@@ -4,4 +4,3 @@ Installation:
 2. Install Git Extensions for Windows
 3. Install KDiff3
 4. Clone http://www.youtube.com/watch?v=TlZXSkJGKF8
-5. Yo
