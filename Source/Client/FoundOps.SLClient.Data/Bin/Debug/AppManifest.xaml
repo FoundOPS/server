@@ -1,0 +1,28 @@
+﻿<Deployment xmlns="http://schemas.microsoft.com/client/2007/deployment" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" EntryPointAssembly="FoundOps.SLClient.Data" EntryPointType="FoundOps.Core.NavigatorContext.App" RuntimeVersion="5.0.60401.0">
+  <Deployment.Parts>
+    <AssemblyPart x:Name="FoundOps.SLClient.Data" Source="FoundOps.SLClient.Data.dll" />
+    <AssemblyPart x:Name="EntityTools" Source="EntityTools.dll" />
+    <AssemblyPart x:Name="FoundOps.Common" Source="FoundOps.Common.dll" />
+    <AssemblyPart x:Name="FoundOps.Common.Silverlight" Source="FoundOps.Common.Silverlight.dll" />
+    <AssemblyPart x:Name="FoundOps.Common.Silverlight.UI" Source="FoundOps.Common.Silverlight.UI.dll" />
+    <AssemblyPart x:Name="MEFedMVVM.SL" Source="MEFedMVVM.SL.dll" />
+    <AssemblyPart x:Name="ReactiveUI.Xaml_SL4" Source="ReactiveUI.Xaml_SL4.dll" />
+    <AssemblyPart x:Name="ReactiveUI_SL4" Source="ReactiveUI_SL4.dll" />
+    <AssemblyPart x:Name="Rxx" Source="Rxx.dll" />
+    <AssemblyPart x:Name="SLMultiBinding" Source="SLMultiBinding.dll" />
+    <AssemblyPart x:Name="System.ComponentModel.Composition.Initialization" Source="System.ComponentModel.Composition.Initialization.dll" />
+    <AssemblyPart x:Name="System.Reactive" Source="System.Reactive.dll" />
+    <AssemblyPart x:Name="System.Reactive.Windows.Threading" Source="System.Reactive.Windows.Threading.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls" Source="System.Windows.Controls.dll" />
+    <AssemblyPart x:Name="System.Windows.Interactivity" Source="System.Windows.Interactivity.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.Data" Source="Telerik.Windows.Controls.Data.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.ScheduleView" Source="Telerik.Windows.Controls.ScheduleView.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.GridView" Source="Telerik.Windows.Controls.GridView.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.Navigation" Source="Telerik.Windows.Controls.Navigation.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls.Navigation" Source="System.Windows.Controls.Navigation.dll" />
+    <AssemblyPart x:Name="Microsoft.CSharp" Source="Microsoft.CSharp.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls.Toolkit" Source="System.Windows.Controls.Toolkit.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.Input" Source="Telerik.Windows.Controls.Input.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls.Toolkit.Internals" Source="System.Windows.Controls.Toolkit.Internals.dll" />
+  </Deployment.Parts>
+</Deployment>

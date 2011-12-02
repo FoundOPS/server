@@ -1,0 +1,34 @@
+﻿<xapCache source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\FoundOps.SLClient.Navigator.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="12/1/2011 6:29:57 PM">
+  <file source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\obj\Debug\FoundOps.SLClient.Navigator.dll" archivePath="FoundOps.SLClient.Navigator.dll" lastWriteTime="12/1/2011 6:29:54 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Debug\FoundOps.Common.dll" archivePath="FoundOps.Common.dll" lastWriteTime="12/1/2011 6:27:49 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\FoundOps.Common.Silverlight.dll" archivePath="FoundOps.Common.Silverlight.dll" lastWriteTime="12/1/2011 6:27:56 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\FoundOps.Common.Silverlight.UI.dll" archivePath="FoundOps.Common.Silverlight.UI.dll" lastWriteTime="12/1/2011 6:27:51 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\Bin\Debug\FoundOps.SLClient.Data.dll" archivePath="FoundOps.SLClient.Data.dll" lastWriteTime="12/1/2011 6:28:03 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.UI\Bin\Debug\FoundOps.SLClient.UI.dll" archivePath="FoundOps.SLClient.UI.dll" lastWriteTime="12/1/2011 6:29:46 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll" archivePath="GalaSoft.MvvmLight.SL4.dll" lastWriteTime="11/22/2011 4:58:41 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.HelperTrinity.dll" archivePath="Kent.Boogaart.HelperTrinity.dll" lastWriteTime="11/22/2011 4:58:41 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.KBCsv.dll" archivePath="Kent.Boogaart.KBCsv.dll" lastWriteTime="11/22/2011 4:58:41 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\MEFedMVVM.SL.dll" archivePath="MEFedMVVM.SL.dll" lastWriteTime="11/22/2011 4:58:41 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Effects.dll" archivePath="Microsoft.Expression.Effects.dll" lastWriteTime="9/6/2011 7:31:00 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Interactions.dll" archivePath="Microsoft.Expression.Interactions.dll" lastWriteTime="9/6/2011 7:31:00 PM" />
+  <file source="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\mscorlib.dll" archivePath="mscorlib.dll" lastWriteTime="4/1/2011 1:36:24 AM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\ReactiveUI.Xaml_SL4.dll" archivePath="ReactiveUI.Xaml_SL4.dll" lastWriteTime="10/17/2011 6:21:20 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL4.dll" archivePath="ReactiveUI_SL4.dll" lastWriteTime="10/23/2011 5:03:21 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\SilverlightAnalytics.dll" archivePath="SilverlightAnalytics.dll" lastWriteTime="11/6/2011 4:28:27 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\SLMultiBinding.dll" archivePath="SLMultiBinding.dll" lastWriteTime="11/22/2011 4:58:41 PM" />
+  <file source="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\system.dll" archivePath="system.dll" lastWriteTime="4/1/2011 1:36:24 AM" />
+  <file source="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\System.Net.dll" archivePath="System.Net.dll" lastWriteTime="4/1/2011 1:36:24 AM" />
+  <file source="C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v1.1.10621\Binaries\Silverlight\v5.0\System.Reactive.dll" archivePath="System.Reactive.dll" lastWriteTime="6/21/2011 8:35:00 PM" />
+  <file source="C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v1.1.10621\Binaries\Silverlight\v5.0\System.Reactive.Windows.Threading.dll" archivePath="System.Reactive.Windows.Threading.dll" lastWriteTime="6/21/2011 8:35:00 PM" />
+  <file source="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\System.ServiceModel.Web.dll" archivePath="System.ServiceModel.Web.dll" lastWriteTime="4/1/2011 1:36:24 AM" />
+  <file source="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\System.Windows.Browser.dll" archivePath="System.Windows.Browser.dll" lastWriteTime="4/1/2011 1:36:24 AM" />
+  <file source="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\System.Windows.dll" archivePath="System.Windows.dll" lastWriteTime="4/1/2011 1:36:24 AM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Interactivity.dll" archivePath="System.Windows.Interactivity.dll" lastWriteTime="11/22/2011 4:58:42 PM" />
+  <file source="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\System.Xml.dll" archivePath="System.Xml.dll" lastWriteTime="4/1/2011 1:36:24 AM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\EntityGraph.Silverlight.dll" archivePath="EntityGraph.Silverlight.dll" lastWriteTime="11/22/2011 4:58:41 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.Windows.Controls.Toolkit.dll" archivePath="System.Windows.Controls.Toolkit.dll" lastWriteTime="11/22/2011 4:58:42 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.UI\Bin\Debug\Rxx.dll" archivePath="Rxx.dll" lastWriteTime="11/22/2011 4:58:41 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\DataValidationFramework.Silverlight.dll" archivePath="DataValidationFramework.Silverlight.dll" lastWriteTime="11/22/2011 4:58:41 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.Windows.Controls.Toolkit.Internals.dll" archivePath="System.Windows.Controls.Toolkit.Internals.dll" lastWriteTime="11/22/2011 4:58:42 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="11/29/2011 12:23:49 PM" />
+</xapCache>

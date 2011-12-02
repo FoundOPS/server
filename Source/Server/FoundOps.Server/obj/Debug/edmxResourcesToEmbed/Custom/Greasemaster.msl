@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="greasemasterModelStoreContainer" CdmEntityContainer="greasemasterEntities">
+    <EntitySetMapping Name="clientAccounts">
+      <EntityTypeMapping TypeName="greasemasterModel.clientAccount">
+        <MappingFragment StoreEntitySet="clientAccounts">
+          <ScalarProperty Name="lastAccess" ColumnName="lastAccess" />
+          <ScalarProperty Name="lastSession" ColumnName="lastSession" />
+          <ScalarProperty Name="lastIp" ColumnName="lastIp" />
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="phoneSuffix" ColumnName="phoneSuffix" />
+          <ScalarProperty Name="phonePrefix" ColumnName="phonePrefix" />
+          <ScalarProperty Name="phoneAreaCode" ColumnName="phoneAreaCode" />
+          <ScalarProperty Name="ccEmails" ColumnName="ccEmails" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="AddressStreet" ColumnName="AddressStreet" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="PickUpLocationID" ColumnName="PickUpLocationID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="mApp_files">
+      <EntityTypeMapping TypeName="greasemasterModel.mApp_files">
+        <MappingFragment StoreEntitySet="mApp_files">
+          <ScalarProperty Name="pickedUpOn" ColumnName="pickedUpOn" />
+          <ScalarProperty Name="uploadedBy" ColumnName="uploadedBy" />
+          <ScalarProperty Name="img3" ColumnName="img3" />
+          <ScalarProperty Name="img2" ColumnName="img2" />
+          <ScalarProperty Name="img1" ColumnName="img1" />
+          <ScalarProperty Name="PickUpLocationID" ColumnName="PickUpLocationID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="mApp_filesNew">
+      <EntityTypeMapping TypeName="greasemasterModel.mApp_filesNew">
+        <MappingFragment StoreEntitySet="mApp_filesNew">
+          <ScalarProperty Name="pickedUpOn" ColumnName="pickedUpOn" />
+          <ScalarProperty Name="uploadedBy" ColumnName="uploadedBy" />
+          <ScalarProperty Name="serial" ColumnName="serial" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="img" ColumnName="img" />
+          <ScalarProperty Name="session_date" ColumnName="session_date" />
+          <ScalarProperty Name="PickUpLocationID" ColumnName="PickUpLocationID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="mApp_users">
+      <EntityTypeMapping TypeName="greasemasterModel.mApp_users">
+        <MappingFragment StoreEntitySet="mApp_users">
+          <ScalarProperty Name="lastAccess" ColumnName="lastAccess" />
+          <ScalarProperty Name="lastSession" ColumnName="lastSession" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pickuphistories">
+      <EntityTypeMapping TypeName="greasemasterModel.pickuphistory">
+        <MappingFragment StoreEntitySet="pickuphistory">
+          <ScalarProperty Name="Signature" ColumnName="Signature" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="Charge" ColumnName="Charge" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Emergency" ColumnName="Emergency" />
+          <ScalarProperty Name="CompletionTime" ColumnName="CompletionTime" />
+          <ScalarProperty Name="PickUpTime" ColumnName="PickUpTime" />
+          <ScalarProperty Name="ScheduledDate" ColumnName="ScheduledDate" />
+          <ScalarProperty Name="RouteScheduleID" ColumnName="RouteScheduleID" />
+          <ScalarProperty Name="PickUpLocationID" ColumnName="PickUpLocationID" />
+          <ScalarProperty Name="PickUpID" ColumnName="PickUpID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pickuplocations">
+      <EntityTypeMapping TypeName="greasemasterModel.pickuplocation">
+        <MappingFragment StoreEntitySet="pickuplocation">
+          <ScalarProperty Name="PickUpLocationTypeID" ColumnName="PickUpLocationTypeID" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="OtherNotes" ColumnName="OtherNotes" />
+          <ScalarProperty Name="GreaseTrapDetails" ColumnName="GreaseTrapDetails" />
+          <ScalarProperty Name="GreaseTrapCharge" ColumnName="GreaseTrapCharge" />
+          <ScalarProperty Name="OilCharge" ColumnName="OilCharge" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="BillingState" ColumnName="BillingState" />
+          <ScalarProperty Name="BillingZipCode" ColumnName="BillingZipCode" />
+          <ScalarProperty Name="BillingCity" ColumnName="BillingCity" />
+          <ScalarProperty Name="BillingAddress" ColumnName="BillingAddress" />
+          <ScalarProperty Name="FaxNumber" ColumnName="FaxNumber" />
+          <ScalarProperty Name="AlternativePhoneNumber" ColumnName="AlternativePhoneNumber" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+          <ScalarProperty Name="GeocodeY" ColumnName="GeocodeY" />
+          <ScalarProperty Name="GeocodeX" ColumnName="GeocodeX" />
+          <ScalarProperty Name="AddressState" ColumnName="AddressState" />
+          <ScalarProperty Name="AddressZipCode" ColumnName="AddressZipCode" />
+          <ScalarProperty Name="AddressCity" ColumnName="AddressCity" />
+          <ScalarProperty Name="AddressCrossStreet" ColumnName="AddressCrossStreet" />
+          <ScalarProperty Name="AddressStreet" ColumnName="AddressStreet" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="PickUpLocationID" ColumnName="PickUpLocationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pickuplocationschedules">
+      <EntityTypeMapping TypeName="greasemasterModel.pickuplocationschedule">
+        <MappingFragment StoreEntitySet="pickuplocationschedule">
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Recurrence" ColumnName="Recurrence" />
+          <ScalarProperty Name="PickUpLocationID" ColumnName="PickUpLocationID" />
+          <ScalarProperty Name="PickUpLocationScheduleID" ColumnName="PickUpLocationScheduleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pickuplocationtypes">
+      <EntityTypeMapping TypeName="greasemasterModel.pickuplocationtype">
+        <MappingFragment StoreEntitySet="pickuplocationtype">
+          <ScalarProperty Name="PickUpLocationType1" ColumnName="PickUpLocationType" />
+          <ScalarProperty Name="PickUpLocationTypeID" ColumnName="PickUpLocationTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pickuplocationtypes1">
+      <EntityTypeMapping TypeName="greasemasterModel.pickuplocationtype1">
+        <MappingFragment StoreEntitySet="pickuplocationtypes">
+          <ScalarProperty Name="PickUpLocationTypeID" ColumnName="PickUpLocationTypeID" />
+          <ScalarProperty Name="PickUpLocationID" ColumnName="PickUpLocationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="regions">
+      <EntityTypeMapping TypeName="greasemasterModel.region">
+        <MappingFragment StoreEntitySet="region">
+          <ScalarProperty Name="ARGB" ColumnName="ARGB" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="routes">
+      <EntityTypeMapping TypeName="greasemasterModel.route">
+        <MappingFragment StoreEntitySet="route">
+          <ScalarProperty Name="PositionsInOrder" ColumnName="PositionsInOrder" />
+          <ScalarProperty Name="PickUpLocationPositions" ColumnName="PickUpLocationPositions" />
+          <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="routehistories">
+      <EntityTypeMapping TypeName="greasemasterModel.routehistory">
+        <MappingFragment StoreEntitySet="routehistory">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="RouteScheduleID" ColumnName="RouteScheduleID" />
+          <ScalarProperty Name="RouteHistoryID" ColumnName="RouteHistoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="routeschedules">
+      <EntityTypeMapping TypeName="greasemasterModel.routeschedule">
+        <MappingFragment StoreEntitySet="routeschedule">
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="Recurrence" ColumnName="Recurrence" />
+          <ScalarProperty Name="RouteID" ColumnName="RouteID" />
+          <ScalarProperty Name="RouteScheduleID" ColumnName="RouteScheduleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="routeschedulebreaks">
+      <EntityTypeMapping TypeName="greasemasterModel.routeschedulebreak">
+        <MappingFragment StoreEntitySet="routeschedulebreak">
+          <ScalarProperty Name="DateOfBreak" ColumnName="DateOfBreak" />
+          <ScalarProperty Name="RouteScheduleID" ColumnName="RouteScheduleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="timewindows">
+      <EntityTypeMapping TypeName="greasemasterModel.timewindow">
+        <MappingFragment StoreEntitySet="timewindow">
+          <ScalarProperty Name="End" ColumnName="End" />
+          <ScalarProperty Name="Start" ColumnName="Start" />
+          <ScalarProperty Name="PickUpLocationID" ColumnName="PickUpLocationID" />
+          <ScalarProperty Name="TimeWindowID" ColumnName="TimeWindowID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="greasemasterModel.user">
+        <MappingFragment StoreEntitySet="user">
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

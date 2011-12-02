@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[SalesLeads] (
+    [Id]    UNIQUEIDENTIFIER NOT NULL,
+    [Email] NVARCHAR (MAX)   NULL,
+    CONSTRAINT [PK_SalesLeads] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+

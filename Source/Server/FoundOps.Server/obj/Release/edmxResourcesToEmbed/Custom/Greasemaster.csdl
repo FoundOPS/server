@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="greasemasterModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="greasemasterEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="clientAccounts" EntityType="greasemasterModel.clientAccount" />
+    <EntitySet Name="mApp_files" EntityType="greasemasterModel.mApp_files" />
+    <EntitySet Name="mApp_filesNew" EntityType="greasemasterModel.mApp_filesNew" />
+    <EntitySet Name="mApp_users" EntityType="greasemasterModel.mApp_users" />
+    <EntitySet Name="pickuphistories" EntityType="greasemasterModel.pickuphistory" />
+    <EntitySet Name="pickuplocations" EntityType="greasemasterModel.pickuplocation" />
+    <EntitySet Name="pickuplocationschedules" EntityType="greasemasterModel.pickuplocationschedule" />
+    <EntitySet Name="pickuplocationtypes" EntityType="greasemasterModel.pickuplocationtype" />
+    <EntitySet Name="pickuplocationtypes1" EntityType="greasemasterModel.pickuplocationtype1" />
+    <EntitySet Name="regions" EntityType="greasemasterModel.region" />
+    <EntitySet Name="routes" EntityType="greasemasterModel.route" />
+    <EntitySet Name="routehistories" EntityType="greasemasterModel.routehistory" />
+    <EntitySet Name="routeschedules" EntityType="greasemasterModel.routeschedule" />
+    <EntitySet Name="routeschedulebreaks" EntityType="greasemasterModel.routeschedulebreak" />
+    <EntitySet Name="timewindows" EntityType="greasemasterModel.timewindow" />
+    <EntitySet Name="users" EntityType="greasemasterModel.user" />
+    <AssociationSet Name="plocidcstr" Association="greasemasterModel.plocidcstr">
+      <End Role="pickuplocation" EntitySet="pickuplocations" />
+      <End Role="pickuphistory" EntitySet="pickuphistories" />
+    </AssociationSet>
+    <AssociationSet Name="rscdlidcstr" Association="greasemasterModel.rscdlidcstr">
+      <End Role="routeschedule" EntitySet="routeschedules" />
+      <End Role="pickuphistory" EntitySet="pickuphistories" />
+    </AssociationSet>
+    <AssociationSet Name="plocidtwcstr" Association="greasemasterModel.plocidtwcstr">
+      <End Role="pickuplocation" EntitySet="pickuplocations" />
+      <End Role="timewindow" EntitySet="timewindows" />
+    </AssociationSet>
+    <AssociationSet Name="pltid" Association="greasemasterModel.pltid">
+      <End Role="pickuplocationtype" EntitySet="pickuplocationtypes" />
+      <End Role="pickuplocation" EntitySet="pickuplocations" />
+    </AssociationSet>
+    <AssociationSet Name="rgnid" Association="greasemasterModel.rgnid">
+      <End Role="region" EntitySet="regions" />
+      <End Role="pickuplocation" EntitySet="pickuplocations" />
+    </AssociationSet>
+    <AssociationSet Name="rtidrtschdcstr" Association="greasemasterModel.rtidrtschdcstr">
+      <End Role="route" EntitySet="routes" />
+      <End Role="routeschedule" EntitySet="routeschedules" />
+    </AssociationSet>
+    <AssociationSet Name="rtidcstr" Association="greasemasterModel.rtidcstr">
+      <End Role="routeschedule" EntitySet="routeschedules" />
+      <End Role="routehistory" EntitySet="routehistories" />
+    </AssociationSet>
+    <AssociationSet Name="locidcstr" Association="greasemasterModel.locidcstr">
+      <End Role="routeschedule" EntitySet="routeschedules" />
+      <End Role="routeschedulebreak" EntitySet="routeschedulebreaks" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="clientAccount">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="PickUpLocationID" Nullable="false" />
+    <Property Type="String" Name="Name" />
+    <Property Type="String" Name="AddressStreet" />
+    <Property Type="String" Name="username" Nullable="false" />
+    <Property Type="String" Name="password" Nullable="false" />
+    <Property Type="String" Name="email" />
+    <Property Type="String" Name="ccEmails" />
+    <Property Type="String" Name="phoneAreaCode" />
+    <Property Type="String" Name="phonePrefix" />
+    <Property Type="String" Name="phoneSuffix" />
+    <Property Type="Boolean" Name="active" Nullable="false" />
+    <Property Type="String" Name="lastIp" />
+    <Property Type="String" Name="lastSession" Nullable="false" />
+    <Property Type="DateTimeOffset" Name="lastAccess" />
+  </EntityType>
+  <EntityType Name="mApp_files">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="PickUpLocationID" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="PickUpLocationID" Nullable="false" />
+    <Property Type="String" Name="img1" Nullable="false" />
+    <Property Type="String" Name="img2" Nullable="false" />
+    <Property Type="String" Name="img3" Nullable="false" />
+    <Property Type="String" Name="uploadedBy" Nullable="false" />
+    <Property Type="DateTimeOffset" Name="pickedUpOn" />
+  </EntityType>
+  <EntityType Name="mApp_filesNew">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="PickUpLocationID" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="PickUpLocationID" Nullable="false" />
+    <Property Type="String" Name="session_date" Nullable="false" />
+    <Property Type="String" Name="img" Nullable="false" />
+    <Property Type="Boolean" Name="type" Nullable="false" />
+    <Property Type="Boolean" Name="serial" Nullable="false" />
+    <Property Type="String" Name="uploadedBy" Nullable="false" />
+    <Property Type="String" Name="pickedUpOn" Nullable="false" />
+  </EntityType>
+  <EntityType Name="mApp_users">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="userName" />
+    </Key>
+    <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="firstName" Nullable="false" />
+    <Property Type="String" Name="lastName" Nullable="false" />
+    <Property Type="String" Name="userName" Nullable="false" />
+    <Property Type="String" Name="password" Nullable="false" />
+    <Property Type="String" Name="lastSession" Nullable="false" />
+    <Property Type="DateTimeOffset" Name="lastAccess" />
+  </EntityType>
+  <EntityType Name="pickuphistory">
+    <Key>
+      <PropertyRef Name="PickUpID" />
+    </Key>
+    <Property Type="Int32" Name="PickUpID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="PickUpLocationID" Nullable="false" />
+    <Property Type="Int32" Name="RouteScheduleID" />
+    <Property Type="DateTime" Name="ScheduledDate" Nullable="false" />
+    <Property Type="Time" Name="PickUpTime" Nullable="false" />
+    <Property Type="Time" Name="CompletionTime" Nullable="false" />
+    <Property Type="Boolean" Name="Emergency" />
+    <Property Type="Int32" Name="Amount" />
+    <Property Type="Int32" Name="Charge" />
+    <Property Type="String" Name="Notes" />
+    <Property Type="Int32" Name="UserID" />
+    <Property Type="Binary" Name="Signature" />
+    <NavigationProperty Name="pickuplocation" Relationship="greasemasterModel.plocidcstr" FromRole="pickuphistory" ToRole="pickuplocation" />
+    <NavigationProperty Name="routeschedule" Relationship="greasemasterModel.rscdlidcstr" FromRole="pickuphistory" ToRole="routeschedule" />
+  </EntityType>
+  <EntityType Name="pickuplocation">
+    <Key>
+      <PropertyRef Name="PickUpLocationID" />
+    </Key>
+    <Property Type="Int32" Name="PickUpLocationID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="String" Name="AddressStreet" />
+    <Property Type="String" Name="AddressCrossStreet" />
+    <Property Type="String" Name="AddressCity" />
+    <Property Type="Int32" Name="AddressZipCode" />
+    <Property Type="String" Name="AddressState" />
+    <Property Type="Double" Name="GeocodeX" Nullable="false" />
+    <Property Type="Double" Name="GeocodeY" Nullable="false" />
+    <Property Type="Int32" Name="RegionID" />
+    <Property Type="String" Name="ContactName" />
+    <Property Type="Int64" Name="PhoneNumber" />
+    <Property Type="Int64" Name="AlternativePhoneNumber" />
+    <Property Type="Int64" Name="FaxNumber" />
+    <Property Type="String" Name="BillingAddress" />
+    <Property Type="String" Name="BillingCity" />
+    <Property Type="Int32" Name="BillingZipCode" />
+    <Property Type="String" Name="BillingState" />
+    <Property Type="String" Name="Email" />
+    <Property Type="Int32" Name="OilCharge" />
+    <Property Type="Int32" Name="GreaseTrapCharge" />
+    <Property Type="String" Name="GreaseTrapDetails" />
+    <Property Type="String" Name="OtherNotes" />
+    <Property Type="DateTime" Name="DateAdded" />
+    <Property Type="Int32" Name="PickUpLocationTypeID" />
+    <NavigationProperty Name="pickuphistories" Relationship="greasemasterModel.plocidcstr" FromRole="pickuplocation" ToRole="pickuphistory" />
+    <NavigationProperty Name="timewindows" Relationship="greasemasterModel.plocidtwcstr" FromRole="pickuplocation" ToRole="timewindow" />
+    <NavigationProperty Name="pickuplocationtype" Relationship="greasemasterModel.pltid" FromRole="pickuplocation" ToRole="pickuplocationtype" />
+    <NavigationProperty Name="region" Relationship="greasemasterModel.rgnid" FromRole="pickuplocation" ToRole="region" />
+  </EntityType>
+  <EntityType Name="pickuplocationschedule">
+    <Key>
+      <PropertyRef Name="PickUpLocationScheduleID" />
+    </Key>
+    <Property Type="Int32" Name="PickUpLocationScheduleID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="PickUpLocationID" Nullable="false" />
+    <Property Type="Int32" Name="Recurrence" Nullable="false" />
+    <Property Type="DateTime" Name="StartDate" Nullable="false" />
+    <Property Type="Int32" Name="Type" Nullable="false" />
+    <Property Type="DateTime" Name="EndDate" />
+  </EntityType>
+  <EntityType Name="pickuplocationtype">
+    <Key>
+      <PropertyRef Name="PickUpLocationTypeID" />
+    </Key>
+    <Property Type="Int32" Name="PickUpLocationTypeID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="PickUpLocationType1" Nullable="false" />
+    <NavigationProperty Name="pickuplocations" Relationship="greasemasterModel.pltid" FromRole="pickuplocationtype" ToRole="pickuplocation" />
+  </EntityType>
+  <EntityType Name="pickuplocationtype1">
+    <Key>
+      <PropertyRef Name="PickUpLocationID" />
+      <PropertyRef Name="PickUpLocationTypeID" />
+    </Key>
+    <Property Type="Int32" Name="PickUpLocationID" Nullable="false" />
+    <Property Type="Int32" Name="PickUpLocationTypeID" Nullable="false" />
+  </EntityType>
+  <EntityType Name="region">
+    <Key>
+      <PropertyRef Name="RegionID" />
+    </Key>
+    <Property Type="Int32" Name="RegionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" />
+    <Property Type="Int32" Name="ARGB" />
+    <NavigationProperty Name="pickuplocations" Relationship="greasemasterModel.rgnid" FromRole="region" ToRole="pickuplocation" />
+  </EntityType>
+  <EntityType Name="route">
+    <Key>
+      <PropertyRef Name="RouteID" />
+    </Key>
+    <Property Type="Int32" Name="RouteID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="PickUpLocationPositions" Nullable="false" />
+    <Property Type="String" Name="PositionsInOrder" Nullable="false" />
+    <NavigationProperty Name="routeschedules" Relationship="greasemasterModel.rtidrtschdcstr" FromRole="route" ToRole="routeschedule" />
+  </EntityType>
+  <EntityType Name="routehistory">
+    <Key>
+      <PropertyRef Name="RouteHistoryID" />
+    </Key>
+    <Property Type="Int32" Name="RouteHistoryID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="RouteScheduleID" Nullable="false" />
+    <Property Type="DateTime" Name="StartTime" Nullable="false" />
+    <Property Type="DateTime" Name="EndTime" Nullable="false" />
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <NavigationProperty Name="routeschedule" Relationship="greasemasterModel.rtidcstr" FromRole="routehistory" ToRole="routeschedule" />
+  </EntityType>
+  <EntityType Name="routeschedule">
+    <Key>
+      <PropertyRef Name="RouteScheduleID" />
+    </Key>
+    <Property Type="Int32" Name="RouteScheduleID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="RouteID" Nullable="false" />
+    <Property Type="Int32" Name="Recurrence" Nullable="false" />
+    <Property Type="DateTime" Name="StartDate" Nullable="false" />
+    <Property Type="Int32" Name="Type" Nullable="false" />
+    <Property Type="DateTime" Name="EndDate" />
+    <NavigationProperty Name="pickuphistories" Relationship="greasemasterModel.rscdlidcstr" FromRole="routeschedule" ToRole="pickuphistory" />
+    <NavigationProperty Name="route" Relationship="greasemasterModel.rtidrtschdcstr" FromRole="routeschedule" ToRole="route" />
+    <NavigationProperty Name="routehistories" Relationship="greasemasterModel.rtidcstr" FromRole="routeschedule" ToRole="routehistory" />
+    <NavigationProperty Name="routeschedulebreaks" Relationship="greasemasterModel.locidcstr" FromRole="routeschedule" ToRole="routeschedulebreak" />
+  </EntityType>
+  <EntityType Name="routeschedulebreak">
+    <Key>
+      <PropertyRef Name="RouteScheduleID" />
+      <PropertyRef Name="DateOfBreak" />
+    </Key>
+    <Property Type="Int32" Name="RouteScheduleID" Nullable="false" />
+    <Property Type="DateTime" Name="DateOfBreak" Nullable="false" />
+    <NavigationProperty Name="routeschedule" Relationship="greasemasterModel.locidcstr" FromRole="routeschedulebreak" ToRole="routeschedule" />
+  </EntityType>
+  <EntityType Name="timewindow">
+    <Key>
+      <PropertyRef Name="TimeWindowID" />
+    </Key>
+    <Property Type="Int32" Name="TimeWindowID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="PickUpLocationID" Nullable="false" />
+    <Property Type="Time" Name="Start" Nullable="false" />
+    <Property Type="Time" Name="End" Nullable="false" />
+    <NavigationProperty Name="pickuplocation" Relationship="greasemasterModel.plocidtwcstr" FromRole="timewindow" ToRole="pickuplocation" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="UserName" />
+    </Key>
+    <Property Type="Int32" Name="UserID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="UserName" Nullable="false" />
+    <Property Type="String" Name="Password" Nullable="false" />
+  </EntityType>
+  <Association Name="plocidcstr">
+    <End Type="greasemasterModel.pickuplocation" Role="pickuplocation" Multiplicity="1" />
+    <End Type="greasemasterModel.pickuphistory" Role="pickuphistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pickuplocation">
+        <PropertyRef Name="PickUpLocationID" />
+      </Principal>
+      <Dependent Role="pickuphistory">
+        <PropertyRef Name="PickUpLocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="rscdlidcstr">
+    <End Type="greasemasterModel.routeschedule" Role="routeschedule" Multiplicity="0..1" />
+    <End Type="greasemasterModel.pickuphistory" Role="pickuphistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="routeschedule">
+        <PropertyRef Name="RouteScheduleID" />
+      </Principal>
+      <Dependent Role="pickuphistory">
+        <PropertyRef Name="RouteScheduleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="plocidtwcstr">
+    <End Type="greasemasterModel.pickuplocation" Role="pickuplocation" Multiplicity="1" />
+    <End Type="greasemasterModel.timewindow" Role="timewindow" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pickuplocation">
+        <PropertyRef Name="PickUpLocationID" />
+      </Principal>
+      <Dependent Role="timewindow">
+        <PropertyRef Name="PickUpLocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="pltid">
+    <End Type="greasemasterModel.pickuplocationtype" Role="pickuplocationtype" Multiplicity="0..1" />
+    <End Type="greasemasterModel.pickuplocation" Role="pickuplocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pickuplocationtype">
+        <PropertyRef Name="PickUpLocationTypeID" />
+      </Principal>
+      <Dependent Role="pickuplocation">
+        <PropertyRef Name="PickUpLocationTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="rgnid">
+    <End Type="greasemasterModel.region" Role="region" Multiplicity="0..1" />
+    <End Type="greasemasterModel.pickuplocation" Role="pickuplocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="region">
+        <PropertyRef Name="RegionID" />
+      </Principal>
+      <Dependent Role="pickuplocation">
+        <PropertyRef Name="RegionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="rtidrtschdcstr">
+    <End Type="greasemasterModel.route" Role="route" Multiplicity="1" />
+    <End Type="greasemasterModel.routeschedule" Role="routeschedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="route">
+        <PropertyRef Name="RouteID" />
+      </Principal>
+      <Dependent Role="routeschedule">
+        <PropertyRef Name="RouteID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="rtidcstr">
+    <End Type="greasemasterModel.routeschedule" Role="routeschedule" Multiplicity="1" />
+    <End Type="greasemasterModel.routehistory" Role="routehistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="routeschedule">
+        <PropertyRef Name="RouteScheduleID" />
+      </Principal>
+      <Dependent Role="routehistory">
+        <PropertyRef Name="RouteScheduleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="locidcstr">
+    <End Type="greasemasterModel.routeschedule" Role="routeschedule" Multiplicity="1" />
+    <End Type="greasemasterModel.routeschedulebreak" Role="routeschedulebreak" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="routeschedule">
+        <PropertyRef Name="RouteScheduleID" />
+      </Principal>
+      <Dependent Role="routeschedulebreak">
+        <PropertyRef Name="RouteScheduleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

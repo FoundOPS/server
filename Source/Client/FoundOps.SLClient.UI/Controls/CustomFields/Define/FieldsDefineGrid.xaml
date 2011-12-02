@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.CustomFields.FieldsDefineGrid" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
+    xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields"  
+    xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors" xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" 
+    xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
+    xmlns:Converters1="clr-namespace:FoundOps.Core.Context.Converters"
+             xmlns:Define="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Define" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400"
+    ViewModelLocator:ViewModelLocator.SharedViewModel="FieldsVM">
+    <UserControl.Resources>
+        <Converters:FieldToTypeStringConverter x:Key="FieldToTypeStringConverter"/>
+        <Converters1:FieldDefaultValueStringConverter x:Key="FieldDefaultValueStringConverter"/>
+        <DataTemplate x:Key="CheckBoxTemplate">
+            <CustomFields:CheckBoxDefine OptionsField="{Binding}" />
+        </DataTemplate>
+        <DataTemplate x:Key="CurrencyTemplate">
+            <CustomFields:CurrencyDefine NumericField="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="NumberTemplate">
+            <CustomFields:NumberDefine NumericField="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="OptionsFieldTemplate">
+            <Define:OptionsFieldDefine OptionsField="{Binding}" />
+        </DataTemplate>
+        <DataTemplate x:Key="PercentageTemplate">
+            <CustomFields:PercentageDefine NumericField="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="TextTemplate">
+            <CustomFields:TextDefine TextBoxField="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="TimeTemplate">
+            <CustomFields:TimeDefine DateTimeField="{Binding}"/>
+        </DataTemplate>
+        <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" CheckListTemplate="{StaticResource OptionsFieldTemplate}" ComboBoxTemplate="{StaticResource OptionsFieldTemplate}" CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberTemplate}" PercentageTemplate="{StaticResource PercentageTemplate}" TextSmTemplate="{StaticResource TextTemplate}" TextLgTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+    </UserControl.Resources>
+    <telerik:RadTreeListView x:Name="FieldDefineTreeListView"  AutoGenerateColumns="False" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" 
+                             RowIndicatorVisibility="Collapsed" SelectionMode="Single" RowDetailsTemplateSelector="{StaticResource FieldDataTemplateSelector}" 
+                             SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}">
+        <telerik:RadTreeListView.Columns>
+            <telerik:GridViewDataColumn Header="Type">
+                <telerik:GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldToTypeStringConverter}}"/>
+                    </DataTemplate>
+                </telerik:GridViewColumn.CellTemplate>
+            </telerik:GridViewDataColumn>
+            <telerik:GridViewDataColumn Header="Name" >
+                <telerik:GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </telerik:GridViewColumn.CellTemplate>
+            </telerik:GridViewDataColumn>
+            <telerik:GridViewDataColumn Header="Default Value(s)" Width="*">
+                <telerik:GridViewColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldDefaultValueStringConverter}}"/>
+                    </DataTemplate>
+                </telerik:GridViewColumn.CellTemplate>
+            </telerik:GridViewDataColumn>
+        </telerik:RadTreeListView.Columns>
+    </telerik:RadTreeListView>
+</UserControl>

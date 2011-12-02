@@ -1,0 +1,47 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/d:Controllers/f:HomeController.cs" caret="484" fromTop="17" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Global.asax.cs" caret="1595" fromTop="17" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/d:Models/d:CoreEntities/f:CoreEntitiesLogic.cs" caret="2784" fromTop="17" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/d:Resources/f:Developer.config" caret="461" fromTop="9" />
+      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:Controls/f:ErrorWindow.xaml.cs" caret="1213" fromTop="11" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Web.config" caret="861" fromTop="7" />
+      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/f:App.xaml.cs" caret="1400" fromTop="14" />
+      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:ViewModels/f:NavigationBarViewModel.cs" caret="3731" fromTop="3" />
+      <File id="4CB3F72C-3943-4BE5-AC76-6D5BB8B82790/f:ServiceDefinition.csdef" caret="0" fromTop="0" />
+      <File id="4CB3F72C-3943-4BE5-AC76-6D5BB8B82790/f:ServiceConfiguration.cscfg" caret="262" fromTop="3" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="4CB3F72C-3943-4BE5-AC76-6D5BB8B82790/f:ServiceDefinition.csdef" caret="388" fromTop="9" />
+      <File id="4CB3F72C-3943-4BE5-AC76-6D5BB8B82790/f:ServiceDefinition.csdef" caret="551" fromTop="15" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Web.config" caret="3438" fromTop="13" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Global.asax.cs" caret="1690" fromTop="25" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/d:Controllers/f:HomeController.cs" caret="440" fromTop="17" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/d:Resources/f:Developer.config" caret="324" fromTop="6" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Web.config" caret="4142" fromTop="13" />
+      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Web.config" caret="2180" fromTop="4" />
+      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:ViewModels/f:NavigationBarViewModel.cs" caret="3751" fromTop="4" />
+      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:ViewModels/f:NavigationBarViewModel.cs" caret="4793" fromTop="21" />
+      <File id="4CB3F72C-3943-4BE5-AC76-6D5BB8B82790/f:ServiceConfiguration.cscfg" caret="262" fromTop="3" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False">
+    </NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+</Configuration>

@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <!-- Sandcastle Help File Builder Tasks.  http://SHFB.CodePlex.com -->
+  <UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.MRefBuilder" AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
+  <UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.XslTransform" AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
+  <!-- Task properties -->
+  <PropertyGroup>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <DocInternals>false</DocInternals>
+    <SandcastlePath>C:\Program Files (x86)\Sandcastle\</SandcastlePath>
+    <WorkingFolder>C:\FoundOps\Agile5\Docs\Help\Working\</WorkingFolder>
+    <ReferencePath Condition=" '$(ReferencePath)' == '' ">
+    </ReferencePath>
+  </PropertyGroup>
+  <!-- The common targets require OutputPath to be valid -->
+  <PropertyGroup>
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <!-- Import the common targets -->
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+  <!-- Import the Silverlight targets if needed so that the references are
+       resolved properly in Silverlight projects. -->
+  <PropertyGroup>
+    <FrameworkRegistryBase Condition="'$(TargetFrameworkIdentifier)' == 'Silverlight'">Software\Microsoft\Microsoft SDKs\$(TargetFrameworkIdentifier)</FrameworkRegistryBase>
+  </PropertyGroup>
+  <Import Condition="'$(TargetFrameworkIdentifier)' == 'Silverlight'" Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(TargetFrameworkVersion)\Microsoft.Silverlight.Common.targets" />
+  <!-- Import the .NET Portable Framework targets if needed so that the references are
+       resolved properly in .NET Portable Framework projects. -->
+  <Import Condition="'$(TargetFrameworkIdentifier)' == '.NETPortable'" Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.Common.targets" />
+  <!-- This defines the dependencies for the Generate target -->
+  <PropertyGroup>
+    <GenerateDependsOn>
+      ResolveReferences;
+      BeforeGenerateRefInfo;
+      GenerateRefInfo;
+      AfterGenerateRefInfo
+    </GenerateDependsOn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityGraph.Silverlight">
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityTools">
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\EntityTools.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.SL4">
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
+    </Reference>
+    <Reference Include="MEFedMVVM.SL">
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\MEFedMVVM.SL.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SLMultiBinding">
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\SLMultiBinding.dll</HintPath>
+    </Reference>
+    <Reference Include="system" />
+    <Reference Include="System.ComponentModel.Composition, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition.Initialization, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=5.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Observable">
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\System.Observable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.DomainServices.Client, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Client.Web, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web.Extensions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ServiceModel.Web.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows, Version=5.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Windows.Controls">
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Data">
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.DataVisualization">
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.DomainServices">
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DomainServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.ScheduleView">
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data">
+      <Private>False</Private>
+      <HintPath>C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Assembly Include="C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\Bin\Debug\FoundOps.SLClient.Data.dll" />
+  </ItemGroup>
+  <Target Name="Generate" DependsOnTargets="$(GenerateDependsOn)" />
+  <!-- The Generate Ref Info target -->
+  <Target Name="GenerateRefInfo">
+    <!-- Run MRefBuilder.  Reference build items are added to this template by
+         the build process.  The ResolveReferences dependency target will
+         resolve them to absolute paths that can be passed to MRefBuilder
+         using the /dep command line option.  Assembly build items are added
+         by the build process to define the assemblies to reflect. -->
+    <SandcastleBuilder.Utils.MSBuild.MRefBuilder DocumentInternals="$(DocInternals)" SandcastlePath="$(SandcastlePath)" WorkingFolder="$(WorkingFolder)" Assemblies="@(Assembly)" References="@(ReferencePath)" />
+    <!-- Merge duplicate topics (if any) -->
+    <Copy SourceFiles="reflection.org" DestinationFiles="reflection.all" />
+    <SandcastleBuilder.Utils.MSBuild.XslTransform SandcastlePath="$(SandcastlePath)" WorkingFolder="$(WorkingFolder)" Transformations="ProductionTransforms\MergeDuplicates.xsl" InputFile="reflection.all" OutputFile="reflection.org" />
+  </Target>
+  <!-- The following targets may be overridden or replaced to perform
+       additional processing. -->
+  <Target Name="BeforeGenerateRefInfo" />
+  <Target Name="AfterGenerateRefInfo" />
+</Project>

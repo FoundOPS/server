@@ -1,0 +1,10 @@
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\bin\Debug\FoundOps.Common.NET.dll
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\bin\Debug\FoundOps.Common.NET.pdb
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\bin\Debug\FoundOps.Common.dll
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\bin\Debug\Microsoft.WindowsAzure.StorageClient.dll
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\bin\Debug\System.Reactive.dll
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\bin\Debug\FoundOps.Common.pdb
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\bin\Debug\Microsoft.WindowsAzure.StorageClient.xml
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\obj\Debug\ResolveAssemblyReference.cache
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\obj\Debug\FoundOps.Common.NET.dll
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.NET\obj\Debug\FoundOps.Common.NET.pdb

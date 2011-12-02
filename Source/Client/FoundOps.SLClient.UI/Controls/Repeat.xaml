@@ -1,0 +1,234 @@
+﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.Repeat" x:Name="myRepeat"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
+        xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding" xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters"
+        xmlns:Controls="clr-namespace:FoundOps.Framework.Views.Controls" xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Controls1="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d">
+    <Grid x:Name="LayoutRoot" DataContext="{Binding Value, ElementName=myRepeat}">
+        <Grid.Resources>
+            <Converters2:EnumValuesConverter x:Key="EnumValuesConverter" />
+            <Converters:RepeatEveryTimesUnitTypeConverter x:Key="RepeatEveryTimesUnitTypeConverter" />
+            <Converters:EndAfterTimesToOccurrencesStringConverter x:Key="EndAfterTimesToOccurrencesStringConverter" />
+        </Grid.Resources>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Once">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="StartDateTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="StartDatePicker">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RepeatEveryTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                Storyboard.TargetName="RepeatEveryTimesNumericUpDown">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RepeatOnTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                Storyboard.TargetName="WeeklyFrequencyDetailsDaysOfWeekControl">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RepeatOnItemsControl">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="EndDateTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="EndDateStackPanel">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Daily">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RepeatOnTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                Storyboard.TargetName="WeeklyFrequencyDetailsDaysOfWeekControl">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RepeatOnItemsControl">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Weekly">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RepeatOnItemsControl">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Monthly">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                Storyboard.TargetName="WeeklyFrequencyDetailsDaysOfWeekControl">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RepeatOnItemsControl">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Yearly">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RepeatOnTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                Storyboard.TargetName="WeeklyFrequencyDetailsDaysOfWeekControl">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="RepeatOnItemsControl">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="2" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="2" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="2" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="2" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{StaticResource LargeLabelColumn}" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="FrequencyTextBlock" HorizontalAlignment="Right" Text="Frequency:" />
+        <telerik:RadComboBox x:Name="FrequencyComboBox" Grid.Column="2"
+                ItemsSource="{Binding Frequency, Mode=OneTime, Converter={StaticResource EnumValuesConverter}}"
+                SelectedItem="{Binding Frequency, Mode=TwoWay}" SelectionChanged="FrequencyComboBoxSelectionChanged" />
+        <TextBlock x:Name="StartDateTextBlock" Grid.Row="2" Text="Start Date:" HorizontalAlignment="Right" />
+        <telerik:RadDatePicker x:Name="StartDatePicker" Grid.Row="2" Grid.Column="2" 
+                SelectedValue="{Binding StartDate, Mode=TwoWay}" DisplayFormat="Long" />
+        <TextBlock x:Name="RepeatEveryTextBlock" Text="Repeat Every:" HorizontalAlignment="Right" Grid.Row="4" />
+        <StackPanel Grid.Row="4" Grid.Column="2">
+            <telerik:RadNumericUpDown x:Name="RepeatEveryTimesNumericUpDown" Minimum="1" NumberDecimalDigits="0"
+                    Value="{Binding RepeatEveryTimes, Mode=TwoWay}" IsInteger="True">
+                <local:BindingUtil.MultiBindings>
+                    <local:MultiBindings>
+                        <local:MultiBinding TargetProperty="CustomUnit" Converter="{StaticResource RepeatEveryTimesUnitTypeConverter}">
+                            <local:BindingCollection>
+                                <Binding Path="Frequency" />
+                                <Binding Path="RepeatEveryTimes" />
+                            </local:BindingCollection>
+                        </local:MultiBinding>
+                    </local:MultiBindings>
+                </local:BindingUtil.MultiBindings>
+            </telerik:RadNumericUpDown>
+        </StackPanel>
+        <TextBlock x:Name="RepeatOnTextBlock" Text="Repeat On:" HorizontalAlignment="Right" Grid.Row="6" />
+        <Controls1:GlobalDaysOfWeek x:Name="WeeklyFrequencyDetailsDaysOfWeekControl" AllowEdit="True"
+                SelectedDaysOfWeek="{Binding FrequencyDetailAsWeeklyFrequencyDetail, Mode=TwoWay}" Grid.Row="6" Grid.Column="2" />
+        <Controls:MonthlyFrequencyDetails x:Name="RepeatOnItemsControl" Grid.Row="6" Grid.Column="2" Value="{Binding}" />
+        <TextBlock x:Name="EndDateTextBlock" Text="End Date:" HorizontalAlignment="Right" Grid.Row="8" />
+        <StackPanel x:Name="EndDateStackPanel" Grid.Row="8" Grid.Column="2">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                <RadioButton x:Name="NeverRadioButton" GroupName="EndDate" Checked="NeverRadioButtonChecked"/>
+                <TextBlock Text="Never" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                <RadioButton x:Name="AfterRadioButton" GroupName="EndDate" Checked="AfterRadioButtonChecked"/>
+                <TextBlock Text="After " />
+                <telerik:RadNumericUpDown x:Name="EndAfterTimesNumericUpDown" Minimum="1" NumberDecimalDigits="0"
+                        Value="{Binding EndAfterTimes, Mode=TwoWay}" IsInteger="True" LargeChange="1"
+                        IsEnabled="{Binding IsChecked, ElementName=AfterRadioButton}"
+                        CustomUnit="{Binding EndAfterTimes, Converter={StaticResource EndAfterTimesToOccurrencesStringConverter}}" />
+                <!--data bind the unit to the value and put on a converter that returns occurence or occurences-->
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0">
+                <RadioButton x:Name="OnRadioButton" GroupName="EndDate" Checked="EndOnRadioButtonChecked"/>
+                <TextBlock Text="On " />
+                <telerik:RadDatePicker x:Name="EndDatePicker" Margin="0" SelectedValue="{Binding EndDate, Mode=TwoWay}"
+                        IsEnabled="{Binding IsChecked, ElementName=OnRadioButton}" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

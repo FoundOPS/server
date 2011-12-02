@@ -1,0 +1,6 @@
+﻿<xapCache source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\FoundOps.Common.xap" wasSigned="False" certificateThumbprint="" TimeStampUrl="" lastWriteTime="11/23/2011 1:17:48 AM">
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\obj\Release\FoundOps.Common.dll" archivePath="FoundOps.Common.dll" lastWriteTime="11/23/2011 1:17:48 AM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.dll" archivePath="System.Reactive.dll" lastWriteTime="11/22/2011 4:58:42 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.Windows.Threading.dll" archivePath="System.Reactive.Windows.Threading.dll" lastWriteTime="11/22/2011 4:58:42 PM" />
+  <file source="C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="11/23/2011 1:17:48 AM" />
+</xapCache>

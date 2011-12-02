@@ -1,0 +1,44 @@
+﻿<Deployment xmlns="http://schemas.microsoft.com/client/2007/deployment" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" EntryPointAssembly="FoundOps.Common.Silverlight" EntryPointType="FoundOps.Common.Silverlight.App" RuntimeVersion="5.0.60401.0">
+  <Deployment.Parts>
+    <AssemblyPart x:Name="FoundOps.Common.Silverlight" Source="FoundOps.Common.Silverlight.dll" />
+    <AssemblyPart x:Name="EntityGraph.Silverlight" Source="EntityGraph.Silverlight.dll" />
+    <AssemblyPart x:Name="FoundOps.Common" Source="FoundOps.Common.dll" />
+    <AssemblyPart x:Name="FoundOps.Common.Silverlight.UI" Source="FoundOps.Common.Silverlight.UI.dll" />
+    <AssemblyPart x:Name="GalaSoft.MvvmLight.SL4" Source="GalaSoft.MvvmLight.SL4.dll" />
+    <AssemblyPart x:Name="Microsoft.CSharp" Source="Microsoft.CSharp.dll" />
+    <AssemblyPart x:Name="Microsoft.Expression.Interactions" Source="Microsoft.Expression.Interactions.dll" />
+    <AssemblyPart x:Name="Microsoft.Windows.Data.DomainServices" Source="Microsoft.Windows.Data.DomainServices.dll" />
+    <AssemblyPart x:Name="mscorlib" Source="mscorlib.dll" />
+    <AssemblyPart x:Name="SLaB.Utilities" Source="SLaB.Utilities.dll" />
+    <AssemblyPart x:Name="SLaB.Utilities.Xaml" Source="SLaB.Utilities.Xaml.dll" />
+    <AssemblyPart x:Name="SLMultiBinding" Source="SLMultiBinding.dll" />
+    <AssemblyPart x:Name="System.ComponentModel.Composition" Source="System.ComponentModel.Composition.dll" />
+    <AssemblyPart x:Name="System.ComponentModel.Composition.Initialization" Source="System.ComponentModel.Composition.Initialization.dll" />
+    <AssemblyPart x:Name="System.ComponentModel.DataAnnotations" Source="System.ComponentModel.DataAnnotations.dll" />
+    <AssemblyPart x:Name="system" Source="system.dll" />
+    <AssemblyPart x:Name="System.Net" Source="System.Net.dll" />
+    <AssemblyPart x:Name="System.Reactive" Source="System.Reactive.dll" />
+    <AssemblyPart x:Name="System.Reactive.Windows.Threading" Source="System.Reactive.Windows.Threading.dll" />
+    <AssemblyPart x:Name="System.Runtime.Serialization" Source="System.Runtime.Serialization.dll" />
+    <AssemblyPart x:Name="System.ServiceModel.DomainServices.Client" Source="System.ServiceModel.DomainServices.Client.dll" />
+    <AssemblyPart x:Name="System.Windows.Browser" Source="System.Windows.Browser.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls" Source="System.Windows.Controls.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls.Navigation" Source="System.Windows.Controls.Navigation.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls.Toolkit" Source="System.Windows.Controls.Toolkit.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls.Toolkit.Internals" Source="System.Windows.Controls.Toolkit.Internals.dll" />
+    <AssemblyPart x:Name="System.Windows.Data" Source="System.Windows.Data.dll" />
+    <AssemblyPart x:Name="System.Windows" Source="System.Windows.dll" />
+    <AssemblyPart x:Name="System.Windows.Interactivity" Source="System.Windows.Interactivity.dll" />
+    <AssemblyPart x:Name="System.Xml" Source="System.Xml.dll" />
+    <AssemblyPart x:Name="System.Xml.Linq" Source="System.Xml.Linq.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.DataVisualization" Source="Telerik.Windows.Controls.DataVisualization.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls" Source="Telerik.Windows.Controls.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.GridView" Source="Telerik.Windows.Controls.GridView.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.Navigation" Source="Telerik.Windows.Controls.Navigation.dll" />
+    <AssemblyPart x:Name="ReactiveUI.Xaml_SL4" Source="ReactiveUI.Xaml_SL4.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Data" Source="Telerik.Windows.Data.dll" />
+    <AssemblyPart x:Name="ReactiveUI_SL4" Source="ReactiveUI_SL4.dll" />
+    <AssemblyPart x:Name="DataValidationFramework.Silverlight" Source="DataValidationFramework.Silverlight.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.Input" Source="Telerik.Windows.Controls.Input.dll" />
+  </Deployment.Parts>
+</Deployment>

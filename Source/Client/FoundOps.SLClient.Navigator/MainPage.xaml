@@ -1,0 +1,52 @@
+﻿<UserControl x:Name="myNavigatorMainPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation" xmlns:Controls2="clr-namespace:FoundOps.SLClient.Navigator.Controls"
+        xmlns:ContentLoaders="clr-namespace:FoundOps.Core.Navigator.Loader;assembly=FoundOps.Common.Silverlight" xmlns:local="clr-namespace:FoundOps.Core.Navigator"
+        xmlns:meffed="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" 
+        FontFamily="PTS55F.ttf#PT Sans"
+        x:Class="FoundOps.SLClient.Navigator.MainPage" mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="800" meffed:ViewModelLocator.SharedViewModel="NavigationBarVM">
+    <UserControl.Resources>
+        <ContentLoaders:MEFBlockLoader x:Key="MEFContentLoader" PropertyChanged="MefBlockLoaderPropertyChanged" />
+    </UserControl.Resources>
+    <Border x:Name="LayoutRoot" Background="#FF333335">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="310" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="11"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="35"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="42"/>
+            </Grid.ColumnDefinitions>
+            <Controls2:UserIcon HorizontalAlignment="Right" Margin="5,0,0,0"/>
+            <Controls:RadComboBox ItemsSource="{Binding OwnerAccountsOfMyRoles}" Grid.Column="2" HorizontalAlignment="Left" Margin="0,0,0,5" 
+                                    SelectedItem="{Binding SelectedOwnerAccountOfRole, Mode=TwoWay}" Height="30" MinWidth="80" IsEnabled="{Binding CurrentUserAccount, Converter={StaticResource ExistsBoolConverter}}" >
+                <Controls:RadComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding DisplayName}"/>
+                    </DataTemplate>
+                </Controls:RadComboBox.ItemTemplate>
+            </Controls:RadComboBox>
+            <Image x:Name="CompassImage" Source="/FoundOps.SLClient.Navigator;component/Content/SiteLogo.png" MouseLeftButtonDown="CompassImageMouseLeftButtonDown" Grid.Column="3" 
+                    Grid.ColumnSpan="2" Grid.RowSpan="2" HorizontalAlignment="Right"  Width="101" VerticalAlignment="Top" Height="46"/>
+            <Border Grid.Row="1" BorderThickness="1" CornerRadius="7" BorderBrush="Black" Background="#FF848484" Grid.ColumnSpan="4" Grid.RowSpan="2" Padding="5">
+                <Grid x:Name="ContentStackPanel">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="Function_Block" Background="#FFBFBFBF" MinHeight="600" Grid.Row="1">
+                        <navigation:Frame x:Name="ContentFrame" ContentLoader="{StaticResource MEFContentLoader}" Navigated="ContentFrameNavigated"
+                                    Content="{Binding SelectedContent, Mode=TwoWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                    Background="White" />
+                    </Grid>
+                </Grid>
+            </Border>
+            <Controls2:NavigationSideBar Grid.Row="3" Grid.Column="4"/>
+        </Grid>
+    </Border>
+</UserControl>

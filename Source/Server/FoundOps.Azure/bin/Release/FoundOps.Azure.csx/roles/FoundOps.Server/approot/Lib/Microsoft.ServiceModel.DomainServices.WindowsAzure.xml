@@ -1,0 +1,522 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.ServiceModel.DomainServices.WindowsAzure</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.QueryComposer">
+            <summary>
+            Used to compose two separate queries into a single query
+            </summary>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.QueryComposer.Compose(System.Linq.IQueryable,System.Linq.IQueryable)">
+            <summary>
+            Composes the specified query with the source provided.
+            </summary>
+            <param name="source">The root or source query</param>
+            <param name="query">The query to compose</param>
+            <returns>The composed query</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.QueryComposer.Split(System.Linq.IQueryable,System.Linq.IQueryable@)">
+            <summary>
+            Splits the input query into two parts; supported and unsupported.
+            </summary>
+            <remarks>
+            Windows Azure Table Storage only supports a subset of the LINQ operators. This
+            method splits a single query into two parts at the first occurrence of an
+            unsupported operation. This results in 3 scenarios.
+            
+            1) The whole query is supported.
+                The <paramref name="query"/> will be returned and <paramref name="unsupportedQuery"/> will be <c>null</c>.
+            2) The query is split.
+                The supported query will be returned and <paramref name="unsupportedQuery"/> will be set.
+            3) The whole query is unsupported.
+                <c>null</c> will be returned and the <paramref name="unsupportedQuery"/> will be set to the <paramref name="query"/>.
+            </remarks>
+            <param name="query">The query to split</param>
+            <param name="unsupportedQuery">The unsupported part of the query or <c>null</c> if the whole query is supported.</param>
+            <returns>The supported part of the query or <c>null</c> if the whole query is unsupported.</returns>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.QueryComposer.QueryRebaser">
+            <summary>
+            Class used to insert a specified query source into another separate
+            query, effectively "rebasing" the query source.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.QueryComposer.QueryRebaser.Rebase(System.Linq.IQueryable,System.Linq.IQueryable)">
+            <summary>
+            Rebase the specified query to the specified source
+            </summary>
+            <param name="source">The query source</param>
+            <param name="query">The query to rebase</param>
+            <returns>Returns the edited query.</returns>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.QueryComposer.QuerySplitter">
+            <summary>
+            <see cref="T:System.Linq.Expressions.ExpressionVisitor"/> that splits a query on the first unsupported LINQ
+            operator it encounters.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1">
+            <summary>
+            <see cref="T:System.ServiceModel.DomainServices.Server.DomainService"/> for using with Windows Azure Table Storage.
+            </summary>
+            <remarks>
+            This base class will take care of interacting with the storage layer to handle common
+            <see cref="T:System.ServiceModel.DomainServices.Server.DomainService"/> tasks like querying, persisting, validation, and concurrency.
+            </remarks>
+            <typeparam name="TEntityContext">The <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext"/> to use to interact
+            with the table storage
+            </typeparam>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.CreateEntityContext">
+            <summary>
+            Creates and initializes the context that will be used by this domain service.
+            </summary>
+            <returns>The entity context to use</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.Submit(System.ServiceModel.DomainServices.Server.ChangeSet)">
+            <summary>
+            Performs the operations indicated by the specified <see cref="T:System.ServiceModel.DomainServices.Server.ChangeSet"/> by invoking
+            the corresponding domain operations for each.
+            </summary>
+            <param name="changeSet">The changeset to submit</param>
+            <returns>True if the submit was successful, false otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.Query(System.ServiceModel.DomainServices.Server.QueryDescription,System.Collections.Generic.IEnumerable{System.ComponentModel.DataAnnotations.ValidationResult}@,System.Int32@)">
+            <summary>
+            Performs the query operation indicated by the specified <see cref="T:System.ServiceModel.DomainServices.Server.QueryDescription"/>
+            and returns the results. If the query returns a singleton, it should still be returned
+            as an <see cref="T:System.Collections.IEnumerable"/> containing the single result.
+            </summary>
+            <remarks>
+            This overridden implementation makes sure query operations that are not supported by Table storage are not applied
+            to the <see cref="T:System.Linq.IQueryable"/> returned from the underlying query operation. Instead that <see cref="T:System.Linq.IQueryable"/>
+            will first be evaluated, and then the unsupported query operations will be run against the result in memory. This
+            approach allows the client to specify filters and sorts without having to worry which are supported by the underlying
+            query provider.
+            </remarks>
+            <param name="queryDescription">The description of the query to perform.</param>
+            <param name="validationErrors">Output parameter that will contain any validation errors encountered. If no validation
+            errors are encountered, this will be set to <c>null</c>.</param>
+            <param name="totalCount">Returns the total number of results based on the specified query, but without 
+            any paging applied to it.</param>
+            <returns>The query results. May be null if there are no query results.</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.EnumerateQuery(System.Linq.IQueryable,System.Int32)">
+            <summary>
+            Enumerates the specified enumerable to guarantee eager execution.
+            </summary>
+            <param name="queryable">The queryable to enumerate.</param>
+            <param name="estimatedResultCount">The estimated number of items the enumerable will yield.</param>
+            <returns>A new enumerable with the results of the enumerated enumerable.</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.PersistChangeSet">
+            <summary>
+            This method is called to finalize changes after all the operations in the current <see cref="T:System.ServiceModel.DomainServices.Server.ChangeSet"/>
+            have been invoked. This method commits all the changes made to the <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.EntityContext"/>.
+            </summary>
+            <exception cref="T:System.Data.Services.Client.DataServiceRequestException"> will be thrown in the event of concurrency conflicts.
+            </exception>
+            <returns><c>true</c> if the <see cref="T:System.ServiceModel.DomainServices.Server.ChangeSet"/> was persisted successfully, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.UpdateETags">
+            <summary>
+            Updates the eTag values for each entity in the <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.EntityContext"/>
+            </summary>
+            <remarks>
+            This method will be called after successful <see cref="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.Submit(System.ServiceModel.DomainServices.Server.ChangeSet)"/> and <see cref="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.Query(System.ServiceModel.DomainServices.Server.QueryDescription,System.Collections.Generic.IEnumerable{System.ComponentModel.DataAnnotations.ValidationResult}@,System.Int32@)"/>
+            operations to update the eTags on the entities that are being returned.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.PartitionKey">
+            <summary>
+            Gets the partition key to use with this service
+            </summary>
+            <remarks>
+            When this key is set, the service will operate in 'single-key' mode. It will add the key to
+            each new entity if the key has not already been specified. Also, it will use the key to optimize
+            each query. Finally, changes will be submitted to the database in a transactional batch.
+            When this key is <c>null</c>, the service will operate in 'unique-key' mode. It will generate a
+            unique partition key for each new entity if the key has not already been specified.
+            Often it makes sense to operate in 'specific-key' mode. In this case entities may be partitioned
+            into two or more specific groups. To run in this mode, return <c>null</c> for this value and
+            always set an entity's parition key before adding it to a <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet"/>.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1.EntityContext">
+            <summary>
+            Gets the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext"/> used by this <see cref="T:System.ServiceModel.DomainServices.Server.DomainService"/>
+            </summary>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity">
+            <summary>
+            The base type for all entities that can be made available from the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity.GetETag">
+            <summary>
+            Gets the etag used in concurrency checking for the entity
+            </summary>
+            <returns>The etag for the entity</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity.SetETag(System.String)">
+            <summary>
+            Sets the etag used in concurrency checking for the entity
+            </summary>
+            <param name="etag">The etag for the entity</param>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext">
+            <summary>
+            <see cref="T:Microsoft.WindowsAzure.StorageClient.TableServiceContext"/> that simplifies the task of creating entity
+            sets for each entity and its backing table.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.#ctor(System.String,Microsoft.WindowsAzure.StorageCredentials)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext"/> for testing
+            </summary>
+            <param name="baseAddress">The base context address</param>
+            <param name="credentials">The storage credentials</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext"/> using the specified
+            connection string
+            </summary>
+            <param name="connectionString">The table storage connection string</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.#ctor(Microsoft.WindowsAzure.CloudStorageAccount)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext"/> using the spcified
+            account
+            </summary>
+            <param name="account">The cloud storage account to connect to</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.ResolveEntityTypePrivate(System.String)">
+            <summary>
+            Resolves the entity <see cref="T:System.Type"/> for the specified table name
+            </summary>
+            <param name="fullTableName">The full table name in the form of 'AccountName.TableName'</param>
+            <returns>The type for the specified table name</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.ResolveEntityType(System.String)">
+            <summary>
+            Resolves the entity type from the <paramref name="tableName"/>
+            </summary>
+            <param name="tableName">The table to get the entity type for</param>
+            <returns>The type for the specified table name</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.GetEntitySet``1">
+            <summary>
+            Gets the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> for the specified type
+            </summary>
+            <remarks>
+            This method will create the set using <see cref="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.CreateEntitySet``1"/> if necessary.
+            </remarks>
+            <typeparam name="TEntity">The type of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> to get</typeparam>
+            <returns>A <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> for the specified type</returns>
+            <exception cref="T:System.InvalidOperationException"> is thrown if the table for the
+            <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> does not exist and cannot be created.
+            </exception>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.SetEntitySet``1(Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet{``0})">
+            <summary>
+            Sets the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> to use for the specified entity type
+            </summary>
+            <typeparam name="TEntity">The type the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> will be used for</typeparam>
+            <param name="entitySet">The <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> to use</param>
+            <exception cref="T:System.InvalidOperationException"> is thrown if the table for the
+            <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> does not exist and cannot be created.
+            </exception>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.CreateEntitySet``1">
+            <summary>
+            Creates the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> for the specified type
+            </summary>
+            <typeparam name="TEntity">The type of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> to create</typeparam>
+            <returns>A new instance of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/> for the specified type</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.EnsureTableExists(System.String)">
+            <summary>
+            Ensures the <paramref name="tableName"/> refers to a valid table and creates the
+            table if it does not already exist.
+            </summary>
+            <remarks>
+            To optimize performance in applications where the tables are guaranteed to exist,
+            this method should be overridden and do nothing.
+            </remarks>
+            <param name="tableName">The table name to ensure exists</param>
+            <exception cref="T:System.InvalidOperationException"> is thrown if the table does not
+            exist and cannot be created.
+            </exception>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityContext.PartitionKey">
+            <summary>
+            Gets or sets the partition key to use with each <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet"/> this context contains
+            </summary>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet">
+            <summary>
+            Set of <see cref="T:Microsoft.WindowsAzure.StorageClient.TableServiceEntity"/>s that can be updated, added to, or removed
+            from before persisting the changes using the specified <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.TableServiceContext"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.#ctor(Microsoft.WindowsAzure.StorageClient.TableServiceContext,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet"/>
+            </summary>
+            <param name="tableServiceContext">The <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.TableServiceContext"/> to use</param>
+            <param name="tableName">The table name to use</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.Add(Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity)">
+            <summary>
+            Adds a new entity to the <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.TableServiceContext"/> this entity set uses
+            </summary>
+            <remarks>
+            If either the partition key or row key is not set when the entity is added, 
+            a default value will be used for that key.
+            </remarks>
+            <param name="entity">The entity to add</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.Delete(Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity)">
+            <summary>
+            Deletes an existing entity from the <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.TableServiceContext"/> this entity set uses
+            </summary>
+            <param name="entity">The entity to delete</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.Delete(Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity,System.String)">
+            <summary>
+            Deletes an existing entity from the <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.TableServiceContext"/> this entity set uses
+            </summary>
+            <remarks>
+            This delete will check for concurrency conflicts using the specified <paramref name="etag"/>
+            </remarks>
+            <param name="entity">The entity to delete</param>
+            <param name="etag">The etag associated with the entity</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.Update(Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity)">
+            <summary>
+            Updates an existing entity in the <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.TableServiceContext"/> this entity set uses
+            </summary>
+            <param name="entity">The entity to update</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.Update(Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity,System.String)">
+            <summary>
+            Updates an existing entity in the <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.TableServiceContext"/> this entity set uses
+            </summary>
+            <remarks>
+            This update will check for concurrency conflicts using the specified <paramref name="etag"/>
+            </remarks>
+            <param name="entity">The entity to update</param>
+            <param name="etag">The etag associated with the entity</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.EnsureAttached(Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity)">
+            <summary>
+            Ensures the entity is attached
+            </summary>
+            <remarks>
+            The entity will be attached using the default etag and will not check for concurrency conflicts
+            </remarks>
+            <param name="entity">The entity to ensure is attached</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.EnsureAttached(Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity,System.String)">
+            <summary>
+            Ensures the entity is attached
+            </summary>
+            <param name="entity">The entity to ensure is attached</param>
+            <param name="etag">The etag associated with the entity</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.EnsureDetached(Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity)">
+            <summary>
+            Ensures the entity is detached
+            </summary>
+            <param name="entity">The entity to ensure is detached</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.GetEnumeratorCore">
+            <summary>
+            Returns the <see cref="T:System.Collections.IEnumerator"/> for this entity set
+            </summary>
+            <returns>The <see cref="T:System.Collections.IEnumerator"/> for this entity set</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An enumerator that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.GetNewEntityPartitionKey">
+            <summary>
+            Returns a partition key for a new entity
+            </summary>
+            <remarks>
+            This will only be called for entities where the partition key is not already set
+            </remarks>
+            <returns>A new partition key</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.GetNewEntityRowKey">
+            <summary>
+            Returns a row key for a new entity
+            </summary>
+            <remarks>
+            This will only be called for entities where the row key is not already set
+            </remarks>
+            <returns>A new row key</returns>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.PartitionKey">
+            <summary>
+            Gets or sets the partition key to use with this set
+            </summary>
+            <remarks>
+            When this key is set, the entity set will operate in 'single-key' mode. It will add the key to
+            each new entity if the key has not already been specified. Also, it will use the key to apply an
+            optimizing filter to the default query.
+            When this key is <c>null</c>, the entity set will operate in 'unique-key' mode. It will generate a
+            unique partition key for each new entity if the key has not already been specified.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.TableServiceContext">
+            <summary>
+            Gets the context this set uses
+            </summary>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.TableName">
+            <summary>
+            Gets the Table name that this set operates against
+            </summary>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1">
+            <summary>
+            Set of entities that can be updated, added to, or removed from before persisting
+            the changes using the specified <see cref="T:Microsoft.WindowsAzure.StorageClient.TableServiceContext"/>.
+            </summary>
+            <typeparam name="TEntity">The type of entity in the set</typeparam>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1.#ctor(Microsoft.WindowsAzure.StorageClient.TableServiceContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/>
+            </summary>
+            <param name="tableServiceContext">The <see cref="T:Microsoft.WindowsAzure.StorageClient.TableServiceContext"/> to use</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1.#ctor(Microsoft.WindowsAzure.StorageClient.TableServiceContext,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1"/>
+            </summary>
+            <param name="tableServiceContext">The <see cref="T:Microsoft.WindowsAzure.StorageClient.TableServiceContext"/> to use</param>
+            <param name="tableName">The table name to use</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1.CreateQuery">
+            <summary>
+            Returns a query against the backing table
+            </summary>
+            <remarks>
+            When <see cref="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet.PartitionKey"/> is set, the query will be optimized to load from
+            that specific partition
+            </remarks>
+            <returns>A query against the backing table</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An enumerator that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1.GetEnumeratorCore">
+            <summary>
+            Returns the <see cref="T:System.Collections.IEnumerator"/> for this entity set
+            </summary>
+            <returns>The <see cref="T:System.Collections.IEnumerator"/> for this entity set</returns>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1.Query">
+            <summary>
+            The query against windows azure storage provided by the <see cref="T:Microsoft.WindowsAzure.StorageClient.TableServiceContext"/>
+            </summary>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1.System#Linq#IQueryable#ElementType">
+            <summary>
+            Gets the type of the elements that are returned when the expression tree is executed
+            </summary>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1.System#Linq#IQueryable#Expression">
+            <summary>
+            Gets the expression tree
+            </summary>
+        </member>
+        <member name="P:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntitySet`1.System#Linq#IQueryable#Provider">
+            <summary>
+            Gets the query provider
+            </summary>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableMetadataProviderAttribute">
+            <summary>
+            Attribute that declares a table-specific <see cref="T:System.ServiceModel.DomainServices.Server.DomainServiceDescriptionProvider"/>.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableMetadataProvider">
+            <summary>
+            <see cref="T:System.ServiceModel.DomainServices.Server.DomainServiceDescriptionProvider"/> that provides metadata for all the entities available
+            on a specified domain service.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableMetadataTypeDescriptor">
+            <summary>
+            <see cref="T:System.ComponentModel.CustomTypeDescriptor"/> used to provide default metadata for entity types made available
+            from a <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1"/>.
+            </summary>
+            <remarks>
+            Since each entity is required to extend <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity"/>, they can use the default metadata
+            declared in <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityMetadata"/>.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableMetadataTypeDescriptor.#ctor(System.Type,System.ComponentModel.ICustomTypeDescriptor)">
+            <summary>
+            Creates a new instance of the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableMetadataTypeDescriptor"/>
+            </summary>
+            <param name="componentType">The component type</param>
+            <param name="parent">The parent descriptor</param>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableMetadataTypeDescriptor.GetProperties">
+            <summary>
+            Returns the list of properties for this type.
+            </summary>
+            <returns>The list of properties for this type.</returns>
+        </member>
+        <member name="M:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableMetadataTypeDescriptor.GetAdditionalMemberAttributes(System.ComponentModel.PropertyDescriptor)">
+            <summary>
+            Returns a collection of all the <see cref="T:System.Attribute"/>s we infer from the metadata associated
+            with the metadata member corresponding to the given property descriptor
+            </summary>
+            <param name="pd">The property to get attributes for</param>
+            <returns>a collection of attributes inferred from metadata in the given descriptor</returns>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableMetadataTypeDescriptor.MetadataPropertyDescriptorWrapper">
+            <summary>
+            This class concatenates the attributes provided on construction with the base
+            attributes of the specified PropertyDescriptor.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableMetadataTypeDescriptor.ETagPropertyDescriptor">
+            <summary>
+            This <see cref="T:System.ComponentModel.PropertyDescriptor"/> is used exclusively for describing the "ETag" property
+            </summary>
+            <remarks>
+            We use this property descriptor (instead of a real property) so to generate the "ETag"
+            property on the client without having it appear in table storage schema.
+            <para>
+            The <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableDomainService`1"/> makes sure this cache is kept up-to-date for each 
+            entity instance.
+            </para>
+            </remarks>
+        </member>
+        <member name="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntityMetadata">
+            <summary>
+            Type used to store the default metadata for the <see cref="T:Microsoft.ServiceModel.DomainServices.WindowsAzure.TableEntity"/>.
+            </summary>
+        </member>
+    </members>
+</doc>

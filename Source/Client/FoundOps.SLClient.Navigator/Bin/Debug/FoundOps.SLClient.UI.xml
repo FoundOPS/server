@@ -1,0 +1,2542 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FoundOps.SLClient.UI</name>
+    </assembly>
+    <members>
+        <member name="T:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings">
+            <summary>
+            View for Business Account Settings
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Services.ServiceOccurencesLink.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Regions.RegionSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload">
+            <summary>
+            A class to hold ImageUpload
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.FileProperty">
+            <summary>
+            File Dependency Property.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.OwnerPartyProperty">
+            <summary>
+            OwnerParty Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload"/> class.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.File">
+            <summary>
+            File
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.OwnerParty">
+            <summary>
+            The File's OwnerParty.
+            NOTE: Required for creating PartyImages
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.DefaultFileTypeToCreate" -->
+        <member name="M:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory.EmployeeHistoryGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory.EmployeeHistoryLinkLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.RegionsVM">
+            <summary>
+            Contains the logic for displaying Regions
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.IAddDeleteSelectedLocation.AddSelectedLocationCommand">
+            <summary>
+            Add the Selected CommandParameter (of Type T)
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.IAddDeleteSelectedLocation.DeleteSelectedLocationCommand">
+            <summary>
+            Delete the Selected CommandParameter (of Type T)
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RegionsVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.RegionsVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Converters.RepeatDescriptionConverter">
+            <summary>
+             Takes a Repeat and displays a string with a detailed description of the repeat
+             Ex. Reapeat every 2 weeks on Tuesday
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Settings.UserAccountSettings.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifestViewer">
+            <summary>
+            Displays RouteManifest
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifestViewer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifestViewer"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifestViewer.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.CustomFields.ImageDefine.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.ContactInfo.ContactInfoEdit.ContactInfoVMProperty">
+            <summary>
+            ContactInfoVM Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.ContactInfo.ContactInfoEdit.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.ContactInfo.ContactInfoEdit.ContactInfoVM">
+            <summary>
+            ContactInfoVM
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Services.LocationServicesLinkSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Services.ServiceSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Regions.RegionLinkLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Regions.RegionLinkLarge.SelectedRegionProperty">
+            <summary>
+            SelectedRegion Dependency Property.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Regions.RegionLinkLarge.IsReadOnlyProperty">
+            <summary>
+            IsReadOnly Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Regions.RegionLinkLarge.SelectedRegion">
+            <summary>
+            SelectedRegion
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Regions.RegionLinkLarge.IsReadOnly">
+            <summary>
+            IsReadOnly
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Employees.EmployeeSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Dispatcher.RouteDetails.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteMapView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteMapView.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Dispatcher.RouteMapView"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteMapView.RefreshRouteMapView">
+            <summary>
+            Refreshes the RouteMapView with PinPoints for all of the ShownRoutes
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.RouteMapView.RouteMapVM">
+            <summary>
+            Gets the route map VM.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteMapView.MapShapeItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Dispatcher.RouteMapView.MapShapeItem"/> class.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.RouteMapView.MapShapeItem.Route">
+            <summary>
+            Gets or sets the route.
+            </summary>
+            <value>
+            The route.
+            </value>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Contacts.ContactsGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.ContactInfo.ContactInfoView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.ContactInfo.ContactInfoView.ContactInfoVMProperty">
+            <summary>
+            ContactInfoVM Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.ContactInfo.ContactInfoView.ContactInfoVM">
+            <summary>
+            ContactInfoVM
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge">
+            <summary>
+            A control to display and edit SelectedEntities. Related to CoreSelectedEntitiesCollectionVM.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge"/> class.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge.CoreSelectedEntitiesCollectionVMProperty">
+            <summary>
+            CoreSelectedEntitiesCollectionVM Dependency Property.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge.EntityTextProperty">
+            <summary>
+            EntityText Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge.NewEntityTemplate">
+            <summary>
+            Sets the new entity template.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge.ExistingEntityTemplate">
+            <summary>
+            Sets the existing entity template.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge.CoreSelectedEntitiesCollectionVM">
+            <summary>
+            The CoreSelectedEntitiesCollectionVM. NOTE: This is an object, because SL XAML does not support generics :(
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Common.SelectedEntitiesLarge.EntityText">
+            <summary>
+            EntityText
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.IAddDeleteSelectedClient.AddSelectedClientCommand">
+            <summary>
+            Add the Selected CommandParameter (of Type T)
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.IAddDeleteSelectedClient.DeleteSelectedClientCommand">
+            <summary>
+            Delete the Selected CommandParameter (of Type T)
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.IAddDeleteSelectedRegion.AddSelectedRegionCommand">
+            <summary>
+            Add the Selected CommandParameter (of Type T)
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.IAddDeleteSelectedRegion.DeleteSelectedRegionCommand">
+            <summary>
+            Delete the Selected CommandParameter (of Type T)
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.IAddDeleteSelectedService.AddSelectedServiceCommand">
+            <summary>
+            Add the Selected CommandParameter (of Type T)
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.IAddDeleteSelectedService.DeleteSelectedServiceCommand">
+            <summary>
+            Delete the Selected CommandParameter (of Type T)
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplatesGrid">
+            <summary>
+            Displays a list of the ServiceTemplates for the current context
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplatesGrid.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplatesGrid"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplatesGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Services.ServiceLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Services.RecurringServices.RecurringServiceSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.Repeat.ValueProperty">
+            <summary>
+            Value Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Repeat.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.Repeat.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.MonthlyFrequencyDetails.ValueProperty">
+            <summary>
+            Value Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.MonthlyFrequencyDetails.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsLink.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Dispatcher.Filter">
+            <summary>
+            A filter for Dispatching
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.Filter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Dispatcher.Filter"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.Filter.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.CustomFields.CheckBoxDefine.OptionsFieldProperty">
+            <summary>
+            OptionsField Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.CustomFields.CheckBoxDefine.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.CustomFields.CheckBoxDefine.OptionsField">
+            <summary>
+            OptionsField
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Clients.ClientLinkSmall.SelectedClientProperty">
+            <summary>
+            SelectedClient Dependency Property.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Clients.ClientLinkSmall.IsReadOnlyProperty">
+            <summary>
+            IsReadOnly Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Clients.ClientLinkSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientLinkSmall.SelectedClient">
+            <summary>
+            SelectedClient
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientLinkSmall.IsReadOnly">
+            <summary>
+            IsReadOnly
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Locations.LocationSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Locations.LocationSmall.LocationVMProperty">
+            <summary>
+            LocationVM Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Locations.LocationSmall.LocationVM">
+            <summary>
+            LocationVM
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Employees.SelectedEmployees">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Employees.SelectedEmployees.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Employees.SelectedEmployees.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Employees.SelectedEmployees"/> class.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Employees.SelectedEmployees.SelectedEmployeesVMProperty">
+            <summary>
+            SelectedEmployeesVM Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Employees.SelectedEmployees.SelectedEmployeesVM">
+            <summary>
+            SelectedEmployeesVM
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.CustomFields.PercentageDefine.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.CustomFields.PercentageDefine.NumericFieldProperty">
+            <summary>
+            NumericField Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.CustomFields.PercentageDefine.NumericField">
+            <summary>
+            NumericField
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.CustomFields.FieldsDefineGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.CustomFields.FieldsDefineGrid.ServiceTemplateProperty">
+            <summary>
+            ServiceTemplate Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.CustomFields.FieldsDefineGrid.ServiceTemplate">
+            <summary>
+            ServiceTemplate
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.RouteMapVM">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RouteMapVM.#ctor(FoundOps.Core.Context.Services.Interface.IRouteDataService,FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.RouteMapVM"/> class.
+            </summary>
+            <param name="routeDataService">The route data service.</param>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.EmployeeHistoryVM">
+            <summary>
+            Contains the logic for displaying EmployeeHistory
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.EmployeeHistoryVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.EmployeeHistoryVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.ClientTitlesVM">
+            <summary>
+            A VM which manages Contact's ClientTitles
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ClientTitlesVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.ClientTitlesVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ClientTitlesVM.DeleteClientTitleInCreation">
+            <summary>
+            Deletes the client title in creation.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ClientTitlesVM.StartCreationOfClientTitle">
+            <summary>
+            Starts the creation of client title.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ClientTitlesVM.DistinctTitles">
+            <summary>
+            Gets the distinct titles.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.ContactInfoType">
+            <summary>
+            The different ContactInfoTypes
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.ViewModels.ContactInfoType.Locations">
+            <summary>
+            Locations' Contact Info
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.ViewModels.ContactInfoType.OwnedParties">
+            <summary>
+            OwnedParties' Contact Info
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.ContactInfoVM">
+            <summary>
+            Contains the logic for displaying ContactInfo
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ContactInfoVM.#ctor(FoundOps.Core.Context.Services.Interface.IContactInfoDataService,System.ServiceModel.DomainServices.Client.EntityCollection{FoundOps.Core.Models.CoreEntities.ContactInfo})">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.ContactInfoVM"/> class.
+            </summary>
+            <param name="contactInfoDataService">The contact info data service.</param>
+            <param name="contactInfoSet">The contact info set.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ContactInfoVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.SLClient.UI.ViewModels.ContactInfoType,System.ServiceModel.DomainServices.Client.EntityCollection{FoundOps.Core.Models.CoreEntities.ContactInfo})">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.ContactInfoVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="contactInfoType">Type of the contact info.</param>
+            <param name="contactInfoSet">The contact info set.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ContactInfoVM.OnAddNewContactInfo">
+            <summary>
+            Called when [add new contact info].
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ContactInfoVM.OnDeleteContactInfoCommand(FoundOps.Core.Models.CoreEntities.ContactInfo)">
+            <summary>
+            Called when [delete contact info command].
+            </summary>
+            <param name="contactInfoToDelete">The contact info to delete.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ContactInfoVM.ContactInfoDataService">
+            <summary>
+            Gets the contact info data service.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ContactInfoVM.AddNewContactInfoCommand">
+            <summary>
+            Gets the add new contact info command.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ContactInfoVM.DeleteContactInfoCommand">
+            <summary>
+            Gets the delete contact info command.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Vehicles.SelectedVehicles">
+            <summary>
+            A control to allow adding and removing Vehicle associations to entities.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Vehicles.SelectedVehicles.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Vehicles.SelectedVehicles"/> class.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Vehicles.SelectedVehicles.SelectedVehiclesVMProperty">
+            <summary>
+            SelectedVehiclesVM Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Vehicles.SelectedVehicles.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Vehicles.SelectedVehicles.SelectedVehiclesVM">
+            <summary>
+            SelectedVehiclesVM
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Vehicles.VehicleLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Settings.QuickbooksSettings">
+            <summary>
+            View of QuickBooks Settings
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Settings.QuickbooksSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Settings.QuickbooksSettings"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Settings.QuickbooksSettings.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Settings.QuickbooksSettings.BusinessAccountSettingsVM">
+            <summary>
+            Gets the business account settings VM.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Locations.LocationsGrid">
+            <summary>
+            Contains a list of Locations.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Locations.LocationsGrid.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Locations.LocationsGrid"/> class.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Locations.LocationsGrid.ParentContextVMProperty">
+            <summary>
+            ParentContextVM Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Locations.LocationsGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Locations.LocationsGrid.IsMainGrid">
+            <summary>
+            Gets or sets a value indicating whether this instance is main grid.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is main grid; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Locations.LocationsGrid.LocationsVM">
+            <summary>
+            Gets the locations VM.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Locations.LocationsGrid.ParentContextVM">
+            <summary>
+            ParentContextVM
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Employees.EmployeeLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.CustomFields.FieldsEditGrid.ServiceTemplateProperty">
+            <summary>
+            ServiceTemplate Dependency Property.
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.CustomFields.FieldsEditGrid.IsGeneratedServiceProperty">
+            <summary>
+            IsGeneratedService Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.CustomFields.FieldsEditGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.CustomFields.FieldsEditGrid.ServiceTemplate">
+            <summary>
+            ServiceTemplate
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.CustomFields.FieldsEditGrid.IsGeneratedService">
+            <summary>
+            IsGeneratedService
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Account.Business.BusinessDetailsView.SelectedBusinessProperty">
+            <summary>
+            SelectedBusiness Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Account.Business.BusinessDetailsView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Account.Business.BusinessDetailsView.SelectedBusiness">
+            <summary>
+            SelectedBusiness
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplateEdit">
+            <summary>
+            The control for editing a ServiceTemplate
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplateEdit.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplateEdit.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplateEdit"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Parties.BusinessAccounts.BusinessAccountSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.CustomFields.CurrencyDefine.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.CustomFields.CurrencyDefine.NumericFieldProperty">
+            <summary>
+            NumericField Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.CustomFields.CurrencyDefine.NumericField">
+            <summary>
+            NumericField
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.CustomFields.Define.OptionsFieldDefine.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.CustomFields.Define.OptionsFieldDefine.OptionsFieldProperty">
+            <summary>
+            OptionsField Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.CustomFields.Define.OptionsFieldDefine.OptionsField">
+            <summary>
+            OptionsField
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.RecurringServicesVM">
+            <summary>
+            Contains the logic for displaying RecurringServices
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RecurringServicesVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.RecurringServicesVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Converters.AddButtonTextConverter">
+            <summary>
+            Sets the add button text based on if the item is new or existing
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Vehicles.Maintenance.MaintenanceSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Services.RecurringServices.RecurringServicesLinkLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.Locations.LocationLinkSmall.LocationsProperty">
+            <summary>
+            Locations Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Locations.LocationLinkSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.Locations.LocationLinkSmall.Locations">
+            <summary>
+            Locations
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Employees.EmployeeHistory.EmployeeHistoryLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.FieldsVM">
+            <summary>
+            Contains the logic for displaying Fields
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.FieldsVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.FieldsVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.FieldsVM.FieldTypes">
+            <summary>
+            Gets the field types.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.UserAccountSettingsVM">
+            <summary>
+            A view model for all of the UserAccountSettings
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.UserAccountSettingsVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.UserAccountSettingsVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.UserAccountSettingsVM.SelectedUserAccount">
+            <summary>
+            Gets or sets the selected user account.
+            </summary>
+            <value>
+            The selected user account.
+            </value>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.ContactsVM">
+            <summary>
+            Contains the logic for displaying Contacts
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ContactsVM.#ctor(FoundOps.Core.Context.Services.IPartyDataService,FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.ContactsVM"/> class.
+            </summary>
+            <param name="partyDataService">The party data service.</param>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ContactsVM.SelectedContactPersonVM">
+            <summary>
+            Gets the selected contact person VM.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Converters.ScheduleModeConverter">
+            <summary>
+             
+             The converter parameter should be set to 0 for FixedDate and 1 for Relative
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplateLarge">
+            <summary>
+            The control for editing a ServiceTemplate, and seeing it's relationships.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplateLarge.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplateLarge"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplateLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Price_Sets.PriceSetRules.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Locations.SubLocations.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Locations.SubLocations.SubLocationsVMProperty">
+            <summary>
+            SubLocationsVM Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Locations.SubLocations.SubLocationsVM">
+            <summary>
+            SubLocationsVM
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.LocationsVM">
+            <summary>
+            Contains the logic for displaying Locations
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.LocationsVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.Core.Context.Services.Interface.ILocationsDataService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.LocationsVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="locationsDataService">The locations data service.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.LocationsVM.DeleteLocationInCreation">
+            <summary>
+            Deletes the location in creation.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.LocationsVM.StartCreationOfLocation">
+            <summary>
+            Starts the creation of a location.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationsVM.LocationsWithoutClient">
+            <summary>
+            Gets the not selected entities.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationsVM.SelectedLocationVMObservable">
+            <summary>
+            Gets or sets the location VM observable.
+            </summary>
+            <value>
+            The location VM observable.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationsVM.SelectedLocationVM">
+            <summary>
+            Gets the selected location's LocationVM.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationsVM.SelectedSubLocationsVMObservable">
+            <summary>
+            Gets or sets the location VM observable.
+            </summary>
+            <value>
+            The location VM observable.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationsVM.SelectedSubLocationsVM">
+            <summary>
+            Gets the selected location's SubLocationsVM.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationsVM.LocationInCreation">
+            <summary>
+            Gets or sets the location in creation.
+            </summary>
+            <value>
+            The location in creation.
+            </value>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.ServiceTemplatesVM">
+            <summary>
+            A view model for all of the ServiceTemplates
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ServiceTemplatesVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.ServiceTemplatesVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ServiceTemplatesVM.ServiceTemplatesForServiceProvider">
+            <summary>
+            Returns all service provider service templates
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ServiceTemplatesVM.AdditionalServiceTemplatesForServiceProvider">
+            <summary>
+            Returns any service templates for service provider the current context does not already have
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ServiceTemplatesVM.ServiceTemplatesForClient">
+            <summary>
+            Returns service templates the current client has
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ServiceTemplatesVM.FoundOPSServiceTemplates">
+            <summary>
+            Returns FoundOPS service templates.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ServiceTemplatesVM.LoadedServiceTemplates">
+            <summary>
+            Gets the loaded service templates.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Locations.LocationLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard">
+            <summary>
+            Displays the Tasks to be routed for the day.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard.PublicTaskBoardRadGridView">
+            <summary>
+            Exposes the public task board rad grid view.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard.ClientsVM">
+            <summary>
+            Gets the clients VM. Must be public so the xaml can bind to it.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard.LocationsVM">
+            <summary>
+            Gets the locations VM. Must be public so the xaml can bind to it.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard.RoutesVM">
+            <summary>
+            Gets the routes VM. Must be public so the xaml can bind to it.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.App.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Vehicles.Maintenance.MaintenanceLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.ImportData.ImportDataGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Files.FileLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Clients.ClientLarge">
+            <summary>
+            Displays a Client and its associations.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Clients.ClientLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Clients.ClientLarge.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Clients.ClientLarge"/> class.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Clients.ClientLarge.ClientsListVMProperty">
+            <summary>
+            ClientsListVM Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Clients.ClientLarge.AddLocationButtonClicked(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Called whenever the Add Existing or Add New location button is clicked.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientLarge.ClientsVM">
+            <summary>
+            Gets the clients VM.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientLarge.LocationsVM">
+            <summary>
+            Gets the locations VM.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientLarge.ClientsListVM">
+            <summary>
+            ClientsListVM
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Account.Person.PersonDetailsEdit.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Account.Person.PersonDetailsEdit.PersonVMProperty">
+            <summary>
+            PersonVM Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Account.Person.PersonDetailsEdit.PersonVM">
+            <summary>
+            PersonVM
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.RoutesInfiniteAccordionVM">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RoutesInfiniteAccordionVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.RoutesInfiniteAccordionVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifest">
+            <summary>
+            Displays a RouteManifest
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifest.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifest"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifest.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifest.RoutesVM">
+            <summary>
+            Exposes the RoutesVM.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Contacts.ContactLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Vehicles.VehiclesGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Vehicles.Maintenance.MaintenanceGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit">
+            <summary>
+            View/Edit User account settings.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.EntityProperty">
+            <summary>
+            Entity Dependency Property.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.ISaveDiscardChangesCommandsProperty">
+            <summary>
+            ISaveDiscardChangesCommands Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.HyperlinkButtonClick(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Hyperlinks the button click. Navigate to /Account/ChangePassword
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.Entity">
+            <summary>
+            Entity
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.ISaveDiscardChangesCommands">
+            <summary>
+            ISaveDiscardChangesCommands
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Services.InstanceEditChildWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Regions.RegionLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Dispatcher.TaskDetails.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.RouteManifestOptions.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.CustomFields.Edit.LocationFieldEdit.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.CustomFields.Edit.LocationFieldEdit.LocationFieldProperty">
+            <summary>
+            LocationField Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.CustomFields.Edit.LocationFieldEdit.LocationField">
+            <summary>
+            LocationField
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Contacts.ContactSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.SubLocationsVM">
+            <summary>
+            A view model for all of the SubLocations
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.SubLocationsVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.Core.Context.Services.Interface.ILocationsDataService,FoundOps.Core.Models.CoreEntities.Location)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.SubLocationsVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="locationsDataService">The locations data service.</param>
+            <param name="selectedLocation">The selected location.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.PersonVM">
+            <summary>
+            Contains the logic for displaying Person
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.PartyVM">
+            <summary>
+            Contains the logic for displaying Party
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.PersonVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.Core.Context.Services.IPartyDataService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.PersonVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="partyDataService">The party data service.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.PersonVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.Core.Models.CoreEntities.Person,FoundOps.Core.Context.Services.IPartyDataService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.PersonVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="selectedPerson">The selected person.</param>
+            <param name="partyDataService">The party data service.</param>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Vehicles.VehicleSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate.ServiceTemplatesLink.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Regions.RegionLinkSmall.SelectedRegionProperty">
+            <summary>
+            SelectedRegion Dependency Property.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Regions.RegionLinkSmall.IsReadOnlyProperty">
+            <summary>
+            IsReadOnly Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Regions.RegionLinkSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Regions.RegionLinkSmall.SelectedRegion">
+            <summary>
+            SelectedRegion
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Regions.RegionLinkSmall.IsReadOnly">
+            <summary>
+            IsReadOnly
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid">
+            <summary>
+            Displays a list of the BusinessAccounts
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid.BusinessAccountsVM">
+            <summary>
+            Gets the business accounts VM.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Clients.ClientsGrid.ParentContextVMProperty">
+            <summary>
+            ParentContextVM Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Clients.ClientsGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientsGrid.ParentContextVM">
+            <summary>
+            ParentContextVM
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Services.RecurringServices.RecurringServicesLinkSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Contacts.ClientTitleGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Contacts.ClientTitleGrid.ParentContextVMProperty">
+            <summary>
+            ParentContextVM Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Contacts.ClientTitleGrid.ParentContextVM">
+            <summary>
+            ParentContextVM
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Converters.RouteDestinationsOpacityConverter">
+            <summary>
+            Sets the Opacity of the RouteDestinations based on whether or not their tasks are of one of the selected RouteTypes
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Converters.RouteTasksOpacityConverter">
+            <summary>
+            Sets the Opacity of the RouteTasks based on whether or not they are of one of the selected RouteTypes
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Files.FilesGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Employees.EmployeeHistory.EmployeeHistorySmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.CustomFields.TimeDefine.DateTimeFieldProperty">
+            <summary>
+            DateTimeField Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.CustomFields.TimeDefine.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.CustomFields.TimeDefine.DateTimeField">
+            <summary>
+            DateTimeField
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid">
+            <summary>
+            Displays a list of the UserAccounts
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid"/> class.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid.UserAccountsVM">
+            <summary>
+            Gets the user accounts VM.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid.IsMainGrid">
+            <summary>
+            Gets or sets if this is the main grid.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.SelectedVehiclesVM">
+            <summary>
+            A view model for all of the SelectedVehicles in Routes
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.SelectedVehiclesVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.Core.Models.CoreEntities.M2M4Ria.IEntityCollection{FoundOps.Core.Models.CoreEntities.Vehicle})">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.SelectedVehiclesVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="selectedVehicles">The selected vehicles.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.SelectedEmployeesVM">
+            <summary>
+            A view model for all of the SelectedEmployees in Routes
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.SelectedEmployeesVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.Core.Models.CoreEntities.M2M4Ria.IEntityCollection{FoundOps.Core.Models.CoreEntities.Employee})">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.SelectedEmployeesVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="selectedEmployees">The selected employees.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Tools.ServiceGenerator">
+            <summary>
+             Generates the proper services based on existing Services and RecurringServices schedules
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Tools.ServiceGenerator.GenerateServiceTuples(FoundOps.Core.Models.CoreEntities.Service,System.Collections.Generic.IEnumerable{FoundOps.Core.Models.CoreEntities.Service},System.Collections.Generic.IEnumerable{FoundOps.Core.Models.CoreEntities.RecurringService},FoundOps.Core.Models.CoreEntities.Client,FoundOps.Core.Models.CoreEntities.Location,FoundOps.Core.Models.CoreEntities.RecurringService,System.Int32)">
+             <summary>
+             Generate ServiceTuples around the selectedService.
+             </summary>
+            <param name="selectedService">The selected service to generate services around. If null, Services will be generated around DateTime.Now</param>
+            <param name="services">The existing/new/modified (not generated) services</param>
+            <param name="recurringServices">The recurring services</param>
+            <param name="clientContext">The current client context</param>
+            <param name="locationContext">The current location context</param>
+            <param name="recurringServiceContext">The current recurringService context</param>
+            <param name="size">The size of the sorted set to generate</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Tools.ServiceGenerator.FilterServicesRecurringServices(System.Collections.Generic.IEnumerable{FoundOps.Core.Models.CoreEntities.Service},System.Collections.Generic.IEnumerable{FoundOps.Core.Models.CoreEntities.RecurringService},FoundOps.Core.Models.CoreEntities.Client,FoundOps.Core.Models.CoreEntities.Location,FoundOps.Core.Models.CoreEntities.RecurringService)">
+             <summary>
+             The filtered Services and RecurringServices
+             </summary>
+            <param name="services">The existing/new/modified (not generated) services</param>
+            <param name="recurringServices">The recurring services</param>
+            <param name="clientContext">The current client context</param>
+            <param name="locationContext">The current location context</param>
+            <param name="recurringServiceContext">The current recurringService context</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Tools.ServiceGenerator.SortedExistingAndGeneratedServices(FoundOps.Core.Models.CoreEntities.Service,System.Collections.Generic.IEnumerable{FoundOps.Core.Models.CoreEntities.Service},System.Collections.Generic.IEnumerable{FoundOps.Core.Models.CoreEntities.RecurringService},System.Int32)">
+            <summary>
+            A method to generate a SortedSet'ServiceTuple based on existing and generated services. 
+            It will be the size of pageSize with the selectedService in the middle. If selectedService is null, a service closest to DateTime.Now will be in the middle
+            </summary>
+            <param name="selectedService">The selected entity to generate services around. Can be null</param>
+            <param name="existingServices">The existing services to include in the sorted list.</param>
+            <param name="recurringServices">The recurring services to generate services from.</param>
+            <param name="pageSize">The page size to generate.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Tools.ServiceGenerator.AddServiceTuplesToCollection(System.Collections.Generic.SortedSet{FoundOps.SLClient.UI.Tools.ServiceTuple},System.Collections.Generic.IEnumerable{FoundOps.Core.Models.CoreEntities.RecurringService},System.DateTime,System.DateTime,FoundOps.SLClient.UI.Tools.CrawlingPosition)">
+            <summary>
+            Generates ServiceTuples from recurring services for a start and end date. 
+            It will probably return service tuples with dates that extend past those (because it uses Repeat.NextOnOrAfterDate).
+            </summary>
+            <param name="collection">The collection to add ServiceTuples to</param>
+            <param name="recurringServices">The recurring services to generate ServiceTuples from</param>
+            <param name="estimatedStartDate">The estimated start of the generation range</param>
+            <param name="estimatedEndDate">The estimated end of the generation range</param>
+            <param name="position">The crawling position sets which direction this should generate service tuples towards</param>
+            <returns>Whether or not it can continue crawling</returns>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Tools.CrawlingPosition">
+            <summary>
+             A crawling position. Either crawling backward, stopped in the middle, or crawling forward
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Tools.CrawlingPosition.MoveBackward">
+            <summary>
+             Crawl backwards
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Tools.CrawlingPosition.StoppedInMiddle">
+            <summary>
+             Stay in middle
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Tools.CrawlingPosition.MoveForward">
+            <summary>
+             Crawl forward
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Tools.ServiceGenerationResult">
+            <summary>
+             The result of a ServiceGeneration request.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Tools.ServiceGenerationResult.CanMoveBackward">
+            <summary>
+             Whether or not the set of recurring services can move backwards in time.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Tools.ServiceGenerationResult.CanMoveForward">
+            <summary>
+             Whether or not the set of recurring services can move forward in time.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Tools.ServiceGenerationResult.ServicesTuples">
+            <summary>
+             The resulting services or services to to generate
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Tools.ServiceTuple">
+            <summary>
+             This class holds either a service, or a DateTime and RecurringService used to generate a service
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Tools.ServiceTuple.#ctor(FoundOps.Core.Models.CoreEntities.Service)">
+            <param name="existingService">The existing service to store</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Tools.ServiceTuple.#ctor(System.DateTime,FoundOps.Core.Models.CoreEntities.RecurringService)">
+            <param name="serviceDateToGenerate">The service date for the service to generate</param>
+            <param name="recurringServiceToGenerateFrom">The recurring service to generate the service from</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Tools.ServiceTuple.GenerateService">
+            <summary>
+             Generates a service if there is not one yet (and if the necessary associations are loaded)
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Tools.ServiceTuple.ServiceDate">
+            <summary>
+             The ServiceDate of this ServiceTuple. Used for sorting.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:FoundOps.SLClient.UI.Tools.ServiceTuple.ServiceDateToGenerate" -->
+        <!-- Badly formed XML comment ignored for member "P:FoundOps.SLClient.UI.Tools.ServiceTuple.RecurringServiceToGenerateFrom" -->
+        <member name="P:FoundOps.SLClient.UI.Tools.ServiceTuple.Service">
+            <summary>
+             The a existing or generated service
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Vehicles.Maintenance.MaintenanceLinkSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.RecurringServices.RecurringServiceLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Parties.BusinessAccounts.BusinessAccountLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Employees.EmployeeHistory.EmployeeHistoryLinkSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.RouteManifestVM">
+            <summary>
+            Contains the logic for displaying and printing RouteManifests
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RouteManifestVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.RouteManifestVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RouteManifestVM.UpdateSaveRouteManifestSettings">
+            <summary>
+             Updates and saves the current business account's RouteManifestSettings
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteManifestVM.Printer">
+            <summary>
+            Gets or sets the printer.
+            </summary>
+            <value>
+            The printer.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteManifestVM.RouteManifestSettings">
+            <summary>
+            Gets the route manifest settings.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteManifestVM.ForwardOnePage">
+            <summary>
+            Go forward one page in the manifest.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteManifestVM.BackOnePage">
+            <summary>
+            Go back one page in the manifest.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteManifestVM.GoToFirstPage">
+            <summary>
+            Go to the first page in the manifest.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteManifestVM.GoToLastPage">
+            <summary>
+            Go to the last page in the manifest.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.PartySettingsVM">
+            <summary>
+            Contains the logic for displaying PartySettings
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.PartySettingsVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.SLClient.UI.ViewModels.PartyVM)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.PartySettingsVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="partyVM">The party VM.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.RecurringServices.RecurringServicesGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Regions.RegionsGrid.ParentContextVMProperty">
+            <summary>
+            ParentContextVM Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Regions.RegionsGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Regions.RegionsGrid.ParentContextVM">
+            <summary>
+            ParentContextVM
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Invoices.InvoiceDetails.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Locations.LocationLinkLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Locations.LocationLinkLarge.SelectedLocationProperty">
+            <summary>
+            SelectedLocation Dependency Property.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Locations.LocationLinkLarge.IsReadOnlyProperty">
+            <summary>
+            IsReadOnly Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Locations.LocationLinkLarge.SelectedLocation">
+            <summary>
+            SelectedLocation
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Locations.LocationLinkLarge.IsReadOnly">
+            <summary>
+            IsReadOnly
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.LocationVM">
+            <summary>
+            Contains the logic for searching for and displaying a Location
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.LocationVM.#ctor(FoundOps.Core.Models.CoreEntities.Location,FoundOps.SLClient.Data.Services.DataManager,FoundOps.Core.Context.Services.Interface.ILocationsDataService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.LocationVM"/> class.
+            </summary>
+            <param name="locationsDataService">The locations data service.</param>
+            <param name="selectedLocation">The selectedLocation this viewmodel is for</param>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.SelectedLocation">
+            <summary>
+            Gets the selected location this viewmodel is for.
+            </summary>
+            <value>
+            The selected location.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.ContactInfoVM">
+            <summary>
+            Gets the ContactInfoVM for the Location
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.GeocoderResults">
+            <summary>
+            Gets or sets the geocoder results.
+            </summary>
+            <value>
+            The geocoder results of a search.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.GeocoderResultsWithLocations">
+            <summary>
+            Gets the geocoder results that have locations.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.SelectedGeocoderResult">
+            <summary>
+            Gets or sets the user selected geocoder result.
+            </summary>
+            <value>
+            The user selected geocoder result.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.ManuallySelectGeocoderResult">
+            <summary>
+            Gets or sets the manually selected geocoder result.
+            </summary>
+            <value>
+            The manually selected geocoder result.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.SearchText">
+            <summary>
+            Gets or sets the user's search text.
+            </summary>
+            <value>
+            The user's search text.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.SearchCommand">
+            <summary>
+            A command to Search for an address.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.SetLocationToGeocoderResultCommand">
+            <summary>
+            A command for setting the Location's information based off a GeocoderResult.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationVM.ManuallySetLatitudeLongitude">
+            <summary>
+            A command for manually setting the Location's latitude and longitude.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.LocationSetMessage">
+            <summary>
+            A message for force setting the Location
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.LocationSetMessage.#ctor(Telerik.Windows.Controls.Map.Location)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.LocationSetMessage"/> class.
+            </summary>
+            <param name="location">The location to force set.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.LocationSetMessage.SetLocation">
+            <summary>
+            Gets the location to set.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.ResetMapMessage">
+            <summary>
+            A message for Resetting the map
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.RouteScheduleVM">
+            <summary>
+            Gets the necessary data for the RouteScheduleVM
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RouteScheduleVM.#ctor(Microsoft.Windows.Data.DomainServices.DomainCollectionView{FoundOps.Core.Models.CoreEntities.Route},FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.RouteScheduleVM"/> class.
+            </summary>
+            <param name="domainCollectionView">The domain collection view.</param>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteScheduleVM.ResourceTypesCollection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteScheduleVM.AppointmentCollection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteScheduleVM.EarliestStartTime">
+            <summary>
+            Gets the earliest start time of the routes
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RouteScheduleVM.LatestEndTime">
+            <summary>
+            Gets the latest end time of the routes
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Dispatcher.DestinationDetails.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.SetDraggedItems(System.Collections.Generic.IEnumerable{System.Object},Telerik.Windows.Controls.DragDrop.DragDropEventArgs)">
+            <summary>
+            Sets the dragged items.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.SetRouteDraggedFrom(System.Collections.Generic.IEnumerable{System.Object},Telerik.Windows.Controls.DragDrop.DragDropEventArgs)">
+            <summary>
+            Sets the route dragged from.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.DragCueSetter(Telerik.Windows.Controls.DragDrop.DragDropEventArgs)">
+             <summary>
+            Sets the drag cue while object is being dragged if the drop is not allowed to be dropped
+            If the drag can be dropped then the defult drag cue is used
+            If stopDragDrop is false it means drop is not allowed and then is cancelled
+             </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.RemoveFromRoute(FoundOps.SLClient.UI.ViewModels.RoutesVM,FoundOps.Core.Models.CoreEntities.Route,System.Collections.IEnumerable)">
+            <summary>
+            Removes draggedRouteTasks from the existing route. Then deletes any empty RouteDestination
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.AddToRoute(Telerik.Windows.Controls.DragDrop.DragDropEventArgs,System.Collections.IEnumerable)">
+            <summary>
+            Adds what ever is being dragged to the specified Route by creating a new RouteDestination.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.DragCueSetterDrop(System.Collections.IEnumerable,Telerik.Windows.Controls.DragDrop.DragDropEventArgs)">
+            <summary>
+            Sets the DragCue for the specified item being dragged and its current potential drop location.
+            Doesnt change the DragCue if drop location is valid
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.PublicRoutesListBox">
+            <summary>
+            Gets the public routes list box.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.RoutesVM">
+            <summary>
+            Gets the routes VM.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView.RoutesDragDropVM">
+            <summary>
+            Gets the routes drag drop VM.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.VehiclesVM">
+            <summary>
+            A view model for all of the Vehicles
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.VehiclesVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.VehiclesVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.EmployeesVM">
+            <summary>
+            Contains the logic for displaying Employees
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.EmployeesVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.Core.Context.Services.IPartyDataService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.EmployeesVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="partyDataService">The party data service.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.EmployeesVM.SelectedEmployeePersonVM">
+            <summary>
+            Gets the selected employee person VM.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.OptionsFieldVM">
+            <summary>
+            Contains the logic for displaying OptionsField
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.OptionsFieldVM.AddCommand">
+            <summary>
+            A command for adding an entity
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.OptionsFieldVM.DeleteCommand">
+            <summary>
+            A command for deleting an entity
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.OptionsFieldVM.OptionsField">
+            <summary>
+            Gets or sets the options field.
+            </summary>
+            <value>
+            The options field.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.OptionsFieldVM.SelectedOption">
+            <summary>
+            Gets or sets the selected option.
+            </summary>
+            <value>
+            The selected option.
+            </value>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.UserAccountsVM">
+            <summary>
+            A view model for all of the UserAccounts
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.UserAccountsVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.UserAccountsVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.UserAccountsVM.ObjectTypeProvided">
+            <summary>
+            Gets the object type provided (for the InfiniteAccordion). Overriden because base class is Party.
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.CustomFields.TextDefine.TextBoxFieldProperty">
+            <summary>
+            TextBoxField Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.CustomFields.TextDefine.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.CustomFields.TextDefine.TextBoxField">
+            <summary>
+            TextBoxField
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Services.ServicesGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Locations.LocationEdit.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Locations.LocationEdit.LocationVMProperty">
+            <summary>
+            LocationVM Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Locations.LocationEdit.LocationVM">
+            <summary>
+            LocationVM
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Employees.EmployeesGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.CustomFields.NumberDefine.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.Framework.Views.Controls.CustomFields.NumberDefine.NumericFieldProperty">
+            <summary>
+            NumericField Dependency Property.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Framework.Views.Controls.CustomFields.NumberDefine.NumericField">
+            <summary>
+            NumericField
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.RoutesVM">
+            <summary>
+            Contains the logic for displaying and dispatching Routes.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.ViewModels.RoutesVM.AutoAssignButtonHasBeenClicked">
+            <summary>
+            True if AutoAssignButton has been clicked
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.ViewModels.RoutesVM._updateFilter">
+            <summary>
+            Called whenever the Filter needs updating.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RoutesVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.RoutesVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RoutesVM.LoadData">
+            <summary>
+            Used in the constructor to setup the data loading process.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RoutesVM.RegisterCommands">
+            <summary>
+            Used in the constructor to setup the commands
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RoutesVM.SetupRouteTypesFilter(System.Collections.Generic.IEnumerable{FoundOps.Core.Models.CoreEntities.ServiceTemplate})">
+            <summary>
+            Setup the route types filter.
+            </summary>
+            <param name="serviceTemplates">The source service templates.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RoutesVM.SetupRegionsFilter(System.Collections.ObjectModel.ObservableCollection{FoundOps.Core.Models.CoreEntities.Location})">
+            <summary>
+            Setup the regions filter.
+            </summary>
+            <param name="locations">The source locations w regions.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RoutesVM.OnRouteTasksLoaded(Microsoft.Windows.Data.DomainServices.EntityList{FoundOps.Core.Models.CoreEntities.RouteTask})">
+            <summary>
+            Called when [route tasks loaded]. Removes Generated RouteTasks and replaces them with clones
+            </summary>
+            <param name="routeTasks">The route tasks.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RoutesVM.DeleteRouteDestination(FoundOps.Core.Models.CoreEntities.RouteDestination)">
+            <summary>
+            Exposes a method to delete a route destination.
+            </summary>
+            <param name="routeDestination">The route destination to delete.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.RoutesVM.OnDeleteEntity(FoundOps.Core.Models.CoreEntities.Route)">
+            <summary>
+            Called when delete route is called.
+            </summary>
+            <param name="deletedRoute">The deleted route.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.AutoCalculateRoutes">
+            <summary>
+            A command to automatically place the unrouted tasks into Routes
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.OpenRouteManifests">
+            <summary>
+            A command to open the Route Manifests
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.AddRouteTask">
+            <summary>
+            A command to add a route task.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.DeleteRouteTask">
+            <summary>
+            A command to delete a route task.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SetSelectedDayToToday">
+            <summary>
+            A command to set the selected day to today.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SetSelectedDayOneDayPrevious">
+            <summary>
+            A command to set the selected day one day previous than the selected date.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SetSelectedDayOneDayForward">
+            <summary>
+            A command to set the selected day one day past the selected date.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.RouteTypes">
+            <summary>
+            A temporary solution for filtering. Currently represents ServiceTemplates
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.Regions">
+            <summary>
+            A temporary solution for filtering. Currently represents ServiceTemplates
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SelectedRegions">
+            <summary>
+            Gets the selected regions of routes to display.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SelectedRouteTypes">
+            <summary>
+            Gets the selected route types of routes to display.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.ForceFilterCountUpdate">
+            <summary>
+            Used to force the bindings on the Dispatching filter counts. 
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.TasksLoading">
+            <summary>
+            Gets a value indicating whether [tasks is loading].
+            </summary>
+            <value>
+              <c>true</c> if [tasks is loading]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.RoutesLoading">
+            <summary>
+            Gets a value indicating whether [routes is loading].
+            </summary>
+            <value>
+              <c>true</c> if [routes is loading]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.AutoAsignButtonClickedOn">
+            <summary>
+            Tracks if the auto assign button has been clicked (for analytics)
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SelectedDate">
+            <summary>
+            The SelectedDate. This is used to load the proper Routes and RouteTasks
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SelectedRouteDestination">
+            <summary>
+            The first selected route destination in route tree view
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SelectedRouteDestinations">
+            <summary>
+            The route destinations selected in route tree view
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SelectedTask">
+            <summary>
+            The first selected Task in route tree view
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.RouteManifestVM">
+            <summary>
+            Gets the RouteManifestVM.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SelectedRouteDestinationContactInfoVM">
+            <summary>
+            Gets the ContactInfoVM for the selected route destination.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SelectedRouteSelectedEmployeesVM">
+            <summary>
+            Gets the SelectedEmployeesVM for the selected route.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.SelectedRouteSelectedVehiclesVM">
+            <summary>
+            Gets the SelectedVehiclesVM for the selected route.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.UnroutedTasks">
+            <summary>
+            The UnroutedTasks.
+            It is not an EntityList so that Items can be added/removed without affecting the EntitySet for
+            a) DragAndDrop and b) auto route calculation.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.RoutesVM.LoadedRouteTasks">
+            <summary>
+            The loaded route tasks (disconnected from an EntitySet)
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.RoutesVM.Query">
+            <summary>
+            The custom queries the RoutesVM uses
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.ViewModels.RoutesVM.Query.RoutesForServiceProviderOnDay">
+            <summary>
+            Load the Routes for the Selected Date
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.ViewModels.RoutesVM.Query.UnroutedRouteTasks">
+            <summary>
+            Load the unrouted RouteTasks for the Selected Date
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.BusinessVM">
+            <summary>
+            Contains the logic for displaying Busineses
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.BusinessVM.#ctor(FoundOps.SLClient.Data.Services.DataManager,FoundOps.Core.Context.Services.IPartyDataService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.BusinessVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+            <param name="partyDataService">The party data service.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.BusinessVM.SelectedBusiness">
+            <summary>
+            Gets or sets the selected business.
+            </summary>
+            <value>
+            The selected business.
+            </value>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.BusinessAccountsVM">
+            <summary>
+            Contains the logic for displaying BusinessAccounts
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.BusinessAccountsVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.BusinessAccountsVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.BusinessAccountsVM.OnSelectedEntityChanged(FoundOps.Core.Models.CoreEntities.Party,FoundOps.Core.Models.CoreEntities.Party)">
+            <summary>
+            Called when [selected entity changed]. 
+            </summary>
+            <param name="oldValue">The old value.</param>
+            <param name="newValue">The new value.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.BusinessAccountsVM.ObjectTypeProvided">
+            <summary>
+            Gets the object type provided (for the InfiniteAccordion). Overriden because base class is Party.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.BusinessAccountsVM.SelectedEntityContactInfoVM">
+            <summary>
+            Gets or sets the selected entity contact info VM.
+            </summary>
+            <value>
+            The selected entity contact info VM.
+            </value>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Dispatcher.RouteScheduleView">
+            <summary>
+            Displays Routes as a Schedule
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteScheduleView.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Dispatcher.RouteScheduleView"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RouteScheduleView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Clients.ClientLinkLarge.SelectedClientProperty">
+            <summary>
+            SelectedClient Dependency Property.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Clients.ClientLinkLarge.IsReadOnlyProperty">
+            <summary>
+            IsReadOnly Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Clients.ClientLinkLarge.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientLinkLarge.SelectedClient">
+            <summary>
+            SelectedClient
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientLinkLarge.IsReadOnly">
+            <summary>
+            IsReadOnly
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.ServicesVM">
+            <summary>
+            Loads, displays (and generates) services based on context. Allows adding/deleting of services.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ServicesVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.ServicesVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager</param>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ServicesVM.RegenerateSelectedEntityServiceTemplate">
+            <summary>
+            Regenerates the selected entity's service template.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.ImportDataVM">
+            <summary>
+            Contains the logic for displaying Import Data
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ImportDataVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.ImportDataVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.ClientsVM">
+            <summary>
+             Contains the logic for displaying Clients
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.ClientsVM.#ctor(FoundOps.Core.Context.Services.IPartyDataService,FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.ClientsVM"/> class.
+            </summary>
+            <param name="partyDataService">The party data service.</param>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ClientsVM.AddLocationCommand">
+            <summary>
+            A command to add a location.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ClientsVM.DeleteLocationCommand">
+            <summary>
+            A command to remove a location.
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.ClientsVM.SelectedClientOwnedBusinessVM">
+            <summary>
+            Gets the selected client owned business VM.
+            </summary>
+        </member>
+        <member name="T:FoundOps.Framework.Views.Converters.RepeatEveryTimesUnitTypeConverter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:FoundOps.Framework.Views.Converters.EndOfRepeatToIsCheckedConverter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:FoundOps.Framework.Views.Converters.EndAfterTimesToOccurrencesStringConverter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:FoundOps.Framework.Views.Converters.EstimatedLengthConverter">
+            <summary>
+            Convert timespan(in minutes) to an int and vise versa
+            </summary>
+        </member>
+        <member name="M:FoundOps.Framework.Views.Controls.Files.FilesLink.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesLogGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.BusinessAccountSettingsVM">
+            <summary>
+            A view model for all of the BusinessAccountSettings
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.BusinessAccountSettingsVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.BusinessAccountSettingsVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.ViewModels.BusinessAccountSettingsVM.SelectedBusinessAccount">
+            <summary>
+            Gets the selected business account.
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Converters.RouteTypeFilterConverter">
+            <summary>
+            Allows the Filter to display the number of Route Tasks that fall under each ServiceType.
+            Only RouteTasks from Routes with a SelectedRegion are counted.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Converters.RouteTypeFilterConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the specified values.
+            </summary>
+            <param name="values">The values.</param>
+            <param name="targetType">Type of the target.</param>
+            <param name="parameter">The parameter.</param>
+            <param name="culture">The culture.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Converters.RouteTypeFilterConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the back.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetTypes">The target types.</param>
+            <param name="parameter">The parameter.</param>
+            <param name="culture">The culture.</param>
+            <returns></returns>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Converters.RegionFilterConverter">
+            <summary>
+            Allows the Filter to display the number of Route Tasks that fall under each Region.
+            Only RouteTasks from Routes with a SelectedType are counted. 
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Converters.RegionFilterConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the specified values.
+            </summary>
+            <param name="values">The values.</param>
+            <param name="targetType">Type of the target.</param>
+            <param name="parameter">The parameter.</param>
+            <param name="culture">The culture.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Converters.RegionFilterConverter.ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the back.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="targetTypes">The target types.</param>
+            <param name="parameter">The parameter.</param>
+            <param name="culture">The culture.</param>
+            <returns></returns>
+        </member>
+        <member name="F:FoundOps.SLClient.UI.Controls.Clients.ClientSmall.ClientsListVMProperty">
+            <summary>
+            ClientsListVM Dependency Property.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Clients.ClientSmall.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientSmall.ClientsListVM">
+            <summary>
+            ClientsListVM
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.ViewModels.VehicleMaintenanceVM">
+            <summary>
+             A view model for all of the VehicleMaintenanceLogEntries
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.ViewModels.VehicleMaintenanceVM.#ctor(FoundOps.SLClient.Data.Services.DataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.ViewModels.VehicleMaintenanceVM"/> class.
+            </summary>
+            <param name="dataManager">The data manager.</param>
+        </member>
+    </members>
+</doc>

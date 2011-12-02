@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.RouteMapView" x:Name="myRouteMapView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.DataVisualization" xmlns:Map="clr-namespace:Telerik.Windows.Controls.Map;assembly=Telerik.Windows.Controls.DataVisualization" 
+    xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.Controls.Icons;assembly=FoundOps.Common.Silverlight.UI" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"  
+    xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400" ViewModelLocator:ViewModelLocator.SharedViewModel="RouteMapVM">
+    <UserControl.Resources>
+        <Converters:IntToStringConverter x:Key="IntToStringConverter"/>
+        <Converters:StringToColorConverter x:Key="StringToColorConverter"/>
+        <DataTemplate x:Key="RouteDestination">
+            <StackPanel>
+                <Icons:PinPointIcon x:Name="MapPinPoint" HorizontalAlignment="Center" Map:MapLayer.Location="{Binding Location.TelerikLocation}" Fill="{Binding Route.Color, Converter={StaticResource StringToColorConverter}}" Text="{Binding OrderInRoute, Converter={StaticResource IntToStringConverter}}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <StackPanel Background="White">
+                                <TextBlock Text="{Binding Location.Name}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                </Icons:PinPointIcon>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="PolylineTemplate">
+            <Map:MapPolyline Points="{Binding Points}" StrokeThickness="1" Stroke="{Binding Color, Converter={StaticResource StringToColorConverter}}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+            <Controls:RadMap x:Name="Map" Margin="5" NavigationVisibility="Collapsed" MouseLocationIndicatorVisibility="Collapsed" CommandBarVisibility="Collapsed"
+                                  MouseClickMode="None" MaxZoomLevel="17">
+                <Map:InformationLayer x:Name="InformationLayer" />
+                <Map:InformationLayer x:Name="InformationLayer2" ItemTemplate="{StaticResource PolylineTemplate}"/>
+            </Controls:RadMap>
+        <telerik:RadComboBox x:Name="MapTypeSelector" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,25" BorderBrush="Black" 
+                             Foreground="Black" Background="SlateGray" SelectionChanged="MapTypeSelector_SelectionChanged">
+            <telerik:RadComboBoxItem x:Name="OSMRoad" Content="Map View"/>
+            <telerik:RadComboBoxItem x:Name="YahooSatellite" Content="Satellite View"/>
+        </telerik:RadComboBox>
+    </Grid>
+</UserControl>

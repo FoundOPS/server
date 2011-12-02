@@ -1,0 +1,371 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0F4FBB4B-0807-4903-8503-67A7021D82BF}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FoundOps.SLClient.Data</RootNamespace>
+    <AssemblyName>FoundOps.SLClient.Data</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>false</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>FoundOps.Core.Context.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>FoundOps.Core.NavigatorContext.App</SilverlightAppEntry>
+    <TestPageFileName>FoundOps.Core.NavigatorContextTestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>false</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject>..\..\Server\FoundOps.Server\FoundOps.Server.csproj</LinkedServerProject>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>Bin\Debug\FoundOps.SLClient.Data.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityGraph.Silverlight">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EntityTools">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityTools.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.SL4">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MEFedMVVM.SL">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\MEFedMVVM.SL.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ReactiveUI.Xaml_SL4">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI.Xaml_SL4.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI_SL4">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL4.dll</HintPath>
+    </Reference>
+    <Reference Include="Rxx">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Rxx.dll</HintPath>
+    </Reference>
+    <Reference Include="SLMultiBinding">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\SLMultiBinding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.Composition.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition.Initialization, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=5.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.DomainServices.Client, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.ServiceModel.DomainServices.Client.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Client.Web, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.ServiceModel.DomainServices.Client.Web.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web.Extensions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ServiceModel.Web.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows, Version=5.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="Telerik.Windows.Controls">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Data">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.DataVisualization">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.DomainServices">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DomainServices.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.ScheduleView">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\BlocksData.cs">
+      <Link>DesignData\BlocksData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\BusinessAccountsDesignData.cs">
+      <Link>DesignData\BusinessAccountsDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\ClientsDesignData.cs">
+      <Link>DesignData\ClientsDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\ContactInfoDesignData.cs">
+      <Link>DesignData\ContactInfoDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\ContactsDesignData.cs">
+      <Link>DesignData\ContactsDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\EmployeeHistoryDesignData.cs">
+      <Link>DesignData\EmployeeHistoryDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\EmployeesDesignData.cs">
+      <Link>DesignData\EmployeesDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\FieldsDesignData.cs">
+      <Link>DesignData\FieldsDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\InvoicesDesignData.cs">
+      <Link>DesignData\InvoicesDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\LocationsDesignData.cs">
+      <Link>DesignData\LocationsDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\PartyDesignData.cs">
+      <Link>DesignData\PartyDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\RecurringServicesDesignData.cs">
+      <Link>DesignData\RecurringServicesDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\RegionsDesignData.cs">
+      <Link>DesignData\RegionsDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\RepeatDesignData.cs">
+      <Link>DesignData\RepeatDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\RolesDesignData.cs">
+      <Link>DesignData\RolesDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\RoutesDesignData.cs">
+      <Link>DesignData\RoutesDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\SalesTermsDesignData.cs">
+      <Link>DesignData\SalesTermsDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\ServicesDesignData.cs">
+      <Link>DesignData\ServicesDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\ServiceTemplatesDesignData.cs">
+      <Link>DesignData\ServiceTemplatesDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\SubLocationsDesignData.cs">
+      <Link>DesignData\SubLocationsDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\UserAccountsDesignData.cs">
+      <Link>DesignData\UserAccountsDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\VehicleMaintenanceDesignData.cs">
+      <Link>DesignData\VehicleMaintenanceDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\VehiclesDesignData.cs">
+      <Link>DesignData\VehiclesDesignData.cs</Link>
+    </Compile>
+    <Compile Include="Converters\ClientToOwnerParty.cs" />
+    <Compile Include="Converters\LocationConverters.cs" />
+    <Compile Include="Converters\ServiceTemplatesConverters.cs" />
+    <Compile Include="ExportContext.cs" />
+    <Compile Include="Extensions\AddressExtensions.cs" />
+    <Compile Include="Extensions\ClientExtensions.cs" />
+    <Compile Include="Extensions\ClientTitleExtensions.cs" />
+    <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="Extensions\VehicleMaintenanceLogEntryExtensions.cs" />
+    <Compile Include="Extensions\LocationFieldExtensions.cs" />
+    <Compile Include="Extensions\OptionsFieldExtensions.cs" />
+    <Compile Include="Extensions\FieldExtensions.cs" />
+    <Compile Include="Extensions\PartyExtensions.cs" />
+    <Compile Include="Extensions\RecurringServiceExtensions.cs" />
+    <Compile Include="Extensions\ScheduleViewAppointment.cs" />
+    <Compile Include="Extensions\ServiceTemplateExtensions.cs" />
+    <Compile Include="Extensions\RouteTaskExtensions.cs" />
+    <Compile Include="Extensions\CoreDomainContextExtensions.cs" />
+    <Compile Include="Extensions\LocationExtensions.cs" />
+    <Compile Include="Extensions\RouteDestinationExtensions.cs" />
+    <Compile Include="Extensions\IEntityCollectionExtensions.cs" />
+    <Compile Include="Extensions\RepeatExtensions.cs" />
+    <Compile Include="Extensions\RouteExtensions.cs" />
+    <Compile Include="Extensions\ServiceExtensions.cs" />
+    <Compile Include="Extensions\SubLocationExtensions.cs" />
+    <Compile Include="M2M4RiaDomainContext.g.cs">
+      <DependentUpon>M2M4RiaDomainContext.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Models\RouteManifestSettings.cs" />
+    <Compile Include="Services\ContextManager.cs" />
+    <Compile Include="Services\DataManager.cs" />
+    <Compile Include="Services\Design\DesignContactInfoDataService.cs" />
+    <Compile Include="Services\Interface\IContactInfoDataService.cs" />
+    <Compile Include="Services\Analytics\AnalyticsManager.cs" />
+    <Compile Include="Services\Manager.cs" />
+    <Compile Include="Tools\DataFedVMExtensions.cs" />
+    <Compile Include="Tools\ContextManagerMarkupExtensions.cs" />
+    <Compile Include="Tools\SimpleRouteCalculator.cs" />
+    <Compile Include="ViewModels\CoreEntityVM.cs" />
+    <Compile Include="ViewModels\CoreEntityCollectionInfiniteAccordionVM.cs" />
+    <Compile Include="ViewModels\CoreEntityCollectionVM.cs" />
+    <Compile Include="Services\Design\DesignRoutesDataService.cs" />
+    <Compile Include="Services\Design\DesignLocationsDataService.cs" />
+    <Compile Include="Services\Design\DesignPartyDataService.cs" />
+    <Compile Include="Services\Interface\IRouteDataService.cs" />
+    <Compile Include="Services\Interface\IPartyDataService.cs" />
+    <Compile Include="Services\Interface\ILocationsDataService.cs" />
+    <Compile Include="Services\Interface\INavigatorDataService.cs" />
+    <Compile Include="Services\Runtime\PartyDataService.cs" />
+    <Compile Include="Services\Runtime\RoutesDataService.cs" />
+    <Compile Include="Services\Runtime\LocationsDataService.cs" />
+    <Compile Include="Services\Runtime\NavigatorDataService.cs" />
+    <Compile Include="Services\Design\DesignNavigatorDataService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CoreSelectedEntitiesCollectionVM.cs" />
+    <Compile Include="ViewModels\DataFedVM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="M2M4RiaDomainContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>M2M4RiaDomainContext.g.cs</LastGenOutput>
+    </None>
+    <None Include="M2MGenerator.ttinclude" />
+    <None Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj">
+      <Project>{BB748726-9C39-4FDA-8B02-9CC12CD9D34D}</Project>
+      <Name>FoundOps.Common.Silverlight.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\FoundOps.Common.Silverlight\FoundOps.Common.Silverlight.csproj">
+      <Project>{14ADDE30-D51B-4A1C-A855-D556431FDA0A}</Project>
+      <Name>FoundOps.Common.Silverlight</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\FoundOps.Common\FoundOps.Common.csproj">
+      <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
+      <Name>FoundOps.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

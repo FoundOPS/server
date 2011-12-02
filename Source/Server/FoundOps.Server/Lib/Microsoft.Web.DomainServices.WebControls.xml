@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Web.DomainServices.WebControls</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Web.StringResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.ChangeSetValidationHelper_DataChangedConflictError">
+            <summary>
+              Looks up a localized string similar to The data has been modified in the underlying store..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.ChangeSetValidationHelper_DataDeletedConflictError">
+            <summary>
+              Looks up a localized string similar to The data has been deleted in the underlying store..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.Common_GreaterThanOrEqualToZero">
+            <summary>
+              Looks up a localized string similar to Value must be greater than or equal to 0..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.Common_NullOrEmpty">
+            <summary>
+              Looks up a localized string similar to Value cannot be null or empty..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.Common_PageCannotBeNull">
+            <summary>
+              Looks up a localized string similar to Page cannot be null. Please ensure that this operation is being performed in the context of an ASP.NET request..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DataSourceHelper_CannotConvertType">
+            <summary>
+              Looks up a localized string similar to Cannot convert value of parameter &apos;{0}&apos; from &apos;{1}&apos; to &apos;{2}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSource_Description">
+            <summary>
+              Looks up a localized string similar to Connect to data exposed by a WCF RIA Services Domain Service..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSource_DisplayName">
+            <summary>
+              Looks up a localized string similar to Domain Service.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSource_EnableDelete">
+            <summary>
+              Looks up a localized string similar to Specifies whether the Delete operation is enabled..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSource_EnableInsert">
+            <summary>
+              Looks up a localized string similar to Specifies whether the Insert operation is enabled..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSource_EnableUpdate">
+            <summary>
+              Looks up a localized string similar to Specifies whether the Update operation is enabled..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_CustomPropertyDoesNotMatchQueryMethodProperty">
+            <summary>
+              Looks up a localized string similar to The value of the {0} property (&apos;{1}&apos;) on DomainDataSource &apos;{2}&apos; does not match any of the parameters on the query method &apos;{3}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_DeleteNotSupported">
+            <summary>
+              Looks up a localized string similar to The DomainDataSource &apos;{0}&apos; does not support the Delete operation unless EnableDelete is set to true..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_DomainServiceInstanceFromCreatingEventNotCompatibleWithDomainServiceNameProperty">
+            <summary>
+              Looks up a localized string similar to The domain service instance of type &apos;{0}&apos; obtained through the DomainServiceCreating event on DomainDataSource &apos;{1}&apos; must be a type assignable to &apos;{2}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_DomainServiceTypeNameMustBeDomainService">
+            <summary>
+              Looks up a localized string similar to The domain service type used by DomainDataSource &apos;{0}&apos; must extend DomainService..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_DomainServiceTypeNameNotFound">
+            <summary>
+              Looks up a localized string similar to Could not find the type specified in the DomainServiceTypeName property of DomainDataSource &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_DomainServiceTypeNameNotSpecified">
+            <summary>
+              Looks up a localized string similar to The DomainServiceTypeName property of DomainDataSource &apos;{0}&apos; must specify a domain service type..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_InsertNotSupported">
+            <summary>
+              Looks up a localized string similar to The DomainDataSource &apos;{0}&apos; does not support the Insert operation unless EnableInsert is set to true..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_MaximumRowsParameterNameNotSet">
+            <summary>
+              Looks up a localized string similar to The MaximumRowsParameterName property on DomainDataSource &apos;{0}&apos; does not have a value. It must be set to a valid value when the StartRowIndexParameterName property is set..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_QueryMethodMissingTotalCountParameter">
+            <summary>
+              Looks up a localized string similar to The query method &apos;{0}&apos; on DomainDataSource &apos;{1}&apos; does not have an out parameter that sets the total count. When StartRowIndexParameterName and MaximumRowsParameterName are set the query method must set the total count..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_QueryMethodNotComposable">
+            <summary>
+              Looks up a localized string similar to The query method &apos;{0}&apos; on DomainDataSource &apos;{1}&apos; is not composable..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_QueryMethodNotFound">
+            <summary>
+              Looks up a localized string similar to Could not find the query method &apos;{0}&apos; defined on the DomainDataSource &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_QueryMethodNotSpecified">
+            <summary>
+              Looks up a localized string similar to The QueryName property of DomainDataSource &apos;{0}&apos; must specify the name of a domain service query method..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_QueryParameterMissing">
+            <summary>
+              Looks up a localized string similar to The QueryParameters collection on DomainDataSource &apos;{0}&apos; is missing a parameter named &apos;{1}&apos; that is required by the query method &apos;{2}&apos;. Add the appropriate parameter to the control&apos;s QueryParameters collection. The parameter value can also be provided in an event handler for the Querying event..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_StartRowIndexParameterNameNotSet">
+            <summary>
+              Looks up a localized string similar to The StartRowIndexParameterName property on DomainDataSource &apos;{0}&apos; does not have a value. It must be set to a valid value when the MaximumRowsParameterName property is set..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainDataSourceView_UpdateNotSupported">
+            <summary>
+              Looks up a localized string similar to The DomainDataSource &apos;{0}&apos; does not support the Update operation unless EnableUpdate is set to true..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainModelProvider_CannotFindDefaultQueryMethod">
+            <summary>
+              Looks up a localized string similar to Cannot find the default query method for type &apos;{0}&apos; in the domain service &apos;{1}&apos;. When a type has multiple query methods associated with it then one of them must be marked as the default one using QueryAttribute..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainTableProvider_GetQueryContextMustBeADomainService">
+            <summary>
+              Looks up a localized string similar to The context must be a DomainService..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.DomainValidator_UnableToFindDataSource">
+            <summary>
+              Looks up a localized string similar to Unable to find the data source associated with the control &apos;{0}&apos; that DomainValidator &apos;{1}&apos; is referring to..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Web.StringResources.EntityOperationException_ErrorOccurred">
+            <summary>
+              Looks up a localized string similar to An error has occurred..
+            </summary>
+        </member>
+        <member name="T:Microsoft.Web.UI.WebControls.EntityOperationException">
+            <summary>
+            Wrap a ChangeSetEntry in an exception
+            NOTE: Temporary to unblock the ASP.NET team!
+            </summary>
+        </member>
+    </members>
+</doc>

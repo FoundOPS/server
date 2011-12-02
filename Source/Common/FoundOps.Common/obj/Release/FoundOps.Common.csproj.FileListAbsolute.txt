@@ -1,0 +1,12 @@
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\FoundOps.Common.dll
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\FoundOps.Common.pdb
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\AppManifest.xaml
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\FoundOps.Common.xap
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\FoundOps.CommonTestPage.html
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\obj\Release\ResolveAssemblyReference.cache
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\obj\Release\FoundOps.Common.dll
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\obj\Release\FoundOps.Common.pdb
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\obj\Release\XapCacheFile.xml
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\System.Reactive.dll
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\System.Reactive.Windows.Threading.dll
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\Bin\Release\System.Reactive.Windows.Threading.xml

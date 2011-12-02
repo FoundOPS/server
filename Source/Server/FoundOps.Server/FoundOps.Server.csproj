@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D32C535E-2B13-4AC5-9D49-70C8EDC83933}</ProjectGuid>
+    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FoundOps.Server</RootNamespace>
+    <AssemblyName>FoundOps.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SilverlightApplicationList>{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}|..\..\Client\FoundOps.SLClient.Navigator\FoundOps.SLClient.Navigator.csproj|ClientBin|False</SilverlightApplicationList>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\DevDefined.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LinqKit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\LinqKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ServiceModel.DomainServices.EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.ServiceModel.DomainServices.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceModel.DomainServices.Hosting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\RIA Services\v1.0\Toolkit\Libraries\Server\Microsoft.ServiceModel.DomainServices.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.Smo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.CloudDrive, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.WindowsAzure.CloudDrive.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.WindowsAzure.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
+    <Reference Include="NuGet.Core, Version=1.0.11220.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\NuGet.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Recaptcha, Version=1.0.5.0, Culture=neutral, PublicKeyToken=9afc4d65b28c38c2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Recaptcha.dll</HintPath>
+    </Reference>
+    <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Hosting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Hosting.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SDKs\RIA Services\v1.0\Libraries\Server\System.ServiceModel.DomainServices.Hosting.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Server, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Abstractions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Administration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\System.Web.WebPages.Administration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Browser">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v5.0\System.Windows.Browser.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="UIAutomationProvider">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="UIAutomationTypes">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="zxing, Version=1.0.4216.32187, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\zxing.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="clientaccesspolicy.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Banner1.png" />
+    <Content Include="Content\banner2.png" />
+    <Content Include="Content\Banner3.png" />
+    <Content Include="Content\bgGradient.png" />
+    <Content Include="Content\bgLogo.png" />
+    <Content Include="Content\BlankPhoto.png" />
+    <Content Include="Content\Chimp.png" />
+    <Content Include="Content\facebook.png" />
+    <Content Include="Content\favicon.ico" />
+    <Content Include="Content\footerBg.png" />
+    <Content Include="Content\MobileSite.css" />
+    <Content Include="Content\headerBg.png" />
+    <Content Include="Content\infoBg.png" />
+    <Content Include="Content\jquery.js" />
+    <Content Include="Content\linkedin.png" />
+    <Content Include="Content\navLogo.png" />
+    <Content Include="Content\navRibbons.png" />
+    <Content Include="Content\pagingBtn.png" />
+    <Content Include="Content\pagingBtnActive.png" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\SiteLogo.png" />
+    <Content Include="Content\touch.css" />
+    <Content Include="Content\TouchIcon.png" />
+    <Content Include="Content\twitter.png" />
+    <Content Include="Content\wt-rotator.css" />
+    <Content Include="Lib\EntityFramework.dll" />
+    <Content Include="Lib\LinqKit.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.EntityFramework.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.EntityFramework.xml" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Hosting.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Hosting.xml" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.LinqToSql.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.LinqToSql.xml" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Server.UnitTesting.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Server.UnitTesting.xml" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Tools.TextTemplate.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Tools.TextTemplate.xml" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.WindowsAzure.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.WindowsAzure.xml" />
+    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.Design.dll" />
+    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.Design.xml" />
+    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.dll" />
+    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.xml" />
+    <Content Include="Lib\Microsoft.WindowsAzure.CloudDrive.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.CloudDrive.xml" />
+    <Content Include="Lib\Microsoft.WindowsAzure.Diagnostics.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.Diagnostics.xml" />
+    <Content Include="Lib\Microsoft.WindowsAzure.ServiceRuntime.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.ServiceRuntime.xml" />
+    <Content Include="Lib\Microsoft.WindowsAzure.StorageClient.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.StorageClient.xml" />
+    <Content Include="Lib\Recaptcha.dll" />
+    <Content Include="Lib\System.Web.Mvc.dll" />
+    <Content Include="Lib\zxing.dll" />
+    <Content Include="Lib\zxing.pdb" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.11.js" />
+    <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.easing.1.3.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquery.wt-rotator.js" />
+    <Content Include="Scripts\MicrosoftAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\modernizr-1.7.js" />
+    <Content Include="Scripts\modernizr-1.7.min.js" />
+    <Content Include="Scripts\form.js" />
+    <Content Include="Scripts\touch.js" />
+    <Content Include="Scripts\Silverlight.js" />
+    <Content Include="Silverlight.js" />
+    <Content Include="Views\Shared\HomeLinkView.ascx" />
+    <Content Include="Views\Shared\LogOnUserControl.ascx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Authentication\AccountModels.cs" />
+    <Compile Include="Authentication\CoreEntitiesMembershipProvider.cs" />
+    <Compile Include="Authentication\UserAccountExtensions.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\BlockController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\HelperController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\QuickBooksController.cs" />
+    <Compile Include="Controllers\WorkFlowController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Services\AuthenticationDomainService.cs" />
+    <Compile Include="Services\CoreDomainService\CoreDomainService.Services.cs" />
+    <Compile Include="Services\CoreDomainService\CoreDomainService.Dispatching.cs" />
+    <Compile Include="Services\CoreDomainService\CoreDomainService.ServiceTemplates.cs" />
+    <Compile Include="Services\CoreDomainService\CoreDomainService.Invoicing.cs" />
+    <Compile Include="Services\CoreDomainService\CoreDomainService.Records.cs" />
+    <Compile Include="Services\TechnicianDomainService.cs" />
+    <Compile Include="Services\M2M4RiaLinqToEntitiesDomainService.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>M2M4RiaLinqToEntitiesDomainService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\AddTestUsersThenAuthorize.cs" />
+    <Compile Include="Authentication\AuthenticationLogic.cs" />
+    <Compile Include="Tools\ImageHelpers.cs" />
+    <Compile Include="Tools\MobileHelpers.cs" />
+    <Compile Include="Tools\ServerManagement.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CoreDomainService\CoreDomainService.Core.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Developer.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientBin\FoundOps.SLClient.Navigator.xap" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\FoundOps.SLClient.Navigator.xap" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Microsoft.Windows.Data.DomainServices.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Microsoft.Windows.Data.DomainServices.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\SLaB.Printing.Controls.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\SLaB.Printing.Controls.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\SLaB.Utilities.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\SLaB.Utilities.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\SLaB.Utilities.Xaml.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\SLaB.Utilities.Xaml.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.ComponentModel.Composition.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.ComponentModel.Composition.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.ComponentModel.Composition.Initialization.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.ComponentModel.Composition.Initialization.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.ComponentModel.DataAnnotations.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.ComponentModel.DataAnnotations.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.ServiceModel.DomainServices.Client.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.Web.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.ServiceModel.DomainServices.Client.Web.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.Windows.Controls.Data.Input.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.Windows.Controls.Data.Input.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.Windows.Controls.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.Windows.Controls.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.Windows.Controls.Navigation.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.Windows.Controls.Navigation.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.Windows.Data.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.Windows.Data.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.Xml.Linq.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.Xml.Linq.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Controls.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.Docking.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Controls.Docking.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.GridView.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Controls.GridView.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.Input.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Controls.Input.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.Navigation.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Controls.Navigation.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.RibbonBar.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Controls.RibbonBar.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.Scheduler.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Controls.Scheduler.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.ScheduleView.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Controls.ScheduleView.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Telerik.Windows.Data.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Telerik.Windows.Data.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\Microsoft.CSharp.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\Microsoft.CSharp.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" Condition="$(IsDesktopBuild) == true" />
+    <None Include="ClientBin\System.ServiceModel.Web.Extensions.zip" Condition="$(IsDesktopBuild) != true" />
+    <Content Include="Content\Web.sitemap" />
+    <None Include="Services\M2M4RiaLinqToEntitiesDomainService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>M2M4RiaLinqToEntitiesDomainService.g.cs</LastGenOutput>
+    </None>
+    <Content Include="packages.config" />
+    <Content Include="Views\Account\BlogLogin.cshtml" />
+    <Content Include="Views\Account\Captcha.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordSuccess.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Home\CCDAPDD.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\PerformServerOperations.cshtml" />
+    <Content Include="Views\Home\Silverlight.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\QuickBooks\GetAuthorization.cshtml" />
+    <Content Include="Views\QuickBooks\OAuthGrantHandler.cshtml" />
+    <Content Include="Views\Shared\Master.cshtml" />
+    <Content Include="Views\WorkFlow\TimeCheck.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientBin\SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\FoundOps.Common.NET\FoundOps.Common.NET.csproj">
+      <Project>{DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB}</Project>
+      <Name>FoundOps.Common.NET</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\FoundOps.Common\FoundOps.Common.csproj">
+      <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
+      <Name>FoundOps.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FoundOps.Core\FoundOps.Core.csproj">
+      <Project>{C5170A8A-CAD2-47E2-8552-FEF87C771C03}</Project>
+      <Name>FoundOps.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>31820</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

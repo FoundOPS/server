@@ -1,0 +1,19 @@
+﻿<UserControl x:Name="mySelectedEmployees" x:Class="FoundOps.SLClient.UI.Controls.Employees.SelectedEmployees"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Employees="clr-namespace:FoundOps.SLClient.UI.Controls.Employees" xmlns:Common="clr-namespace:FoundOps.SLClient.UI.Controls.Common" 
+             mc:Ignorable="d" d:DesignWidth="200">
+    <UserControl.Resources>
+        <DataTemplate x:Key="NewEmployeeTemplate">
+            <TextBlock Text="{Binding OwnedPerson.DisplayName}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ExistingEmployeeTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding OwnedPerson.FirstName, Mode=TwoWay}" />
+                <TextBox Text="{Binding OwnedPerson.LastName, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Common:SelectedEntitiesLarge EntityText="Technicians" CoreSelectedEntitiesCollectionVM="{Binding SelectedEmployeesVM, RelativeSource={RelativeSource AncestorType=Employees:SelectedEmployees}}"
+                                  NewEntityTemplate="{StaticResource ExistingEmployeeTemplate}" ExistingEntityTemplate="{StaticResource NewEmployeeTemplate}" />
+</UserControl>

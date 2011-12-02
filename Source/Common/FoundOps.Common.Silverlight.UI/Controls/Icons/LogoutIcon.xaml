@@ -1,0 +1,8 @@
+﻿<UserControl x:Class="FoundOps.Common.Silverlight.Controls.Icons.LogoutIcon" x:Name="myLogoutIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Path Data="M10.817989,7.0620012 L28.293989,24.587002 L35.499992,16.826004 L35.499992,35.499004 L17.758991,35.433006 L25.109989,27.898003 L7.6249909,10.383002 z M0,0 L30,0 L30,18.437 L26.062,18.437 L26.062,4.125 L4.25,4.125 L4.25,25.875 L19.25,25.875 L19.25,30 L0,30 z" Fill="White" Stretch="Uniform"/>
+</UserControl>

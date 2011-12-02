@@ -1,0 +1,1473 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="CoreEntities" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+  <EntityContainer Name="CoreEntitiesContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Blocks" EntityType="CoreEntities.Block" />
+    <EntitySet Name="Roles" EntityType="CoreEntities.Role" />
+    <EntitySet Name="Parties" EntityType="CoreEntities.Party" />
+    <EntitySet Name="ContactInfoSet" EntityType="CoreEntities.ContactInfo" />
+    <AssociationSet Name="ContactInfoParty" Association="CoreEntities.ContactInfoParty">
+      <End Role="ContactInfo" EntitySet="ContactInfoSet" />
+      <End Role="Party" EntitySet="Parties" />
+    </AssociationSet>
+    <AssociationSet Name="RoleBlock" Association="CoreEntities.RoleBlock">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="Block" EntitySet="Blocks" />
+    </AssociationSet>
+    <EntitySet Name="Services" EntityType="CoreEntities.Service" />
+    <EntitySet Name="Fields" EntityType="CoreEntities.Field" />
+    <EntitySet Name="Locations" EntityType="CoreEntities.Location" />
+    <AssociationSet Name="LocationContactInfo" Association="CoreEntities.LocationContactInfo">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="ContactInfo" EntitySet="ContactInfoSet" />
+    </AssociationSet>
+    <AssociationSet Name="LocationParty" Association="CoreEntities.LocationParty">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="Party" EntitySet="Parties" />
+    </AssociationSet>
+    <EntitySet Name="RouteDestinations" EntityType="CoreEntities.RouteDestination" />
+    <EntitySet Name="TrackPoints" EntityType="CoreEntities.TrackPoint" />
+    <EntitySet Name="Routes" EntityType="CoreEntities.Route" />
+    <EntitySet Name="UserAccountLog" EntityType="CoreEntities.UserAccountLogEntry" />
+    <EntitySet Name="Vehicles" EntityType="CoreEntities.Vehicle" />
+    <EntitySet Name="VehicleMaintenanceLog" EntityType="CoreEntities.VehicleMaintenanceLogEntry" />
+    <AssociationSet Name="VehicleMaintenanceLogEntryVehicle" Association="CoreEntities.VehicleMaintenanceLogEntryVehicle">
+      <End Role="VehicleMaintenanceLogEntry" EntitySet="VehicleMaintenanceLog" />
+      <End Role="Vehicle" EntitySet="Vehicles" />
+    </AssociationSet>
+    <AssociationSet Name="RouteVehicle" Association="CoreEntities.RouteVehicle">
+      <End Role="Route" EntitySet="Routes" />
+      <End Role="Vehicle" EntitySet="Vehicles" />
+    </AssociationSet>
+    <AssociationSet Name="RouteTaskLocation" Association="CoreEntities.RouteTaskLocation">
+      <End Role="RouteTask" EntitySet="Tasks" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <EntitySet Name="Positions" EntityType="CoreEntities.Position" />
+    <AssociationSet Name="PositionUserAccount" Association="CoreEntities.PositionUserAccount">
+      <End Role="Position" EntitySet="Positions" />
+      <End Role="UserAccount" EntitySet="Parties" />
+    </AssociationSet>
+    <AssociationSet Name="RouteDestinationLocation" Association="CoreEntities.RouteDestinationLocation">
+      <End Role="RouteDestination" EntitySet="RouteDestinations" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <AssociationSet Name="RouteTaskRouteDestination" Association="CoreEntities.RouteTaskRouteDestination">
+      <End Role="RouteTask" EntitySet="Tasks" />
+      <End Role="RouteDestination" EntitySet="RouteDestinations" />
+    </AssociationSet>
+    <AssociationSet Name="RouteDestinationRoute" Association="CoreEntities.RouteDestinationRoute">
+      <End Role="RouteDestination" EntitySet="RouteDestinations" />
+      <End Role="Route" EntitySet="Routes" />
+    </AssociationSet>
+    <EntitySet Name="VehicleMaintenanceLineItems" EntityType="CoreEntities.VehicleMaintenanceLineItem" />
+    <AssociationSet Name="VehicleMaintenanceLogEntryLineItem" Association="CoreEntities.VehicleMaintenanceLogEntryLineItem">
+      <End Role="VehicleMaintenanceLogEntry" EntitySet="VehicleMaintenanceLog" />
+      <End Role="LineItem" EntitySet="VehicleMaintenanceLineItems" />
+    </AssociationSet>
+    <EntitySet Name="Clients" EntityType="CoreEntities.Client" />
+    <AssociationSet Name="ClientParty" Association="CoreEntities.ClientParty">
+      <End EntitySet="Clients" Role="Client" />
+      <End EntitySet="Parties" Role="Party" />
+    </AssociationSet>
+    <AssociationSet Name="ClientParty1" Association="CoreEntities.ClientParty1">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="Party" EntitySet="Parties" />
+    </AssociationSet>
+    <AssociationSet Name="RouteTaskClient" Association="CoreEntities.RouteTaskClient">
+      <End Role="RouteTask" EntitySet="Tasks" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="ServiceClient" Association="CoreEntities.ServiceClient">
+      <End Role="Service" EntitySet="Services" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="RouteDestinationClient" Association="CoreEntities.RouteDestinationClient">
+      <End Role="RouteDestination" EntitySet="RouteDestinations" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="RouteTaskService" Association="CoreEntities.RouteTaskService">
+      <End Role="RouteTask" EntitySet="Tasks" />
+      <End Role="Service" EntitySet="Services" />
+    </AssociationSet>
+    <AssociationSet Name="BusinessAccountService" Association="CoreEntities.BusinessAccountService">
+      <End Role="BusinessAccount" EntitySet="Parties" />
+      <End Role="Service" EntitySet="Services" />
+    </AssociationSet>
+    <AssociationSet Name="BusinessAccountRoute" Association="CoreEntities.BusinessAccountRoute">
+      <End Role="BusinessAccount" EntitySet="Parties" />
+      <End Role="Route" EntitySet="Routes" />
+    </AssociationSet>
+    <AssociationSet Name="BusinessAccountClient" Association="CoreEntities.BusinessAccountClient">
+      <End Role="BusinessAccount" EntitySet="Parties" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="BusinessPosition" Association="CoreEntities.BusinessPosition">
+      <End Role="Business" EntitySet="Parties" />
+      <End Role="Position" EntitySet="Positions" />
+    </AssociationSet>
+    <AssociationSet Name="BusinessAccountRouteTask" Association="CoreEntities.BusinessAccountRouteTask">
+      <End Role="BusinessAccount" EntitySet="Parties" />
+      <End Role="RouteTask" EntitySet="Tasks" />
+    </AssociationSet>
+    <AssociationSet Name="UserAccountTrackPoint" Association="CoreEntities.UserAccountTrackPoint">
+      <End Role="UserAccount" EntitySet="Parties" />
+      <End Role="TrackPoint" EntitySet="TrackPoints" />
+    </AssociationSet>
+    <AssociationSet Name="UserAccountUserAccountLogEntry" Association="CoreEntities.UserAccountUserAccountLogEntry">
+      <End Role="UserAccount" EntitySet="Parties" />
+      <End Role="UserAccountLogEntry" EntitySet="UserAccountLog" />
+    </AssociationSet>
+    <EntitySet Name="ServiceTemplates" EntityType="CoreEntities.ServiceTemplate" />
+    <AssociationSet Name="ServiceTemplateBusinessAccount" Association="CoreEntities.ServiceTemplateBusinessAccount">
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
+      <End Role="BusinessAccount" EntitySet="Parties" />
+    </AssociationSet>
+    <EntitySet Name="Tasks" EntityType="CoreEntities.Task" />
+    <EntitySet Name="Repeats" EntityType="CoreEntities.Repeat" />
+    <EntitySet Name="RecurringServices" EntityType="CoreEntities.RecurringService" />
+    <AssociationSet Name="RecurringServiceServiceTemplate" Association="CoreEntities.RecurringServiceServiceTemplate">
+      <End Role="RecurringService" EntitySet="RecurringServices" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="RecurringServiceService" Association="CoreEntities.RecurringServiceService">
+      <End Role="RecurringService" EntitySet="RecurringServices" />
+      <End Role="Service" EntitySet="Services" />
+    </AssociationSet>
+    <AssociationSet Name="RecurringServiceClient" Association="CoreEntities.RecurringServiceClient">
+      <End Role="RecurringService" EntitySet="RecurringServices" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="ClientServiceTemplate" Association="CoreEntities.ClientServiceTemplate">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="VehicleParty" Association="CoreEntities.VehicleParty">
+      <End Role="Vehicle" EntitySet="Vehicles" />
+      <End Role="Party" EntitySet="Parties" />
+    </AssociationSet>
+    <AssociationSet Name="ServiceServiceTemplate" Association="CoreEntities.ServiceServiceTemplate">
+      <End Role="Service" EntitySet="Services" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="PartyRole" Association="CoreEntities.PartyRole">
+      <End Role="Party" EntitySet="Parties" />
+      <End Role="Role" EntitySet="Roles" />
+    </AssociationSet>
+    <AssociationSet Name="PartyRole1" Association="CoreEntities.PartyRole1">
+      <End Role="Party" EntitySet="Parties" />
+      <End Role="Role" EntitySet="Roles" />
+    </AssociationSet>
+    <AssociationSet Name="LocationParty1" Association="CoreEntities.LocationParty1">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="Party" EntitySet="Parties" />
+    </AssociationSet>
+    <EntitySet Name="Regions" EntityType="CoreEntities.Region" />
+    <AssociationSet Name="RegionsLocation" Association="CoreEntities.RegionLocation">
+      <End Role="Regions" EntitySet="Regions" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <AssociationSet Name="BusinessAccountRegion" Association="CoreEntities.BusinessAccountRegion">
+      <End Role="BusinessAccount" EntitySet="Parties" />
+      <End Role="Region" EntitySet="Regions" />
+    </AssociationSet>
+    <EntitySet Name="Files" EntityType="CoreEntities.File" />
+    <AssociationSet Name="LocationFile" Association="CoreEntities.LocationFile">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="File" EntitySet="Files" />
+    </AssociationSet>
+    <EntitySet Name="SubLocations" EntityType="CoreEntities.SubLocation" />
+    <AssociationSet Name="LocationSubLocation" Association="CoreEntities.LocationSubLocation">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="SubLocation" EntitySet="SubLocations" />
+    </AssociationSet>
+    <EntitySet Name="Employees" EntityType="CoreEntities.Employee" />
+    <AssociationSet Name="EmployeeUserAccount" Association="CoreEntities.EmployeeUserAccount">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="UserAccount" EntitySet="Parties" />
+    </AssociationSet>
+    <AssociationSet Name="EmployeeBusinessAccount" Association="CoreEntities.EmployeeBusinessAccount">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="BusinessAccount" EntitySet="Parties" />
+    </AssociationSet>
+    <AssociationSet Name="EmployeePerson" Association="CoreEntities.EmployeePerson">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Person" EntitySet="Parties" />
+    </AssociationSet>
+    <AssociationSet Name="RecurringServiceRepeat" Association="CoreEntities.RecurringServiceRepeat">
+      <End Role="RecurringService" EntitySet="RecurringServices" />
+      <End Role="Repeat" EntitySet="Repeats" />
+    </AssociationSet>
+    <EntitySet Name="SalesLeads" EntityType="CoreEntities.SalesLead" />
+    <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.EmployeeHistoryEntry" />
+    <AssociationSet Name="EmployeeHistoryEntryEmployee" Association="CoreEntities.EmployeeHistoryEntryEmployee">
+      <End Role="EmployeeHistoryEntry" EntitySet="EmployeeHistoryEntries" />
+      <End Role="Employee" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="RouteEmployee" Association="CoreEntities.RouteEmployee">
+      <End Role="Route" EntitySet="Routes" />
+      <End Role="Employee" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="ServiceTemplateServiceTemplate" Association="CoreEntities.ServiceTemplateServiceTemplate">
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
+      <End Role="ServiceTemplate1" EntitySet="ServiceTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="FieldField" Association="CoreEntities.FieldField">
+      <End Role="Field" EntitySet="Fields" />
+      <End Role="Field1" EntitySet="Fields" />
+    </AssociationSet>
+    <EntitySet Name="Options" EntityType="CoreEntities.Option" />
+    <AssociationSet Name="OptionsFieldOption" Association="CoreEntities.OptionsFieldOption">
+      <End Role="OptionsField" EntitySet="Fields" />
+      <End Role="Option" EntitySet="Options" />
+    </AssociationSet>
+    <AssociationSet Name="ServiceTemplateField" Association="CoreEntities.ServiceTemplateField">
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
+      <End Role="Field" EntitySet="Fields" />
+    </AssociationSet>
+    <AssociationSet Name="LocationFieldLocation" Association="CoreEntities.LocationFieldLocation">
+      <End Role="LocationField" EntitySet="Fields" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <EntitySet Name="Contacts" EntityType="CoreEntities.Contact" />
+    <AssociationSet Name="ContactPerson" Association="CoreEntities.ContactPerson">
+      <End Role="Contact" EntitySet="Contacts" />
+      <End Role="Person" EntitySet="Parties" />
+    </AssociationSet>
+    <AssociationSet Name="ContactParty" Association="CoreEntities.ContactParty">
+      <End Role="Contact" EntitySet="Contacts" />
+      <End Role="Party" EntitySet="Parties" />
+    </AssociationSet>
+    <EntitySet Name="ClientTitles" EntityType="CoreEntities.ClientTitle" />
+    <AssociationSet Name="ClientTitleClient" Association="CoreEntities.ClientTitleClient">
+      <End Role="ClientTitle" EntitySet="ClientTitles" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="ClientTitleContact" Association="CoreEntities.ClientTitleContact">
+      <End Role="ClientTitle" EntitySet="ClientTitles" />
+      <End Role="Contact" EntitySet="Contacts" />
+    </AssociationSet>
+    <EntitySet Name="Invoices" EntityType="CoreEntities.Invoice" />
+    <AssociationSet Name="InvoiceLocation" Association="CoreEntities.InvoiceLocation">
+      <End Role="Invoice" EntitySet="Invoices" />
+      <End Role="Location" EntitySet="Locations" />
+    </AssociationSet>
+    <EntitySet Name="SalesTerms" EntityType="CoreEntities.SalesTerm" />
+    <AssociationSet Name="InvoiceSalesTerm" Association="CoreEntities.InvoiceSalesTerm">
+      <End Role="Invoice" EntitySet="Invoices" />
+      <End Role="SalesTerm" EntitySet="SalesTerms" />
+    </AssociationSet>
+    <AssociationSet Name="InvoiceServiceTemplate" Association="CoreEntities.InvoiceServiceTemplate">
+      <End EntitySet="Invoices" Role="Invoice" />
+      <End EntitySet="ServiceTemplates" Role="ServiceTemplate" />
+    </AssociationSet>
+    <EntitySet Name="LineItems" EntityType="CoreEntities.LineItem" />
+    <AssociationSet Name="LineItemInvoice" Association="CoreEntities.LineItemInvoice">
+      <End Role="LineItem" EntitySet="LineItems" />
+      <End Role="Invoice" EntitySet="Invoices" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Block">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="String" Name="FileName" Nullable="true" />
+    <Property Type="String" Name="NavigateUri" Nullable="false" />
+    <Property Type="Binary" Name="Icon" Nullable="true" />
+    <NavigationProperty Name="Roles" Relationship="CoreEntities.RoleBlock" FromRole="Block" ToRole="Role" />
+    <Property Type="String" Name="Link" Nullable="false" />
+    <Property Type="Boolean" Name="LoginNotRequired" Nullable="false" />
+    <Property Type="Boolean" Name="HideFromNavigation" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <NavigationProperty Name="Blocks" Relationship="CoreEntities.RoleBlock" FromRole="Role" ToRole="Block" />
+    <NavigationProperty Name="MemberParties" Relationship="CoreEntities.PartyRole" FromRole="Role" ToRole="Party" />
+    <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.PartyRole1" FromRole="Role" ToRole="Party" />
+    <Property Name="OwnerPartyId" Nullable="true" Type="Guid" />
+  </EntityType>
+  <EntityType Name="Party" Abstract="false">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.ContactInfoParty" FromRole="Party" ToRole="ContactInfo" />
+    <NavigationProperty Name="OwnedLocations" Relationship="CoreEntities.LocationParty" FromRole="Party" ToRole="Location" />
+    <NavigationProperty Name="ClientOwner" Relationship="CoreEntities.ClientParty" FromRole="Party" ToRole="Client">
+      <Documentation>
+        <LongDescription>This is only set if this party is owned by a Client</LongDescription>
+      </Documentation>
+    </NavigationProperty>
+    <NavigationProperty Name="OfClients" Relationship="CoreEntities.ClientParty1" FromRole="Party" ToRole="Client">
+      <Documentation>
+        <LongDescription>The linked clients this party is a client of</LongDescription>
+      </Documentation>
+    </NavigationProperty>
+    <NavigationProperty Name="Vehicles" Relationship="CoreEntities.VehicleParty" FromRole="Party" ToRole="Vehicle" />
+    <NavigationProperty Name="RoleMembership" Relationship="CoreEntities.PartyRole" FromRole="Party" ToRole="Role" />
+    <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.PartyRole1" FromRole="Party" ToRole="Role" />
+    <NavigationProperty Name="Locations" Relationship="CoreEntities.LocationParty1" FromRole="Party" ToRole="Location" />
+    <NavigationProperty Name="Contacts" Relationship="CoreEntities.ContactParty" FromRole="Party" ToRole="Contact" />
+  </EntityType>
+  <EntityType Name="Person" BaseType="CoreEntities.Party">
+    <Property Type="String" Name="FirstName" Nullable="true" />
+    <Property Type="String" Name="LastName" Nullable="true" />
+    <Property Type="String" Name="MiddleInitial" Nullable="true" />
+    <Property Type="Int16" Name="GenderInt" Nullable="true" />
+    <Property Type="DateTime" Name="DateOfBirth" Nullable="true" />
+    <NavigationProperty Name="Positions" Relationship="CoreEntities.PositionUserAccount" FromRole="UserAccount" ToRole="Position" />
+    <NavigationProperty Name="OwnerEmployee" Relationship="CoreEntities.EmployeePerson" FromRole="Person" ToRole="Employee" />
+    <NavigationProperty Name="OwnerContact" Relationship="CoreEntities.ContactPerson" FromRole="Person" ToRole="Contact" />
+  </EntityType>
+  <EntityType Name="Business" BaseType="CoreEntities.Party">
+    <Property Type="String" Name="Name" Nullable="true" />
+    <NavigationProperty Name="Positions" Relationship="CoreEntities.BusinessPosition" FromRole="Business" ToRole="Position" />
+  </EntityType>
+  <EntityType Name="ContactInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Type" Nullable="false" />
+    <Property Type="String" Name="Label" Nullable="true" />
+    <Property Type="String" Name="Data" Nullable="true" />
+    <NavigationProperty Name="Party" Relationship="CoreEntities.ContactInfoParty" FromRole="ContactInfo" ToRole="Party" />
+    <Property Type="Guid" Name="PartyId" Nullable="true" />
+    <NavigationProperty Name="Location" Relationship="CoreEntities.LocationContactInfo" FromRole="ContactInfo" ToRole="Location" />
+    <Property Type="Guid" Name="LocationId" Nullable="true" />
+    <Property Type="Guid" Name="ContactId" Nullable="true" />
+  </EntityType>
+  <Association Name="ContactInfoParty">
+    <End Type="CoreEntities.ContactInfo" Role="ContactInfo" Multiplicity="*" />
+    <End Type="CoreEntities.Party" Role="Party" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Party">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ContactInfo">
+        <PropertyRef Name="PartyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoleBlock">
+    <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
+    <End Type="CoreEntities.Block" Role="Block" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Repeat">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="DateTime" Name="EndDate" Nullable="true" />
+    <Property Type="Int32" Name="EndAfterTimes" Nullable="true" />
+    <Property Type="Int32" Name="RepeatEveryTimes" Nullable="false" />
+    <Property Type="Int32" Name="FrequencyInt" Nullable="false" />
+    <Property Type="Int32" Name="FrequencyDetailInt" Nullable="true" />
+    <Property Type="DateTime" Name="StartDate" Nullable="false" />
+    <NavigationProperty Name="RecurringService" Relationship="CoreEntities.RecurringServiceRepeat" FromRole="Repeat" ToRole="RecurringService" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.LocationContactInfo" FromRole="Location" ToRole="ContactInfo" />
+    <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.LocationParty" FromRole="Location" ToRole="Party">
+      <Documentation>
+        <LongDescription>The account which made the location</LongDescription>
+      </Documentation>
+    </NavigationProperty>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="Guid" Name="OwnerPartyId" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <Property Type="String" Name="AddressLineOne" Nullable="true" DefaultValue="" />
+    <Property Type="Decimal" Name="Longitude" Nullable="true" Precision="11" Scale="8" />
+    <Property Type="String" Name="ZipCode" Nullable="true" />
+    <Property Type="String" Name="AddressLineTwo" Nullable="true" DefaultValue="" />
+    <Property Type="String" Name="State" Nullable="true" />
+    <Property Type="Decimal" Name="Latitude" Nullable="true" Precision="11" Scale="8" />
+    <Property Type="String" Name="City" Nullable="true" />
+    <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.RouteTaskLocation" FromRole="Location" ToRole="RouteTask" />
+    <NavigationProperty Name="RouteDestinations" Relationship="CoreEntities.RouteDestinationLocation" FromRole="Location" ToRole="RouteDestination" />
+    <NavigationProperty Name="Party" Relationship="CoreEntities.LocationParty1" FromRole="Location" ToRole="Party">
+      <Documentation>
+        <LongDescription>The actual party at this location</LongDescription>
+      </Documentation>
+    </NavigationProperty>
+    <Property Type="Guid" Name="PartyId" Nullable="true" />
+    <NavigationProperty Name="Region" Relationship="CoreEntities.RegionLocation" FromRole="Location" ToRole="Regions" />
+    <Property Type="Guid" Name="RegionId" Nullable="true" />
+    <NavigationProperty Name="Files" Relationship="CoreEntities.LocationFile" FromRole="Location" ToRole="File" />
+    <NavigationProperty Name="SubLocations" Relationship="CoreEntities.LocationSubLocation" FromRole="Location" ToRole="SubLocation" />
+    <NavigationProperty Name="LocationFieldsWhereValue" Relationship="CoreEntities.LocationFieldLocation" FromRole="Location" ToRole="LocationField" />
+    <NavigationProperty Name="Invoices" Relationship="CoreEntities.InvoiceLocation" FromRole="Location" ToRole="Invoice" />
+  </EntityType>
+  <EntityType Name="Service">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <NavigationProperty Name="Client" Relationship="CoreEntities.ServiceClient" FromRole="Service" ToRole="Client" />
+    <Property Type="Guid" Name="ClientId" Nullable="false" />
+    <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.RouteTaskService" FromRole="Service" ToRole="RouteTask" />
+    <NavigationProperty Name="ServiceProvider" Relationship="CoreEntities.BusinessAccountService" FromRole="Service" ToRole="BusinessAccount" />
+    <Property Type="Guid" Name="ServiceProviderId" Nullable="false" />
+    <NavigationProperty Name="RecurringServiceParent" Relationship="CoreEntities.RecurringServiceService" FromRole="Service" ToRole="RecurringService" />
+    <Property Type="Guid" Name="RecurringServiceId" Nullable="true" />
+    <Property Type="DateTime" Name="ServiceDate" Nullable="false" />
+    <NavigationProperty Name="ServiceTemplate" Relationship="CoreEntities.ServiceServiceTemplate" FromRole="Service" ToRole="ServiceTemplate" />
+  </EntityType>
+  <EntityType Name="Field">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="String" Name="Group" Nullable="false" />
+    <Property Type="Boolean" Name="Required" Nullable="false" />
+    <Property Type="String" Name="Tooltip" Nullable="true" />
+    <NavigationProperty Name="ChildrenFields" Relationship="CoreEntities.FieldField" FromRole="Field" ToRole="Field1" />
+    <NavigationProperty Name="ParentField" Relationship="CoreEntities.FieldField" FromRole="Field1" ToRole="Field" />
+    <Property Type="Guid" Name="ParentFieldId" Nullable="true" />
+    <NavigationProperty Name="OwnerServiceTemplate" Relationship="CoreEntities.ServiceTemplateField" FromRole="Field" ToRole="ServiceTemplate" />
+    <Property Type="Guid" Name="ServiceTemplateId" Nullable="true" />
+  </EntityType>
+  <EntityType Name="TextBoxField" BaseType="CoreEntities.Field">
+    <Property Type="Boolean" Name="IsMultiline" Nullable="false" />
+    <Property Type="String" Name="Value" Nullable="true" />
+  </EntityType>
+  <Association Name="LocationContactInfo">
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="0..1" />
+    <End Type="CoreEntities.ContactInfo" Role="ContactInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ContactInfo">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="LocationParty">
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="*" />
+    <End Type="CoreEntities.Party" Role="Party" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Party">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Location">
+        <PropertyRef Name="OwnerPartyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="RouteDestination">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="Int32" Name="OrderInRoute" Nullable="false" />
+    <NavigationProperty Name="Location" Relationship="CoreEntities.RouteDestinationLocation" FromRole="RouteDestination" ToRole="Location" />
+    <Property Type="Guid" Name="LocationId" Nullable="true" />
+    <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.RouteTaskRouteDestination" FromRole="RouteDestination" ToRole="RouteTask" />
+    <NavigationProperty Name="Route" Relationship="CoreEntities.RouteDestinationRoute" FromRole="RouteDestination" ToRole="Route" />
+    <Property Type="Guid" Name="RouteId" Nullable="false" />
+    <NavigationProperty Name="Client" Relationship="CoreEntities.RouteDestinationClient" FromRole="RouteDestination" ToRole="Client" />
+    <Property Type="Guid" Name="ClientId" Nullable="true" />
+  </EntityType>
+  <EntityType Name="TrackPoint">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int64" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="DateTime" Name="Timestamp" Nullable="true" />
+    <Property Type="Int32" Name="CompassDirection" Nullable="false" />
+    <Property Type="Double" Name="Latitude" Nullable="false" />
+    <Property Type="Double" Name="Longitude" Nullable="false" />
+    <NavigationProperty Name="UserAccount" Relationship="CoreEntities.UserAccountTrackPoint" FromRole="TrackPoint" ToRole="UserAccount" />
+    <Property Type="Guid" Name="UserAccountId" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Route">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <Property Type="DateTime" Name="Date" Nullable="false" />
+    <Property Type="DateTime" Name="StartTime" Nullable="false" />
+    <Property Type="DateTime" Name="EndTime" Nullable="false" />
+    <NavigationProperty Name="Vehicles" Relationship="CoreEntities.RouteVehicle" FromRole="Route" ToRole="Vehicle" />
+    <NavigationProperty Name="RouteDestinations" Relationship="CoreEntities.RouteDestinationRoute" FromRole="Route" ToRole="RouteDestination" />
+    <NavigationProperty Name="OwnerBusinessAccount" Relationship="CoreEntities.BusinessAccountRoute" FromRole="Route" ToRole="BusinessAccount" />
+    <Property Type="Guid" Name="OwnerBusinessAccountId" Nullable="false" />
+    <Property Type="String" Name="Color" Nullable="true" />
+    <NavigationProperty Name="Technicians" Relationship="CoreEntities.RouteEmployee" FromRole="Route" ToRole="Employee" />
+    <Property Type="String" Name="RouteType" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserAccountLogEntry">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="Int32" Name="TypeId" Nullable="true" />
+    <Property Type="DateTime" Name="TimeStamp" Nullable="false" />
+    <NavigationProperty Name="UserAccount" Relationship="CoreEntities.UserAccountUserAccountLogEntry" FromRole="UserAccountLogEntry" ToRole="UserAccount" />
+    <Property Type="Guid" Name="UserAccountId" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Vehicle">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="VehicleId" Nullable="true" />
+    <Property Type="Int32" Name="Mileage" Nullable="true" />
+    <Property Type="String" Name="LicensePlate" Nullable="true" />
+    <Property Type="String" Name="VIN" Nullable="true" />
+    <Property Type="Int32" Name="Year" Nullable="true" />
+    <Property Type="String" Name="Make" Nullable="true" />
+    <Property Type="String" Name="Model" Nullable="true" />
+    <Property Type="String" Name="Notes" Nullable="true" />
+    <NavigationProperty Name="VehicleMaintenanceLog" Relationship="CoreEntities.VehicleMaintenanceLogEntryVehicle" FromRole="Vehicle" ToRole="VehicleMaintenanceLogEntry" />
+    <NavigationProperty Name="Routes" Relationship="CoreEntities.RouteVehicle" FromRole="Vehicle" ToRole="Route" />
+    <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.VehicleParty" FromRole="Vehicle" ToRole="Party" />
+    <Property Type="Guid" Name="OwnerPartyId" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VehicleMaintenanceLogEntry">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="DateTime" Name="Date" Nullable="true" />
+    <Property Type="Int32" Name="Mileage" Nullable="true" />
+    <Property Type="String" Name="ServicedBy" Nullable="true" />
+    <Property Type="String" Name="Comments" Nullable="true" />
+    <NavigationProperty Name="Vehicle" Relationship="CoreEntities.VehicleMaintenanceLogEntryVehicle" FromRole="VehicleMaintenanceLogEntry" ToRole="Vehicle" />
+    <Property Type="Guid" Name="VehicleId" Nullable="false" />
+    <NavigationProperty Name="LineItems" Relationship="CoreEntities.VehicleMaintenanceLogEntryLineItem" FromRole="VehicleMaintenanceLogEntry" ToRole="LineItem" />
+  </EntityType>
+  <Association Name="VehicleMaintenanceLogEntryVehicle">
+    <End Type="CoreEntities.VehicleMaintenanceLogEntry" Role="VehicleMaintenanceLogEntry" Multiplicity="*" />
+    <End Type="CoreEntities.Vehicle" Role="Vehicle" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicle">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="VehicleMaintenanceLogEntry">
+        <PropertyRef Name="VehicleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RouteVehicle">
+    <End Type="CoreEntities.Route" Role="Route" Multiplicity="*" />
+    <End Type="CoreEntities.Vehicle" Role="Vehicle" Multiplicity="*" />
+  </Association>
+  <EntityType Name="RouteTask" BaseType="CoreEntities.Task">
+    <Property Type="DateTime" Name="Date" Nullable="false" />
+    <NavigationProperty Name="Location" Relationship="CoreEntities.RouteTaskLocation" FromRole="RouteTask" ToRole="Location" />
+    <Property Type="Guid" Name="LocationId" Nullable="true" />
+    <NavigationProperty Name="RouteDestination" Relationship="CoreEntities.RouteTaskRouteDestination" FromRole="RouteTask" ToRole="RouteDestination" />
+    <Property Type="Guid" Name="RouteDestinationId" Nullable="true" />
+    <NavigationProperty Name="Client" Relationship="CoreEntities.RouteTaskClient" FromRole="RouteTask" ToRole="Client" />
+    <Property Type="Guid" Name="ClientId" Nullable="true" />
+    <NavigationProperty Name="Service" Relationship="CoreEntities.RouteTaskService" FromRole="RouteTask" ToRole="Service" />
+    <Property Type="Guid" Name="ServiceId" Nullable="true" />
+    <Property Type="Boolean" Name="ReadOnly" Nullable="false" />
+    <NavigationProperty Name="OwnerBusinessAccount" Relationship="CoreEntities.BusinessAccountRouteTask" FromRole="RouteTask" ToRole="BusinessAccount" />
+    <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
+    <Property Type="Time" Name="EstimatedDuration" Nullable="false" />
+  </EntityType>
+  <Association Name="RouteTaskLocation">
+    <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RouteTask">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Position">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="SSN" Nullable="true" />
+    <Property Type="DateTime" Name="HireDate" Nullable="true" />
+    <Property Type="String" Name="Comments" Nullable="true" />
+    <NavigationProperty Name="UserAccount" Relationship="CoreEntities.PositionUserAccount" FromRole="Position" ToRole="UserAccount" />
+    <Property Type="Guid" Name="UserAccountId" Nullable="false" />
+    <NavigationProperty Name="Business" Relationship="CoreEntities.BusinessPosition" FromRole="Position" ToRole="Business" />
+    <Property Type="Guid" Name="BusinessId" Nullable="false" />
+  </EntityType>
+  <Association Name="PositionUserAccount">
+    <End Type="CoreEntities.Position" Role="Position" Multiplicity="*" />
+    <End Type="CoreEntities.Person" Role="UserAccount" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Position">
+        <PropertyRef Name="UserAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RouteDestinationLocation">
+    <End Type="CoreEntities.RouteDestination" Role="RouteDestination" Multiplicity="*" />
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RouteDestination">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RouteTaskRouteDestination">
+    <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
+    <End Type="CoreEntities.RouteDestination" Role="RouteDestination" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="RouteDestination">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RouteTask">
+        <PropertyRef Name="RouteDestinationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RouteDestinationRoute">
+    <End Type="CoreEntities.RouteDestination" Role="RouteDestination" Multiplicity="*" />
+    <End Type="CoreEntities.Route" Role="Route" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Route">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RouteDestination">
+        <PropertyRef Name="RouteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="VehicleMaintenanceLineItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Type" Nullable="true" />
+    <Property Type="Decimal" Name="Cost" Nullable="true" cg:SetterAccess="Public" Precision="12" Scale="2" />
+    <Property Type="String" Name="Details" Nullable="true" />
+    <NavigationProperty Name="VehicleMaintenanceLogEntry" Relationship="CoreEntities.VehicleMaintenanceLogEntryLineItem" FromRole="LineItem" ToRole="VehicleMaintenanceLogEntry" />
+    <Property Type="Guid" Name="VehicleMaintenanceLogEntryId" Nullable="false" />
+  </EntityType>
+  <Association Name="VehicleMaintenanceLogEntryLineItem">
+    <End Type="CoreEntities.VehicleMaintenanceLogEntry" Role="VehicleMaintenanceLogEntry" Multiplicity="1" />
+    <End Type="CoreEntities.VehicleMaintenanceLineItem" Role="LineItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VehicleMaintenanceLogEntry">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LineItem">
+        <PropertyRef Name="VehicleMaintenanceLogEntryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" Type="Guid" />
+    <Property Type="DateTime" Name="DateAdded" Nullable="false" />
+    <Property Type="String" Name="Salesperson" Nullable="true" />
+    <NavigationProperty Name="OwnedParty" Relationship="CoreEntities.ClientParty" FromRole="Client" ToRole="Party" />
+    <NavigationProperty Name="LinkedParty" Relationship="CoreEntities.ClientParty1" FromRole="Client" ToRole="Party" />
+    <Property Type="Guid" Name="LinkedPartyId" Nullable="true" />
+    <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.RouteTaskClient" FromRole="Client" ToRole="RouteTask" />
+    <NavigationProperty Name="ServicesToRecieve" Relationship="CoreEntities.ServiceClient" FromRole="Client" ToRole="Service" />
+    <NavigationProperty Name="RouteDestinations" Relationship="CoreEntities.RouteDestinationClient" FromRole="Client" ToRole="RouteDestination" />
+    <NavigationProperty Name="Vendor" Relationship="CoreEntities.BusinessAccountClient" FromRole="Client" ToRole="BusinessAccount" />
+    <Property Type="Guid" Name="VendorId" Nullable="false" />
+    <NavigationProperty Name="RecurringServices" Relationship="CoreEntities.RecurringServiceClient" FromRole="Client" ToRole="RecurringService" />
+    <NavigationProperty Name="ServiceTemplates" Relationship="CoreEntities.ClientServiceTemplate" FromRole="Client" ToRole="ServiceTemplate" />
+    <NavigationProperty Name="ClientTitles" Relationship="CoreEntities.ClientTitleClient" FromRole="Client" ToRole="ClientTitle" />
+  </EntityType>
+  <Association Name="ClientParty">
+    <End Type="CoreEntities.Client" Multiplicity="0..1" Role="Client" />
+    <End Type="CoreEntities.Party" Multiplicity="1" Role="Party" />
+    <ReferentialConstraint>
+      <Principal Role="Party">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientParty1">
+    <End Type="CoreEntities.Client" Role="Client" Multiplicity="*" />
+    <End Type="CoreEntities.Party" Role="Party" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Party">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="LinkedPartyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RouteTaskClient">
+    <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
+    <End Type="CoreEntities.Client" Role="Client" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RouteTask">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ServiceClient">
+    <End Type="CoreEntities.Service" Role="Service" Multiplicity="*" />
+    <End Type="CoreEntities.Client" Role="Client" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Service">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RouteDestinationClient">
+    <End Type="CoreEntities.RouteDestination" Role="RouteDestination" Multiplicity="*" />
+    <End Type="CoreEntities.Client" Role="Client" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RouteDestination">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RouteTaskService">
+    <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
+    <End Type="CoreEntities.Service" Role="Service" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Service">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RouteTask">
+        <PropertyRef Name="ServiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="BusinessAccount" BaseType="CoreEntities.Business">
+    <NavigationProperty Name="ServicesToProvide" Relationship="CoreEntities.BusinessAccountService" FromRole="BusinessAccount" ToRole="Service" />
+    <NavigationProperty Name="Routes" Relationship="CoreEntities.BusinessAccountRoute" FromRole="BusinessAccount" ToRole="Route" />
+    <NavigationProperty Name="Clients" Relationship="CoreEntities.BusinessAccountClient" FromRole="BusinessAccount" ToRole="Client" />
+    <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.BusinessAccountRouteTask" FromRole="BusinessAccount" ToRole="RouteTask" />
+    <NavigationProperty Name="ServiceTemplates" Relationship="CoreEntities.ServiceTemplateBusinessAccount" FromRole="BusinessAccount" ToRole="ServiceTemplate" />
+    <NavigationProperty Name="Regions" Relationship="CoreEntities.BusinessAccountRegion" FromRole="BusinessAccount" ToRole="Region" />
+    <NavigationProperty Name="Employees" Relationship="CoreEntities.EmployeeBusinessAccount" FromRole="BusinessAccount" ToRole="Employee" />
+    <Property Type="Boolean" Name="QuickBooksEnabled" Nullable="false" DefaultValue="False" />
+    <Property Type="String" Name="QuickBooksAccessToken" Nullable="true" />
+    <Property Type="String" Name="QuickBooksAccessTokenSecret" Nullable="true" />
+    <Property Type="String" Name="RouteManifestSettings" Nullable="true" />
+    <Property Type="String" Name="QuickBooksSessionXml" Nullable="true" />
+  </EntityType>
+  <Association Name="BusinessAccountService">
+    <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
+    <End Type="CoreEntities.Service" Role="Service" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Service">
+        <PropertyRef Name="ServiceProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BusinessAccountRoute">
+    <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
+    <End Type="CoreEntities.Route" Role="Route" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Route">
+        <PropertyRef Name="OwnerBusinessAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BusinessAccountClient">
+    <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
+    <End Type="CoreEntities.Client" Role="Client" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BusinessPosition">
+    <End Type="CoreEntities.Business" Role="Business" Multiplicity="1" />
+    <End Type="CoreEntities.Position" Role="Position" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Business">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Position">
+        <PropertyRef Name="BusinessId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BusinessAccountRouteTask">
+    <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
+    <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RouteTask">
+        <PropertyRef Name="BusinessAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="UserAccount" BaseType="CoreEntities.Person">
+    <Property Type="String" Name="PasswordHash" Nullable="true" />
+    <Property Type="String" Name="EmailAddress" Nullable="false" />
+    <Property Type="DateTime" Name="LastActivity" Nullable="true" />
+    <NavigationProperty Name="TrackPoints" Relationship="CoreEntities.UserAccountTrackPoint" FromRole="UserAccount" ToRole="TrackPoint" />
+    <NavigationProperty Name="UserAccountLog" Relationship="CoreEntities.UserAccountUserAccountLogEntry" FromRole="UserAccount" ToRole="UserAccountLogEntry" />
+    <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+    <NavigationProperty Name="OfEmployees" Relationship="CoreEntities.EmployeeUserAccount" FromRole="UserAccount" ToRole="Employee" />
+  </EntityType>
+  <Association Name="UserAccountTrackPoint">
+    <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="1" />
+    <End Type="CoreEntities.TrackPoint" Role="TrackPoint" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TrackPoint">
+        <PropertyRef Name="UserAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserAccountUserAccountLogEntry">
+    <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="1" />
+    <End Type="CoreEntities.UserAccountLogEntry" Role="UserAccountLogEntry" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserAccountLogEntry">
+        <PropertyRef Name="UserAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ServiceTemplate">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <NavigationProperty Name="OwnerServiceProvider" Relationship="CoreEntities.ServiceTemplateBusinessAccount" FromRole="ServiceTemplate" ToRole="BusinessAccount" />
+    <Property Type="Guid" Name="OwnerServiceProviderId" Nullable="true" />
+    <NavigationProperty Name="OwnerRecurringService" Relationship="CoreEntities.RecurringServiceServiceTemplate" FromRole="ServiceTemplate" ToRole="RecurringService" />
+    <NavigationProperty Name="OwnerClient" Relationship="CoreEntities.ClientServiceTemplate" FromRole="ServiceTemplate" ToRole="Client" />
+    <Property Type="Guid" Name="OwnerClientId" Nullable="true" />
+    <NavigationProperty Name="OwnerService" Relationship="CoreEntities.ServiceServiceTemplate" FromRole="ServiceTemplate" ToRole="Service" />
+    <NavigationProperty Name="ChildrenServiceTemplates" Relationship="CoreEntities.ServiceTemplateServiceTemplate" FromRole="ServiceTemplate" ToRole="ServiceTemplate1" />
+    <NavigationProperty Name="ParentServiceTemplate" Relationship="CoreEntities.ServiceTemplateServiceTemplate" FromRole="ServiceTemplate1" ToRole="ServiceTemplate" />
+    <Property Type="Guid" Name="OwnerServiceTemplateId" Nullable="true" />
+    <NavigationProperty Name="Fields" Relationship="CoreEntities.ServiceTemplateField" FromRole="ServiceTemplate" ToRole="Field" />
+    <Property Type="Int16" Name="LevelInt" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="true" />
+    <NavigationProperty Name="Invoice" Relationship="CoreEntities.InvoiceServiceTemplate" FromRole="ServiceTemplate" ToRole="Invoice" />
+  </EntityType>
+  <Association Name="ServiceTemplateBusinessAccount">
+    <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate" Multiplicity="*" />
+    <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ServiceTemplate">
+        <PropertyRef Name="OwnerServiceProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Task">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OptionsField" BaseType="CoreEntities.Field">
+    <Property Type="Boolean" Name="AllowMultipleSelection" Nullable="false" />
+    <Property Type="Int16" Name="TypeInt" Nullable="false" />
+    <NavigationProperty Name="Options" Relationship="CoreEntities.OptionsFieldOption" FromRole="OptionsField" ToRole="Option" />
+  </EntityType>
+  <EntityType Name="RecurringService">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <NavigationProperty Name="ServiceTemplate" Relationship="CoreEntities.RecurringServiceServiceTemplate" FromRole="RecurringService" ToRole="ServiceTemplate" />
+    <NavigationProperty Name="GeneratedServices" Relationship="CoreEntities.RecurringServiceService" FromRole="RecurringService" ToRole="Service" />
+    <NavigationProperty Name="Client" Relationship="CoreEntities.RecurringServiceClient" FromRole="RecurringService" ToRole="Client" />
+    <Property Type="Guid" Name="ClientId" Nullable="false" />
+    <NavigationProperty Name="Repeat" Relationship="CoreEntities.RecurringServiceRepeat" FromRole="RecurringService" ToRole="Repeat" />
+    <Property Type="String" Name="ExcludedDatesString" Nullable="true">
+      <Documentation>
+        <LongDescription>A comma seperated list of dates</LongDescription>
+      </Documentation>
+    </Property>
+  </EntityType>
+  <Association Name="RecurringServiceServiceTemplate">
+    <End Type="CoreEntities.RecurringService" Role="RecurringService" Multiplicity="0..1" />
+    <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="ServiceTemplate">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RecurringService">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RecurringServiceService">
+    <End Type="CoreEntities.RecurringService" Role="RecurringService" Multiplicity="0..1" />
+    <End Type="CoreEntities.Service" Role="Service" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RecurringService">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Service">
+        <PropertyRef Name="RecurringServiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RecurringServiceClient">
+    <End Type="CoreEntities.RecurringService" Role="RecurringService" Multiplicity="*" />
+    <End Type="CoreEntities.Client" Role="Client" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RecurringService">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientServiceTemplate">
+    <End Type="CoreEntities.Client" Role="Client" Multiplicity="0..1" />
+    <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ServiceTemplate">
+        <PropertyRef Name="OwnerClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="VehicleParty">
+    <End Type="CoreEntities.Vehicle" Role="Vehicle" Multiplicity="*" />
+    <End Type="CoreEntities.Party" Role="Party" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Party">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Vehicle">
+        <PropertyRef Name="OwnerPartyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ServiceServiceTemplate">
+    <End Type="CoreEntities.Service" Role="Service" Multiplicity="0..1" />
+    <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="ServiceTemplate">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Service">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PartyRole">
+    <End Type="CoreEntities.Party" Role="Party" Multiplicity="*" />
+    <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
+  </Association>
+  <Association Name="PartyRole1">
+    <End Type="CoreEntities.Party" Role="Party" Multiplicity="0..1" />
+    <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Party">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Role">
+        <PropertyRef Name="OwnerPartyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="LocationParty1">
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="*" />
+    <End Type="CoreEntities.Party" Role="Party" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Party">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Location">
+        <PropertyRef Name="PartyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Region">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <NavigationProperty Name="Locations" Relationship="CoreEntities.RegionLocation" FromRole="Regions" ToRole="Location" />
+    <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.BusinessAccountRegion" FromRole="Region" ToRole="BusinessAccount" />
+    <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
+    <Property Type="String" Name="Color" Nullable="true" />
+    <Property Type="String" Name="Notes" Nullable="true" />
+  </EntityType>
+  <Association Name="RegionLocation">
+    <End Type="CoreEntities.Region" Role="Regions" Multiplicity="0..1" />
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Regions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Location">
+        <PropertyRef Name="RegionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BusinessAccountRegion">
+    <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />
+    <End Type="CoreEntities.Region" Role="Region" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Region">
+        <PropertyRef Name="BusinessAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="File">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="Byte" Name="Data" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <NavigationProperty Name="Location" Relationship="CoreEntities.LocationFile" FromRole="File" ToRole="Location" />
+    <Property Type="Guid" Name="LocationId" Nullable="true" />
+  </EntityType>
+  <Association Name="LocationFile">
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="0..1" />
+    <End Type="CoreEntities.File" Role="File" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="File">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="SubLocation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="Decimal" Name="Longitude" Nullable="true" Precision="11" Scale="8" />
+    <Property Type="Decimal" Name="Latitude" Nullable="true" Precision="11" Scale="8" />
+    <Property Type="String" Name="Notes" Nullable="true" />
+    <NavigationProperty Name="Location" Relationship="CoreEntities.LocationSubLocation" FromRole="SubLocation" ToRole="Location" />
+    <Property Type="Guid" Name="LocationId" Nullable="true" />
+    <Property Type="Int32" Name="Number" Nullable="false" />
+  </EntityType>
+  <Association Name="LocationSubLocation">
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="0..1" />
+    <End Type="CoreEntities.SubLocation" Role="SubLocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SubLocation">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="AddressLineOne" Nullable="true" />
+    <Property Type="String" Name="AddressLineTwo" Nullable="true" />
+    <Property Type="String" Name="City" Nullable="true" />
+    <Property Type="String" Name="Comments" Nullable="true" />
+    <Property Type="String" Name="State" Nullable="true" />
+    <Property Type="String" Name="ZipCode" Nullable="true" />
+    <Property Type="String" Name="Permissions" Nullable="true" />
+    <Property Type="DateTime" Name="HireDate" Nullable="true" />
+    <Property Type="String" Name="SSN" Nullable="true" />
+    <NavigationProperty Name="LinkedUserAccount" Relationship="CoreEntities.EmployeeUserAccount" FromRole="Employee" ToRole="UserAccount" />
+    <Property Type="Guid" Name="LinkedUserAccountId" Nullable="true" />
+    <NavigationProperty Name="Employer" Relationship="CoreEntities.EmployeeBusinessAccount" FromRole="Employee" ToRole="BusinessAccount" />
+    <Property Type="Guid" Name="EmployerId" Nullable="false" />
+    <NavigationProperty Name="OwnedPerson" Relationship="CoreEntities.EmployeePerson" FromRole="Employee" ToRole="Person" />
+    <NavigationProperty Name="EmployeeHistoryEntries" Relationship="CoreEntities.EmployeeHistoryEntryEmployee" FromRole="Employee" ToRole="EmployeeHistoryEntry" />
+    <NavigationProperty Name="Routes" Relationship="CoreEntities.RouteEmployee" FromRole="Employee" ToRole="Route" />
+  </EntityType>
+  <Association Name="EmployeeUserAccount">
+    <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
+    <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="LinkedUserAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EmployeeBusinessAccount">
+    <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
+    <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="EmployerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EmployeePerson">
+    <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="CoreEntities.Person" Role="Person" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RecurringServiceRepeat">
+    <End Type="CoreEntities.RecurringService" Role="RecurringService" Multiplicity="0..1" />
+    <End Type="CoreEntities.Repeat" Role="Repeat" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Repeat">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RecurringService">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="NumericField" BaseType="CoreEntities.Field">
+    <Property Type="String" Name="Mask" Nullable="false" />
+    <Property Type="Int32" Name="DecimalPlaces" Nullable="false" />
+    <Property Type="Decimal" Name="Minimum" Nullable="false" Precision="16" Scale="6" />
+    <Property Type="Decimal" Name="Maximum" Nullable="false" Precision="16" Scale="6" />
+    <Property Type="Decimal" Name="Value" Nullable="true" Scale="6" Precision="16" />
+  </EntityType>
+  <EntityType Name="DateTimeField" BaseType="CoreEntities.Field">
+    <Property Type="DateTime" Name="Earliest" Nullable="false" />
+    <Property Type="DateTime" Name="Latest" Nullable="false" />
+    <Property Type="Int16" Name="TypeInt" Nullable="false" />
+    <Property Type="DateTime" Name="Value" Nullable="true" />
+  </EntityType>
+  <EntityType Name="SalesLead">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Email" Nullable="true" />
+  </EntityType>
+  <EntityType Name="EmployeeHistoryEntry">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="DateTime" Name="Date" Nullable="true" />
+    <Property Type="String" Name="Type" Nullable="true" />
+    <Property Type="String" Name="Summary" Nullable="true" />
+    <Property Type="String" Name="Notes" Nullable="true" />
+    <NavigationProperty Name="Employee" Relationship="CoreEntities.EmployeeHistoryEntryEmployee" FromRole="EmployeeHistoryEntry" ToRole="Employee" />
+    <Property Type="Guid" Name="EmployeeId" Nullable="false" />
+  </EntityType>
+  <Association Name="EmployeeHistoryEntryEmployee">
+    <End Type="CoreEntities.EmployeeHistoryEntry" Role="EmployeeHistoryEntry" Multiplicity="*" />
+    <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EmployeeHistoryEntry">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RouteEmployee">
+    <End Type="CoreEntities.Route" Role="Route" Multiplicity="*" />
+    <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
+  </Association>
+  <Association Name="ServiceTemplateServiceTemplate">
+    <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate" Multiplicity="0..1" />
+    <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServiceTemplate">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ServiceTemplate1">
+        <PropertyRef Name="OwnerServiceTemplateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FieldField">
+    <End Type="CoreEntities.Field" Role="Field" Multiplicity="0..1" />
+    <End Type="CoreEntities.Field" Role="Field1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Field">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Field1">
+        <PropertyRef Name="ParentFieldId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Option">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="Boolean" Name="IsChecked" Nullable="false" DefaultValue="false" />
+    <NavigationProperty Name="OptionsField" Relationship="CoreEntities.OptionsFieldOption" FromRole="Option" ToRole="OptionsField" />
+    <Property Type="Guid" Name="OptionsFieldId" Nullable="false" />
+    <Property Type="Int32" Name="Index" Nullable="false" DefaultValue="0" />
+    <Property Type="String" Name="Tooltip" Nullable="true" />
+  </EntityType>
+  <Association Name="OptionsFieldOption">
+    <End Type="CoreEntities.OptionsField" Role="OptionsField" Multiplicity="1" />
+    <End Type="CoreEntities.Option" Role="Option" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OptionsField">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Option">
+        <PropertyRef Name="OptionsFieldId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="LocationOption" BaseType="CoreEntities.Option" />
+  <Association Name="ServiceTemplateField">
+    <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate" Multiplicity="0..1" />
+    <End Type="CoreEntities.Field" Role="Field" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServiceTemplate">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Field">
+        <PropertyRef Name="ServiceTemplateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="LocationField" BaseType="CoreEntities.Field">
+    <NavigationProperty Name="Value" Relationship="CoreEntities.LocationFieldLocation" FromRole="LocationField" ToRole="Location" />
+    <Property Type="Guid" Name="LocationId" Nullable="true" />
+    <Property Type="Int16" Name="LocationFieldTypeInt" Nullable="false" />
+  </EntityType>
+  <Association Name="LocationFieldLocation">
+    <End Type="CoreEntities.LocationField" Role="LocationField" Multiplicity="*" />
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LocationField">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Contact">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Notes" Nullable="true" />
+    <NavigationProperty Name="OwnedPerson" Relationship="CoreEntities.ContactPerson" FromRole="Contact" ToRole="Person" />
+    <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.ContactParty" FromRole="Contact" ToRole="Party" />
+    <Property Type="Guid" Name="OwnerPartyId" Nullable="false" />
+    <NavigationProperty Name="ClientTitles" Relationship="CoreEntities.ClientTitleContact" FromRole="Contact" ToRole="ClientTitle" />
+  </EntityType>
+  <Association Name="ContactPerson">
+    <End Type="CoreEntities.Contact" Role="Contact" Multiplicity="0..1" />
+    <End Type="CoreEntities.Person" Role="Person" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contact">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ContactParty">
+    <End Type="CoreEntities.Contact" Role="Contact" Multiplicity="*" />
+    <End Type="CoreEntities.Party" Role="Party" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Party">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Contact">
+        <PropertyRef Name="OwnerPartyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ClientTitle">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="String" Name="Title" Nullable="false" />
+    <NavigationProperty Name="Client" Relationship="CoreEntities.ClientTitleClient" FromRole="ClientTitle" ToRole="Client" />
+    <Property Type="Guid" Name="ClientId" Nullable="true" />
+    <NavigationProperty Name="Contact" Relationship="CoreEntities.ClientTitleContact" FromRole="ClientTitle" ToRole="Contact" />
+    <Property Type="Guid" Name="ContactId" Nullable="false" />
+  </EntityType>
+  <Association Name="ClientTitleClient">
+    <End Type="CoreEntities.ClientTitle" Role="ClientTitle" Multiplicity="*" />
+    <End Type="CoreEntities.Client" Role="Client" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientTitle">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ClientTitleContact">
+    <End Type="CoreEntities.ClientTitle" Role="ClientTitle" Multiplicity="*" />
+    <End Type="CoreEntities.Contact" Role="Contact" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Contact">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientTitle">
+        <PropertyRef Name="ContactId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Invoice">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <NavigationProperty Name="BillToLocation" Relationship="CoreEntities.InvoiceLocation" FromRole="Invoice" ToRole="Location" />
+    <Property Type="Guid" Name="LocationId" Nullable="true" />
+    <Property Type="Int32" Name="FixedScheduleOptionInt" Nullable="true" />
+    <Property Type="Int32" Name="RelativeScheduleDays" Nullable="true" />
+    <Property Type="Int32" Name="ScheduleModeInt" Nullable="false" />
+    <NavigationProperty Name="SalesTerm" Relationship="CoreEntities.InvoiceSalesTerm" FromRole="Invoice" ToRole="SalesTerm" />
+    <Property Type="Guid" Name="SalesTermId" Nullable="false" />
+    <Property Type="String" Name="Memo" Nullable="true" />
+    <Property Type="DateTime" Name="DueDate" Nullable="true" />
+    <NavigationProperty Name="ServiceTemplate" Relationship="CoreEntities.InvoiceServiceTemplate" FromRole="Invoice" ToRole="ServiceTemplate" />
+    <Property Type="String" Name="SyncToken" Nullable="true" />
+    <Property Type="String" Name="CustomerId" Nullable="true" />
+    <Property Type="String" Name="CreateTime" Nullable="true" />
+    <Property Type="String" Name="LastUpdatedTime" Nullable="true" />
+    <NavigationProperty Name="LineItems" Relationship="CoreEntities.LineItemInvoice" FromRole="Invoice" ToRole="LineItem" />
+  </EntityType>
+  <Association Name="InvoiceLocation">
+    <End Type="CoreEntities.Invoice" Role="Invoice" Multiplicity="*" />
+    <End Type="CoreEntities.Location" Role="Location" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Invoice">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="SalesTerm">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <Property Type="Int32" Name="DueDays" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <NavigationProperty Name="Invoices" Relationship="CoreEntities.InvoiceSalesTerm" FromRole="SalesTerm" ToRole="Invoice" />
+  </EntityType>
+  <Association Name="InvoiceSalesTerm">
+    <End Type="CoreEntities.Invoice" Role="Invoice" Multiplicity="*" />
+    <End Type="CoreEntities.SalesTerm" Role="SalesTerm" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="SalesTerm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Invoice">
+        <PropertyRef Name="SalesTermId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="InvoiceServiceTemplate">
+    <End Type="CoreEntities.Invoice" Role="Invoice" Multiplicity="0..1" />
+    <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="ServiceTemplate">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Invoice">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="LineItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+    <NavigationProperty Name="Invoice" Relationship="CoreEntities.LineItemInvoice" FromRole="LineItem" ToRole="Invoice" />
+    <Property Type="Guid" Name="InvoiceId" Nullable="false" />
+    <Property Type="String" Name="Description" Nullable="true" />
+    <Property Type="String" Name="Amount" Nullable="true" />
+  </EntityType>
+  <Association Name="LineItemInvoice">
+    <End Type="CoreEntities.LineItem" Role="LineItem" Multiplicity="*" />
+    <End Type="CoreEntities.Invoice" Role="Invoice" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Invoice">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LineItem">
+        <PropertyRef Name="InvoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

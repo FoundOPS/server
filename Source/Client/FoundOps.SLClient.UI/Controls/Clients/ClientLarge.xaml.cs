@@ -1,0 +1,89 @@
+﻿using System.ComponentModel;
+using System.Windows;
+using FoundOps.SLClient.Data.Tools;
+using FoundOps.SLClient.UI.ViewModels;
+
+namespace FoundOps.SLClient.UI.Controls.Clients
+{
+    /// <summary>
+    /// Displays a Client and its associations.
+    /// </summary>
+    public partial class ClientLarge
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientLarge"/> class.
+        /// </summary>
+        public ClientLarge()
+        {
+            // Required to initialize variables
+            InitializeComponent();
+
+#if DEBUG
+            if (DesignerProperties.IsInDesignTool)
+                return;
+#endif
+            
+            this.DependentWhenVisible(LocationsVM);
+
+            //Hookup the AddDeleteLocation logic
+            AddDeleteLocation.CreateNewItem = () => this.LocationsVM.StartCreationOfLocation();
+            AddDeleteLocation.RemoveCurrentItem = (item) => this.LocationsVM.DeleteLocationInCreation();
+        }
+
+        /// <summary>
+        /// Gets the clients VM.
+        /// </summary>
+        public ClientsVM ClientsVM
+        {
+            get
+            {
+                return (ClientsVM)this.DataContext;
+            }
+        }
+
+        /// <summary>
+        /// Gets the locations VM.
+        /// </summary>
+        public LocationsVM LocationsVM
+        {
+            get
+            {
+                return (LocationsVM)this.LocationsGrid.DataContext;
+            }
+        }
+
+        #region ClientsListVM Dependency Property
+
+        /// <summary>
+        /// ClientsListVM
+        /// </summary>
+        public ClientsVM ClientsListVM
+        {
+            get { return (ClientsVM)GetValue(ClientsListVMProperty); }
+            set { SetValue(ClientsListVMProperty, value); }
+        }
+
+        /// <summary>
+        /// ClientsListVM Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty ClientsListVMProperty =
+            DependencyProperty.Register(
+                "ClientsListVM",
+                typeof(ClientsVM),
+                typeof(ClientLarge),
+                new PropertyMetadata(null));
+
+        #endregion
+
+        /// <summary>
+        /// Called whenever the Add Existing or Add New location button is clicked.
+        /// </summary>
+        private void AddLocationButtonClicked(object sender, RoutedEventArgs e)
+        {
+            //Call this to trigger the AddLocationCommand, and to close the contextmenu after adding an item
+            AddDeleteLocation.AddedCurrentItem();
+            //Must do this manually because the AddLocationCommand takes a LocationsVM instead of the entity as a parameter
+            ClientsVM.AddLocationCommand.Execute(LocationsVM);
+        }
+    }
+}

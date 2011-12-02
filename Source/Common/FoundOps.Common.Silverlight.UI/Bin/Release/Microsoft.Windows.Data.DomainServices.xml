@@ -1,0 +1,1634 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Windows.Data.DomainServices</name>
+    </assembly>
+    <members>
+        <member name="T:System.ServiceModel.DomainServices.Client.ICollectionChangedListener">
+            <summary>
+            Interface to handle collection changed events through a weak listener.
+            </summary>
+        </member>
+        <member name="M:System.ServiceModel.DomainServices.Client.ICollectionChangedListener.OnCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Called by the <see cref="T:System.ServiceModel.DomainServices.Client.WeakCollectionChangedListener"/> when a collection
+            changed event occurs.
+            </summary>
+            <param name="sender">The event sender</param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="T:System.ServiceModel.DomainServices.Client.WeakCollectionChangedListener">
+            <summary>
+            A collection change listener that subscribes to the source using a weak reference
+            </summary>
+        </member>
+        <member name="M:System.ServiceModel.DomainServices.Client.WeakCollectionChangedListener.#ctor(System.Collections.Specialized.INotifyCollectionChanged,System.ServiceModel.DomainServices.Client.ICollectionChangedListener)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.ServiceModel.DomainServices.Client.WeakCollectionChangedListener"/>
+            </summary>
+            <param name="source">The source event source</param>
+            <param name="listener">The listener event listener</param>
+        </member>
+        <member name="M:System.ServiceModel.DomainServices.Client.WeakCollectionChangedListener.CreateIfNecessary(System.Object,System.ServiceModel.DomainServices.Client.ICollectionChangedListener)">
+            <summary>
+            Creates a weak listener if the source implements <see cref="T:System.Collections.Specialized.INotifyCollectionChanged"/>
+            </summary>
+            <param name="source">The source to subscribe to</param>
+            <param name="listener">The collection change listener</param>
+            <returns>A weak listener instance</returns>
+        </member>
+        <member name="M:System.ServiceModel.DomainServices.Client.WeakCollectionChangedListener.SourceCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Handles collection changed events raised by the source
+            </summary>
+            <param name="sender">The source collection</param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:System.ServiceModel.DomainServices.Client.WeakCollectionChangedListener.Disconnect">
+            <summary>
+            Disconnects this listener from the collection change event
+            </summary>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions">
+            <summary>
+            Static extension methods for applying collection view state to a <see cref="T:Microsoft.Windows.Data.DomainServices.QueryBuilder`1"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.SortBy``1(System.ServiceModel.DomainServices.Client.EntityQuery{``0},System.ComponentModel.ICollectionView)">
+            <summary>
+            Orders the query using the group and sort descriptions of the specified <paramref name="collectionView"/>.
+            </summary>
+            <typeparam name="TEntity">The generic type of the entity</typeparam>
+            <param name="query">The query to sort</param>
+            <param name="collectionView">The view containing the descriptions to sort by</param>
+            <returns>A query ordered according to the specified <paramref name="collectionView"/></returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.SortBy``1(Microsoft.Windows.Data.DomainServices.QueryBuilder{``0},System.ComponentModel.ICollectionView)">
+            <summary>
+            Orders the query using the group and sort descriptions of the specified <paramref name="collectionView"/>.
+            </summary>
+            <typeparam name="TEntity">The generic type of the entity</typeparam>
+            <param name="query">The query to sort</param>
+            <param name="collectionView">The view containing the descriptions to sort by</param>
+            <returns>A query ordered according to the specified <paramref name="collectionView"/></returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.SortBy``1(Microsoft.Windows.Data.DomainServices.QueryBuilder{``0},System.Collections.Generic.IEnumerable{System.ComponentModel.GroupDescription},System.Collections.Generic.IEnumerable{System.ComponentModel.SortDescription})">
+            <summary>
+            Orders the query using the specified group and sort descriptions.
+            </summary>
+            <typeparam name="TEntity">The generic type of the entity</typeparam>
+            <param name="query">The query to sort</param>
+            <param name="groupDescriptions">The group descriptions</param>
+            <param name="sortDescriptions">The sort descriptions</param>
+            <returns>A query ordered according to the specified descriptions</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.GetSortMethodName(System.Boolean,System.Boolean)">
+            <summary>
+            Returns the method name for sorting according to the given parameters
+            </summary>
+            <param name="isFirst">Whether this is the first sort in the sequence</param>
+            <param name="isAscending">Whether this is an ascending sort</param>
+            <returns>The method name</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.PageBy``1(System.ServiceModel.DomainServices.Client.EntityQuery{``0},System.ComponentModel.IPagedCollectionView)">
+            <summary>
+            Pages the query using the page size and index of the specified <paramref name="collectionView"/>.
+            </summary>
+            <remarks>
+            The paged query will request the total item count if it is not already known to the specified
+            <paramref name="collectionView"/>.
+            </remarks>
+            <typeparam name="TEntity">The generic type of the entity</typeparam>
+            <param name="query">The query to page</param>
+            <param name="collectionView">The view containing the paging information</param>
+            <returns>A query paged according to the specified <paramref name="collectionView"/></returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.PageBy``1(Microsoft.Windows.Data.DomainServices.QueryBuilder{``0},System.ComponentModel.IPagedCollectionView)">
+            <summary>
+            Pages the query using the page size and index of the specified <paramref name="collectionView"/>.
+            </summary>
+            <remarks>
+            The paged query will request the total item count if it is not already known to the specified
+            <paramref name="collectionView"/>.
+            </remarks>
+            <typeparam name="TEntity">The generic type of the entity</typeparam>
+            <param name="query">The query to page</param>
+            <param name="collectionView">The view containing the paging information</param>
+            <returns>A query paged according to the specified <paramref name="collectionView"/></returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.SortAndPageBy``1(System.ServiceModel.DomainServices.Client.EntityQuery{``0},System.ComponentModel.ICollectionView)">
+            <summary>
+            Updates the query by calling <see cref="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.SortBy``1(System.ServiceModel.DomainServices.Client.EntityQuery{``0},System.ComponentModel.ICollectionView)"/> and <see cref="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.PageBy``1(System.ServiceModel.DomainServices.Client.EntityQuery{``0},System.ComponentModel.IPagedCollectionView)"/> in sequence.
+            </summary>
+            <typeparam name="TEntity">The generic type of the entity</typeparam>
+            <param name="query">The query to update</param>
+            <param name="collectionView">The collection view to pass to each method</param>
+            <returns>An updated query</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.SortAndPageBy``1(Microsoft.Windows.Data.DomainServices.QueryBuilder{``0},System.ComponentModel.ICollectionView)">
+            <summary>
+            Updates the query by calling <see cref="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.SortBy``1(Microsoft.Windows.Data.DomainServices.QueryBuilder{``0},System.ComponentModel.ICollectionView)"/> and <see cref="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.PageBy``1(Microsoft.Windows.Data.DomainServices.QueryBuilder{``0},System.ComponentModel.IPagedCollectionView)"/> in sequence.
+            </summary>
+            <typeparam name="TEntity">The generic type of the entity</typeparam>
+            <param name="query">The query to update</param>
+            <param name="collectionView">The collection view to pass to each method</param>
+            <returns>An updated query</returns>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.ExpressionUtility">
+            <summary>
+            Static utility for composing Linq expressions and queries
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.ExpressionUtility.BuildPropertyExpression(System.Type,System.String)">
+            <summary>
+            Builds the Linq Expression for the provided propertyPath and type properties
+            </summary>
+            <param name="type">Type that exposes the property</param>
+            <param name="propertyPath">Public property. Can be nested.</param>
+            <returns>Resulting property expression</returns>
+            <exception cref="T:System.ArgumentException">When property is not found on the specified type.</exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.ExpressionUtility.GenerateProperty(System.Type,System.String,System.Linq.Expressions.Expression)">
+            <summary>
+            Generates a Linq property expression given a type and a property path
+            </summary>
+            <param name="type">Type that contains the property provided</param>
+            <param name="propertyPath">Property path that can be dotted or not.</param>
+            <param name="instance">Root expression</param>
+            <returns>Resulting property expression if path is valid. Null otherwise.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewExtensions.ExpressionUtility.Sort``1(Microsoft.Windows.Data.DomainServices.QueryBuilder{``0},System.String,System.Linq.Expressions.Expression)">
+            <summary>
+            Compose an OrderBy, ThenBy, OrderByDescending, or ThenByDescending clause onto an query.
+            </summary>
+            <typeparam name="TEntity">The generic type of the entity</typeparam>
+            <param name="query">The source query</param>
+            <param name="methodName">The method name to use: OrderBy, ThenBy, OrderByDescending, or ThenByDescending.</param>
+            <param name="sortExpression">The expression to use for sorting.</param>
+            <returns>The composed query.</returns>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.CollectionViewLoader">
+            <summary>
+            Abstract base class that is responsible for loading data for the source collection
+            of the collection view.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.CollectionViewLoader"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.Load(System.Object)">
+            <summary>
+            Asynchronously loads data into the source collection of the collection view
+            </summary>
+            <remarks>
+            The <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.LoadCompleted"/> event will be raised upon successful completion as well as
+            when cancellation and exceptions occur.
+            </remarks>
+            <param name="userState">The user state will be returned in the <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.LoadCompleted"/> event
+            args. This parameter is optional.
+            </param>
+            <exception cref="T:System.InvalidOperationException"> is thrown when <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoad"/> is false</exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.OnCanLoadChanged">
+            <summary>
+            Raises a <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoadChanged"/> event
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.OnLoadCompleted(System.ComponentModel.AsyncCompletedEventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.LoadCompleted"/> event
+            </summary>
+            <param name="e">The event to raise</param>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoadChanged">
+            <summary>
+            Event raised when the value of <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoad"/> changes
+            </summary>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.LoadCompleted">
+            <summary>
+            Event raised when an asynchronous <see cref="M:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.Load(System.Object)"/> operation completes
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoad">
+            <summary>
+            Gets or sets a value that indicates whether a <see cref="M:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.Load(System.Object)"/> can be successfully invoked
+            </summary>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper">
+            <summary>
+            Abstract wrapper implementation for collection view interfaces.
+            </summary>
+            <remarks>
+            This class unofficially implements the <see cref="T:System.ComponentModel.ICollectionView"/>,
+            <see cref="T:System.ComponentModel.IEditableCollectionView"/>, <see cref="T:System.ComponentModel.IPagedCollectionView"/>, and
+            <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> interfaces by wrapping an existing collection
+            view. A derived implementation will need to set a view property and implement the
+            interface that it corresponds to. For instance, a collection view implementation
+            should set <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView"/> and implement <see cref="T:System.ComponentModel.ICollectionView"/>.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnCollectionViewCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Handles <see cref="E:System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged"/> events raised by the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView"/>
+            </summary>
+            <param name="sender">The <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView"/></param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Raises collection changed events
+            </summary>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnCollectionViewCurrentChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles <see cref="E:System.ComponentModel.ICollectionView.CurrentChanged"/> events raised by the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView"/>
+            </summary>
+            <param name="sender">The <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView"/></param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnCurrentChanged(System.EventArgs)">
+            <summary>
+            Raises current changed events
+            </summary>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnCollectionViewCurrentChanging(System.Object,System.ComponentModel.CurrentChangingEventArgs)">
+            <summary>
+            Handles <see cref="E:System.ComponentModel.ICollectionView.CurrentChanging"/> events raised by the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView"/>
+            </summary>
+            <param name="sender">The <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView"/></param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnCurrentChanging(System.ComponentModel.CurrentChangingEventArgs)">
+            <summary>
+            Raises current changing events
+            </summary>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.Contains(System.Object)">
+            <summary>
+            Indicates whether the specified item belongs to this collection view.
+            </summary>
+            <param name="item">The object to check</param>
+            <returns>
+            <c>true</c> if the item belongs to this collection view; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.DeferRefresh">
+            <summary>
+            Enters a defer cycle that you can use to merge changes to the view and delay
+            automatic refresh.
+            </summary>
+            <returns>
+            The typical usage is to create a using scope with an implementation of this
+            method and then include multiple view-changing calls within the scope. The
+            implementation should delay automatic refresh until after the using scope
+            exits.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnDeferHelperDisposed">
+            <summary>
+            Handles disposal of a <see cref="T:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.DeferHelper"/> by conditionally calling <see cref="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.Refresh"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through
+            the collection.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveCurrentTo(System.Object)">
+            <summary>
+            Sets the specified item in the view as the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>.
+            </summary>
+            <param name="item">The item to set as the current item.</param>
+            <returns>
+            <c>true</c> if the resulting <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/> is
+            an item in the view; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveCurrentToFirst">
+            <summary>
+            Sets the first item in the view as the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>.
+            </summary>
+            <returns>
+            <c>true</c> if the resulting <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/> is
+            an item in the view; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveCurrentToLast">
+            <summary>
+            Sets the last item in the view as the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>.
+            </summary>
+            <returns>
+            <c>true</c> if the resulting <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/> is
+            an item in the view; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveCurrentToNext">
+            <summary>
+            Sets the item after the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>
+            in the view as the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>.
+            </summary>
+            <returns>
+            <c>true</c> if the resulting <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/> is
+            an item in the view; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveCurrentToPosition(System.Int32)">
+            <summary>
+            Sets the item at the specified index to be the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>
+            in the view.
+            </summary>
+            <param name="position">The index to set the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/> to.</param>
+            <returns>
+            <c>true</c> if the resulting <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/> is
+            an item in the view; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveCurrentToPrevious">
+            <summary>
+            Sets the item before the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>
+            in the view to the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>.
+            </summary>
+            <returns>
+            <c>true</c> if the resulting <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/> is
+            an item in the view; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.Refresh">
+            <summary>
+            Recreates the view.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.AddNew">
+            <summary>
+            Adds a new item to the underlying collection.
+            </summary>
+            <returns>The new item that is added to the collection.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CancelEdit">
+            <summary>
+            Ends the edit transaction and, if possible, restores the original value of
+            the item.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CancelNew">
+            <summary>
+            Ends the add transaction and discards the pending new item.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CommitEdit">
+            <summary>
+            Ends the edit transaction and saves the pending changes.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CommitNew">
+            <summary>
+            Ends the add transaction and saves the pending new item.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.EditItem(System.Object)">
+            <summary>
+            Begins an edit transaction on the specified item.
+            </summary>
+            <param name="item">The item to edit.</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.Remove(System.Object)">
+            <summary>
+            Removes the specified item from the collection.
+            </summary>
+            <param name="item">The item to remove.</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.RemoveAt(System.Int32)">
+            <summary>
+            Removes the item at the specified position from the collection.
+            </summary>
+            <param name="index">Index of item to remove.</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnPagedCollectionViewPageChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles <see cref="E:System.ComponentModel.IPagedCollectionView.PageChanged"/> events raised by the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PagedCollectionView"/>
+            </summary>
+            <param name="sender">The <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PagedCollectionView"/></param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnPageChanged(System.EventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PageChanged"/> event
+            </summary>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnPagedCollectionViewPageChanging(System.Object,System.ComponentModel.PageChangingEventArgs)">
+            <summary>
+            Handles <see cref="E:System.ComponentModel.IPagedCollectionView.PageChanging"/> events raised by the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PagedCollectionView"/>
+            </summary>
+            <param name="sender">The <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PagedCollectionView"/></param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnPageChanging(System.ComponentModel.PageChangingEventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PageChanging"/> event
+            </summary>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveToFirstPage">
+            <summary>
+            Sets the first page as the current page.
+            </summary>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveToLastPage">
+            <summary>
+            Sets the last page as the current page.
+            </summary>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveToNextPage">
+            <summary>
+            Moves to the page after the current page.
+            </summary>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveToPage(System.Int32)">
+            <summary>
+            Moves to the page at the specified index.
+            </summary>
+            <param name="pageIndex">The index of the page to move to.</param>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.MoveToPreviousPage">
+            <summary>
+            Moves to the page before the current page.
+            </summary>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.GetViewMatches(System.Object)">
+            <summary>
+            Returns the number of times the wrapper references the specified view
+            </summary>
+            <param name="view">The view to match</param>
+            <returns>The number of times the wrapper references the view</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.AddPropertyChangedIfNeeded(System.Object)">
+            <summary>
+            Adds a property changed event handler the first time the view is referenced
+            </summary>
+            <param name="view">The view to add a handler to</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.RemovePropertyChangedIfNeeded(System.Object)">
+            <summary>
+            Removes a property changed event handler the last time a view reference is reset
+            </summary>
+            <param name="view">The view to remove a handler from</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnViewPropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Handles <see cref="E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/> events raised by any of the
+            wrapped collection views.
+            </summary>
+            <param name="sender">A wrapped collection view</param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PropertyChanged"/> event
+            </summary>
+            <param name="e">The event args</param>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView">
+            <summary>
+            Gets or sets the <see cref="T:System.ComponentModel.ICollectionView"/> implementation to delegate to.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionViewChecked">
+            <summary>
+            Gets the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView"/> property
+            </summary>
+            <exception cref="T:System.NotSupportedException"> is thrown if the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionView"/>
+            property is <c>null</c>
+            </exception>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.EditableCollectionView">
+            <summary>
+            Get or sets the <see cref="T:System.ComponentModel.IEditableCollectionView"/> implementation to delegate to
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.EditableCollectionViewChecked">
+            <summary>
+            Gets the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.EditableCollectionView"/> property
+            </summary>
+            <exception cref="T:System.NotSupportedException"> is thrown if the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.EditableCollectionView"/>
+            property is <c>null</c>
+            </exception>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PagedCollectionView">
+            <summary>
+            Get or sets the <see cref="T:System.ComponentModel.IPagedCollectionView"/> implementation to delegate to
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PagedCollectionViewChecked">
+            <summary>
+            Gets the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PagedCollectionView"/> property
+            </summary>
+            <exception cref="T:System.NotSupportedException"> is thrown if the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PagedCollectionView"/>
+            property is <c>null</c>
+            </exception>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CollectionChanged">
+            <summary>
+            Occurs when the items list of the collection has changed or the collection is reset
+            </summary>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentChanged">
+            <summary>
+            Occurs after the current item has been changed
+            </summary>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentChanging">
+            <summary>
+            Occurs before the current item changes
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CanFilter">
+            <summary>
+            Gets a value that indicates whether this view supports filtering by way of
+            the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.Filter"/> property.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CanGroup">
+            <summary>
+            Gets a value that indicates whether this view supports grouping by way of
+            the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.GroupDescriptions"/> property.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CanSort">
+            <summary>
+            Gets a value that indicates whether this view supports sorting by way of
+            the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.SortDescriptions"/> property.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.Culture">
+            <summary>
+            Gets or sets the cultural information for any operations of the view that
+            may differ by culture, such as sorting.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem">
+            <summary>
+            Gets the current item in the view.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentPosition">
+            <summary>
+             Gets the ordinal position of the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/> in the view.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.Filter">
+            <summary>
+            Gets or sets a callback that is used to determine whether an item is appropriate
+            for inclusion in the view.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.GroupDescriptions">
+            <summary>
+            Gets a collection of <see cref="T:System.ComponentModel.GroupDescription"/> objects that
+            describe how the items in the collection are grouped in the view.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.Groups">
+            <summary>
+            Gets the top-level groups.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.IsCurrentAfterLast">
+            <summary>
+            Gets a value that indicates whether the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>
+            of the view is beyond the end of the collection.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.IsCurrentBeforeFirst">
+            <summary>
+            Gets a value that indicates whether the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentItem"/>
+            of the view is beyond the start of the collection.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.IsEmpty">
+            <summary>
+            Gets a value that indicates whether the view is empty.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.SortDescriptions">
+            <summary>
+            Gets a collection of <see cref="T:System.ComponentModel.SortDescription"/> instances that
+            describe how the items in the collection are sorted in the view.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.SourceCollection">
+            <summary>
+            Gets the underlying collection.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.IsRefreshDeferred">
+            <summary>
+            Gets a value that indicates whether a <see cref="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.DeferRefresh"/> method is pending
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CanAddNew">
+            <summary>
+            Gets a value that indicates whether a new item can be added to the collection.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CanCancelEdit">
+            <summary>
+            Gets a value that indicates whether the collection view can discard pending
+            changes and restore the original values of an edited object.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CanRemove">
+            <summary>
+            Gets a value that indicates whether an item can be removed from the collection.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentAddItem">
+            <summary>
+            Gets the item that is being added during the current add transaction.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CurrentEditItem">
+            <summary>
+            Gets the item in the collection that is being edited.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.IsAddingNew">
+            <summary>
+            Gets a value that indicates whether an add transaction is in progress.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.IsEditingItem">
+            <summary>
+            Gets a value that indicates whether an edit transaction is in progress.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.NewItemPlaceholderPosition">
+            <summary>
+            Gets or sets the position of the new item placeholder in the collection view.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PageChanged">
+            <summary>
+            Raised after the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PageIndex"/> has changed.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PageChanging">
+            <summary>
+            Raised before the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PageIndex"/> has changed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.CanChangePage">
+            <summary>
+            Gets a value that indicates whether the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PageIndex"/>
+            value can change.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.IsPageChanging">
+            <summary>
+            Gets a value that indicates whether the page index is changing.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.ItemCount">
+            <summary>
+            Gets the number of known items in the view before paging is applied.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PageIndex">
+            <summary>
+            Gets the zero-based index of the current page.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PageSize">
+            <summary>
+            Gets or sets the number of items to display on a page.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.TotalItemCount">
+            <summary>
+            Gets the total number of items in the view before paging is applied.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PropertyChanged">
+            <summary>
+            Raised when a property value changes
+            </summary>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.DeferHelper">
+            <summary>
+            <see cref="T:System.IDisposable"/> that allows the wrapper to track <see cref="M:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.DeferRefresh"/> invocations
+            </summary>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView">
+            <summary>
+            Collection view implementation that allows the view to be updated asynchronously
+            via a <see cref="T:Microsoft.Windows.Data.DomainServices.CollectionViewLoader"/>. In conjunction with the
+            <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader"/>, this allows collection view properties
+            like sorting, grouping, and paging to be applied on the server.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.#ctor(System.Func{System.ServiceModel.DomainServices.Client.LoadOperation},System.Collections.IEnumerable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView"/> that
+            uses the specified callback for loading data.
+            </summary>
+            <param name="load">The callback to use for loading data</param>
+            <param name="source">The source collection for this view. All updates to the
+            source will be reflected in the view.
+            </param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.#ctor(Microsoft.Windows.Data.DomainServices.CollectionViewLoader,System.Collections.IEnumerable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView"/>
+            </summary>
+            <param name="collectionViewLoader">The <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CollectionViewLoader"/> to use for loading data</param>
+            <param name="source">The source collection for this view. All updates to the
+            source will be reflected in the view.
+            </param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CreateView(System.Collections.IEnumerable)">
+            <summary>
+            Creates a view to wrap using the specified source
+            </summary>
+            <param name="source">The source to create a view for</param>
+            <returns>A view over the specified source</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SetTotalItemCount(System.Int32)">
+            <summary>
+            Sets the <see cref="P:System.ComponentModel.IPagedCollectionView.TotalItemCount"/>.
+            </summary>
+            <remarks>
+            This value is used by the pager to display the page count. When this
+            value is set to <c>-1</c>, no page count is displayed.
+            </remarks>
+            <param name="totalItemCount">The total item count</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.Refresh">
+            <summary>
+            Overridden to reload the view using the <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CollectionViewLoader"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.Load">
+            <summary>
+            Reloads the view using the <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CollectionViewLoader"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.LoadPage(System.Int32)">
+            <summary>
+            Sets the <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.PageIndex"/> and reloads the view
+            </summary>
+            <param name="pageIndex">The page index to load</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.OnLoadCompleted(System.Object,System.ComponentModel.AsyncCompletedEventArgs)">
+            <summary>
+            Handles the <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.LoadCompleted"/> event and updates
+            the view
+            </summary>
+            <param name="sender">The <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CollectionViewLoader"/></param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SyncToWrappedValues">
+            <summary>
+            Applies the wrapped view state to the current view
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SyncToWrappedGroupDescriptions">
+            <summary>
+            Applies the wrapped view descriptions to the <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.GroupDescriptions"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SyncToWrappedSortDescriptions">
+            <summary>
+            Applies the wrapped view descriptions to the <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SortDescriptions"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SyncToWrappedPageIndex">
+            <summary>
+            Applies the wrapped view index to the <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.PageIndex"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SyncToCurrentValues">
+            <summary>
+            Applies the current view state to the wrapped view
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SyncToCurrentGroupDescriptions">
+            <summary>
+            Applies the current <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.GroupDescriptions"/> to the wrapped view
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SyncToCurrentSortDescriptions">
+            <summary>
+            Applies the current <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SortDescriptions"/> to the wrapped view
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SyncToCurrentItemCounts">
+            <summary>
+            Updates the <see cref="P:System.ComponentModel.IPagedCollectionView.ItemCount"/> property based on the
+            values in the view
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CopyGroupDescriptions(System.Collections.ObjectModel.ObservableCollection{System.ComponentModel.GroupDescription},System.Collections.ObjectModel.ObservableCollection{System.ComponentModel.GroupDescription})">
+            <summary>
+            Copies the <paramref name="from"/> collection to the <paramref name="to"/> collection
+            </summary>
+            <param name="from">The group descriptions to copy from</param>
+            <param name="to">The group descriptions to copy to</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CopySortDescriptions(System.ComponentModel.SortDescriptionCollection,System.ComponentModel.SortDescriptionCollection)">
+            <summary>
+            Copies the <paramref name="from"/> collection to the <paramref name="to"/> collection
+            </summary>
+            <param name="from">The sort descriptions to copy from</param>
+            <param name="to">The sort descriptions to copy to</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.UpdateItemCounts(System.Int32)">
+            <summary>
+            Updates the <see cref="P:System.ComponentModel.IPagedCollectionView.TotalItemCount"/> and 
+            <see cref="P:System.ComponentModel.IPagedCollectionView.ItemCount"/> properties based on the
+            specified <paramref name="totalItemCount"/> and values in the view
+            </summary>
+            <param name="totalItemCount">The total item count</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.UpdateItemCounts(System.Int32,System.Int32)">
+            <summary>
+            Updates the <see cref="P:System.ComponentModel.IPagedCollectionView.TotalItemCount"/> and 
+            <see cref="P:System.ComponentModel.IPagedCollectionView.ItemCount"/> properties based on the
+            specified <paramref name="totalItemCount"/> and <paramref name="itemCount"/>
+            </summary>
+            <param name="totalItemCount">The total item count</param>
+            <param name="itemCount">The item count</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.OnCollectionViewLoaderCanLoadChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoadChanged"/> event
+            </summary>
+            <param name="sender">The <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CollectionViewLoader"/></param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.OnViewPropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Handles <see cref="E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/> events raised by the wrapped views
+            </summary>
+            <remarks>
+            Overridden to re-calculate property values
+            </remarks>
+            <param name="sender">The wrapped views</param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CalculateAll">
+            <summary>
+            Calculates all the properties based on the underlying state
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CalculateCanChangePage">
+            <summary>
+            Calculates the value of <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CanChangePage"/> using <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoad"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CalculateCanGroup">
+            <summary>
+            Calculates the value of <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CanGroup"/> using <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoad"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CalculateCanSort">
+            <summary>
+            Calculates the value of <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CanSort"/> using <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoad"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SetPageIndex(System.Int32)">
+            <summary>
+            Sets <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.PageIndex"/> using the specified <paramref name="pageIndex"/>
+            </summary>
+            <param name="pageIndex">The page index</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.RaisePropertyChanged(System.String)">
+            <summary>
+            Raises <see cref="E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/> events for the specified property
+            </summary>
+            <param name="propertyName">The property to raise an event for</param>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CanChangePage">
+            <summary>
+            Gets a value that indicates whether the <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.PageIndex"/>
+            value can change.
+            </summary>
+            <remarks>
+            Overridden to return <c>false</c> when <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoad"/> is <c>false</c>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CanGroup">
+            <summary>
+            Gets a value that indicates whether this view supports grouping by way of
+            the <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.GroupDescriptions"/> property.
+            </summary>
+            <remarks>
+            Overridden to return <c>false</c> when <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoad"/> is <c>false</c>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CanSort">
+            <summary>
+            Gets a value that indicates whether this view supports sorting by way of
+            the <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SortDescriptions"/> property.
+            </summary>
+            <remarks>
+            Overridden to return <c>false</c> when <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.CanLoad"/> is <c>false</c>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.CollectionViewLoader">
+            <summary>
+            Gets the <see cref="T:Microsoft.Windows.Data.DomainServices.CollectionViewLoader"/> this view uses to asynchronously load
+            the source collection.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.GroupDescriptions">
+            <summary>
+            Gets a collection of <see cref="T:System.ComponentModel.GroupDescription"/> objects that
+            describe how the items in the collection are grouped in the view.
+            </summary>
+            <remarks>
+            Overridden to preserve view state while an asynchronous load is taking place
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.PageIndex">
+            <summary>
+            Gets the zero-based index of the current page.
+            </summary>
+            <remarks>
+            Overridden to preserve view state while an asynchronous load is taking place
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.SortDescriptions">
+            <summary>
+            Gets a collection of <see cref="T:System.ComponentModel.SortDescription"/> instances that
+            describe how the items in the collection are sorted in the view.
+            </summary>
+            <remarks>
+            Overridden to preserve view state while an asynchronous load is taking place
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionView.PagedCollectionViewPrivate">
+            <summary>
+            Returns the <see cref="P:Microsoft.Windows.Data.DomainServices.CollectionViewWrapper.PagedCollectionView"/> as a
+            <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView.DomainPagedCollectionView"/>
+            </summary>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView.DomainPagedCollectionView">
+            <summary>
+            Concrete implementation of the <see cref="T:System.ComponentModel.IPagedCollectionView"/> interface that
+            moves pages using a callback.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase">
+            <summary>
+            Abstract implementation of the <see cref="T:System.ComponentModel.IPagedCollectionView"/> interface.
+            </summary>
+            <remarks>
+            Derived classes will typically only have to implement <see cref="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.BeginMoveToPageCore(System.Int32)"/>
+            and set properties like <see cref="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.TotalItemCount"/>.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.MoveToFirstPage">
+            <summary>
+            Sets the first page as the current page.
+            </summary>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.MoveToLastPage">
+            <summary>
+            Sets the last page as the current page.
+            </summary>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.MoveToNextPage">
+            <summary>
+            Moves to the page after the current page.
+            </summary>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.MoveToPreviousPage">
+            <summary>
+            Moves to the page before the current page.
+            </summary>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.MoveToPage(System.Int32)">
+            <summary>
+            Moves to the page at the specified index.
+            </summary>
+            <param name="pageIndex">The index of the page to move to.</param>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.BeginMoveToPage(System.Int32)">
+            <summary>
+            Begins a page move by raising events and updating state before calling
+            <see cref="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.BeginMoveToPageCore(System.Int32)"/>.
+            </summary>
+            <remarks>
+            Every successful call to <see cref="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.BeginMoveToPage(System.Int32)"/> should be matched by a call
+            to <see cref="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.EndMoveToPage(System.Int32)"/> when the page move is complete.
+            </remarks>
+            <param name="pageIndex">The index of the page to move to</param>
+            <returns><c>true</c> if the operation was successful; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.EndMoveToPage(System.Int32)">
+            <summary>
+            Ends a page move by calling <see cref="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.EndMoveToPageCore(System.Int32)"/> before updating state
+            and raising events.
+            </summary>
+            <param name="pageIndex">The index of the page that was moved to</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.BeginMoveToPageCore(System.Int32)">
+            <summary>
+            Invoked from <see cref="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.BeginMoveToPage(System.Int32)"/> to move to the specified page.
+            </summary>
+            <param name="pageIndex">The index of the page to move to</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.EndMoveToPageCore(System.Int32)">
+            <summary>
+            Invoked from <see cref="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.EndMoveToPage(System.Int32)"/> after the specified page has been moved to.
+            </summary>
+            <param name="pageIndex">The index of the page that was moved to</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.OnPageChanged(System.EventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageChanged"/> event
+            </summary>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.OnPageChanging(System.ComponentModel.PageChangingEventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageChanging"/> event
+            </summary>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.RaisePropertyChanged(System.String)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PropertyChanged"/> event for the specified property
+            </summary>
+            <param name="propertyName">The property to raise the event for</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Raises a <see cref="E:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PropertyChanged"/> event
+            </summary>
+            <param name="e">The event args</param>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageChanged">
+            <summary>
+            Raised after the <see cref="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageIndex"/> has changed.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageChanging">
+            <summary>
+            Raised before the <see cref="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageIndex"/> has changed.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PropertyChanged">
+            <summary>
+            Raised when a property value changes
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.CanChangePage">
+            <summary>
+            Gets or sets a value that indicates whether the <see cref="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageIndex"/>
+            value can change.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.IsPageCountKnown">
+            <summary>
+            Gets a value that indicates whether the <see cref="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageCount"/> is valid
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.IsPageChanging">
+            <summary>
+            Gets a value that indicates whether the page index is changing.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.ItemCount">
+            <summary>
+            Gets or sets the number of known items in the view before paging is applied.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageCount">
+            <summary>
+            Gets the number of pages in the view
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageIndex">
+            <summary>
+            Gets the zero-based index of the current page.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.PageSize">
+            <summary>
+            Gets or sets the number of items to display on a page.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.PagedCollectionViewBase.TotalItemCount">
+            <summary>
+            Gets or sets the total number of items in the view before paging is applied.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.DomainPagedCollectionView.CompleteMoveToPage(System.Int32)">
+            <summary>
+            Completes a page move
+            </summary>
+            <param name="pageIndex">The index that was moved to</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView.DomainPagedCollectionView.SetItemCounts(System.Int32,System.Int32)">
+            <summary>
+            Sets the values for <see cref="P:System.ComponentModel.IPagedCollectionView.TotalItemCount"/> and
+            <see cref="P:System.ComponentModel.IPagedCollectionView.ItemCount"/>.
+            </summary>
+            <param name="totalItemCount">The total item count to set</param>
+            <param name="itemCount">The item count to set</param>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView`1">
+            <summary>
+            Collection view implementation that allows the view to be updated asynchronously
+            via a <see cref="T:Microsoft.Windows.Data.DomainServices.CollectionViewLoader"/>. In conjunction with the
+            <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader"/>, this allows collection view properties
+            like sorting, grouping, and paging to be applied on the server.
+            </summary>
+            <typeparam name="TItem">The item type of this view</typeparam>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView`1.#ctor(System.Func{System.ServiceModel.DomainServices.Client.LoadOperation},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView"/> that
+            uses the specified callback for loading data.
+            </summary>
+            <param name="load">The callback to use for loading data</param>
+            <param name="source">The source collection for this view. All updates to the
+            source will be reflected in the view.
+            </param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView`1.#ctor(Microsoft.Windows.Data.DomainServices.CollectionViewLoader,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView"/>
+            </summary>
+            <param name="collectionViewLoader">The <see cref="T:Microsoft.Windows.Data.DomainServices.CollectionViewLoader"/> to use for loading data</param>
+            <param name="source">The source collection for this view. All updates to the
+            source will be reflected in the view.
+            </param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionView`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader">
+            <summary>
+            Concrete implementation of the <see cref="T:Microsoft.Windows.Data.DomainServices.CollectionViewLoader"/> that uses callbacks to
+            load data for the source collection of the collection view.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.#ctor(System.Func{System.ServiceModel.DomainServices.Client.LoadOperation})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView"/> with a
+            load callback
+            </summary>
+            <param name="load">The load callback. This function will be called every time
+            <see cref="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.Load(System.Object)"/> is invoked. It should return the <see cref="T:System.ServiceModel.DomainServices.Client.LoadOperation"/>
+            responsible for loading the data for the source collection.
+            </param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.#ctor(System.Func{System.ServiceModel.DomainServices.Client.LoadOperation},System.Action{System.ServiceModel.DomainServices.Client.LoadOperation})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView"/> with load
+            and completion callbacks
+            </summary>
+            <param name="load">The load callback. This function will be called every time
+            <see cref="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.Load(System.Object)"/> is invoked. It should return the <see cref="T:System.ServiceModel.DomainServices.Client.LoadOperation"/>
+            responsible for loading the data for the source collection.
+            </param>
+            <param name="onLoadCompleted">The completion callback. This action will be called
+            upon completion of each <see cref="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.Load(System.Object)"/> operation and should handle success,
+            cancellation, and exceptions.
+            </param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.Load(System.Object)">
+            <summary>
+            Asynchronously loads data into the source collection of the collection view by invoking
+            the load callback passed into the constructor
+            </summary>
+            <param name="userState">The user state will be returned in the
+            <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.LoadCompleted"/> event args. This parameter is optional.
+            </param>
+            <exception cref="T:System.InvalidOperationException"> is thrown when <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.CanLoad"/> is false</exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.OnLoadCompleted(System.Object,System.EventArgs)">
+            <summary>
+            Handles load completion by invoking the completion callback passed into the constructor and
+            raising the <see cref="E:Microsoft.Windows.Data.DomainServices.CollectionViewLoader.LoadCompleted"/> event
+            </summary>
+            <param name="sender">The completed operation</param>
+            <param name="e">Empty event args</param>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.IsBusy">
+            <summary>
+            Gets or sets a value that indicates whether the loader is busy
+            </summary>
+            <remarks>
+            Setting this value will also update <see cref="P:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.CanLoad"/>.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.CanLoad">
+            <summary>
+            Gets or sets a value that indicates whether a <see cref="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.Load(System.Object)"/> can be successfully invoked
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.CurrentOperation">
+            <summary>
+            Gets or sets the current operation
+            </summary>
+            <remarks>
+            Setting the current operation will cancel all pending operations and subscribe to the
+            completion of the new operation.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader`1">
+            <summary>
+            Generic concrete implementation of the <see cref="T:Microsoft.Windows.Data.DomainServices.CollectionViewLoader"/> that uses callbacks to
+            load data for the source collection of the collection view.
+            </summary>
+            <typeparam name="TEntity">The entity type for this loader</typeparam>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader`1.#ctor(System.Func{System.ServiceModel.DomainServices.Client.LoadOperation{`0}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView"/> with a
+            load callback
+            </summary>
+            <param name="load">The load callback. This function will be called every time
+            <see cref="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.Load(System.Object)"/> is invoked. It should return the <see cref="T:System.ServiceModel.DomainServices.Client.LoadOperation"/>
+            responsible for loading the data for the source collection.
+            </param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader`1.#ctor(System.Func{System.ServiceModel.DomainServices.Client.LoadOperation{`0}},System.Action{System.ServiceModel.DomainServices.Client.LoadOperation{`0}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.DomainCollectionView"/> with load
+            and completion callbacks
+            </summary>
+            <param name="load">The load callback. This function will be called every time
+            <see cref="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.Load(System.Object)"/> is invoked. It should return the <see cref="T:System.ServiceModel.DomainServices.Client.LoadOperation"/>
+            responsible for loading the data for the source collection.
+            </param>
+            <param name="onLoadCompleted">The completion callback. This action will be called
+            upon completion of each <see cref="M:Microsoft.Windows.Data.DomainServices.DomainCollectionViewLoader.Load(System.Object)"/> operation and should handle success,
+            cancellation, and exceptions.
+            </param>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.EntityList`1">
+            <summary>
+            Observable list of entities. This list stays in sync with its <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.Source"/>
+            collection as well as its backing <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/>.
+            </summary>
+            <remarks>
+            All items added or removed from this list will also be added or removed from the
+            backing <see cref="T:System.ServiceModel.DomainServices.Client.EntitySet`1"/>.
+            </remarks>
+            <typeparam name="T">The entity type of this list</typeparam>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.#ctor(System.ServiceModel.DomainServices.Client.EntitySet{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.EntityList`1"/>
+            </summary>
+            <param name="entitySet">The
+            <see cref="T:System.ServiceModel.DomainServices.Client.EntitySet`1"/> that backs this list. All
+            items added or removed from this list will also be added or removed from the backing
+            <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/>.
+            </param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.#ctor(System.ServiceModel.DomainServices.Client.EntitySet{`0},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.EntityList`1"/> with the specified
+            <paramref name="source"/>
+            </summary>
+            <param name="entitySet">The
+            <see cref="T:System.ServiceModel.DomainServices.Client.EntitySet`1"/> that backs this list. All
+            items added or removed from this list will also be added or removed from the backing
+            <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/>.
+            </param>
+            <param name="source">The source collection used to populate this list</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.UpdateAndIgnoreReentrance(System.Action{System.Object},System.Object)">
+            <summary>
+            Takes an updating action and ignores re-entrant callbacks
+            </summary>
+            <param name="updateAction">The action to invoke</param>
+            <param name="obj">The parameter to pass to the action</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.ResetToSource">
+            <summary>
+            Resets this list and re-adds all the entities from the <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.Source"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.InsertItem(System.Int32,`0)">
+            <summary>
+            Overridden to ensure new entities are added to the backing <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/>
+            </summary>
+            <param name="index">The index of the new entity</param>
+            <param name="item">The newly added entity</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.AddToEntitySet(System.Object)">
+            <summary>
+            Adds the entity to the <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/>
+            </summary>
+            <param name="obj">The entity to add</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.RemoveItem(System.Int32)">
+            <summary>
+            Overridden to ensure existing entities are removed from the backing <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/>
+            </summary>
+            <param name="index">The index of the entity to remove</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.RemoveFromEntitySet(System.Object)">
+            <summary>
+            Removes the entity from the <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/>
+            </summary>
+            <param name="obj">The entity to remove</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.OnSourceCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Handles changes to the source collection by adding or removing entities from the list
+            </summary>
+            <param name="sender">The source collection</param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.HandleSourceCollectionChanged(System.Object)">
+            <summary>
+            Adds or removes entities from the list to keep it in sync with the source collection
+            </summary>
+            <param name="obj">The collection changed event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.OnEntitySetCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Handles changes to the <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/> by conditionally adding or removing entities
+            from the list
+            </summary>
+            <param name="sender">The <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/></param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.HandleEntitySetCollectionChanged(System.Object)">
+            <summary>
+            Adds or removes entities from the list to keep it in sync with the backing <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/>
+            </summary>
+            <remarks>
+            Entities added to the <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/> will only be added to the list if they already
+            exist in the <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.Source"/>. This typically only occurs when an entity is removed and then
+            the changes are rejected causing the entity to be re-added.
+            </remarks>
+            <param name="obj">The collection changed event args</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.EntityList`1.System#ServiceModel#DomainServices#Client#ICollectionChangedListener#OnCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Handles changes to the <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/> by conditionally adding or removing entities
+            from the list
+            </summary>
+            <param name="sender">The <see cref="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet"/></param>
+            <param name="e">The event args</param>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.EntityList`1.EntitySet">
+            <summary>
+            Gets or sets the backing <see cref="T:System.ServiceModel.DomainServices.Client.EntitySet`1"/>
+            </summary>
+            <remarks>
+            All items added or removed from this list will also be added or removed from the
+            backing <see cref="T:System.ServiceModel.DomainServices.Client.EntitySet`1"/>.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.EntityList`1.Source">
+            <summary>
+            Gets or sets the source collection used to populate this list
+            </summary>
+            <remarks>
+            Setting the source will <see cref="M:System.Collections.ObjectModel.Collection`1.Clear"/> this list and add all the items in
+            the new source. If the new collection is observable, changes to the source will
+            also be reflected in this list.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.QueryBuilder`1">
+            <summary>
+            Builder that can be used to compose and apply a query to existing
+            <see cref="T:System.Linq.IQueryable`1"/> and <see cref="T:System.ServiceModel.DomainServices.Client.EntityQuery`1"/> instances.
+            </summary>
+            <typeparam name="T">The entity type of the query</typeparam>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.QueryBuilder`1"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Windows.Data.DomainServices.QueryBuilder`1"/> class.
+            </summary>
+            <param name="requestTotalItemCount">whether to request the total item count</param>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.OrderBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Applies the specified ascending order clause to the builder
+            </summary>
+            <typeparam name="TKey">The type of the member being ordered by</typeparam>
+            <param name="keySelector">The expression selecting the member to order by</param>
+            <returns>The composed query builder</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown if <paramref name="keySelector"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.OrderByDescending``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Applies the specified descending order clause to the builder
+            </summary>
+            <typeparam name="TKey">The type of the member being ordered by</typeparam>
+            <param name="keySelector">The expression selecting the member to order by</param>
+            <returns>The composed query builder</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown if <paramref name="keySelector"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.Select(System.Linq.Expressions.Expression{System.Func{`0,`0}})">
+            <summary>
+            Applies the specified selection to the builder. Only empty selections are supported.
+            </summary>
+            <param name="selector">The selector function. Note that projections are not supported; the
+            selection must be the entity itself.</param>
+            <returns>The composed query builder</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown if <paramref name="selector"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.Skip(System.Int32)">
+            <summary>
+            Applies the specified skip clause to the builder
+            </summary>
+            <param name="count">The number to skip</param>
+            <returns>The composed query builder</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.Take(System.Int32)">
+            <summary>
+            Applies the specified take clause to the builder
+            </summary>
+            <param name="count">The number to take</param>
+            <returns>The composed query builder</returns>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.ThenBy``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Applies the specified ascending order clause to the builder
+            </summary>
+            <typeparam name="TKey">The type of the member being ordered by</typeparam>
+            <param name="keySelector">The expression selecting the member to order by</param>
+            <returns>The composed query builder</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown if <paramref name="keySelector"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.ThenByDescending``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Applies the specified descending order clause to the builder
+            </summary>
+            <typeparam name="TKey">The type of the member being ordered by</typeparam>
+            <param name="keySelector">The expression selecting the member to order by</param>
+            <returns>The composed query builder</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown if <paramref name="keySelector"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Applies the specified filter to the builder
+            </summary>
+            <param name="predicate">The filter predicate</param>
+            <returns>The composed query builder</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown if <paramref name="predicate"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.ApplyTo(System.ServiceModel.DomainServices.Client.EntityQuery{`0})">
+            <summary>
+            Applies the builer query to the specified <paramref name="entityQuery"/>
+            </summary>
+            <param name="entityQuery">The entity query to apply the builer query to</param>
+            <returns>An <see cref="T:System.ServiceModel.DomainServices.Client.EntityQuery`1"/> with the builder query applied</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown when <paramref name="entityQuery"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.ApplyTo(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Applies the builer query to the specified <paramref name="enumerable"/>
+            </summary>
+            <param name="enumerable">The eumerable to apply the builer query to</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> with the builder query applied</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown when <paramref name="enumerable"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.ApplyTo(System.Linq.IQueryable{`0})">
+            <summary>
+            Applies the builer query to the specified <paramref name="queryable"/>
+            </summary>
+            <param name="queryable">The queryable to apply the builer query to</param>
+            <returns>An <see cref="T:System.Linq.IQueryable`1"/> with the builder query applied</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown when <paramref name="queryable"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="M:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.ApplyTo(System.Collections.ObjectModel.ObservableCollection{`0})">
+            <summary>
+            Applies the builer query to the specified <paramref name="collection"/>
+            </summary>
+            <param name="collection">The observable collection to apply the builer query to</param>
+            <returns>A <see cref="T:System.Collections.ObjectModel.ObservableCollection`1"/> with the builder query applied</returns>
+            <exception cref="T:System.ArgumentNullException"> is thrown when <paramref name="collection"/>
+            is <c>null</c>
+            </exception>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.QueryBuilder`1.RequestTotalItemCount">
+            <summary>
+            Gets or sets a value indicating whether to request the total item count.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Windows.Data.DomainServices.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.CannotLoad">
+            <summary>
+              Looks up a localized string similar to Load cannot be invoked when &apos;CanLoad&apos; is false..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.IcvNotSupported">
+            <summary>
+              Looks up a localized string similar to This ICollectionView operation is not supported..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.IecvNotSupported">
+            <summary>
+              Looks up a localized string similar to This IEditableCollectionView operation is not supported..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.IpcvNotSupported">
+            <summary>
+              Looks up a localized string similar to This IPagedCollectionView operation is not supported..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.MustImplementIecv">
+            <summary>
+              Looks up a localized string similar to The source collection view must implement IEditableCollectionView..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.MustImplementIpcv">
+            <summary>
+              Looks up a localized string similar to The view must implement IPagedCollectionView..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.NoESorEC">
+            <summary>
+              Looks up a localized string similar to EntitySet and EntityCollection are already observable and should be bound to directly..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Windows.Data.DomainServices.Resources.PropertyNotFound">
+            <summary>
+              Looks up a localized string similar to Property {0} not found on type {1}..
+            </summary>
+        </member>
+    </members>
+</doc>

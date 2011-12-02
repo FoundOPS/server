@@ -1,0 +1,78 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.QuickBooksWF", "FoundOps.QuickBooksWF\FoundOps.QuickBooksWF.csproj", "{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Core", "FoundOps.Core\FoundOps.Core.csproj", "{C5170A8A-CAD2-47E2-8552-FEF87C771C03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Common", "..\Common\FoundOps.Common\FoundOps.Common.csproj", "{43D5B3DA-7DCD-454A-BA3D-667901D304CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.QuickBooksWF.Tests", "FoundOps.QuickBooksWF.Tests\FoundOps.QuickBooksWF.Tests.csproj", "{F4FFCA4B-91FF-49FC-8639-D1F56E6BE847}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC} = {E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F6CFD9B6-A0EC-43ED-AE30-E60BC7C43A73}"
+	ProjectSection(SolutionItems) = preProject
+		FoundOps.QuickBooks.vsmdi = FoundOps.QuickBooks.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Server", "FoundOps.Server\FoundOps.Server.csproj", "{D32C535E-2B13-4AC5-9D49-70C8EDC83933}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://corp.foundops.com:8080/tfs/foundops
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = FoundOps.QuickBooksWF\\FoundOps.QuickBooksWF.csproj
+		SccProjectName1 = FoundOps.QuickBooksWF
+		SccLocalPath1 = FoundOps.QuickBooksWF
+		SccProjectUniqueName2 = FoundOps.Core\\FoundOps.Core.csproj
+		SccProjectName2 = FoundOps.Core
+		SccLocalPath2 = FoundOps.Core
+		SccProjectUniqueName3 = ..\\Common\\FoundOps.Common\\FoundOps.Common.csproj
+		SccProjectName3 = ../Common/FoundOps.Common
+		SccLocalPath3 = ..\\Common\\FoundOps.Common
+		SccProjectUniqueName4 = FoundOps.QuickBooksWF.Tests\\FoundOps.QuickBooksWF.Tests.csproj
+		SccProjectName4 = FoundOps.QuickBooksWF.Tests
+		SccLocalPath4 = FoundOps.QuickBooksWF.Tests
+		SccProjectUniqueName5 = FoundOps.Server\\FoundOps.Server.csproj
+		SccProjectName5 = FoundOps.Server
+		SccLocalPath5 = FoundOps.Server
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = FoundOps.QuickBooks.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5170A8A-CAD2-47E2-8552-FEF87C771C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5170A8A-CAD2-47E2-8552-FEF87C771C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5170A8A-CAD2-47E2-8552-FEF87C771C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5170A8A-CAD2-47E2-8552-FEF87C771C03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43D5B3DA-7DCD-454A-BA3D-667901D304CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43D5B3DA-7DCD-454A-BA3D-667901D304CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43D5B3DA-7DCD-454A-BA3D-667901D304CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43D5B3DA-7DCD-454A-BA3D-667901D304CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4FFCA4B-91FF-49FC-8639-D1F56E6BE847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4FFCA4B-91FF-49FC-8639-D1F56E6BE847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4FFCA4B-91FF-49FC-8639-D1F56E6BE847}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4FFCA4B-91FF-49FC-8639-D1F56E6BE847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32C535E-2B13-4AC5-9D49-70C8EDC83933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32C535E-2B13-4AC5-9D49-70C8EDC83933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32C535E-2B13-4AC5-9D49-70C8EDC83933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32C535E-2B13-4AC5-9D49-70C8EDC83933}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
