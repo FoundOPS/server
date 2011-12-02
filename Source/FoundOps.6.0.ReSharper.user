@@ -18,7 +18,6 @@
       <File id="F3DE1685-C531-41A6-A9CB-896B502386E8/d:Controls/d:Parties/d:UserAccounts/f:UserAccountEdit.xaml" caret="3020" fromTop="12" />
       <File id="F3DE1685-C531-41A6-A9CB-896B502386E8/d:Controls/d:Parties/d:UserAccounts/f:UserAccountEdit.xaml.cs" caret="2090" fromTop="13" />
       <File id="0F4FBB4B-0807-4903-8503-67A7021D82BF/d:Services/f:DataManager.cs" caret="25130" fromTop="16" />
-      <File id="8513F689-6113-49D2-A0D3-454F1BFCC2D5/f:Changes.txt/s:..?Changes.txt" caret="30" fromTop="0" />
       <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:CoreEntities/f:CoreEntities.Designer.cs" caret="0" fromTop="0" />
       <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:CoreEntities/d:Extensions/d:Invoices/f:InvoiceExtensions.shared.cs" caret="0" fromTop="0" />
       <File id="0F4FBB4B-0807-4903-8503-67A7021D82BF/d:Tools/f:ContextManagerMarkupExtensions.cs" caret="0" fromTop="0" />
@@ -30,7 +29,6 @@
       <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Web.config" caret="12633" fromTop="42" />
       <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Web.config" caret="5111" fromTop="25" />
       <File id="F3DE1685-C531-41A6-A9CB-896B502386E8/d:Controls/d:Parties/d:UserAccounts/f:UserAccountEdit.xaml" caret="3020" fromTop="12" />
-      <File id="8513F689-6113-49D2-A0D3-454F1BFCC2D5/f:Changes.txt/s:..?Changes.txt" caret="0" fromTop="0" />
     </RecentEdits>
   </RecentFiles>
   <NAntValidationSettings>
