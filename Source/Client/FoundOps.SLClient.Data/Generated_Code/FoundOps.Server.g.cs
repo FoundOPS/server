@@ -579,6 +579,7 @@ namespace FoundOps.Core.Models.CoreEntities
     using System.ServiceModel.DomainServices.Client;
     using System.ServiceModel.DomainServices.Client.ApplicationServices;
     using System.Xml.Serialization;
+    using FoundOps.Core.Models.CoreEntities.Validation;
     
     
     /// <summary>
@@ -2883,12 +2884,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets or sets the 'Earliest' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references a method 'IsTimeValueWithinEarliest' on type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'.
-        // [CustomValidationAttribute(typeof(FoundOps.Core.Models.CoreEntities.Validation.FieldValidators), "IsTimeValueWithinEarliest")]
-        // 
+        [CustomValidation(typeof(FieldValidators), "IsTimeValueWithinEarliest")]
         [DataMember()]
         public DateTime Earliest
         {
@@ -2913,12 +2909,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets or sets the 'Latest' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references a method 'IsTimeValueWithinLatest' on type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'.
-        // [CustomValidationAttribute(typeof(FoundOps.Core.Models.CoreEntities.Validation.FieldValidators), "IsTimeValueWithinLatest")]
-        // 
+        [CustomValidation(typeof(FieldValidators), "IsTimeValueWithinLatest")]
         [DataMember()]
         public DateTime Latest
         {
@@ -2967,12 +2958,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets or sets the 'Value' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references a method 'IsTimeValueValid' on type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'.
-        // [CustomValidationAttribute(typeof(FoundOps.Core.Models.CoreEntities.Validation.FieldValidators), "IsTimeValueValid")]
-        // 
+        [CustomValidation(typeof(FieldValidators), "IsTimeValueValid")]
         [DataMember()]
         public Nullable<DateTime> Value
         {
@@ -6338,12 +6324,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets or sets the 'Maximum' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references a method 'IsValueWithinMaximum' on type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'.
-        // [CustomValidationAttribute(typeof(FoundOps.Core.Models.CoreEntities.Validation.FieldValidators), "IsValueWithinMaximum")]
-        // 
+        [CustomValidation(typeof(FieldValidators), "IsValueWithinMaximum")]
         [DataMember()]
         public decimal Maximum
         {
@@ -6368,12 +6349,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets or sets the 'Minimum' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references a method 'IsValueWithinMinimum' on type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'.
-        // [CustomValidationAttribute(typeof(FoundOps.Core.Models.CoreEntities.Validation.FieldValidators), "IsValueWithinMinimum")]
-        // 
+        [CustomValidation(typeof(FieldValidators), "IsValueWithinMinimum")]
         [DataMember()]
         public decimal Minimum
         {
@@ -6398,12 +6374,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets or sets the 'Value' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references a method 'IsValueValid' on type 'FoundOps.Core.Models.CoreEntities.Validation.FieldValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'.
-        // [CustomValidationAttribute(typeof(FoundOps.Core.Models.CoreEntities.Validation.FieldValidators), "IsValueValid")]
-        // 
+        [CustomValidation(typeof(FieldValidators), "IsValueValid")]
         [DataMember()]
         public Nullable<decimal> Value
         {
@@ -8540,12 +8511,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets or sets the 'FrequencyDetailInt' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references type 'FoundOps.Core.Models.CoreEntities.Validation.RepeatValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references a method 'IsCorrectDayCheckedForFrequencyDetailInt' on type 'FoundOps.Core.Models.CoreEntities.Validation.RepeatValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'.
-        // [CustomValidationAttribute(typeof(FoundOps.Core.Models.CoreEntities.Validation.RepeatValidators), "IsCorrectDayCheckedForFrequencyDetailInt")]
-        // 
+        [CustomValidation(typeof(RepeatValidators), "IsCorrectDayCheckedForFrequencyDetailInt")]
         [DataMember()]
         public Nullable<int> FrequencyDetailInt
         {
@@ -8570,12 +8536,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets or sets the 'FrequencyInt' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references type 'FoundOps.Core.Models.CoreEntities.Validation.RepeatValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references a method 'IsCorrectDayCheckedForFrequencyInt' on type 'FoundOps.Core.Models.CoreEntities.Validation.RepeatValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'.
-        // [CustomValidationAttribute(typeof(FoundOps.Core.Models.CoreEntities.Validation.RepeatValidators), "IsCorrectDayCheckedForFrequencyInt")]
-        // 
+        [CustomValidation(typeof(RepeatValidators), "IsCorrectDayCheckedForFrequencyInt")]
         [DataMember()]
         public int FrequencyInt
         {
@@ -8690,12 +8651,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets or sets the 'StartDate' value.
         /// </summary>
-        // The following attributes were not generated:
-        // 
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references type 'FoundOps.Core.Models.CoreEntities.Validation.RepeatValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'. If you would like the attribute to be generated, make sure the assembly containing the attribute is referenced on the client.
-        // - The attribute 'System.ComponentModel.DataAnnotations.CustomValidationAttribute' references a method 'IsCorrectDayCheckedForStartDate' on type 'FoundOps.Core.Models.CoreEntities.Validation.RepeatValidators' that is not accessible in the client project 'FoundOps.SLClient.Data'.
-        // [CustomValidationAttribute(typeof(FoundOps.Core.Models.CoreEntities.Validation.RepeatValidators), "IsCorrectDayCheckedForStartDate")]
-        // 
+        [CustomValidation(typeof(RepeatValidators), "IsCorrectDayCheckedForStartDate")]
         [DataMember()]
         public DateTime StartDate
         {

@@ -39,52 +39,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Core", "Server\FoundOps.Core\FoundOps.Core.csproj", "{C5170A8A-CAD2-47E2-8552-FEF87C771C03}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://corp.foundops.com:8080/tfs/foundops
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Common\\FoundOps.Common\\FoundOps.Common.csproj
-		SccProjectTopLevelParentUniqueName1 = FoundOps.sln
-		SccProjectName1 = Common/FoundOps.Common
-		SccLocalPath1 = Common\\FoundOps.Common
-		SccProjectUniqueName2 = Client\\FoundOps.SLClient.Data\\FoundOps.SLClient.Data.csproj
-		SccProjectTopLevelParentUniqueName2 = FoundOps.sln
-		SccProjectName2 = Client/FoundOps.SLClient.Data
-		SccLocalPath2 = Client\\FoundOps.SLClient.Data
-		SccProjectUniqueName3 = Client\\FoundOps.SLClient.Navigator\\FoundOps.SLClient.Navigator.csproj
-		SccProjectTopLevelParentUniqueName3 = FoundOps.sln
-		SccProjectName3 = Client/FoundOps.SLClient.Navigator
-		SccLocalPath3 = Client\\FoundOps.SLClient.Navigator
-		SccProjectUniqueName4 = Client\\FoundOps.SLClient.UI\\FoundOps.SLClient.UI.csproj
-		SccProjectTopLevelParentUniqueName4 = FoundOps.sln
-		SccProjectName4 = Client/FoundOps.SLClient.UI
-		SccLocalPath4 = Client\\FoundOps.SLClient.UI
-		SccProjectUniqueName5 = Common\\FoundOps.Common.NET\\FoundOps.Common.NET.csproj
-		SccProjectTopLevelParentUniqueName5 = FoundOps.sln
-		SccProjectName5 = Common/FoundOps.Common.NET
-		SccLocalPath5 = Common\\FoundOps.Common.NET
-		SccProjectUniqueName6 = Common\\FoundOps.Common.Silverlight\\FoundOps.Common.Silverlight.csproj
-		SccProjectTopLevelParentUniqueName6 = FoundOps.sln
-		SccProjectName6 = Common/FoundOps.Common.Silverlight
-		SccLocalPath6 = Common\\FoundOps.Common.Silverlight
-		SccProjectUniqueName7 = Common\\FoundOps.Common.Silverlight.UI\\FoundOps.Common.Silverlight.UI.csproj
-		SccProjectTopLevelParentUniqueName7 = FoundOps.sln
-		SccProjectName7 = Common/FoundOps.Common.Silverlight.UI
-		SccLocalPath7 = Common\\FoundOps.Common.Silverlight.UI
-		SccProjectUniqueName8 = Server\\FoundOps.Server\\FoundOps.Server.csproj
-		SccProjectTopLevelParentUniqueName8 = FoundOps.sln
-		SccProjectName8 = Server/FoundOps.Server
-		SccLocalPath8 = Server\\FoundOps.Server
-		SccProjectUniqueName9 = Server\\FoundOps.Core\\FoundOps.Core.csproj
-		SccProjectTopLevelParentUniqueName9 = FoundOps.sln
-		SccProjectName9 = Server/FoundOps.Core
-		SccLocalPath9 = Server\\FoundOps.Core
-		SccProjectUniqueName10 = Server\\FoundOps.Server.Tests\\FoundOps.Server.Tests.csproj
-		SccProjectTopLevelParentUniqueName10 = FoundOps.sln
-		SccProjectName10 = Server/FoundOps.Server.Tests
-		SccLocalPath10 = Server\\FoundOps.Server.Tests
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = FoundOps.vsmdi
 	EndGlobalSection

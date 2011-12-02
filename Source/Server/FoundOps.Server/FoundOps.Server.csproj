@@ -13,10 +13,14 @@
     <RootNamespace>FoundOps.Server</RootNamespace>
     <AssemblyName>FoundOps.Server</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <SilverlightApplicationList>{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}|..\..\Client\FoundOps.SLClient.Navigator\FoundOps.SLClient.Navigator.csproj|ClientBin|False</SilverlightApplicationList>
     <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
