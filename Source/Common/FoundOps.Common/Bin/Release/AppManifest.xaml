@@ -1,7 +1,0 @@
-﻿<Deployment xmlns="http://schemas.microsoft.com/client/2007/deployment" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" EntryPointAssembly="FoundOps.Common" EntryPointType="FoundOps.Common.App" RuntimeVersion="5.0.60401.0">
-  <Deployment.Parts>
-    <AssemblyPart x:Name="FoundOps.Common" Source="FoundOps.Common.dll" />
-    <AssemblyPart x:Name="System.Reactive" Source="System.Reactive.dll" />
-    <AssemblyPart x:Name="System.Reactive.Windows.Threading" Source="System.Reactive.Windows.Threading.dll" />
-  </Deployment.Parts>
-</Deployment>

@@ -1,8 +1,0 @@
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Database.Core\bin\Debug\FoundOps.Database.Core.sqlx
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Database.Core\bin\Debug\FoundOps.Database.Core.dll
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Database.Core\bin\Debug\FoundOps.Database.Core.pdb
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Database.Core\obj\Debug\ResolveAssemblyReference.cache
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Database.Core\obj\Debug\FoundOps.Database.Core.Model.xml
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Database.Core\obj\Debug\FoundOps.Database.Core.Manifest.xml
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Database.Core\obj\Debug\FoundOps.Database.Core.dll
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Database.Core\obj\Debug\FoundOps.Database.Core.pdb
