@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DevDefined.OAuth.Consumer;
 using DevDefined.OAuth.Framework;
 using FoundOps.Common.Tools;
@@ -77,7 +77,7 @@ namespace FoundOps.Core.Models.QuickBooks
             };
             return oSession;
         }
-        
+
         /// <summary>
         /// Creates the OAuthSession based on the consumer context generated here
         /// as well as the constants provided to us by Intuit for the IntuitAnywhere App  
@@ -128,7 +128,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
         #endregion
 
-        #region Base Url, User Info and Invoice List
+        #region Base Url, User Info and Entity List
 
         /// <summary>
         /// Finds the BaseURL for the current QuickBooks user
@@ -252,13 +252,8 @@ namespace FoundOps.Core.Models.QuickBooks
 
             //Converts the filter created above from a string to a dictionary
             //In order to send the filter as part of the request it needs to be a dictionary
-            var paramCollection = new Dictionary<string, string>();
             String[] splitParams = completeFilter.Split('&');
-            for (int i = 0; i < splitParams.Length; i++)
-            {
-                String[] nameValueSplit = splitParams[i].Split('=');
-                paramCollection.Add(nameValueSplit[0], nameValueSplit[1]);
-            }
+            var paramCollection = splitParams.Select(t => t.Split('=')).ToDictionary(nameValueSplit => nameValueSplit[0], nameValueSplit => nameValueSplit[1]);
 
             //Adds the parameters of sending back Page 1 with 25 invoices on it
             consumerRequest = consumerRequest.WithFormParameters(paramCollection);
@@ -270,7 +265,33 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest.Post().WithRawContentType("application/x-www-form-urlencoded").WithBody(completeFilter);
 
             //Reads the response XML
-             return consumerRequest.ReadBody();
+            return consumerRequest.ReadBody();
+        }
+
+        /// <summary>
+        /// Gets the invoice by id.
+        /// </summary>
+        /// <param name="currentBusinessAccount">The current business account.</param>
+        /// <param name="entityType">The entity type for this call to the function</param>
+        /// <param name="id">The specified Filter</param>
+        /// <returns></returns>
+        public static string GetEntityById(BusinessAccount currentBusinessAccount, string entityType, string id = null)
+        {
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
+
+            //URL for the QuickBooks Data Service for getting the BaseURL
+            var serviceEndPoint = String.Format(quickBooksSession.BaseUrl + "/resource/" + entityType + "/v2" + quickBooksSession.RealmId + id);
+
+            var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
+
+            //Sends and signs the request to the Data Service
+            IConsumerRequest conReq = oSession.Request().Get().ForUrl(serviceEndPoint).SignWithToken();
+
+            //OAuth parameters are needed in the header for this call
+            conReq.Context.GenerateOAuthParametersForHeader();
+
+            //Reads the response XML
+            return conReq.ReadBody();
         }
 
         #endregion
@@ -282,7 +303,7 @@ namespace FoundOps.Core.Models.QuickBooks
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="currentInvoice">The current invoice.</param>
-        public static void CreateNewInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice)
+        public static string CreateNewInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice)
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
@@ -298,6 +319,8 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest = consumerRequest.ForUri(new Uri(serviceEndPoint));
 
             #region Generates the XML body of the Post call
+
+            #region Gets the ClientId
 
             var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.DisplayName;
 
@@ -319,6 +342,8 @@ namespace FoundOps.Core.Models.QuickBooks
                 }
             }
 
+            #endregion
+
             var body = QuickBooksXml.InvoiceXml(currentInvoice, clientId, Operation.Create);
 
             #endregion
@@ -327,10 +352,10 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest = consumerRequest.SignWithToken();
 
             //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string) body));
+            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
 
             //Reads the response XML
-            var responseString = consumerRequest.ReadBody();
+            return consumerRequest.ReadBody();
         }
 
         /// <summary>
@@ -338,8 +363,11 @@ namespace FoundOps.Core.Models.QuickBooks
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="currentInvoice">The current invoice.</param>
-        public static void UpdateInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice)
+        /// <param name="coreEntitiesContainer">The CoreEntitesContainer</param>
+        public static void UpdateInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice, CoreEntitiesContainer coreEntitiesContainer)
         {
+            currentInvoice = MergeChangesWithQuickBooks(currentBusinessAccount, currentInvoice, coreEntitiesContainer);
+
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
             //URL for the QuickBooks DataService for getting the updating an Invoice
@@ -383,7 +411,7 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest = consumerRequest.SignWithToken();
 
             //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string) body));
+            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
 
             //Reads the response XML
             var responseString = consumerRequest.ReadBody();
@@ -439,13 +467,262 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest = consumerRequest.SignWithToken();
 
             //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string) body));
+            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
 
             //Reads the response XML
             var responseString = consumerRequest.ReadBody();
         }
 
         #endregion
+
+        /// <summary>
+        /// Merges the changes between our system and quick books.
+        /// </summary>
+        /// <param name="currentBusinessAccount">The current business account.</param>
+        /// <param name="currentInvoice">The current invoice.</param>
+        /// <param name="coreEntitiesContainer">The CoreEntitiesContainer</param>
+        /// <returns></returns>
+        private static Invoice MergeChangesWithQuickBooks(BusinessAccount currentBusinessAccount, Invoice currentInvoice, CoreEntitiesContainer coreEntitiesContainer)
+        {
+            var response = GetEntityById(currentBusinessAccount, "invoice", currentInvoice.Id.ToString());
+
+            //Creates an Invoice to compare with instead of comparing to XML repeatedly
+            var quickbooksInvoice = CreateInvoiceFromQuickbooksResponse(response);
+
+            #region Invoice
+
+            //This means that a property on the Invoice itself has changed
+            if (currentInvoice.IsBillToLocationChanged || currentInvoice.IsDueDateChanged || currentInvoice.IsMemoChanged)
+            {
+                //var response = GetInvoiceById(currentBusinessAccount, currentInvoice);
+                string[] responseArray = response.Split('<');
+
+                //Checks each line for the one containing the BaseURL
+                foreach (string s in responseArray)
+                {
+                    if (!currentInvoice.IsBillToLocationChanged)
+                    {
+                        //Nothing is done here because of an issue with keeping changes the user made in QuickBooks
+                        //If they want to change the address that it is billed to, they can do it in our system
+                    }
+                    if (!currentInvoice.IsDueDateChanged)
+                    {
+                        //Comes in as "DueDate>2011-08-19"
+                        var tempSplit = s.Split('>');
+
+                        //Now we split just the date part
+                        var newDate = tempSplit[1].Split('-');
+
+                        //Set the new Date in the database
+                        currentInvoice.DueDate = new DateTime(Convert.ToInt32(newDate[0]), Convert.ToInt32(newDate[1]), Convert.ToInt32(newDate[2]));
+                    }
+                    if (!currentInvoice.IsMemoChanged)
+                    {
+                        //Comes in as "Memo>This is a test"
+                        var tempSplit = s.Split('>');
+
+                        //Just saves the memo portion
+                        currentInvoice.Memo = tempSplit[1];
+                    }
+                }
+            }
+
+            #endregion
+
+            #region SalesTerm
+
+            //Since there is currently no way to edit SalesTerms in our System, this will only deal with the QuickBooksId as that is the only thing that changes
+            if (!currentInvoice.IsSalesTermChanged)
+            {
+                string[] responseArray = response.Split('<');
+
+                //Checks each line for the one containing the SalesTermId
+                foreach (string s in responseArray.Where(s => s.Contains("qbo:SalesTermId>")))
+                {
+                    responseArray = s.Split('>');
+                    //Set the Invoice to the SalesTerm with that Id
+                    var salesTerm = coreEntitiesContainer.SalesTerms.Where(st => st.QuickBooksId == responseArray[1]).FirstOrDefault();
+
+                    //If a SalesTerm was found, set it to the SalesTerm for the current Invoice
+                    if (salesTerm != null)
+                    {
+                        currentInvoice.SalesTerm = salesTerm;
+                        break;
+                    }
+                }
+
+                //If a SalesTerm with that Id doesnt exist, make it
+                //Get the SalesTerm with the matching Id from QBO
+                var salesTermsResponse = GetEntityById(currentBusinessAccount, "sales-term", responseArray[1]);
+
+                var splitResponse = salesTermsResponse.Split('<');
+
+                var newSalesTerm = new SalesTerm();
+
+                #region Sets all the properties on the new SalesTerm
+
+                foreach (var sr in splitResponse)
+                {
+                    if (sr.Contains("qbo:Id"))
+                    {
+                        var split = sr.Split('>');
+                        newSalesTerm.QuickBooksId = split[1];
+                    }
+
+                    if (sr.Contains("SyncToken"))
+                    {
+                        var split = sr.Split('>');
+                        newSalesTerm.SyncToken = split[1];
+                    }
+
+                    if (sr.Contains("CreateTime"))
+                    {
+                        var split = sr.Split('>');
+                        newSalesTerm.CreateTime = split[1];
+                    }
+
+                    if (sr.Contains("LastUpdatedTime"))
+                    {
+                        var split = sr.Split('>');
+                        newSalesTerm.LastUpdatedTime = split[1];
+                    }
+
+                    if (sr.Contains("Name"))
+                    {
+                        var split = sr.Split('>');
+                        newSalesTerm.Name = split[1];
+                    }
+
+                    if (sr.Contains("DueDays"))
+                    {
+                        var split = sr.Split('>');
+                        newSalesTerm.DueDays = Convert.ToInt32(split[1]);
+                    }
+                }
+
+                #endregion
+
+                //Save it to the BusinessAccount
+                currentBusinessAccount.SalesTerms.Add(newSalesTerm);
+
+                //Save the correct SalesTerm to the Invoice
+                currentInvoice.SalesTerm = newSalesTerm;
+            }
+
+            #endregion
+
+            #region LineItems
+
+
+            foreach (var lineItem in currentInvoice.LineItems)
+            {
+                //Check the invoice from qbo for the Id and make sure it matches one of the ids we have in our system
+                if (response.Contains(String.Format("<ItemId>" + lineItem.QuickBooksId + "</ItemId>")))
+                {
+                    //Splits to get each line item
+                    var splitLineResponse = Regex.Split(response, "<Line>");
+
+                    foreach (var item in splitLineResponse)
+                    {
+                        //Gets us the Item Id of the LineItem
+                        var splitResponse = Regex.Split(item, "<ItemId>");
+
+                        //Isolates the itemId
+                        splitResponse = splitResponse[1].Split('<');
+
+                        var correctLineItem = currentInvoice.LineItems.Where(li => li.QuickBooksId == splitResponse[0]).FirstOrDefault();
+
+                        //If a line item was found, check that no properties have changed in our system and merge changes accordingly
+                        if (correctLineItem != null)
+                        {
+                            #region Check for changes in amount
+                            
+                            if (!lineItem.IsAmountChanged)
+                            {
+                                var splitAmountResponse = item.Split('<');
+                                foreach (var attribute in splitAmountResponse)
+                                {
+                                    if (attribute.Contains("Amount>"))
+                                    {
+                                        var splitAttribute = attribute.Split('>');
+                                        correctLineItem.Amount = splitAttribute[1];
+                                    }
+                                }
+                            }
+
+                            #endregion
+
+                            #region Check for changes in the description
+
+                            if (!lineItem.IsDescriptionChanged)
+                            {
+                                var splitDescriptionResponse = item.Split('<');
+                                foreach (var attribute in splitDescriptionResponse)
+                                {
+                                    if (attribute.Contains("Desc>"))
+                                    {
+                                        var splitAttribute = attribute.Split('>');
+                                        correctLineItem.Amount = splitAttribute[1];
+                                    }
+                                }
+                            }
+
+                            #endregion
+                        }
+                    }
+                }
+            }
+
+
+            #endregion
+
+            //Save all changes made
+            coreEntitiesContainer.SaveChanges();
+
+            //This Invoice has been merged and is ready to be updated
+            return currentInvoice;
+        }
+
+        private static Invoice CreateInvoiceFromQuickbooksResponse(string response)
+        {
+            var splitResponse = response.Split('<');
+
+            var qbInvoice = new Invoice();
+
+            foreach (var item in splitResponse)
+            {
+                if(item.Contains("qbo:Id"))
+                {
+                    var split = item.Split('>');
+                    qbInvoice.QuickBooksId = split[1];
+                }
+                if (item.Contains("Note"))
+                {
+                    var split = item.Split('>');
+                    qbInvoice.Memo = split[1];
+                }
+                if (item.Contains("DueDate"))
+                {
+                    var split = item.Split('>');
+                    //Now we split just the date part
+                    var newDate = split[1].Split('-');
+
+                    //Set the new Date in the database
+                    qbInvoice.DueDate = new DateTime(Convert.ToInt32(newDate[0]), Convert.ToInt32(newDate[1]), Convert.ToInt32(newDate[2]));
+                }
+                if (item.Contains("qbo:SalesTermId"))
+                {
+                    var split = item.Split('>');
+                    qbInvoice.SalesTerm.QuickBooksId = split[1];
+                }
+
+                //still need to figure out how to do this for line items......................................
+            }
+
+
+            return qbInvoice;
+        }
+
 
         /// <summary>
         /// Creates the authorization URL for QuickBooks based on the OAuth session
@@ -470,14 +747,18 @@ namespace FoundOps.Core.Models.QuickBooks
             return authUrl;
         }
 
+        #region Azure Tables
+
         /// <summary>
         /// Adds the item to the table only if the item does not already exist in the table.
         /// If it does exist, the method will update that item to the current details
         /// </summary>
         /// <param name="currentInvoice">The current invoice.</param>
-        /// <param name="newItem">The new item to add to the table.</param>
-        public static void AddUpdateToTable(Invoice currentInvoice, InvoiceTableDataModel newItem)
+        /// <param name="changeType">The Type of Change required</param>
+        public static void AddUpdateDeleteToTable(Invoice currentInvoice, Operation changeType)
         {
+            var newItem = new InvoiceTableDataModel { InvoiceId = currentInvoice.Id, ChangeType = changeType };
+
             //Check that this DataConnectionString is right
             var storageAccount =
                 CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("DataConnectionString"));
@@ -501,7 +782,7 @@ namespace FoundOps.Core.Models.QuickBooks
                 //Adds the new object to the Table
                 serviceContext.AddObject(currentInvoice.BusinessAccount.Name, newItem);
             }
-                //If an item exists already, update the item and save the changes
+            //If an item exists already, update the item and save the changes
             else
             {
                 //No need to update the InvoiceId becuase it should be the same
@@ -514,5 +795,51 @@ namespace FoundOps.Core.Models.QuickBooks
             //Saves the Tables
             serviceContext.SaveChanges();
         }
+
+        /// <summary>
+        /// Removes the object from the Azure table.
+        /// </summary>
+        /// <param name="currentInvoice">The current invoice.</param>
+        public static void RemoveFromTable(Invoice currentInvoice)
+        {
+            //Check that this DataConnectionString is right
+            var storageAccount =
+                CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("DataConnectionString"));
+
+            var serviceContext = new InvoiceTableDataServiceContext(storageAccount.TableEndpoint.ToString(),
+                                                                    storageAccount.Credentials);
+
+            var newItem = new InvoiceTableDataModel { InvoiceId = currentInvoice.Id };
+
+            //Query that checks to see if and object with the same InvoiceId exists in the Table specified
+            var existsQuery = serviceContext.CreateQuery<InvoiceTableDataModel>(currentInvoice.BusinessAccount.Name).Where(
+                e => e.InvoiceId == newItem.InvoiceId);
+
+            //Gets the first and hopefully only item in the Table that matches
+            var existingObject = existsQuery.FirstOrDefault();
+
+            if (existingObject != null)
+                serviceContext.DeleteObject(existingObject);
+        }
+
+        /// <summary>
+        /// Gets the list of objects from the specified table.
+        /// </summary>
+        /// <param name="currentBusinessAccount">The current business account.</param>
+        /// <returns></returns>
+        public static IQueryable<InvoiceTableDataModel> GetListFromTables(BusinessAccount currentBusinessAccount)
+        {
+            //Check that this DataConnectionString is right
+            var storageAccount =
+                CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("DataConnectionString"));
+
+            var serviceContext = new InvoiceTableDataServiceContext(storageAccount.TableEndpoint.ToString(),
+                                                                    storageAccount.Credentials);
+
+            //Gets all objects from the Azure table specified and returns the result
+            return serviceContext.CreateQuery<InvoiceTableDataModel>(currentBusinessAccount.Name);
+        }
+
+        #endregion
     }
 }

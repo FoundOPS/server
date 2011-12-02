@@ -4,8 +4,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <StartPageUrl>
-          </StartPageUrl>
+          <StartPageUrl>Home/CCDAPDD</StartPageUrl>
           <StartAction>CurrentPage</StartAction>
           <AspNetDebugging>True</AspNetDebugging>
           <SilverlightDebugging>True</SilverlightDebugging>
@@ -20,7 +19,7 @@
           <StartWorkingDirectory>
           </StartWorkingDirectory>
           <EnableENC>False</EnableENC>
-          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+          <AlwaysStartWebServerOnDebug>True</AlwaysStartWebServerOnDebug>
           <ProjectOutputReferences>
             <Ref Project="{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}" Folder="ClientBin">FoundOps.SLClient.Navigator.xap|Microsoft.CSharp.zip|Microsoft.Windows.Data.DomainServices.zip|SLaB.Printing.Controls.zip|SLaB.Utilities.Xaml.zip|SLaB.Utilities.zip|System.ComponentModel.Composition.Initialization.zip|System.ComponentModel.Composition.zip|System.ComponentModel.DataAnnotations.zip|System.ServiceModel.DomainServices.Client.Web.zip|System.ServiceModel.DomainServices.Client.zip|System.ServiceModel.Web.Extensions.zip|System.Windows.Controls.Data.Input.zip|System.Windows.Controls.Navigation.zip|System.Windows.Controls.zip|System.Windows.Data.zip|System.Xml.Linq.zip|Telerik.Windows.Controls.DataVisualization.zip|Telerik.Windows.Controls.Docking.zip|Telerik.Windows.Controls.GridView.zip|Telerik.Windows.Controls.Input.zip|Telerik.Windows.Controls.Navigation.zip|Telerik.Windows.Controls.RibbonBar.zip|Telerik.Windows.Controls.Scheduler.zip|Telerik.Windows.Controls.ScheduleView.zip|Telerik.Windows.Controls.zip|Telerik.Windows.Data.zip</Ref>
           </ProjectOutputReferences>

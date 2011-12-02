@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Data;
+using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.EntityFramework;
+using FoundOps.Core.Models.QuickBooks;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -32,11 +34,15 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateInvoice(Invoice currentInvoice)
         {
+            QuickBooksTools.AddUpdateDeleteToTable(currentInvoice, Operation.Update);
+
             this.ObjectContext.Invoices.AttachAsModified(currentInvoice);
         }
 
         public void DeleteInvoice(Invoice invoice)
         {
+            QuickBooksTools.AddUpdateDeleteToTable(invoice, Operation.Delete);
+
             if ((invoice.EntityState == EntityState.Detached))
                 this.ObjectContext.Invoices.Attach(invoice);
 
@@ -75,6 +81,40 @@ namespace FoundOps.Server.Services.CoreDomainService
                 this.ObjectContext.SalesTerms.Attach(salesTerm);
 
             this.ObjectContext.SalesTerms.DeleteObject(salesTerm);
+        }
+
+        #endregion
+
+        #region LineItem
+
+        public IQueryable<LineItem> GetLineItem()
+        {
+            return this.ObjectContext.LineItems;
+        }
+
+        public void InsertLineItem(LineItem lineItem)
+        {
+            if ((lineItem.EntityState != EntityState.Detached))
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(lineItem, EntityState.Added);
+            }
+            else
+            {
+                this.ObjectContext.LineItems.AddObject(lineItem);
+            }
+        }
+
+        public void UpdateLineItem(LineItem lineItem)
+        {
+            this.ObjectContext.LineItems.AttachAsModified(lineItem);
+        }
+
+        public void DeleteLineItem(LineItem lineItem)
+        {
+            if ((lineItem.EntityState == EntityState.Detached))
+                this.ObjectContext.LineItems.Attach(lineItem);
+
+            this.ObjectContext.LineItems.DeleteObject(lineItem);
         }
 
         #endregion

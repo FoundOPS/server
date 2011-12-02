@@ -1033,7 +1033,6 @@
     <ProjectReference Include="..\FoundOps.SLClient.Data\FoundOps.SLClient.Data.csproj">
       <Project>{0F4FBB4B-0807-4903-8503-67A7021D82BF}</Project>
       <Name>FoundOps.SLClient.Data</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

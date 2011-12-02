@@ -255,6 +255,7 @@
           <ScalarProperty Name="Salesperson" ColumnName="Salesperson" />
           <ScalarProperty Name="LinkedPartyId" ColumnName="LinkedPartyId" />
           <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="SalesTermId" ColumnName="SalesTermId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -423,6 +424,11 @@
           <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="QuickBooksId" ColumnName="QuickBooksId" />
+          <ScalarProperty Name="IsMemoChanged" ColumnName="IsMemoChanged" />
+          <ScalarProperty Name="IsBillToLocationChanged" ColumnName="IsBillToLocationChanged" />
+          <ScalarProperty Name="IsDueDateChanged" ColumnName="IsDueDateChanged" />
+          <ScalarProperty Name="IsSalesTermChanged" ColumnName="IsSalesTermChanged" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -432,6 +438,13 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="DueDays" ColumnName="DueDays" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
+          <ScalarProperty Name="QuickBooksId" ColumnName="QuickBooksId" />
+          <ScalarProperty Name="IsNameChanged" ColumnName="IsNameChanged" />
+          <ScalarProperty Name="IsDueDaysChanged" ColumnName="IsDueDaysChanged" />
+          <ScalarProperty Name="SyncToken" ColumnName="SyncToken" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -442,6 +455,9 @@
           <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="IsAmountChanged" ColumnName="IsAmountChanged" />
+          <ScalarProperty Name="IsDescriptionChanged" ColumnName="IsDescriptionChanged" />
+          <ScalarProperty Name="QuickBooksId" ColumnName="QuickBooksId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

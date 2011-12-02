@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.Core.Models.QuickBooks;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace FoundOps.Core.Models.Azure
@@ -16,6 +17,6 @@ namespace FoundOps.Core.Models.Azure
         }
 
         public Guid InvoiceId { get; set; }
-        public string ChangeType { get; set; }
+        public Operation ChangeType { get; set; }
     }
 }

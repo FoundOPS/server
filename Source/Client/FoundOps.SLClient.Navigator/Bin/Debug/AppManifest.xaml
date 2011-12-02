@@ -15,7 +15,6 @@
     <AssemblyPart x:Name="mscorlib" Source="mscorlib.dll" />
     <AssemblyPart x:Name="ReactiveUI.Xaml_SL4" Source="ReactiveUI.Xaml_SL4.dll" />
     <AssemblyPart x:Name="ReactiveUI_SL4" Source="ReactiveUI_SL4.dll" />
-    <AssemblyPart x:Name="SilverlightAnalytics" Source="SilverlightAnalytics.dll" />
     <AssemblyPart x:Name="SLMultiBinding" Source="SLMultiBinding.dll" />
     <AssemblyPart x:Name="system" Source="system.dll" />
     <AssemblyPart x:Name="System.Net" Source="System.Net.dll" />

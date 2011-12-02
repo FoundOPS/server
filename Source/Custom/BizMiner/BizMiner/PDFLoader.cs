@@ -8,7 +8,7 @@ namespace BizMiner
 {
     public class PDFLoader
     {
-        private const string FolderLocation = @"C:\FoundOps\Company\Bussiness Development\Research\Target\Industry";
+        private const string FolderLocation = @"C:\FoundOps\Company\Research\Target\SubIndustry";
 
         /// <summary>
         /// Converts the PDF files to text files.

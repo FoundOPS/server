@@ -4,21 +4,6 @@
         <name>FoundOps.SLClient.UI</name>
     </assembly>
     <members>
-        <member name="T:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings">
-            <summary>
-            View for Business Account Settings
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings"/> class.
-            </summary>
-        </member>
         <member name="M:FoundOps.Framework.Views.Controls.Services.ServiceOccurencesLink.InitializeComponent">
             <summary>
             InitializeComponent
@@ -29,43 +14,6 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="T:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload">
-            <summary>
-            A class to hold ImageUpload
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="F:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.FileProperty">
-            <summary>
-            File Dependency Property.
-            </summary>
-        </member>
-        <member name="F:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.OwnerPartyProperty">
-            <summary>
-            OwnerParty Dependency Property.
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload"/> class.
-            </summary>
-        </member>
-        <member name="P:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.File">
-            <summary>
-            File
-            </summary>
-        </member>
-        <member name="P:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.OwnerParty">
-            <summary>
-            The File's OwnerParty.
-            NOTE: Required for creating PartyImages
-            </summary>
-        </member>
-        <!-- Badly formed XML comment ignored for member "P:FoundOps.SLClient.UI.Controls.Files.ImageFileUpload.DefaultFileTypeToCreate" -->
         <member name="M:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory.EmployeeHistoryGrid.InitializeComponent">
             <summary>
             InitializeComponent
@@ -102,6 +50,23 @@
              Takes a Repeat and displays a string with a detailed description of the repeat
              Ex. Reapeat every 2 weeks on Tuesday
             </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Settings.UserAccountSettings">
+            <summary>
+            View/Edit User account settings.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Settings.UserAccountSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Settings.UserAccountSettings"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Settings.UserAccountSettings.HyperlinkButtonClick(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Hyperlinks the button click. Navigate to /Account/ChangePassword
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:FoundOps.SLClient.UI.Controls.Settings.UserAccountSettings.InitializeComponent">
             <summary>
@@ -364,11 +329,6 @@
         <member name="P:FoundOps.Framework.Views.Controls.MonthlyFrequencyDetails.Value">
             <summary>
             Value
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsLink.InitializeComponent">
-            <summary>
-            InitializeComponent
             </summary>
         </member>
         <member name="T:FoundOps.SLClient.UI.Controls.Dispatcher.Filter">
@@ -836,11 +796,6 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountLarge.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
         <member name="T:FoundOps.SLClient.UI.ViewModels.FieldsVM">
             <summary>
             Contains the logic for displaying Fields
@@ -1193,48 +1148,6 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="T:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit">
-            <summary>
-            View/Edit User account settings.
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="F:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.EntityProperty">
-            <summary>
-            Entity Dependency Property.
-            </summary>
-        </member>
-        <member name="F:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.ISaveDiscardChangesCommandsProperty">
-            <summary>
-            ISaveDiscardChangesCommands Dependency Property.
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit"/> class.
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.HyperlinkButtonClick(System.Object,System.Windows.RoutedEventArgs)">
-            <summary>
-            Hyperlinks the button click. Navigate to /Account/ChangePassword
-            </summary>
-            <param name="sender">The sender.</param>
-            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="P:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.Entity">
-            <summary>
-            Entity
-            </summary>
-        </member>
-        <member name="P:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit.ISaveDiscardChangesCommands">
-            <summary>
-            ISaveDiscardChangesCommands
-            </summary>
-        </member>
         <member name="M:FoundOps.Framework.Views.Controls.Services.InstanceEditChildWindow.InitializeComponent">
             <summary>
             InitializeComponent
@@ -1348,26 +1261,6 @@
             IsReadOnly
             </summary>
         </member>
-        <member name="T:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid">
-            <summary>
-            Displays a list of the BusinessAccounts
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid"/> class.
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="P:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts.BusinessAccountsGrid.BusinessAccountsVM">
-            <summary>
-            Gets the business accounts VM.
-            </summary>
-        </member>
         <member name="F:FoundOps.SLClient.UI.Controls.Clients.ClientsGrid.ParentContextVMProperty">
             <summary>
             ParentContextVM Dependency Property.
@@ -1381,6 +1274,21 @@
         <member name="P:FoundOps.SLClient.UI.Controls.Clients.ClientsGrid.ParentContextVM">
             <summary>
             ParentContextVM
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings">
+            <summary>
+            View for Business Account Settings
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Settings.BusinessAccountSettings"/> class.
             </summary>
         </member>
         <member name="M:FoundOps.Framework.Views.Controls.Services.RecurringServices.RecurringServicesLinkSmall.InitializeComponent">
@@ -1436,31 +1344,6 @@
         <member name="P:FoundOps.Framework.Views.Controls.CustomFields.TimeDefine.DateTimeField">
             <summary>
             DateTimeField
-            </summary>
-        </member>
-        <member name="T:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid">
-            <summary>
-            Displays a list of the UserAccounts
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid"/> class.
-            </summary>
-        </member>
-        <member name="P:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid.UserAccountsVM">
-            <summary>
-            Gets the user accounts VM.
-            </summary>
-        </member>
-        <member name="P:FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountsGrid.IsMainGrid">
-            <summary>
-            Gets or sets if this is the main grid.
             </summary>
         </member>
         <member name="T:FoundOps.SLClient.UI.ViewModels.SelectedVehiclesVM">
@@ -2000,11 +1883,6 @@
             </summary>
             <param name="dataManager">The data manager.</param>
         </member>
-        <member name="P:FoundOps.SLClient.UI.ViewModels.UserAccountsVM.ObjectTypeProvided">
-            <summary>
-            Gets the object type provided (for the InfiniteAccordion). Overriden because base class is Party.
-            </summary>
-        </member>
         <member name="F:FoundOps.Framework.Views.Controls.CustomFields.TextDefine.TextBoxFieldProperty">
             <summary>
             TextBoxField Dependency Property.
@@ -2511,6 +2389,26 @@
             <param name="parameter">The parameter.</param>
             <param name="culture">The culture.</param>
             <returns></returns>
+        </member>
+        <member name="T:FoundOps.SLClient.UI.Controls.Parties.AdmininistrativeConsole.BusinessAccountsGrid">
+            <summary>
+            Displays a list of the BusinessAccounts
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.AdmininistrativeConsole.BusinessAccountsGrid.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.UI.Controls.Parties.AdmininistrativeConsole.BusinessAccountsGrid"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.UI.Controls.Parties.AdmininistrativeConsole.BusinessAccountsGrid.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:FoundOps.SLClient.UI.Controls.Parties.AdmininistrativeConsole.BusinessAccountsGrid.BusinessAccountsVM">
+            <summary>
+            Gets the business accounts VM.
+            </summary>
         </member>
         <member name="F:FoundOps.SLClient.UI.Controls.Clients.ClientSmall.ClientsListVMProperty">
             <summary>

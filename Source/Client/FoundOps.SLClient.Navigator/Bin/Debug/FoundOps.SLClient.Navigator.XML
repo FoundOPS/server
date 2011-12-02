@@ -166,6 +166,21 @@
                 with the server hosted on localhost
             </summary>
         </member>
+        <member name="T:FoundOps.SLClient.Navigator.MainPage">
+            <summary>
+            The MainPage of the entire Silverlight Application
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.Navigator.MainPage.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.Navigator.MainPage.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.Navigator.MainPage"/> class.
+            </summary>
+        </member>
         <member name="T:FoundOps.SLClient.Navigator.Panes.InfiniteAccordion.Blocks">
             <summary>
             The InfiniteAccordionPageAdapter for Blocks.
@@ -286,6 +301,11 @@
             Gets the data manager.
             </summary>
         </member>
+        <member name="M:FoundOps.SLClient.Navigator.Panes.MainPage.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
         <member name="T:FoundOps.SLClient.Navigator.Panes.Dispatcher.DispatcherToolBar">
             <summary>
             The toolbar at the top of the dispatcher main page
@@ -301,27 +321,7 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="T:FoundOps.SLClient.Navigator.Panes.InfiniteAccordion.ServiceTemplatesModeConverter">
-            <summary>
-            A converter to choose DetailsOnly or ListDetailsSummary for the ServiceTemplatesThirdsListDetails
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.Navigator.Panes.MainPage.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:FoundOps.SLClient.Navigator.MainPage">
-            <summary>
-            The MainPage of the entire Silverlight Application
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.Navigator.MainPage.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:FoundOps.SLClient.Navigator.MainPage"/> class.
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.Navigator.MainPage.InitializeComponent">
+        <member name="M:FoundOps.Core.Navigator.Footer.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
@@ -336,14 +336,14 @@
             A page to setup User Account, Business Account, and QuickBooks Settings.
             </summary>
         </member>
-        <member name="M:FoundOps.SLClient.Navigator.Panes.Settings.SettingsPane.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:FoundOps.SLClient.Navigator.Panes.Settings.SettingsPane"/> class.
-            </summary>
-        </member>
         <member name="M:FoundOps.SLClient.Navigator.Panes.Settings.SettingsPane.InitializeComponent">
             <summary>
             InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.Navigator.Panes.Settings.SettingsPane.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.Navigator.Panes.Settings.SettingsPane"/> class.
             </summary>
         </member>
         <member name="T:FoundOps.SLClient.Navigator.Controls.UserIcon">
@@ -351,29 +351,14 @@
             Displays the current user accounts icon.
             </summary>
         </member>
-        <member name="M:FoundOps.SLClient.Navigator.Controls.UserIcon.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:FoundOps.SLClient.Navigator.Controls.UserIcon"/> class.
-            </summary>
-        </member>
         <member name="M:FoundOps.SLClient.Navigator.Controls.UserIcon.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
         </member>
-        <member name="T:FoundOps.SLClient.Navigator.Panes.CompanyHome">
+        <member name="M:FoundOps.SLClient.Navigator.Controls.UserIcon.#ctor">
             <summary>
-            The home page when you switch to a company role.
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.Navigator.Panes.CompanyHome.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:FoundOps.SLClient.Navigator.Panes.MainPage"/> class.
-            </summary>
-        </member>
-        <member name="M:FoundOps.SLClient.Navigator.Panes.CompanyHome.InitializeComponent">
-            <summary>
-            InitializeComponent
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.Navigator.Controls.UserIcon"/> class.
             </summary>
         </member>
         <member name="M:FoundOps.SLClient.Navigator.App.InitializeComponent">
@@ -381,9 +366,24 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="M:FoundOps.Core.Navigator.Footer.InitializeComponent">
+        <member name="T:FoundOps.SLClient.Navigator.Panes.InfiniteAccordion.ServiceTemplatesModeConverter">
+            <summary>
+            A converter to choose DetailsOnly or ListDetailsSummary for the ServiceTemplatesThirdsListDetails
+            </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.Navigator.Panes.CompanyHome">
+            <summary>
+            The home page when you switch to a company role.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.Navigator.Panes.CompanyHome.InitializeComponent">
             <summary>
             InitializeComponent
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.Navigator.Panes.CompanyHome.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.SLClient.Navigator.Panes.MainPage"/> class.
             </summary>
         </member>
     </members>

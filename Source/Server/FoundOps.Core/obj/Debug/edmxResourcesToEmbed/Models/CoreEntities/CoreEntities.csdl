@@ -272,6 +272,14 @@
       <End Role="Client" EntitySet="Clients" />
       <End Role="Invoice" EntitySet="Invoices" />
     </AssociationSet>
+    <AssociationSet Name="SalesTermClient" Association="CoreEntities.SalesTermClient">
+      <End Role="SalesTerm" EntitySet="SalesTerms" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="SalesTermBusinessAccount" Association="CoreEntities.SalesTermBusinessAccount">
+      <End Role="SalesTerm" EntitySet="SalesTerms" />
+      <End Role="BusinessAccount" EntitySet="Parties" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Block">
     <Key>
@@ -589,7 +597,7 @@
     <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
     <Property Type="Time" Name="EstimatedDuration" Nullable="false" />
     <Property Type="String" Name="Name" Nullable="false" />
-    <Property Type="Boolean" Name="ReadyToInvoice" Nullable="true" />
+    <Property Type="Boolean" Name="ReadyToInvoice" Nullable="false" />
     <Property Type="DateTime" Name="Date" Nullable="false" />
   </EntityType>
   <Association Name="RouteTaskLocation">
@@ -682,6 +690,8 @@
     <NavigationProperty Name="ServiceTemplates" Relationship="CoreEntities.ClientServiceTemplate" FromRole="Client" ToRole="ServiceTemplate" />
     <NavigationProperty Name="ClientTitles" Relationship="CoreEntities.ClientTitleClient" FromRole="Client" ToRole="ClientTitle" />
     <NavigationProperty Name="Invoices" Relationship="CoreEntities.ClientInvoice" FromRole="Client" ToRole="Invoice" />
+    <NavigationProperty Name="DefaultSalesTerm" Relationship="CoreEntities.SalesTermClient" FromRole="Client" ToRole="SalesTerm" />
+    <Property Type="Guid" Name="SalesTermId" Nullable="false" />
   </EntityType>
   <Association Name="ClientParty">
     <End Type="CoreEntities.Client" Multiplicity="0..1" Role="Client" />
@@ -769,6 +779,7 @@
     <Property Type="String" Name="RouteManifestSettings" Nullable="true" />
     <Property Type="String" Name="QuickBooksSessionXml" Nullable="true" />
     <NavigationProperty Name="Invoices" Relationship="CoreEntities.BusinessAccountInvoice" FromRole="BusinessAccount" ToRole="Invoice" />
+    <NavigationProperty Name="SalesTerms" Relationship="CoreEntities.SalesTermBusinessAccount" FromRole="BusinessAccount" ToRole="SalesTerm" />
   </EntityType>
   <Association Name="BusinessAccountService">
     <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
@@ -1378,6 +1389,11 @@
     <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
     <NavigationProperty Name="Client" Relationship="CoreEntities.ClientInvoice" FromRole="Invoice" ToRole="Client" />
     <Property Type="Guid" Name="ClientId" Nullable="true" />
+    <Property Type="String" Name="QuickBooksId" Nullable="true" />
+    <Property Type="Boolean" Name="IsMemoChanged" Nullable="false" />
+    <Property Type="Boolean" Name="IsBillToLocationChanged" Nullable="false" />
+    <Property Type="Boolean" Name="IsDueDateChanged" Nullable="false" />
+    <Property Type="Boolean" Name="IsSalesTermChanged" Nullable="false" />
   </EntityType>
   <Association Name="InvoiceLocation">
     <End Type="CoreEntities.Invoice" Role="Invoice" Multiplicity="*" />
@@ -1399,6 +1415,15 @@
     <Property Type="Int32" Name="DueDays" Nullable="true" />
     <Property Type="String" Name="Name" Nullable="false" />
     <NavigationProperty Name="Invoices" Relationship="CoreEntities.InvoiceSalesTerm" FromRole="SalesTerm" ToRole="Invoice" />
+    <NavigationProperty Name="Clients" Relationship="CoreEntities.SalesTermClient" FromRole="SalesTerm" ToRole="Client" />
+    <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.SalesTermBusinessAccount" FromRole="SalesTerm" ToRole="BusinessAccount" />
+    <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
+    <Property Type="String" Name="QuickBooksId" Nullable="false" />
+    <Property Type="Boolean" Name="IsNameChanged" Nullable="false" />
+    <Property Type="Boolean" Name="IsDueDaysChanged" Nullable="false" />
+    <Property Type="String" Name="SyncToken" Nullable="true" />
+    <Property Type="String" Name="CreateTime" Nullable="true" />
+    <Property Type="String" Name="LastUpdatedTime" Nullable="true" />
   </EntityType>
   <Association Name="InvoiceSalesTerm">
     <End Type="CoreEntities.Invoice" Role="Invoice" Multiplicity="*" />
@@ -1433,6 +1458,9 @@
     <Property Type="Guid" Name="InvoiceId" Nullable="false" />
     <Property Type="String" Name="Description" Nullable="true" />
     <Property Type="String" Name="Amount" Nullable="true" />
+    <Property Type="Boolean" Name="IsAmountChanged" Nullable="false" />
+    <Property Type="Boolean" Name="IsDescriptionChanged" Nullable="false" />
+    <Property Type="String" Name="QuickBooksId" Nullable="false" />
   </EntityType>
   <Association Name="LineItemInvoice">
     <End Type="CoreEntities.LineItem" Role="LineItem" Multiplicity="*" />
@@ -1497,6 +1525,30 @@
       </Principal>
       <Dependent Role="Invoice">
         <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SalesTermClient">
+    <End Type="CoreEntities.SalesTerm" Role="SalesTerm" Multiplicity="1" />
+    <End Type="CoreEntities.Client" Role="Client" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SalesTerm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="SalesTermId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SalesTermBusinessAccount">
+    <End Type="CoreEntities.SalesTerm" Role="SalesTerm" Multiplicity="*" />
+    <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SalesTerm">
+        <PropertyRef Name="BusinessAccountId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

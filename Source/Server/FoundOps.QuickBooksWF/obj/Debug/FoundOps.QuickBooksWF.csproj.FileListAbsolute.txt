@@ -1,0 +1,15 @@
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\FoundOps.QuickBooksWF.dll
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\FoundOps.QuickBooksWF.pdb
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\FoundOps.Core.dll
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\Microsoft.WindowsAzure.StorageClient.dll
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\DevDefined.OAuth.dll
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\FoundOps.Common.dll
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\FoundOps.Common.NET.dll
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\FoundOps.Core.pdb
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\Microsoft.WindowsAzure.StorageClient.xml
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\FoundOps.Common.pdb
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\FoundOps.Common.NET.pdb
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\obj\Debug\ResolveAssemblyReference.cache
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\obj\Debug\FoundOps.QuickBooksWF.dll
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\obj\Debug\FoundOps.QuickBooksWF.pdb
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.QuickBooksWF\bin\System.Data.Entity.dll

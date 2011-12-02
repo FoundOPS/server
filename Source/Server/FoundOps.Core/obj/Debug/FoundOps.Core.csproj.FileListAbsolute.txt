@@ -1,6 +1,7 @@
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\bin\Debug\FoundOps.Core.dll.config
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\bin\Debug\FoundOps.Core.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\bin\Debug\FoundOps.Core.pdb
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\bin\Debug\DevDefined.OAuth.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\bin\Debug\FoundOps.Common.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\bin\Debug\FoundOps.Common.NET.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\bin\Debug\Microsoft.WindowsAzure.StorageClient.dll
@@ -14,4 +15,3 @@ C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\bin\Debug\System.Reactive.Win
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\obj\Debug\ResolveAssemblyReference.cache
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\obj\Debug\FoundOps.Core.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\obj\Debug\FoundOps.Core.pdb
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\bin\Debug\DevDefined.OAuth.dll

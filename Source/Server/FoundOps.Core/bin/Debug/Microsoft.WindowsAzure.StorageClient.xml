@@ -8548,7 +8548,7 @@
             Specifies snapshots are to be included.
             </summary>
         </member>
-        <member name="F:Microsoft.WindowsAzure.StorageClient.Protocol.Constants.HeaderConstants.UserAgentPrefix">
+        <member name="F:Microsoft.WindowsAzure.StorageClient.Protocol.Constants.HeaderConstants.UserAgent">
             <summary>
             Specifies the value to use for UserAgent header.
             </summary>

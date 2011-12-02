@@ -1,0 +1,207 @@
+<Configuration>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="E77B2732-6E8E-4FEA-8776-89BBC98D4BFC/f:Web.config" caret="717" fromTop="8" />
+      <File id="E77B2732-6E8E-4FEA-8776-89BBC98D4BFC/f:SetReadyToInvoice.cs" caret="0" fromTop="0" />
+      <File id="E77B2732-6E8E-4FEA-8776-89BBC98D4BFC/f:GetInvoiceFromRouteTask.cs" caret="0" fromTop="0" />
+      <File id="E77B2732-6E8E-4FEA-8776-89BBC98D4BFC/f:CreateInvoiceQuickBooks.cs" caret="919" fromTop="21" />
+      <File id="F4FFCA4B-91FF-49FC-8639-D1F56E6BE847/f:UnitTest1.cs" caret="0" fromTop="0" />
+      <File id="E77B2732-6E8E-4FEA-8776-89BBC98D4BFC/f:GetBaseUrlActivity.cs" caret="728" fromTop="19" />
+      <File id="E77B2732-6E8E-4FEA-8776-89BBC98D4BFC/f:UpdateInvoiceQuickBooks.cs" caret="740" fromTop="21" />
+      <File id="E77B2732-6E8E-4FEA-8776-89BBC98D4BFC/f:GetListOfBusinessAccounts.cs" caret="639" fromTop="16" />
+      <File id="E77B2732-6E8E-4FEA-8776-89BBC98D4BFC/f:GetListOfObjectsFromTables.cs" caret="2012" fromTop="26" />
+    </RecentFiles>
+    <RecentEdits />
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False">
+    </NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="livetemplates.csharp.usevar">True</setting>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <UnitTestSessions>
+    <Session>
+      <Name>Session #1</Name>
+      <Elements />
+    </Session>
+  </UnitTestSessions>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="CSharpCodeCompletionContext">
+      <Item value="public" priority="63" />
+      <Item value="static" priority="95" />
+      <Item value="IQueryable" priority="31" />
+      <Item value="InvoiceTableDataModel`0" priority="31" />
+      <Item value="Invoice`0" priority="126" />
+      <Item value="BusinessAccount`0" priority="63" />
+      <Item value="for" priority="31" />
+      <Item value="foreach" priority="287" />
+      <Item value="if" priority="511" />
+      <Item value="invoiceObject" priority="222" />
+      <Item value="Delete" priority="16" />
+      <Item value="Update" priority="16" />
+      <Item value="else" priority="63" />
+      <Item value="coreEntitiesContainer" priority="321" />
+      <Item value="i" priority="63" />
+      <Item value="Id" priority="63" />
+      <Item value="invoiceExists" priority="63" />
+      <Item value="var" priority="607" />
+      <Item value="invoice" priority="95" />
+      <Item value="return" priority="127" />
+      <Item value="Guid`0" priority="31" />
+      <Item value="QuickBooksTools`0" priority="159" />
+      <Item value="currentBusinessAccount" priority="255" />
+      <Item value="Create" priority="16" />
+      <Item value="currentInvoice" priority="702" />
+      <Item value="quickBooksSession" priority="31" />
+      <Item value="true" priority="31" />
+      <Item value="IServiceProvider`0" priority="31" />
+      <Item value="GetInvoiceById`0" priority="31" />
+      <Item value="response" priority="191" />
+      <Item value="new" priority="159" />
+      <Item value="DateTime" priority="28" />
+      <Item value="s" priority="63" />
+      <Item value="newDate" priority="127" />
+      <Item value="Convert`0" priority="159" />
+      <Item value="tempSplit" priority="63" />
+      <Item value="CoreEntitiesContainer`0" priority="63" />
+      <Item value="IFormattable`0" priority="63" />
+      <Item value="st" priority="63" />
+      <Item value="responseArray" priority="95" />
+      <Item value="salesTerm" priority="94" />
+      <Item value="null" priority="30" />
+      <Item value="break" priority="31" />
+      <Item value="GetEntityList`0" priority="31" />
+      <Item value="StringSplitOptions`0" priority="31" />
+      <Item value="System" priority="30" />
+      <Item value="salesTermsResponse" priority="63" />
+      <Item value="string" priority="159" />
+      <Item value="term" priority="63" />
+      <Item value="entityType" priority="31" />
+      <Item value="id" priority="31" />
+      <Item value="GetEntityById`0" priority="63" />
+      <Item value="sr" priority="63" />
+      <Item value="SalesTerm" priority="29" />
+      <Item value="newSalesTerm" priority="95" />
+      <Item value="split" priority="63" />
+      <Item value="#region" priority="127" />
+      <Item value="#endregion" priority="127" />
+      <Item value="String`0" priority="31" />
+      <Item value="lineItem" priority="95" />
+      <Item value="Regex`0" priority="63" />
+      <Item value="splitResponse" priority="224" />
+      <Item value="item" priority="63" />
+      <Item value="li" priority="31" />
+      <Item value="correctLineItem" priority="63" />
+      <Item value="splitLineResponse" priority="31" />
+      <Item value="IFormatProvider`0" priority="31" />
+      <Item value="attribute" priority="62" />
+      <Item value="splitAttribute" priority="31" />
+      <Item value="LineItem" priority="28" />
+      <Item value="Invoice" priority="28" />
+      <Item value="qbInvoice" priority="127" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.Azure.InvoiceTableDataModel">
+      <Item value="ChangeType" priority="80" />
+      <Item value="InvoiceId" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.CoreEntitiesContainer">
+      <Item value="Invoices" priority="26" />
+      <Item value="SaveChanges`0" priority="53" />
+      <Item value="SalesTerms" priority="54" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Objects.ObjectSet`1">
+      <Item value="Where`0" priority="55" />
+      <Item value="OrderBy`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Objects.ObjectQuery`1">
+      <Item value="Where`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Nullable`1">
+      <Item value="ToString`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="ToString`0" priority="26" />
+      <Item value="Split`0" priority="323" />
+      <Item value="Contains`0" priority="134" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Invoice">
+      <Item value="Id" priority="84" />
+      <Item value="QuickBooksId" priority="53" />
+      <Item value="IsBillToLocationChanged" priority="53" />
+      <Item value="IsDueDateChanged" priority="53" />
+      <Item value="IsMemoChanged" priority="80" />
+      <Item value="DueDate" priority="54" />
+      <Item value="Memo" priority="54" />
+      <Item value="SalesTerm" priority="107" />
+      <Item value="IsSalesTermChanged" priority="27" />
+      <Item value="LineItems" priority="53" />
+      <Item value="SalesTermId" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@FoundOps.Core.Models.QuickBooks.QuickBooksTools">
+      <Item value="DeleteInvoice`0" priority="26" />
+      <Item value="UpdateInvoice`0" priority="26" />
+      <Item value="RemoveFromTable`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.QuickBooks.QuickBooksSession">
+      <Item value="BaseUrl" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Convert">
+      <Item value="ToInt32`0" priority="161" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.SalesTerm">
+      <Item value="IsDueDaysChanged" priority="26" />
+      <Item value="IsNameChanged" priority="26" />
+      <Item value="QuickBooksId" priority="80" />
+      <Item value="Id" priority="26" />
+      <Item value="DueDays" priority="26" />
+      <Item value="Name" priority="26" />
+      <Item value="SyncToken" priority="26" />
+      <Item value="CreateTime" priority="53" />
+      <Item value="LastUpdatedTime" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Int32">
+      <Item value="ToString`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Linq.IQueryable`1">
+      <Item value="FirstOrDefault`1" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Guid">
+      <Item value="ToString`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.BusinessAccount">
+      <Item value="SalesTerms" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Objects.DataClasses.EntityCollection`1">
+      <Item value="Add`0" priority="26" />
+      <Item value="Where`1" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="Format`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.LineItem">
+      <Item value="QuickBooksId" priority="53" />
+      <Item value="IsAmountChanged" priority="26" />
+      <Item value="IsDescriptionChanged" priority="27" />
+      <Item value="Amount" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Text.RegularExpressions.Regex">
+      <Item value="Split`0" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.IEnumerable`1">
+      <Item value="FirstOrDefault`1" priority="26" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>

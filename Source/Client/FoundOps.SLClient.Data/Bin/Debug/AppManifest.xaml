@@ -18,8 +18,8 @@
     <AssemblyPart x:Name="Telerik.Windows.Controls.Data" Source="Telerik.Windows.Controls.Data.dll" />
     <AssemblyPart x:Name="Telerik.Windows.Controls.ScheduleView" Source="Telerik.Windows.Controls.ScheduleView.dll" />
     <AssemblyPart x:Name="Telerik.Windows.Controls.GridView" Source="Telerik.Windows.Controls.GridView.dll" />
-    <AssemblyPart x:Name="Telerik.Windows.Controls.Navigation" Source="Telerik.Windows.Controls.Navigation.dll" />
     <AssemblyPart x:Name="System.Windows.Controls.Navigation" Source="System.Windows.Controls.Navigation.dll" />
+    <AssemblyPart x:Name="Telerik.Windows.Controls.Navigation" Source="Telerik.Windows.Controls.Navigation.dll" />
     <AssemblyPart x:Name="Microsoft.CSharp" Source="Microsoft.CSharp.dll" />
     <AssemblyPart x:Name="System.Windows.Controls.Toolkit" Source="System.Windows.Controls.Toolkit.dll" />
     <AssemblyPart x:Name="Telerik.Windows.Controls.Input" Source="Telerik.Windows.Controls.Input.dll" />

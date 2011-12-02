@@ -39,6 +39,8 @@ C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\Te
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\Telerik.Windows.Controls.DataVisualization.xml
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\Telerik.Windows.Controls.GridView.pdb
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\Telerik.Windows.Controls.GridView.xml
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\Telerik.Windows.Controls.Input.pdb
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\Telerik.Windows.Controls.Input.xml
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\Telerik.Windows.Controls.Navigation.pdb
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\Telerik.Windows.Controls.Navigation.xml
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\Bin\Debug\Telerik.Windows.Controls.RibbonBar.pdb

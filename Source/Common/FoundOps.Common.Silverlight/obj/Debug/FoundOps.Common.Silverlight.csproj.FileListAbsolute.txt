@@ -77,6 +77,8 @@ C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\Teler
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\ReactiveUI_SL4.pdb
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\ReactiveUI_SL4.xml
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\DataValidationFramework.Silverlight.pdb
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\Telerik.Windows.Controls.Input.pdb
+C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\Telerik.Windows.Controls.Input.xml
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\de\Microsoft.CSharp.resources.dll
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\es\Microsoft.CSharp.resources.dll
 C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\Bin\Debug\fr\Microsoft.CSharp.resources.dll

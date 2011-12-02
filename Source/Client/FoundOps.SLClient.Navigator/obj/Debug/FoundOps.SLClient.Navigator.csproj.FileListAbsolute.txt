@@ -54,8 +54,6 @@ C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Syste
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.ComponentModel.DataAnnotations.dll
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\system.dll
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.Net.dll
-C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.Reactive.dll
-C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.Reactive.Windows.Threading.dll
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.ServiceModel.DomainServices.Client.dll
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.ServiceModel.DomainServices.Client.Web.dll
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.ServiceModel.Web.dll
@@ -100,8 +98,6 @@ C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Micro
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Microsoft.Expression.Interactions.xml
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\ReactiveUI_SL4.pdb
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\ReactiveUI_SL4.xml
-C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.Reactive.xml
-C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.Reactive.Windows.Threading.xml
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.ServiceModel.DomainServices.Client.xml
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.ServiceModel.DomainServices.Client.Web.xml
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\System.Windows.Controls.Data.Input.xml
@@ -126,6 +122,8 @@ C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Teler
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Telerik.Windows.Controls.Docking.xml
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Telerik.Windows.Controls.GridView.pdb
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Telerik.Windows.Controls.GridView.xml
+C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Telerik.Windows.Controls.Input.pdb
+C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Telerik.Windows.Controls.Input.xml
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Telerik.Windows.Controls.Navigation.pdb
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Telerik.Windows.Controls.Navigation.xml
 C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Navigator\Bin\Debug\Telerik.Windows.Controls.RibbonBar.pdb

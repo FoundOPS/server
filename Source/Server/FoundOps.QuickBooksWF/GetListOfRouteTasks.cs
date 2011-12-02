@@ -8,7 +8,7 @@ using FoundOps.Core.Models.CoreEntities;
 namespace FoundOps.QuickBooksWF
 {
 
-    public sealed class GenerateInvoicesFromTasksActivity : CodeActivity
+    public sealed class GetListOfRouteTasks : CodeActivity
     {
         // Define an activity input argument of type BunsinessAccount
         public InArgument<BusinessAccount> CurrentBusinessAccount { get; set; }

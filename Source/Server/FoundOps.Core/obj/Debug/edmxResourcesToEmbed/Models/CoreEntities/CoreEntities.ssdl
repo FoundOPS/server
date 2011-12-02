@@ -303,6 +303,14 @@
       <End Role="Client" EntitySet="Clients" />
       <End Role="Invoice" EntitySet="Invoices" />
     </AssociationSet>
+    <AssociationSet Name="SalesTermClient" Association="CoreEntities.Store.SalesTermClient">
+      <End Role="SalesTerm" EntitySet="SalesTerms" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="SalesTermBusinessAccount" Association="CoreEntities.Store.SalesTermBusinessAccount">
+      <End Role="SalesTerm" EntitySet="SalesTerms" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
+    </AssociationSet>
     <AssociationSet Name="FK_Business_inherits_Party" Association="CoreEntities.Store.FK_Business_inherits_Party">
       <End Role="Party" EntitySet="Parties" />
       <End Role="Business" EntitySet="Parties_Business" />
@@ -514,6 +522,7 @@
     <Property Name="Salesperson" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LinkedPartyId" Type="uniqueidentifier" Nullable="true" />
     <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="SalesTermId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="ServiceTemplates">
     <Key>
@@ -659,6 +668,11 @@
     <Property Name="LastUpdatedTime" Type="nvarchar(max)" Nullable="true" />
     <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="true" />
     <Property Name="ClientId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="QuickBooksId" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="IsMemoChanged" Type="bit" Nullable="false" />
+    <Property Name="IsBillToLocationChanged" Type="bit" Nullable="false" />
+    <Property Name="IsDueDateChanged" Type="bit" Nullable="false" />
+    <Property Name="IsSalesTermChanged" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="SalesTerms">
     <Key>
@@ -667,6 +681,13 @@
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="DueDays" Type="int" Nullable="true" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="QuickBooksId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsNameChanged" Type="bit" Nullable="false" />
+    <Property Name="IsDueDaysChanged" Type="bit" Nullable="false" />
+    <Property Name="SyncToken" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CreateTime" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LastUpdatedTime" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="LineItems">
     <Key>
@@ -676,6 +697,9 @@
     <Property Name="InvoiceId" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Amount" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="IsAmountChanged" Type="bit" Nullable="false" />
+    <Property Name="IsDescriptionChanged" Type="bit" Nullable="false" />
+    <Property Name="QuickBooksId" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="RouteTasks">
     <Key>
@@ -690,7 +714,7 @@
     <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
     <Property Name="EstimatedDuration" Type="time" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ReadyToInvoice" Type="bit" Nullable="true" />
+    <Property Name="ReadyToInvoice" Type="bit" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Parties_Business">
@@ -1490,6 +1514,30 @@
       </Principal>
       <Dependent Role="Invoice">
         <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SalesTermClient">
+    <End Role="SalesTerm" Type="CoreEntities.Store.SalesTerms" Multiplicity="1" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SalesTerm">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="SalesTermId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SalesTermBusinessAccount">
+    <End Role="SalesTerm" Type="CoreEntities.Store.SalesTerms" Multiplicity="*" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SalesTerm">
+        <PropertyRef Name="BusinessAccountId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

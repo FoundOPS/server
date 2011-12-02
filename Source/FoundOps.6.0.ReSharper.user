@@ -3,35 +3,15 @@
     <string />
     <integer />
     <boolean>
-      <setting name="livetemplates.csharp.usevar">True</setting>
+      <setting name="livetemplates.csharp.usevar">False</setting>
       <setting name="SolutionAnalysisEnabled">False</setting>
     </boolean>
   </SettingsComponent>
   <RecentFiles>
     <RecentFiles>
-      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:Panes/d:InfiniteAccordion/f:Blocks.xaml.cs" caret="0" fromTop="0" />
-      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:Panes/d:InfiniteAccordion/f:Blocks.xaml" caret="29562" fromTop="18" />
-      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:Panes/d:Settings/f:SettingsPane.xaml" caret="2122" fromTop="12" />
-      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:Panes/d:Settings/f:SettingsPane.xaml.cs" caret="496" fromTop="10" />
-      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/d:Views/f:Web.config" caret="2389" fromTop="44" />
-      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Web.config" caret="3752" fromTop="14" />
-      <File id="F3DE1685-C531-41A6-A9CB-896B502386E8/d:Controls/d:Parties/d:UserAccounts/f:UserAccountEdit.xaml" caret="3020" fromTop="12" />
-      <File id="F3DE1685-C531-41A6-A9CB-896B502386E8/d:Controls/d:Parties/d:UserAccounts/f:UserAccountEdit.xaml.cs" caret="2090" fromTop="13" />
-      <File id="0F4FBB4B-0807-4903-8503-67A7021D82BF/d:Services/f:DataManager.cs" caret="25130" fromTop="16" />
-      <File id="8513F689-6113-49D2-A0D3-454F1BFCC2D5/f:Changes.txt/s:..?Changes.txt" caret="30" fromTop="0" />
-      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:CoreEntities/f:CoreEntities.Designer.cs" caret="0" fromTop="0" />
-      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:CoreEntities/d:Extensions/d:Invoices/f:InvoiceExtensions.shared.cs" caret="0" fromTop="0" />
-      <File id="0F4FBB4B-0807-4903-8503-67A7021D82BF/d:Tools/f:ContextManagerMarkupExtensions.cs" caret="0" fromTop="0" />
-      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/d:Controllers/f:AccountController.cs" caret="10845" fromTop="40" />
+      <File id="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB/f:UserSpecificResourcesWrapper.cs" caret="610" fromTop="19" />
     </RecentFiles>
-    <RecentEdits>
-      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:Panes/d:InfiniteAccordion/f:Blocks.xaml" caret="28478" fromTop="19" />
-      <File id="FF7089B6-040E-4C6C-A386-BAB77C52CFCB/d:Panes/d:Settings/f:SettingsPane.xaml" caret="2122" fromTop="12" />
-      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Web.config" caret="12633" fromTop="42" />
-      <File id="D32C535E-2B13-4AC5-9D49-70C8EDC83933/f:Web.config" caret="5111" fromTop="25" />
-      <File id="F3DE1685-C531-41A6-A9CB-896B502386E8/d:Controls/d:Parties/d:UserAccounts/f:UserAccountEdit.xaml" caret="3020" fromTop="12" />
-      <File id="8513F689-6113-49D2-A0D3-454F1BFCC2D5/f:Changes.txt/s:..?Changes.txt" caret="0" fromTop="0" />
-    </RecentEdits>
+    <RecentEdits />
   </RecentFiles>
   <NAntValidationSettings>
     <NAntPath value="" />
@@ -45,1876 +25,813 @@
     <UseAddins>Never</UseAddins>
   </UnitTestRunnerNUnit>
   <CompletionStatisticsManager>
-    <ItemStatistics item="Default">
-      <Item value="if" priority="45" />
-      <Item value="navigateUri" priority="1" />
-      <Item value="NavigateToPage`0" priority="0" />
-      <Item value="savedTargetUri" priority="0" />
-      <Item value="Uri`0" priority="0" />
-      <Item value="new" priority="84" />
-      <Item value="Uri" priority="1" />
-      <Item value="navigateUriForCurrentUri" priority="1" />
-      <Item value="block" priority="0" />
-      <Item value="s" priority="12" />
-      <Item value="c" priority="4" />
-      <Item value="Html" priority="1" />
-      <Item value="Url" priority="0" />
-      <Item value="Response" priority="2" />
-      <Item value="var" priority="64" />
-      <Item value="BackgroundWorker`0" priority="0" />
-      <Item value="worker" priority="1" />
-      <Item value="UpdateVisibleServicesHelper`0" priority="0" />
-      <Item value="DispatchMethod`0" priority="2" />
-      <Item value="values" priority="7" />
-      <Item value="null" priority="25" />
-      <Item value="Count`1" priority="1" />
-      <Item value="return" priority="47" />
-      <Item value="IMultiValueConverter`0" priority="0" />
-      <Item value="logEntry" priority="2" />
-      <Item value="this" priority="29" />
-      <Item value="double" priority="1" />
-      <Item value="Double`0" priority="0" />
-      <Item value="string" priority="12" />
-      <Item value="SLDependProp" priority="0" />
-      <Item value="VehicleMaintenanceLogEntry`0" priority="4" />
-      <Item value="SLDependPropChange" priority="1" />
-      <Item value="e" priority="2" />
-      <Item value="LineItemsChanged`0" priority="0" />
-      <Item value="Sum`0" priority="0" />
-      <Item value="args" priority="1" />
-      <Item value="SecuritySettings`0" priority="3" />
-      <Item value="IFormatProvider`0" priority="1" />
-      <Item value="se" priority="0" />
-      <Item value="ar" priority="0" />
-      <Item value="as" priority="0" />
-      <Item value="public" priority="35" />
-      <Item value="decimal" priority="1" />
-      <Item value="totalCost" priority="1" />
-      <Item value="foreach" priority="3" />
-      <Item value="OnMileageChanged`0" priority="0" />
-      <Item value="in" priority="3" />
-      <Item value="DesignerProperties`0" priority="0" />
-      <Item value="SetRouteDayView`0" priority="0" />
-      <Item value="coreDataManager" priority="0" />
-      <Item value="service" priority="2" />
-      <Item value="private" priority="22" />
-      <Item value="static" priority="15" />
-      <Item value="GetRouteType`0" priority="0" />
-      <Item value="payloadCheck" priority="0" />
-      <Item value="draggedItemsType" priority="0" />
-      <Item value="IsInDetailsView" priority="2" />
-      <Item value="selectedEntity" priority="4" />
-      <Item value="false" priority="1" />
-      <Item value="true" priority="6" />
-      <Item value="submitOperation" priority="1" />
-      <Item value="CurrentContext" priority="0" />
-      <Item value="pageSize" priority="5" />
-      <Item value="else" priority="8" />
-      <Item value="base" priority="0" />
-      <Item value="continue" priority="0" />
-      <Item value="void" priority="7" />
-      <Item value="Timer" priority="0" />
-      <Item value="UpdateControl`0" priority="0" />
-      <Item value="Timeout`0" priority="2" />
-      <Item value="DateTime`0" priority="17" />
-      <Item value="Console`0" priority="10" />
-      <Item value="startTime" priority="0" />
-      <Item value="Validation`0" priority="0" />
-      <Item value="ValueFormat`0" priority="0" />
-      <Item value="value" priority="7" />
-      <Item value="ServiceGenerator`0" priority="0" />
-      <Item value="RecurringService`0" priority="8" />
-      <Item value="recurringServiceContext" priority="7" />
-      <Item value="clientContext" priority="2" />
-      <Item value="PageFlipEventArgs`0" priority="1" />
-      <Item value="locationContext" priority="2" />
-      <Item value="List" priority="10" />
-      <Item value="Service`0" priority="9" />
-      <Item value="lf" priority="1" />
-      <Item value="Destination" priority="0" />
-      <Item value="ServiceDefined" priority="0" />
-      <Item value="IEnumerable" priority="6" />
-      <Item value="possibleRecurringServices" priority="0" />
-      <Item value="class" priority="5" />
-      <Item value="bool" priority="4" />
-      <Item value="SortedSet" priority="6" />
-      <Item value="ExistingService" priority="3" />
-      <Item value="ServiceDateToGenerate" priority="1" />
-      <Item value="ServiceTuple`0" priority="6" />
-      <Item value="ToolBarContainerStyle`0" priority="0" />
-      <Item value="Tuple`0" priority="13" />
-      <Item value="Tuple&lt;List&lt;Service&gt;,List&lt;RecurringService&gt;&gt;" priority="0" />
-      <Item value="_filteredServices" priority="0" />
-      <Item value="_filteredRecurringServices" priority="0" />
-      <Item value="FilterServicesRecurringServices`0" priority="0" />
-      <Item value="services" priority="2" />
-      <Item value="recurringServices" priority="3" />
-      <Item value="AccessViolationException`0" priority="0" />
-      <Item value="a" priority="8" />
-      <Item value="dateCompare" priority="1" />
-      <Item value="xId" priority="0" />
-      <Item value="ServiceTuple" priority="1" />
-      <Item value="existingService" priority="0" />
-      <Item value="serviceDateToGenerate" priority="0" />
-      <Item value="RecurringServiceToGenerateFrom" priority="1" />
-      <Item value="gs" priority="3" />
-      <Item value="existingServiceInRange" priority="0" />
-      <Item value="int" priority="6" />
-      <Item value="serviceTuples" priority="0" />
-      <Item value="collection" priority="3" />
-      <Item value="selectedService" priority="0" />
-      <Item value="elibileServicesRecurringServices" priority="1" />
-      <Item value="ServiceGenerationResult`0" priority="0" />
-      <Item value="CanMoveBackward" priority="1" />
-      <Item value="ServiceGenerationResult" priority="0" />
-      <Item value="canMoveBackward" priority="0" />
-      <Item value="CanMoveForward" priority="0" />
-      <Item value="canMoveForward" priority="0" />
-      <Item value="ServicesTuples" priority="0" />
-      <Item value="sortedList" priority="0" />
-      <Item value="_existingServices" priority="0" />
-      <Item value="IComparer" priority="0" />
-      <Item value="InputMode`0" priority="0" />
-      <Item value="serviceGenerationResult" priority="1" />
-      <Item value="_canMoveBackward" priority="0" />
-      <Item value="_canMoveForward" priority="0" />
-      <Item value="Service" priority="0" />
-      <Item value="ServiceDate" priority="1" />
-      <Item value="Client" priority="0" />
-      <Item value="serviceTuple" priority="1" />
-      <Item value="existingServices" priority="1" />
-      <Item value="canAddMore" priority="3" />
-      <Item value="firstServiceTupleDate" priority="1" />
-      <Item value="firstHalfStartDate" priority="1" />
-      <Item value="existingServicesToAdd" priority="4" />
-      <Item value="eligibleServices" priority="0" />
-      <Item value="servicesToAdd" priority="0" />
-      <Item value="es" priority="1" />
-      <Item value="middleDate" priority="0" />
-      <Item value="DirectSetSelectedEntity`0" priority="0" />
-      <Item value="SelectedEntity" priority="0" />
-      <Item value="_selectedContactPersonViewModel" priority="0" />
-      <Item value="Person" priority="0" />
-      <Item value="ClientTitleInCreation" priority="0" />
-      <Item value="AddCommand" priority="0" />
-      <Item value="ObservableCollection" priority="0" />
-      <Item value="oldValue" priority="1" />
-      <Item value="handler" priority="0" />
-      <Item value="newValue" priority="1" />
-      <Item value="_selectedRouteDestinations" priority="0" />
-      <Item value="RouteDestination`0" priority="0" />
-      <Item value="NotifyCollectionChangedAction`0" priority="1" />
-      <Item value="_action" priority="0" />
-      <Item value="internal" priority="0" />
-      <Item value="CollectionExtensions`0" priority="0" />
-      <Item value="targetUri" priority="0" />
-      <Item value="SLClient.Data" priority="0" />
-      <Item value="ContextManager`0" priority="8" />
-      <Item value="RoleId" priority="1" />
-      <Item value="Subject&lt;Guid&gt;" priority="0" />
-      <Item value="Context" priority="0" />
-      <Item value="_contextManager" priority="4" />
-      <Item value="contextManger" priority="0" />
-      <Item value="Guid`0" priority="11" />
-      <Item value="SelectedRole" priority="2" />
-      <Item value="SLClient" priority="0" />
-      <Item value="DataManager`0" priority="2" />
-      <Item value="Client`0" priority="4" />
-      <Item value="contextManager" priority="6" />
-      <Item value="using" priority="0" />
-      <Item value="context" priority="0" />
-      <Item value="coreDomainContext" priority="2" />
-      <Item value="ClientsInContext" priority="2" />
-      <Item value="T`0" priority="7" />
-      <Item value="_coreDomainContext" priority="1" />
-      <Item value="query" priority="5" />
-      <Item value="Action`0" priority="10" />
-      <Item value="LoadOperation`0" priority="0" />
-      <Item value="obj" priority="0" />
-      <Item value="callback" priority="1" />
-      <Item value="response" priority="0" />
-      <Item value="loadedClients" priority="0" />
-      <Item value="EntityList&lt;Client&gt;" priority="0" />
-      <Item value="CoreDataManager`0" priority="1" />
-      <Item value="dataManager" priority="2" />
-      <Item value="DomainCollectionView" priority="3" />
-      <Item value="DomainCollectionView&lt;Client&gt;" priority="1" />
-      <Item value="ClientsDesignData`0" priority="0" />
-      <Item value="Subject`0" priority="10" />
-      <Item value="EntityList" priority="10" />
-      <Item value="entityList" priority="0" />
-      <Item value="domainCollectionViewWrapper" priority="0" />
-      <Item value="clients" priority="0" />
-      <Item value="loadedCallback" priority="0" />
-      <Item value="DataManager" priority="1" />
-      <Item value="ContextManager" priority="1" />
-      <Item value="CoreDomainContext" priority="1" />
-      <Item value="Subject&lt;EntityList&lt;Client&gt;&gt;" priority="0" />
-      <Item value="enum" priority="1" />
-      <Item value="StatefulObserver`0" priority="0" />
-      <Item value="StatefulObserver" priority="1" />
-      <Item value="object" priority="14" />
-      <Item value="subject" priority="1" />
-      <Item value="ObservationState" priority="3" />
-      <Item value="ObservationState`0" priority="42" />
-      <Item value="Subject&lt;ObservationState&gt;" priority="0" />
-      <Item value="ObservableExtensions`0" priority="2" />
-      <Item value="observable" priority="11" />
-      <Item value="IObservable" priority="25" />
-      <Item value="ReplaySubject" priority="3" />
-      <Item value="BehaviorSubject" priority="9" />
-      <Item value="readonly" priority="2" />
-      <Item value="Observable`0" priority="21" />
-      <Item value="protected" priority="0" />
-      <Item value="ControlsThatCurrentlyRequireThisViewModel" priority="2" />
-      <Item value="from" priority="6" />
-      <Item value="select" priority="6" />
-      <Item value="count" priority="1" />
-      <Item value="BehaviorSubject&lt;IObservable&lt;ObservationState&gt;&gt;" priority="0" />
-      <Item value="observableObservationState" priority="2" />
-      <Item value="List&lt;IObservable&lt;ObservationState&gt;&gt;" priority="2" />
-      <Item value="observationState" priority="7" />
-      <Item value="Active" priority="14" />
-      <Item value="join" priority="3" />
-      <Item value="observationStateObservable" priority="4" />
-      <Item value="os" priority="3" />
-      <Item value="clientsNeedsLoadingCaseA" priority="0" />
-      <Item value="Role`0" priority="3" />
-      <Item value="roleId" priority="7" />
-      <Item value="observables" priority="2" />
-      <Item value="Suspended" priority="1" />
-      <Item value="observationStateIsActive" priority="1" />
-      <Item value="leftRoleId" priority="1" />
-      <Item value="rightObservationState" priority="0" />
-      <Item value="leftRightJoin" priority="0" />
-      <Item value="roleIdUpdates" priority="5" />
-      <Item value="observationStateUpdates" priority="0" />
-      <Item value="act" priority="0" />
-      <Item value="suspendedUpdate" priority="0" />
-      <Item value="observationStateActiveUpdates" priority="0" />
-      <Item value="active" priority="0" />
-      <Item value="observationStateUpdate" priority="0" />
-      <Item value="lastObservationState" priority="1" />
-      <Item value="Time" priority="2" />
-      <Item value="State" priority="2" />
-      <Item value="observationStateChanges" priority="1" />
-      <Item value="observationStateChanged" priority="1" />
-      <Item value="lastSuspension" priority="2" />
-      <Item value="lastRoleIdUpdate" priority="0" />
-      <Item value="_roleIdUpdates" priority="8" />
-      <Item value="updateCaseA" priority="0" />
-      <Item value="updateCaseB" priority="1" />
-      <Item value="Dictionary" priority="0" />
-      <Item value="Type`0" priority="0" />
-      <Item value="Dictionary&lt;string,List&lt;List&lt;IObservable&lt;ObservationState&gt;&gt;&gt;&gt;" priority="0" />
-      <Item value="SetupExecuteObservable`0" priority="0" />
-      <Item value="_observationStateObservables" priority="4" />
-      <Item value="execute" priority="3" />
-      <Item value="executeClientQuery" priority="0" />
-      <Item value="_queriesIsLoadingObservables" priority="0" />
-      <Item value="EntityQuery`0" priority="0" />
-      <Item value="loadedEntities" priority="1" />
-      <Item value="EntitySet`0" priority="0" />
-      <Item value="EntityList&lt;T&gt;" priority="0" />
-      <Item value="Dictionary&lt;string,IObserver&lt;object&gt;&gt;" priority="0" />
-      <Item value="Subject" priority="1" />
-      <Item value="IObserver" priority="3" />
-      <Item value="Enum`0" priority="0" />
-      <Item value="Query`0" priority="7" />
-      <Item value="_queriesEntityListObservables" priority="0" />
-      <Item value="Entity`0" priority="0" />
-      <Item value="System" priority="0" />
-      <Item value="action" priority="0" />
-      <Item value="_observationStateQueries" priority="0" />
-      <Item value="state" priority="0" />
-      <Item value="String`0" priority="0" />
-      <Item value="scheduler" priority="0" />
-      <Item value="Scheduler`0" priority="1" />
-      <Item value="TimeSpan" priority="4" />
-      <Item value="Tuple&lt;Subject&lt;List&lt;ObservationState&gt;&gt;,List&lt;IObservable&lt;ObservationState&gt;&gt;&gt;" priority="0" />
-      <Item value="Any`1" priority="0" />
-      <Item value="states" priority="0" />
-      <Item value="Contains`1" priority="0" />
-      <Item value="CombinedObservationState`0" priority="1" />
-      <Item value="CombinedObservationStateObservable" priority="0" />
-      <Item value="Subject&lt;IObservable&lt;ObservationState&gt;&gt;" priority="0" />
-      <Item value="CombinedObservationState" priority="0" />
-      <Item value="Subject&lt;IObservable&lt;Tuple&lt;ObservationState,DateTime&gt;&gt;&gt;" priority="0" />
-      <Item value="LinkedList" priority="1" />
-      <Item value="_combinedObservationStateObservable" priority="2" />
-      <Item value="BehaviorSubject&lt;ObservationState&gt;" priority="0" />
-      <Item value="observer" priority="0" />
-      <Item value="Tuple&lt;ObservationState,DateTime&gt;" priority="3" />
-      <Item value="osobv" priority="0" />
-      <Item value="Observer`0" priority="0" />
-      <Item value="IEventPatternSource" priority="0" />
-      <Item value="Array`0" priority="0" />
-      <Item value="b" priority="0" />
-      <Item value="MailToConverter`0" priority="0" />
-      <Item value="BehaviorSubject&lt;Tuple&lt;ObservationState,DateTime&gt;&gt;" priority="0" />
-      <Item value="IDisposable`0" priority="1" />
-      <Item value="ref" priority="1" />
-      <Item value="updatedRoleId" priority="2" />
-      <Item value="observationSate" priority="1" />
-      <Item value="combinedObservationStateChanges" priority="5" />
-      <Item value="on" priority="2" />
-      <Item value="combinedObservationStateChange" priority="3" />
-      <Item value="group" priority="2" />
-      <Item value="by" priority="1" />
-      <Item value="roleIdUpdate" priority="6" />
-      <Item value="into" priority="0" />
-      <Item value="g" priority="0" />
-      <Item value="ObservationStateChanges" priority="0" />
-      <Item value="osc" priority="1" />
-      <Item value="updatedCaseA" priority="0" />
-      <Item value="equals" priority="2" />
-      <Item value="IntToDoubleConverter`0" priority="0" />
-      <Item value="DebuggingConverter`0" priority="0" />
-      <Item value="FrameworkElementExtensions`0" priority="0" />
-      <Item value="frameworkElement" priority="0" />
-      <Item value="viewModel" priority="0" />
-      <Item value="ClientsViewModel`0" priority="0" />
-      <Item value="executeObservable" priority="1" />
-      <Item value="_queriesIsLoadingSubjects" priority="0" />
-      <Item value="rs" priority="0" />
-      <Item value="st" priority="0" />
-      <Item value="x" priority="0" />
-      <Item value="_osc" priority="0" />
-      <Item value="_ostateUpdate" priority="0" />
-      <Item value="RoleIdObserver" priority="0" />
-      <Item value="DateTimeOffset" priority="0" />
-      <Item value="qsu" priority="1" />
-      <Item value="_idUpdate" priority="1" />
-      <Item value="Stack" priority="0" />
-      <Item value="anon" priority="1" />
-      <Item value="cache" priority="1" />
-      <Item value="_isLoadingObservable" priority="0" />
-      <Item value="IsLoadingObservable" priority="1" />
-      <Item value="IsLoading" priority="0" />
-      <Item value="_isLoadingDisposable" priority="0" />
-      <Item value="SynchronizationContext`0" priority="1" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Server.Models.CoreEntities.Block">
-      <Item value="Link" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Uri">
-      <Item value="ToString`0" priority="2" />
-      <Item value="MakeRelativeUri`0" priority="0" />
-    </ItemStatistics>
     <ItemStatistics item="Qualified:System.String">
-      <Item value="Count`0" priority="0" />
-      <Item value="ToString`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Web.Mvc.HtmlHelper`1">
-      <Item value="AntiForgeryToken`0" priority="0" />
-      <Item value="Action`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Web.Mvc.UrlHelper">
-      <Item value="Content`0" priority="1" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Web.HttpResponse">
-      <Item value="Write`0" priority="1" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Web.Mvc.MvcHtmlString">
-      <Item value="ToHtmlString`0" priority="1" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ComponentModel.BackgroundWorker">
-      <Item value="DoWork" priority="0" />
-      <Item value="RunWorkerAsync`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.VehicleMaintenanceLogEntry">
-      <Item value="LineItems" priority="3" />
-      <Item value="RaiseDataMemberChanged`0" priority="0" />
-      <Item value="RaisePropertyChanged`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Client.EntityCollection`1">
-      <Item value="Count" priority="0" />
-      <Item value="EntityAdded" priority="54" />
-      <Item value="EntityRemoved" priority="0" />
-      <Item value="Where`1" priority="0" />
-      <Item value="Any`1" priority="0" />
-      <Item value="SelectMany`2" priority="81" />
-      <Item value="FromCollectionChanged`1" priority="54" />
-      <Item value="Select`2" priority="26" />
-      <Item value="Contains`1" priority="27" />
-      <Item value="First`1" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Windows.DependencyPropertyChangedEventArgs">
-      <Item value="NewValue" priority="29" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.Tools.SumLineItemsCostMarkupExtension">
-      <Item value="UpdateValue`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Nullable`1">
-      <Item value="ToString`0" priority="0" />
-      <Item value="HasValue" priority="109" />
-      <Item value="Value" priority="56" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Client.EntityCollectionChangedEventArgs`1">
-      <Item value="Entity" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.VehicleMaintenanceLineItem">
-      <Item value="PropertyChanged" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ComponentModel.PropertyChangedEventArgs">
-      <Item value="PropertyName" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:Telerik.Windows.Controls.RadNumericUpDown">
-      <Item value="NumberFormatInfo" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Globalization.NumberFormatInfo">
-      <Item value="NumberGroupSeparator" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Blocks.Dispatcher.MainPage">
-      <Item value="RoutesViewModel" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Framework.Views.ViewModels.RoutesViewModel">
-      <Item value="SaveCommand" priority="0" />
-      <Item value="DomainCollectionView" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:GalaSoft.MvvmLight.Command.RelayCommand">
-      <Item value="Execute`0" priority="1" />
-      <Item value="CanExecute`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:Microsoft.Windows.Data.DomainServices.DomainCollectionView`1">
-      <Item value="First`1" priority="0" />
-      <Item value="FirstOrDefault`1" priority="0" />
-      <Item value="SourceCollection" priority="108" />
-      <Item value="Remove`0" priority="27" />
-      <Item value="AddNew`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.ComponentModel.DesignerProperties">
-      <Item value="IsInDesignTool" priority="55" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Service">
-      <Item value="ServiceTemplate" priority="4" />
-      <Item value="ServiceHasChanges" priority="29" />
-      <Item value="ServiceDate" priority="8" />
-      <Item value="Id" priority="1" />
-      <Item value="ObservableForProperty`2" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.ServiceTemplate">
-      <Item value="Name" priority="1" />
-      <Item value="ServiceTemplateLevel" priority="0" />
-      <Item value="OwnerService" priority="0" />
-      <Item value="OwnerRecurringService" priority="0" />
-      <Item value="Invoice" priority="1" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Client.SubmitOperation">
-      <Item value="ChangeSet" priority="0" />
-      <Item value="Cancel`0" priority="53" />
-      <Item value="CanCancel" priority="80" />
-      <Item value="Completed" priority="81" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Client.EntityChangeSet">
-      <Item value="OfType`1" priority="0" />
-      <Item value="RemovedEntities" priority="26" />
-      <Item value="Count`1" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Collections.ObjectModel.ObservableCollection`1">
-      <Item value="Count" priority="28" />
-      <Item value="Add`0" priority="27" />
-      <Item value="CollectionChanged" priority="3" />
-      <Item value="ToObservable`1" priority="3" />
-      <Item value="GetEnumerator`0" priority="0" />
-      <Item value="ForkJoin`1" priority="0" />
-      <Item value="SelectMany`3" priority="0" />
-      <Item value="Merge`1" priority="0" />
-      <Item value="Remove`0" priority="27" />
-      <Item value="Subscribe`1" priority="26" />
-      <Item value="FromCollectionChangedEvent`0" priority="27" />
-      <Item value="LastOrDefault`1" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Context.ViewModels.CoreEntityCollectionInfiniteAccordionViewModel`1">
-      <Item value="OnSave`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Framework.Views.ViewModels.ServicesViewModel">
-      <Item value="Context" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Server.Services.CoreDomainContext">
-      <Item value="EntityContainer" priority="0" />
-      <Item value="GetClientsForRoleQuery`0" priority="0" />
-      <Item value="Clients" priority="1" />
-      <Item value="Load`0" priority="0" />
-      <Item value="GetContactsForRoleQuery`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Client.EntityContainer">
-      <Item value="GetChanges`0" priority="54" />
-      <Item value="GetEntitySet`1" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Threading.Timeout">
-      <Item value="Infinite" priority="2" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Threading.Timer">
-      <Item value="Change`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Windows.Threading.Dispatcher">
-      <Item value="BeginInvoke`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Console">
-      <Item value="WriteLine`0" priority="17" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.DateTime">
-      <Item value="Now" priority="302" />
-      <Item value="MinValue" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.DateTime">
-      <Item value="Subtract`0" priority="81" />
-      <Item value="CompareTo`0" priority="1" />
-      <Item value="Date" priority="2" />
-      <Item value="Second" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:Telerik.Windows.Controls.RadContextMenu">
-      <Item value="ItemTemplateSelectorProperty" priority="0" />
-      <Item value="IsOpen" priority="26" />
-      <Item value="ClearValue`0" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Client">
-      <Item value="ServicesToRecieve" priority="0" />
-      <Item value="RecurringServices" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Location">
-      <Item value="LocationFieldsWhereValue" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.LocationField">
-      <Item value="Value" priority="0" />
-      <Item value="LocationFieldType" priority="0" />
-      <Item value="OwnerServiceTemplate" priority="1" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Collections.Generic.IEnumerable`1">
-      <Item value="Select`2" priority="109" />
-      <Item value="Union`1" priority="2" />
-      <Item value="Count`1" priority="1" />
-      <Item value="ToList`1" priority="0" />
-      <Item value="ToArray`1" priority="83" />
-      <Item value="ToObservable`1" priority="0" />
-      <Item value="LastOrDefault`1" priority="55" />
-      <Item value="Merge`1" priority="53" />
-      <Item value="Where`1" priority="109" />
-      <Item value="Contains`1" priority="80" />
-      <Item value="FirstOrDefault`1" priority="54" />
-      <Item value="Distinct`1" priority="81" />
-      <Item value="OrderBy`2" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Server.Models.CoreEntities.ServiceTemplateLevel">
-      <Item value="RecurringServiceDefined" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.RecurringService">
-      <Item value="GeneratedServices" priority="1" />
-      <Item value="Id" priority="1" />
-      <Item value="ClientId" priority="0" />
-      <Item value="ServiceTemplate" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.Tools.ServiceTuple">
-      <Item value="Compare`0" priority="0" />
-      <Item value="ServiceDate" priority="4" />
-      <Item value="ExistingService" priority="3" />
-      <Item value="RecurringServiceToGenerateFrom" priority="3" />
-      <Item value="ServiceDateToGenerate" priority="0" />
-      <Item value="GenerateService`0" priority="0" />
-      <Item value="Service" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Guid">
-      <Item value="CompareTo`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Collections.Generic.List`1">
+      <Item value="ToString`0" priority="137" />
+      <Item value="Split`0" priority="28" />
       <Item value="Contains`0" priority="0" />
-      <Item value="Remove`0" priority="1" />
-      <Item value="ToArray`0" priority="55" />
-      <Item value="FindIndex`1" priority="0" />
-      <Item value="Where`1" priority="28" />
-      <Item value="RemoveRange`0" priority="0" />
-      <Item value="Select`2" priority="0" />
-      <Item value="Count" priority="0" />
-      <Item value="RemoveAll`1" priority="0" />
-      <Item value="ToObservable`1" priority="6" />
-      <Item value="Add`0" priority="31" />
-      <Item value="Merge`1" priority="1" />
-      <Item value="ForkJoin`1" priority="2" />
-      <Item value="ForEach`0" priority="1" />
-      <Item value="Clear`0" priority="27" />
+      <Item value="Where`1" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Tuple`2">
-      <Item value="Item1" priority="131" />
-      <Item value="Item2" priority="67" />
+    <ItemStatistics item="Default">
+      <Item value="var" priority="8" />
+      <Item value="internal" priority="0" />
+      <Item value="static" priority="0" />
+      <Item value="readonly" priority="0" />
+      <Item value="QuickBooksTools`0" priority="5" />
+      <Item value="object" priority="2" />
+      <Item value="conReq" priority="16" />
+      <Item value="oSession" priority="7" />
+      <Item value="ConnectionStringSettings`0" priority="1" />
+      <Item value="name" priority="0" />
+      <Item value="string" priority="12" />
+      <Item value="quickBooksSession" priority="9" />
+      <Item value="BusinessAccount`0" priority="0" />
+      <Item value="_txtServiceResponse" priority="0" />
+      <Item value="FilterProviderCollection`0" priority="0" />
+      <Item value="foreach" priority="0" />
+      <Item value="if" priority="1" />
+      <Item value="s" priority="2" />
+      <Item value="set" priority="0" />
+      <Item value="return" priority="3" />
+      <Item value="responseArray" priority="1" />
+      <Item value="Guid`0" priority="1" />
+      <Item value="currentBusinessAccount" priority="6" />
+      <Item value="oauthVerifier" priority="0" />
+      <Item value="this" priority="0" />
+      <Item value="oauthVerifyer" priority="0" />
+      <Item value="new" priority="9" />
+      <Item value="DictionarySectionHandler`0" priority="1" />
+      <Item value="dictionary" priority="3" />
+      <Item value="IOAuthConsumerContext`0" priority="0" />
+      <Item value="OAuthContext`0" priority="0" />
+      <Item value="CreateNewInvoice`0" priority="1" />
+      <Item value="OAuthSession`0" priority="1" />
+      <Item value="void" priority="0" />
+      <Item value="Encoding" priority="0" />
+      <Item value="UTF8Encoding`0" priority="0" />
+      <Item value="settings" priority="0" />
+      <Item value="writer" priority="4" />
+      <Item value="requestType" priority="0" />
+      <Item value="builder" priority="1" />
+      <Item value="Region`0" priority="0" />
+      <Item value="DevDefined" priority="0" />
+      <Item value="OAuth" priority="0" />
+      <Item value="Framework" priority="0" />
+      <Item value="SignatureMethod`0" priority="0" />
+      <Item value="Consumer" priority="0" />
+      <Item value="RequestDescription`0" priority="0" />
+      <Item value="CheckCharacters" priority="0" />
+      <Item value="false" priority="0" />
+      <Item value="const" priority="0" />
+      <Item value="nameSpaceOne" priority="1" />
+      <Item value="nameSpaceTwo" priority="0" />
+      <Item value="returnString" priority="0" />
+      <Item value="null" priority="1" />
+      <Item value="DictionaryValueProvider" priority="0" />
+      <Item value="oauthToken" priority="2" />
+      <Item value="IToken`0" priority="2" />
+      <Item value="TokenBase" priority="0" />
+      <Item value="Uri" priority="2" />
+      <Item value="GetAccessToken`0" priority="0" />
+      <Item value="consumerToken" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@FoundOps.Core.Server.Tools.QuickBooksTools+OauthEndPoints">
+      <Item value="ConsumerKey" priority="1" />
+      <Item value="ConsumerSecret" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@FoundOps.Core.Server.Tools.QuickBooksTools">
+      <Item value="OauthEndPoints`0" priority="0" />
+      <Item value="OauthConstants`0" priority="5" />
+      <Item value="CreateXml`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@FoundOps.Core.Server.Tools.QuickBooksTools+OauthConstants">
+      <Item value="ConsumerKey" priority="1" />
+      <Item value="IdFedOAuthBaseUrl" priority="0" />
+      <Item value="AuthorizeUrl" priority="0" />
+      <Item value="ConsumerSecret" priority="0" />
+      <Item value="OauthCallbackUrl" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Runtime.Serialization.DataContractSerializer">
+      <Item value="KnownTypes" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:DevDefined.OAuth.Consumer.IConsumerRequest">
+      <Item value="Post`0" priority="4" />
+      <Item value="Put`0" priority="0" />
+      <Item value="Context" priority="2" />
+      <Item value="Get`0" priority="0" />
+      <Item value="ForUrl`0" priority="1" />
+      <Item value="SignWithToken`0" priority="4" />
+      <Item value="GetRequestDescription`0" priority="2" />
+      <Item value="ToBodyParameters`0" priority="3" />
+      <Item value="ToWebRequest`0" priority="1" />
+      <Item value="WithFormParameters`0" priority="4" />
+      <Item value="Delete`0" priority="0" />
+      <Item value="SignWithoutToken`0" priority="1" />
       <Item value="ToString`0" priority="0" />
+      <Item value="ReadBody`0" priority="0" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.SLClient.UI.Tools.ServiceGenerator">
-      <Item value="GenerateServiceTuples`0" priority="0" />
+    <ItemStatistics item="Qualified:DevDefined.OAuth.Consumer.OAuthSession">
+      <Item value="Request`0" priority="0" />
+      <Item value="ConsumerRequestFactory" priority="1" />
+      <Item value="WithCookies`0" priority="0" />
+      <Item value="AccessToken" priority="1" />
+      <Item value="ConsumerContext" priority="0" />
+      <Item value="WithFormParameters`0" priority="0" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.Tools.ServiceGenerationResult">
-      <Item value="ServicesTuples" priority="0" />
-      <Item value="CanMoveBackward" priority="0" />
-      <Item value="CanMoveForward" priority="0" />
+    <ItemStatistics item="Qualified:DevDefined.OAuth.Consumer.RequestDescription">
+      <Item value="Body" priority="6" />
+      <Item value="Method" priority="0" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Collections.Generic.SortedSet`1">
-      <Item value="Min" priority="1" />
-      <Item value="Add`0" priority="0" />
-      <Item value="AddRange`1" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Contact">
-      <Item value="OwnedPerson" priority="1" />
-      <Item value="OwnerParty" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Framework.Views.ViewModels.ContactsViewModel">
-      <Item value="CoreDataManager" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Context.Services.CoreDataManager">
-      <Item value="CurrentOwnerAccount" priority="0" />
+    <ItemStatistics item="Qualified:System.Collections.Specialized.NameValueCollection">
+      <Item value="Add`0" priority="1" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@System.String">
-      <Item value="IsNullOrEmpty`0" priority="0" />
-      <Item value="Format`0" priority="81" />
+      <Item value="Format`0" priority="111" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:GalaSoft.MvvmLight.Command.RelayCommand`1">
-      <Item value="RaiseCanExecuteChanged`0" priority="0" />
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.QuickBooks.QuickBooksSession">
+      <Item value="RealmId" priority="2" />
+      <Item value="OAuthVerifier" priority="0" />
+      <Item value="BaseUrl" priority="0" />
+      <Item value="Token" priority="2" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Common.Tools.CollectionExtensions">
-      <Item value="HookupToCollectionChanged`1" priority="0" />
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.BusinessAccount">
+      <Item value="QuickBooksAccessToken" priority="1" />
+      <Item value="QuickBooksAccessTokenSecret" priority="0" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.Tools.ItemExistsInCollection">
-      <Item value="ItemExistsInCollectionCollectionChanged`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Reactive.Subjects.Subject`1">
-      <Item value="OnNext`0" priority="628" />
-      <Item value="Subscribe`0" priority="276" />
-      <Item value="AsObservable`1" priority="113" />
-      <Item value="Join`5" priority="1" />
-      <Item value="SelectMany`3" priority="0" />
-      <Item value="Last`1" priority="1" />
-      <Item value="DistinctUntilChanged`1" priority="2" />
-      <Item value="Distinct`2" priority="0" />
-      <Item value="ToProperty`2" priority="53" />
-      <Item value="DistinctUntilChanged`2" priority="54" />
-      <Item value="Replay`1" priority="26" />
-      <Item value="Where`1" priority="54" />
-      <Item value="SubscribeOnDispatcher`1" priority="26" />
-      <Item value="Select`2" priority="27" />
-      <Item value="Throttle`1" priority="26" />
-      <Item value="Dispose`0" priority="26" />
-      <Item value="OnError`0" priority="26" />
-      <Item value="OnCompleted`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.Services.ContextManager">
-      <Item value="RoleId" priority="35" />
-      <Item value="RoleIdObservable" priority="82" />
-      <Item value="RoleIdObserver" priority="0" />
-      <Item value="OwnerAccount" priority="490" />
-      <Item value="UserAccount" priority="26" />
-      <Item value="OwnerAccountObservable" priority="80" />
-      <Item value="UserAccountObservable" priority="26" />
-      <Item value="CurrentContext" priority="188" />
-      <Item value="CurrentContextProviderSubject" priority="80" />
-      <Item value="CurrentContextSubject" priority="135" />
-      <Item value="CurrentContextProvider" priority="107" />
-      <Item value="GetContext`1" priority="188" />
-      <Item value="ContextChangedObservable" priority="107" />
-      <Item value="CurrentContextProviderObservable" priority="27" />
-      <Item value="GetContextObservable`1" priority="104" />
-      <Item value="ContextChangedTrigger" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Role">
-      <Item value="Id" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Core.Server.Services.CoreDomainContext">
-      <Item value="CoreDomainContextEntityContainer`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Client.EntitySet`1">
-      <Item value="ToObservable`1" priority="0" />
-      <Item value="Remove`0" priority="55" />
-      <Item value="Contains`1" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.IObservable`1">
-      <Item value="Where`1" priority="428" />
-      <Item value="Equals`0" priority="0" />
-      <Item value="Subscribe`0" priority="1287" />
-      <Item value="Select`2" priority="672" />
-      <Item value="Publish`2" priority="5" />
-      <Item value="Count`1" priority="1" />
-      <Item value="DistinctUntilChanged`1" priority="7" />
-      <Item value="Last`1" priority="14" />
-      <Item value="Join`5" priority="4" />
-      <Item value="Merge`1" priority="519" />
-      <Item value="CombineLatest`3" priority="32" />
-      <Item value="Any`1" priority="6" />
-      <Item value="TakeLast`1" priority="1" />
-      <Item value="Delay`1" priority="86" />
-      <Item value="And`2" priority="0" />
-      <Item value="Latest`1" priority="4" />
-      <Item value="Buffer`1" priority="2" />
-      <Item value="TakeWhile`1" priority="1" />
-      <Item value="DoWhile`1" priority="0" />
-      <Item value="Window`1" priority="0" />
-      <Item value="GroupJoin`5" priority="1" />
-      <Item value="Throttle`1" priority="466" />
-      <Item value="Aggregate`1" priority="0" />
-      <Item value="Finally`1" priority="0" />
-      <Item value="LastOrDefault`1" priority="2" />
-      <Item value="Contains`1" priority="0" />
-      <Item value="FirstOrDefault`1" priority="0" />
-      <Item value="First`1" priority="1" />
-      <Item value="Take`1" priority="83" />
-      <Item value="SubscribeOnDispatcher`1" priority="300" />
-      <Item value="ForEach`1" priority="2" />
-      <Item value="ObserveOn`1" priority="0" />
-      <Item value="SelectMany`3" priority="0" />
-      <Item value="Next`1" priority="27" />
-      <Item value="ForkJoin`3" priority="1" />
-      <Item value="ToList`1" priority="0" />
-      <Item value="MostRecent`1" priority="0" />
-      <Item value="SubscribeOn`1" priority="2" />
-      <Item value="ObserveOnDispatcher`1" priority="167" />
-      <Item value="DistinctUntilChanged`2" priority="26" />
-      <Item value="ToProperty`2" priority="134" />
-      <Item value="Publish`1" priority="26" />
-      <Item value="BindTo`2" priority="26" />
-      <Item value="CachedSelectMany`2" priority="26" />
-      <Item value="Window`3" priority="82" />
-      <Item value="Replay`1" priority="53" />
-      <Item value="StartWith`1" priority="26" />
-      <Item value="AsObservable`1" priority="53" />
-      <Item value="SelectMany`2" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Client.LoadOperation`1">
-      <Item value="Entities" priority="1" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.Services.DataManager">
-      <Item value="ClientsInContext" priority="1" />
-      <Item value="SubscribeToClients`0" priority="0" />
-      <Item value="Subscribe`1" priority="162" />
-      <Item value="ContextManager" priority="408" />
-      <Item value="Context" priority="190" />
-      <Item value="AddQuery`1" priority="26" />
-      <Item value="GetEntityListObservable`1" priority="53" />
-      <Item value="Query`0" priority="26" />
-      <Item value="_nextSubmitOperationsQueue" priority="27" />
-      <Item value="SaveDiscardCancelPrompt`0" priority="26" />
-      <Item value="EnqueueSubmitOperation`0" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.MVVM.Services.DomainCollectionViewFactory`1">
-      <Item value="View" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.SLClient.Data.Services.DataManager">
-      <Item value="GetDomainCollectionView`1" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Common.Models.ObservationState">
-      <Item value="Active" priority="11" />
-      <Item value="Suspended" priority="11" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Reactive.Linq.Observable">
-      <Item value="Create`0" priority="10" />
-      <Item value="Empty`1" priority="63" />
-      <Item value="Return`1" priority="0" />
-      <Item value="Join`5" priority="5" />
-      <Item value="AsObservable`1" priority="0" />
-      <Item value="Generate`2" priority="1" />
-      <Item value="FromEvent`0" priority="1" />
-      <Item value="ForEach`1" priority="0" />
-      <Item value="Defer`1" priority="0" />
-      <Item value="Merge`1" priority="26" />
-      <Item value="TimeInterval`1" priority="26" />
-      <Item value="FromEventPattern`0" priority="26" />
-      <Item value="Create`1" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Reactive.Subjects.BehaviorSubject`1">
-      <Item value="MinBy`2" priority="0" />
-      <Item value="Last`1" priority="1" />
-      <Item value="OnNext`0" priority="84" />
-      <Item value="Subscribe`0" priority="54" />
-      <Item value="CombineLatest`3" priority="0" />
-      <Item value="Zip`3" priority="0" />
-      <Item value="Replay`1" priority="26" />
-      <Item value="ToProperty`2" priority="26" />
-      <Item value="First`1" priority="26" />
-      <Item value="Where`1" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Reactive.Joins.Pattern`2">
-      <Item value="Then`1" priority="1" />
+    <ItemStatistics item="Qualified:FoundOps.Server.Tools.OAuthQuickBooks">
+      <Item value="OAuthVerifier" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:System.Collections.Generic.Dictionary`2">
-      <Item value="Add`0" priority="3" />
-      <Item value="ContainsKey`0" priority="26" />
+      <Item value="Add`0" priority="1" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.IObserver`1">
-      <Item value="OnNext`0" priority="28" />
+    <ItemStatistics item="Qualified:DevDefined.OAuth.Consumer.IConsumerRequestFactory">
+      <Item value="CreateConsumerRequest`0" priority="1" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Enum">
-      <Item value="GetName`0" priority="0" />
+    <ItemStatistics item="Qualified:@System.Text.UTF8Encoding">
+      <Item value="UTF8" priority="0" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Common.Silverlight.Converters.EnumValueCache">
-      <Item value="GetValues`0" priority="0" />
+    <ItemStatistics item="Qualified:System.Xml.XmlWriterSettings">
+      <Item value="Encoding" priority="0" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.SLClient.Data.Services.DataManager+Query">
-      <Item value="Clients" priority="7" />
-      <Item value="Contacts" priority="81" />
-      <Item value="RoutesForDay" priority="26" />
-      <Item value="Vehicles" priority="53" />
-      <Item value="RouteLog" priority="27" />
-      <Item value="Employees" priority="108" />
-      <Item value="EmployeeHistory" priority="27" />
-      <Item value="Regions" priority="27" />
-      <Item value="ServiceTemplates" priority="54" />
-      <Item value="RecurringServices" priority="26" />
-      <Item value="Locations" priority="27" />
-      <Item value="VehicleMaintenance" priority="27" />
-      <Item value="UserAccounts" priority="54" />
+    <ItemStatistics item="Qualified:System.Text.StringBuilder">
+      <Item value="ToString`0" priority="28" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Reactive.Concurrency.Scheduler">
-      <Item value="NewThread" priority="0" />
-      <Item value="Schedule`1" priority="0" />
+    <ItemStatistics item="Qualified:System.DateTime">
+      <Item value="Date" priority="54" />
+      <Item value="ToShortDateString`0" priority="0" />
+      <Item value="Month" priority="53" />
+      <Item value="Year" priority="26" />
+      <Item value="Day" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.Services.DataManager+Query">
-      <Item value="CompareTo`0" priority="0" />
+    <ItemStatistics item="Qualified:System.Xml.XmlWriter">
+      <Item value="WriteElementString`0" priority="0" />
+      <Item value="WriteStartElement`0" priority="27" />
+      <Item value="WriteAttributeString`0" priority="28" />
+      <Item value="Flush`0" priority="0" />
+      <Item value="WriteEndAttribute`0" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.Services.CombinedObservationState">
-      <Item value="CombinedObservationStateObservable" priority="0" />
+    <ItemStatistics item="Qualified:DevDefined.OAuth.Framework.IOAuthContext">
+      <Item value="Headers" priority="1" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Reactive.Subjects.ReplaySubject`1">
-      <Item value="OnNext`0" priority="0" />
-      <Item value="ToList`1" priority="0" />
-      <Item value="ToEnumerable`1" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Collections.Generic.LinkedList`1">
-      <Item value="AddLast`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.IDisposable">
-      <Item value="Dispose`0" priority="28" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Reactive.Linq.IGroupedObservable`2">
-      <Item value="Key" priority="0" />
-      <Item value="Any`1" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Diagnostics.Debug">
-      <Item value="WriteLine`0" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Linq.IQueryable`1">
-      <Item value="Select`2" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Reactive.Subjects.IConnectableObservable`1">
-      <Item value="RefCount`1" priority="0" />
-      <Item value="First`1" priority="26" />
-      <Item value="LastOrDefault`1" priority="26" />
-      <Item value="FirstOrDefault`1" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Guid">
-      <Item value="Empty" priority="55" />
-      <Item value="NewGuid`0" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Collections.Generic.Stack`1">
-      <Item value="Push`0" priority="0" />
-      <Item value="Clear`0" priority="1" />
-      <Item value="Peek`0" priority="0" />
-      <Item value="Count" priority="0" />
-      <Item value="Pop`0" priority="0" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Threading.SynchronizationContext">
-      <Item value="Current" priority="1" />
+    <ItemStatistics item="Qualified:DevDefined.OAuth.Framework.TokenBase">
+      <Item value="Token" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="CSharpCodeCompletionContext">
-      <Item value="query" priority="31" />
-      <Item value="Contact`0" priority="30" />
-      <Item value="IsLoadingObservable" priority="95" />
-      <Item value="loadedCallback" priority="31" />
-      <Item value="new" priority="3266" />
-      <Item value="EntityList&lt;Client&gt;" priority="28" />
-      <Item value="var" priority="2687" />
-      <Item value="contactsQueryable" priority="31" />
-      <Item value="private" priority="1343" />
-      <Item value="void" priority="575" />
-      <Item value="this" priority="3711" />
-      <Item value="LocationsVM" priority="63" />
-      <Item value="using" priority="123" />
-      <Item value="IObservable" priority="959" />
-      <Item value="_isLoadingSubject" priority="63" />
-      <Item value="isLoading" priority="159" />
-      <Item value="Subject&lt;bool&gt;" priority="116" />
-      <Item value="value" priority="383" />
-      <Item value="ObservableCollection&lt;string&gt;" priority="115" />
-      <Item value="NotificationMessageWithCallback`0" priority="31" />
-      <Item value="ObservableCollection" priority="60" />
-      <Item value="bool" priority="601" />
-      <Item value="rvm" priority="31" />
-      <Item value="Subject`0" priority="92" />
-      <Item value="true" priority="736" />
-      <Item value="reenterDispatcher" priority="31" />
-      <Item value="protected" priority="543" />
-      <Item value="DateTime`0" priority="639" />
-      <Item value="TimeSpan`0" priority="31" />
-      <Item value="DiscardCommand" priority="31" />
-      <Item value="SetupMainQuery`0" priority="191" />
-      <Item value="roleId" priority="63" />
-      <Item value="SelectedDate" priority="31" />
-      <Item value="Context" priority="191" />
-      <Item value="false" priority="415" />
-      <Item value="if" priority="3039" />
-      <Item value="TimeSpan" priority="637" />
-      <Item value="ObservableCollection&lt;RouteDestination&gt;" priority="28" />
-      <Item value="Observable`0" priority="183" />
-      <Item value="_contextManager" priority="31" />
-      <Item value="loadQuery" priority="31" />
-      <Item value="return" priority="2367" />
-      <Item value="WaveFormatType`0" priority="31" />
-      <Item value="Guid`0" priority="159" />
-      <Item value="public" priority="1307" />
-      <Item value="ContextManager`0" priority="63" />
-      <Item value="ContextManager" priority="768" />
-      <Item value="dataManager" priority="225" />
-      <Item value="AsyncSubject&lt;Party&gt;" priority="28" />
-      <Item value="Subject&lt;Party&gt;" priority="29" />
-      <Item value="AsyncSubject&lt;UserAccount&gt;" priority="28" />
-      <Item value="OnRoutesLoaded`0" priority="31" />
-      <Item value="PropertyChanged" priority="159" />
-      <Item value="propertyName" priority="31" />
-      <Item value="_context" priority="63" />
-      <Item value="null" priority="1802" />
-      <Item value="CoreDomainContext`0" priority="63" />
-      <Item value="_coreDomainContext" priority="63" />
-      <Item value="coreDomainContext" priority="64" />
-      <Item value="Party`0" priority="93" />
-      <Item value="_ownerAccount" priority="31" />
-      <Item value="OwnerAccountObservable" priority="63" />
-      <Item value="x" priority="831" />
-      <Item value="ReactiveObject`0" priority="31" />
-      <Item value="DataManager" priority="511" />
-      <Item value="QueryBuilder" priority="191" />
-      <Item value="string" priority="92" />
-      <Item value="sortBy" priority="96" />
-      <Item value="virtual" priority="63" />
-      <Item value="Queryable`0" priority="159" />
-      <Item value="override" priority="511" />
-      <Item value="object" priority="157" />
-      <Item value="ReactiveCommand" priority="175" />
-      <Item value="CanAddCommand`0" priority="32" />
-      <Item value="IsLoading" priority="63" />
-      <Item value="CanDeleteCommand`0" priority="63" />
-      <Item value="DomainCollectionView" priority="191" />
-      <Item value="queryKey" priority="159" />
-      <Item value="allPublicProperties" priority="31" />
-      <Item value="ServiceTemplatesPotentiallyChanged`0" priority="31" />
-      <Item value="EntityList" priority="126" />
-      <Item value="entities" priority="159" />
-      <Item value="base" priority="255" />
-      <Item value="RecurringService`0" priority="63" />
-      <Item value="recurringServicesLoading" priority="95" />
-      <Item value="servicesLoading" priority="63" />
-      <Item value="loadingTuple" priority="63" />
-      <Item value="DispatcherObservable`0" priority="31" />
-      <Item value="ParamArrayAttribute`0" priority="127" />
-      <Item value="&lt;param name=&quot;&quot;&gt;&lt;/param&gt;" priority="25" />
-      <Item value="navigate" priority="31" />
-      <Item value="Action`0" priority="636" />
-      <Item value="MemberwiseClone`0" priority="63" />
-      <Item value="ownerAccount" priority="96" />
-      <Item value="ReactiveCommand`0" priority="58" />
-      <Item value="hasChanges" priority="31" />
-      <Item value="isSubmitting" priority="31" />
-      <Item value="AddCommand" priority="63" />
-      <Item value="System" priority="124" />
-      <Item value="Reactive" priority="26" />
-      <Item value="DeleteCommand" priority="31" />
-      <Item value="selectedEntity" priority="95" />
-      <Item value="ServiceTemplate`0" priority="222" />
-      <Item value="Service`0" priority="30" />
-      <Item value="_loadedServiceTemplates" priority="31" />
-      <Item value="RoleIdObservable" priority="95" />
-      <Item value="GetHashCode`0" priority="31" />
-      <Item value="UserAccount" priority="94" />
-      <Item value="Data" priority="155" />
-      <Item value="_roleId" priority="31" />
-      <Item value="RaisePropertyChanged`0" priority="127" />
-      <Item value="#region" priority="223" />
-      <Item value="PropertyChangedEventHandler`0" priority="31" />
-      <Item value="clientTitleInCreation" priority="31" />
-      <Item value="locationsDataService" priority="31" />
-      <Item value="routeTasks" priority="32" />
-      <Item value="ObservationState" priority="31" />
-      <Item value="RouteTask`0" priority="31" />
-      <Item value="IEnumerable" priority="191" />
-      <Item value="serviceTemplates" priority="64" />
-      <Item value="CanSaveObservable" priority="97" />
-      <Item value="oldValue" priority="95" />
-      <Item value="newValue" priority="95" />
-      <Item value="ValidatesViaMethodAttribute`0" priority="31" />
-      <Item value="serviceHasChanges" priority="31" />
-      <Item value="TEntity`0" priority="284" />
-      <Item value="Subject&lt;TEntity&gt;" priority="28" />
-      <Item value="ThreadStaticAttribute`0" priority="62" />
-      <Item value="_selectedEntityObservable" priority="31" />
-      <Item value="_canSaveObservable" priority="63" />
-      <Item value="canSave" priority="63" />
-      <Item value="canSaveTwo" priority="31" />
-      <Item value="CanDiscardObservable" priority="31" />
-      <Item value="CoreDataManager" priority="31" />
-      <Item value="DataManager`0" priority="95" />
-      <Item value="PartyDataService" priority="57" />
-      <Item value="CoreDomainContext" priority="28" />
-      <Item value="ImportingConstructor" priority="31" />
-      <Item value="partyDataService" priority="65" />
-      <Item value="IPartyDataService`0" priority="31" />
-      <Item value="RoleIdObserver" priority="31" />
-      <Item value="_queriesEntityListObservables" priority="31" />
-      <Item value="#endregion" priority="127" />
-      <Item value="BehaviorSubject&lt;Guid&gt;" priority="29" />
-      <Item value="ReplaySubject&lt;Guid&gt;" priority="58" />
-      <Item value="ReplaySubject" priority="31" />
-      <Item value="Subject&lt;Guid&gt;" priority="28" />
-      <Item value="Subject" priority="250" />
-      <Item value="readonly" priority="95" />
-      <Item value="LocationVM`0" priority="93" />
-      <Item value="ObservableAsPropertyHelper&lt;LocationVM&gt;" priority="57" />
-      <Item value="name" priority="31" />
-      <Item value="String`0" priority="63" />
-      <Item value="_selectedLocationVM" priority="159" />
-      <Item value="AsyncSubject&lt;Location&gt;" priority="28" />
-      <Item value="selectedLocation" priority="192" />
-      <Item value="SelectedLocationVM" priority="31" />
-      <Item value="SelectedLocationObservable" priority="31" />
-      <Item value="Subject&lt;LocationVM&gt;" priority="57" />
-      <Item value="ReplaySubject&lt;LocationVM&gt;" priority="29" />
-      <Item value="BehaviorSubject&lt;LocationVM&gt;" priority="58" />
-      <Item value="_locationVMObservable" priority="63" />
-      <Item value="SelectedEntity" priority="191" />
-      <Item value="SelectedLocationVMObservable" priority="95" />
-      <Item value="SerialDisposable" priority="86" />
-      <Item value="FlowDirection`0" priority="31" />
-      <Item value="SelectedEntityObservable" priority="31" />
-      <Item value="_selectedLocationVMObservable" priority="63" />
-      <Item value="SelectedLocation" priority="31" />
-      <Item value="SubLocationsVM" priority="29" />
-      <Item value="_selectedSubLocationsVMObservable" priority="31" />
-      <Item value="se" priority="31" />
-      <Item value="else" priority="319" />
-      <Item value="_selectedLocation" priority="31" />
-      <Item value="selectedEntities" priority="31" />
-      <Item value="existingEntities" priority="95" />
-      <Item value="DirectSetSelectedEntity`0" priority="31" />
+      <Item value="public" priority="702" />
+      <Item value="void" priority="159" />
+      <Item value="QuickBooksTools`0" priority="95" />
+      <Item value="static" priority="415" />
+      <Item value="EnvironmentVariableTarget`0" priority="95" />
+      <Item value="Invoice`0" priority="319" />
+      <Item value="invoiceToCreate" priority="223" />
+      <Item value="var" priority="1980" />
+      <Item value="clientName" priority="63" />
+      <Item value="string" priority="570" />
+      <Item value="writer" priority="95" />
+      <Item value="customerId" priority="31" />
+      <Item value="SelectedRegions" priority="223" />
+      <Item value="routeToCheck" priority="95" />
+      <Item value="r" priority="127" />
+      <Item value="rd" priority="159" />
+      <Item value="rta" priority="31" />
+      <Item value="RouteDestination`0" priority="31" />
+      <Item value="new" priority="799" />
+      <Item value="RouteDestination" priority="28" />
+      <Item value="test" priority="159" />
+      <Item value="RouteTask" priority="28" />
+      <Item value="InitialUnroutedRouteTasks" priority="31" />
+      <Item value="true" priority="286" />
+      <Item value="return" priority="1247" />
+      <Item value="routeTypeIsInRoute" priority="31" />
+      <Item value="regionIsInRoute" priority="31" />
+      <Item value="if" priority="1215" />
+      <Item value="Regions" priority="159" />
+      <Item value="ValidationResultInfo`0" priority="63" />
+      <Item value="IEnumerable" priority="65" />
+      <Item value="CoreDataManager" priority="63" />
+      <Item value="Service`0" priority="31" />
+      <Item value="Region`0" priority="63" />
+      <Item value="CoreDataManager`0" priority="31" />
+      <Item value="Location`0" priority="352" />
+      <Item value="l" priority="95" />
+      <Item value="foreach" priority="639" />
+      <Item value="regionName" priority="223" />
+      <Item value="UpdateRegions`0" priority="31" />
+      <Item value="InArgument`0" priority="31" />
+      <Item value="FoundOps" priority="94" />
+      <Item value="Server" priority="81" />
+      <Item value="Controllers" priority="85" />
+      <Item value="BusinessAccount`0" priority="514" />
+      <Item value="as" priority="351" />
+      <Item value="BusinessAccount" priority="28" />
+      <Item value="CurrentBusinessAccount" priority="351" />
+      <Item value="QuickBooksSession`0" priority="31" />
+      <Item value="context" priority="95" />
+      <Item value="QuickBooksController`0" priority="26" />
+      <Item value="GetBaseUrl`0" priority="31" />
+      <Item value="CoreEntitiesContainer`0" priority="128" />
+      <Item value="coreEntitiesContainer" priority="129" />
+      <Item value="CoreEntitiesContainer" priority="186" />
+      <Item value="this" priority="1087" />
+      <Item value="currentBusinessAccount" priority="127" />
+      <Item value="invoiceInfo" priority="64" />
+      <Item value="currentInvoice" priority="735" />
+      <Item value="lineItem" priority="31" />
+      <Item value="#region" priority="127" />
+      <Item value="#endregion" priority="95" />
+      <Item value="Queue" priority="28" />
+      <Item value="Models" priority="26" />
+      <Item value="Core" priority="1419" />
+      <Item value="ctx" priority="28" />
+      <Item value="Common" priority="54" />
+      <Item value="AuthenticationLogic`0" priority="63" />
+      <Item value="C.Models.CoreEntities" priority="28" />
+      <Item value="DomainCollectionView" priority="611" />
+      <Item value="previousAdded" priority="31" />
+      <Item value="DataManager" priority="127" />
+      <Item value="EntityList" priority="30" />
+      <Item value="TextTrimming`0" priority="31" />
+      <Item value="TEntity`0" priority="31" />
+      <Item value="queryKey" priority="31" />
       <Item value="loadedEntities" priority="31" />
-      <Item value="LoadedEntites" priority="31" />
-      <Item value="entityToRemove" priority="31" />
-      <Item value="typeof" priority="127" />
-      <Item value="Employee`0" priority="31" />
-      <Item value="ValidationResultInfo`0" priority="31" />
-      <Item value="IProvideContext`0" priority="160" />
-      <Item value="Subject&lt;IProvideContext&gt;" priority="28" />
-      <Item value="ReactiveUI" priority="63" />
-      <Item value="MessageBus`0" priority="181" />
-      <Item value="Navigator" priority="30" />
-      <Item value="ObjectTypeProvided" priority="31" />
-      <Item value="enum" priority="31" />
-      <Item value="moveStrategy" priority="64" />
-      <Item value="MoveStrategy" priority="32" />
-      <Item value="moveToDetailsViewMessage" priority="31" />
-      <Item value="AddContextToExisting" priority="50" />
-      <Item value="MoveStrategy`0" priority="159" />
-      <Item value="objectToDisplay" priority="63" />
-      <Item value="MoveToDetailsView" priority="31" />
-      <Item value="AddContextMessage" priority="29" />
-      <Item value="_allowMoveUpToContext" priority="63" />
-      <Item value="ObjectDisplayControls" priority="32" />
-      <Item value="MoveToDetailsViewMessage" priority="29" />
-      <Item value="typeOfDetailsView" priority="31" />
-      <Item value="MoveToDetailsViewHelper`0" priority="31" />
-      <Item value="message" priority="255" />
-      <Item value="as" priority="223" />
-      <Item value="contextProvider" priority="95" />
-      <Item value="IPreventNavigationFrom`0" priority="32" />
-      <Item value="_contentLoaded" priority="31" />
-      <Item value="objectDisplay" priority="95" />
-      <Item value="IContextAware`0" priority="32" />
-      <Item value="case" priority="63" />
-      <Item value="context" priority="63" />
-      <Item value="o" priority="63" />
-      <Item value="break" priority="31" />
-      <Item value="Xaml" priority="80" />
-      <Item value="Messenger`0" priority="31" />
-      <Item value="ContentPresenter" priority="31" />
-      <Item value="IProvideContext" priority="32" />
-      <Item value="Display" priority="32" />
-      <Item value="interface" priority="30" />
-      <Item value="FrameworkElement`0" priority="32" />
-      <Item value="currentContext" priority="31" />
-      <Item value="_discardObservable" priority="31" />
-      <Item value="UpdateFilter`0" priority="63" />
-      <Item value="class" priority="61" />
-      <Item value="ContextProviderUpdatedMessage`0" priority="31" />
-      <Item value="CurrentContextProvider" priority="127" />
-      <Item value="ScheduledSubject" priority="31" />
-      <Item value="BehaviorSubject&lt;bool&gt;" priority="28" />
-      <Item value="_preventParentDoubleClick" priority="63" />
-      <Item value="_preventParentDoubleClickSubject" priority="128" />
-      <Item value="p" priority="31" />
-      <Item value="ppdc" priority="31" />
-      <Item value="_moveToThisContentType" priority="63" />
-      <Item value="MoveToDetailsViewMessage`0" priority="31" />
-      <Item value="time" priority="31" />
-      <Item value="lastMoveToDetailsViewMessage" priority="31" />
-      <Item value="messageOverSecondAgo" priority="31" />
-      <Item value="ImportMany" priority="31" />
-      <Item value="ContextBorderClickManager`0" priority="31" />
-      <Item value="LastContextBorderClick" priority="31" />
-      <Item value="Import" priority="31" />
-      <Item value="ContextBorderClickManager" priority="31" />
-      <Item value="CompositionInitializer`0" priority="31" />
-      <Item value="_currentContextProviderSubject" priority="31" />
-      <Item value="ccp" priority="31" />
-      <Item value="SelectedContextSubject" priority="31" />
-      <Item value="_contextChangedObservable" priority="63" />
-      <Item value="cp" priority="31" />
-      <Item value="_recurringServices" priority="63" />
-      <Item value="ClientContext" priority="63" />
-      <Item value="static" priority="95" />
-      <Item value="entityCollection" priority="32" />
-      <Item value="EntityCollectionChangedEventArgs" priority="30" />
-      <Item value="T`0" priority="30" />
-      <Item value="entityAdded" priority="31" />
-      <Item value="entityRemoved" priority="31" />
-      <Item value="Observable2`0" priority="31" />
-      <Item value="Subject&lt;Client&gt;" priority="28" />
-      <Item value="clientContextSubject" priority="63" />
-      <Item value="GetContext`1" priority="31" />
-      <Item value="locationContextObservable" priority="31" />
-      <Item value="rs" priority="351" />
-      <Item value="c" priority="319" />
-      <Item value="caseA" priority="63" />
-      <Item value="caseB" priority="63" />
-      <Item value="PropertyChangedEventArgs`0" priority="31" />
-      <Item value="Repeat`0" priority="30" />
-      <Item value="PropertyChangingEventArgs`0" priority="32" />
-      <Item value="recurringServiceContextObservable" priority="31" />
-      <Item value="clientContext" priority="95" />
-      <Item value="ContextChanged" priority="31" />
-      <Item value="ObservableExtensions`0" priority="31" />
-      <Item value="a" priority="95" />
-      <Item value="beforeSave" priority="130" />
-      <Item value="IFormatProvider`0" priority="31" />
-      <Item value="afterSave" priority="196" />
-      <Item value="source" priority="63" />
-      <Item value="state" priority="31" />
-      <Item value="Active" priority="16" />
-      <Item value="TSource`0" priority="31" />
-      <Item value="Subject&lt;TSource&gt;" priority="28" />
-      <Item value="serialDisposable" priority="64" />
-      <Item value="params" priority="31" />
-      <Item value="Tuple`0" priority="95" />
-      <Item value="Tuple&lt;Action,Action,Action,Action,Action&gt;" priority="57" />
-      <Item value="customDiscardAction" priority="98" />
-      <Item value="_saveDiscardCancelPrompt" priority="31" />
-      <Item value="SaveDiscardCancelPromptHelper`0" priority="31" />
-      <Item value="tuple" priority="131" />
-      <Item value="saved" priority="31" />
-      <Item value="_save" priority="63" />
-      <Item value="_saveQueue" priority="63" />
-      <Item value="SaveHelper`0" priority="31" />
-      <Item value="ISubject" priority="31" />
-      <Item value="lock" priority="31" />
-      <Item value="BlockingQueue&lt;Action&gt;" priority="28" />
-      <Item value="SubmitOperation`0" priority="126" />
-      <Item value="Subject&lt;SubmitOperation&gt;" priority="28" />
-      <Item value="callback" priority="31" />
-      <Item value="loadOperation" priority="31" />
-      <Item value="submitOperation" priority="127" />
-      <Item value="_currentSubmitOperation" priority="255" />
-      <Item value="callSubmit" priority="31" />
-      <Item value="List" priority="92" />
-      <Item value="List&lt;IObservable&lt;SubmitOperation&gt;&gt;" priority="28" />
-      <Item value="foreach" priority="287" />
-      <Item value="in" priority="255" />
-      <Item value="_submitOperationQueued" priority="31" />
-      <Item value="CallSubmit`0" priority="31" />
-      <Item value="EnqueueSubmitOperation`0" priority="95" />
-      <Item value="e" priority="95" />
-      <Item value="Add" priority="16" />
-      <Item value="PerformNextSave`0" priority="31" />
-      <Item value="action" priority="31" />
-      <Item value="SaveDiscardCancel`0" priority="62" />
-      <Item value="t" priority="127" />
-      <Item value="actionTuple" priority="31" />
-      <Item value="List&lt;Tuple&lt;Action,Action,Action,Action,Action&gt;&gt;" priority="28" />
-      <Item value="Any`1" priority="26" />
-      <Item value="prompt" priority="31" />
-      <Item value="beforeDiscard" priority="32" />
-      <Item value="afterDiscard" priority="98" />
-      <Item value="SaveDiscardCancel" priority="28" />
-      <Item value="DomainCollectionViewObservable" priority="31" />
-      <Item value="_" priority="31" />
-      <Item value="DomainCollectionView&lt;ServiceTemplate&gt;" priority="28" />
-      <Item value="st" priority="95" />
-      <Item value="ServiceTemplatesForServiceProvider" priority="63" />
-      <Item value="serviceProviderServiceTemplate" priority="31" />
-      <Item value="Client`0" priority="63" />
-      <Item value="is" priority="191" />
-      <Item value="Location`0" priority="93" />
-      <Item value="Name" priority="159" />
-      <Item value="locationsVM" priority="223" />
-      <Item value="locationToAdd" priority="159" />
-      <Item value="existingLocation" priority="63" />
-      <Item value="LocationsVM`0" priority="31" />
-      <Item value="DisableSaveDiscardCancel" priority="64" />
-      <Item value="_loadedEntities" priority="31" />
-      <Item value="Subject&lt;EntityList&lt;TEntity&gt;&gt;" priority="28" />
-      <Item value="lastContext" priority="31" />
-      <Item value="setOfLocations" priority="63" />
-      <Item value="Region`0" priority="31" />
-      <Item value="CurrentContext" priority="31" />
-      <Item value="Type`0" priority="31" />
-      <Item value="types" priority="31" />
-      <Item value="closestContext" priority="31" />
-      <Item value="entityToDelete" priority="63" />
-      <Item value="location" priority="277" />
-      <Item value="s" priority="191" />
-      <Item value="service" priority="63" />
-      <Item value="BeforeDeleteCommand`0" priority="31" />
-      <Item value="locationToDelete" priority="95" />
-      <Item value="ObservableAsPropertyHelper" priority="31" />
-      <Item value="_loadedLocations" priority="31" />
-      <Item value="_loadedLocationsProperty" priority="31" />
+      <Item value="loadedLoc" priority="127" />
+      <Item value="x" priority="191" />
+      <Item value="loadedLocations" priority="63" />
+      <Item value="allPublicProperties" priority="32" />
+      <Item value="partial" priority="159" />
+      <Item value="clientOwner" priority="31" />
+      <Item value="noClientOwner" priority="63" />
+      <Item value="locations" priority="31" />
+      <Item value="locationsWithoutClient" priority="31" />
+      <Item value="base" priority="31" />
+      <Item value="private" priority="31" />
+      <Item value="isInitialLoad" priority="31" />
+      <Item value="InitializeHelper`0" priority="31" />
+      <Item value="locationsWithoutClientB" priority="32" />
+      <Item value="locs" priority="31" />
+      <Item value="loc" priority="127" />
       <Item value="AddDeleteLocation" priority="31" />
-      <Item value="sender" priority="31" />
-      <Item value="CommandParameter" priority="31" />
-      <Item value="ClientsVM" priority="31" />
+      <Item value="LocationsVM" priority="477" />
+      <Item value="e" priority="95" />
+      <Item value="null" priority="254" />
+      <Item value="ClientsListVM" priority="64" />
+      <Item value="ClientsVM`0" priority="31" />
+      <Item value="ClientsVM" priority="63" />
+      <Item value="SelectedEntity" priority="127" />
+      <Item value="ReactiveCommand" priority="87" />
+      <Item value="sender" priority="128" />
+      <Item value="DeleteCommand" priority="31" />
+      <Item value="AddLocationCommand" priority="31" />
+      <Item value="SystemParameters`0" priority="31" />
+      <Item value="param" priority="63" />
+      <Item value="location" priority="798" />
+      <Item value="se" priority="31" />
+      <Item value="client" priority="31" />
+      <Item value="LocationInCreation" priority="31" />
+      <Item value="New" priority="16" />
+      <Item value="class" priority="30" />
+      <Item value="MoveToDetailsViewTypeMessage`0" priority="31" />
+      <Item value="bool" priority="63" />
+      <Item value="Messenger`0" priority="63" />
+      <Item value="OnMoveToDetailsViewMessage`0" priority="31" />
+      <Item value="MoveToDetailsViewMessage" priority="29" />
+      <Item value="moveToDetailsViewTypeMessage" priority="31" />
+      <Item value="typeof" priority="31" />
+      <Item value="newLocation" priority="127" />
+      <Item value="VehiclesVM`0" priority="31" />
+      <Item value="InitializeComponent`0" priority="31" />
+      <Item value="Location" priority="115" />
+      <Item value="newLocationToAdd" priority="31" />
+      <Item value="Name" priority="31" />
+      <Item value="ContextManager" priority="63" />
+      <Item value="target" priority="31" />
+      <Item value="try" priority="31" />
+      <Item value="do" priority="63" />
+      <Item value="finally" priority="31" />
+      <Item value="monthWithNotEnoughDays" priority="63" />
+      <Item value="false" priority="223" />
+      <Item value="RemoveDeleteCancel`0" priority="31" />
+      <Item value="RemoveDeleteCancel" priority="29" />
+      <Item value="removeDeleteCancel" priority="95" />
+      <Item value="value" priority="95" />
+      <Item value="LocationVM`0" priority="31" />
+      <Item value="locationsDomainCollectionView" priority="31" />
+      <Item value="LocationsVM`0" priority="32" />
+      <Item value="locationsVM" priority="479" />
+      <Item value="break" priority="95" />
+      <Item value="else" priority="63" />
+      <Item value="locationToAddExists" priority="63" />
+      <Item value="locationAdded" priority="63" />
+      <Item value="SaveCommand" priority="63" />
+      <Item value="DataManager`0" priority="31" />
+      <Item value="OnSave`0" priority="32" />
+      <Item value="RoutesVM" priority="223" />
+      <Item value="RoutesVM`0" priority="391" />
+      <Item value="values" priority="415" />
+      <Item value="route" priority="95" />
+      <Item value="region" priority="31" />
+      <Item value="selectedRegion" priority="31" />
+      <Item value="regionFromRoute" priority="31" />
+      <Item value="routesWithCorrectType" priority="94" />
+      <Item value="returnString" priority="31" />
+      <Item value="count" priority="95" />
+      <Item value="TypedReference`0" priority="31" />
+      <Item value="DomainCollectionView`0" priority="32" />
+      <Item value="Route`0" priority="127" />
+      <Item value="serviceType" priority="255" />
+      <Item value="routeDCV" priority="63" />
+      <Item value="filteredRoutes" priority="63" />
+      <Item value="routesRegions" priority="31" />
+      <Item value="Any`1" priority="26" />
+      <Item value="selectedRegions" priority="31" />
+      <Item value="String`0" priority="63" />
+      <Item value="Contains`1" priority="53" />
+      <Item value="filteredRoute" priority="31" />
+      <Item value="selectedTypes" priority="31" />
+      <Item value="selectedRouteTypes" priority="63" />
+      <Item value="destination" priority="63" />
+      <Item value="rt" priority="31" />
+      <Item value="RouteTask`0" priority="162" />
+      <Item value="task" priority="95" />
+      <Item value="routesVM" priority="31" />
+      <Item value="currentDestination" priority="63" />
+      <Item value="loadedRoutes" priority="63" />
+      <Item value="routesOrFiltersChanged" priority="31" />
+      <Item value="loadedRoute" priority="31" />
+      <Item value="lr" priority="31" />
+      <Item value="_selectedTypesBool" priority="31" />
+      <Item value="Rxx2`0" priority="31" />
+      <Item value="rds" priority="31" />
+      <Item value="entityCollection" priority="63" />
+      <Item value="Observable`0" priority="31" />
+      <Item value="TimeSpan" priority="28" />
+      <Item value="DateTime`0" priority="127" />
       <Item value="DateTime" priority="28" />
-      <Item value="field" priority="127" />
-      <Item value="child" priority="31" />
-      <Item value="client" priority="287" />
-      <Item value="clientTitle" priority="31" />
-      <Item value="Convert`0" priority="26" />
-      <Item value="changeset" priority="31" />
-      <Item value="cse" priority="95" />
-      <Item value="Delete" priority="33" />
-      <Item value="serviceTemplatesToDelete" priority="63" />
-      <Item value="changes" priority="31" />
-      <Item value="Count`1" priority="53" />
-      <Item value="option" priority="31" />
-      <Item value="Deleted" priority="16" />
-      <Item value="UIElement`0" priority="31" />
-      <Item value="ct" priority="31" />
-      <Item value="BusinessAccount" priority="90" />
-      <Item value="PartyImage" priority="31" />
-      <Item value="Invoice`0" priority="63" />
-      <Item value="#if" priority="95" />
-      <Item value="newBusinessAccount" priority="95" />
-      <Item value="CoreEntityCollectionInfiniteAccordionVM" priority="32" />
-      <Item value="_contextChanged" priority="64" />
-      <Item value="Converter" priority="127" />
-      <Item value="serviceProvider" priority="159" />
-      <Item value="FoundOps" priority="31" />
-      <Item value="AddDeleteModeConverter`0" priority="31" />
-      <Item value="AddDeleteMode`0" priority="63" />
-      <Item value="SLDependProp" priority="127" />
-      <Item value="SLDependPropChange" priority="31" />
-      <Item value="BindingFlags" priority="29" />
-      <Item value="binding" priority="63" />
-      <Item value="Binding`0" priority="92" />
-      <Item value="BindingValidationError" priority="31" />
-      <Item value="Binding" priority="28" />
-      <Item value="greasemaster" priority="63" />
-      <Item value="Client" priority="29" />
-      <Item value="OwnedParty" priority="64" />
-      <Item value="GotGreaseImporter`0" priority="31" />
-      <Item value="greasemasterEntities" priority="28" />
-      <Item value="_gotGrease" priority="225" />
-      <Item value="DateAdded" priority="32" />
-      <Item value="pickupLocation" priority="194" />
-      <Item value="regions" priority="129" />
-      <Item value="Region" priority="90" />
-      <Item value="Color" priority="32" />
-      <Item value="Notes" priority="32" />
-      <Item value="region" priority="91" />
-      <Item value="Select`2" priority="108" />
-      <Item value="pul" priority="391" />
-      <Item value="Location" priority="28" />
-      <Item value="Business" priority="28" />
-      <Item value="AddressLineOne" priority="32" />
-      <Item value="AddressLineTwo" priority="32" />
-      <Item value="State" priority="32" />
-      <Item value="ZipCode" priority="32" />
-      <Item value="Latitude" priority="27" />
-      <Item value="Longitude" priority="32" />
-      <Item value="OwnerParty" priority="32" />
-      <Item value="_regions" priority="96" />
-      <Item value="r" priority="96" />
-      <Item value="_clients" priority="63" />
-      <Item value="f" priority="31" />
-      <Item value="TextBoxField`0" priority="31" />
-      <Item value="locationSchedule" priority="95" />
-      <Item value="schedule" priority="53" />
-      <Item value="notesField" priority="31" />
-      <Item value="ImportClients`0" priority="31" />
-      <Item value="ImportSchedules`0" priority="31" />
-      <Item value="pickuplocation`0" priority="61" />
-      <Item value="pickuplocationschedule`0" priority="63" />
-      <Item value="_locationSchedules" priority="31" />
-      <Item value="ValueType`0" priority="31" />
-      <Item value="ActionResult`0" priority="31" />
-      <Item value="HttpStatusCodeResult" priority="28" />
-      <Item value="HttpStatusCodeResult`0" priority="31" />
-      <Item value="Content`0" priority="31" />
-      <Item value="XmlValidatingReader`0" priority="31" />
-      <Item value="lrs" priority="95" />
-      <Item value="EnvironmentVariableTarget`0" priority="31" />
-      <Item value="pickupLocations" priority="31" />
-      <Item value="clients" priority="31" />
-      <Item value="i" priority="95" />
-      <Item value="operation" priority="31" />
-      <Item value="_lastOperation" priority="31" />
-      <Item value="Debug`0" priority="31" />
-      <Item value="ContactInfo" priority="28" />
-      <Item value="Type" priority="31" />
-      <Item value="Label" priority="32" />
-      <Item value="int" priority="31" />
-      <Item value="regionIndex" priority="127" />
-      <Item value="CurrentPageIndex" priority="127" />
-      <Item value="pageToPrint" priority="64" />
-      <Item value="ForceBindingsUpdateLayout`0" priority="95" />
-      <Item value="UpdateCurrentItems`0" priority="31" />
-      <Item value="HorizontalContentAlignment" priority="31" />
-      <Item value="Text" priority="31" />
-      <Item value="Page`0" priority="31" />
-      <Item value="DesignerPropertiesHelper`0" priority="31" />
-      <Item value="#endif" priority="31" />
-      <Item value="_serialDisposable" priority="32" />
-      <Item value="val" priority="31" />
-      <Item value="BusinessAccount`0" priority="95" />
-      <Item value="FoundOPSServiceTemplates" priority="63" />
-      <Item value="ServiceTemplate" priority="57" />
-      <Item value="serviceTemplateChild" priority="31" />
-      <Item value="Id" priority="31" />
-      <Item value="ServiceTemplateLevel" priority="31" />
-      <Item value="FoundOpsDefined" priority="17" />
-      <Item value="Business`0" priority="31" />
-      <Item value="businessAccountContext" priority="31" />
-      <Item value="serviceTemplateExistsUnderContext" priority="31" />
-      <Item value="commandParameter" priority="31" />
-      <Item value="addButtonBindingExpression" priority="31" />
-      <Item value="Explicit" priority="16" />
-      <Item value="_addButtonCommandBinding" priority="31" />
-      <Item value="ButtonBase`0" priority="63" />
-      <Item value="AddDelete" priority="16" />
-      <Item value="PaddingProperty" priority="31" />
-      <Item value="UserAccount`0" priority="95" />
-      <Item value="mp" priority="31" />
-      <Item value="serviceProviderContext" priority="63" />
-      <Item value="newEntity" priority="63" />
-      <Item value="UserAccountsRadGridView" priority="31" />
+      <Item value="View`0" priority="31" />
+      <Item value="OutArgument`0" priority="63" />
+      <Item value="OutArgument" priority="28" />
+      <Item value="listOfBusinessAccounts" priority="95" />
+      <Item value="System" priority="63" />
+      <Item value="Activities" priority="53" />
+      <Item value="Activity`0" priority="26" />
+      <Item value="ActivityContext`0" priority="26" />
+      <Item value="radPane" priority="31" />
+      <Item value="GridViewRow`0" priority="31" />
+      <Item value="RadTreeListView`0" priority="31" />
+      <Item value="RadTreeView`0" priority="31" />
+      <Item value="SerializationTools" priority="31" />
+      <Item value="authURL" priority="31" />
+      <Item value="currentBunsinessAccount" priority="31" />
+      <Item value="PartyImage" priority="93" />
+      <Item value="Guid`0" priority="31" />
+      <Item value="newItem" priority="224" />
+      <Item value="serviceContext" priority="63" />
+      <Item value="IQueryable" priority="31" />
+      <Item value="t" priority="95" />
+      <Item value="storageAccount" priority="95" />
+      <Item value="CloudTableClient`0" priority="31" />
+      <Item value="tableClient" priority="128" />
+      <Item value="CloudTableClient" priority="28" />
+      <Item value="entityType" priority="31" />
+      <Item value="enum" priority="31" />
+      <Item value="Party`0" priority="63" />
+      <Item value="operation" priority="64" />
+      <Item value="Update" priority="16" />
+      <Item value="XmlWriter`0" priority="94" />
+      <Item value="StringBuilder`0" priority="63" />
+      <Item value="builder" priority="160" />
+      <Item value="using" priority="62" />
+      <Item value="writerBuilder" priority="31" />
+      <Item value="Tuple&lt;XmlWriter,StringBuilder&gt;" priority="28" />
+      <Item value="Delete" priority="16" />
+      <Item value="xmlWriter" priority="32" />
+      <Item value="Action`0" priority="63" />
+      <Item value="createElement" priority="31" />
+      <Item value="CreateQuickBooksElement`0" priority="31" />
+      <Item value="QuickBooksXml`0" priority="63" />
+      <Item value="filter" priority="95" />
+      <Item value="clientId" priority="95" />
+      <Item value="Operation`0" priority="31" />
+      <Item value="IEntityDefaultCreation`0" priority="31" />
+      <Item value="IsBillToLocationChanged" priority="31" />
+      <Item value="IsDueDateChanged" priority="31" />
+      <Item value="IsMemoChanged" priority="63" />
+      <Item value="invoice" priority="63" />
+      <Item value="st" priority="31" />
+      <Item value="LineItem`0" priority="160" />
+      <Item value="Server.Services.CoreDomainService" priority="28" />
+      <Item value="CoreEntities" priority="30" />
+      <Item value="listOfProperties" priority="31" />
+      <Item value="is" priority="31" />
+      <Item value="SalesTerm`0" priority="64" />
+      <Item value="SalesTerm" priority="32" />
+      <Item value="TrackChanges`0" priority="63" />
+      <Item value="IsSalesTermChanged" priority="31" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Invoice">
+      <Item value="ServiceTemplate" priority="26" />
+      <Item value="BillToLocation" priority="161" />
+      <Item value="CustomerId" priority="161" />
+      <Item value="LineItems" priority="26" />
+      <Item value="SyncToken" priority="53" />
+      <Item value="CreateTime" priority="26" />
+      <Item value="LastUpdatedTime" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.ServiceTemplate">
+      <Item value="OwnerClient" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Client">
+      <Item value="DisplayName" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Location">
+      <Item value="AddressLineOne" priority="53" />
+      <Item value="AddressLineTwo" priority="26" />
+      <Item value="City" priority="26" />
+      <Item value="State" priority="26" />
+      <Item value="ZipCode" priority="26" />
+      <Item value="Region" priority="53" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.RoutesVM">
-      <Item value="PropertyChanged" priority="26" />
-      <Item value="SelectedDate" priority="26" />
-      <Item value="DataManager" priority="163" />
-      <Item value="Context" priority="53" />
-      <Item value="ObservationState" priority="26" />
-      <Item value="SetupMainQuery`0" priority="26" />
-      <Item value="RoleId" priority="27" />
-      <Item value="ContextManager" priority="26" />
+      <Item value="SelectedRegions" priority="135" />
+      <Item value="RouteTypes" priority="26" />
+      <Item value="SelectedRouteTypes" priority="242" />
+      <Item value="SelectedTypesBool" priority="323" />
+      <Item value="DomainCollectionView" priority="108" />
+      <Item value="ForceDispatchingFilterUpdate" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Services.CoreDomainService.CoreDomainContext">
-      <Item value="GetRoutesForServiceProviderOnDayQuery`0" priority="53" />
-      <Item value="Routes" priority="54" />
-      <Item value="GetVehiclesForPartyQuery`0" priority="27" />
-      <Item value="GetRouteLogForServiceProviderQuery`0" priority="27" />
-      <Item value="GetEmployeesForRoleQuery`0" priority="27" />
-      <Item value="GetEmployeeHistoryEntriesForRoleQuery`0" priority="27" />
-      <Item value="EmployeeHistoryEntries" priority="27" />
-      <Item value="GetLocationsQuery`0" priority="27" />
-      <Item value="GetLocationsToAdministerForRoleQuery`0" priority="26" />
-      <Item value="Locations" priority="80" />
-      <Item value="GetRecurringServicesForServiceProviderQuery`0" priority="27" />
-      <Item value="RecurringServices" priority="54" />
-      <Item value="GetRegionsQuery`0" priority="27" />
-      <Item value="GetRegionsForServiceProviderQuery`0" priority="27" />
-      <Item value="Regions" priority="26" />
-      <Item value="GetServiceTemplatesForServiceProviderQuery`0" priority="27" />
-      <Item value="ServiceTemplates" priority="54" />
-      <Item value="GetServicesForRoleQuery`0" priority="27" />
-      <Item value="GetBusinessAccountsForRoleQuery`0" priority="27" />
-      <Item value="Parties" priority="53" />
-      <Item value="VehicleMaintenanceLogEntries" priority="27" />
-      <Item value="GetVehicleMaintenanceLogForPartyQuery`0" priority="27" />
-      <Item value="GetUnroutedRouteTasksQuery`0" priority="27" />
-      <Item value="SubmitChanges`0" priority="80" />
-      <Item value="RejectChanges`0" priority="53" />
-      <Item value="EntityContainer" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:ReactiveUI.ObservableAsPropertyHelper`1">
-      <Item value="Value" priority="299" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.ViewModels.DataFedVM">
-      <Item value="IsLoading" priority="27" />
-      <Item value="raisePropertyChanged`0" priority="26" />
-      <Item value="ObservationState" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.VehiclesVM">
-      <Item value="SetupMainQuery`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Void">
-      <Item value="Equals`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:ReactiveUI.Xaml.IReactiveCommand">
-      <Item value="Execute`0" priority="53" />
-      <Item value="Subscribe`0" priority="269" />
-      <Item value="CanExecuteObservable" priority="26" />
-      <Item value="AsObservable`1" priority="26" />
-      <Item value="Merge`1" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.ViewModels.CoreEntityCollectionVM`1">
-      <Item value="WhenAny`3" priority="107" />
-      <Item value="CanAddCommand`0" priority="26" />
-      <Item value="DataManager" priority="26" />
-      <Item value="ContextManager" priority="26" />
-      <Item value="IsLoading" priority="26" />
-      <Item value="SelectedEntity" priority="26" />
-      <Item value="DomainCollectionView" priority="26" />
-      <Item value="DeleteEntity`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.UserAccountsVM">
-      <Item value="SetupMainQuery`0" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.SelectedEmployeesVM">
-      <Item value="ControlsThatCurrentlyRequireThisVM" priority="26" />
-      <Item value="SetupMainQuery`0" priority="26" />
-      <Item value="SelectedEntity" priority="26" />
-      <Item value="SelectedEntities" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.LocationsVM">
-      <Item value="SetupMainQuery`0" priority="26" />
-      <Item value="RaiseAndSetIfChanged`2" priority="53" />
-      <Item value="SelectedLocationVM" priority="26" />
-      <Item value="RaisePropertyChanged`0" priority="26" />
-      <Item value="LocationVMObservable" priority="26" />
-      <Item value="LocationInCreation" priority="81" />
-      <Item value="UpdateFilter`0" priority="53" />
-      <Item value="DomainCollectionView" priority="53" />
-      <Item value="ObservationState" priority="26" />
-      <Item value="ContextManager" priority="134" />
-      <Item value="Context" priority="53" />
-      <Item value="IsLoading" priority="26" />
-      <Item value="DeleteCommand" priority="27" />
-      <Item value="DeleteLocationInCreation`0" priority="53" />
-      <Item value="SelectedEntity" priority="107" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.RegionsVM">
-      <Item value="SetupMainQuery`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.ClientsVM">
-      <Item value="DataManager" priority="27" />
-      <Item value="ContextManager" priority="26" />
-      <Item value="IsLoadingObservable" priority="26" />
-      <Item value="AddLocationCommand" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.RecurringServicesVM">
-      <Item value="SetupMainQuery`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.ServiceTemplatesVM">
-      <Item value="SetupMainQuery`0" priority="53" />
-      <Item value="ContextManager" priority="136" />
-      <Item value="ObservationState" priority="53" />
-      <Item value="DataManager" priority="26" />
-      <Item value="AddCommand" priority="53" />
-      <Item value="DeleteCommand" priority="26" />
-      <Item value="FoundOPSServiceTemplates" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:Microsoft.Windows.Data.DomainServices.EntityList`1">
-      <Item value="CollectionChanged" priority="26" />
-      <Item value="Count" priority="26" />
-      <Item value="Remove`0" priority="54" />
-      <Item value="Add`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.ViewModels.CoreEntityCollectionInfiniteAccordionVM`1">
-      <Item value="CanAddCommand`0" priority="26" />
-      <Item value="GetType`0" priority="26" />
-      <Item value="ContextManager" priority="107" />
-      <Item value="OnDeleteEntity`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.ServicesVM">
-      <Item value="SetupMainQuery`0" priority="26" />
-      <Item value="ContextManager" priority="108" />
-      <Item value="SaveCommand" priority="53" />
-      <Item value="CanSaveObservable" priority="26" />
-      <Item value="WhenAny`3" priority="26" />
-      <Item value="SelectedEntity" priority="54" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.SelectedVehiclesVM">
-      <Item value="SetupMainQuery`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.ContactsVM">
-      <Item value="ContextManager" priority="54" />
-    </ItemStatistics>
-    <ItemStatistics item="Doc Comment tags">
-      <Item value="&lt;param name=&quot;&quot;&gt;&lt;/param&gt;" priority="4" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:ReactiveUI.IObservedChange`2">
-      <Item value="Value" priority="352" />
-    </ItemStatistics>
-    <ItemStatistics item="XamlCodeCompletionContext">
-      <Item value="AcquireLicenseCompletedEventArgs`0" priority="5" />
-      <Item value="AllowDrop" priority="17" />
-      <Item value="AncestorType" priority="5" />
-      <Item value="AddDelete" priority="5" />
-      <Item value="ISaveDiscardChangesCommands" priority="5" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.ViewModels.ThreadableVM">
-      <Item value="RegisterCommands`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Context.Services.PartyDataService">
-      <Item value="GetCurrentUserAccount`0" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.ViewModels.CoreEntityVM">
-      <Item value="RaisePropertyChanged`0" priority="53" />
-      <Item value="RegisterCommands`0" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.ClientTitlesVM">
-      <Item value="RaisePropertyChanged`0" priority="26" />
-      <Item value="ClientTitleInCreation" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.ClientTitle">
-      <Item value="HasValidationErrors" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.PartyVM">
-      <Item value="RegisterCommands`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Reactive.Linq.Observable2">
-      <Item value="AsInterval`1" priority="26" />
-      <Item value="FromPropertyChangedPattern`2" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.LocationVM">
-      <Item value="_selectedLocationObservable" priority="26" />
-      <Item value="SelectedLocation" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Reactive.Disposables.SerialDisposable">
-      <Item value="Disposable" priority="107" />
-      <Item value="Dispose`0" priority="26" />
-      <Item value="IsDisposed" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.M2M4Ria.IEntityCollection`1">
-      <Item value="CollectionChanged" priority="27" />
-      <Item value="Add`0" priority="54" />
+    <ItemStatistics item="Qualified:System.Collections.ObjectModel.ObservableCollection`1">
       <Item value="Any`1" priority="26" />
+      <Item value="Contains`0" priority="82" />
+      <Item value="Count" priority="81" />
+      <Item value="Add`0" priority="80" />
+      <Item value="First`1" priority="26" />
+      <Item value="Select`2" priority="81" />
+      <Item value="ToArray`1" priority="53" />
+      <Item value="CollectionChanged" priority="26" />
+      <Item value="FromCollectionChangedEventGeneric`0" priority="54" />
+      <Item value="FromCollectionChangedEvent`0" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.ViewModels.CoreSelectedEntitiesCollectionVM`1">
-      <Item value="RaisePropertyChanged`0" priority="27" />
-      <Item value="SelectedEntities" priority="54" />
-      <Item value="LoadedEntites" priority="53" />
-      <Item value="WhenAny`3" priority="26" />
-      <Item value="Context" priority="26" />
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Route">
+      <Item value="RouteDestinationsListWrapper" priority="26" />
+      <Item value="RouteDestinations" priority="107" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@ReactiveUI.MessageBus">
-      <Item value="Current" priority="161" />
+    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Client.EntityCollection`1">
+      <Item value="Any`1" priority="81" />
+      <Item value="Add`0" priority="135" />
+      <Item value="FirstOrDefault`1" priority="53" />
+      <Item value="Remove`0" priority="80" />
+      <Item value="Select`2" priority="54" />
+      <Item value="SelectMany`2" priority="26" />
+      <Item value="FromCollectionChangedEvent`0" priority="26" />
+      <Item value="FromCollectionChanged`1" priority="110" />
+      <Item value="ToObservable`1" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.MoveToDetailsViewMessage">
-      <Item value="TypeOfDetailsView" priority="107" />
-      <Item value="Strategy" priority="53" />
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.RouteDestination">
+      <Item value="RouteTasks" priority="107" />
+      <Item value="Location" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.IProvideContext">
-      <Item value="ObjectTypeProvided" priority="80" />
-      <Item value="SelectedContext" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.MoveStrategy">
-      <Item value="StartFresh" priority="80" />
-      <Item value="AddContextToExisting" priority="53" />
-      <Item value="MoveBackwards" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.Controls.InfiniteAccordion.ObjectDisplay">
-      <Item value="ObjectWithDataContext" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Windows.FrameworkElement">
-      <Item value="DataContext" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Type">
-      <Item value="ToString`0" priority="107" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.InfiniteAccordionView">
-      <Item value="CurrentContext" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Object">
-      <Item value="GetType`0" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.TimeSpan">
-      <Item value="FromSeconds`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:ReactiveUI.IMessageBus">
-      <Item value="SendMessage`1" priority="80" />
-      <Item value="Listen`1" priority="107" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.RemoveContextMessage">
-      <Item value="Context" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.Controls.InfiniteAccordion.DetailsObjectDisplay">
-      <Item value="ContextProvider" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.ThirdsListDetails">
-      <Item value="Details" priority="27" />
-      <Item value="Display" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.ObjectTypeDisplay">
-      <Item value="Display" priority="55" />
-      <Item value="ContextProvider" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.IObjectTypeDisplay">
-      <Item value="Display" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.FieldsVM">
-      <Item value="ContextManager" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.RoutesInfiniteAccordionVM">
-      <Item value="ContextManager" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.ContextProviderChangedMessage">
-      <Item value="CurrentContextProvider" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.ContextBorder">
-      <Item value="Padding" priority="26" />
-      <Item value="_preventDoubleClicks" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.ComponentModel.Composition.CompositionInitializer">
-      <Item value="SatisfyImports`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.AddContextMessage">
-      <Item value="Context" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Client">
-      <Item value="RecurringServices" priority="107" />
-      <Item value="ServiceTemplates" priority="53" />
-      <Item value="OwnedParty" priority="80" />
-      <Item value="ClientTitles" priority="107" />
-      <Item value="DateAdded" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.RecurringService">
-      <Item value="Repeat" priority="162" />
-      <Item value="RepeatChangedObservable`0" priority="80" />
-      <Item value="FromAnyPropertyChanged`1" priority="26" />
-      <Item value="ServiceTemplate" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Repeat">
-      <Item value="FromAnyPropertyChanged`1" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Tuple`5">
-      <Item value="Item1" priority="135" />
-      <Item value="Item2" priority="27" />
-      <Item value="Item3" priority="27" />
-      <Item value="Item4" priority="27" />
-      <Item value="Item5" priority="54" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Models.BlockingQueue`1">
-      <Item value="Enqueue`0" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Collections.Specialized.NotifyCollectionChangedEventArgs">
-      <Item value="Action" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Windows.Input.MouseButtonEventArgs">
-      <Item value="ClickCount" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.Controls.SaveDiscardCancel">
-      <Item value="Show`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Common.Silverlight.Services.DomainCollectionViewFactory`1">
-      <Item value="GetDomainCollectionView`1" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Services.CoreDomainService.CoreDomainService">
-      <Item value="ChangeSet" priority="161" />
-      <Item value="ObjectContext" priority="271" />
-      <Item value="DeleteServiceTemplate`0" priority="26" />
-      <Item value="DeleteClientTitle`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete.AddDelete">
-      <Item value="AddedCurrentItem`0" priority="80" />
-      <Item value="_addButtonCommandBinding" priority="107" />
-      <Item value="SetBinding`0" priority="53" />
-      <Item value="ClearValue`0" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Location">
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Region">
       <Item value="Name" priority="80" />
-      <Item value="EntityState" priority="26" />
-      <Item value="GetOriginal`0" priority="26" />
-      <Item value="Region" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Party">
-      <Item value="Locations" priority="80" />
-      <Item value="OwnedLocations" priority="26" />
-      <Item value="ContactInfoSet" priority="26" />
-      <Item value="Id" priority="26" />
+    <ItemStatistics item="Qualified:FoundOps.Core.Context.Services.CoreDataManager">
+      <Item value="CollectionViewManager" priority="80" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.CoreEntitiesContainer">
-      <Item value="SaveChanges`0" priority="161" />
-      <Item value="Locations" priority="26" />
-      <Item value="ObjectStateManager" priority="26" />
-      <Item value="Options" priority="26" />
+    <ItemStatistics item="Qualified:FoundOps.Core.Context.Services.CoreCollectionViewManager">
+      <Item value="RecurringServicesDomainCollectionView" priority="26" />
+      <Item value="LocationsDomainCollectionView" priority="81" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Service">
-      <Item value="EntityActions" priority="26" />
-      <Item value="ServiceTemplate" priority="80" />
+    <ItemStatistics item="Qualified:Microsoft.Windows.Data.DomainServices.DomainCollectionView`1">
+      <Item value="SourceCollection" priority="215" />
+      <Item value="Select`2" priority="26" />
+      <Item value="FromCollectionChangedEvent`0" priority="26" />
+      <Item value="AsEnumerable`1" priority="26" />
+      <Item value="Contains`0" priority="53" />
+      <Item value="AddNew`0" priority="82" />
+      <Item value="CommitEdit`0" priority="53" />
+      <Item value="CommitNew`0" priority="26" />
+      <Item value="Remove`0" priority="26" />
+      <Item value="ToArray`1" priority="26" />
+      <Item value="Last`1" priority="26" />
+      <Item value="Where`1" priority="26" />
+      <Item value="Count`1" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Client.Entity">
-      <Item value="GetOriginal`0" priority="26" />
+    <ItemStatistics item="Qualified:System.Collections.Generic.IEnumerable`1">
+      <Item value="Select`2" priority="134" />
+      <Item value="Distinct`1" priority="53" />
+      <Item value="ToArray`1" priority="53" />
+      <Item value="Merge`1" priority="163" />
+      <Item value="ToObservableCollection`1" priority="26" />
+      <Item value="CombineLatest`1" priority="26" />
+      <Item value="Count`1" priority="53" />
+      <Item value="Where`1" priority="107" />
+      <Item value="Any`1" priority="26" />
+      <Item value="Contains`1" priority="81" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Data.Objects.ObjectStateManager">
-      <Item value="TryGetObjectStateEntry`0" priority="26" />
+    <ItemStatistics item="Qualified:DeclarativeServiceLibrary1.GetBaseUrl">
+      <Item value="CreateOAuthSession`0" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Windows.Controls.Button">
-      <Item value="Content" priority="26" />
-      <Item value="Command" priority="53" />
-      <Item value="GetBindingExpression`0" priority="53" />
+    <ItemStatistics item="Qualified:System.Activities.InArgument`1">
+      <Item value="ArgumentType" priority="53" />
+      <Item value="Get`0" priority="80" />
+      <Item value="Get`1" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Field">
-      <Item value="ParentField" priority="26" />
-      <Item value="ChildrenFields" priority="80" />
-      <Item value="Name" priority="26" />
+    <ItemStatistics item="Qualified:System.Activities.CodeActivityContext">
+      <Item value="DataContext" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Data.Objects.DataClasses.EntityCollection`1">
-      <Item value="Remove`0" priority="55" />
-      <Item value="ToArray`1" priority="27" />
-      <Item value="Load`0" priority="26" />
-      <Item value="Add`0" priority="55" />
-      <Item value="First`1" priority="54" />
-      <Item value="OfType`1" priority="26" />
+    <ItemStatistics item="Qualified:@FoundOps.Server.Controllers.QuickBooksController">
+      <Item value="CreateNewInvoice`0" priority="26" />
+      <Item value="UpdateInvoice`0" priority="26" />
+      <Item value="DeleteInvoice`0" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Convert">
-      <Item value="ToInt32`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Server.ChangeSet">
-      <Item value="ChangeSetEntries" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Collections.ObjectModel.ReadOnlyCollection`1">
-      <Item value="Contains`0" priority="26" />
-      <Item value="Any`1" priority="54" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.ServiceModel.DomainServices.Server.ChangeSetEntry">
-      <Item value="Operation" priority="53" />
-      <Item value="Entity" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.ServiceTemplate">
-      <Item value="EntityKey" priority="27" />
-      <Item value="Fields" priority="26" />
-      <Item value="OwnerServiceProviderId" priority="27" />
-      <Item value="OwnerServiceProvider" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Option">
-      <Item value="EntityState" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.Printing.PagedPrinter">
-      <Item value="InvalidateArrange`0" priority="27" />
-      <Item value="InvalidateMeasure`0" priority="27" />
-      <Item value="UpdateCurrentItems`0" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.ClientTitle">
-      <Item value="ClientId" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.BusinessAccountsVM">
-      <Item value="DomainCollectionView" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Core.Models.CoreEntities.ServiceTemplateLevel">
-      <Item value="FoundOpsDefined" priority="26" />
-      <Item value="ServiceProviderDefined" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Windows.Data.IValueConverter">
-      <Item value="Convert`0" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.BusinessAccount">
-      <Item value="Id" priority="53" />
-      <Item value="ServiceTemplates" priority="80" />
-      <Item value="Regions" priority="80" />
-      <Item value="Clients" priority="27" />
-      <Item value="RoleMembership" priority="26" />
-      <Item value="OwnedRoles" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Core.Models.CoreEntities.DesignData.BusinessAccountsDesignData">
-      <Item value="FoundOps" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Common.Silverlight.Models.AddDeleteMode">
-      <Item value="AddDelete" priority="26" />
-      <Item value="AddItemDelete" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Windows.Data.Binding">
-      <Item value="ProvideValue`0" priority="26" />
-      <Item value="Mode" priority="26" />
-      <Item value="UpdateSourceTrigger" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Custom.greasemasterEntities">
-      <Item value="Connection" priority="26" />
-      <Item value="pickuplocations" priority="26" />
-      <Item value="regions" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Data.Common.DbConnection">
-      <Item value="Open`0" priority="26" />
+    <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.LineItem">
+      <Item value="Amount" priority="26" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:System.Data.Objects.ObjectSet`1">
-      <Item value="ToArray`1" priority="26" />
+      <Item value="AsQueryable`1" priority="27" />
+      <Item value="OfType`1" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Custom.pickuplocation">
-      <Item value="DateAdded" priority="54" />
-      <Item value="region" priority="53" />
-      <Item value="regionReference" priority="107" />
-      <Item value="OtherNotes" priority="26" />
-      <Item value="Name" priority="54" />
-      <Item value="AddressStreet" priority="27" />
-      <Item value="AddressCity" priority="27" />
-      <Item value="AddressState" priority="27" />
-      <Item value="AddressZipCode" priority="27" />
-      <Item value="GeocodeX" priority="27" />
-      <Item value="GeocodeY" priority="27" />
-      <Item value="GreaseTrapDetails" priority="53" />
-      <Item value="PhoneNumber" priority="27" />
-      <Item value="ContactName" priority="55" />
-      <Item value="AlternativePhoneNumber" priority="55" />
-      <Item value="FaxNumber" priority="55" />
+    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.Services.DataManager">
+      <Item value="GetEntityListObservable`1" priority="53" />
+      <Item value="Query`0" priority="26" />
+      <Item value="Context" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Custom.region">
-      <Item value="Name" priority="136" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Data.Objects.DataClasses.EntityReference`1">
-      <Item value="Load`0" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Region">
-      <Item value="Name" priority="26" />
+    <ItemStatistics item="Qualified:@FoundOps.SLClient.Data.Services.DataManager+Query">
       <Item value="Locations" priority="26" />
-      <Item value="Color" priority="26" />
-      <Item value="BusinessAccount" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Server.Custom.pickuplocationschedule">
-      <Item value="Type" priority="26" />
-      <Item value="Recurrence" priority="107" />
+    <ItemStatistics item="Qualified:System.IObservable`1">
+      <Item value="Merge`1" priority="215" />
+      <Item value="Select`2" priority="382" />
+      <Item value="Where`1" priority="26" />
+      <Item value="ToProperty`2" priority="53" />
+      <Item value="FromCollectionChangedOrSet`1" priority="53" />
+      <Item value="FromCollectionChangedOrSetGeneric`1" priority="26" />
+      <Item value="SelectMany`2" priority="26" />
+      <Item value="Subscribe`0" priority="26" />
+      <Item value="Delay`1" priority="26" />
+      <Item value="Throttle`1" priority="27" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.TextBoxField">
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Location">
+      <Item value="FromAnyPropertyChanged`1" priority="26" />
+      <Item value="OwnerParty" priority="243" />
+      <Item value="Name" priority="459" />
+      <Item value="EntityState" priority="53" />
+      <Item value="Party" priority="53" />
+      <Item value="ContactInfoSet" priority="27" />
+      <Item value="Region" priority="134" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Reactive.Linq.Observable2">
+      <Item value="FromPropertyChangedPattern`2" priority="26" />
+      <Item value="CombineLatest`2" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.LocationsVM">
+      <Item value="WhenAny`3" priority="26" />
+      <Item value="AddCommand" priority="26" />
+      <Item value="SelectedEntity" priority="215" />
+      <Item value="ContextManager" priority="26" />
+      <Item value="LocationInCreation" priority="162" />
+      <Item value="DomainCollectionView" priority="297" />
+      <Item value="LocationsWithoutClient" priority="26" />
+      <Item value="SaveCommand" priority="26" />
+      <Item value="SelectedContext" priority="54" />
+      <Item value="raisePropertyChanged`0" priority="26" />
+      <Item value="RaisePropertyChanged`0" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Party">
+      <Item value="ClientOwner" priority="80" />
+      <Item value="Locations" priority="81" />
+      <Item value="OwnedLocations" priority="107" />
+      <Item value="DisplayName" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:ReactiveUI.IObservedChange`2">
       <Item value="Value" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Tuple`3">
-      <Item value="Item2" priority="53" />
-      <Item value="Item3" priority="53" />
+    <ItemStatistics item="Qualified:@System.Reactive.Linq.Observable">
+      <Item value="Empty`1" priority="26" />
+      <Item value="Create`1" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.TimeSpan">
-      <Item value="Seconds" priority="26" />
-      <Item value="TotalSeconds" priority="26" />
+    <ItemStatistics item="Qualified:System.Collections.Generic.IList`1">
+      <Item value="Where`1" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.Controls.AddDelete">
+      <Item value="AddCommand" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Input.ICommand">
+      <Item value="Execute`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.RoutedEventArgs">
+      <Item value="OriginalSource" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.Controls.Clients.ClientLarge">
+      <Item value="ActualHeight" priority="26" />
+      <Item value="LocationsGrid" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.ViewModels.ClientsVM">
+      <Item value="AddCommand" priority="26" />
+      <Item value="SelectedEntity" priority="188" />
+      <Item value="AddLocationCommand" priority="26" />
+      <Item value="WhenAny`3" priority="26" />
+      <Item value="DomainCollectionView" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:ReactiveUI.Xaml.IReactiveCommand">
+      <Item value="Subscribe`0" priority="26" />
+      <Item value="Execute`0" priority="107" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Client">
+      <Item value="OwnedParty" priority="134" />
+      <Item value="Vendor" priority="26" />
+      <Item value="DisplayName" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.SLClient.Data.Services.ContextManager">
+      <Item value="OwnerAccount" priority="80" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@GalaSoft.MvvmLight.Messaging.Messenger">
+      <Item value="Default" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:GalaSoft.MvvmLight.Messaging.Messenger">
+      <Item value="Register`1" priority="26" />
+      <Item value="Send`1" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.MoveToDetailsViewTypeMessage">
+      <Item value="AddCurrentContext" priority="26" />
+      <Item value="TypeOfDetailsView" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Type">
       <Item value="ToString`0" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Core.Models.CoreEntities.Frequency">
-      <Item value="Daily" priority="27" />
+    <ItemStatistics item="Qualified:@FoundOps.Core.Models.CoreEntities.MonthlyFrequencyDetail">
+      <Item value="OnDayInMonth" priority="27" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Int64">
-      <Item value="ToString`0" priority="27" />
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Repeat">
+      <Item value="RepeatEveryTimes" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:@FoundOps.Core.Models.CoreEntities.DesignData.RegionsDesignData">
-      <Item value="DesignRegionColors" priority="26" />
+    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.Controls.RemoveDeleteCancel">
+      <Item value="DeleteButton" priority="27" />
+      <Item value="RemoveButton" priority="27" />
+      <Item value="LocationName" priority="80" />
+      <Item value="ClientName" priority="27" />
+      <Item value="LocationNameTextBox" priority="26" />
+      <Item value="ClientNameTextBox" priority="26" />
+      <Item value="OwnerName" priority="27" />
+      <Item value="OwnerNameTextBox" priority="27" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Int32">
-      <Item value="ToString`0" priority="27" />
+    <ItemStatistics item="Qualified:System.Windows.Controls.TextBlock">
+      <Item value="Text" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Windows.Printing.PrintPageEventArgs">
-      <Item value="HasMorePages" priority="26" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Linq.IOrderedEnumerable`1">
-      <Item value="AsEnumerable`1" priority="27" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:System.Windows.Data.BindingExpression">
-      <Item value="ParentBinding" priority="80" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:@System.Windows.Controls.Primitives.ButtonBase">
-      <Item value="CommandProperty" priority="53" />
-    </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Role">
-      <Item value="MemberParties" priority="26" />
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.BusinessAccount">
+      <Item value="Locations" priority="26" />
+      <Item value="OwnedLocations" priority="27" />
+      <Item value="QuickBooksSessionXml" priority="26" />
+      <Item value="OwnedRoles" priority="26" />
       <Item value="Name" priority="26" />
     </ItemStatistics>
-    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Contact">
-      <Item value="OwnerParty" priority="26" />
+    <ItemStatistics item="Qualified:FoundOps.Server.Services.CoreDomainService.CoreDomainContext">
+      <Item value="SubmitChanges`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.Controls.Locations.LocationsGrid">
+      <Item value="LocationsRadGridView" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Route">
+      <Item value="RouteType" priority="109" />
+      <Item value="RouteDestinationsListWrapper" priority="26" />
+      <Item value="RouteDestinations" priority="107" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Common.Silverlight.Tools.OrderedEntityCollection`1">
+      <Item value="Select`2" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.RouteDestination">
+      <Item value="Location" priority="134" />
+      <Item value="Name" priority="26" />
+      <Item value="Tasks" priority="107" />
+      <Item value="RouteTasks" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Region">
+      <Item value="ToString`0" priority="26" />
+      <Item value="Name" priority="134" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Object">
+      <Item value="ToString`0" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.RouteTask">
+      <Item value="Name" priority="107" />
+      <Item value="RouteDestination" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView">
+      <Item value="RoutesVM" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.SLClient.Navigator.Panes.Dispatcher.MainPage">
+      <Item value="RoutesVM" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.Windows.Data.DomainServices.EntityList`1">
+      <Item value="Select`2" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:ReactiveUI.ObservableAsPropertyHelper`1">
+      <Item value="Value" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Random">
+      <Item value="Next`0" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.DateTime">
+      <Item value="Now" priority="107" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.CoreEntitiesContainer">
+      <Item value="AcceptAllChanges`0" priority="26" />
+      <Item value="Parties" priority="26" />
+      <Item value="SaveChanges`0" priority="26" />
+      <Item value="LineItems" priority="139" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Activities.OutArgument`1">
+      <Item value="ArgumentType" priority="53" />
+      <Item value="Expression" priority="26" />
+      <Item value="Set`0" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.QuickBooksWF.GetListOfBusinessAccounts">
+      <Item value="Implementation" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Telerik.Windows.Controls.DragDrop.DragDropOptions">
+      <Item value="Destination" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.Invoice">
+      <Item value="BillToLocation" priority="26" />
+      <Item value="BusinessAccount" priority="54" />
+      <Item value="ServiceTemplate" priority="26" />
+      <Item value="Id" priority="26" />
+      <Item value="Client" priority="26" />
+      <Item value="LineItems" priority="54" />
+      <Item value="SalesTerm" priority="53" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.ServiceTemplate">
+      <Item value="OwnerServiceProvider" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.Azure.InvoiceTableDataModel">
+      <Item value="InvoiceId" priority="138" />
+      <Item value="TypeEnum" priority="26" />
+      <Item value="ChangeType" priority="80" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.Azure.InvoiceTableDataServiceContext">
+      <Item value="InvoiceTable" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.WindowsAzure.CloudStorageAccount">
+      <Item value="TableEndpoint" priority="80" />
+      <Item value="Credentials" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Uri">
+      <Item value="Query" priority="26" />
+      <Item value="ToString`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.WindowsAzure.StorageClient.CloudTableClient">
+      <Item value="ListTables`0" priority="26" />
+      <Item value="DoesTableExist`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@FoundOps.Core.Models.QuickBooks.QuickBooksTools">
+      <Item value="AddUpdateToTable`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Tuple`2">
+      <Item value="Item1" priority="26" />
+      <Item value="Item2" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@FoundOps.Core.Models.QuickBooks.QuickBooksXml">
+      <Item value="InvoiceXml`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@FoundOps.Core.Models.QuickBooks.Operation">
+      <Item value="Update" priority="82" />
+      <Item value="Create" priority="27" />
+      <Item value="Delete" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.ComponentModel.PropertyChangedEventArgs">
+      <Item value="PropertyName" priority="80" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.SalesTerm">
+      <Item value="IsNameChanged" priority="26" />
+      <Item value="IsDueDaysChanged" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.LineItem">
+      <Item value="IsAmountChanged" priority="53" />
+      <Item value="IsDescriptionChanged" priority="26" />
     </ItemStatistics>
   </CompletionStatisticsManager>
+  <UnitTestSessions>
+    <Session>
+      <Name>Session #1</Name>
+      <Elements />
+    </Session>
+  </UnitTestSessions>
 </Configuration>

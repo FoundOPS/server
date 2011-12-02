@@ -37,7 +37,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data.Entity" />
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Data.Entity">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -56,17 +59,22 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetListOfObjectsFromTables.cs" />
+    <Compile Include="SetReadyToInvoice.cs" />
+    <Compile Include="UpdateInvoiceQuickBooks.cs" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Compile Include="App_Data\CreateInvoiceQuickBooks.cs" />
-    <Compile Include="GenerateInvoiceFromRouteTask.cs" />
-    <Compile Include="GetListOfRouteTasks.cs" />
+    <Compile Include="CreateInvoiceQuickBooks.cs" />
+    <Compile Include="GetInvoiceFromRouteTask.cs" />
     <Compile Include="GetBaseUrlActivity.cs" />
     <Compile Include="GetListOfBusinessAccounts.cs" />
+    <Compile Include="GetListOfRouteTasks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Service1.xamlx">
       <SubType>Designer</SubType>
@@ -78,6 +86,11 @@
       <Project>{C5170A8A-CAD2-47E2-8552-FEF87C771C03}</Project>
       <Name>FoundOps.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UpdateDelete.xamlx">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

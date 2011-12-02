@@ -1,3 +1,0 @@
-C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj,634574765675582151,
-C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common.Silverlight\FoundOps.Common.Silverlight.csproj,634575779212675392,
-C:\FoundOps\Agile5\Source-DEV\Common\FoundOps.Common\FoundOps.Common.csproj,634575779206005010,

@@ -1,0 +1,1647 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.Windows.Controls.MediaPlayer</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.Windows.Controls.ChaptersPanel">
+            <summary>
+            Arranges its chapters children according to their time possition in the video.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.ChaptersPanel.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures the children of a <see cref="T:Telerik.Windows.Controls.ChaptersPanel"/> to prepare for arranging them during the ArrangeOverride pass. 
+            </summary>
+            <param name="availableSize">The available size that this element can give to child elements. Indicates an upper limit that child elements should not exceed.</param>
+            <returns>The Size that represents the desired size of the element.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.ChaptersPanel.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges and sizes the <see cref="T:Telerik.Windows.Controls.ChaptersPanel"/> control and its contents.
+            </summary>
+            <param name="finalSize">The size allowed for the <see cref="T:Telerik.Windows.Controls.ChaptersPanel"/> control.</param>
+            <returns>The finalSize, unchanged.</returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.MediaPlayer.FullscreenChangedEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.FullscreenChangedEventArgs.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.MediaPlayer.FullscreenChangedEventArgs"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.FullscreenChangedEventArgs.#ctor(System.Windows.Size)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.MediaPlayer.FullscreenChangedEventArgs"/> class.
+            </summary>
+            <param name="mediaPlayerSize">Size of the media player.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.FullscreenChangedEventArgs.#ctor(System.Windows.Size,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.MediaPlayer.FullscreenChangedEventArgs"/> class.
+            </summary>
+            <param name="mediaPlayerSize">Size of the media player.</param>
+            <param name="fullScreen">If set to <c>true</c> [is fullscreen].</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaPlayer.FullscreenChangedEventArgs.MediaPlayerSize">
+            <summary>
+            Gets the size of the media player.
+            </summary>
+            <value>The size of the media player.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaPlayer.FullscreenChangedEventArgs.IsFullscreen">
+            <summary>
+            Gets a value indicating whether RadMediaPlayer is fullscreen.
+            </summary>
+            <value>
+            	<c>True</c> if this instance is fullscreen; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.HeaderedSelector">
+            <summary>
+            Represents a control that contains multiple selectable items and has a header.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeaderedSelector.SelectedValuePathProperty">
+            <summary>
+            Identifies the SelectedValuePath dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeaderedSelector.SelectedValueProperty">
+            <summary>
+            Identifies the SelectedValue dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeaderedSelector.IsSelectedProperty">
+            <summary>
+            Identifies the IsSelected attached property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeaderedSelector.SelectedIndexProperty">
+            <summary>
+            Identifies the SelectedIndex dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeaderedSelector.SelectedItemProperty">
+            <summary>
+            Identifies the SelectedItem dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeaderedSelector.SelectedEvent">
+            <summary>
+            Identifies the Selected routed event.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeaderedSelector.SelectionChangedEvent">
+            <summary>
+            Identifies the SelectionChanged routed event. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeaderedSelector.UnselectedEvent">
+            <summary>
+            Identifies the Unselected routed event. 
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.GetIsSelected(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the IsSelected attached property that indicates whether an item is selected.
+            </summary>
+            <param name="element">Object to query concerning the IsSelected property.</param>
+            <returns>Bool value, true if the IsSelected property is true.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.AddSelectedHandler(System.Windows.DependencyObject,System.Windows.RoutedEventHandler)">
+            <summary>
+            Adds a handler for the Selected attached event. 
+            </summary>
+            <param name="element">Element that listens to this event.</param>
+            <param name="handler">Event handler to add.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.AddUnselectedHandler(System.Windows.DependencyObject,System.Windows.RoutedEventHandler)">
+            <summary>
+            Adds a handler for the Unselected attached event. 
+            </summary>
+            <param name="element">Element that listens to this event.</param>
+            <param name="handler">Event handler to add.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.RemoveSelectedHandler(System.Windows.DependencyObject,System.Windows.RoutedEventHandler)">
+            <summary>
+            Removes a handler for the Selected attached event.
+            </summary>
+            <param name="element">Element that listens to this event.</param>
+            <param name="handler">Event handler to remove.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.RemoveUnselectedHandler(System.Windows.DependencyObject,System.Windows.RoutedEventHandler)">
+            <summary>
+            Removes a handler for the Unselected attached event.
+            </summary>
+            <param name="element">Element that listens to this event.</param>
+            <param name="handler">Event handler to remove.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.SetIsSelected(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets a property value that indicates whether an item in a HeaderedSelector is selected.
+            </summary>
+            <param name="element">Object on which to set the property.</param>
+            <param name="isSelected">Value to set.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Prepares the selector containers.
+            </summary>
+            <param name="element"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Clear selector containers.
+            </summary>
+            <param name="element"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.
+            </summary>
+            <param name="e">Information about the change.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.OnSelectedValueChanged(System.Object,System.Object)">
+            <summary>
+            Called when the SelectedValue property is changed.
+            </summary>
+            <param name="oldValue">The old value of the SelectedValue property.</param>
+            <param name="newValue">The new value of the SelectedValue property.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.OnSelectionChanged(System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Called when the selection changes.
+            </summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.OnSelectedValuePathChanged(System.String,System.String)">
+            <summary>
+            Called when the SelectedValuePath property is changed.
+            </summary>
+            <param name="oldValue">The old value of the SelectedValuePath property.</param>
+            <param name="newValue">The new value of the SelectedValuePath property.</param>
+        </member>
+        <member name="E:Telerik.Windows.Controls.HeaderedSelector.SelectionChanged">
+            <summary>
+            Occurs when the selection of a HeaderedSelector changes.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeaderedSelector.SelectedValuePath">
+            <summary>
+            Gets or sets ... This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeaderedSelector.SelectedValue">
+            <summary>
+            Gets or sets ... This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeaderedSelector.SelectedIndex">
+            <summary>
+            Gets or sets the index of the first item in the current selection or returns negative one (-1) if the selection is empty. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeaderedSelector.SelectedItem">
+            <summary>
+            Gets or sets the first item in the current selection or returns null if the selection is empty. This is a dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.SelectionChanger`1.Begin">
+            <summary>
+            Begin tracking selection changes.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.SelectionChanger`1.SelectJustThisItem(`0)">
+            <summary>
+            Select just this item; all other items in Selection will be removed.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.SelectionChanger`1.Cancel">
+            <summary>
+            Cancels the currently active SelectionChanger.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.SelectionChanger`1.Select(`0)">
+            <summary>
+            Queue something to be added to the selection.
+            Does nothing if the item is already selected.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.SelectionChanger`1.Unselect(`0)">
+            <summary>
+            Queue something to be removed from the selection.
+            Does nothing if the item is not already selected.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeaderedSelector.SelectionChanger`1.AddToSelection(`0)">
+            <summary>
+            Commit selection changes.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeaderedSelector.SelectionChanger`1.IsActive">
+            <summary>
+            True if there is a SelectionChange currently in progress.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.InvertBooleanConverter">
+            <summary>
+            InvertBooleanConverter is a converter that returns the negated equivalent of its boolean argument.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.InvertBooleanConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Returns the inverted boolean value.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.InvertBooleanConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Returns the inverted boolean value.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.MediaPlayer.ItemsCountToIsEnabledConverter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.ItemsCountToIsEnabledConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Modifies the source data before passing it to the target for display in the UI.
+            </summary>
+            <param name="value">The source data being passed to the target.</param>
+            <param name="targetType">The <see cref="T:System.Type"/> of data expected by the target dependency property.</param>
+            <param name="parameter">An optional parameter to be used in the converter logic.</param>
+            <param name="culture">The culture of the conversion.</param>
+            <returns>
+            The value to be passed to the target dependency property.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.ItemsCountToIsEnabledConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Modifies the target data before passing it to the source object.
+            </summary>
+            <param name="value">The target data being passed to the source.</param>
+            <param name="targetType">The <see cref="T:System.Type"/> of data expected by the source object.</param>
+            <param name="parameter">An optional parameter to be used in the converter logic.</param>
+            <param name="culture">The culture of the conversion.</param>
+            <returns>
+            The value to be passed to the source object.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.MediaCommands">
+            <summary>
+            Provides a standard set of media related commands. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.ToggleVideoPanelPinned">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.ToggleChaptersPanelPinned">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.DecreaseVolume">
+            <summary>
+            Gets the value that represents the Decrease Volume command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.FastForward">
+            <summary>
+            Gets the value that represents the Fast Forward command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.IncreaseVolume">
+            <summary>
+            Gets the value that represents the Increase Volume command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.MuteVolume">
+            <summary>
+            Gets the value that represents the Mute Volume command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.NextTrack">
+            <summary>
+            Gets the value that represents the Next Track command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.NextChapter">
+            <summary>
+            Gets the value that represents the Next Chapter command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.Pause">
+            <summary>
+            Gets the value that represents the Pause command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.Play">
+            <summary>
+            Gets the value that represents the Play command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.PreviousTrack">
+            <summary>
+            Gets the value that represents the Previous Track command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.PreviousChapter">
+            <summary>
+            Gets the value that represents the Previous Chapter command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.Rewind">
+            <summary>
+            Gets the value that represents the Rewind command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.Select">
+            <summary>
+            Gets the value that represents the Select command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.Stop">
+            <summary>
+            Gets the value that represents the Stop command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.ToggleMuteOnOff">
+            <summary>
+            Gets the value that represents the Toggle Mute On/Off command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.TogglePlayPause">
+            <summary>
+            Gets the value that represents the Toggle Play Pause command. This command indicates the intention to toggle playback between play and pause. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.TogglePlaylist">
+            <summary>
+            Gets the value that represents the Toggle Playlist command. This command indicates the intention to toggle the Playlist shown or hidden. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MediaCommands.ToggleFullScreen">
+            <summary>
+            This command indicates the intention to toggle the FullScreen on or off. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.ToggleVideoPanelPinned">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.ChannelDown">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.ChannelUp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.ToggleChaptersPanelPinned">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.DecreaseMicrophoneVolume">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.DecreaseTreble">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.DecreaseVolume">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.FastForward">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.IncreaseBass">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.IncreaseMicrophoneVolume">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.IncreaseTreble">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.IncreaseVolume">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.Last">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.MuteMicrophoneVolume">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.MuteVolume">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.NextTrack">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.NextChapter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.Pause">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.Play">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.PreviousTrack">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.PreviousChapter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.Record">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.Rewind">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.Select">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.Stop">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.ToggleMicrophoneOnOff">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.TogglePlayPause">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.ToggleMuteOnOff">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.TogglePlaylist">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MediaCommands.CommandId.ToggleFullScreen">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RadMediaPlayerWrapper">
+            <summary>
+            RadMediaPlayerWrapper is a control holding all the buttons and visual elements displayed by RadMediaPlayer.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayerWrapper.PlayerProperty">
+            <summary>
+            Identifies the Player dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayerWrapper.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RadMediaPlayerWrapper"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayerWrapper.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, it is invoked whenever application code or internal processes
+            (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayerWrapper.OnMouseMove(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.MouseMove"/> event occurs.
+            </summary>
+            <param name="e">
+            The data for the event.
+            </param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayerWrapper.Player">
+            <summary>
+            Gets or sets a reference to parent <see cref="T:RadMediaPlayerWrapper"/>.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.MediaPlayer.PlaylistPresenter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.PlaylistPresenter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.MediaPlayer.PlaylistPresenter"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.PlaylistPresenter.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter.OnChapterClicked(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Called when [chapter clicked].
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter.IsItemItsOwnContainerOverride(System.Object)">
+            <summary>
+            Determines if the specified item is (or is eligible to be) its own container.
+            </summary>
+            <param name="item">The item to check.</param>
+            <returns>
+            True if the item is (or is eligible to be) its own container; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter.GetContainerForItemOverride">
+            <summary>
+            Creates or identifies the element that is used to display the given item.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Prepares the specified element to display the specified item.
+            </summary>
+            <param name="element">Element used to display the specified item.</param>
+            <param name="item">Specified item.</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RadMediaChapter">
+            <summary>
+            Chapters gives you the ability to highlight key media content.
+            Chapters are added to the a RadMediaItem object using its Items collection. 
+            In XAML
+            RadMediaItem
+            	RadMediaChapter
+            RadMediaItem
+            Each chapter (which is a RadMediaChapter class) is defined with the following properties: 
+            Position - the exact time (in seconds) when the chapter begins 
+            Content - the content(title) of the chapter.
+            ImageSource - url of the image with which the chapter is previewed in RadChaptersPresenter.
+            </summary>	
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaChapter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadMediaChapter"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaChapter.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadMediaChapter"/> class.
+            </summary>
+            <param name="position">The position.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaChapter.OnSelected(Telerik.Windows.RadRoutedEventArgs)">
+            <summary>
+            Called when the RadMediaChapter is selected in a RadMediaItem.
+            </summary>
+            <param name="e">The event data.</param>
+            <remarks>
+            This method is called when the IsSelected property changes to true.
+            </remarks>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaChapter.OnUnselected(Telerik.Windows.RadRoutedEventArgs)">
+            <summary>
+            Called when the RadMediaChapter is unselected in a RadMediaItem.
+            </summary>
+            <param name="e">The event data.</param>
+            <remarks>
+            This method is called when the IsSelected property changes to true.
+            </remarks>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaChapter.SelectedEvent">
+            <summary>
+            Identifies the Selected routed event.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaChapter.UnselectedEvent">
+            <summary>
+            Identifies the Unselected routed event.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaChapter.IndexStringProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaChapter.ImageSourceProperty">
+            <summary>
+            Identifies the ImageSource dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaChapter.TitleProperty">
+            <summary>
+            Identifies the Title dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaChapter.PositionProperty">
+            <summary>
+            Identifies the Position dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaChapter.IsSelectedProperty">
+            <summary>
+            Identifies the IsSelected dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaChapter.ChapterClickEvent">
+            <summary>
+            Occurs whenever a chapter is clicked.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaChapter.IndexString">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaChapter.IsSelected">
+            <summary>
+            Specifies if this chapter is the currently playing.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaChapter.Position">
+            <summary>
+            Gets or sets the position of RadMediaChapter. The Position property is used when the user wants to jump to a specific moment of the media item.
+            </summary>
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem Source="movie1.wmv">
+            				<telerik:RadMediaChapter 
+            					Position="00:00:20"
+            					Title="Jump to 20 sec." />
+            				<telerik:RadMediaChapter 
+            					Position="00:02:50"
+            					Title="Jump to 2 min and 50 sec." />
+            			</telerik:RadMediaItem>
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            
+            		RadMediaChapter chapter1 = new RadMediaChapter();
+            		chapter1.Position = "00:00:20";
+            		chapter1.Title = "Jump to 20sec.";
+            		mediaItem.Items.Add(chapter1);
+            		
+            		RadMediaChapter chapter2 = new RadMediaChapter();
+            		chapter2.Position = "00:02:50";
+            		chapter2.Title = "Jump to 2min. 50sec.";
+            		mediaItem.Items.Add(chapter2);
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaChapter.Title">
+            <summary>
+            Gets or sets the Title property of RadMediaChapter.
+            The title property provides a string that will be displayed when the current RadMediaChapter is reached.
+            </summary>
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem Source="movie1.wmv">
+            				<telerik:RadMediaChapter 
+            					Position="00:00:20" 
+            					Title="Jump to 20 sec." />
+            				<telerik:RadMediaChapter 
+            					Position="00:02:50" 
+            					Title="Jump to 2 min and 50 sec." />
+            			</telerik:RadMediaItem>
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            
+            		RadMediaChapter chapter1 = new RadMediaChapter();
+            		chapter1.Position = "00:00:20";
+            		chapter1.Title = "Jump to 20sec.";
+            		mediaItem.Items.Add(chapter1);
+            		
+            		RadMediaChapter chapter2 = new RadMediaChapter();
+            		chapter2.Position = "00:02:50";
+            		chapter2.Title = "Jump to 2min. 50sec.";
+            		mediaItem.Items.Add(chapter2);
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaChapter.ImageSource">
+            <summary>
+            Gets or sets the image that will be used within the current instance of <see cref="T:Telerik.Windows.Controls.RadMediaChapter">RadMediaChapter</see>.
+            </summary>
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem Source="movie1.wmv">
+            				<telerik:RadMediaChapter 
+            					Position="00:00:20" 
+            					Title="Jump to 20 sec."
+            					ImageSource="image1.jpg" />
+            				<telerik:RadMediaChapter 
+            					Position="00:02:50" 
+            					Title="Jump to 2 min and 50 sec."
+            					ImageSource="image2.jpg" />
+            			</telerik:RadMediaItem>
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            
+            		RadMediaChapter chapter1 = new RadMediaChapter();
+            		chapter1.Position = "00:00:20";
+            		chapter1.Title = "Jump to 20sec.";
+            		chapter1.ImageSource = new Uri("image1.jpg", UriKind.RelativeOrAbsolute);
+            		mediaItem.Items.Add(chapter1);
+            		
+            		RadMediaChapter chapter2 = new RadMediaChapter();
+            		chapter2.Position = "00:02:50";
+            		chapter2.Title = "Jump to 2min. 50sec.";
+            		chapter2.ImageSource = new Uri("image2.jpg", UriKind.RelativeOrAbsolute);
+            		mediaItem.Items.Add(chapter2);
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RadMediaItem">
+            <summary>
+            RadMediaItem allows a user to populate RadMediaPlayer with media items. 
+            RadMediaItem is identified by the following properties:
+            Source - the Uri of the media file;
+            ImageSource - the Uri of the image file that will represent RadMediaItem in RadmediaPlayer's playlist;
+            Header - Content that is displayed in the Playlist area of RadMediaPlayer.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadMediaItem"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaItem.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaItem.OnSelected(Telerik.Windows.RadRoutedEventArgs)">
+            <summary>
+            Called when the RadMediaItem is selected in a RadMediaPlayer.
+            </summary>
+            <param name="e">The event data.</param>
+            <remarks>
+            This method is called when the IsSelected property changes to true.
+            </remarks>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaItem.OnUnselected(Telerik.Windows.RadRoutedEventArgs)">
+            <summary>
+            Called when the RadMediaItem is unselected in a RadMediaPlayer.
+            </summary>
+            <param name="e">The event data.</param>
+            <remarks>
+            This method is called when the IsSelected property changes to true.
+            </remarks>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaItem.OnSelectionChanged(System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Raises the SelectionChanged event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaItem.GetContainerForItemOverride">
+            <summary>
+            Creates or identifies the element that is used to display the given item.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaItem.IsItemItsOwnContainerOverride(System.Object)">
+            <summary>
+            Determines if the specified item is (or is eligible to be) its own item container. 
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.SelectedEvent">
+            <summary>
+            Identifies the Selected routed event.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.UnselectedEvent">
+            <summary>
+            Identifies the Unselected routed event.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.CurrentItemChangedEvent">
+            <summary>
+            Occurs whenever a chapter is clicked.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.SourceProperty">
+            <summary> 
+            Identifies the Source dependency property. 
+            </summary> 
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.ImageSourceProperty">
+            <summary> 
+            Identifies the ImageSource dependency property. 
+            </summary> 
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.TitleProperty">
+            <summary>
+            Identifies the Title dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.DescriptionProperty">
+            <summary>
+            Identifies the Description dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.VideoWidthProperty">
+            <summary>
+            Identifies the VideoWidth dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.VideoHeightProperty">
+            <summary>
+            Identifies the VideoHeight dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.VideoStretchProperty">
+            <summary>
+            Identifies the VideoStretch dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.BufferingTimeProperty">
+            <summary>
+            Identifies the BufferingTime Dependency Property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.IsSelectedProperty">
+            <summary>
+            Identifies the IsSelected Dependency Property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.PositionProperty">
+            <summary>
+            Identifies the Position Dependency Property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaItem.IsStreamingSourceProperty">
+            <summary>
+            Identifies the IsStreamingSource Property.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadMediaItem.StreamAttached">
+            <summary>
+            Raised when IsStreamSource is true, to make stream preparations if needed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadMediaItem.StreamDetached">
+            <summary>
+            Raised when IsStreamSource is true, to make stream clean up if needed.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.IsStreamingSource">
+            <summary>
+            Determines whether RadMediaItems will play media from stream or not.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.Position">
+            <summary>
+            Gets or sets the current position in the playing video.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.Source">
+            <summary> 
+            Gets or sets the video file associated with the media item. Source is of type Uri. 
+            </summary> 
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem 
+            				Source="movie1.wmv" />
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.ImageSource">
+            <summary> 
+            Gets or sets the source of the image will be used for representing this instance of <see cref="T:Telerik.Windows.Controls.RadMediaItem">RadMediaItem</see> into <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>'s playlist.
+            </summary> 
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem 
+            				Source="movie1.wmv"
+            				ImageSource="image1.jpg"/>
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            		mediaItem.ImageSource = new Uri("image1.jpg", UriKind.RelativeOrAbsolute);
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.Title">
+            <summary> 
+            Gets or sets the text that will be used as a title of this instance of <see cref="T:Telerik.Windows.Controls.RadMediaItem">RadMediaItem</see> into <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>'s playlist.
+            </summary> 
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem 
+            				Source="movie1.wmv"
+            				Title="Title of movie1"/>
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            		mediaItem.Title = "Title of movie1";
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.Description">
+            <summary>
+            Gets or sets the text that will be used as a description of this instance of <see cref="T:Telerik.Windows.Controls.RadMediaItem">RadMediaItem</see> into <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>'s playlist.
+            </summary>
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem 
+            				Source="movie1.wmv"
+            				Description="Description of movie1"/>
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            		mediaItem.Description = "Description of movie1";
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.VideoWidth">
+            <summary>
+            Gets or sets the value that will be used to set the Width of the <see cref="T:System.Windows.Controls.MediaElement">MediaElement</see> in <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>.
+            </summary>
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem 
+            				Source="movie1.wmv"
+            				VideoWidth="200" 
+            				VideoHeight="200" />
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            		mediaItem.VideoWidth = 200;
+            		mediaItem.VideoHeight = 200;
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.VideoHeight">
+            <summary>
+            Gets or sets the VideoHeight possible Value of the double object.
+            </summary>
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem 
+            				Source="movie1.wmv"
+            				VideoWidth="200" 
+            				VideoHeight="200" />
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            		mediaItem.VideoWidth = 200;
+            		mediaItem.VideoHeight = 200;
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.VideoStretch">
+            <summary>
+            Gets or sets the VideoStretch possible Value of the Stretch object.
+            </summary>
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer
+            			<telerik:RadMediaItem 
+            				Source="movie1.wmv"
+            				VideoStretch="UniformToFill"/>
+            		</telerik:RadMediaPlayer>
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            
+            		RadMediaItem mediaItem = new RadMediaItem();
+            		mediaItem.Source = new Uri("movie1.wmv", UriKind.RelativeOrAbsolute);
+            		mediaItem.VideoStretch = Stretch.UniformToFill;
+            
+            		radMediaPlayer1.Items.Add(mediaItem);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.BufferingTime">
+            <summary>
+            The buffering time specifies the advance-load time (buffer) that the media item will
+            need before starts playing. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaItem.IsSelected">
+            <summary>
+            Identifies weather this RadMediaItem is currently selected.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RadMediaPlayer">
+            <summary>
+            RadMediaPlayer is a flexible UI component based on Silverlight 2.0 platform.
+            It allows users to play a variety of video and audio formats into a web page.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadMediaPlayer"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes
+            (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.Play">
+            <summary>
+            Invokes <see cref="M:System.Windows.Controls.MediaElement.Play">Play()</see>
+            of the <see cref="T:System.Windows.Controls.MediaElement">MediaElement</see> inside <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.Stop">
+            <summary>
+            Invokes <see cref="M:System.Windows.Controls.MediaElement.Stop">Stop()</see>
+            of the <see cref="T:System.Windows.Controls.MediaElement">MediaElement</see> inside <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.Pause">
+            <summary>
+            Invokes <see cref="M:System.Windows.Controls.MediaElement.Pause">Pause()</see>
+            of the <see cref="T:System.Windows.Controls.MediaElement">MediaElement</see> inside <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.NextChapter">
+            <summary>
+            Goes to the next chapter.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.PreviousChapter">
+            <summary>
+            Goes to the previous chapter.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.NextMovie">
+            <summary>
+            Gets the next movie.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.PreviousMovie">
+            <summary>
+            Gets the previous movie.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.GetContainerForItemOverride">
+            <summary>
+            Creates or identifies the element that is used to display the given item. 
+            </summary>
+            <returns>Instance of RadMediaItem.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Prepares the specified element to display the specified item.
+            </summary>
+            <param name="element">The element used to display the specified item.</param>
+            <param name="item">The item to display.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.OnSelectionChanged(System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Raise the SelectionChanged event.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMediaPlayer.OnIsFullScreenChanged">
+            <summary>
+            Called when the RadMediaPlayer either enters or exits full-screen mode and fires the FullScreenChanged.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.PositionProperty">
+            <summary>
+            Identifies the Position dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsFullscreenProperty">
+            <summary>
+            Identifies the IsFullscreen dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsPlayingProperty">
+            <summary>
+            Identifies the IsPlaying dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.PanelStaysOpenIntervalProperty">
+            <summary>
+            Identifies the PanelStaysOpenInterval dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.AutoPlayProperty">
+            <summary>
+            Identifies the AutoPlay dependency property.
+            </summary>		
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.ChaptersStaysOpenIntervalProperty">
+            <summary>
+            Identifies the ChaptersStaysOpenInterval dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsAutoReverseProperty">
+            <summary>
+            Identifies the IsAutoReverse dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsAutoPlaylistAdvanceProperty">
+            <summary>
+            Identifies the AutoPlaylistAdvance dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.VolumeProperty">
+            <summary>
+            Identifies the Volume dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsMuteProperty">
+            <summary>
+            Identifies the IsMuteProperty dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.CanSeekProperty">
+            <summary>
+            Identifies the CanSeek dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsVideoPanelPinnedProperty">
+            <summary>
+            Identifies the IsVideoPanelPinned dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsChaptersPanelPinnedProperty">
+            <summary>
+            Identifies the IsChaptersPanelPinned dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsVideoPanelHiddenProperty">
+            <summary>
+            Identifies the IsVideoPanelHidden dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsChaptersPanelHiddenProperty">
+            <summary>
+            Identifies the IsChaptersPanelHidden dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsVideoControlsPanelVisibleProperty">
+            <summary>
+            Identifies the IsVideoControlsPanelVisibleProperty dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.IsPlaylistVisibleProperty">
+            <summary>
+            Identifies the IsPlaylistVisible dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.SelectedMediaItemProperty">
+            <summary>
+            A dependency property that holds the SelectedItem property of type <see cref="T:Telerik.Windows.Controls.RadMediaItem"/>.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.MediaElementTotalTimeProperty">
+            <summary>
+            A dependency property that holds the duration(in seconds) of the current media item. This is a string property and it is formatted in order to be used by a TextBlock.
+            </summary>		
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.MediaElementCurrentTimeProperty">
+            <summary>
+            A dependency property that holds the current time of the MediaElement in RadMediaPlayer. This is a string property and it is formatted in order to be used by a TextBlock.
+            </summary>		
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.MediaElementTotalSecondsProperty">
+            <summary>
+            A dependency property that holds the duration(in seconds) of the current media item. This property is used by TimeSlider's Maximum property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.TimeSliderTickMarksProperty">
+            <summary>
+            Identifies the TimeSliderTickMarks dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.DownloadProgressValueProperty">
+            <summary>
+            Identifies the DownloadProgressValue dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.DownloadProgressOffsetProperty">
+            <summary>
+            Identifies the DownloadProgressOffset dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.CurrentStateChangedEvent">
+            <summary>
+            Occurs whenever RadMediaPlayer changes its CurrentState.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.MediaOpenedEvent">
+            <summary>
+            Occurs when the current RadMediaItem opens its source.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.MediaEndedEvent">
+            <summary>
+            Occurs when the current RadMediaItem has ended.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.DownloadProgressChangedEvent">
+            <summary>
+            Occurs when there is a change in the download progress of RadMediaPlayr.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadMediaPlayer.ChapterReachedEvent">
+            <summary>
+            Occurs whenever a chapter has been reached.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadMediaPlayer.CurrentStateChanged">
+            <summary>
+            CLR accessors for CurrentStateChangedEvent.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadMediaPlayer.MediaOpened">
+            <summary>
+            CLR accessors for MediaOpenedEvent.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadMediaPlayer.MediaEnded">
+            <summary>
+            CLR accessors for MediaEndedEvent.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadMediaPlayer.ChapterReached">
+            <summary>
+            CLR accessors for ChapterReachedEvent.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadMediaPlayer.DownloadProgressChanged">
+            <summary>
+            CLR accessors for DownloadProgressChangedEvent.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadMediaPlayer.FullScreenChanged">
+            <summary>
+            Occurs when RadMediaPlayer toggles between fullscreen and normal screen.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadMediaPlayer.MediaStateChanged">
+            <summary>
+            Occurs when RadMediaPlayer detects change in some of following properies: IsEnabled, IsErrorOccured, IsLoading,
+            IsVideoControlsPanelVisible, IsChaptersPanelVisible, IsPlaylistVisible.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.AutoPlay">
+            <summary>
+            Gets or sets a value that indicates whether <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>
+            will play automatically the selected item or when click explicitly Play.
+            </summary>	
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsVideoPanelPinned">
+            <summary>
+            Gets or sets value that determnines whether the video panel is pinned or not.
+             This property has lower precedence than <see cref="P:IsVideoPanelHidden"/>.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsChaptersPanelPinned">
+            <summary>
+            Gets or sets value that determnines whether the chapters panel is pinned or not.
+            This property has lower precedence than <see cref="P:IsChaptersPanelHidden"/>.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsVideoPanelHidden">
+            <summary>
+            Gets or sets value that determnines whether the video panel is hidden or not. Takes precedence over
+            <see cref="P:IsVideoControlsPanelVisible"/> and <see cref="P:IsVideoPanelPinned"/>.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsChaptersPanelHidden">
+            <summary>
+            Gets or sets value that determnines whether the chapters panel is hidden or not. Takes precedence over
+            <see cref="P:IsChaptersPanelPinned"/>.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsVideoControlsPanelVisible">
+            <summary>
+            Gets or sets value that determnines whether the video panel is visible or not.
+            This property has lower precedence than <see cref="P:IsVideoPanelHidden"/>.
+            This property is used internally by the player, which means its value may change in certain circumstances.
+            If <see cref="P:IsVideoPanelPinned"/> is set to false, the <see cref="P:IsVideoControlsPanelVisible"/> property
+            will become false after the time in <see cref="P:PanelStaysOpenInterval"/> expires. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.PanelStaysOpenInterval">
+            <summary>
+            The amount of time Video controls panel will stays open.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.ChaptersStaysOpenInterval">
+            <summary>
+            The amount of time Chapters panel will stays open.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.TimeSliderTickMarks">
+            <summary>
+            Collection of marks which are shown on the player chapters panel.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.CanSeek">
+            <summary>
+            Get or set value to determine if seeking is enabled.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsAutoReverse">
+            <summary>
+            Gets or sets a value that indicates whether when <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>
+            reaches the end of its playlist and AutoReverse is set to True, <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>
+            to play its first item in the playlist.
+            </summary>				
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsAutoPlaylistAdvance">
+            <summary>
+            Gets or sets a value that indicates whether <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>
+            should play the next item in the playlist when the current one ends.
+            </summary>		
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsFullScreen">
+            <summary>
+            Gets or sets a value that indicates whether <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see> is displaying in full screen mode.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsPlaying">
+            <summary>
+            Gets or sets a value that indicates whether <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see> is currently playing media.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.Volume">
+            <summary>
+            Gets or sets the volume of the currently played <see cref="T:Telerik.Windows.Controls.RadMediaItem">RadMediaItem</see>.
+            </summary>
+            <remarks>
+            The Volume property ranges between 0 and 1.
+            </remarks>
+            <example>
+            	<code lang="XAML">
+            		<![CDATA[
+            		<telerik:RadMediaPlayer	
+            			x:Name="radMediaPlayer1"
+            			Width="500" Height="400" 
+            			AutoPlay="True"
+            			Volume="0.7" />
+            		]]>
+            	</code>
+            	<code lang="CS">
+            		<![CDATA[
+            		RadMediaPlayer radMediaPlayer1 = new RadMediaPlayer();
+            		radMediaPlayer1.Width = 500;
+            		radMediaPlayer1.Height = 400;
+            		radMediaPlayer1.AutoPlay = true;
+            		radMediaPlayer1.Volume = 0.7d;
+            		LayoutRoot.Children.Add(radMediaPlayer1);
+            		]]>
+            	</code>
+            </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsMute">
+            <summary> 
+            Gets or sets value indicating wheter the volume is mute or not. This is a DependencyProperty.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.SelectedMediaItem">
+            <summary> 
+            Gets the <see cref="T:Telerik.Windows.Controls.RadMediaItem">RadMediaItem</see> that represents the currently played SelectedItem. This is a DependencyProperty.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.Position">
+            <summary> 
+            Gets or sets value for current position of the played <see cref="T:RadMediaItem"/>. This is a DependencyProperty.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.MediaElement">
+            <summary>
+            Gets the <see cref="T:System.Windows.Controls.MediaElement">MediaElement</see>
+            object inside <see cref="T:Telerik.Windows.Controls.RadMediaPlayer">RadMediaPlayer</see>.
+            </summary>
+            <value>The media element.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.DownloadProgressValue">
+            <summary> 
+            Gets value representing the download progress of the currently selected <see cref="T:RadMediaItem"/>. This is a DependencyProperty.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.DownloadProgressOffset">
+            <summary> 
+            Gets value representing the download progress offset of the currently selected <see cref="T:RadMediaItem"/>. This is a DependencyProperty.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsPlaylistVisible">
+            <summary>
+            Gets or sets a value that indicates whether Playlist is visible initially. This is a DependencyProperty.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.MediaElementTotalTime">
+            <summary>
+            Gets the a string representing MediaElement's total time. This is a read-only dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.MediaElementCurrentTime">
+            <summary>
+            Depricated! Gets the a string representing MediaElement's Position. This is a read-only dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.MediaElementTotalSeconds">
+            <summary>
+            Gets the a double value representing MediaElement's total time. This is a read-only dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMediaPlayer.IsChaptersPanelVisible">
+            <summary>
+            Gets or sets value that determnines whether the chapters panel is visible or not.
+            </summary>
+        </member>
+    </members>
+</doc>

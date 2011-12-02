@@ -5,6 +5,7 @@
     <AssemblyPart x:Name="FoundOps.Common" Source="FoundOps.Common.dll" />
     <AssemblyPart x:Name="FoundOps.Common.Silverlight" Source="FoundOps.Common.Silverlight.dll" />
     <AssemblyPart x:Name="FoundOps.Common.Silverlight.UI" Source="FoundOps.Common.Silverlight.UI.dll" />
+    <AssemblyPart x:Name="FoundOps.SLClient.Data" Source="FoundOps.SLClient.Data.dll" />
     <AssemblyPart x:Name="ReactiveUI.Xaml_SL4" Source="ReactiveUI.Xaml_SL4.dll" />
     <AssemblyPart x:Name="ReactiveUI_SL4" Source="ReactiveUI_SL4.dll" />
     <AssemblyPart x:Name="Rxx" Source="Rxx.dll" />
@@ -12,5 +13,7 @@
     <AssemblyPart x:Name="System.Reactive.Windows.Threading" Source="System.Reactive.Windows.Threading.dll" />
     <AssemblyPart x:Name="System.Windows.Controls.Data.Input" Source="System.Windows.Controls.Data.Input.dll" />
     <AssemblyPart x:Name="Telerik.Windows.Controls.Data" Source="Telerik.Windows.Controls.Data.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls.Navigation" Source="System.Windows.Controls.Navigation.dll" />
+    <AssemblyPart x:Name="System.ComponentModel.Composition.Initialization" Source="System.ComponentModel.Composition.Initialization.dll" />
   </Deployment.Parts>
 </Deployment>

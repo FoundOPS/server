@@ -1,9 +1,0 @@
-<Modules>
-  <Module PersistentId="BB748726-9C39-4FDA-8B02-9CC12CD9D34D" ModuleId="FoundOps.Common.Silverlight.UI" />
-  <Module PersistentId="D32C535E-2B13-4AC5-9D49-70C8EDC83933" ModuleId="FoundOps.Server" />
-  <Module PersistentId="43D5B3DA-7DCD-454A-BA3D-667901D304CE" ModuleId="FoundOps.Common" />
-  <Module PersistentId="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB" ModuleId="FoundOps.Common.NET" />
-  <Module PersistentId="FF7089B6-040E-4C6C-A386-BAB77C52CFCB" ModuleId="FoundOps.SLClient.Navigator" />
-  <Module PersistentId="14ADDE30-D51B-4A1C-A855-D556431FDA0A" ModuleId="FoundOps.Common.Silverlight" />
-  <Module PersistentId="0F4FBB4B-0807-4903-8503-67A7021D82BF" ModuleId="FoundOps.SLClient.Data" />
-</Modules>

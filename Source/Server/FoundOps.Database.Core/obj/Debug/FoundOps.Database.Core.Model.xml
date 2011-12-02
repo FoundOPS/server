@@ -1628,6 +1628,7 @@
 				</Entry>
 				<Entry>
 					<Element Type="SqlSimpleColumn" Name="[dbo].[Files].[Name]">
+						<Property Name="IsNullable" Value="False" />
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -1657,22 +1658,6 @@
 						</Relationship>
 					</Element>
 				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Files].[PartyId]">
-						<Property Name="IsNullable" Value="False" />
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
 			</Relationship>
 			<Relationship Name="Schema">
 				<Entry>
@@ -1681,25 +1666,6 @@
 			</Relationship>
 			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="37" />
 			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="38" />
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="39" />
-		</Element>
-		<Element Type="SqlIndex" Name="[dbo].[Files].[IX_FK_FileParty]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[Files].[PartyId]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="IndexedObject">
-				<Entry>
-					<References Name="[dbo].[Files]" />
-				</Entry>
-			</Relationship>
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[Files].[IX_FK_LocationFile]">
 			<Relationship Name="ColumnSpecifications">
@@ -1718,35 +1684,6 @@
 					<References Name="[dbo].[Files]" />
 				</Entry>
 			</Relationship>
-		</Element>
-		<Element Type="SqlTable" Name="[dbo].[Files_PartyImage]">
-			<Property Name="IsAnsiNullsOn" Value="True" />
-			<Relationship Name="Columns">
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Files_PartyImage].[Id]">
-						<Property Name="IsNullable" Value="False" />
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="Schema">
-				<Entry>
-					<References ExternalSource="BuiltIns" Name="[dbo]" />
-				</Entry>
-			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="40" />
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="41" />
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="42" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_Business_inherits_Party]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -1771,7 +1708,7 @@
 					<References Name="[dbo].[Parties]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="43" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="39" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_BusinessAccount_inherits_Business]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -1796,7 +1733,7 @@
 					<References Name="[dbo].[Parties_Business]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="44" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="40" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_BusinessAccountClient]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -1823,31 +1760,6 @@
 			</Relationship>
 			<AttachedAnnotation Disambiguator="5" />
 		</Element>
-		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_BusinessAccountInvoice]">
-			<Property Name="OnUpdateAction" Value="4" />
-			<Property Name="OnDeleteAction" Value="4" />
-			<Relationship Name="Columns">
-				<Entry>
-					<References Name="[dbo].[Invoices].[BusinessAccountId]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="DefiningTable">
-				<Entry>
-					<References Name="[dbo].[Invoices]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="ForeignColumns">
-				<Entry>
-					<References Name="[dbo].[Parties_BusinessAccount].[Id]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="ForeignTable">
-				<Entry>
-					<References Name="[dbo].[Parties_BusinessAccount]" />
-				</Entry>
-			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="45" />
-		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_BusinessAccountRegion]">
 			<Property Name="OnUpdateAction" Value="4" />
 			<Property Name="OnDeleteAction" Value="4" />
@@ -1871,7 +1783,7 @@
 					<References Name="[dbo].[Parties_BusinessAccount]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="46" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="41" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_BusinessAccountRoute]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -1896,19 +1808,19 @@
 					<References Name="[dbo].[Parties_BusinessAccount]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="47" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="42" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_BusinessAccountRouteTask]">
 			<Property Name="OnUpdateAction" Value="4" />
 			<Property Name="OnDeleteAction" Value="4" />
 			<Relationship Name="Columns">
 				<Entry>
-					<References Name="[dbo].[RouteTasks].[BusinessAccountId]" />
+					<References Name="[dbo].[Tasks_RouteTask].[BusinessAccountId]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="DefiningTable">
 				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
+					<References Name="[dbo].[Tasks_RouteTask]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="ForeignColumns">
@@ -1921,7 +1833,7 @@
 					<References Name="[dbo].[Parties_BusinessAccount]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="48" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="43" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_BusinessAccountService]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -1946,32 +1858,32 @@
 					<References Name="[dbo].[Parties_BusinessAccount]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="49" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="44" />
 		</Element>
-		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ClientInvoice]">
+		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_BusinessPosition]">
 			<Property Name="OnUpdateAction" Value="4" />
 			<Property Name="OnDeleteAction" Value="4" />
 			<Relationship Name="Columns">
 				<Entry>
-					<References Name="[dbo].[Invoices].[ClientId]" />
+					<References Name="[dbo].[Positions].[BusinessId]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="DefiningTable">
 				<Entry>
-					<References Name="[dbo].[Invoices]" />
+					<References Name="[dbo].[Positions]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="ForeignColumns">
 				<Entry>
-					<References Name="[dbo].[Clients].[Id]" />
+					<References Name="[dbo].[Parties_Business].[Id]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="ForeignTable">
 				<Entry>
-					<References Name="[dbo].[Clients]" />
+					<References Name="[dbo].[Parties_Business]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="50" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="45" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ClientParty]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2046,7 +1958,7 @@
 					<References Name="[dbo].[Clients]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="51" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="46" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ClientTitleClient]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2323,31 +2235,6 @@
 			</Relationship>
 			<AttachedAnnotation Disambiguator="24" />
 		</Element>
-		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_FileParty]">
-			<Property Name="OnUpdateAction" Value="4" />
-			<Property Name="OnDeleteAction" Value="4" />
-			<Relationship Name="Columns">
-				<Entry>
-					<References Name="[dbo].[Files].[PartyId]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="DefiningTable">
-				<Entry>
-					<References Name="[dbo].[Files]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="ForeignColumns">
-				<Entry>
-					<References Name="[dbo].[Parties].[Id]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="ForeignTable">
-				<Entry>
-					<References Name="[dbo].[Parties]" />
-				</Entry>
-			</Relationship>
-			<AttachedAnnotation Disambiguator="38" />
-		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_InvoiceLocation]">
 			<Property Name="OnUpdateAction" Value="4" />
 			<Property Name="OnDeleteAction" Value="4" />
@@ -2371,7 +2258,7 @@
 					<References Name="[dbo].[Locations]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="52" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="47" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_InvoiceSalesTerm]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2396,7 +2283,7 @@
 					<References Name="[dbo].[SalesTerms]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="53" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="48" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_InvoiceServiceTemplate]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2421,7 +2308,7 @@
 					<References Name="[dbo].[ServiceTemplates]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="54" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="49" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_LineItemInvoice]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2446,7 +2333,7 @@
 					<References Name="[dbo].[Invoices]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="55" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="50" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_LocationContactInfo]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2546,7 +2433,7 @@
 					<References Name="[dbo].[Locations]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="39" />
+			<AttachedAnnotation Disambiguator="38" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_LocationOption_inherits_Option]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2571,7 +2458,7 @@
 					<References Name="[dbo].[Options]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="56" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="51" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_LocationParty]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2596,7 +2483,7 @@
 					<References Name="[dbo].[Parties]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="57" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="52" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_LocationParty1]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2621,7 +2508,7 @@
 					<References Name="[dbo].[Parties]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="58" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="53" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_LocationSubLocation]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2646,7 +2533,7 @@
 					<References Name="[dbo].[Locations]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="59" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="54" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_NumericField_inherits_Field]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2721,57 +2608,7 @@
 					<References Name="[dbo].[Fields_OptionsField]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="60" />
-		</Element>
-		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_PartyImage_inherits_File]">
-			<Property Name="OnUpdateAction" Value="4" />
-			<Property Name="OnDeleteAction" Value="4" />
-			<Relationship Name="Columns">
-				<Entry>
-					<References Name="[dbo].[Files_PartyImage].[Id]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="DefiningTable">
-				<Entry>
-					<References Name="[dbo].[Files_PartyImage]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="ForeignColumns">
-				<Entry>
-					<References Name="[dbo].[Files].[Id]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="ForeignTable">
-				<Entry>
-					<References Name="[dbo].[Files]" />
-				</Entry>
-			</Relationship>
-			<AttachedAnnotation Disambiguator="41" />
-		</Element>
-		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_PartyPartyImage]">
-			<Property Name="OnUpdateAction" Value="4" />
-			<Property Name="OnDeleteAction" Value="4" />
-			<Relationship Name="Columns">
-				<Entry>
-					<References Name="[dbo].[Files_PartyImage].[Id]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="DefiningTable">
-				<Entry>
-					<References Name="[dbo].[Files_PartyImage]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="ForeignColumns">
-				<Entry>
-					<References Name="[dbo].[Parties].[Id]" />
-				</Entry>
-			</Relationship>
-			<Relationship Name="ForeignTable">
-				<Entry>
-					<References Name="[dbo].[Parties]" />
-				</Entry>
-			</Relationship>
-			<AttachedAnnotation Disambiguator="42" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="55" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_PartyRole_Party]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2796,7 +2633,7 @@
 					<References Name="[dbo].[Parties]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="61" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="56" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_PartyRole_Role]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2821,7 +2658,7 @@
 					<References Name="[dbo].[Roles]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="62" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="57" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_PartyRole1]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2846,7 +2683,7 @@
 					<References Name="[dbo].[Parties]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="63" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="58" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_Person_inherits_Party]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2871,7 +2708,32 @@
 					<References Name="[dbo].[Parties]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="64" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="59" />
+		</Element>
+		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_PositionUserAccount]">
+			<Property Name="OnUpdateAction" Value="4" />
+			<Property Name="OnDeleteAction" Value="4" />
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[dbo].[Positions].[UserAccountId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Positions]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[dbo].[Parties_Person].[Id]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[dbo].[Parties_Person]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="60" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RecurringServiceClient]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2896,7 +2758,7 @@
 					<References Name="[dbo].[Clients]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="65" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="61" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RecurringServiceRepeat]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2921,7 +2783,7 @@
 					<References Name="[dbo].[Repeats]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="66" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="62" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RecurringServiceService]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2946,7 +2808,7 @@
 					<References Name="[dbo].[RecurringServices]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="67" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="63" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RecurringServiceServiceTemplate]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2971,7 +2833,7 @@
 					<References Name="[dbo].[ServiceTemplates]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="68" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="64" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RegionLocation]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -2996,7 +2858,7 @@
 					<References Name="[dbo].[Regions]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="69" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="65" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RoleBlock_Block]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3021,7 +2883,7 @@
 					<References Name="[dbo].[Blocks]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="70" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="66" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RoleBlock_Role]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3046,7 +2908,7 @@
 					<References Name="[dbo].[Roles]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="71" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="67" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteDestinationClient]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3071,7 +2933,7 @@
 					<References Name="[dbo].[Clients]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="72" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="68" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteDestinationLocation]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3096,7 +2958,7 @@
 					<References Name="[dbo].[Locations]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="73" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="69" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteDestinationRoute]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3121,7 +2983,7 @@
 					<References Name="[dbo].[Routes]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="74" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="70" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteEmployee_Employee]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3146,7 +3008,7 @@
 					<References Name="[dbo].[Employees]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="75" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="71" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteEmployee_Route]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3171,19 +3033,44 @@
 					<References Name="[dbo].[Routes]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="76" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="72" />
+		</Element>
+		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteTask_inherits_Task]">
+			<Property Name="OnUpdateAction" Value="4" />
+			<Property Name="OnDeleteAction" Value="4" />
+			<Relationship Name="Columns">
+				<Entry>
+					<References Name="[dbo].[Tasks_RouteTask].[Id]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Tasks_RouteTask]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignColumns">
+				<Entry>
+					<References Name="[dbo].[Tasks].[Id]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="ForeignTable">
+				<Entry>
+					<References Name="[dbo].[Tasks]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="73" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteTaskClient]">
 			<Property Name="OnUpdateAction" Value="4" />
 			<Property Name="OnDeleteAction" Value="4" />
 			<Relationship Name="Columns">
 				<Entry>
-					<References Name="[dbo].[RouteTasks].[ClientId]" />
+					<References Name="[dbo].[Tasks_RouteTask].[ClientId]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="DefiningTable">
 				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
+					<References Name="[dbo].[Tasks_RouteTask]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="ForeignColumns">
@@ -3196,19 +3083,19 @@
 					<References Name="[dbo].[Clients]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="77" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="74" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteTaskLocation]">
 			<Property Name="OnUpdateAction" Value="4" />
 			<Property Name="OnDeleteAction" Value="4" />
 			<Relationship Name="Columns">
 				<Entry>
-					<References Name="[dbo].[RouteTasks].[LocationId]" />
+					<References Name="[dbo].[Tasks_RouteTask].[LocationId]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="DefiningTable">
 				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
+					<References Name="[dbo].[Tasks_RouteTask]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="ForeignColumns">
@@ -3221,19 +3108,19 @@
 					<References Name="[dbo].[Locations]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="78" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="75" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteTaskRouteDestination]">
 			<Property Name="OnUpdateAction" Value="4" />
 			<Property Name="OnDeleteAction" Value="4" />
 			<Relationship Name="Columns">
 				<Entry>
-					<References Name="[dbo].[RouteTasks].[RouteDestinationId]" />
+					<References Name="[dbo].[Tasks_RouteTask].[RouteDestinationId]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="DefiningTable">
 				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
+					<References Name="[dbo].[Tasks_RouteTask]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="ForeignColumns">
@@ -3246,19 +3133,19 @@
 					<References Name="[dbo].[RouteDestinations]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="79" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="76" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteTaskService]">
 			<Property Name="OnUpdateAction" Value="4" />
 			<Property Name="OnDeleteAction" Value="4" />
 			<Relationship Name="Columns">
 				<Entry>
-					<References Name="[dbo].[RouteTasks].[ServiceId]" />
+					<References Name="[dbo].[Tasks_RouteTask].[ServiceId]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="DefiningTable">
 				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
+					<References Name="[dbo].[Tasks_RouteTask]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="ForeignColumns">
@@ -3271,7 +3158,7 @@
 					<References Name="[dbo].[Services]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="80" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="77" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteVehicle_Route]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3296,7 +3183,7 @@
 					<References Name="[dbo].[Routes]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="81" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="78" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_RouteVehicle_Vehicle]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3321,7 +3208,7 @@
 					<References Name="[dbo].[Vehicles]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="82" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="79" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ServiceClient]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3346,7 +3233,7 @@
 					<References Name="[dbo].[Clients]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="83" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="80" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ServiceServiceTemplate]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3371,7 +3258,7 @@
 					<References Name="[dbo].[ServiceTemplates]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="84" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="81" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ServiceTemplateBusinessAccount]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3396,7 +3283,7 @@
 					<References Name="[dbo].[Parties_BusinessAccount]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="85" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="82" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_ServiceTemplateField]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3446,7 +3333,7 @@
 					<References Name="[dbo].[ServiceTemplates]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="86" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="83" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_TextBoxField_inherits_Field]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3496,7 +3383,7 @@
 					<References Name="[dbo].[Parties_Person]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="87" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="84" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_UserAccountTrackPoint]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3521,7 +3408,7 @@
 					<References Name="[dbo].[Parties_UserAccount]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="88" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="85" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_UserAccountUserAccountLogEntry]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3546,7 +3433,7 @@
 					<References Name="[dbo].[Parties_UserAccount]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="89" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="86" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_VehicleMaintenanceLogEntryLineItem]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3571,7 +3458,7 @@
 					<References Name="[dbo].[VehicleMaintenanceLog]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="90" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="87" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_VehicleMaintenanceLogEntryVehicle]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3596,7 +3483,7 @@
 					<References Name="[dbo].[Vehicles]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="91" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="88" />
 		</Element>
 		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[FK_VehicleParty]">
 			<Property Name="OnUpdateAction" Value="4" />
@@ -3621,7 +3508,7 @@
 					<References Name="[dbo].[Parties]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="92" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="89" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Invoices]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -3813,84 +3700,16 @@
 						</Relationship>
 					</Element>
 				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Invoices].[BusinessAccountId]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[Invoices].[ClientId]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
 			</Relationship>
 			<Relationship Name="Schema">
 				<Entry>
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="93" />
-			<AttachedAnnotation Disambiguator="45" />
-			<AttachedAnnotation Disambiguator="50" />
-			<AttachedAnnotation Disambiguator="52" />
-			<AttachedAnnotation Disambiguator="53" />
-			<AttachedAnnotation Disambiguator="54" />
-		</Element>
-		<Element Type="SqlIndex" Name="[dbo].[Invoices].[IX_FK_BusinessAccountInvoice]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[Invoices].[BusinessAccountId]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="IndexedObject">
-				<Entry>
-					<References Name="[dbo].[Invoices]" />
-				</Entry>
-			</Relationship>
-		</Element>
-		<Element Type="SqlIndex" Name="[dbo].[Invoices].[IX_FK_ClientInvoice]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[Invoices].[ClientId]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="IndexedObject">
-				<Entry>
-					<References Name="[dbo].[Invoices]" />
-				</Entry>
-			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="90" />
+			<AttachedAnnotation Disambiguator="47" />
+			<AttachedAnnotation Disambiguator="48" />
+			<AttachedAnnotation Disambiguator="49" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[Invoices].[IX_FK_InvoiceLocation]">
 			<Relationship Name="ColumnSpecifications">
@@ -4001,8 +3820,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="94" />
-			<AttachedAnnotation Disambiguator="55" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="91" />
+			<AttachedAnnotation Disambiguator="50" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[LineItems].[IX_FK_LineItemInvoice]">
 			<Relationship Name="ColumnSpecifications">
@@ -4222,10 +4041,10 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="95" />
-			<AttachedAnnotation Disambiguator="57" />
-			<AttachedAnnotation Disambiguator="58" />
-			<AttachedAnnotation Disambiguator="69" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="92" />
+			<AttachedAnnotation Disambiguator="52" />
+			<AttachedAnnotation Disambiguator="53" />
+			<AttachedAnnotation Disambiguator="65" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[Locations].[IX_FK_LocationParty]">
 			<Relationship Name="ColumnSpecifications">
@@ -4387,8 +4206,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="96" />
-			<AttachedAnnotation Disambiguator="60" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="93" />
+			<AttachedAnnotation Disambiguator="55" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[Options].[IX_FK_OptionsFieldOption]">
 			<Relationship Name="ColumnSpecifications">
@@ -4433,8 +4252,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="97" />
-			<AttachedAnnotation Disambiguator="56" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="94" />
+			<AttachedAnnotation Disambiguator="51" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Parties]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -4461,7 +4280,7 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="98" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="95" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Parties_Business]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -4504,8 +4323,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="99" />
-			<AttachedAnnotation Disambiguator="43" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="96" />
+			<AttachedAnnotation Disambiguator="39" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Parties_BusinessAccount]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -4612,8 +4431,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="100" />
-			<AttachedAnnotation Disambiguator="44" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="97" />
+			<AttachedAnnotation Disambiguator="40" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Parties_Person]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -4718,8 +4537,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="101" />
-			<AttachedAnnotation Disambiguator="64" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="98" />
+			<AttachedAnnotation Disambiguator="59" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Parties_UserAccount]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -4810,8 +4629,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="102" />
-			<AttachedAnnotation Disambiguator="87" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="99" />
+			<AttachedAnnotation Disambiguator="84" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[PartyRole]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -4854,9 +4673,9 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="103" />
-			<AttachedAnnotation Disambiguator="61" />
-			<AttachedAnnotation Disambiguator="62" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="100" />
+			<AttachedAnnotation Disambiguator="56" />
+			<AttachedAnnotation Disambiguator="57" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[PartyRole].[IX_FK_PartyRole_Role]">
 			<Relationship Name="ColumnSpecifications">
@@ -5142,25 +4961,6 @@
 			</Relationship>
 			<AttachedAnnotation Disambiguator="37" />
 		</Element>
-		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Files_PartyImage]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[Files_PartyImage].[Id]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="DefiningTable">
-				<Entry>
-					<References Name="[dbo].[Files_PartyImage]" />
-				</Entry>
-			</Relationship>
-			<AttachedAnnotation Disambiguator="40" />
-		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Invoices]">
 			<Relationship Name="ColumnSpecifications">
 				<Entry>
@@ -5178,7 +4978,7 @@
 					<References Name="[dbo].[Invoices]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="93" />
+			<AttachedAnnotation Disambiguator="90" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_LineItems]">
 			<Relationship Name="ColumnSpecifications">
@@ -5197,7 +4997,7 @@
 					<References Name="[dbo].[LineItems]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="94" />
+			<AttachedAnnotation Disambiguator="91" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Locations]">
 			<Relationship Name="ColumnSpecifications">
@@ -5216,7 +5016,7 @@
 					<References Name="[dbo].[Locations]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="95" />
+			<AttachedAnnotation Disambiguator="92" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Options]">
 			<Relationship Name="ColumnSpecifications">
@@ -5235,7 +5035,7 @@
 					<References Name="[dbo].[Options]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="96" />
+			<AttachedAnnotation Disambiguator="93" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Options_LocationOption]">
 			<Relationship Name="ColumnSpecifications">
@@ -5254,7 +5054,7 @@
 					<References Name="[dbo].[Options_LocationOption]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="97" />
+			<AttachedAnnotation Disambiguator="94" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Parties]">
 			<Relationship Name="ColumnSpecifications">
@@ -5273,7 +5073,7 @@
 					<References Name="[dbo].[Parties]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="98" />
+			<AttachedAnnotation Disambiguator="95" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Parties_Business]">
 			<Relationship Name="ColumnSpecifications">
@@ -5292,7 +5092,7 @@
 					<References Name="[dbo].[Parties_Business]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="99" />
+			<AttachedAnnotation Disambiguator="96" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Parties_BusinessAccount]">
 			<Relationship Name="ColumnSpecifications">
@@ -5311,7 +5111,7 @@
 					<References Name="[dbo].[Parties_BusinessAccount]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="100" />
+			<AttachedAnnotation Disambiguator="97" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Parties_Person]">
 			<Relationship Name="ColumnSpecifications">
@@ -5330,7 +5130,7 @@
 					<References Name="[dbo].[Parties_Person]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="101" />
+			<AttachedAnnotation Disambiguator="98" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Parties_UserAccount]">
 			<Relationship Name="ColumnSpecifications">
@@ -5349,7 +5149,7 @@
 					<References Name="[dbo].[Parties_UserAccount]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="102" />
+			<AttachedAnnotation Disambiguator="99" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_PartyRole]">
 			<Relationship Name="ColumnSpecifications">
@@ -5377,7 +5177,26 @@
 					<References Name="[dbo].[PartyRole]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="103" />
+			<AttachedAnnotation Disambiguator="100" />
+		</Element>
+		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Positions]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Positions].[Id]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Positions]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="101" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_RecurringServices]">
 			<Relationship Name="ColumnSpecifications">
@@ -5396,7 +5215,7 @@
 					<References Name="[dbo].[RecurringServices]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="104" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="102" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Regions]">
 			<Relationship Name="ColumnSpecifications">
@@ -5415,7 +5234,7 @@
 					<References Name="[dbo].[Regions]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="105" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="103" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Repeats]">
 			<Relationship Name="ColumnSpecifications">
@@ -5434,7 +5253,7 @@
 					<References Name="[dbo].[Repeats]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="106" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="104" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_RoleBlock]">
 			<Relationship Name="ColumnSpecifications">
@@ -5462,7 +5281,7 @@
 					<References Name="[dbo].[RoleBlock]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="107" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="105" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Roles]">
 			<Relationship Name="ColumnSpecifications">
@@ -5481,7 +5300,7 @@
 					<References Name="[dbo].[Roles]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="108" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="106" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_RouteDestinations]">
 			<Relationship Name="ColumnSpecifications">
@@ -5500,7 +5319,7 @@
 					<References Name="[dbo].[RouteDestinations]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="109" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="107" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_RouteEmployee]">
 			<Relationship Name="ColumnSpecifications">
@@ -5528,7 +5347,7 @@
 					<References Name="[dbo].[RouteEmployee]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="110" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="108" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Routes]">
 			<Relationship Name="ColumnSpecifications">
@@ -5547,26 +5366,7 @@
 					<References Name="[dbo].[Routes]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="111" />
-		</Element>
-		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_RouteTasks]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[RouteTasks].[Id]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="DefiningTable">
-				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
-				</Entry>
-			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="112" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="109" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_RouteVehicle]">
 			<Relationship Name="ColumnSpecifications">
@@ -5594,7 +5394,7 @@
 					<References Name="[dbo].[RouteVehicle]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="113" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="110" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_SalesLeads]">
 			<Relationship Name="ColumnSpecifications">
@@ -5613,7 +5413,7 @@
 					<References Name="[dbo].[SalesLeads]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="114" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="111" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_SalesTerms]">
 			<Relationship Name="ColumnSpecifications">
@@ -5632,7 +5432,7 @@
 					<References Name="[dbo].[SalesTerms]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="115" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="112" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Services]">
 			<Relationship Name="ColumnSpecifications">
@@ -5651,7 +5451,7 @@
 					<References Name="[dbo].[Services]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="116" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="113" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_ServiceTemplates]">
 			<Relationship Name="ColumnSpecifications">
@@ -5670,7 +5470,7 @@
 					<References Name="[dbo].[ServiceTemplates]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="117" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="114" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_SubLocations]">
 			<Relationship Name="ColumnSpecifications">
@@ -5689,7 +5489,45 @@
 					<References Name="[dbo].[SubLocations]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="118" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="115" />
+		</Element>
+		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Tasks]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Tasks].[Id]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Tasks]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="116" />
+		</Element>
+		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Tasks_RouteTask]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Tasks_RouteTask].[Id]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="DefiningTable">
+				<Entry>
+					<References Name="[dbo].[Tasks_RouteTask]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="117" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_TrackPoints]">
 			<Relationship Name="ColumnSpecifications">
@@ -5708,7 +5546,7 @@
 					<References Name="[dbo].[TrackPoints]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="119" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="118" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_UserAccountLog]">
 			<Relationship Name="ColumnSpecifications">
@@ -5727,7 +5565,7 @@
 					<References Name="[dbo].[UserAccountLog]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="120" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="119" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_VehicleMaintenanceLineItems]">
 			<Relationship Name="ColumnSpecifications">
@@ -5746,7 +5584,7 @@
 					<References Name="[dbo].[VehicleMaintenanceLineItems]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="121" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="120" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_VehicleMaintenanceLog]">
 			<Relationship Name="ColumnSpecifications">
@@ -5765,7 +5603,7 @@
 					<References Name="[dbo].[VehicleMaintenanceLog]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="122" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="121" />
 		</Element>
 		<Element Type="SqlPrimaryKeyConstraint" Name="[dbo].[PK_Vehicles]">
 			<Relationship Name="ColumnSpecifications">
@@ -5784,7 +5622,151 @@
 					<References Name="[dbo].[Vehicles]" />
 				</Entry>
 			</Relationship>
-			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="123" />
+			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="122" />
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[Positions]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Positions].[Id]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Positions].[SSN]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="IsMax" Value="True" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Positions].[HireDate]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Positions].[Comments]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="IsMax" Value="True" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Positions].[UserAccountId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Positions].[BusinessId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<AttachedAnnotation Disambiguator="101" />
+			<AttachedAnnotation Disambiguator="45" />
+			<AttachedAnnotation Disambiguator="60" />
+		</Element>
+		<Element Type="SqlIndex" Name="[dbo].[Positions].[IX_FK_BusinessPosition]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Positions].[BusinessId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="IndexedObject">
+				<Entry>
+					<References Name="[dbo].[Positions]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlIndex" Name="[dbo].[Positions].[IX_FK_PositionUserAccount]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Positions].[UserAccountId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="IndexedObject">
+				<Entry>
+					<References Name="[dbo].[Positions]" />
+				</Entry>
+			</Relationship>
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[RecurringServices]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -5843,10 +5825,10 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="104" />
-			<AttachedAnnotation Disambiguator="65" />
-			<AttachedAnnotation Disambiguator="66" />
-			<AttachedAnnotation Disambiguator="68" />
+			<AttachedAnnotation Disambiguator="102" />
+			<AttachedAnnotation Disambiguator="61" />
+			<AttachedAnnotation Disambiguator="62" />
+			<AttachedAnnotation Disambiguator="64" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[RecurringServices].[IX_FK_RecurringServiceClient]">
 			<Relationship Name="ColumnSpecifications">
@@ -5955,8 +5937,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="105" />
-			<AttachedAnnotation Disambiguator="46" />
+			<AttachedAnnotation Disambiguator="103" />
+			<AttachedAnnotation Disambiguator="41" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[Regions].[IX_FK_BusinessAccountRegion]">
 			<Relationship Name="ColumnSpecifications">
@@ -6094,7 +6076,7 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="106" />
+			<AttachedAnnotation Disambiguator="104" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[RoleBlock]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -6137,9 +6119,9 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="107" />
-			<AttachedAnnotation Disambiguator="70" />
-			<AttachedAnnotation Disambiguator="71" />
+			<AttachedAnnotation Disambiguator="105" />
+			<AttachedAnnotation Disambiguator="66" />
+			<AttachedAnnotation Disambiguator="67" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[RoleBlock].[IX_FK_RoleBlock_Block]">
 			<Relationship Name="ColumnSpecifications">
@@ -6231,8 +6213,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="108" />
-			<AttachedAnnotation Disambiguator="63" />
+			<AttachedAnnotation Disambiguator="106" />
+			<AttachedAnnotation Disambiguator="58" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[Roles].[IX_FK_PartyRole1]">
 			<Relationship Name="ColumnSpecifications">
@@ -6339,10 +6321,10 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="109" />
-			<AttachedAnnotation Disambiguator="72" />
-			<AttachedAnnotation Disambiguator="73" />
-			<AttachedAnnotation Disambiguator="74" />
+			<AttachedAnnotation Disambiguator="107" />
+			<AttachedAnnotation Disambiguator="68" />
+			<AttachedAnnotation Disambiguator="69" />
+			<AttachedAnnotation Disambiguator="70" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[RouteDestinations].[IX_FK_RouteDestinationClient]">
 			<Relationship Name="ColumnSpecifications">
@@ -6439,9 +6421,9 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="110" />
-			<AttachedAnnotation Disambiguator="75" />
-			<AttachedAnnotation Disambiguator="76" />
+			<AttachedAnnotation Disambiguator="108" />
+			<AttachedAnnotation Disambiguator="71" />
+			<AttachedAnnotation Disambiguator="72" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[RouteEmployee].[IX_FK_RouteEmployee_Employee]">
 			<Relationship Name="ColumnSpecifications">
@@ -6561,6 +6543,22 @@
 					</Element>
 				</Entry>
 				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Routes].[Color]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="IsMax" Value="True" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
 					<Element Type="SqlSimpleColumn" Name="[dbo].[Routes].[RouteType]">
 						<Property Name="IsNullable" Value="False" />
 						<Relationship Name="TypeSpecifier">
@@ -6583,8 +6581,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="111" />
-			<AttachedAnnotation Disambiguator="47" />
+			<AttachedAnnotation Disambiguator="109" />
+			<AttachedAnnotation Disambiguator="42" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[Routes].[IX_FK_BusinessAccountRoute]">
 			<Relationship Name="ColumnSpecifications">
@@ -6601,285 +6599,6 @@
 			<Relationship Name="IndexedObject">
 				<Entry>
 					<References Name="[dbo].[Routes]" />
-				</Entry>
-			</Relationship>
-		</Element>
-		<Element Type="SqlTable" Name="[dbo].[RouteTasks]">
-			<Property Name="IsAnsiNullsOn" Value="True" />
-			<Relationship Name="Columns">
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[Id]">
-						<Property Name="IsNullable" Value="False" />
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[LocationId]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[RouteDestinationId]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[ClientId]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[ServiceId]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[ReadOnly]">
-						<Property Name="IsNullable" Value="False" />
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[bit]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[BusinessAccountId]">
-						<Property Name="IsNullable" Value="False" />
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[EstimatedDuration]">
-						<Property Name="IsNullable" Value="False" />
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="Scale" Value="7" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[time]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[Name]">
-						<Property Name="IsNullable" Value="False" />
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Property Name="IsMax" Value="True" />
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[ReadyToInvoice]">
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[bit]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-				<Entry>
-					<Element Type="SqlSimpleColumn" Name="[dbo].[RouteTasks].[Date]">
-						<Property Name="IsNullable" Value="False" />
-						<Relationship Name="TypeSpecifier">
-							<Entry>
-								<Element Type="SqlTypeSpecifier">
-									<Relationship Name="Type">
-										<Entry>
-											<References ExternalSource="BuiltIns" Name="[datetime]" />
-										</Entry>
-									</Relationship>
-								</Element>
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="Schema">
-				<Entry>
-					<References ExternalSource="BuiltIns" Name="[dbo]" />
-				</Entry>
-			</Relationship>
-			<AttachedAnnotation Disambiguator="112" />
-			<AttachedAnnotation Disambiguator="48" />
-			<AttachedAnnotation Disambiguator="77" />
-			<AttachedAnnotation Disambiguator="78" />
-			<AttachedAnnotation Disambiguator="79" />
-			<AttachedAnnotation Disambiguator="80" />
-		</Element>
-		<Element Type="SqlIndex" Name="[dbo].[RouteTasks].[IX_FK_BusinessAccountRouteTask]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[RouteTasks].[BusinessAccountId]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="IndexedObject">
-				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
-				</Entry>
-			</Relationship>
-		</Element>
-		<Element Type="SqlIndex" Name="[dbo].[RouteTasks].[IX_FK_RouteTaskClient]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[RouteTasks].[ClientId]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="IndexedObject">
-				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
-				</Entry>
-			</Relationship>
-		</Element>
-		<Element Type="SqlIndex" Name="[dbo].[RouteTasks].[IX_FK_RouteTaskLocation]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[RouteTasks].[LocationId]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="IndexedObject">
-				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
-				</Entry>
-			</Relationship>
-		</Element>
-		<Element Type="SqlIndex" Name="[dbo].[RouteTasks].[IX_FK_RouteTaskRouteDestination]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[RouteTasks].[RouteDestinationId]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="IndexedObject">
-				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
-				</Entry>
-			</Relationship>
-		</Element>
-		<Element Type="SqlIndex" Name="[dbo].[RouteTasks].[IX_FK_RouteTaskService]">
-			<Relationship Name="ColumnSpecifications">
-				<Entry>
-					<Element Type="SqlIndexedColumnSpecification">
-						<Relationship Name="Column">
-							<Entry>
-								<References Name="[dbo].[RouteTasks].[ServiceId]" />
-							</Entry>
-						</Relationship>
-					</Element>
-				</Entry>
-			</Relationship>
-			<Relationship Name="IndexedObject">
-				<Entry>
-					<References Name="[dbo].[RouteTasks]" />
 				</Entry>
 			</Relationship>
 		</Element>
@@ -6924,9 +6643,9 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="113" />
-			<AttachedAnnotation Disambiguator="81" />
-			<AttachedAnnotation Disambiguator="82" />
+			<AttachedAnnotation Disambiguator="110" />
+			<AttachedAnnotation Disambiguator="78" />
+			<AttachedAnnotation Disambiguator="79" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[RouteVehicle].[IX_FK_RouteVehicle_Vehicle]">
 			<Relationship Name="ColumnSpecifications">
@@ -6987,7 +6706,7 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="114" />
+			<AttachedAnnotation Disambiguator="111" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[SalesTerms]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -7046,7 +6765,7 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="115" />
+			<AttachedAnnotation Disambiguator="112" />
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[Services]">
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -7136,11 +6855,11 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="116" />
-			<AttachedAnnotation Disambiguator="49" />
-			<AttachedAnnotation Disambiguator="67" />
-			<AttachedAnnotation Disambiguator="83" />
-			<AttachedAnnotation Disambiguator="84" />
+			<AttachedAnnotation Disambiguator="113" />
+			<AttachedAnnotation Disambiguator="44" />
+			<AttachedAnnotation Disambiguator="63" />
+			<AttachedAnnotation Disambiguator="80" />
+			<AttachedAnnotation Disambiguator="81" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[Services].[IX_FK_BusinessAccountService]">
 			<Relationship Name="ColumnSpecifications">
@@ -7298,10 +7017,10 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="117" />
-			<AttachedAnnotation Disambiguator="51" />
-			<AttachedAnnotation Disambiguator="85" />
-			<AttachedAnnotation Disambiguator="86" />
+			<AttachedAnnotation Disambiguator="114" />
+			<AttachedAnnotation Disambiguator="46" />
+			<AttachedAnnotation Disambiguator="82" />
+			<AttachedAnnotation Disambiguator="83" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[ServiceTemplates].[IX_FK_ClientServiceTemplate]">
 			<Relationship Name="ColumnSpecifications">
@@ -7480,8 +7199,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="118" />
-			<AttachedAnnotation Disambiguator="59" />
+			<AttachedAnnotation Disambiguator="115" />
+			<AttachedAnnotation Disambiguator="54" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[SubLocations].[IX_FK_LocationSubLocation]">
 			<Relationship Name="ColumnSpecifications">
@@ -7498,6 +7217,298 @@
 			<Relationship Name="IndexedObject">
 				<Entry>
 					<References Name="[dbo].[SubLocations]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[Tasks]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks].[Id]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks].[Name]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="IsMax" Value="True" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<AttachedAnnotation Disambiguator="116" />
+		</Element>
+		<Element Type="SqlTable" Name="[dbo].[Tasks_RouteTask]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="Columns">
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks_RouteTask].[Date]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[datetime]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks_RouteTask].[LocationId]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks_RouteTask].[RouteDestinationId]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks_RouteTask].[ClientId]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks_RouteTask].[ServiceId]">
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks_RouteTask].[ReadOnly]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bit]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks_RouteTask].[BusinessAccountId]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks_RouteTask].[EstimatedDuration]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Property Name="Scale" Value="7" />
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[time]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSimpleColumn" Name="[dbo].[Tasks_RouteTask].[Id]">
+						<Property Name="IsNullable" Value="False" />
+						<Relationship Name="TypeSpecifier">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[uniqueidentifier]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<AttachedAnnotation Disambiguator="117" />
+			<AttachedAnnotation Disambiguator="43" />
+			<AttachedAnnotation Disambiguator="73" />
+			<AttachedAnnotation Disambiguator="74" />
+			<AttachedAnnotation Disambiguator="75" />
+			<AttachedAnnotation Disambiguator="76" />
+			<AttachedAnnotation Disambiguator="77" />
+		</Element>
+		<Element Type="SqlIndex" Name="[dbo].[Tasks_RouteTask].[IX_FK_BusinessAccountRouteTask]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Tasks_RouteTask].[BusinessAccountId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="IndexedObject">
+				<Entry>
+					<References Name="[dbo].[Tasks_RouteTask]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlIndex" Name="[dbo].[Tasks_RouteTask].[IX_FK_RouteTaskClient]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Tasks_RouteTask].[ClientId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="IndexedObject">
+				<Entry>
+					<References Name="[dbo].[Tasks_RouteTask]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlIndex" Name="[dbo].[Tasks_RouteTask].[IX_FK_RouteTaskLocation]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Tasks_RouteTask].[LocationId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="IndexedObject">
+				<Entry>
+					<References Name="[dbo].[Tasks_RouteTask]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlIndex" Name="[dbo].[Tasks_RouteTask].[IX_FK_RouteTaskRouteDestination]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Tasks_RouteTask].[RouteDestinationId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="IndexedObject">
+				<Entry>
+					<References Name="[dbo].[Tasks_RouteTask]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlIndex" Name="[dbo].[Tasks_RouteTask].[IX_FK_RouteTaskService]">
+			<Relationship Name="ColumnSpecifications">
+				<Entry>
+					<Element Type="SqlIndexedColumnSpecification">
+						<Relationship Name="Column">
+							<Entry>
+								<References Name="[dbo].[Tasks_RouteTask].[ServiceId]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="IndexedObject">
+				<Entry>
+					<References Name="[dbo].[Tasks_RouteTask]" />
 				</Entry>
 			</Relationship>
 		</Element>
@@ -7607,8 +7618,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="119" />
-			<AttachedAnnotation Disambiguator="88" />
+			<AttachedAnnotation Disambiguator="118" />
+			<AttachedAnnotation Disambiguator="85" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[TrackPoints].[IX_FK_UserAccountTrackPoint]">
 			<Relationship Name="ColumnSpecifications">
@@ -7700,8 +7711,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="120" />
-			<AttachedAnnotation Disambiguator="89" />
+			<AttachedAnnotation Disambiguator="119" />
+			<AttachedAnnotation Disambiguator="86" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[UserAccountLog].[IX_FK_UserAccountUserAccountLogEntry]">
 			<Relationship Name="ColumnSpecifications">
@@ -7811,8 +7822,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="121" />
-			<AttachedAnnotation Disambiguator="90" />
+			<AttachedAnnotation Disambiguator="120" />
+			<AttachedAnnotation Disambiguator="87" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[VehicleMaintenanceLineItems].[IX_FK_VehicleMaintenanceLogEntryLineItem]">
 			<Relationship Name="ColumnSpecifications">
@@ -7935,8 +7946,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="122" />
-			<AttachedAnnotation Disambiguator="91" />
+			<AttachedAnnotation Disambiguator="121" />
+			<AttachedAnnotation Disambiguator="88" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[VehicleMaintenanceLog].[IX_FK_VehicleMaintenanceLogEntryVehicle]">
 			<Relationship Name="ColumnSpecifications">
@@ -8123,8 +8134,8 @@
 					<References ExternalSource="BuiltIns" Name="[dbo]" />
 				</Entry>
 			</Relationship>
-			<AttachedAnnotation Disambiguator="123" />
-			<AttachedAnnotation Disambiguator="92" />
+			<AttachedAnnotation Disambiguator="122" />
+			<AttachedAnnotation Disambiguator="89" />
 		</Element>
 		<Element Type="SqlIndex" Name="[dbo].[Vehicles].[IX_FK_VehicleParty]">
 			<Relationship Name="ColumnSpecifications">

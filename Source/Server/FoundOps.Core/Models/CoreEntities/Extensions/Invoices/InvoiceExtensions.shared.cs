@@ -2,7 +2,7 @@
 
 namespace FoundOps.Core.Models.CoreEntities
 {
-    public partial class Invoice : ICompositeRaiseEntityPropertyChanged
+    public partial class Invoice : ICompositeRaiseEntityPropertyChanged, IEntityDefaultCreation
     {
         #region Implementation of ICompositeRaiseEntityPropertyChanged
 
@@ -17,6 +17,22 @@ namespace FoundOps.Core.Models.CoreEntities
             OnPropertyChanged(propertyName);
         }
 #endif
+        #endregion
+
+        #region Implementation of IEntityDefaultCreation
+
+#if SILVERLIGHT
+        partial void OnCreated()
+        {
+            ((IEntityDefaultCreation) this).OnCreate();
+        }
+#else
+        public Invoice()
+        {
+            ((IEntityDefaultCreation)this).OnCreate();
+        }
+#endif
+
         #endregion
 
         public ScheduleMode ScheduleMode
@@ -41,20 +57,21 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
-        public Invoice MakeChild()
-        {
-            var invoiceChild = new Invoice
-                                   {
-                                       DueDate = this.DueDate,
-                                       FixedScheduleOptionInt = this.FixedScheduleOptionInt,
-                                       Memo = this.Memo,
-                                       RelativeScheduleDays = this.RelativeScheduleDays,
-                                       ScheduleModeInt = this.ScheduleModeInt,
-                                       BillToLocation = this.BillToLocation,
-                                       SalesTerm = this.SalesTerm
-                                   };
+        partial void OnCreation(); //For Extensions on Silverlight Side
 
-            return invoiceChild;
+        public void OnCreate()
+        {
+            DueDate = this.DueDate;
+            FixedScheduleOptionInt = this.FixedScheduleOptionInt;
+            Memo = this.Memo;
+            RelativeScheduleDays = this.RelativeScheduleDays;
+            ScheduleModeInt = this.ScheduleModeInt;
+            BillToLocation = this.BillToLocation;
+            SalesTerm = this.SalesTerm;
+            IsBillToLocationChanged = false;
+            IsDueDateChanged = false;
+            IsMemoChanged = false;
+            OnCreation();
         }
     }
     public enum ScheduleMode

@@ -951,6 +951,8 @@ namespace FoundOps.Core.Models.CoreEntities
         
         private EntityCollection<RouteTask> _routeTasks;
         
+        private EntityCollection<SalesTerm> _salesTerms;
+        
         private EntityCollection<Service> _servicesToProvide;
         
         private EntityCollection<ServiceTemplate> _serviceTemplates;
@@ -1207,6 +1209,23 @@ namespace FoundOps.Core.Models.CoreEntities
         }
         
         /// <summary>
+        /// Gets the collection of associated <see cref="SalesTerm"/> entity instances.
+        /// </summary>
+        [Association("BusinessAccount_SalesTerm", "Id", "BusinessAccountId")]
+        [XmlIgnore()]
+        public EntityCollection<SalesTerm> SalesTerms
+        {
+            get
+            {
+                if ((this._salesTerms == null))
+                {
+                    this._salesTerms = new EntityCollection<SalesTerm>(this, "SalesTerms", this.FilterSalesTerms, this.AttachSalesTerms, this.DetachSalesTerms);
+                }
+                return this._salesTerms;
+            }
+        }
+        
+        /// <summary>
         /// Gets the collection of associated <see cref="Service"/> entity instances.
         /// </summary>
         [Association("BusinessAccount_Service", "Id", "ServiceProviderId")]
@@ -1330,6 +1349,21 @@ namespace FoundOps.Core.Models.CoreEntities
             return (entity.BusinessAccountId == this.Id);
         }
         
+        private void AttachSalesTerms(SalesTerm entity)
+        {
+            entity.BusinessAccount = this;
+        }
+        
+        private void DetachSalesTerms(SalesTerm entity)
+        {
+            entity.BusinessAccount = null;
+        }
+        
+        private bool FilterSalesTerms(SalesTerm entity)
+        {
+            return (entity.BusinessAccountId == this.Id);
+        }
+        
         private void AttachServicesToProvide(Service entity)
         {
             entity.ServiceProvider = this;
@@ -1375,6 +1409,8 @@ namespace FoundOps.Core.Models.CoreEntities
         
         private DateTime _dateAdded;
         
+        private EntityRef<SalesTerm> _defaultSalesTerm;
+        
         private Guid _id;
         
         private EntityCollection<Invoice> _invoices;
@@ -1392,6 +1428,8 @@ namespace FoundOps.Core.Models.CoreEntities
         private EntityCollection<RouteTask> _routeTasks;
         
         private string _salesperson;
+        
+        private Guid _salesTermId;
         
         private EntityCollection<Service> _servicesToRecieve;
         
@@ -1416,6 +1454,8 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnLinkedPartyIdChanged();
         partial void OnSalespersonChanging(string value);
         partial void OnSalespersonChanged();
+        partial void OnSalesTermIdChanging(Guid value);
+        partial void OnSalesTermIdChanged();
         partial void OnVendorIdChanging(Guid value);
         partial void OnVendorIdChanged();
 
@@ -1467,6 +1507,50 @@ namespace FoundOps.Core.Models.CoreEntities
                     this._dateAdded = value;
                     this.RaiseDataMemberChanged("DateAdded");
                     this.OnDateAddedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="SalesTerm"/> entity.
+        /// </summary>
+        [Association("SalesTerm_Client", "SalesTermId", "Id", IsForeignKey=true)]
+        [XmlIgnore()]
+        public SalesTerm DefaultSalesTerm
+        {
+            get
+            {
+                if ((this._defaultSalesTerm == null))
+                {
+                    this._defaultSalesTerm = new EntityRef<SalesTerm>(this, "DefaultSalesTerm", this.FilterDefaultSalesTerm);
+                }
+                return this._defaultSalesTerm.Entity;
+            }
+            set
+            {
+                SalesTerm previous = this.DefaultSalesTerm;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("DefaultSalesTerm", value);
+                    if ((previous != null))
+                    {
+                        this._defaultSalesTerm.Entity = null;
+                        previous.Clients.Remove(this);
+                    }
+                    if ((value != null))
+                    {
+                        this.SalesTermId = value.Id;
+                    }
+                    else
+                    {
+                        this.SalesTermId = default(Guid);
+                    }
+                    this._defaultSalesTerm.Entity = value;
+                    if ((value != null))
+                    {
+                        value.Clients.Add(this);
+                    }
+                    this.RaisePropertyChanged("DefaultSalesTerm");
                 }
             }
         }
@@ -1711,6 +1795,35 @@ namespace FoundOps.Core.Models.CoreEntities
         }
         
         /// <summary>
+        /// Gets or sets the 'SalesTermId' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.RoundtripOriginalAttribute' is not visible in the client project 'FoundOps.SLClient.Data'. Are you missing an assembly reference?
+        // [RoundtripOriginalAttribute()]
+        // 
+        [DataMember()]
+        public Guid SalesTermId
+        {
+            get
+            {
+                return this._salesTermId;
+            }
+            set
+            {
+                if ((this._salesTermId != value))
+                {
+                    this.OnSalesTermIdChanging(value);
+                    this.RaiseDataMemberChanging("SalesTermId");
+                    this.ValidateProperty("SalesTermId", value);
+                    this._salesTermId = value;
+                    this.RaiseDataMemberChanged("SalesTermId");
+                    this.OnSalesTermIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
         /// Gets the collection of associated <see cref="Service"/> entity instances.
         /// </summary>
         [Association("Client_Service", "Id", "ClientId")]
@@ -1830,6 +1943,11 @@ namespace FoundOps.Core.Models.CoreEntities
         private bool FilterClientTitles(ClientTitle entity)
         {
             return (entity.ClientId == this.Id);
+        }
+        
+        private bool FilterDefaultSalesTerm(SalesTerm entity)
+        {
+            return (entity.Id == this.SalesTermId);
         }
         
         private void AttachInvoices(Invoice entity)
@@ -4582,11 +4700,23 @@ namespace FoundOps.Core.Models.CoreEntities
         
         private Guid _id;
         
+        private bool _isBillToLocationChanged;
+        
+        private bool _isDueDateChanged;
+        
+        private bool _isMemoChanged;
+        
+        private bool _isSalesTermChanged;
+        
         private string _lastUpdatedTime;
+        
+        private EntityCollection<LineItem> _lineItems;
         
         private Nullable<Guid> _locationId;
         
         private string _memo;
+        
+        private string _quickBooksId;
         
         private Nullable<int> _relativeScheduleDays;
         
@@ -4621,12 +4751,22 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnFixedScheduleOptionIntChanged();
         partial void OnIdChanging(Guid value);
         partial void OnIdChanged();
+        partial void OnIsBillToLocationChangedChanging(bool value);
+        partial void OnIsBillToLocationChangedChanged();
+        partial void OnIsDueDateChangedChanging(bool value);
+        partial void OnIsDueDateChangedChanged();
+        partial void OnIsMemoChangedChanging(bool value);
+        partial void OnIsMemoChangedChanged();
+        partial void OnIsSalesTermChangedChanging(bool value);
+        partial void OnIsSalesTermChangedChanged();
         partial void OnLastUpdatedTimeChanging(string value);
         partial void OnLastUpdatedTimeChanged();
         partial void OnLocationIdChanging(Nullable<Guid> value);
         partial void OnLocationIdChanged();
         partial void OnMemoChanging(string value);
         partial void OnMemoChanged();
+        partial void OnQuickBooksIdChanging(string value);
+        partial void OnQuickBooksIdChanged();
         partial void OnRelativeScheduleDaysChanging(Nullable<int> value);
         partial void OnRelativeScheduleDaysChanged();
         partial void OnSalesTermIdChanging(Nullable<Guid> value);
@@ -4964,6 +5104,102 @@ namespace FoundOps.Core.Models.CoreEntities
         }
         
         /// <summary>
+        /// Gets or sets the 'IsBillToLocationChanged' value.
+        /// </summary>
+        [DataMember()]
+        public bool IsBillToLocationChanged
+        {
+            get
+            {
+                return this._isBillToLocationChanged;
+            }
+            set
+            {
+                if ((this._isBillToLocationChanged != value))
+                {
+                    this.OnIsBillToLocationChangedChanging(value);
+                    this.RaiseDataMemberChanging("IsBillToLocationChanged");
+                    this.ValidateProperty("IsBillToLocationChanged", value);
+                    this._isBillToLocationChanged = value;
+                    this.RaiseDataMemberChanged("IsBillToLocationChanged");
+                    this.OnIsBillToLocationChangedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'IsDueDateChanged' value.
+        /// </summary>
+        [DataMember()]
+        public bool IsDueDateChanged
+        {
+            get
+            {
+                return this._isDueDateChanged;
+            }
+            set
+            {
+                if ((this._isDueDateChanged != value))
+                {
+                    this.OnIsDueDateChangedChanging(value);
+                    this.RaiseDataMemberChanging("IsDueDateChanged");
+                    this.ValidateProperty("IsDueDateChanged", value);
+                    this._isDueDateChanged = value;
+                    this.RaiseDataMemberChanged("IsDueDateChanged");
+                    this.OnIsDueDateChangedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'IsMemoChanged' value.
+        /// </summary>
+        [DataMember()]
+        public bool IsMemoChanged
+        {
+            get
+            {
+                return this._isMemoChanged;
+            }
+            set
+            {
+                if ((this._isMemoChanged != value))
+                {
+                    this.OnIsMemoChangedChanging(value);
+                    this.RaiseDataMemberChanging("IsMemoChanged");
+                    this.ValidateProperty("IsMemoChanged", value);
+                    this._isMemoChanged = value;
+                    this.RaiseDataMemberChanged("IsMemoChanged");
+                    this.OnIsMemoChangedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'IsSalesTermChanged' value.
+        /// </summary>
+        [DataMember()]
+        public bool IsSalesTermChanged
+        {
+            get
+            {
+                return this._isSalesTermChanged;
+            }
+            set
+            {
+                if ((this._isSalesTermChanged != value))
+                {
+                    this.OnIsSalesTermChangedChanging(value);
+                    this.RaiseDataMemberChanging("IsSalesTermChanged");
+                    this.ValidateProperty("IsSalesTermChanged", value);
+                    this._isSalesTermChanged = value;
+                    this.RaiseDataMemberChanged("IsSalesTermChanged");
+                    this.OnIsSalesTermChangedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the 'LastUpdatedTime' value.
         /// </summary>
         [DataMember()]
@@ -4984,6 +5220,23 @@ namespace FoundOps.Core.Models.CoreEntities
                     this.RaiseDataMemberChanged("LastUpdatedTime");
                     this.OnLastUpdatedTimeChanged();
                 }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the collection of associated <see cref="LineItem"/> entity instances.
+        /// </summary>
+        [Association("Invoice_LineItem", "Id", "InvoiceId")]
+        [XmlIgnore()]
+        public EntityCollection<LineItem> LineItems
+        {
+            get
+            {
+                if ((this._lineItems == null))
+                {
+                    this._lineItems = new EntityCollection<LineItem>(this, "LineItems", this.FilterLineItems, this.AttachLineItems, this.DetachLineItems);
+                }
+                return this._lineItems;
             }
         }
         
@@ -5036,6 +5289,30 @@ namespace FoundOps.Core.Models.CoreEntities
                     this._memo = value;
                     this.RaiseDataMemberChanged("Memo");
                     this.OnMemoChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'QuickBooksId' value.
+        /// </summary>
+        [DataMember()]
+        public string QuickBooksId
+        {
+            get
+            {
+                return this._quickBooksId;
+            }
+            set
+            {
+                if ((this._quickBooksId != value))
+                {
+                    this.OnQuickBooksIdChanging(value);
+                    this.RaiseDataMemberChanging("QuickBooksId");
+                    this.ValidateProperty("QuickBooksId", value);
+                    this._quickBooksId = value;
+                    this.RaiseDataMemberChanged("QuickBooksId");
+                    this.OnQuickBooksIdChanged();
                 }
             }
         }
@@ -5244,6 +5521,21 @@ namespace FoundOps.Core.Models.CoreEntities
             return (entity.Id == this.ClientId);
         }
         
+        private void AttachLineItems(LineItem entity)
+        {
+            entity.Invoice = this;
+        }
+        
+        private void DetachLineItems(LineItem entity)
+        {
+            entity.Invoice = null;
+        }
+        
+        private bool FilterLineItems(LineItem entity)
+        {
+            return (entity.InvoiceId == this.Id);
+        }
+        
         private bool FilterSalesTerm(SalesTerm entity)
         {
             return (entity.Id == this.SalesTermId);
@@ -5252,6 +5544,304 @@ namespace FoundOps.Core.Models.CoreEntities
         private bool FilterServiceTemplate(ServiceTemplate entity)
         {
             return (entity.Id == this.Id);
+        }
+        
+        /// <summary>
+        /// Computes a value from the key fields that uniquely identifies this entity instance.
+        /// </summary>
+        /// <returns>An object instance that uniquely identifies this entity instance.</returns>
+        public override object GetIdentity()
+        {
+            return this._id;
+        }
+    }
+    
+    /// <summary>
+    /// The 'LineItem' entity class.
+    /// This entity is shared between the following contexts:
+    /// The <see cref="CoreDomainContext"/> context.
+    /// The <see cref="TechnicianDomainContext"/> context.
+    /// </summary>
+    [DataContract(Namespace="http://schemas.datacontract.org/2004/07/FoundOps.Core.Models.CoreEntities")]
+    public sealed partial class LineItem : Entity
+    {
+        
+        private string _amount;
+        
+        private string _description;
+        
+        private Guid _id;
+        
+        private EntityRef<Invoice> _invoice;
+        
+        private Guid _invoiceId;
+        
+        private bool _isAmountChanged;
+        
+        private bool _isDescriptionChanged;
+        
+        private string _quickBooksId;
+        
+        #region Extensibility Method Definitions
+
+        /// <summary>
+        /// This method is invoked from the constructor once initialization is complete and
+        /// can be used for further object setup.
+        /// </summary>
+        partial void OnCreated();
+        partial void OnAmountChanging(string value);
+        partial void OnAmountChanged();
+        partial void OnDescriptionChanging(string value);
+        partial void OnDescriptionChanged();
+        partial void OnIdChanging(Guid value);
+        partial void OnIdChanged();
+        partial void OnInvoiceIdChanging(Guid value);
+        partial void OnInvoiceIdChanged();
+        partial void OnIsAmountChangedChanging(bool value);
+        partial void OnIsAmountChangedChanged();
+        partial void OnIsDescriptionChangedChanging(bool value);
+        partial void OnIsDescriptionChangedChanged();
+        partial void OnQuickBooksIdChanging(string value);
+        partial void OnQuickBooksIdChanged();
+
+        #endregion
+        
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineItem"/> class.
+        /// </summary>
+        public LineItem()
+        {
+            this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Amount' value.
+        /// </summary>
+        [DataMember()]
+        public string Amount
+        {
+            get
+            {
+                return this._amount;
+            }
+            set
+            {
+                if ((this._amount != value))
+                {
+                    this.OnAmountChanging(value);
+                    this.RaiseDataMemberChanging("Amount");
+                    this.ValidateProperty("Amount", value);
+                    this._amount = value;
+                    this.RaiseDataMemberChanged("Amount");
+                    this.OnAmountChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Description' value.
+        /// </summary>
+        [DataMember()]
+        public string Description
+        {
+            get
+            {
+                return this._description;
+            }
+            set
+            {
+                if ((this._description != value))
+                {
+                    this.OnDescriptionChanging(value);
+                    this.RaiseDataMemberChanging("Description");
+                    this.ValidateProperty("Description", value);
+                    this._description = value;
+                    this.RaiseDataMemberChanged("Description");
+                    this.OnDescriptionChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'Id' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.RoundtripOriginalAttribute' is not visible in the client project 'FoundOps.SLClient.Data'. Are you missing an assembly reference?
+        // [RoundtripOriginalAttribute()]
+        // 
+        [DataMember()]
+        [Editable(false, AllowInitialValue=true)]
+        [Key()]
+        public Guid Id
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                if ((this._id != value))
+                {
+                    this.OnIdChanging(value);
+                    this.ValidateProperty("Id", value);
+                    this._id = value;
+                    this.RaisePropertyChanged("Id");
+                    this.OnIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="Invoice"/> entity.
+        /// </summary>
+        [Association("Invoice_LineItem", "InvoiceId", "Id", IsForeignKey=true)]
+        [XmlIgnore()]
+        public Invoice Invoice
+        {
+            get
+            {
+                if ((this._invoice == null))
+                {
+                    this._invoice = new EntityRef<Invoice>(this, "Invoice", this.FilterInvoice);
+                }
+                return this._invoice.Entity;
+            }
+            set
+            {
+                Invoice previous = this.Invoice;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("Invoice", value);
+                    if ((previous != null))
+                    {
+                        this._invoice.Entity = null;
+                        previous.LineItems.Remove(this);
+                    }
+                    if ((value != null))
+                    {
+                        this.InvoiceId = value.Id;
+                    }
+                    else
+                    {
+                        this.InvoiceId = default(Guid);
+                    }
+                    this._invoice.Entity = value;
+                    if ((value != null))
+                    {
+                        value.LineItems.Add(this);
+                    }
+                    this.RaisePropertyChanged("Invoice");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'InvoiceId' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.RoundtripOriginalAttribute' is not visible in the client project 'FoundOps.SLClient.Data'. Are you missing an assembly reference?
+        // [RoundtripOriginalAttribute()]
+        // 
+        [DataMember()]
+        public Guid InvoiceId
+        {
+            get
+            {
+                return this._invoiceId;
+            }
+            set
+            {
+                if ((this._invoiceId != value))
+                {
+                    this.OnInvoiceIdChanging(value);
+                    this.RaiseDataMemberChanging("InvoiceId");
+                    this.ValidateProperty("InvoiceId", value);
+                    this._invoiceId = value;
+                    this.RaiseDataMemberChanged("InvoiceId");
+                    this.OnInvoiceIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'IsAmountChanged' value.
+        /// </summary>
+        [DataMember()]
+        public bool IsAmountChanged
+        {
+            get
+            {
+                return this._isAmountChanged;
+            }
+            set
+            {
+                if ((this._isAmountChanged != value))
+                {
+                    this.OnIsAmountChangedChanging(value);
+                    this.RaiseDataMemberChanging("IsAmountChanged");
+                    this.ValidateProperty("IsAmountChanged", value);
+                    this._isAmountChanged = value;
+                    this.RaiseDataMemberChanged("IsAmountChanged");
+                    this.OnIsAmountChangedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'IsDescriptionChanged' value.
+        /// </summary>
+        [DataMember()]
+        public bool IsDescriptionChanged
+        {
+            get
+            {
+                return this._isDescriptionChanged;
+            }
+            set
+            {
+                if ((this._isDescriptionChanged != value))
+                {
+                    this.OnIsDescriptionChangedChanging(value);
+                    this.RaiseDataMemberChanging("IsDescriptionChanged");
+                    this.ValidateProperty("IsDescriptionChanged", value);
+                    this._isDescriptionChanged = value;
+                    this.RaiseDataMemberChanged("IsDescriptionChanged");
+                    this.OnIsDescriptionChangedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'QuickBooksId' value.
+        /// </summary>
+        [DataMember()]
+        [Required()]
+        public string QuickBooksId
+        {
+            get
+            {
+                return this._quickBooksId;
+            }
+            set
+            {
+                if ((this._quickBooksId != value))
+                {
+                    this.OnQuickBooksIdChanging(value);
+                    this.RaiseDataMemberChanging("QuickBooksId");
+                    this.ValidateProperty("QuickBooksId", value);
+                    this._quickBooksId = value;
+                    this.RaiseDataMemberChanged("QuickBooksId");
+                    this.OnQuickBooksIdChanged();
+                }
+            }
+        }
+        
+        private bool FilterInvoice(Invoice entity)
+        {
+            return (entity.Id == this.InvoiceId);
         }
         
         /// <summary>
@@ -10212,7 +10802,7 @@ namespace FoundOps.Core.Models.CoreEntities
         
         private bool _readOnly;
         
-        private Nullable<bool> _readyToInvoice;
+        private bool _readyToInvoice;
         
         private EntityRef<RouteDestination> _routeDestination;
         
@@ -10247,7 +10837,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
         partial void OnReadOnlyChanging(bool value);
         partial void OnReadOnlyChanged();
-        partial void OnReadyToInvoiceChanging(Nullable<bool> value);
+        partial void OnReadyToInvoiceChanging(bool value);
         partial void OnReadyToInvoiceChanged();
         partial void OnRouteDestinationIdChanging(Nullable<Guid> value);
         partial void OnRouteDestinationIdChanged();
@@ -10639,7 +11229,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Gets or sets the 'ReadyToInvoice' value.
         /// </summary>
         [DataMember()]
-        public Nullable<bool> ReadyToInvoice
+        public bool ReadyToInvoice
         {
             get
             {
@@ -11059,13 +11649,31 @@ namespace FoundOps.Core.Models.CoreEntities
     public sealed partial class SalesTerm : Entity
     {
         
+        private EntityRef<BusinessAccount> _businessAccount;
+        
+        private Nullable<Guid> _businessAccountId;
+        
+        private EntityCollection<Client> _clients;
+        
+        private string _createTime;
+        
         private Nullable<int> _dueDays;
         
         private Guid _id;
         
         private EntityCollection<Invoice> _invoices;
         
+        private bool _isDueDaysChanged;
+        
+        private bool _isNameChanged;
+        
+        private string _lastUpdatedTime;
+        
         private string _name;
+        
+        private string _quickBooksId;
+        
+        private string _syncToken;
         
         #region Extensibility Method Definitions
 
@@ -11074,12 +11682,26 @@ namespace FoundOps.Core.Models.CoreEntities
         /// can be used for further object setup.
         /// </summary>
         partial void OnCreated();
+        partial void OnBusinessAccountIdChanging(Nullable<Guid> value);
+        partial void OnBusinessAccountIdChanged();
+        partial void OnCreateTimeChanging(string value);
+        partial void OnCreateTimeChanged();
         partial void OnDueDaysChanging(Nullable<int> value);
         partial void OnDueDaysChanged();
         partial void OnIdChanging(Guid value);
         partial void OnIdChanged();
+        partial void OnIsDueDaysChangedChanging(bool value);
+        partial void OnIsDueDaysChangedChanged();
+        partial void OnIsNameChangedChanging(bool value);
+        partial void OnIsNameChangedChanged();
+        partial void OnLastUpdatedTimeChanging(string value);
+        partial void OnLastUpdatedTimeChanged();
         partial void OnNameChanging(string value);
         partial void OnNameChanged();
+        partial void OnQuickBooksIdChanging(string value);
+        partial void OnQuickBooksIdChanged();
+        partial void OnSyncTokenChanging(string value);
+        partial void OnSyncTokenChanged();
 
         #endregion
         
@@ -11090,6 +11712,120 @@ namespace FoundOps.Core.Models.CoreEntities
         public SalesTerm()
         {
             this.OnCreated();
+        }
+        
+        /// <summary>
+        /// Gets or sets the associated <see cref="BusinessAccount"/> entity.
+        /// </summary>
+        [Association("BusinessAccount_SalesTerm", "BusinessAccountId", "Id", IsForeignKey=true)]
+        [XmlIgnore()]
+        public BusinessAccount BusinessAccount
+        {
+            get
+            {
+                if ((this._businessAccount == null))
+                {
+                    this._businessAccount = new EntityRef<BusinessAccount>(this, "BusinessAccount", this.FilterBusinessAccount);
+                }
+                return this._businessAccount.Entity;
+            }
+            set
+            {
+                BusinessAccount previous = this.BusinessAccount;
+                if ((previous != value))
+                {
+                    this.ValidateProperty("BusinessAccount", value);
+                    if ((previous != null))
+                    {
+                        this._businessAccount.Entity = null;
+                        previous.SalesTerms.Remove(this);
+                    }
+                    if ((value != null))
+                    {
+                        this.BusinessAccountId = value.Id;
+                    }
+                    else
+                    {
+                        this.BusinessAccountId = default(Nullable<Guid>);
+                    }
+                    this._businessAccount.Entity = value;
+                    if ((value != null))
+                    {
+                        value.SalesTerms.Add(this);
+                    }
+                    this.RaisePropertyChanged("BusinessAccount");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'BusinessAccountId' value.
+        /// </summary>
+        // The following attributes were not generated:
+        // 
+        // - The attribute 'System.ComponentModel.DataAnnotations.RoundtripOriginalAttribute' is not visible in the client project 'FoundOps.SLClient.Data'. Are you missing an assembly reference?
+        // [RoundtripOriginalAttribute()]
+        // 
+        [DataMember()]
+        public Nullable<Guid> BusinessAccountId
+        {
+            get
+            {
+                return this._businessAccountId;
+            }
+            set
+            {
+                if ((this._businessAccountId != value))
+                {
+                    this.OnBusinessAccountIdChanging(value);
+                    this.RaiseDataMemberChanging("BusinessAccountId");
+                    this.ValidateProperty("BusinessAccountId", value);
+                    this._businessAccountId = value;
+                    this.RaiseDataMemberChanged("BusinessAccountId");
+                    this.OnBusinessAccountIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the collection of associated <see cref="Client"/> entity instances.
+        /// </summary>
+        [Association("SalesTerm_Client", "Id", "SalesTermId")]
+        [XmlIgnore()]
+        public EntityCollection<Client> Clients
+        {
+            get
+            {
+                if ((this._clients == null))
+                {
+                    this._clients = new EntityCollection<Client>(this, "Clients", this.FilterClients, this.AttachClients, this.DetachClients);
+                }
+                return this._clients;
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'CreateTime' value.
+        /// </summary>
+        [DataMember()]
+        public string CreateTime
+        {
+            get
+            {
+                return this._createTime;
+            }
+            set
+            {
+                if ((this._createTime != value))
+                {
+                    this.OnCreateTimeChanging(value);
+                    this.RaiseDataMemberChanging("CreateTime");
+                    this.ValidateProperty("CreateTime", value);
+                    this._createTime = value;
+                    this.RaiseDataMemberChanged("CreateTime");
+                    this.OnCreateTimeChanged();
+                }
+            }
         }
         
         /// <summary>
@@ -11164,6 +11900,78 @@ namespace FoundOps.Core.Models.CoreEntities
         }
         
         /// <summary>
+        /// Gets or sets the 'IsDueDaysChanged' value.
+        /// </summary>
+        [DataMember()]
+        public bool IsDueDaysChanged
+        {
+            get
+            {
+                return this._isDueDaysChanged;
+            }
+            set
+            {
+                if ((this._isDueDaysChanged != value))
+                {
+                    this.OnIsDueDaysChangedChanging(value);
+                    this.RaiseDataMemberChanging("IsDueDaysChanged");
+                    this.ValidateProperty("IsDueDaysChanged", value);
+                    this._isDueDaysChanged = value;
+                    this.RaiseDataMemberChanged("IsDueDaysChanged");
+                    this.OnIsDueDaysChangedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'IsNameChanged' value.
+        /// </summary>
+        [DataMember()]
+        public bool IsNameChanged
+        {
+            get
+            {
+                return this._isNameChanged;
+            }
+            set
+            {
+                if ((this._isNameChanged != value))
+                {
+                    this.OnIsNameChangedChanging(value);
+                    this.RaiseDataMemberChanging("IsNameChanged");
+                    this.ValidateProperty("IsNameChanged", value);
+                    this._isNameChanged = value;
+                    this.RaiseDataMemberChanged("IsNameChanged");
+                    this.OnIsNameChangedChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'LastUpdatedTime' value.
+        /// </summary>
+        [DataMember()]
+        public string LastUpdatedTime
+        {
+            get
+            {
+                return this._lastUpdatedTime;
+            }
+            set
+            {
+                if ((this._lastUpdatedTime != value))
+                {
+                    this.OnLastUpdatedTimeChanging(value);
+                    this.RaiseDataMemberChanging("LastUpdatedTime");
+                    this.ValidateProperty("LastUpdatedTime", value);
+                    this._lastUpdatedTime = value;
+                    this.RaiseDataMemberChanged("LastUpdatedTime");
+                    this.OnLastUpdatedTimeChanged();
+                }
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the 'Name' value.
         /// </summary>
         [DataMember()]
@@ -11186,6 +11994,75 @@ namespace FoundOps.Core.Models.CoreEntities
                     this.OnNameChanged();
                 }
             }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'QuickBooksId' value.
+        /// </summary>
+        [DataMember()]
+        [Required()]
+        public string QuickBooksId
+        {
+            get
+            {
+                return this._quickBooksId;
+            }
+            set
+            {
+                if ((this._quickBooksId != value))
+                {
+                    this.OnQuickBooksIdChanging(value);
+                    this.RaiseDataMemberChanging("QuickBooksId");
+                    this.ValidateProperty("QuickBooksId", value);
+                    this._quickBooksId = value;
+                    this.RaiseDataMemberChanged("QuickBooksId");
+                    this.OnQuickBooksIdChanged();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the 'SyncToken' value.
+        /// </summary>
+        [DataMember()]
+        public string SyncToken
+        {
+            get
+            {
+                return this._syncToken;
+            }
+            set
+            {
+                if ((this._syncToken != value))
+                {
+                    this.OnSyncTokenChanging(value);
+                    this.RaiseDataMemberChanging("SyncToken");
+                    this.ValidateProperty("SyncToken", value);
+                    this._syncToken = value;
+                    this.RaiseDataMemberChanged("SyncToken");
+                    this.OnSyncTokenChanged();
+                }
+            }
+        }
+        
+        private bool FilterBusinessAccount(BusinessAccount entity)
+        {
+            return (entity.Id == this.BusinessAccountId);
+        }
+        
+        private void AttachClients(Client entity)
+        {
+            entity.DefaultSalesTerm = this;
+        }
+        
+        private void DetachClients(Client entity)
+        {
+            entity.DefaultSalesTerm = null;
+        }
+        
+        private bool FilterClients(Client entity)
+        {
+            return (entity.SalesTermId == this.Id);
         }
         
         private void AttachInvoices(Invoice entity)
@@ -14460,13 +15337,13 @@ namespace FoundOps.Server.Services
         }
         
         /// <summary>
-        /// Gets an EntityQuery instance that can be used to load <see cref="Route"/> entity instances using the 'GetTestTechniciansRoutes' query.
+        /// Gets an EntityQuery instance that can be used to load <see cref="RouteDestination"/> entity instances using the 'GetTestTechniciansRouteDestinations' query.
         /// </summary>
-        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Route"/> entity instances.</returns>
-        public EntityQuery<Route> GetTestTechniciansRoutesQuery()
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="RouteDestination"/> entity instances.</returns>
+        public EntityQuery<RouteDestination> GetTestTechniciansRouteDestinationsQuery()
         {
-            this.ValidateMethod("GetTestTechniciansRoutesQuery", null);
-            return base.CreateQuery<Route>("GetTestTechniciansRoutes", null, false, true);
+            this.ValidateMethod("GetTestTechniciansRouteDestinationsQuery", null);
+            return base.CreateQuery<RouteDestination>("GetTestTechniciansRouteDestinations", null, false, true);
         }
         
         /// <summary>
@@ -14644,23 +15521,24 @@ namespace FoundOps.Server.Services
             QueryResult<RouteDestination> EndGetTechniciansRouteDestinationsAuthorized(IAsyncResult result);
             
             /// <summary>
-            /// Asynchronously invokes the 'GetTestTechniciansRoutes' operation.
+            /// Asynchronously invokes the 'GetTestTechniciansRouteDestinations' operation.
             /// </summary>
             /// <param name="callback">Callback to invoke on completion.</param>
             /// <param name="asyncState">Optional state object.</param>
             /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
-            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/TechnicianDomainService/GetTestTechniciansRoutesDomainServiceF" +
-                "ault", Name="DomainServiceFault", Namespace="DomainServices")]
-            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/TechnicianDomainService/GetTestTechniciansRoutes", ReplyAction="http://tempuri.org/TechnicianDomainService/GetTestTechniciansRoutesResponse")]
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/TechnicianDomainService/GetTestTechniciansRouteDestinationsDom" +
+                "ainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/TechnicianDomainService/GetTestTechniciansRouteDestinations", ReplyAction="http://tempuri.org/TechnicianDomainService/GetTestTechniciansRouteDestinationsRes" +
+                "ponse")]
             [WebGet()]
-            IAsyncResult BeginGetTestTechniciansRoutes(AsyncCallback callback, object asyncState);
+            IAsyncResult BeginGetTestTechniciansRouteDestinations(AsyncCallback callback, object asyncState);
             
             /// <summary>
-            /// Completes the asynchronous operation begun by 'BeginGetTestTechniciansRoutes'.
+            /// Completes the asynchronous operation begun by 'BeginGetTestTechniciansRouteDestinations'.
             /// </summary>
-            /// <param name="result">The IAsyncResult returned from 'BeginGetTestTechniciansRoutes'.</param>
-            /// <returns>The 'QueryResult' returned from the 'GetTestTechniciansRoutes' operation.</returns>
-            QueryResult<Route> EndGetTestTechniciansRoutes(IAsyncResult result);
+            /// <param name="result">The IAsyncResult returned from 'BeginGetTestTechniciansRouteDestinations'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetTestTechniciansRouteDestinations' operation.</returns>
+            QueryResult<RouteDestination> EndGetTestTechniciansRouteDestinations(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetTrackPoints' operation.
@@ -14730,6 +15608,7 @@ namespace FoundOps.Server.Services
                 this.CreateEntitySet<Field>(EntitySetOperations.None);
                 this.CreateEntitySet<File>(EntitySetOperations.None);
                 this.CreateEntitySet<Invoice>(EntitySetOperations.None);
+                this.CreateEntitySet<LineItem>(EntitySetOperations.None);
                 this.CreateEntitySet<Location>(EntitySetOperations.None);
                 this.CreateEntitySet<Option>(EntitySetOperations.None);
                 this.CreateEntitySet<Party>(EntitySetOperations.None);
@@ -14932,6 +15811,17 @@ namespace FoundOps.Server.Services.CoreDomainService
             get
             {
                 return base.EntityContainer.GetEntitySet<Invoice>();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the set of <see cref="LineItem"/> entity instances that have been loaded into this <see cref="CoreDomainContext"/> instance.
+        /// </summary>
+        public EntitySet<LineItem> LineItems
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<LineItem>();
             }
         }
         
@@ -15169,19 +16059,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
         
         /// <summary>
-        /// Gets an EntityQuery instance that can be used to load <see cref="Party"/> entity instances using the 'GetAllUserAccounts' query.
-        /// </summary>
-        /// <param name="roleId">The value for the 'roleId' parameter of the query.</param>
-        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="Party"/> entity instances.</returns>
-        public EntityQuery<Party> GetAllUserAccountsQuery(Guid roleId)
-        {
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("roleId", roleId);
-            this.ValidateMethod("GetAllUserAccountsQuery", parameters);
-            return base.CreateQuery<Party>("GetAllUserAccounts", parameters, false, true);
-        }
-        
-        /// <summary>
         /// Gets an EntityQuery instance that can be used to load <see cref="Party"/> entity instances using the 'GetBusinessAccountsForRole' query.
         /// </summary>
         /// <param name="roleId">The value for the 'roleId' parameter of the query.</param>
@@ -15340,6 +16217,16 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             this.ValidateMethod("GetInvoicesQuery", null);
             return base.CreateQuery<Invoice>("GetInvoices", null, false, true);
+        }
+        
+        /// <summary>
+        /// Gets an EntityQuery instance that can be used to load <see cref="LineItem"/> entity instances using the 'GetLineItem' query.
+        /// </summary>
+        /// <returns>An EntityQuery that can be loaded to retrieve <see cref="LineItem"/> entity instances.</returns>
+        public EntityQuery<LineItem> GetLineItemQuery()
+        {
+            this.ValidateMethod("GetLineItemQuery", null);
+            return base.CreateQuery<LineItem>("GetLineItem", null, false, true);
         }
         
         /// <summary>
@@ -15892,25 +16779,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             QueryResult<Address> EndGetAddresses(IAsyncResult result);
             
             /// <summary>
-            /// Asynchronously invokes the 'GetAllUserAccounts' operation.
-            /// </summary>
-            /// <param name="roleId">The value for the 'roleId' parameter of this action.</param>
-            /// <param name="callback">Callback to invoke on completion.</param>
-            /// <param name="asyncState">Optional state object.</param>
-            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
-            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/CoreDomainService/GetAllUserAccountsDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
-            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/CoreDomainService/GetAllUserAccounts", ReplyAction="http://tempuri.org/CoreDomainService/GetAllUserAccountsResponse")]
-            [WebGet()]
-            IAsyncResult BeginGetAllUserAccounts(Guid roleId, AsyncCallback callback, object asyncState);
-            
-            /// <summary>
-            /// Completes the asynchronous operation begun by 'BeginGetAllUserAccounts'.
-            /// </summary>
-            /// <param name="result">The IAsyncResult returned from 'BeginGetAllUserAccounts'.</param>
-            /// <returns>The 'QueryResult' returned from the 'GetAllUserAccounts' operation.</returns>
-            QueryResult<Party> EndGetAllUserAccounts(IAsyncResult result);
-            
-            /// <summary>
             /// Asynchronously invokes the 'GetBusinessAccountsForRole' operation.
             /// </summary>
             /// <param name="roleId">The value for the 'roleId' parameter of this action.</param>
@@ -16170,6 +17038,24 @@ namespace FoundOps.Server.Services.CoreDomainService
             /// <param name="result">The IAsyncResult returned from 'BeginGetInvoices'.</param>
             /// <returns>The 'QueryResult' returned from the 'GetInvoices' operation.</returns>
             QueryResult<Invoice> EndGetInvoices(IAsyncResult result);
+            
+            /// <summary>
+            /// Asynchronously invokes the 'GetLineItem' operation.
+            /// </summary>
+            /// <param name="callback">Callback to invoke on completion.</param>
+            /// <param name="asyncState">Optional state object.</param>
+            /// <returns>An IAsyncResult that can be used to monitor the request.</returns>
+            [FaultContract(typeof(DomainServiceFault), Action="http://tempuri.org/CoreDomainService/GetLineItemDomainServiceFault", Name="DomainServiceFault", Namespace="DomainServices")]
+            [OperationContract(AsyncPattern=true, Action="http://tempuri.org/CoreDomainService/GetLineItem", ReplyAction="http://tempuri.org/CoreDomainService/GetLineItemResponse")]
+            [WebGet()]
+            IAsyncResult BeginGetLineItem(AsyncCallback callback, object asyncState);
+            
+            /// <summary>
+            /// Completes the asynchronous operation begun by 'BeginGetLineItem'.
+            /// </summary>
+            /// <param name="result">The IAsyncResult returned from 'BeginGetLineItem'.</param>
+            /// <returns>The 'QueryResult' returned from the 'GetLineItem' operation.</returns>
+            QueryResult<LineItem> EndGetLineItem(IAsyncResult result);
             
             /// <summary>
             /// Asynchronously invokes the 'GetLocationFields' operation.
@@ -16775,6 +17661,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 this.CreateEntitySet<Field>(EntitySetOperations.All);
                 this.CreateEntitySet<File>(EntitySetOperations.All);
                 this.CreateEntitySet<Invoice>(EntitySetOperations.All);
+                this.CreateEntitySet<LineItem>(EntitySetOperations.All);
                 this.CreateEntitySet<Location>(EntitySetOperations.All);
                 this.CreateEntitySet<Option>(EntitySetOperations.All);
                 this.CreateEntitySet<Party>(EntitySetOperations.All);

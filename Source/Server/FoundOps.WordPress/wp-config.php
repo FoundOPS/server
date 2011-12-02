@@ -21,7 +21,7 @@ global $debug, $foundopsLink,  $blogLink;
 /** The site URL */
 define('WP_SITEURL', $blogLink);
 
-$debug = true;
+$debug = false;
 
 if ($debug)
 {

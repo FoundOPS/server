@@ -499,6 +499,11 @@
             Gets the collection of associated <see cref="T:FoundOps.Core.Models.CoreEntities.RouteTask"/> entity instances.
             </summary>
         </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.BusinessAccount.SalesTerms">
+            <summary>
+            Gets the collection of associated <see cref="T:FoundOps.Core.Models.CoreEntities.SalesTerm"/> entity instances.
+            </summary>
+        </member>
         <member name="P:FoundOps.Core.Models.CoreEntities.BusinessAccount.ServicesToProvide">
             <summary>
             Gets the collection of associated <see cref="T:FoundOps.Core.Models.CoreEntities.Service"/> entity instances.
@@ -536,6 +541,11 @@
         <member name="P:FoundOps.Core.Models.CoreEntities.Client.DateAdded">
             <summary>
             Gets or sets the 'DateAdded' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.Client.DefaultSalesTerm">
+            <summary>
+            Gets or sets the associated <see cref="T:FoundOps.Core.Models.CoreEntities.SalesTerm"/> entity.
             </summary>
         </member>
         <member name="P:FoundOps.Core.Models.CoreEntities.Client.Id">
@@ -581,6 +591,11 @@
         <member name="P:FoundOps.Core.Models.CoreEntities.Client.Salesperson">
             <summary>
             Gets or sets the 'Salesperson' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.Client.SalesTermId">
+            <summary>
+            Gets or sets the 'SalesTermId' value.
             </summary>
         </member>
         <member name="P:FoundOps.Core.Models.CoreEntities.Client.ServicesToRecieve">
@@ -1112,6 +1127,11 @@
             </summary>
             <returns>An object instance that uniquely identifies this entity instance.</returns>
         </member>
+        <member name="M:FoundOps.Core.Models.CoreEntities.Invoice.TrackChanges">
+            <summary>
+            Track this Entity's Changes
+            </summary>
+        </member>
         <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.BillToLocation">
             <summary>
             Gets or sets the associated <see cref="T:FoundOps.Core.Models.CoreEntities.Location"/> entity.
@@ -1162,9 +1182,34 @@
             Gets or sets the 'Id' value.
             </summary>
         </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.IsBillToLocationChanged">
+            <summary>
+            Gets or sets the 'IsBillToLocationChanged' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.IsDueDateChanged">
+            <summary>
+            Gets or sets the 'IsDueDateChanged' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.IsMemoChanged">
+            <summary>
+            Gets or sets the 'IsMemoChanged' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.IsSalesTermChanged">
+            <summary>
+            Gets or sets the 'IsSalesTermChanged' value.
+            </summary>
+        </member>
         <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.LastUpdatedTime">
             <summary>
             Gets or sets the 'LastUpdatedTime' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.LineItems">
+            <summary>
+            Gets the collection of associated <see cref="T:FoundOps.Core.Models.CoreEntities.LineItem"/> entity instances.
             </summary>
         </member>
         <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.LocationId">
@@ -1175,6 +1220,11 @@
         <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.Memo">
             <summary>
             Gets or sets the 'Memo' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.QuickBooksId">
+            <summary>
+            Gets or sets the 'QuickBooksId' value.
             </summary>
         </member>
         <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.RelativeScheduleDays">
@@ -1205,6 +1255,65 @@
         <member name="P:FoundOps.Core.Models.CoreEntities.Invoice.SyncToken">
             <summary>
             Gets or sets the 'SyncToken' value.
+            </summary>
+        </member>
+        <member name="T:FoundOps.Core.Models.CoreEntities.LineItem">
+            <summary>
+            The 'LineItem' entity class.
+            This entity is shared between the following contexts:
+            The <see cref="!:CoreDomainContext"/> context.
+            The <see cref="!:TechnicianDomainContext"/> context.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Core.Models.CoreEntities.LineItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FoundOps.Core.Models.CoreEntities.LineItem"/> class.
+            </summary>
+        </member>
+        <member name="M:FoundOps.Core.Models.CoreEntities.LineItem.GetIdentity">
+            <summary>
+            Computes a value from the key fields that uniquely identifies this entity instance.
+            </summary>
+            <returns>An object instance that uniquely identifies this entity instance.</returns>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.LineItem.Amount">
+            <summary>
+            Gets or sets the 'Amount' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.LineItem.Description">
+            <summary>
+            Gets or sets the 'Description' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.LineItem.Id">
+            <summary>
+            Gets or sets the 'Id' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.LineItem.Invoice">
+            <summary>
+            Gets or sets the associated <see cref="P:FoundOps.Core.Models.CoreEntities.LineItem.Invoice"/> entity.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.LineItem.InvoiceId">
+            <summary>
+            Gets or sets the 'InvoiceId' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.LineItem.IsAmountChanged">
+            <summary>
+            Gets or sets the 'IsAmountChanged' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.LineItem.IsDescriptionChanged">
+            <summary>
+            Gets or sets the 'IsDescriptionChanged' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.LineItem.QuickBooksId">
+            <summary>
+            Gets or sets the 'QuickBooksId' value.
             </summary>
         </member>
         <member name="T:FoundOps.Core.Models.CoreEntities.Location">
@@ -2374,6 +2483,26 @@
             </summary>
             <returns>An object instance that uniquely identifies this entity instance.</returns>
         </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.BusinessAccount">
+            <summary>
+            Gets or sets the associated <see cref="P:FoundOps.Core.Models.CoreEntities.SalesTerm.BusinessAccount"/> entity.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.BusinessAccountId">
+            <summary>
+            Gets or sets the 'BusinessAccountId' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.Clients">
+            <summary>
+            Gets the collection of associated <see cref="T:FoundOps.Core.Models.CoreEntities.Client"/> entity instances.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.CreateTime">
+            <summary>
+            Gets or sets the 'CreateTime' value.
+            </summary>
+        </member>
         <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.DueDays">
             <summary>
             Gets or sets the 'DueDays' value.
@@ -2389,9 +2518,34 @@
             Gets the collection of associated <see cref="T:FoundOps.Core.Models.CoreEntities.Invoice"/> entity instances.
             </summary>
         </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.IsDueDaysChanged">
+            <summary>
+            Gets or sets the 'IsDueDaysChanged' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.IsNameChanged">
+            <summary>
+            Gets or sets the 'IsNameChanged' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.LastUpdatedTime">
+            <summary>
+            Gets or sets the 'LastUpdatedTime' value.
+            </summary>
+        </member>
         <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.Name">
             <summary>
             Gets or sets the 'Name' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.QuickBooksId">
+            <summary>
+            Gets or sets the 'QuickBooksId' value.
+            </summary>
+        </member>
+        <member name="P:FoundOps.Core.Models.CoreEntities.SalesTerm.SyncToken">
+            <summary>
+            Gets or sets the 'SyncToken' value.
             </summary>
         </member>
         <member name="T:FoundOps.Core.Models.CoreEntities.Service">
@@ -3010,11 +3164,11 @@
             </summary>
             <returns>An EntityQuery that can be loaded to retrieve <see cref="T:FoundOps.Core.Models.CoreEntities.RouteDestination"/> entity instances.</returns>
         </member>
-        <member name="M:FoundOps.Server.Services.TechnicianDomainContext.GetTestTechniciansRoutesQuery">
+        <member name="M:FoundOps.Server.Services.TechnicianDomainContext.GetTestTechniciansRouteDestinationsQuery">
             <summary>
-            Gets an EntityQuery instance that can be used to load <see cref="T:FoundOps.Core.Models.CoreEntities.Route"/> entity instances using the 'GetTestTechniciansRoutes' query.
+            Gets an EntityQuery instance that can be used to load <see cref="T:FoundOps.Core.Models.CoreEntities.RouteDestination"/> entity instances using the 'GetTestTechniciansRouteDestinations' query.
             </summary>
-            <returns>An EntityQuery that can be loaded to retrieve <see cref="T:FoundOps.Core.Models.CoreEntities.Route"/> entity instances.</returns>
+            <returns>An EntityQuery that can be loaded to retrieve <see cref="T:FoundOps.Core.Models.CoreEntities.RouteDestination"/> entity instances.</returns>
         </member>
         <member name="M:FoundOps.Server.Services.TechnicianDomainContext.GetTrackPointsQuery">
             <summary>
@@ -3173,20 +3327,20 @@
             <param name="result">The IAsyncResult returned from 'BeginGetTechniciansRouteDestinationsAuthorized'.</param>
             <returns>The 'QueryResult' returned from the 'GetTechniciansRouteDestinationsAuthorized' operation.</returns>
         </member>
-        <member name="M:FoundOps.Server.Services.TechnicianDomainContext.ITechnicianDomainServiceContract.BeginGetTestTechniciansRoutes(System.AsyncCallback,System.Object)">
+        <member name="M:FoundOps.Server.Services.TechnicianDomainContext.ITechnicianDomainServiceContract.BeginGetTestTechniciansRouteDestinations(System.AsyncCallback,System.Object)">
             <summary>
-            Asynchronously invokes the 'GetTestTechniciansRoutes' operation.
+            Asynchronously invokes the 'GetTestTechniciansRouteDestinations' operation.
             </summary>
             <param name="callback">Callback to invoke on completion.</param>
             <param name="asyncState">Optional state object.</param>
             <returns>An IAsyncResult that can be used to monitor the request.</returns>
         </member>
-        <member name="M:FoundOps.Server.Services.TechnicianDomainContext.ITechnicianDomainServiceContract.EndGetTestTechniciansRoutes(System.IAsyncResult)">
+        <member name="M:FoundOps.Server.Services.TechnicianDomainContext.ITechnicianDomainServiceContract.EndGetTestTechniciansRouteDestinations(System.IAsyncResult)">
             <summary>
-            Completes the asynchronous operation begun by 'BeginGetTestTechniciansRoutes'.
+            Completes the asynchronous operation begun by 'BeginGetTestTechniciansRouteDestinations'.
             </summary>
-            <param name="result">The IAsyncResult returned from 'BeginGetTestTechniciansRoutes'.</param>
-            <returns>The 'QueryResult' returned from the 'GetTestTechniciansRoutes' operation.</returns>
+            <param name="result">The IAsyncResult returned from 'BeginGetTestTechniciansRouteDestinations'.</param>
+            <returns>The 'QueryResult' returned from the 'GetTestTechniciansRouteDestinations' operation.</returns>
         </member>
         <member name="M:FoundOps.Server.Services.TechnicianDomainContext.ITechnicianDomainServiceContract.BeginGetTrackPoints(System.AsyncCallback,System.Object)">
             <summary>
@@ -3284,13 +3438,6 @@
             </summary>
             <returns>An EntityQuery that can be loaded to retrieve <see cref="T:FoundOps.Common.NET.Address"/> entity instances.</returns>
         </member>
-        <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.GetAllUserAccountsQuery(System.Guid)">
-            <summary>
-            Gets an EntityQuery instance that can be used to load <see cref="T:FoundOps.Core.Models.CoreEntities.Party"/> entity instances using the 'GetAllUserAccounts' query.
-            </summary>
-            <param name="roleId">The value for the 'roleId' parameter of the query.</param>
-            <returns>An EntityQuery that can be loaded to retrieve <see cref="T:FoundOps.Core.Models.CoreEntities.Party"/> entity instances.</returns>
-        </member>
         <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.GetBusinessAccountsForRoleQuery(System.Guid)">
             <summary>
             Gets an EntityQuery instance that can be used to load <see cref="T:FoundOps.Core.Models.CoreEntities.Party"/> entity instances using the 'GetBusinessAccountsForRole' query.
@@ -3381,6 +3528,12 @@
             Gets an EntityQuery instance that can be used to load <see cref="T:FoundOps.Core.Models.CoreEntities.Invoice"/> entity instances using the 'GetInvoices' query.
             </summary>
             <returns>An EntityQuery that can be loaded to retrieve <see cref="T:FoundOps.Core.Models.CoreEntities.Invoice"/> entity instances.</returns>
+        </member>
+        <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.GetLineItemQuery">
+            <summary>
+            Gets an EntityQuery instance that can be used to load <see cref="T:FoundOps.Core.Models.CoreEntities.LineItem"/> entity instances using the 'GetLineItem' query.
+            </summary>
+            <returns>An EntityQuery that can be loaded to retrieve <see cref="T:FoundOps.Core.Models.CoreEntities.LineItem"/> entity instances.</returns>
         </member>
         <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.GetLocationFieldsQuery">
             <summary>
@@ -3683,6 +3836,11 @@
             Gets the set of <see cref="T:FoundOps.Core.Models.CoreEntities.Invoice"/> entity instances that have been loaded into this <see cref="T:FoundOps.Server.Services.CoreDomainService.CoreDomainContext"/> instance.
             </summary>
         </member>
+        <member name="P:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.LineItems">
+            <summary>
+            Gets the set of <see cref="T:FoundOps.Core.Models.CoreEntities.LineItem"/> entity instances that have been loaded into this <see cref="T:FoundOps.Server.Services.CoreDomainService.CoreDomainContext"/> instance.
+            </summary>
+        </member>
         <member name="P:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.Locations">
             <summary>
             Gets the set of <see cref="T:FoundOps.Core.Models.CoreEntities.Location"/> entity instances that have been loaded into this <see cref="T:FoundOps.Server.Services.CoreDomainService.CoreDomainContext"/> instance.
@@ -3866,22 +4024,6 @@
             </summary>
             <param name="result">The IAsyncResult returned from 'BeginGetAddresses'.</param>
             <returns>The 'QueryResult' returned from the 'GetAddresses' operation.</returns>
-        </member>
-        <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.ICoreDomainServiceContract.BeginGetAllUserAccounts(System.Guid,System.AsyncCallback,System.Object)">
-            <summary>
-            Asynchronously invokes the 'GetAllUserAccounts' operation.
-            </summary>
-            <param name="roleId">The value for the 'roleId' parameter of this action.</param>
-            <param name="callback">Callback to invoke on completion.</param>
-            <param name="asyncState">Optional state object.</param>
-            <returns>An IAsyncResult that can be used to monitor the request.</returns>
-        </member>
-        <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.ICoreDomainServiceContract.EndGetAllUserAccounts(System.IAsyncResult)">
-            <summary>
-            Completes the asynchronous operation begun by 'BeginGetAllUserAccounts'.
-            </summary>
-            <param name="result">The IAsyncResult returned from 'BeginGetAllUserAccounts'.</param>
-            <returns>The 'QueryResult' returned from the 'GetAllUserAccounts' operation.</returns>
         </member>
         <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.ICoreDomainServiceContract.BeginGetBusinessAccountsForRole(System.Guid,System.AsyncCallback,System.Object)">
             <summary>
@@ -4099,6 +4241,21 @@
             </summary>
             <param name="result">The IAsyncResult returned from 'BeginGetInvoices'.</param>
             <returns>The 'QueryResult' returned from the 'GetInvoices' operation.</returns>
+        </member>
+        <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.ICoreDomainServiceContract.BeginGetLineItem(System.AsyncCallback,System.Object)">
+            <summary>
+            Asynchronously invokes the 'GetLineItem' operation.
+            </summary>
+            <param name="callback">Callback to invoke on completion.</param>
+            <param name="asyncState">Optional state object.</param>
+            <returns>An IAsyncResult that can be used to monitor the request.</returns>
+        </member>
+        <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.ICoreDomainServiceContract.EndGetLineItem(System.IAsyncResult)">
+            <summary>
+            Completes the asynchronous operation begun by 'BeginGetLineItem'.
+            </summary>
+            <param name="result">The IAsyncResult returned from 'BeginGetLineItem'.</param>
+            <returns>The 'QueryResult' returned from the 'GetLineItem' operation.</returns>
         </member>
         <member name="M:FoundOps.Server.Services.CoreDomainService.CoreDomainContext.ICoreDomainServiceContract.BeginGetLocationFields(System.AsyncCallback,System.Object)">
             <summary>
@@ -4933,16 +5090,88 @@
             <summary>
             Gets or sets the context manager.
             </summary>
-        </member>
-        <member name="P:FoundOps.SLClient.Data.Services.Manager.AggregateCatalogService">
-            <summary>
-            Gets or sets the aggregate catalog service.
-            </summary>
+            <value>
+            The context manager.
+            </value>
         </member>
         <member name="P:FoundOps.SLClient.Data.Services.Manager.Data">
             <summary>
             Gets or sets the data manager.
             </summary>
+        </member>
+        <member name="T:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction">
+            <summary>
+            A class to set up event tracking for analytics
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.CategoryProperty">
+            <summary>
+            The analytics category.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.ActionProperty">
+            <summary>
+            The analytics action.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.ValueProperty">
+            <summary>
+            The analytics label.
+            </summary>
+        </member>
+        <member name="F:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.LabelProperty">
+            <summary>
+            The analytics value.
+            </summary>
+        </member>
+        <member name="M:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.Track(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Tracks the specified event. Used for events called from code behind.
+            </summary>
+            <param name="category">The category.</param>
+            <param name="action">The action.</param>
+            <param name="label">The label.</param>
+            /// <param name="value">The value.</param>
+        </member>
+        <member name="M:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.Track(System.String,System.String,System.Int32)">
+            <summary>
+            Tracks the specified category.
+            </summary>
+            <param name="category">The category.</param>
+            <param name="action">The action.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="P:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.Category">
+            <summary>
+            Gets or sets the analytics category.
+            </summary>
+            <value>
+            The category.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.Action">
+            <summary>
+            Gets or sets the analytics action.
+            </summary>
+            <value>
+            The action.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.Label">
+            <summary>
+            Gets or sets the analytics label.
+            </summary>
+            <value>
+            The label.
+            </value>
+        </member>
+        <member name="P:FoundOps.SLClient.Data.Services.Analytics.TrackEventAction.Value">
+            <summary>
+            Gets or sets the analytics value.
+            </summary>
+            <value>
+            The value.
+            </value>
         </member>
         <member name="T:FoundOps.SLClient.Data.Services.DataManager">
             <summary>
@@ -5161,11 +5390,6 @@
             Loads all of the ServiceTemplates related to the current RoleId
             </summary>
         </member>
-        <member name="F:FoundOps.SLClient.Data.Services.DataManager.Query.UserAccounts">
-            <summary>
-            Loads all of the UserAccounts related to the current RoleId
-            </summary>
-        </member>
         <member name="F:FoundOps.SLClient.Data.Services.DataManager.Query.Vehicles">
             <summary>
              Loads all of the Vehicle's related to the current RoleId
@@ -5225,8 +5449,7 @@
         </member>
         <member name="T:FoundOps.SLClient.Data.Converters.ServiceTemplatesAddDeleteModeConverter">
             <summary>
-            AddDeleteMode within FoundOPS context: AddDelete, all other serviceproviders: AddItemDelete.
-            Return as int (workaround, because SetProperty on enum sometimes messes up). 
+            AddDeleteMode within FoundOPS context: AddDelete, all other serviceproviders: AddItemDelete
             </summary>
         </member>
         <member name="P:FoundOps.Core.Server.Blocks.BlocksData.SettingsBlock">

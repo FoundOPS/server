@@ -2,6 +2,7 @@ C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\clientaccesspolicy.xml
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\ClientBin\SplashScreen.xaml
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\FoundOps.Server.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\FoundOps.Server.pdb
+C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\DevDefined.OAuth.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\EntityFramework.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\FoundOps.Common.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\FoundOps.Common.NET.dll
@@ -129,4 +130,3 @@ C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\zh-Hant\System.ServiceM
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\obj\Debug\ResolveAssemblyReference.cache
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\obj\Debug\FoundOps.Server.dll
 C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\obj\Debug\FoundOps.Server.pdb
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Server\bin\DevDefined.OAuth.dll

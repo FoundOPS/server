@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FoundOps.Core.Models.CoreEntities.Validation;
 
 // ReSharper disable CheckNamespace
@@ -175,6 +176,9 @@ namespace FoundOps.Core.Models.CoreEntities
 
             [Include]
             public SalesTerm SalesTerm { get; set; }
+
+            [Include]
+            public IEnumerable<LineItem> LineItems { get; set; }
         }
     }
 
