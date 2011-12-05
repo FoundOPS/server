@@ -136,8 +136,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             if (DomainCollectionView == null || DomainCollectionView.IsAddingNew)
                 return;
 
-            if (DesignerProperties.IsInDesignTool)
-                return;
+            if (DesignerProperties.IsInDesignTool) return;
 
             DomainCollectionView.Filter = null;
 

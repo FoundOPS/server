@@ -18,7 +18,7 @@ namespace FoundOps.SLClient.UI.Controls.Locations
                 //After the locations are loaded, setup two way binding
                 if (e.PropertyName == "IsLoading" && !LocationsVM.IsLoading)
                 {
-                    LocationsRadComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("SelectedLocation") { Source = this, Mode = BindingMode.TwoWay });
+                    LocationsRadComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("Entity") { Source = this, Mode = BindingMode.TwoWay });
                 }
             };
 
@@ -30,23 +30,23 @@ namespace FoundOps.SLClient.UI.Controls.Locations
             get { return (LocationsVM)this.DataContext; }
         }
 
-        #region SelectedLocation Dependency Property
+        #region Entity Dependency Property
 
         /// <summary>
-        /// SelectedLocation
+        /// The selected location entity
         /// </summary>
-        public Location SelectedLocation
+        public Location Entity
         {
-            get { return (Location)GetValue(SelectedLocationProperty); }
-            set { SetValue(SelectedLocationProperty, value); }
+            get { return (Location)GetValue(EntityProperty); }
+            set { SetValue(EntityProperty, value); }
         }
 
         /// <summary>
-        /// SelectedLocation Dependency Property.
+        /// The Entity Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty SelectedLocationProperty =
+        public static readonly DependencyProperty EntityProperty =
             DependencyProperty.Register(
-                "SelectedLocation",
+                "Entity",
                 typeof(Location),
                 typeof(LocationLinkLarge),
                 new PropertyMetadata(null));

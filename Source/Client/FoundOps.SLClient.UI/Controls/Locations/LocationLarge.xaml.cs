@@ -1,17 +1,16 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls;
-
-namespace FoundOps.Framework.Views.Controls.Locations
+﻿namespace FoundOps.SLClient.UI.Controls.Locations
 {
-    public partial class LocationLarge : UserControl
+    /// <summary>
+    /// Displays the details of a location.
+    /// </summary>
+    public partial class LocationLarge
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocationLarge"/> class.
+        /// </summary>
         public LocationLarge()
         {
             InitializeComponent();
-#if DEBUG
-            if (DesignerProperties.IsInDesignTool)
-                return;
-#endif
         }
     }
 }

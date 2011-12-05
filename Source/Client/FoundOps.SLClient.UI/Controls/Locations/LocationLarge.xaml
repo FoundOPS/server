@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.Locations.LocationLarge" x:Name="myLocationLarge"
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Locations.LocationLarge" x:Name="myLocationLarge"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
@@ -7,15 +7,23 @@
              xmlns:Regions1="clr-namespace:FoundOps.SLClient.UI.Controls.Regions" xmlns:my1="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
+             mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
     <UserControl.Resources>
+        <Converters1:ExistsBoolConverter x:Key="ExistsBoolConverter"/>
         <Converters1:VisibilityConverter x:Key="VisibilityConverter" />
         <Converters2:LocationToStringConverter x:Key="LocationToStringConverter" />
         <Converters3:OwnerPartyToClientConverter x:Key="OwnerPartyToClientConverter"/>
+        <Style TargetType="UserControl" x:Key="visibindstyle">
+            
+            <Style.Setters>
+                <Setter Property="Visibility" Value="{Binding SelectedLocationVM, Converter={StaticResource VisibilityConverter}}"/>
+            </Style.Setters>
+        </Style>
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White"
-            Visibility="{Binding SelectedLocationVM.SelectedLocation, Converter={StaticResource VisibilityConverter}}">
+          Visibility="{Binding SelectedLocationVM, Converter={StaticResource VisibilityConverter}}">
+        <!-- Original: Visibility="{Binding SelectedLocationVM.Entity, Converter={StaticResource VisibilityConverter}}"-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -29,20 +37,20 @@
                 <StackPanel Orientation="Horizontal" Margin="5,3" >
                     <TextBlock Text="Location - " FontSize="13" Foreground="White" />
                     <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="White"
-                        Text="{Binding SelectedLocationVM.SelectedLocation, Converter={StaticResource LocationToStringConverter}}" />
+                        Text="{Binding SelectedLocationVM.Entity, Converter={StaticResource LocationToStringConverter}}" />
                 </StackPanel>
                 <SaveDiscardCancel:SaveCancel Grid.Column="1" ISaveDiscardChangesCommands="{Binding DataContext, ElementName=myLocationLarge}"/>
             </Grid>
         </Border>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel>
-                <Locations1:LocationEdit LocationVM="{Binding SelectedLocationVM}" />
+                <Locations1:LocationEdit />
                 <ContactInfo:ContactInfoEdit ContactInfoVM="{Binding SelectedLocationVM.ContactInfoVM}" />
                 <my1:ClientLinkLarge SelectedClient="{Binding DataContext.SelectedEntity.Party, ElementName=myLocationLarge, Mode=TwoWay, Converter={StaticResource OwnerPartyToClientConverter}}"/>
                 <Regions1:RegionLinkLarge SelectedRegion="{Binding DataContext.SelectedEntity.Region, ElementName=myLocationLarge, Mode=TwoWay}"/>
                 <Locations1:SubLocations SubLocationsVM="{Binding DataContext.SelectedSubLocationsVM, ElementName=myLocationLarge}"/>
-                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource ServiceBrush}" IsEnabled="{Binding DataContext.IsLoading, ElementName=ServicesGrid, Converter={StaticResource NotExistsBoolConverter}}"
-                        BorderBrush="{StaticResource ServiceBrush}">
+                <toolkit:Expander Margin="5" IsExpanded="true" Style="{StaticResource ExpanderStyle}" Foreground="{StaticResource ServiceBrush}" BorderBrush="{StaticResource ServiceBrush}"
+                                  IsEnabled="{Binding DataContext.IsLoading, ElementName=ServicesGrid, Converter={StaticResource NotExistsBoolConverter}}">
                     <toolkit:Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Services" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
@@ -51,6 +59,6 @@
                     <Services:ServicesGrid x:Name="ServicesGrid" IsMainGrid="False" />
                 </toolkit:Expander>
             </StackPanel>
-        </ScrollViewer>
+        </ScrollViewer> 
     </Grid>
 </UserControl>

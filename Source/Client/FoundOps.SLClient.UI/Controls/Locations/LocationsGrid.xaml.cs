@@ -10,18 +10,9 @@ using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 
 namespace FoundOps.SLClient.UI.Controls.Locations
 {
-    /// <summary>
-    /// Contains a list of Locations.
-    /// </summary>
     public partial class LocationsGrid : INotifyPropertyChanged
     {
         private bool _isMainGrid;
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is main grid.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance is main grid; otherwise, <c>false</c>.
-        /// </value>
         public bool IsMainGrid
         {
             get { return _isMainGrid; }
@@ -31,9 +22,6 @@ namespace FoundOps.SLClient.UI.Controls.Locations
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocationsGrid"/> class.
-        /// </summary>
         public LocationsGrid()
         {
             InitializeComponent();
@@ -43,9 +31,6 @@ namespace FoundOps.SLClient.UI.Controls.Locations
             LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
         }
 
-        /// <summary>
-        /// Gets the locations VM.
-        /// </summary>
         public LocationsVM LocationsVM
         {
             get { return (LocationsVM) this.DataContext; }

@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Linq;
-using System.ComponentModel;
+using ReactiveUI; 
+using System.Linq; 
 using FoundOps.Common.NET;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
-using System.Collections.Generic;
-using GalaSoft.MvvmLight.Messaging;
+using System.Collections.Generic; 
 using System.Collections.ObjectModel;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Context.Services.Interface;
-using ReactiveUI;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -20,27 +20,25 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for searching for and displaying a Location
     /// </summary>
     [ExportViewModel("LocationVM")]
-    public class LocationVM : CoreEntityVM, IAddDeleteSelectedService
+    public class LocationVM : CoreEntityVM
     {
         #region Public Properties
-
-        private readonly Location _selectedLocation;
-        /// <summary>
-        /// Gets the selected location this viewmodel is for.
-        /// </summary>
-        /// <value>
-        /// The selected location.
-        /// </value>
-        public Location SelectedLocation { get { return _selectedLocation; } }
 
         /// <summary>
         /// Gets the ContactInfoVM for the Location
         /// </summary>
         public ContactInfoVM ContactInfoVM { get; private set; }
 
-        // IAddDeleteSelectedService
-        public RelayCommand<Service> AddSelectedServiceCommand { get; set; } //Not intended to be used
-        public RelayCommand<Service> DeleteSelectedServiceCommand { get; set; }
+        private readonly Location _entity;
+        /// <summary>
+        /// Gets the location entity this viewmodel is for.
+        /// </summary>
+        /// <value>
+        /// The location entity.
+        /// </value>
+        public Location Entity { get { return _entity; } }
+
+        #region Geocoder Results
 
         private IEnumerable<GeocoderResult> _geocoderResults = new ObservableCollection<GeocoderResult>();
         /// <summary>
@@ -65,15 +63,14 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         /// <summary>
+        /// The manually selected geocoder result.
+        /// </summary>
+        public GeocoderResult ManuallySelectGeocoderResult { get; set; }
+
+        /// <summary>
         /// Gets the geocoder results that have locations.
         /// </summary>
-        public IEnumerable<GeocoderResult> GeocoderResultsWithLocations
-        {
-            get
-            {
-                return GeocoderResults.Where(gr => gr.TelerikLocation != null);
-            }
-        }
+        public IEnumerable<GeocoderResult> GeocoderResultsWithLocations { get { return GeocoderResults.Where(gr => gr.TelerikLocation != null); } }
 
         private GeocoderResult _selectedGeocoderResult;
         /// <summary>
@@ -93,30 +90,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        private GeocoderResult _manuallySelectGeocoderResult = new GeocoderResult { Name = ManuallySelectLocationString, AddressLineOne = ClickOnTheMapString };
-        /// <summary>
-        /// Gets or sets the manually selected geocoder result.
-        /// </summary>
-        /// <value>
-        /// The manually selected geocoder result.
-        /// </value>
-        public GeocoderResult ManuallySelectGeocoderResult
-        {
-            get { return _manuallySelectGeocoderResult; }
-            set
-            {
-                if (ManuallySelectGeocoderResult != null)
-                    ManuallySelectGeocoderResult.PropertyChanged -= ManuallySelectGeocoderResultPropertyChanged;
-                _manuallySelectGeocoderResult = value;
-                if (ManuallySelectGeocoderResult != null)
-                    ManuallySelectGeocoderResult.PropertyChanged += ManuallySelectGeocoderResultPropertyChanged;
-            }
-        }
-        void ManuallySelectGeocoderResultPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "TelerikLocation")
-                RaisePropertyChanged("GeocoderResultsWithLocations");
-        }
+        #endregion
 
         private string _searchText;
         /// <summary>
@@ -135,18 +109,39 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        /// <summary>
-        /// A command to Search for an address.
-        /// </summary>
-        public RelayCommand SearchCommand { get; private set; }
-        /// <summary>
-        /// A command for setting the Location's information based off a GeocoderResult.
-        /// </summary>
-        public RelayCommand SetLocationToGeocoderResultCommand { get; private set; }
+        #region Commands
+
         /// <summary>
         /// A command for manually setting the Location's latitude and longitude.
         /// </summary>
         public RelayCommand<Tuple<decimal, decimal>> ManuallySetLatitudeLongitude { get; private set; }
+        
+        /// <summary>
+        /// A command to Search for an address.
+        /// </summary>
+        public RelayCommand SearchCommand { get; private set; }
+        
+        /// <summary>
+        /// A command for setting the Location's information based off a GeocoderResult.
+        /// </summary>
+        public RelayCommand SetLocationToGeocoderResultCommand { get; private set; }
+
+        #endregion
+
+        #region Observables
+
+        private readonly BehaviorSubject<IEnumerable<GeocoderResult>> _geocodeCompletion = new BehaviorSubject<IEnumerable<GeocoderResult>>(null);
+        /// <summary>
+        /// An observable that publishes whenever Geocoding has completed.
+        /// </summary>
+        public IObservable<IEnumerable<GeocoderResult>> GeocodeCompletion { get { return _geocodeCompletion; } }
+
+        /// <summary>
+        /// Gets the latitude longitude change.
+        /// </summary>
+        public IObservable<bool> ValidLatitudeLongitudeState { get; private set; }
+
+        #endregion
 
         #endregion
 
@@ -162,17 +157,16 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="LocationVM"/> class.
         /// </summary>
         /// <param name="locationsDataService">The locations data service.</param>
-        /// <param name="selectedLocation">The selectedLocation this viewmodel is for</param>
+        /// <param name="entity">The entity this viewmodel is for</param>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public LocationVM(Location selectedLocation, DataManager dataManager, ILocationsDataService locationsDataService)
+        public LocationVM(Location entity, DataManager dataManager, ILocationsDataService locationsDataService)
             : base(dataManager)
         {
             this._locationsDataService = locationsDataService;
 
             #region Register Commands
 
-            DeleteSelectedServiceCommand = new RelayCommand<Service>(OnDeleteSelectedServiceCommand);
             SearchCommand = new RelayCommand(OnSearch);
             SetLocationToGeocoderResultCommand = new RelayCommand(OnSetLocation,
                                                                   () =>
@@ -187,50 +181,51 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
 
-            #region SelectedLocation logic
+            #region Entity logic
 
-            _selectedLocation = selectedLocation;
+            _entity = entity;
 
-            if (_selectedLocation == null)
+            //Setup the ContactInfoVM and update the Geocoder properties
+            ContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.Locations,
+                                              entity.ContactInfoSet);
+
+            //Set ManuallySelectGeocoderResult to the Entity if it has a Latitude/Longitude
+
+            ManuallySelectGeocoderResult = new GeocoderResult { Name = ManuallySelectLocationString, AddressLineOne = ClickOnTheMapString };
+
+            if (entity.Latitude != null && entity.Longitude != null)
             {
-                MessageBus.Current.SendMessage(new ResetMapMessage());
-            }
-            else
-            {
-                //Setup the ContactInfoVM and update the Geocoder properties
-                ContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.Locations,
-                                                  selectedLocation.ContactInfoSet);
-
-                //Set ManuallySelectGeocoderResult to the SelectedLocation if it has a Latitude/Longitude
-                if (selectedLocation.Latitude != null && selectedLocation.Longitude != null)
-                {
-                    ManuallySelectGeocoderResult.Latitude = selectedLocation.Latitude.Value.ToString();
-                    ManuallySelectGeocoderResult.Longitude = selectedLocation.Longitude.Value.ToString();
-                    SelectedGeocoderResult = ManuallySelectGeocoderResult;
-                    if (SelectedGeocoderResult.TelerikLocation != null)
-                        MessageBus.Current.SendMessage(new LocationSetMessage(SelectedGeocoderResult.TelerikLocation.Value));
-                }
+                ManuallySelectGeocoderResult.Latitude = entity.Latitude.Value.ToString();
+                ManuallySelectGeocoderResult.Longitude = entity.Longitude.Value.ToString();
+                SelectedGeocoderResult = ManuallySelectGeocoderResult;
+                if (SelectedGeocoderResult.TelerikLocation != null)
+                    MessageBus.Current.SendMessage(new LocationSetMessage(SelectedGeocoderResult.TelerikLocation.Value));
             }
 
             #endregion
+
+            //Set the default SearchText
+            SearchText = string.Format("{0}, {1}, {2}, {3}", entity.AddressLineOne, entity.City, entity.State, entity.ZipCode);
+
+
+
+            #region Subscribe to Location state validation
+            //Setup ValidLatitudeLongitude observable, it will be valid as long as the Entity's lat & long have a value
+            //Start with a value
+            ValidLatitudeLongitudeState = new BehaviorSubject<bool>(Entity.Latitude.HasValue && Entity.Longitude.HasValue);
+            // Subscribe to changes
+            Observable2.FromPropertyChangedPattern(Entity, x => x.Latitude).CombineLatest(
+                Observable2.FromPropertyChangedPattern(Entity, x => x.Longitude),(a, b) => a.HasValue && b.HasValue).Throttle(new TimeSpan(0, 0, 0, 0, 250))
+                .Subscribe((BehaviorSubject<bool>) ValidLatitudeLongitudeState);
+
+            #endregion
+
+            // Subscribe to Geocoding completion, aka Search completion.
+            Observable2.FromPropertyChangedPattern(this, x => x.GeocoderResults).Subscribe(GeocodeCompletion as BehaviorSubject<IEnumerable<GeocoderResult>>);
         }
 
         #region Logic
 
-        private void OnDeleteSelectedServiceCommand(Service service)
-        {
-            //TODO: Set this up
-            //var locationValue = this.SelectedLocation.LocationValues.FirstOrDefault(locValue => locValue.ServiceTemplateId == service.ServiceTemplate.Id);
-            //if (locationValue != null)
-            //{
-            //    RaisePropertyChanged("SelectedLocation"); //This updates CurrentContext on LocationsVM
-            //}
-        }
-
-        private void OnGeocodingComplete(IEnumerable<GeocoderResult> geocoderResults)
-        {
-            GeocoderResults = new ObservableCollection<GeocoderResult>(geocoderResults);
-        }
 
         private void OnManuallySetLatitudeLongitude(Tuple<decimal, decimal> latitudeLongitude)
         {
@@ -242,34 +237,40 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void OnSearch()
         {
-            _locationsDataService.TryGeocode(SearchText, OnGeocodingComplete);
+            _locationsDataService.TryGeocode(SearchText, results =>
+                                                             {
+                                                                 GeocoderResults = new ObservableCollection<GeocoderResult>(results);
+                                                                 //TODO: Signal end of search event
+                                                                 GeocodeCompletion.Next();
+                                                             });
+
             ManuallySelectGeocoderResult.Latitude = null;
             ManuallySelectGeocoderResult.Longitude = null;
         }
 
         private void OnSetLocation()
         {
-            if (SelectedLocation == null) return;
+            if (Entity == null) return;
 
-            SelectedLocation.Latitude = Convert.ToDecimal(SelectedGeocoderResult.Latitude);
-            SelectedLocation.Longitude = Convert.ToDecimal(SelectedGeocoderResult.Longitude);
+            Entity.Latitude = Convert.ToDecimal(SelectedGeocoderResult.Latitude);
+            Entity.Longitude = Convert.ToDecimal(SelectedGeocoderResult.Longitude);
 
             if (SelectedGeocoderResult.Name != ManuallySelectLocationString)
             {
                 if (!String.IsNullOrEmpty(SelectedGeocoderResult.Name))
-                    SelectedLocation.Name = SelectedGeocoderResult.Name;
+                    Entity.Name = SelectedGeocoderResult.Name;
 
                 if (!String.IsNullOrEmpty(SelectedGeocoderResult.AddressLineOne))
-                    SelectedLocation.AddressLineOne = SelectedGeocoderResult.AddressLineOne;
+                    Entity.AddressLineOne = SelectedGeocoderResult.AddressLineOne;
 
                 if (!String.IsNullOrEmpty(SelectedGeocoderResult.City))
-                    SelectedLocation.City = SelectedGeocoderResult.City;
+                    Entity.City = SelectedGeocoderResult.City;
 
                 if (!String.IsNullOrEmpty(SelectedGeocoderResult.State))
-                    SelectedLocation.State = SelectedGeocoderResult.State;
+                    Entity.State = SelectedGeocoderResult.State;
 
                 if (!String.IsNullOrEmpty(SelectedGeocoderResult.ZipCode))
-                    SelectedLocation.ZipCode = SelectedGeocoderResult.ZipCode;
+                    Entity.ZipCode = SelectedGeocoderResult.ZipCode;
             }
             MessageBus.Current.SendMessage(new LocationSetMessage(SelectedGeocoderResult.TelerikLocation.Value));
         }
@@ -296,9 +297,4 @@ namespace FoundOps.SLClient.UI.ViewModels
             SetLocation = location;
         }
     }
-
-    /// <summary>
-    /// A message for Resetting the map
-    /// </summary>
-    public class ResetMapMessage { }
 }
