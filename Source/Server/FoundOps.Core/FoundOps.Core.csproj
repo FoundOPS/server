@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C5170A8A-CAD2-47E2-8552-FEF87C771C03}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FoundOps.Core</RootNamespace>
+    <AssemblyName>FoundOps.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\DevDefined.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.Smo.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Reactive, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common\Lib\ReactiveExtensions\v4.5\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common\Lib\ReactiveExtensions\v4.5\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.DomainServices.EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft SDKs\RIA Services\v1.0\Libraries\Server\System.ServiceModel.DomainServices.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Hosting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft SDKs\RIA Services\v1.0\Libraries\Server\System.ServiceModel.DomainServices.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Hosting.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft SDKs\RIA Services\v1.0\Libraries\Server\System.ServiceModel.DomainServices.Hosting.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Server, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft SDKs\RIA Services\v1.0\Libraries\Server\System.ServiceModel.DomainServices.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Azure\InvoiceTableDataModel.cs" />
+    <Compile Include="Models\Azure\InvoiceDataServiceContext.cs" />
+    <Compile Include="Models\CoreEntities\BlocksData.cs" />
+    <Compile Include="Models\CoreEntities\CoreEntities.metadata.cs" />
+    <Compile Include="Models\CoreEntities\CoreEntities.Designer.cs">
+      <DependentUpon>CoreEntities.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Models\CoreEntities\CoreEntitiesServerManagement.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\BusinessAccountsDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\ClientsDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\ContactInfoDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\ContactsDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\EmployeeHistoryDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\EmployeesDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\FieldsDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\InvoicesDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\LocationsDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\PartyDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\RecurringServicesDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\RegionsDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\RepeatDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\RolesDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\RoutesDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\SalesTermsDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\ServicesDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\ServiceTemplatesDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\SubLocationsDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\UserAccountsDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\VehicleMaintenanceDesignData.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\VehiclesDesignData.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Core\BlockExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Core\ContactInfoExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Core\RoleExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountExtensions.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Dispatching\RouteDestination.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Dispatching\RouteExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Dispatching\RouteTaskExtensions.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Dispatching\RouteTaskExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Fields\DateTimeFieldExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Fields\FieldExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Fields\LocationFieldExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Fields\OptionExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Fields\OptionsFieldExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Core\FileExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\ICompositeRaiseEntityPropertyChanged.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\IEntityDefaultInitialization.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Invoices\InvoiceExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Invoices\SalesTermExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Locations\LocationExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Locations\RegionExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Locations\SubLocationExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\BusinessExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\ClientExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\ClientTitleExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\ContactExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeHistoryExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\PartyExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\PersonExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountLogEntryExtensions.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\RepeatExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\SalesLeadExtensions.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Services\RecurringServiceExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Services\ServiceTemplateExtensionMethods.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Services\ServiceTemplateExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Vehicles\VehicleExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Vehicles\VehicleMaintenanceLineItemExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Vehicles\VehicleMaintenanceLogEntryExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\M2M4RiaEntities.g.cs">
+      <DependentUpon>M2M4RiaEntities.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Models\CoreEntities\Validation\FieldValidators.shared.cs" />
+    <Compile Include="Models\CoreEntities\Validation\RepeatValidators.shared.cs" />
+    <Compile Include="Models\QuickBooks\QuickBooksXml.cs" />
+    <Compile Include="Models\QuickBooks\QuickBooksSession.cs" />
+    <Compile Include="Models\QuickBooks\QuickBooksTools.cs" />
+    <Compile Include="Models\RouteEntities\ComplexObjectBase.cs" />
+    <Compile Include="Models\RouteEntities\IRoutingService.cs" />
+    <Compile Include="Models\RouteEntities\Job.cs" />
+    <Compile Include="Models\RouteEntities\JobRoute.cs" />
+    <Compile Include="Models\RouteEntities\JobRouteDetails.cs" />
+    <Compile Include="Models\RouteEntities\JobRouteOptimizationRequest.cs" />
+    <Compile Include="Models\RouteEntities\JobRouteOptimizationResponse.cs" />
+    <Compile Include="Models\RouteEntities\Location.cs" />
+    <Compile Include="Models\RouteEntities\RouteLeg.cs" />
+    <Compile Include="Models\RouteEntities\RouteRequest.cs" />
+    <Compile Include="Models\RouteEntities\RouteResponse.cs" />
+    <Compile Include="Models\RouteEntities\TimeWindow.cs" />
+    <Compile Include="Models\Validation\RequiredGuid.shared.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
+    <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Models\CoreEntities\CoreEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CoreEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="Models\CoreEntities\M2M4RiaEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>M2M4RiaEntities.g.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\FoundOps.Common.NET\FoundOps.Common.NET.csproj">
+      <Project>{DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB}</Project>
+      <Name>FoundOps.Common.NET</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\FoundOps.Common\FoundOps.Common.csproj">
+      <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
+      <Name>FoundOps.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

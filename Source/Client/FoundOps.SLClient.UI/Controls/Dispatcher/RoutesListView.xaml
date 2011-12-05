@@ -1,0 +1,104 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" x:Name="myRoutesListView"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
+        xmlns:telerikDragDrop="clr-namespace:Telerik.Windows.Controls.DragDrop;assembly=Telerik.Windows.Controls"
+        xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" xmlns:Controls2="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation" 
+        xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:FoundOps.Common.Silverlight.UI.Interactivity.Behaviors;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:SLMultiBinding="clr-namespace:SLMultiBinding;assembly=SLMultiBinding"
+             xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters"
+             x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView" 
+        mc:Ignorable="d" HorizontalAlignment="Stretch" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM">
+    <UserControl.Resources>
+        <DataTemplate x:Key="DragCueTemplate">
+            <Controls1:RadDockPanel Margin="2" MaxWidth="200">
+                <TextBlock Text="{Binding Name}" Controls1:RadDockPanel.Dock="Top" Foreground="Black"/>
+            </Controls1:RadDockPanel>
+        </DataTemplate>
+        <Converters:StringToColorConverter x:Key="StringToColorConverter"/>
+        <Converters1:RouteDestinationsOpacityConverter x:Key="RouteDestinationsOpacityConverter"/>
+        <Converters1:RouteTasksOpacityConverter x:Key="RouteTasksOpacityConverter"/>
+        <StackPanel x:Name="RoutesVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM"/>
+        <Style TargetType="ListBoxItem" x:Key="draggableItemStyle">
+            <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrag" Value="True" />
+            <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrop" Value="True" />
+        </Style>
+        <Style TargetType="Controls2:RadTreeViewItem">
+            <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrag" Value="True" />
+            <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrop" Value="True" />
+        </Style>
+        <DataTemplate x:Key="RouteTemplate">
+            <Border Margin="1" BorderThickness="1" Background="AliceBlue" BorderBrush="{Binding Route.Color, Converter={StaticResource StringToColorConverter}}" CornerRadius="2">
+                <!--If Route Conflict Is present (i.e. Route is longer than scheduled, route lacks a vehicle or driver, then Change Border Brush to red and BorderThickness to 4 -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" />
+                    <Controls2:RadTreeView x:Name="RouteTreeView" Loaded="RouteTreeViewLoaded" 
+                                           Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding RouteDestinationsListWrapper}" 
+                                           IsDragDropEnabled="True" Background="Transparent" Selected="RouteTreeViewSelected" Unselected="RouteTreeViewUnselected"
+                                           IsDragPreviewEnabled="True" IsDragTooltipEnabled="True" IsDropPreviewLineEnabled="True" 
+                                           DragStarted="RouteTreeView_DragStarted" PreviewDragEnded="RouteTreeView_PreviewDragEnded" Width="200">
+                        <!--SelectionChanged="RouteTreeView_SelectionChanged"-->
+                        <!--IsExpandOnDblClickEnabled="True" IsLoadOnDemandEnabled="False" AllowDrop="True" IsDropPreviewLineEnabled="True" -->
+                        <Controls2:RadTreeView.ItemTemplate>
+                            <Controls1:HierarchicalDataTemplate x:Name="RouteDestinationHolder" ItemsSource="{Binding Tasks}">
+                                <Controls1:HierarchicalDataTemplate.ItemTemplate>
+                                    <Controls1:HierarchicalDataTemplate>
+                                        <TextBlock Text="{Binding Name}" Width="150">
+                                        <!--MultiBinding to set the Opacity of the TextBlock which uses the RouteTasksOpacityConverter to determine if the task should be greyed out or not-->
+                                        <SLMultiBinding:BindingUtil.MultiBindings>
+                                            <SLMultiBinding:MultiBindings>
+                                                <SLMultiBinding:MultiBinding TargetProperty="Opacity" Converter="{StaticResource RouteTasksOpacityConverter}">
+                                                    <SLMultiBinding:BindingCollection>
+                                                        <Binding />
+                                                        <Binding Path="DataContext" Source="{StaticResource RoutesVMHolder}" />
+                                                        <Binding Path="DataContext.SelectedTypesBool" Source="{StaticResource RoutesVMHolder}" /> <!--For updates-->
+                                                    </SLMultiBinding:BindingCollection>
+                                                </SLMultiBinding:MultiBinding>
+                                            </SLMultiBinding:MultiBindings>
+                                        </SLMultiBinding:BindingUtil.MultiBindings>
+                                        </TextBlock>
+                                    </Controls1:HierarchicalDataTemplate>
+                                </Controls1:HierarchicalDataTemplate.ItemTemplate>
+                                <!--Bind the Background of the grid below to the color of the region where the destination is located-->
+                                <Grid Background="{Binding Location.Region.Color, Converter={StaticResource StringToColorConverter}}">
+                                    <SLMultiBinding:BindingUtil.MultiBindings>
+                                        <SLMultiBinding:MultiBindings>
+                                            <!--MultiBinding to set the Opacity of the TextBlock which uses the RouteDestinationsOpacityConverter to determine if the destination should be greyed out or not-->
+                                            <SLMultiBinding:MultiBinding TargetProperty="Opacity" Converter="{StaticResource RouteDestinationsOpacityConverter}">
+                                                <SLMultiBinding:BindingCollection>
+                                                    <Binding />
+                                                    <Binding Path="DataContext" Source="{StaticResource RoutesVMHolder}" />
+                                                    <Binding Path="DataContext.SelectedTypesBool" Source="{StaticResource RoutesVMHolder}" />
+                                                    <!--For updates-->
+                                                </SLMultiBinding:BindingCollection>
+                                            </SLMultiBinding:MultiBinding>
+                                        </SLMultiBinding:MultiBindings>
+                                    </SLMultiBinding:BindingUtil.MultiBindings>
+                                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Name}" Width="165"/>
+                                </Grid>
+                            </Controls1:HierarchicalDataTemplate>
+                        </Controls2:RadTreeView.ItemTemplate>
+                    </Controls2:RadTreeView>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+        <Grid>
+            <StackPanel x:Name="RoutesDragDropVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesDragDropVM"/>
+            <ListBox x:Name="RoutesListBox" ItemTemplate="{StaticResource RouteTemplate}" ItemsSource="{Binding DomainCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemContainerStyle="{StaticResource draggableItemStyle}"
+                 telerikDragDrop:RadDragAndDropManager.AllowDrag="True" Background="Transparent">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Background="Transparent"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ListBox>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

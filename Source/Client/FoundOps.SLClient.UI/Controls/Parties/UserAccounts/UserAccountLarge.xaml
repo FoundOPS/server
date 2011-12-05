@@ -1,0 +1,7 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountLarge"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" 
+             mc:Ignorable="d" d:DesignHeight="350" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="UserAccountsVM">
+    <UserAccounts:UserAccountEdit ISaveDiscardChangesCommands="{Binding}" Entity="{Binding SelectedEntity}"/>
+</UserControl>

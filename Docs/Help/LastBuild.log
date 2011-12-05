@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shfbBuild product="Sandcastle Help File Builder" version="1.9.3.0" projectFile="C:\FoundOps\Agile5\Docs\SLClient.shfbproj" started="9/7/2011 5:53:54 PM">
+<buildStep step="Initializing">
+</buildStep>
+<buildStep step="ClearWorkFolder">
+Clearing working folder...
+</buildStep>
+<buildStep step="FindingTools">
+Finding tools...
+Found Sandcastle tools in &#39;C:\Program Files (x86)\Sandcastle\&#39;
+Searching for HTML Help 1 compiler...
+Found HTML Help 1 compiler in &#39;C:\Program Files (x86)\HTML Help Workshop\&#39;
+</buildStep>
+<buildStep step="ValidatingDocumentationSources">
+Validating and copying documentation source information
+Source: C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\FoundOps.SLClient.Data.csproj
+    Found project &#39;C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\FoundOps.SLClient.Data.csproj&#39;
+
+Parsing project files
+    Found assembly &#39;C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\Bin\Debug\FoundOps.SLClient.Data.dll&#39;
+
+References to use:
+    EntityGraph.Silverlight
+    EntityTools
+    GalaSoft.MvvmLight.SL4
+    MEFedMVVM.SL
+    Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL
+    mscorlib
+    SLMultiBinding
+    system
+    System.ComponentModel.Composition, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL
+    System.ComponentModel.Composition.Initialization, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL
+    System.ComponentModel.DataAnnotations, Version=5.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL
+    System.Core
+    System.Net
+    System.Observable
+    System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL
+    System.Runtime.Serialization
+    System.ServiceModel
+    System.ServiceModel.DomainServices.Client, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL
+    System.ServiceModel.DomainServices.Client.Web, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL
+    System.ServiceModel.Web.Extensions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL
+    System.Windows, Version=5.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL
+    System.Windows.Browser
+    System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL
+    System.Windows.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL
+    System.Xml
+    Telerik.Windows.Controls
+    Telerik.Windows.Controls.Data
+    Telerik.Windows.Controls.DataVisualization
+    Telerik.Windows.Controls.DomainServices
+    Telerik.Windows.Controls.ScheduleView
+    Telerik.Windows.Data
+
+Copying XML comments files
+    C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data\Bin\Debug\FoundOps.SLClient.Data.XML -&gt; C:\FoundOps\Agile5\Docs\Help\Working\FoundOps.SLClient.Data.XML
+</buildStep>
+<buildStep step="GenerateSharedContent">
+Generating shared content files (en-US, English (United States))...
+    Last step completed in 00:00:00.0160
+</buildStep>
+<buildStep step="GenerateApiFilter">
+Generating API filter for MRefBuilder...
+    Last step completed in 00:00:00.0210
+</buildStep>
+<buildStep step="GenerateReflectionInfo">
+Generating reflection information...
+[C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe]
+C:\Program Files (x86)\MSBuild\Microsoft\Silverlight\v5.0\Microsoft.Silverlight.Common.targets(104,9): error : The Silverlight 4 SDK is not installed. [C:\FoundOps\Agile5\Docs\Help\Working\GenerateRefInfo.proj]
+    Last step completed in 00:00:00.1690
+</buildStep>
+<buildStep step="Failed">
+
+SHFB: Error BE0043: Unexpected error detected in last build step.  See output above for details.
+
+</buildStep>
+</shfbBuild>

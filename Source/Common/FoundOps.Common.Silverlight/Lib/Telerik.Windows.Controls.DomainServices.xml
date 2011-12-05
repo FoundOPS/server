@@ -1,0 +1,767 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.Windows.Controls.DomainServices</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.Windows.Controls.DomainServices.DomainServiceCollection`1">
+            <summary>
+            Represents a generic collection used to accomodate DomainContext entities.
+            Used as the source collection of QueryableDomainServiceCollection.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs">
+            <summary>
+            Event arguments for a completed submit operation.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs.#ctor(System.ServiceModel.DomainServices.Client.EntityChangeSet,System.Collections.Generic.IEnumerable{System.ServiceModel.DomainServices.Client.Entity},System.Exception,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs"/> class.
+            </summary>
+            <param name="changeSet">The set of all changed entities.</param>
+            <param name="entitiesInError">The list of entities that were in error.</param>
+            <param name="error">Exception for the submit operation if it failed.</param>
+            <param name="cancelled">true if the submit operation was canceled, false otherwise.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs.MarkErrorAsHandled">
+            <summary>
+            Marks the error as handled.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs.ChangeSet">
+            <summary>
+            Gets the set of all changed entities (added, deleted, modified).
+            </summary>
+            <value>The set of all changed entities.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs.EntitiesInError">
+            <summary>
+            Gets or sets the entities in error.
+            </summary>
+            <value>A collection of entities that are in error.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs.HasError">
+            <summary>
+            Gets a value indicating whether the operation has failed. If true, inspect the Error property for details.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs.IsErrorHandled">
+            <summary>
+            Gets or sets a value indicating whether the operation error has been marked as handled by calling <see cref="M:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs.MarkErrorAsHandled"/> method.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittingChangesEventArgs">
+            <summary>
+            Event arguments for an in progress submit operation.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittingChangesEventArgs.#ctor(System.ServiceModel.DomainServices.Client.EntityChangeSet)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittingChangesEventArgs"/> class.
+            </summary>
+            <param name="changeSet">The set of all changed entities.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittingChangesEventArgs.ChangeSet">
+            <summary>
+            Gets the set of all changed entities (added, deleted, modified).
+            </summary>
+            <value>The set of all changed entities.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.EntityQueryExtensions">
+            <summary> 
+            EntityQuery extension methods.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.EntityQueryExtensions.IncludeTotalCount``1(System.ServiceModel.DomainServices.Client.EntityQuery{``0},System.Boolean)">
+            <summary> 
+            Includes total count for an EntityQuery.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.EntityQueryExtensions.Where``1(System.ServiceModel.DomainServices.Client.EntityQuery{``0},Telerik.Windows.Data.FilterDescriptorCollection)">
+            <summary> 
+            Filters a EntityQuery using the specified filter descriptors.
+            
+            </summary>
+            <param name="source">The source.</param>
+            <param name="filterDescriptors">The filter descriptors.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.EntityQueryExtensions.Sort``1(System.ServiceModel.DomainServices.Client.EntityQuery{``0},Telerik.Windows.Data.SortDescriptorCollection)">
+            <summary>
+            Sorts a EntityQuery using the specified sort descriptors.
+            </summary>
+            <param name="source">A sequence of values to sort.</param>
+            <param name="sortDescriptors">The sort descriptors used for sorting.</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.EntityQueryInfo">
+            <summary>
+            Represent a structure holding all EntityQuery relevant information
+            used for comparing whether two queries are equivalent.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.EntityQueryPlaceholder`1">
+            <summary>
+            EntityQueryPlaceholder.
+            </summary>
+            <typeparam name="TEntity">The type of the data.</typeparam>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.EntityQueryPlaceholder`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.DomainServices.EntityQueryPlaceholder`1"/> class.
+            This constructor is called by the client to create the data source.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.EntityQueryPlaceholder`1.#ctor(System.Linq.IQueryProvider,System.Linq.Expressions.Expression)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.DomainServices.EntityQueryPlaceholder`1"/> class.
+            This constructor is called by Provider.CreateQuery().
+            </summary>
+            <param name="provider">The provider.</param>
+            <param name="expression">The expression.</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.EntityQueryPlaceholder`1.EntityQueryProvider">
+            <summary>
+            EntityQueryProvider.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.EntityQueryPlaceholder`1.EntityQueryBuilder">
+            <summary>
+            Translates an expression from its EntityQueryPlaceholder form to a EntityQuery form.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs">
+            <summary>
+            Provides data for the LoadedData event.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs.MarkErrorAsHandled">
+            <summary>
+            For a failed operation, marks the error as handled so the exception is not thrown.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs.AllEntities">
+            <summary>
+            Gets all the entities loaded, including any entities referenced by the top level entities.
+            </summary>
+            <value>The loaded entities, including entities referenced by top-level entities.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs.Entities">
+            <summary>
+            Gets all the top-level entities that were loaded.
+            </summary>
+            <value>The top-level entities that were loaded.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs.HasError">
+            <summary>
+            Gets a value indicating whether the operation has failed.
+            </summary>
+            <value><c>true</c> if the operation failed; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs.IsErrorHandled">
+            <summary>
+            Gets a value indicating whether the operation error has been marked as handled by calling the MarkErrorAsHandled method.
+            </summary>
+            <value>
+            	<c>true</c> if the error has been marked as handled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs.TotalEntityCount">
+            <summary>
+            Gets the total entity count for the load operation.
+            </summary>
+            <value>The total entity count for the load operation.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.LoadingDataEventArgs">
+            <summary>
+            Provides data for the LoadingData event.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.LoadingDataEventArgs.Query">
+            <summary>
+            Gets or sets the query that is executed remotely.
+            </summary>
+            <value>The query that is executed remotely.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.LoadingDataEventArgs.LoadBehavior">
+            <summary>
+            Gets or sets the load behavior applied to this load operation.
+            </summary>
+            <value>The load behavior applied to this load operation.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DomainServices.PreparedParameterValueEventArgs">
+            <summary>
+            Provides data for the PreparedParameterValue event.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.PreparedParameterValueEventArgs.Parameter">
+            <summary>
+            Gets the parameter.
+            </summary>
+            <value>The parameter.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.PreparedParameterValueEventArgs.PreparedValue">
+            <summary>
+            Gets or sets the prepared value.
+            </summary>
+            <value>The prepared value.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DomainServices.PreparedParameterValueEventArgs.Error">
+            <summary>
+            Gets a value indicating which error occurred during parameter value preparation.
+            </summary>
+            <value>An Exception instance, if an error occurred during a parameter value preparation; otherwise null.</value>
+        </member>
+        <member name="T:Telerik.Windows.Data.QueryableDomainServiceCollectionView`1">
+            <summary>
+            Represents a view for acessing and manipulationg strongly-typed data 
+            provided by a DomainContext.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+        </member>
+        <member name="T:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase">
+            <summary>
+            Represents a view for acessing and manipulationg a DomainContext.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.#ctor(System.ServiceModel.DomainServices.Client.DomainContext,System.Collections.IEnumerable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase"/> class.
+            </summary>
+            <param name="domainContext">The domain context.</param>
+            <param name="sourceCollection">The source collection.</param>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.Load">
+            <summary>
+            Initiates a Load operation if possible.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.Load(System.Boolean)">
+            <summary>
+            Initiates a Load operation if possible.
+            </summary>
+            <param name="forceLoad">true if load should be performed even if the new 
+            entity query is the same as the last successfully load one; otherwise, false. </param>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.CancelLoad">
+            <summary>
+            Cancels the current data loading operation, if any.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.SubmitChanges">
+            <summary>
+            Initiates a Submit operation if possible.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.CancelSubmit">
+            <summary>
+            Cancels the current submit operation if any.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.RejectChanges">
+            <summary>
+            Rejects all changes.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Raises the <see cref="E:Telerik.Windows.Data.QueryableCollectionView.PropertyChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.CompletePageMove(System.Int32)">
+            <summary>
+            Completes the page move.
+            </summary>
+            <param name="pageIndex">The index of the new page.</param>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.OnLoadingData(Telerik.Windows.Controls.DomainServices.LoadingDataEventArgs)">
+            <summary>
+            Raises the <see cref="E:LoadingData"/> event.
+            </summary>
+            <param name="args">The <see cref="T:Telerik.Windows.Controls.DomainServices.LoadingDataEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.OnLoadedData(Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs)">
+            <summary>
+            Raises the <see cref="E:LoadedData"/> event.
+            </summary>
+            <param name="args">The <see cref="T:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.OnSubmittingChanges(Telerik.Windows.Controls.DomainServices.DomainServiceSubmittingChangesEventArgs)">
+            <summary>
+            Raises <see cref="E:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.SubmittingChanges"/> event.
+            </summary>
+            <param name="args">The <see cref="T:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittingChangesEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.OnSubmittedChanges(Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs)">
+            <summary>
+            Raises <see cref="E:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.SubmittedChanges"/> event.
+            </summary>
+            <param name="submittedEventArgs">The <see cref="T:Telerik.Windows.Controls.DomainServices.DomainServiceSubmittedChangesEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="E:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.LoadingData">
+            <summary>
+            Occurs when a data loading operation is started.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.LoadedData">
+            <summary>
+            Occurs when a data loading operation is completed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.SubmittingChanges">
+            <summary>
+            Event raised whenever a submit operation is launched. 
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.SubmittedChanges">
+            <summary>
+            Event raised whenever a submit operation is completed. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.DomainContext">
+            <summary>
+            Gets or sets the <see cref="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.DomainContext"/> instance used for executing the load and submit operations.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.IsLoading">
+            <summary>
+            Gets a value that indicates whether this collection is currently performing a Load operation.
+            </summary>
+            <value>
+            	<c>true</c> if the collection is currently performing a Load operation; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.IsSubmittingChanges">
+            <summary>
+            Gets a value indicating whether the collection is currently performing a Submit operation.
+            </summary>
+            <value>
+            	<c>true</c> if the collection is currently performing a Submit operation; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.HasChanges">
+            <summary>
+            Gets a value indicating whether this collection has changes.
+            </summary>
+            <value>
+            	<c>true</c> if this instance has changes; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.CanLoad">
+            <summary>
+            Gets a value indicating whether a load operation could be performed based on the present state.
+            </summary>
+            <value><c>true</c> if this instance can load; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.IsBusy">
+            <summary>
+            Gets a value indicating whether this collection is loading or submitting data.
+            </summary>
+            <value><c>true</c> if this collection is loading or submitting; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.AutoLoad">
+            <summary>
+            Gets or sets a value indicating whether Load is automatically invoked when a change 
+            occurs that impacts the query.
+            </summary>
+            <value><c>true</c> if Load will automatically be invoked when a change occurs 
+            that impacts the query; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.CanChangePage">
+            <summary>
+            Completes move to page operation. Raises PageChanged event and refreshes the data view.
+            </summary>
+            <value></value>
+            <returns>
+            true if the <see cref="P:Telerik.Windows.Data.QueryableCollectionView.PageIndex"/> value can change; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionView`1.#ctor(System.ServiceModel.DomainServices.Client.DomainContext,System.ServiceModel.DomainServices.Client.EntityQuery{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Data.QueryableDomainServiceCollectionView`1"/> class.
+            </summary>
+            <param name="domainContext">The domain context.</param>
+            <param name="entityQuery">The entity query.</param>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionView`1.CreateView">
+            <summary>
+            Returns <see cref="T:System.Linq.IQueryable"/> with applied filtering, sorting, grouping and paging.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionView`1.LoadCore(System.ServiceModel.DomainServices.Client.EntityQuery,System.Int32)">
+            <summary>
+            Loads the data.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionView`1.System#Collections#Generic#IEnumerable{TEntity}#GetEnumerator">
+            <summary>
+            Gets the enumerator.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionView`1.EntityQuery">
+            <summary>
+            Gets the entity query.
+            </summary>
+            <value>The entity query.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.QueryParameter">
+            <summary>
+            Defines parameters for domain service queries used by RadDomainDataSource.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.QueryParameter.ParameterNameProperty">
+            <summary>
+            Identifies the ParameterName dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.QueryParameter.ValueProperty">
+            <summary>
+            Identifies the Value dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.QueryParameter.OnPropertyChanged(System.String)">
+            <summary>
+            Raises this object's <see cref="E:Telerik.Windows.Controls.QueryParameter.PropertyChanged"/> event.
+            </summary>
+            <param name="propertyName">The property that has a new value.</param>
+        </member>
+        <member name="E:Telerik.Windows.Controls.QueryParameter.PropertyChanged">
+            <summary>
+            Raised when a property on this object has a new value.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.QueryParameter.ParameterName">
+            <summary>
+            Gets or sets the name of the query parameter.
+            </summary>
+            <value>The name of the query parameter.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.QueryParameter.Value">
+            <summary>
+            Gets or sets the value.
+            </summary>
+            <value>The value.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.QueryParameterCollection">
+            <summary>
+            Represents a collection of <see cref="T:Telerik.Windows.Controls.QueryParameter"/> objects.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.QueryParameterCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.QueryParameterCollection"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.QueryParameterCollection.OnItemChanged(Telerik.Windows.Data.ItemChangedEventArgs{Telerik.Windows.Controls.QueryParameter})">
+            <summary>
+            Raises the <see cref="E:Telerik.Windows.Controls.QueryParameterCollection.ItemChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:Telerik.Windows.Data.ItemChangedEventArgs`1"/> instance containing the event data.</param>
+        </member>
+        <member name="E:Telerik.Windows.Controls.QueryParameterCollection.ItemChanged">
+            <summary>
+            Raised when some collection item's property is changed.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RadDomainDataSource">
+            <summary>
+            Provides an object for loading, filtering, grouping, and sorting data collections.
+            </summary>
+            <remarks>
+            Use this component to simplify the interaction between the user interface and data from a DomainContext. 
+            After specifying a DomainContext and QueryName, the RadDomainDataSource can load data and expose it through the Data and DataView properties.
+            This component also provides codeless integration between other Telerik data controls like RadGridView, RadDataPager and RadDataFilter.
+            </remarks>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.AutoLoadProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.AutoLoad"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.LoadDelayProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.LoadDelay"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.CanLoadProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.CanLoad"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.PageSizeProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.PageSize"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.HasChangesProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.HasChanges"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.IsLoadingDataProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.IsLoadingData"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.IsSubmittingChangesProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.IsSubmittingChanges"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.IsBusyProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.IsBusy"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.DomainContextProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.DomainContext"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.QueryNameProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.QueryName"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDomainDataSource.QueryParametersProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.QueryParameters"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadDomainDataSource"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.BeginInit">
+            <summary>
+            Starts the initialization process for this element.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.EndInit">
+            <summary>
+            Indicates that the initialization process for the element is complete.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            	EndInit was called without BeginInit having previously been called on the element.
+            </exception>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.Load">
+            <summary>
+            Initiates a Load operation if possible.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.CancelLoad">
+            <summary>
+            Cancels the current load operation if any.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.SubmitChanges">
+            <summary>
+            Initiates a Submit operation if possible.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.CancelSubmit">
+            <summary>
+            Cancels the current submit operation if any.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.RejectChanges">
+            <summary>
+            Rejects all changes.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.OnLoadingData(Telerik.Windows.Controls.DomainServices.LoadingDataEventArgs)">
+            <summary>
+            Raises the <see cref="E:LoadingData"/> event.
+            </summary>
+            <param name="args">The <see cref="T:Telerik.Windows.Controls.DomainServices.LoadingDataEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.OnLoadedData(Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs)">
+            <summary>
+            Raises the <see cref="E:LoadedData"/> event.
+            </summary>
+            <param name="args">The <see cref="T:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.OnPreparedParameterValue(Telerik.Windows.Controls.DomainServices.PreparedParameterValueEventArgs)">
+            <summary>
+            Raises the <see cref="E:PreparedParameterValue"/> event.
+            </summary>
+            <param name="args">The <see cref="T:Telerik.Windows.Controls.DomainServices.PreparedParameterValueEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDomainDataSource.ParametersAreEquivalent(System.Reflection.MethodInfo,Telerik.Windows.Controls.QueryParameterCollection)">
+            <summary>
+            Determines whether the parameters of the method match those in the queryParameters
+            collection. The order is not important -- only the names and types are.
+            </summary>
+            <param name="method">The method.</param>
+            <param name="queryParameters">The query parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.AutoLoad">
+            <summary>
+            Gets or sets a value indicating whether Load is automatically invoked when a change occurs that impacts the query composed by the domain data source.
+            </summary>
+            <value><c>true</c> if the domain data source is will automatically invoke Load when a change occurs that impacts the query composed by the domain data source; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.LoadDelay">
+            <summary>
+            Gets or sets the delay before an automatic data loading operation is started. 
+            </summary>
+            <value>The delay before an automatic data loading operation is started.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.CanLoad">
+            <summary>
+            Gets a value indicating whether the control can perform a load operation based on the present state.
+            </summary>
+            <value><c>true</c> if this instance can load data; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.PageSize">
+            <summary>
+            Gets or sets the number of items displayed on each page of the view returned from Data, or 0 to disable paging. 
+            A non-zero page size will cause the number of entities loaded with each Load operation to be limited as well, using server-side paging.
+            </summary>
+            <value>The size of the page.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.HasChanges">
+            <summary>
+            Gets a value indicating whether the <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.DomainContext"/> currently has any entities with pending changes.
+            </summary>
+            <value>
+            	<c>true</c> if <see cref="P:Telerik.Windows.Controls.RadDomainDataSource.DomainContext"/> has changes; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.IsLoadingData">
+            <summary>
+            Gets a value indicating whether <see cref="T:Telerik.Windows.Controls.RadDomainDataSource"/> is currently loading data.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is loading data; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.IsSubmittingChanges">
+            <summary>
+            Gets a value indicating whether <see cref="T:Telerik.Windows.Controls.RadDomainDataSource"/> is currently submitting changes as a result of a call to <see cref="M:Telerik.Windows.Controls.RadDomainDataSource.SubmitChanges"/>.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is submitting changes; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.IsBusy">
+            <summary>
+            Gets or sets a value indicating whether the domain data source is busy (loading or submitting).
+            </summary>
+            <value><c>true</c> if the domain data source is busy; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.DomainContext">
+            <summary>
+            Gets or sets the DomainContext instance used for executing the load and submit operations.
+            </summary>
+            <value>The domain context.</value>
+            <remarks>
+            This is a dependency property.
+            </remarks>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.QueryName">
+            <summary>
+            Gets or sets the name of the query to use for loading.
+            </summary>
+            <value>The name of the query to use for loading data.</value>
+            <remarks>
+            The DomainContext will be searched for a method that returns an 
+            EntityQuery, with a name that matches the name provided to 
+            QueryName. The matched name can be with or without a "Query" suffix.
+            </remarks>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.QueryParameters">
+            <summary>
+            Gets the collection of <see cref="T:Telerik.Windows.Controls.QueryParameter"/> objects representing arguments 
+            of the EntityQuery method specified by the QueryName property.
+            </summary>
+            <value>The query parameters.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.FilterDescriptors">
+            <summary>
+            Gets the filter descriptors used for filtering operations.
+            </summary>
+            <value>The filter descriptors.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.SortDescriptors">
+            <summary>
+            Gets the sort descriptors used for sorting operations.
+            </summary>
+            <value>The filter descriptors.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.GroupDescriptors">
+            <summary>
+            Gets the sort descriptors used for sorting operations.
+            </summary>
+            <value>The filter descriptors.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.LoadCommand">
+            <summary>
+            Gets the command for loading data.
+            </summary>
+            <value>The command for loading data.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.CancelLoadCommand">
+            <summary>
+            Gets the command for cancelling load.
+            </summary>
+            <value>The command for cancelling load.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.SubmitChangesCommand">
+            <summary>
+            Gets the command for submitting changes.
+            </summary>
+            <value>The command for submitting changes.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.CancelSubmitCommand">
+            <summary>
+            Gets the command for cancelling submit.
+            </summary>
+            <value>The command for cancelling submit.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.RejectChangesCommand">
+            <summary>
+            Gets the command for rejecting changes.
+            </summary>
+            <value>The command for rejecting changes.</value>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadDomainDataSource.SubmittingChanges">
+            <summary>
+            Event raised whenever a submit operation is launched. 
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadDomainDataSource.SubmittedChanges">
+            <summary>
+            Event raised whenever a submit operation is completed. 
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadDomainDataSource.LoadingData">
+            <summary>
+            Occurs when a data loading operation is started.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadDomainDataSource.LoadedData">
+            <summary>
+            Occurs when a data loading operation is completed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadDomainDataSource.PreparedParameterValue">
+            <summary>
+            Occurs when a query parameter's value is prepared for building the query.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDomainDataSource.DataView">
+            <summary>
+            Gets the current view of entities resulting from the last load operation, 
+            using a <see cref="T:Telerik.Windows.Data.DataItemCollection"/>.
+            </summary>
+            <value>The current view of entities resulting from the last load operation.</value>
+        </member>
+    </members>
+</doc>

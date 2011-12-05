@@ -1,0 +1,41 @@
+﻿<sdk:Page x:Class="FoundOps.SLClient.Navigator.Panes.CompanyHome" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+          mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="600">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock FontSize="26" FontWeight="Bold" Foreground="#333335">
+                Latest Updates
+            </TextBlock>
+            <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
+                (12/07/2011)
+            </TextBlock>
+        </StackPanel>
+        <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * Ability to add an image to user accounts, business accounts, and employees.<LineBreak/>
+            * Added the day of the week to service occurences.<LineBreak/>
+            * Bug fixes.<LineBreak/>
+            * <LineBreak/>
+            <LineBreak/>
+            (11/10/2011)<LineBreak/>
+            * Added Latest Updates screen.<LineBreak/>
+            * Increased stability.<LineBreak/>
+            * Ability to filter routes by service and region, with service and region counts.<LineBreak/>
+            * Added street map view to locations.<LineBreak/>
+            * Locations and Regions start alphabetically organized.<LineBreak/>
+            * Added route destination details to dispatcher.<LineBreak/>
+            * Added schedule descriptions.<LineBreak/>
+            * Added vehicles and employees to route log.<LineBreak/>
+            * The dispatcher and manifests remember your last settings.<LineBreak/>
+            * Ability to reset the dispatcher layout back to the default.<LineBreak/>            
+            * Reduced Saved, Discard, and Cancel prompts.<LineBreak/>
+            * Business and user settings.<LineBreak/>
+            * Adding locations to clients is now a little easier.<LineBreak/>
+            * Many bug fixes.<LineBreak/>
+        </TextBlock>
+    </Grid>
+</sdk:Page>

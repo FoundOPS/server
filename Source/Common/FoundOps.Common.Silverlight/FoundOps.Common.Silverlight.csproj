@@ -1,0 +1,475 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{14ADDE30-D51B-4A1C-A855-D556431FDA0A}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FoundOps.Common.Silverlight</RootNamespace>
+    <AssemblyName>FoundOps.Common.Silverlight</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>FoundOps.Common.Silverlight.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>FoundOps.Common.Silverlight.App</SilverlightAppEntry>
+    <TestPageFileName>FoundOps.Common.SilverlightTestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>false</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject>
+    </LinkedServerProject>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.1.10405.0</ExpressionBlendVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityGraph.Silverlight">
+      <HintPath>..\Lib\EntityGraph.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.SL4">
+      <HintPath>..\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\Microsoft.CSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MEFedMVVM.1.2\lib\sl40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="SLaB.Utilities">
+      <HintPath>..\Lib\SLaB.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="SLaB.Utilities.Xaml">
+      <HintPath>..\Lib\SLaB.Utilities.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.Composition.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition.Initialization">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.Composition.Initialization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.ServiceModel.DomainServices.Client">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Windows.Controls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Navigation">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Windows.Controls.Navigation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Toolkit">
+      <HintPath>..\Lib\System.Windows.Controls.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Toolkit.Internals">
+      <HintPath>..\Lib\System.Windows.Controls.Toolkit.Internals.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="mscorlib">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SLMultiBinding">
+      <HintPath>..\Lib\SLMultiBinding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="system">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\MEFedMVVM.1.2\lib\sl40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Browser">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Xml.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls, Version=2011.1.315.1040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls.DataVisualization, Version=2011.1.315.1040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interfaces\IRaiseValidationErrors.cs" />
+    <Compile Include="Interfaces\IReject.cs" />
+    <Compile Include="Interfaces\IRequireViewModel.cs" />
+    <Compile Include="Models\Collections\OrderedEntityCollection.cs" />
+    <Compile Include="Models\Collections\RBTree.cs" />
+    <Compile Include="Models\Collections\SortedSet.cs" />
+    <Compile Include="Models\Collections\ThreadableObservableCollection.cs" />
+    <Compile Include="Models\SmartDispatcher.cs" />
+    <Compile Include="Models\ThreadableNotifiableObject.cs" />
+    <Compile Include="Loader\ContentLoaderBase.cs" />
+    <Compile Include="Loader\ContentLoaderBaseAsyncResult.cs" />
+    <Compile Include="Loader\ExportPageAttribute.cs" />
+    <Compile Include="Loader\IExportPageMetadata.cs" />
+    <Compile Include="Loader\LoaderBase.cs" />
+    <Compile Include="Loader\MEFBlockLoader.cs" />
+    <Compile Include="Loader\AggregateCatalogService.cs" />
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DataTable\DataColumn.cs" />
+    <Compile Include="Models\DataTable\DataRow.cs" />
+    <Compile Include="Models\DataTable\DataTable.cs" />
+    <Compile Include="Models\Import\ImportColumn.cs" />
+    <Compile Include="Models\Import\ImportColumnType.cs" />
+    <Compile Include="Models\Import\ValueWithOptionalAssociation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DesignDataService.cs" />
+    <Compile Include="Services\DesignLoader.cs" />
+    <Compile Include="Services\DomainCollectionViewFactory.cs" />
+    <Compile Include="Services\DomainContextDataService.cs" />
+    <Compile Include="Services\Interfaces\IDataService.cs" />
+    <Compile Include="Services\Interfaces\ISaveChanges.cs" />
+    <Compile Include="Tools\DynamicTools.cs" />
+    <Compile Include="Tools\ExtensionMethods\CollectionExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\DependencyObjectExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\DomainCollectionViewExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\ItemsControlExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\Rxx3.cs" />
+    <Compile Include="Tools\ExtensionMethods\ValidationExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\VisualTreeExtensions.cs" />
+    <Compile Include="Tools\FileManager.cs" />
+    <Compile Include="Tools\Location\MapTools.cs" />
+    <Compile Include="Tools\Location\StateUtilities.cs" />
+    <Compile Include="Tools\Location\YahooMapsProvider.cs" />
+    <Compile Include="Tools\Location\YahooMapsSource.cs" />
+    <Compile Include="Tools\StopWatch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Cancel.png" />
+    <Resource Include="Resources\Delete.png" />
+    <Resource Include="Resources\ImageToBeBound.png" />
+    <Resource Include="Resources\New.png" />
+    <Resource Include="Resources\noimageavailable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\gotgreaselogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\RightArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\LeftArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AutoAssign.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Truck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Key.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Add.png" />
+    <Resource Include="Resources\MinusDelete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\UndoRed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\GoFirst.png" />
+    <Resource Include="Resources\GoLast.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FoundOps.Common\FoundOps.Common.csproj">
+      <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
+      <Name>FoundOps.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj">
+      <Project>{BB748726-9C39-4FDA-8B02-9CC12CD9D34D}</Project>
+      <Name>FoundOps.Common.Silverlight.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\Croll.Silverlight.Controls.dll" />
+    <Content Include="Lib\Croll.Silverlight.Controls.pdb" />
+    <Content Include="Lib\DataValidationFramework.Silverlight.dll" />
+    <Content Include="Lib\DataValidationFramework.Silverlight.pdb" />
+    <Content Include="Lib\EntityGraph.Silverlight.dll" />
+    <Content Include="Lib\EntityGraph.Silverlight.pdb" />
+    <Content Include="Lib\EntityGraph.Silverlight.XML" />
+    <Content Include="Lib\EntityTools.dll" />
+    <Content Include="Lib\EntityTools.pdb" />
+    <Content Include="Lib\GalaSoft.MvvmLight.SL4.dll" />
+    <Content Include="Lib\Kent.Boogaart.HelperTrinity.dll" />
+    <Content Include="Lib\Kent.Boogaart.HelperTrinity.pdb" />
+    <Content Include="Lib\Kent.Boogaart.HelperTrinity.xml" />
+    <Content Include="Lib\Kent.Boogaart.KBCsv.dll" />
+    <Content Include="Lib\Kent.Boogaart.KBCsv.pdb" />
+    <Content Include="Lib\MEFedMVVM.SL.dll" />
+    <Content Include="Lib\MEFedMVVM.SL.pdb" />
+    <Content Include="Lib\MEFedMVVM.ValidationsExtensions.SL.dll" />
+    <Content Include="Lib\MEFedMVVM.ValidationsExtensions.SL.pdb" />
+    <Content Include="Lib\Microsoft.Expression.Drawing.dll" />
+    <Content Include="Lib\Microsoft.Expression.Drawing.xml" />
+    <Content Include="Lib\Microsoft.Expression.Effects.dll" />
+    <Content Include="Lib\Microsoft.Expression.Effects.xml" />
+    <Content Include="Lib\Microsoft.Expression.Interactions.dll" />
+    <Content Include="Lib\Microsoft.Expression.Interactions.xml" />
+    <Content Include="Lib\Microsoft.Expression.Prototyping.Interactivity.dll" />
+    <Content Include="Lib\Rxx.Contracts.dll" />
+    <Content Include="Lib\Rxx.dll" />
+    <Content Include="Lib\Rxx.XML" />
+    <Content Include="Lib\SilverlightAnalytics.dll" />
+    <Content Include="Lib\SLaB.Printing.Controls.dll" />
+    <Content Include="Lib\SLaB.Printing.Controls.extmap.xml" />
+    <Content Include="Lib\SLaB.Printing.Controls.pdb" />
+    <Content Include="Lib\SLaB.Printing.Controls.XML" />
+    <Content Include="Lib\SLaB.Utilities.dll" />
+    <Content Include="Lib\SLaB.Utilities.extmap.xml" />
+    <Content Include="Lib\SLaB.Utilities.pdb" />
+    <Content Include="Lib\SLaB.Utilities.Xaml.dll" />
+    <Content Include="Lib\SLaB.Utilities.Xaml.extmap.xml" />
+    <Content Include="Lib\SLaB.Utilities.Xaml.pdb" />
+    <Content Include="Lib\SLMultiBinding.dll" />
+    <Content Include="Lib\SLMultiBinding.pdb" />
+    <Content Include="Lib\System.Reactive.dll" />
+    <Content Include="Lib\System.Reactive.Windows.Threading.dll" />
+    <Content Include="Lib\System.Reactive.Windows.Threading.xml" />
+    <Content Include="Lib\System.ServiceModel.DomainServices.Client.dll" />
+    <Content Include="Lib\System.ServiceModel.DomainServices.Client.extmap.xml" />
+    <Content Include="Lib\System.ServiceModel.DomainServices.Client.Web.dll" />
+    <Content Include="Lib\System.ServiceModel.DomainServices.Client.Web.extmap.xml" />
+    <Content Include="Lib\System.ServiceModel.DomainServices.Client.Web.xml" />
+    <Content Include="Lib\System.ServiceModel.DomainServices.Client.xml" />
+    <Content Include="Lib\System.Windows.Controls.Data.Input.dll" />
+    <Content Include="Lib\System.Windows.Controls.DomainServices.dll" />
+    <Content Include="Lib\System.Windows.Controls.DomainServices.extmap.xml" />
+    <Content Include="Lib\System.Windows.Controls.DomainServices.xml" />
+    <Content Include="Lib\System.Windows.Controls.Input.Toolkit.dll" />
+    <Content Include="Lib\System.Windows.Controls.Toolkit.dll" />
+    <Content Include="Lib\System.Windows.Controls.Toolkit.Internals.dll" />
+    <Content Include="Lib\System.Windows.Controls.Toolkit.pdb" />
+    <Content Include="Lib\System.Windows.Interactivity.dll" />
+    <Content Include="Lib\System.Windows.Interactivity.xml" />
+    <Content Include="Lib\Telerik.Silverlight.Controls.Test.Common.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Charting.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Charting.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Charting.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.Charting.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Data.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Data.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Data.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.Data.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.DataVisualization.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.DataVisualization.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.DataVisualization.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.DataVisualization.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Docking.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Docking.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Docking.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.Docking.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.DomainServices.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.DomainServices.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.DomainServices.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.DomainServices.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Editor.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Editor.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Editor.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.Editor.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Expressions.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Expressions.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Expressions.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.Expressions.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Gauge.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Gauge.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Gauge.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.Gauge.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.GridView.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.GridView.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.GridView.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.GridView.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Input.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Input.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Input.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.Input.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.MediaPlayer.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.MediaPlayer.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.MediaPlayer.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.MediaPlayer.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Navigation.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Navigation.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Navigation.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.Navigation.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.RibbonBar.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.RibbonBar.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.RibbonBar.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.RibbonBar.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.RichTextBoxUI.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.RichTextBoxUI.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.RichTextBoxUI.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.RichTextBoxUI.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Scheduler.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.Scheduler.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.Scheduler.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.Scheduler.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.ScheduleView.dll" />
+    <Content Include="Lib\Telerik.Windows.Controls.ScheduleView.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.ScheduleView.pdb" />
+    <Content Include="Lib\Telerik.Windows.Controls.ScheduleView.xml" />
+    <Content Include="Lib\Telerik.Windows.Controls.xml" />
+    <Content Include="Lib\Telerik.Windows.Data.dll" />
+    <Content Include="Lib\Telerik.Windows.Data.extmap.xml" />
+    <Content Include="Lib\Telerik.Windows.Data.pdb" />
+    <Content Include="Lib\Telerik.Windows.Data.xml" />
+    <Resource Include="Resources\reset.png" />
+    <Resource Include="Resources\WebsiteSymbol.png" />
+    <Resource Include="Resources\EmailSymbol.png" />
+    <Resource Include="Resources\PhoneSymbol.png" />
+    <Resource Include="Resources\FaxSymbol.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

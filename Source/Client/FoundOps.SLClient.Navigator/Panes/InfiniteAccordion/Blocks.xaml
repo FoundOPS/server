@@ -1,0 +1,481 @@
+﻿<UserControl x:Class="FoundOps.SLClient.Navigator.Panes.InfiniteAccordion.Blocks" x:Name="myBlocks"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Locations="clr-namespace:FoundOps.Framework.Views.Controls.Locations;assembly=FoundOps.SLClient.UI"
+             xmlns:InfiniteAccordion="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Vehicles="clr-namespace:FoundOps.Framework.Views.Controls.Vehicles;assembly=FoundOps.SLClient.UI" xmlns:Maintenance="clr-namespace:FoundOps.Framework.Views.Controls.Vehicles.Maintenance;assembly=FoundOps.SLClient.UI"
+             xmlns:Employees="clr-namespace:FoundOps.Framework.Views.Controls.Employees;assembly=FoundOps.SLClient.UI" xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices;assembly=FoundOps.SLClient.UI"
+             xmlns:EmployeeHistory="clr-namespace:FoundOps.Framework.Views.Controls.Employees.EmployeeHistory;assembly=FoundOps.SLClient.UI"
+             xmlns:Regions="clr-namespace:FoundOps.Framework.Views.Controls.Regions;assembly=FoundOps.SLClient.UI" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
+             xmlns:BusinessAccounts="clr-namespace:FoundOps.Framework.Views.Controls.Parties.BusinessAccounts;assembly=FoundOps.SLClient.UI" xmlns:my="clr-namespace:FoundOps.Framework.Views.Controls.Services;assembly=FoundOps.SLClient.UI"
+             xmlns:Contacts="clr-namespace:FoundOps.Framework.Views.Controls.Contacts;assembly=FoundOps.SLClient.UI" xmlns:Locations1="clr-namespace:FoundOps.SLClient.UI.Controls.Locations;assembly=FoundOps.SLClient.UI"
+             xmlns:Regions1="clr-namespace:FoundOps.SLClient.UI.Controls.Regions;assembly=FoundOps.SLClient.UI" xmlns:Clients1="clr-namespace:FoundOps.SLClient.UI.Controls.Clients;assembly=FoundOps.SLClient.UI"
+             xmlns:Contacts1="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts;assembly=FoundOps.SLClient.UI" xmlns:Employees1="clr-namespace:FoundOps.SLClient.UI.Controls.Employees;assembly=FoundOps.SLClient.UI"
+             xmlns:RecurringServices1="clr-namespace:FoundOps.SLClient.UI.Controls.Services.RecurringServices;assembly=FoundOps.SLClient.UI" xmlns:Vehicles1="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles;assembly=FoundOps.SLClient.UI"
+             xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services;assembly=FoundOps.SLClient.UI" xmlns:EmployeeHistory1="clr-namespace:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory;assembly=FoundOps.SLClient.UI" 
+             xmlns:ServiceTemplate1="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate;assembly=FoundOps.SLClient.UI" xmlns:Maintenance1="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles.Maintenance;assembly=FoundOps.SLClient.UI"  
+             xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" 
+             xmlns:Tools="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
+             xmlns:AdministrativeConsole="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts;assembly=FoundOps.SLClient.UI"
+             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts;assembly=FoundOps.SLClient.UI">
+    <UserControl.Resources>
+        <Converters:ServiceTemplatesAddDeleteModeConverter x:Key="ServiceTemplatesAddDeleteModeConverter"/>
+        <StackPanel x:Key="ServiceTemplatesHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ServiceTemplatesVM"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <InfiniteAccordion:InfiniteAccordionView x:Name="LayoutRoot" Grid.Row="1">
+            <InfiniteAccordion:InfiniteAccordionView.ObjectTypeDisplayControls>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.BusinessAccount">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource PermissionBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=BusinessAccountsGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Business Accounts" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness}" />
+                                </Grid>
+                            </Border>
+                            <AdministrativeConsole:BusinessAccountsGrid x:Name="BusinessAccountsGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <BusinessAccounts:BusinessAccountLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <BusinessAccounts:BusinessAccountSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Client">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource ClientBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=ClientsGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Clients" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness}" />
+                                </Grid>
+                            </Border>
+                            <Clients1:ClientsGrid x:Name="ClientsGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <Clients1:ClientLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <Clients1:ClientSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Contact">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource EmployeeBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=ContactsGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Contacts" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness}" />
+                                </Grid>
+                            </Border>
+                            <Contacts1:ContactsGrid x:Name="ContactsGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <Contacts:ContactLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <Contacts:ContactSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Employee">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource EmployeeBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=EmployeesGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Employees" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedEmployeeOwnedBusinessVM.SelectedBusiness}" />
+                                </Grid>
+                            </Border>
+                            <Employees1:EmployeesGrid x:Name="EmployeesGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <Employees:EmployeeLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <Employees:EmployeeSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.EmployeeHistoryEntry">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource EmployeeBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=EmployeeHistoryGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Employee History" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedEmployeeOwnedBusinessVM.SelectedBusiness}" />
+                                </Grid>
+                            </Border>
+                            <EmployeeHistory1:EmployeeHistoryGrid x:Name="EmployeeHistoryGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <EmployeeHistory:EmployeeHistoryLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <EmployeeHistory:EmployeeHistorySmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Location">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <!--Use grid to limit height of RadGridView so scroller will work-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource LocationBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=LocationsGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Locations" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedLocationVM.SelectedLocation}" />
+                                </Grid>
+                            </Border>
+                            <Locations1:LocationsGrid x:Name="LocationsGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <Locations:LocationLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <Locations1:LocationSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Region">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <!--Use grid to limit height of RadGridView so scroller will work-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource LocationBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=RegionsGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Regions" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedEntity}" />
+                                </Grid>
+                            </Border>
+                            <Regions1:RegionsGrid x:Name="RegionsGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <Regions1:RegionLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <Regions:RegionSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.RecurringService">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <!--Use grid to limit height of RadGridView so scroller will work-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource ServiceBrush}" BorderBrush="{StaticResource ServiceBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=RecurringServicesGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Recurring Services" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding DataContext.ServiceTemplatesForClient, Source={StaticResource ServiceTemplatesHolder}}">
+                                        <AddEditDelete:AddDelete.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </AddEditDelete:AddDelete.ItemTemplate>
+                                    </AddEditDelete:AddDelete>
+                                </Grid>
+                            </Border>
+                            <RecurringServices1:RecurringServicesGrid x:Name="RecurringServicesGrid" Grid.Row="1" IsMainGrid="True" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <RecurringServices1:RecurringServiceLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <RecurringServices:RecurringServiceSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Service">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <!--Use grid to limit height of RadGridView so scroller will work-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource ServiceBrush}" BorderBrush="{StaticResource ServiceBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=ServicesGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Services" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding DataContext.ServiceTemplatesForServiceProvider, Source={StaticResource ServiceTemplatesHolder}}">
+                                        <AddEditDelete:AddDelete.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </AddEditDelete:AddDelete.ItemTemplate>
+                                    </AddEditDelete:AddDelete>
+                                </Grid>
+                            </Border>
+                            <Services:ServicesGrid x:Name="ServicesGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <my:ServiceLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <my:ServiceSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.ServiceTemplate" ViewModelLocator:ViewModelLocator.SharedViewModel="ServiceTemplatesVM">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <!--Use grid to limit height of RadGridView so scroller will work-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource ServiceBrush}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Service Templates" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <!--AddDeleteMode within FoundOPS context: AddDelete, all other serviceproviders: AddItemDelete  -->
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding DataContext.AddCommand, Source={StaticResource ServiceTemplatesHolder}}"
+                                                             AddItemCommand="{Binding DataContext.AddCommand, Source={StaticResource ServiceTemplatesHolder}}" 
+                                                             DeleteCommand="{Binding DataContext.DeleteCommand, Source={StaticResource ServiceTemplatesHolder}}"
+                                                             CommandParameter="{Binding DataContext.SelectedEntity, Source={StaticResource ServiceTemplatesHolder}}" 
+                                                             ItemsSource="{Binding DataContext.AdditionalServiceTemplatesForServiceProvider, Source={StaticResource ServiceTemplatesHolder}}"
+                                                             AddDeleteMode="{Tools:GetContextObservableValue Converter={StaticResource ServiceTemplatesAddDeleteModeConverter}, 
+                                        ContextType=CoreEntities1:BusinessAccount, ContextManager={Binding DataContext.ContextManager, Source={StaticResource ServiceTemplatesHolder}}}">
+                                        <AddEditDelete:AddDelete.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </AddEditDelete:AddDelete.ItemTemplate>
+                                    </AddEditDelete:AddDelete>
+                                </Grid>
+                            </Border>
+                            <ServiceTemplate1:ServiceTemplatesGrid x:Name="ServiceTemplatesGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <ServiceTemplate1:ServiceTemplateLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <ServiceTemplate1:ServiceTemplateLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.UserAccount">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource PermissionBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=UserAccountsGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="User Accounts" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" />
+                                </Grid>
+                            </Border>
+                            <UserAccounts:UserAccountsGrid x:Name="UserAccountsGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <UserAccounts:UserAccountLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Vehicle">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <!--Use grid to limit height of RadGridView so scroller will work-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource VehiclesBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=VehiclesGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Vehicles" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedEntity}" />
+                                </Grid>
+                            </Border>
+                            <Vehicles1:VehiclesGrid x:Name="VehiclesGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <Vehicles1:VehicleLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <Vehicles:VehicleSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.VehicleMaintenanceLogEntry">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <!--Use grid to limit height of RadGridView so scroller will work-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource VehiclesBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=MaintenanceGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Vehicle Maintenance" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedEntity}" />
+                                </Grid>
+                            </Border>
+                            <Maintenance1:MaintenanceGrid x:Name="MaintenanceGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <Maintenance:MaintenanceLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <Maintenance:MaintenanceSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
+            </InfiniteAccordion:InfiniteAccordionView.ObjectTypeDisplayControls>
+            <InfiniteAccordion:InfiniteAccordionView.ContextBorderControls>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.BusinessAccount" BorderBrush="{StaticResource PermissionBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Client" BorderBrush="{StaticResource ClientBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Text="{Binding OwnedParty.DisplayName}" Foreground="White"/>
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Employee" BorderBrush="{StaticResource VehiclesBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Margin="5,0" Text="{Binding OwnedPerson.DisplayName}" Foreground="White" />
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Location" BorderBrush="{StaticResource LocationBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Text="{Binding Name}" Foreground="White" />
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Region" BorderBrush="{StaticResource LocationBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Text="{Binding Name}" Foreground="White" />
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Service" BorderBrush="{StaticResource ServiceBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding AccountToService.DisplayName}" Foreground="White" />
+                            <TextBlock Margin="5,0" Text="{Binding ServiceTemplate.Name}" Foreground="White" />
+                        </StackPanel>
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.ServiceTemplate" BorderBrush="{StaticResource ServiceBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Text="{Binding Name}" Foreground="White" Margin="5,0" />
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.RecurringService" BorderBrush="{StaticResource ServiceBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Margin="5,0" Text="{Binding ServiceTemplate.Name}" Foreground="White" />
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.UserAccount" BorderBrush="{StaticResource PermissionBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Vehicle" BorderBrush="{StaticResource VehiclesBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Margin="5,0" Text="{Binding VehicleId}" Foreground="White" />
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+            </InfiniteAccordion:InfiniteAccordionView.ContextBorderControls>
+        </InfiniteAccordion:InfiniteAccordionView>
+    </Grid>
+</UserControl>

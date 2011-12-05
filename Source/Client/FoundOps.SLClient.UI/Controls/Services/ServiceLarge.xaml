@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.Services.ServiceLarge" x:Name="myServiceLarge"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
+             xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields"
+             xmlns:my3="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM">
+    <!--Use grid to allow scrollviewer to work-->
+    <Grid x:Name="LayoutRoot" Background="White"
+            Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Background="{StaticResource ServiceBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="5,3" >
+                    <TextBlock Text="Service - " FontSize="13" Foreground="White"/>
+                    <TextBlock Text="{Binding SelectedEntity.ServiceTemplate.Name}" FontSize="13" Foreground="White"/>
+                </StackPanel>
+                <SaveDiscardCancel:SaveCancel Grid.Column="1" ISaveDiscardChangesCommands="{Binding DataContext, ElementName=myServiceLarge}"/>
+            </Grid>
+        </Border>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel>
+                <toolkit:Expander Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ServiceBrush}" Margin="5">
+                    <toolkit:Expander.Header>
+                        <TextBlock TextWrapping="Wrap" Text="Details" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
+                    </toolkit:Expander.Header>
+                    <StackPanel>
+                        <Grid Margin="0,5" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Date:" Grid.Row="1" Foreground="Black" HorizontalAlignment="Right" Margin="0,2,0,0"/>
+                            <telerik:RadDatePicker Grid.Row="1" Grid.Column="2" InputMode="DatePicker" SelectedValue="{Binding SelectedEntity.ServiceDate, Mode=TwoWay}" IsEnabled="{Binding SelectedEntity.RecurringServiceParent, Converter={StaticResource NotExistsBoolConverter}}"/>
+                        </Grid>
+                        <CustomFields:FieldsEditGrid ServiceTemplate="{Binding DataContext.SelectedEntity.ServiceTemplate, ElementName=myServiceLarge}" IsGeneratedService="{Binding DataContext.SelectedEntity.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"/>
+                    </StackPanel>
+                </toolkit:Expander>
+                <my3:ClientLinkLarge SelectedClient="{Binding DataContext.SelectedEntity.Client, ElementName=myServiceLarge, Mode=TwoWay}" IsReadOnly="{Binding DataContext.SelectedEntity.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

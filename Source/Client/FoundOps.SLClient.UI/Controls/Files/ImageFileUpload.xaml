@@ -1,0 +1,8 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Files.ImageFileUpload" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.UI.Controls;assembly=FoundOps.Common.Silverlight.UI"
+    mc:Ignorable="d" x:Name="myImageFileUpload">
+    <Grid x:Name="LayoutRoot" DataContext="{Binding ElementName=myImageFileUpload}">
+        <Controls:ImageUpload x:Name="imageUpload" ImageName="{Binding File.Name, Mode=TwoWay}" ImageData="{Binding File.ByteData, Mode=TwoWay}" ImageSet="ImageUpload_OnImageSet"/>
+    </Grid>
+</UserControl>

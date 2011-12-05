@@ -1,0 +1,182 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+
+html
+{
+    min-height: 100%;
+    margin-bottom: 1px;
+}
+
+body
+{
+    font-size: .75em;
+    font-family: Verdana, Helvetica, Sans-Serif;
+    margin: 0px;
+    padding: 0px;
+    color: #333335;
+    background-color:#333335;
+}
+
+a:link
+{
+    color: #fff;
+    text-decoration: none;
+}
+
+a:visited
+{
+    color: #3333ff;
+}
+
+a:hover, a:active
+{
+    color: #ccc;
+}
+
+a:focus 
+{ 
+    color: #ccc;
+    outline:none;
+}
+
+p, ul
+{
+    margin-bottom: 20px;
+    line-height: 1.6em;
+    text-align:justify;
+}
+
+li
+{
+    list-style:disc;
+}
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+#SiteLogo
+{
+    position:relative;
+    top:20px;
+    left:50px;
+    margin-bottom:0px;
+}
+
+/* FORM LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+.LogonValSummary, .LogonValSummary li
+{
+    list-style:none;
+    font-size:11px;
+}
+
+input[type="text"], input[type="password"]  
+{
+    background-image:url('../Content/inputGradient.png');
+    height:20px;
+}
+
+input[type="submit"] 
+{
+    margin-top:10px;
+    border-radius:5px;
+    height:25px;
+}
+
+#forgotPass
+{
+    position:relative;
+}
+
+#reset
+{
+    color:#000;
+}
+
+#passRecaptcha
+{
+    position:relative;
+}
+
+#Recaptcha
+{
+    position:relative;
+}
+
+.error
+{
+    color:Red;
+}
+
+#login
+{
+    position:absolute;
+    top:330px;
+    left:20px;
+    width:300px;
+    height:60px;
+    vertical-align:middle;
+}
+
+#changePass, #resetBtn
+{
+}
+
+#changePasswordContent
+{
+}
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid, .validation-summary-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+/* Styles for editor and display helpers
+----------------------------------------------------------*/
+.display-label,
+.editor-label,
+.display-field,
+.editor-field
+{
+}
+
+.editor-label
+{
+}
+
+.text-box
+{
+    width: 30em;
+}
+
+.text-box.multi-line
+{
+    height: 6.5em;
+}
+
+.tri-state
+{
+    width: 6em;
+}

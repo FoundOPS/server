@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Account.Business.BusinessDetailsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" mc:Ignorable="d" x:Name="myBusinessAcountDetailsView">
+    <!-- Design This: ViewModelLocator:ViewModelLocator.NonSharedViewModel="BusinessAccountVM"-->
+    <!-- Runtime or Design Parent: DataContext="{Binding BusinessAccountVM, ElementName=myBusinessAcountDetailsView}"-->
+    <StackPanel x:Name="LayoutRoot" DataContext="{Binding BusinessAccountVM, ElementName=myBusinessAcountDetailsView}">
+        <!--Bind to Business Name-->
+        <TextBlock Text="{Binding SelectedBusinessAccount.Name}" FontWeight="Bold" FontSize="14" />
+        <!--Bind To Business Industy-->
+        <TextBlock Text="{Binding SelectedBusinessAccount.Industry.ParentIndustry.Name}" />
+        <!--Bind to Business Sub-Industry-->
+        <TextBlock Text="{Binding SelectedBusinessAccount.Industry.Name}" />
+    </StackPanel>
+</UserControl>

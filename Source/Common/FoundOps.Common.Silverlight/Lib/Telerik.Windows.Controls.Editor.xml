@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.Windows.Controls.Editor</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.Windows.Controls.RadEditor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadEditor.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadEditor"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadEditor.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadEditor.SelectionChangedEvent">
+            <summary>
+            Identifies the SelectionChanged routed event
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadEditor.HtmlChangedEvent">
+            <summary>
+            Identifies the SelectionChanged routed event
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadEditor.PathToHelperXap">
+            <summary>
+            Gets or sets the path to helper xap.
+            </summary>
+            <remarks>
+            RadEditor requires that the RadEditorHelper.xap file is deployed to the web project.
+            If you place the RadEditorHelper.xap file in the ClientBin directory you do not need to specify a value
+            for the PathToHelperXap property. If you place the file on some other place - specify the path.
+            </remarks>
+            <value>The path to helper xap.</value>
+        </member>
+    </members>
+</doc>
