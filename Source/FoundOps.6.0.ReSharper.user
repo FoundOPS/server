@@ -3,15 +3,47 @@
     <string />
     <integer />
     <boolean>
-      <setting name="livetemplates.csharp.usevar">False</setting>
+      <setting name="livetemplates.csharp.usevar">True</setting>
       <setting name="SolutionAnalysisEnabled">False</setting>
     </boolean>
   </SettingsComponent>
   <RecentFiles>
     <RecentFiles>
       <File id="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB/f:UserSpecificResourcesWrapper.cs" caret="610" fromTop="19" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="38413" fromTop="20" />
     </RecentFiles>
-    <RecentEdits />
+    <RecentEdits>
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="17" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="33" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="39" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="45" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="41" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="47" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="43" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="18" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="17" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="14750" fromTop="27" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="24887" fromTop="15" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="26" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="28" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="25" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="25637" fromTop="25" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="26093" fromTop="30" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="25904" fromTop="30" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="34" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="27" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32155" fromTop="35" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="33512" fromTop="42" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="27503" fromTop="20" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="27203" fromTop="14" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="26881" fromTop="33" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="26657" fromTop="38" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="6286" fromTop="20" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="7585" fromTop="41" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="1592" fromTop="9" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="24211" fromTop="15" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="33578" fromTop="23" />
+    </RecentEdits>
   </RecentFiles>
   <NAntValidationSettings>
     <NAntPath value="" />
@@ -27,9 +59,9 @@
   <CompletionStatisticsManager>
     <ItemStatistics item="Qualified:System.String">
       <Item value="ToString`0" priority="137" />
-      <Item value="Split`0" priority="28" />
-      <Item value="Contains`0" priority="0" />
-      <Item value="Where`1" priority="26" />
+      <Item value="Split`0" priority="55" />
+      <Item value="Contains`0" priority="27" />
+      <Item value="Where`1" priority="53" />
     </ItemStatistics>
     <ItemStatistics item="Default">
       <Item value="var" priority="8" />
@@ -203,7 +235,7 @@
       <Item value="EnvironmentVariableTarget`0" priority="95" />
       <Item value="Invoice`0" priority="319" />
       <Item value="invoiceToCreate" priority="223" />
-      <Item value="var" priority="1980" />
+      <Item value="var" priority="2108" />
       <Item value="clientName" priority="63" />
       <Item value="string" priority="570" />
       <Item value="writer" priority="95" />
@@ -214,16 +246,16 @@
       <Item value="rd" priority="159" />
       <Item value="rta" priority="31" />
       <Item value="RouteDestination`0" priority="31" />
-      <Item value="new" priority="799" />
+      <Item value="new" priority="895" />
       <Item value="RouteDestination" priority="28" />
       <Item value="test" priority="159" />
       <Item value="RouteTask" priority="28" />
       <Item value="InitialUnroutedRouteTasks" priority="31" />
       <Item value="true" priority="286" />
-      <Item value="return" priority="1247" />
+      <Item value="return" priority="1279" />
       <Item value="routeTypeIsInRoute" priority="31" />
       <Item value="regionIsInRoute" priority="31" />
-      <Item value="if" priority="1215" />
+      <Item value="if" priority="1407" />
       <Item value="Regions" priority="159" />
       <Item value="ValidationResultInfo`0" priority="63" />
       <Item value="IEnumerable" priority="65" />
@@ -232,15 +264,15 @@
       <Item value="Region`0" priority="63" />
       <Item value="CoreDataManager`0" priority="31" />
       <Item value="Location`0" priority="352" />
-      <Item value="l" priority="95" />
-      <Item value="foreach" priority="639" />
+      <Item value="l" priority="127" />
+      <Item value="foreach" priority="735" />
       <Item value="regionName" priority="223" />
       <Item value="UpdateRegions`0" priority="31" />
       <Item value="InArgument`0" priority="31" />
       <Item value="FoundOps" priority="94" />
       <Item value="Server" priority="81" />
       <Item value="Controllers" priority="85" />
-      <Item value="BusinessAccount`0" priority="514" />
+      <Item value="BusinessAccount`0" priority="546" />
       <Item value="as" priority="351" />
       <Item value="BusinessAccount" priority="28" />
       <Item value="CurrentBusinessAccount" priority="351" />
@@ -248,16 +280,16 @@
       <Item value="context" priority="95" />
       <Item value="QuickBooksController`0" priority="26" />
       <Item value="GetBaseUrl`0" priority="31" />
-      <Item value="CoreEntitiesContainer`0" priority="128" />
-      <Item value="coreEntitiesContainer" priority="129" />
+      <Item value="CoreEntitiesContainer`0" priority="160" />
+      <Item value="coreEntitiesContainer" priority="258" />
       <Item value="CoreEntitiesContainer" priority="186" />
       <Item value="this" priority="1087" />
-      <Item value="currentBusinessAccount" priority="127" />
+      <Item value="currentBusinessAccount" priority="191" />
       <Item value="invoiceInfo" priority="64" />
-      <Item value="currentInvoice" priority="735" />
-      <Item value="lineItem" priority="31" />
+      <Item value="currentInvoice" priority="926" />
+      <Item value="lineItem" priority="95" />
       <Item value="#region" priority="127" />
-      <Item value="#endregion" priority="95" />
+      <Item value="#endregion" priority="159" />
       <Item value="Queue" priority="28" />
       <Item value="Models" priority="26" />
       <Item value="Core" priority="1419" />
@@ -292,7 +324,7 @@
       <Item value="AddDeleteLocation" priority="31" />
       <Item value="LocationsVM" priority="477" />
       <Item value="e" priority="95" />
-      <Item value="null" priority="254" />
+      <Item value="null" priority="286" />
       <Item value="ClientsListVM" priority="64" />
       <Item value="ClientsVM`0" priority="31" />
       <Item value="ClientsVM" priority="63" />
@@ -337,8 +369,8 @@
       <Item value="locationsDomainCollectionView" priority="31" />
       <Item value="LocationsVM`0" priority="32" />
       <Item value="locationsVM" priority="479" />
-      <Item value="break" priority="95" />
-      <Item value="else" priority="63" />
+      <Item value="break" priority="127" />
+      <Item value="else" priority="127" />
       <Item value="locationToAddExists" priority="63" />
       <Item value="locationAdded" priority="63" />
       <Item value="SaveCommand" priority="63" />
@@ -436,16 +468,36 @@
       <Item value="IsDueDateChanged" priority="31" />
       <Item value="IsMemoChanged" priority="63" />
       <Item value="invoice" priority="63" />
-      <Item value="st" priority="31" />
+      <Item value="st" priority="63" />
       <Item value="LineItem`0" priority="160" />
       <Item value="Server.Services.CoreDomainService" priority="28" />
       <Item value="CoreEntities" priority="30" />
       <Item value="listOfProperties" priority="31" />
       <Item value="is" priority="31" />
-      <Item value="SalesTerm`0" priority="64" />
-      <Item value="SalesTerm" priority="32" />
+      <Item value="SalesTerm`0" priority="97" />
+      <Item value="SalesTerm" priority="90" />
       <Item value="TrackChanges`0" priority="63" />
       <Item value="IsSalesTermChanged" priority="31" />
+      <Item value="splitResponse" priority="63" />
+      <Item value="Regex`0" priority="31" />
+      <Item value="response" priority="31" />
+      <Item value="ToArray`1" priority="26" />
+      <Item value="Where`1" priority="26" />
+      <Item value="line" priority="31" />
+      <Item value="split" priority="94" />
+      <Item value="First`1" priority="26" />
+      <Item value="FirstOrDefault`1" priority="26" />
+      <Item value="continue" priority="31" />
+      <Item value="LineItem" priority="28" />
+      <Item value="qbInvoice" priority="127" />
+      <Item value="newLineItem" priority="63" />
+      <Item value="tempSplit" priority="31" />
+      <Item value="quickbooksInvoice" priority="159" />
+      <Item value="exists" priority="63" />
+      <Item value="newTerm" priority="31" />
+      <Item value="newSalesTerm" priority="31" />
+      <Item value="li" priority="63" />
+      <Item value="items" priority="31" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:FoundOps.Server.Models.CoreEntities.Invoice">
       <Item value="ServiceTemplate" priority="26" />
@@ -541,7 +593,7 @@
       <Item value="Merge`1" priority="163" />
       <Item value="ToObservableCollection`1" priority="26" />
       <Item value="CombineLatest`1" priority="26" />
-      <Item value="Count`1" priority="53" />
+      <Item value="Count`1" priority="80" />
       <Item value="Where`1" priority="107" />
       <Item value="Any`1" priority="26" />
       <Item value="Contains`1" priority="81" />
@@ -568,6 +620,7 @@
     <ItemStatistics item="Qualified:System.Data.Objects.ObjectSet`1">
       <Item value="AsQueryable`1" priority="27" />
       <Item value="OfType`1" priority="26" />
+      <Item value="Where`0" priority="26" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:FoundOps.SLClient.Data.Services.DataManager">
       <Item value="GetEntityListObservable`1" priority="53" />
@@ -702,6 +755,7 @@
       <Item value="QuickBooksSessionXml" priority="26" />
       <Item value="OwnedRoles" priority="26" />
       <Item value="Name" priority="26" />
+      <Item value="SalesTerms" priority="27" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:FoundOps.Server.Services.CoreDomainService.CoreDomainContext">
       <Item value="SubmitChanges`0" priority="26" />
@@ -755,8 +809,9 @@
     <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.CoreEntitiesContainer">
       <Item value="AcceptAllChanges`0" priority="26" />
       <Item value="Parties" priority="26" />
-      <Item value="SaveChanges`0" priority="26" />
+      <Item value="SaveChanges`0" priority="53" />
       <Item value="LineItems" priority="139" />
+      <Item value="SalesTerms" priority="26" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:System.Activities.OutArgument`1">
       <Item value="ArgumentType" priority="53" />
@@ -775,8 +830,11 @@
       <Item value="ServiceTemplate" priority="26" />
       <Item value="Id" priority="26" />
       <Item value="Client" priority="26" />
-      <Item value="LineItems" priority="54" />
-      <Item value="SalesTerm" priority="53" />
+      <Item value="LineItems" priority="189" />
+      <Item value="SalesTerm" priority="270" />
+      <Item value="QuickBooksId" priority="26" />
+      <Item value="Memo" priority="53" />
+      <Item value="DueDate" priority="55" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.ServiceTemplate">
       <Item value="OwnerServiceProvider" priority="26" />
@@ -822,10 +880,24 @@
     <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.SalesTerm">
       <Item value="IsNameChanged" priority="26" />
       <Item value="IsDueDaysChanged" priority="27" />
+      <Item value="QuickBooksId" priority="107" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:FoundOps.Core.Models.CoreEntities.LineItem">
-      <Item value="IsAmountChanged" priority="53" />
-      <Item value="IsDescriptionChanged" priority="26" />
+      <Item value="IsAmountChanged" priority="107" />
+      <Item value="IsDescriptionChanged" priority="80" />
+      <Item value="Description" priority="26" />
+      <Item value="Amount" priority="27" />
+      <Item value="QuickBooksId" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Text.RegularExpressions.Regex">
+      <Item value="Split`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Objects.DataClasses.EntityCollection`1">
+      <Item value="Add`0" priority="53" />
+      <Item value="Where`1" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Linq.IQueryable`1">
+      <Item value="FirstOrDefault`1" priority="26" />
     </ItemStatistics>
   </CompletionStatisticsManager>
   <UnitTestSessions>

@@ -1,4 +1,4 @@
-C:\FoundOps\Agile5\Source-DEV\Client\FoundOps.SLClient.Data
+C:\FoundOps\GitHub\Source\Client\FoundOps.SLClient.Data
 Generated_Code\FoundOps.Server.g.cs
 Generated_Code\FoundOps.Core\Models\CoreEntities\Extensions\Core\BlockExtensions.shared.cs
 Generated_Code\FoundOps.Core\Models\CoreEntities\Extensions\Core\ContactInfoExtensions.shared.cs

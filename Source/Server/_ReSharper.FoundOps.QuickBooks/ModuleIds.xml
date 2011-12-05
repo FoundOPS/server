@@ -1,6 +1,0 @@
-<Modules>
-  <Module PersistentId="C5170A8A-CAD2-47E2-8552-FEF87C771C03" ModuleId="FoundOps.Core" />
-  <Module PersistentId="D32C535E-2B13-4AC5-9D49-70C8EDC83933" ModuleId="FoundOps.Server" />
-  <Module PersistentId="43D5B3DA-7DCD-454A-BA3D-667901D304CE" ModuleId="FoundOps.Common" />
-  <Module PersistentId="E77B2732-6E8E-4FEA-8776-89BBC98D4BFC" ModuleId="FoundOps.QuickBooksWF" />
-</Modules>
