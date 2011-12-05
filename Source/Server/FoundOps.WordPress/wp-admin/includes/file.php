@@ -79,7 +79,7 @@ function get_file_description( $file ) {
 function get_home_path() {
 	$home = get_option( 'home' );
 	$siteurl = get_option( 'siteurl' );
-	if ( $home != '' && $home != $siteurl ) {
+	if ( $home != '' && $home != $siteurl && $siteurl != '' && $_SERVER["SCRIPT_FILENAME"] != '') {
 		$wp_path_rel_to_home = str_replace($home, '', $siteurl); /* $siteurl - $home */
 		$pos = strpos($_SERVER["SCRIPT_FILENAME"], $wp_path_rel_to_home);
 		$home_path = substr($_SERVER["SCRIPT_FILENAME"], 0, $pos);
@@ -227,6 +227,10 @@ function validate_file_to_edit( $file, $allowed_files = '' ) {
  * @param array $overrides Optional. An associative array of names=>values to override default variables with extract( $overrides, EXTR_OVERWRITE ).
  * @return array On success, returns an associative array of file attributes. On failure, returns $overrides['upload_error_handler'](&$file, $message ) or array( 'error'=>$message ).
  */
+ 
+ // custom modification for Overwrite Uploads plugin
+ define('OVUP_FILTER_ADDED', true); 
+ 
 function wp_handle_upload( &$file, $overrides = false, $time = null ) {
 	// The default error handler.
 	if ( ! function_exists( 'wp_handle_upload_error' ) ) {
@@ -234,7 +238,10 @@ function wp_handle_upload( &$file, $overrides = false, $time = null ) {
 			return array( 'error'=>$message );
 		}
 	}
-
+	
+	// custom modification for Overwrite Uploads plugin
+	$overrides = apply_filters( 'wp_handle_upload_overrides', $overrides ); 
+	
 	$file = apply_filters( 'wp_handle_upload_prefilter', $file );
 
 	// You may define your own function and pass the name in $overrides['upload_error_handler']

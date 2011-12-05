@@ -7,7 +7,7 @@
              xmlns:Regions1="clr-namespace:FoundOps.SLClient.UI.Controls.Regions" xmlns:my1="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400">
     <UserControl.Resources>
         <Converters1:VisibilityConverter x:Key="VisibilityConverter" />
         <Converters2:LocationToStringConverter x:Key="LocationToStringConverter" />

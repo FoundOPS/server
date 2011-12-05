@@ -9,6 +9,8 @@
  * @since Twenty Eleven 1.0
  */
 ?><!DOCTYPE html>
+<!--Copyright FoundOPS 2011. All rights reserved.
+FoundOPS and Cloud Dispatched are trademarks of FoundOPS LLC.-->
 <!--[if IE 6]>
 <html id="ie6" <?php language_attributes(); ?>>
 <![endif]-->
@@ -50,11 +52,17 @@
 
 	?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11" />
+<title>Field Service Management @ FoundOPS</title>
+<meta name="keywords" content="FoundOPS, dis-patch, SaaS, service management, field service management, service dispatching, technician dispatch" />
+<meta name="description" content="Manage your field service company with GPS technician tracking, drag & drop dispatching, 
+    and intuitive customer management in one easy-to-use system." />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes" />
+<meta name="google-site-verification" content="gMZQUTO8tOdyGEtehqnkS-fgjy5eMu5UHLKPL_cjn48" />
 <script type="text/javascript" src="<?php echo $GLOBALS["foundopsLink"]; ?>/Scripts/jquery-1.6.1.min.js"></script>
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $GLOBALS["foundopsLink"]; ?>/Content/Site.css" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $GLOBALS["foundopsLink"]; ?>/Content/FormStyles.css" />
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
+
 <!--[if lt IE 9]>
 <script src="<?php echo get_template_directory_uri(); ?>/js/html5.js" type="text/javascript"></script>
 <![endif]-->
@@ -77,7 +85,7 @@
 <body <?php body_class(); ?>>
 <div id="container">
     <div id="page" class="hfeed">
-        <div id="SiteLogo"><a href="<?php echo $GLOBALS["foundopsLink"];?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
+    	<div id="SiteLogo"><a href="<?php echo $GLOBALS["foundopsLink"];?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
         <iframe id="myFrame" src="<?php echo $GLOBALS["foundopsLink"];?>/Account/BlogLogin" width="500px" height="70" frameborder="2" scrolling="no"></iframe>
         <header id="branding" role="banner">
                 <hgroup>

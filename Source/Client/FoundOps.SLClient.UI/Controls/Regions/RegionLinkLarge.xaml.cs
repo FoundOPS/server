@@ -1,14 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Data;
+using Telerik.Windows.Controls;
+using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Tools;
-using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.Regions
 {
     public partial class RegionLinkLarge
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegionLinkLarge"/> class.
+        /// </summary>
         public RegionLinkLarge()
         {
             InitializeComponent();
@@ -25,6 +28,9 @@ namespace FoundOps.SLClient.UI.Controls.Regions
             this.DependentWhenVisible(RegionsVM);
         }
 
+        /// <summary>
+        /// Gets the regions VM.
+        /// </summary>
         public RegionsVM RegionsVM
         {
             get { return (RegionsVM)this.DataContext; }

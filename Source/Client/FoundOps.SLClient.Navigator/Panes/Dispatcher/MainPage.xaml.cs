@@ -461,10 +461,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         //Insures the route map stays the correct size
         private void RouteMapPaneSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (RouteMapView.Content as FrameworkElement == null) return;
+            //if (RouteMapView.Content as FrameworkElement == null) return;
 
-            ((FrameworkElement)RouteMapView.Content).Width = RouteMapPane.Width * .99;
-            ((FrameworkElement)RouteMapView.Content).Height = RouteMapPane.Height * .99;
+            //((FrameworkElement)RouteMapView.Content).Width = RouteMapPane.Width * .99;
+            //((FrameworkElement)RouteMapView.Content).Height = RouteMapPane.Height * .99;
         }
 
         #region Layout

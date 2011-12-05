@@ -22,8 +22,7 @@ if ( 'content' != $current_layout ) :
         </div>	
     
 		<div id="secondary" class="widget-area" role="complementary" style="margin-left:20px; position:relative; top:50px; left:0px;">
-        	<h1 class="jobsTitle" style="font-weight: normal; position:absolute; top:-172px; left:202px;">Blog</h1>
-			<div class="jobsTitleBar" style="background-color:#991A36; position:absolute; top:-107px; left:198px;"></div>
+        	<!--<div id="banner"><h3 style="font-size:30px; color:#fff;">Some Awesome Header</h3></div>-->
 			<?php if ( ! dynamic_sidebar( 'sidebar-1' ) ) : ?>
 
 				<aside id="archives" class="widget">

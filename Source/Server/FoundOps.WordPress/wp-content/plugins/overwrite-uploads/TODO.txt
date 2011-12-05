@@ -1,0 +1,7 @@
+bug -- removeOldAttachments() assumes the upload is attached to a file, so it doesn't remove the original media library entry if it was uploaded straight to the library
+	maybe only happens in wpms
+copy best practices from BGMP
+Once the necessary filter is added to core (http://core.trac.wordpress.org/ticket/16849): Remove custom filter, refactor environment check, and update required version
+Look into using http://codex.wordpress.org/Function_Reference/WP_Error instead of your custom one. If that's not appropriate, then maybe write a quick blog post on the method you're using now.
+Add internationalization support
+remove setting, no need for it. if activated it'll work, if not it wont

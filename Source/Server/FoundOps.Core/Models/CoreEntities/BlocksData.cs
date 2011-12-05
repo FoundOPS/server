@@ -29,6 +29,11 @@ namespace FoundOps.Core.Server.Blocks
 
         public Block LogoutBlock { get; private set; }
 
+        /// <summary>
+        /// The Ids of the default UserAccount Role's Blocks
+        /// </summary>
+        public static Guid[] DefaultUserAccountBlockIds = new[] { new Guid("B8ED1EF7-C43A-43DF-AF26-F5FB5BC0DE65"), new Guid("B8ED1EF7-C43A-43DF-AF26-F5FB5BC0DE65")};
+
         public List<Block> UserAccountBlocks { get; private set; }
         public List<Block> BusinessAdministratorBlocks { get; private set; }
 
@@ -49,8 +54,7 @@ namespace FoundOps.Core.Server.Blocks
                 Name = "Logout",
                 NavigateUri = @"Account/LogOff"
             };
-
-
+            
             UserAccountBlocks = new List<Block> { LogoutBlock, SettingsBlock };
 
             #endregion
@@ -74,7 +78,7 @@ namespace FoundOps.Core.Server.Blocks
         public Block LocationsBlock { get; private set; }
         public Block RegionsBlock { get; private set; }
         public Block ServicesBlock { get; private set; }
-        
+
 
 
         public Block DispatcherBlock { get; private set; }

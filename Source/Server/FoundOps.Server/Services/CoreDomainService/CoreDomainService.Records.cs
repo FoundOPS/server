@@ -246,6 +246,12 @@ namespace FoundOps.Server.Services.CoreDomainService
                  on e.Id equals p.Id
              select p.ContactInfoSet).ToArray();
 
+            //Force load LinkedUserAccount
+            (from e in employeesQueryable
+             join p in this.ObjectContext.Parties
+                 on e.LinkedUserAccount.Id equals p.Id
+             select p).ToArray();
+
             //Force load OwnedPerson.PartyImage
             var t = (from e in employeesQueryable
                 join pi in this.ObjectContext.Files.OfType<PartyImage>()

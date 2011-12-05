@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web.Security;
 
 namespace FoundOps.Core.Models.CoreEntities
@@ -35,5 +36,12 @@ namespace FoundOps.Core.Models.CoreEntities
                                           : DateTime.MinValue,
                                       lastLockoutDateEntry != null ? lastLockoutDateEntry.TimeStamp : DateTime.MinValue);
         }
+
+        /// <summary>
+        /// Gets or sets a temporary password for new user accounts.
+        /// It's not shared so that it doesn't get generated twice on the client.
+        /// </summary>
+        [DataMember]
+        public string TemporaryPassword { get; set; }
     }
 }

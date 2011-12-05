@@ -84,7 +84,7 @@ namespace FoundOps.Server.Authentication
         {
             //TODO: Setup better Administrator role logic, when roles develop
             //TODO: Add logic for User administrators
-            var filteredRoles = rolesToFilter.Where(r => r.Name == "Administrator");
+            var filteredRoles = rolesToFilter.Where(r => r.RoleTypeInt == (int)RoleType.Administrator);
 
             return filteredRoles;
         }

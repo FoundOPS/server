@@ -48,7 +48,7 @@
             </tr>
             <tr>
             	<td></td>
-                <td><a href="<?php echo $GLOBALS["foundopsLink"];?>/Home/Product">Features</a></td>
+                <td><a href="<?php echo $GLOBALS["blogLink"];?>/product">Features</a></td>
                 <td> <a href="<?php echo $GLOBALS["blogLink"];?>/values">Our Values</a> </td>
             </tr>
             <tr>
@@ -59,7 +59,7 @@
             <tr>
             	<td rowspan="3" style="line-height:50px;"> <div id="navLogo"><a href="<?php echo $GLOBALS["foundopsLink"];?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></div></td>
                 <td class="bigFooterText"><a style="position:relative; top:-10px; left:0px;" href="<?php echo $GLOBALS["blogLink"];?>">Blog</a></td>
-                <td><a href="<?php echo $GLOBALS["foundopsLink"];?>/Home/ContactUs">Contact Us</a></td>
+                <td><a href="<?php echo $GLOBALS["blogLink"];?>/contact">Contact Us</a></td>
             </tr>
         </table></div>
     <div style="font-size:12px">&copy;2011&nbsp;FOUNDOPS&nbsp;LLC</div><br/>

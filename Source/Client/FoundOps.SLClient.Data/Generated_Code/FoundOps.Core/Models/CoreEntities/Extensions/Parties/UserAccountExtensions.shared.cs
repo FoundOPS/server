@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using FoundOps.Common.Composite.Entities;
 
 namespace FoundOps.Core.Models.CoreEntities
@@ -19,7 +20,6 @@ namespace FoundOps.Core.Models.CoreEntities
             ((IEntityDefaultCreation)this).OnCreate();
         }
 #endif
-
         partial void OnCreation(); //For Extensions on Silverlight Side
 
         void IEntityDefaultCreation.OnCreate()
@@ -28,7 +28,6 @@ namespace FoundOps.Core.Models.CoreEntities
             CreationDate = DateTime.Now;
             OnCreation();
         }
-
         #endregion
     }
 }

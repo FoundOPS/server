@@ -3,10 +3,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
         xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.DataVisualization" xmlns:Map="clr-namespace:Telerik.Windows.Controls.Map;assembly=Telerik.Windows.Controls.DataVisualization" 
-        xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.Controls.Icons;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+        xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.Controls.Icons;assembly=FoundOps.Common.Silverlight.UI"
         xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550"
-             ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550" ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM" 
+        Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <UserControl.Resources>
         <DataTemplate x:Key="PinPointTemplate">
             <Icons:PinPointIcon x:Name="MapPinPoint" HorizontalAlignment="Right" VerticalAlignment="Top" Map:MapLayer.Location="{Binding TelerikLocation}">
@@ -120,14 +120,14 @@
                         <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False"
                                 ParentContextVM="{Binding DataContext, ElementName=myRegionLarge}"
                                 MaxHeight="150" />
-                        <StackPanel x:Name="AddExistingLocationComboBox" Orientation="Horizontal" Margin="25,0,0,0" Grid.Row="1"
+                        <!--<StackPanel x:Name="AddExistingLocationComboBox" Orientation="Horizontal" Margin="25,0,0,0" Grid.Row="1"
                                 DataContext="{Binding DataContext, ElementName=LocationsGrid}">
-                            <Controls1:RadComboBox x:Name="ExistingLocationsComboBox" MinWidth="150" ItemsSource="{Binding DomainCollectionView.SourceCollection}" IsEditable="True"
+                            <Controls1:RadComboBox x:Name="ExistingLocationsComboBox" MinWidth="150" ItemsSource="{Binding DomainCollectionView}" IsEditable="True"
                                     DisplayMemberPath="Name" />
                             <Button x:Name="AddLocationButton" Margin="5,0" Content="Add Location"
                                     Command="{Binding ParentContextVM.AddSelectedLocationCommand, ElementName=LocationsGrid}"
                                     CommandParameter="{Binding SelectedItem, ElementName=ExistingLocationsComboBox}" />
-                        </StackPanel>
+                        </StackPanel>-->
                     </Grid>
                 </toolkit:Expander>
             </StackPanel>
