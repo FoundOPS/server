@@ -185,14 +185,14 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Locations" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedLocationVM.SelectedLocation}" />
+                                                CommandParameter="{Binding SelectedLocationVM.Entity}" />
                                 </Grid>
                             </Border>
                             <Locations1:LocationsGrid x:Name="LocationsGrid" IsMainGrid="True" Grid.Row="1" />
                         </Grid>
                     </InfiniteAccordion:ThirdsListDetails.List>
                     <InfiniteAccordion:ThirdsListDetails.Details>
-                        <Locations:LocationLarge />
+                        <Locations1:LocationLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
                     <InfiniteAccordion:ThirdsListDetails.Summary>
                         <Locations1:LocationSmall />

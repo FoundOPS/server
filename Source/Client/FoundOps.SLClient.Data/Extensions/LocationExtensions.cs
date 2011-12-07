@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using FoundOps.Common.Silverlight.MVVM.Validation;
 using ReactiveUI;
+using RiaServicesContrib;
+using RiaServicesContrib.DomainServices.Client;
 
 namespace FoundOps.Core.Models.CoreEntities
 {
@@ -57,13 +59,13 @@ namespace FoundOps.Core.Models.CoreEntities
 
         void SubLocationsEntityRemoved(object sender, System.ServiceModel.DomainServices.Client.EntityCollectionChangedEventArgs<SubLocation> e)
         {
-            foreach (var subLocation in
-                this.SubLocations.Where(subLocation => subLocation.Number > e.Entity.Number))
-            {
+            foreach (var subLocation in this.SubLocations.Where(subLocation => subLocation.Number > e.Entity.Number))
                 subLocation.Number = subLocation.Number - 1;
-            }
         }
 
+        /// <summary>
+        /// Gets the telerik location.
+        /// </summary>
         public Telerik.Windows.Controls.Map.Location? TelerikLocation
         {
             get
@@ -76,10 +78,25 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
+        /// <summary>
+        /// Raises the validation errors.
+        /// </summary>
         public void RaiseValidationErrors()
         {
             this.BeginEdit();
             this.EndEdit();
+        }
+
+        /// <summary>
+        /// Gets the entity graph of Location to remove.
+        /// </summary>
+        public EntityGraph EntityGraphToRemove
+        {
+            get
+            {
+                var graphShape = new EntityGraphShape().Edge<Location, ContactInfo>(location => location.ContactInfoSet);
+                return new EntityGraph(this, graphShape);
+            }
         }
     }
 }

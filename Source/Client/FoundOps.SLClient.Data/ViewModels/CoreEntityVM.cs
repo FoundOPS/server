@@ -69,20 +69,10 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         protected readonly DataManager DataManager;
 
-        private ContextManager _contextManager;
-
         /// <summary>
         /// Gets the context manager.
         /// </summary>
-        public ContextManager ContextManager
-        {
-            get { return _contextManager; }
-            private set
-            {
-                _contextManager = value;
-                this.RaisePropertyChanged("ContextManager");
-            }
-        }
+        public ContextManager ContextManager { get; private set; }
 
         private readonly Subject<bool> _discardObservable = new Subject<bool>();
         /// <summary>

@@ -1,9 +1,8 @@
-﻿using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.UI.ViewModels;
-using FoundOps.Core.Context.Services;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.ViewModels;
+﻿using FoundOps.SLClient.Data.Services;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
+using System.ServiceModel.DomainServices.Client;
+using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

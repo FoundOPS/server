@@ -7,6 +7,7 @@ Thumbs.db
 *.pdb
 *.user
 *.aps
+*.orig
 *.pch
 *.vspscc
 *_i.c
@@ -21,11 +22,14 @@ Thumbs.db
 *.log
 [Bb]in
 [Dd]ebug*/
+
 *.lib
 *.sbr
+*.g.cs
 obj/
 [Rr]elease*/
 _ReSharper*/
+Generated_Code/
 [Tt]est[Rr]esult*
-ClientBin/*.xap
 ClientBin/*.zip
+ClientBin/*.xap

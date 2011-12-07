@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
+using System.Threading;
 using Telerik.Windows.Controls.Map;
 
-namespace FoundOps.Common.Silverlight.Tools
+namespace FoundOps.Common.Silverlight.Tools.Location
 {
     public static class MapTools
     {
@@ -38,7 +38,7 @@ namespace FoundOps.Common.Silverlight.Tools
             var ipInformationDelimited = ipInformation.Split(';');
             var latitude = Convert.ToDouble(ipInformationDelimited[8]);
             var longitude = Convert.ToDouble(ipInformationDelimited[9]);
-            map.Center = new Location(latitude, longitude);
+            map.Center = new Telerik.Windows.Controls.Map.Location(latitude, longitude);
             map.ZoomLevel = 16;
         }
     }

@@ -162,10 +162,13 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteContactInfo(ContactInfo contactInfo)
         {
+            var loadedContactInfo = this.ObjectContext.ContactInfoSet.FirstOrDefault(ci => ci.Id == contactInfo.Id);
+            if (!ObjectContext.PreDelete(loadedContactInfo))
+                return;
+
             if ((contactInfo.EntityState == EntityState.Detached))
-            {
                 this.ObjectContext.ContactInfoSet.Attach(contactInfo);
-            }
+
             this.ObjectContext.ContactInfoSet.DeleteObject(contactInfo);
         }
 
@@ -249,6 +252,10 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteParty(Party party)
         {
+            var loadedParty = this.ObjectContext.Parties.FirstOrDefault(p => p.Id == party.Id);
+            if (loadedParty != null)
+                this.ObjectContext.Detach(loadedParty);
+
             if ((party.EntityState == EntityState.Detached))
                 this.ObjectContext.Parties.Attach(party);
 

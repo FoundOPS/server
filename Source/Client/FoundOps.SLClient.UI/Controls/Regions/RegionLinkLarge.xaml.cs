@@ -1,12 +1,13 @@
-﻿using System.Windows;
-using System.Windows.Data;
-using Telerik.Windows.Controls;
+using System.Windows;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.UI.Controls.Regions
 {
+    /// <summary>
+    /// UI to select a single region from the loaded regions.
+    /// </summary>
     public partial class RegionLinkLarge
     {
         /// <summary>
@@ -16,21 +17,9 @@ namespace FoundOps.SLClient.UI.Controls.Regions
         {
             InitializeComponent();
 
-            RegionsVM.PropertyChanged += (sender, e) =>
-            {
-                //After the regions are loaded, setup two way binding
-                if (e.PropertyName == "IsLoading" && !RegionsVM.IsLoading)
-                {
-                    RegionsRadComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("SelectedRegion") { Source = this, Mode = BindingMode.TwoWay });
-                }
-            };
-
             this.DependentWhenVisible(RegionsVM);
         }
 
-        /// <summary>
-        /// Gets the regions VM.
-        /// </summary>
         public RegionsVM RegionsVM
         {
             get { return (RegionsVM)this.DataContext; }

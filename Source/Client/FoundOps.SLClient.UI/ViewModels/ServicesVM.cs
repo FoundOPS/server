@@ -1,5 +1,6 @@
 ﻿using System;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Tools;
 using ReactiveUI;
 using System.Linq;
 using System.Threading;
@@ -141,9 +142,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             var recurringServiceContextObservable = ContextManager.GetContextObservable<RecurringService>();
 
             //Whenever one of the specific context changes, update ContextChanged
-            clientContextSubject.Select(_ => true)
-            .Merge(locationContextObservable.Select(_ => true))
-            .Merge(recurringServiceContextObservable.Select(_ => true))
+            clientContextSubject.AsGeneric()
+            .Merge(locationContextObservable.AsGeneric())
+            .Merge(recurringServiceContextObservable.AsGeneric())
             .SubscribeOnDispatcher().Subscribe(_ => ContextChanged = true);
 
             //Regenerate the Services when:

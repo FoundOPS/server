@@ -298,6 +298,7 @@
     <Compile Include="DynamicallySizedWrapPanel\TypeConverters.cs" />
     <Compile Include="Interactivity\Behaviors\BindingSelectedItems.cs" />
     <Compile Include="Interactivity\Behaviors\CloseRowDetailsOnSelectUnrelatedCellBehavior.cs" />
+    <Compile Include="Interactivity\Behaviors\ConditionalBinding.cs" />
     <Compile Include="Interactivity\Behaviors\MakeLastTabItemInvisible.cs" />
     <Compile Include="Interactivity\Behaviors\SetPropertyOnStateBehavior.cs" />
     <Compile Include="Interactivity\Behaviors\SetSelectedRowOnRowDetailsExpandedBehavior.cs" />
@@ -311,8 +312,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selectors\DisableIfInItemsSourceStyleSelector.cs" />
     <Compile Include="Selectors\EntityTemplateSelector.cs" />
+    <Compile Include="Tools\BindingTools.cs" />
     <Compile Include="Tools\CollectionExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\ColorExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\FrameworkElementExtensions.cs" />
     <Compile Include="Tools\FileTools.cs" />
     <Compile Include="Tools\MarkupExtensions\AppendNumberToStringMarkupExtension.cs" />
     <Compile Include="Tools\MarkupExtensions\ItemExistsInCollection.cs" />

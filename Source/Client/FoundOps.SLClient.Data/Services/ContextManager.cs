@@ -184,13 +184,13 @@ namespace FoundOps.SLClient.Data.Services
             //Setup ContextChangedObservable to trigger whenever:
             _contextChangedObservable =
                 //a) the CurrentContext changes
-                this.CurrentContextObservable.Select(_ => true)
+                this.CurrentContextObservable.AsGeneric()
                 //b) the CurrentContextProvider changes
-                .Merge(this.CurrentContextProviderObservable.Select(_ => true))
+                .Merge(this.CurrentContextProviderObservable.AsGeneric())
                 //c) the CurrentContextProvider's SelectedContext changes
                 .Merge(this.CurrentContextProviderObservable.SelectMany(ccp =>
                     ccp == null ? new[] { true }.ToObservable() : //If the CurrentContextProvider is empty, update once
-                    ccp.SelectedContextObservable.Select(_ => true))); //Select the SelectedContextObservable changes
+                    ccp.SelectedContextObservable.AsGeneric())); //Select the SelectedContextObservable changes
 
             #endregion
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using ReactiveUI;
 using System.Linq;
 using System.Reactive.Linq;
@@ -16,7 +15,6 @@ using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.Services;
 using Microsoft.Windows.Data.DomainServices;
 using FoundOps.Core.Context.Services.Interface;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -74,12 +72,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         //Local Properties
         public Location _locationInCreation;
-        /// <summary>
-        /// Gets or sets the location in creation.
-        /// </summary>
-        /// <value>
-        /// The location in creation.
-        /// </value>
         public Location LocationInCreation
         {
             get { return _locationInCreation; }
@@ -138,8 +130,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             #region DomainCollectionView
 
             //Whenever the OwnerAccount, or the Client or Region context changes, update the DCV
-            this.ContextManager.OwnerAccountObservable
-                .Select(_ => true).Merge(ContextManager.GetContextObservable<Client>().Select(_ => true)).Merge(this.ContextManager.GetContextObservable<Region>().Select(_ => true))
+            this.ContextManager.OwnerAccountObservable.AsGeneric().Merge(ContextManager.GetContextObservable<Client>().AsGeneric()).Merge(this.ContextManager.GetContextObservable<Region>().AsGeneric())
                 .Throttle(new TimeSpan(0, 0, 0, 0, 200))
                 .ObserveOnDispatcher().Subscribe(_ =>
             {
@@ -159,8 +150,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Whenever the DCV changes, sort by Name
-            this.DomainCollectionViewObservable.Subscribe(
-                dcv => dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending)));
+            this.DomainCollectionViewObservable.Subscribe(dcv => dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending)));
 
             #endregion
 
@@ -183,30 +173,30 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
 
-            #region SelectedLocation
+            #region Entity
 
             //Hookup _selectedLocationVM to SelectedLocationVMObservable
-            _selectedLocationVM =
-                SelectedLocationVMObservable.ToProperty(this, x => x.SelectedLocationVM, new LocationVM(null, dataManager, locationsDataService));
+            _selectedLocationVM = SelectedLocationVMObservable.ToProperty(this, x => x.SelectedLocationVM);
 
             //Hookup _selectedSubLocationsVM to SelectedSubLocationsVMObservable
             _selectedSubLocationsVM =
-                SelectedSubLocationsVMObservable.ToProperty(this, x => x.SelectedSubLocationsVM,
-                new SubLocationsVM(dataManager, locationsDataService, null));
+                SelectedSubLocationsVMObservable.ToProperty(this, x => x.SelectedSubLocationsVM, new SubLocationsVM(dataManager, locationsDataService, SelectedEntity));
 
             //Whenever the SelectedEntity changes: create a new LocationVM and SubLocationsVM; update the SearchText
             SelectedEntityObservable.ObserveOnDispatcher().Subscribe(selectedLocation =>
             {
+                if (selectedLocation == null)
+                {
+                    _selectedLocationVMObservable.OnNext(null);
+                    _selectedSubLocationsVMObservable.OnNext(null);
+                    return;
+                }
+
                 //Create a new LocationVM
                 _selectedLocationVMObservable.OnNext(new LocationVM(selectedLocation, dataManager, locationsDataService));
 
                 //Create a new SubLocationsVM
                 _selectedSubLocationsVMObservable.OnNext(new SubLocationsVM(DataManager, _locationsDataService, selectedLocation));
-
-                //If the SelectedEntity changes and is not null update the SearchText
-                if (selectedLocation != null)
-                    SelectedLocationVM.SearchText = string.Format("{0}, {1}, {2}, {3}", selectedLocation.AddressLineOne, selectedLocation.City, selectedLocation.State, selectedLocation.ZipCode);
-
             });
 
             #endregion
@@ -267,8 +257,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public override void DeleteEntity(Location locationToDelete)
         {
+            //Remove Location and it's EntityGraphToRemove
             //This is not automatically done because the DCV is not backed by an EntityList
-            LoadedLocations.Remove(locationToDelete);
+            var locationEntitiesToRemove = locationToDelete.EntityGraphToRemove;
+            DataManager.RemoveEntities(locationEntitiesToRemove);
 
             base.DeleteEntity(locationToDelete);
         }

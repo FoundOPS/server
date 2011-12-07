@@ -1,12 +1,9 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Locations.LocationSmall" x:Name="myLocationSmall"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:FoundOps_Core_Views_Controls="clr-namespace:FoundOps.Core.Views.Controls;assembly=FoundOps.Core.Views"
         xmlns:my="clr-namespace:FoundOps.Framework.Views.Controls.Services" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
-             xmlns:Controls="clr-namespace:FoundOps.Core.Views.Controls"
-             xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
-             xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" mc:Ignorable="d" d:DesignWidth="300" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
-    <Grid x:Name="LayoutRoot" DataContext="{Binding SelectedLocationVM.SelectedLocation}"  Margin="0,0,0,5">
+             xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" mc:Ignorable="d" d:DesignWidth="300" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
+    <Grid x:Name="LayoutRoot" DataContext="{Binding SelectedLocationVM.Entity}"  Margin="0,0,0,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -20,7 +17,7 @@
         <Grid Grid.Row="1" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{StaticResource SmallLabelColumn}" />
-                <ColumnDefinition Width="{StaticResource SmallValueColumn}"/> 
+                <ColumnDefinition Width="{StaticResource SmallValueColumn}"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

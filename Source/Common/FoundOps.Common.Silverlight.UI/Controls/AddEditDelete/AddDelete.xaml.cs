@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Windows;
-using System.Windows.Controls;
+using System.Collections;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Controls;
 using Telerik.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using FoundOps.Common.Silverlight.Converters;
@@ -15,6 +15,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
     {
         AddDelete, //For adding and deleting only
         AddNewExistingDelete, //For adding and deleting new or existing items
+        AddCustomTemplate, //For adding new or existing items. Requires using AddMenuItemTemplate and setting CreateNewItem action and the AddedCurrentItem action
         AddDeleteCustomTemplate, //For adding new or existing and deleting items. Requires using AddMenuItemTemplate and setting CreateNewItem action, the RemoveCurrentItem action, and the AddedCurrentItem action
         AddNewItemDeleteCustomTemplate, //For adding and deleting new items. Requires using AddMenuItemTemplate and setting CreateNewItem action, the RemoveCurrentItem action, and the AddedCurrentItem action
         AddItemDelete //For adding and deleting existing items. Requires using ItemsSource and ItemTemplate
@@ -31,7 +32,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
             AddButton.Click += (s, args) =>
             {
-                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) || RadContextMenu.IsOpen)
+                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) || RadContextMenu.IsOpen)
                     return;
 
                 //When the AddButton is clicked open the RadContextMenu and
@@ -43,7 +44,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
             RadContextMenu.Closed += (s, args) =>
             {
-                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate)) return;
+                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate)) return;
 
                 var item = CustomAddMenuItem.Content;
 
@@ -124,8 +125,13 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
                 case AddDeleteMode.AddNewItemDeleteCustomTemplate:
                     c.CustomAddMenuItem.Visibility = Visibility.Visible;
                     break;
+                case AddDeleteMode.AddCustomTemplate:
+                    c.CustomAddMenuItem.Visibility = Visibility.Visible;
+                    c.DeleteButton.IsEnabled = false;
+                    break;
                 case AddDeleteMode.AddDeleteCustomTemplate:
                     c.CustomAddMenuItem.Visibility = Visibility.Visible;
+                    c.DeleteButton.IsEnabled = true;
                     break;
             }
         }
@@ -141,7 +147,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public void AddedCurrentItem()
         {
-            if (AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate && AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) return;
+            if (AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate && AddDeleteMode != AddDeleteMode.AddCustomTemplate && AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) return;
 
             _currentItemAdded = true;
             this.RadContextMenu.IsOpen = false;
@@ -153,7 +159,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public void CloseContextMenu()
         {
-            if (AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate && AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) return;
+            if (AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate && AddDeleteMode != AddDeleteMode.AddCustomTemplate && AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) return;
 
             _currentItemAdded = true;
             this.RadContextMenu.IsOpen = false;

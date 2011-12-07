@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
