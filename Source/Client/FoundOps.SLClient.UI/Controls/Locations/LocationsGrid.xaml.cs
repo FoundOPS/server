@@ -15,21 +15,13 @@ namespace FoundOps.SLClient.UI.Controls.Locations
     /// </summary>
     public partial class LocationsGrid : INotifyPropertyChanged
     {
-        private bool _isMainGrid;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is main grid.
         /// </summary>
         /// <value>
         /// 	<c>true</c> if this instance is main grid; otherwise, <c>false</c>.
         /// </value>
-        public bool IsMainGrid
-        {
-            get { return _isMainGrid; }
-            set
-            {
-                _isMainGrid = value;
-            }
-        }
+        public bool IsMainGrid { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationsGrid"/> class.
