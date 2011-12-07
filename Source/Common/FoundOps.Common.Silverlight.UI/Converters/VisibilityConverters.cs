@@ -120,7 +120,6 @@ namespace FoundOps.Common.Silverlight.Converters
         #endregion
     }
 
-
     /// <summary>
     /// Visibility based on matching selected integer value to the given integer parameter.
     /// </summary>
@@ -134,6 +133,42 @@ namespace FoundOps.Common.Silverlight.Converters
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
+    //In Clients, show LocationEdit if there is zero or one location.
+    public class ZeroOrOneItemVisibilityConverter : IValueConverter
+    {
+        #region IValueConverter Members
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((int)value <= 1) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
+    //In Clients, show LocationsGrid if there are multiple locations.
+    public class MultipleItemVisibilityConverter : IValueConverter
+    {
+        #region IValueConverter Members
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((int)value > 1) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

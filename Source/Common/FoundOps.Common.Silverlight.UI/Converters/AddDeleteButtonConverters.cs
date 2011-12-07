@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Data;
-using FoundOps.Common.Silverlight.Controls;
+using System.Globalization;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.Common.Silverlight.Converters
@@ -20,6 +20,8 @@ namespace FoundOps.Common.Silverlight.Converters
                     return "Add New or Existing";
                 case AddDeleteMode.AddNewItemDeleteCustomTemplate:
                     return "Add New";
+                case AddDeleteMode.AddCustomTemplate:
+                    return "Add New or Existing";
                 case AddDeleteMode.AddDeleteCustomTemplate:
                     return "Add New or Existing";
                 default:
@@ -28,6 +30,23 @@ namespace FoundOps.Common.Silverlight.Converters
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
+    public class AddDeleteModeConverter : IValueConverter
+    {
+        #region IValueConverter Members
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((int)value <= 1) ? "AddCustomTemplate" : "AddDeleteCustomTemplate";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

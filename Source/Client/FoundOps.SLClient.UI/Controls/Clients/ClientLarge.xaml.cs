@@ -22,7 +22,6 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             if (DesignerProperties.IsInDesignTool)
                 return;
 #endif
-            
             this.DependentWhenVisible(LocationsVM);
 
             //Hookup the AddDeleteLocation logic

@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
+using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

@@ -1,26 +1,21 @@
 ﻿using System.Windows;
-using System.Windows.Data;
+using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Tools;
-using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.Locations
 {
+    /// <summary>
+    /// The UI for selecting a single Location from the loaded Locations.
+    /// </summary>
     public partial class LocationLinkLarge
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocationLinkLarge"/> class.
+        /// </summary>
         public LocationLinkLarge()
         {
             InitializeComponent();
-
-            LocationsVM.PropertyChanged += (sender, e) =>
-            {
-                //After the locations are loaded, setup two way binding
-                if (e.PropertyName == "IsLoading" && !LocationsVM.IsLoading)
-                {
-                    LocationsRadComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("Entity") { Source = this, Mode = BindingMode.TwoWay });
-                }
-            };
 
             this.DependentWhenVisible(LocationsVM);
         }
@@ -84,6 +79,5 @@ namespace FoundOps.SLClient.UI.Controls.Locations
         }
 
         #endregion
-
     }
 }

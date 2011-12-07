@@ -1,13 +1,16 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows;
 using FoundOps.SLClient.UI.ViewModels;
-using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.ContactInfo
 {
+    /// <summary>
+    /// A control to allow adding and editing contact information.
+    /// </summary>
     public partial class ContactInfoEdit
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContactInfoEdit"/> class.
+        /// </summary>
         public ContactInfoEdit()
         {
             // Required to initialize variables
@@ -36,31 +39,5 @@ namespace FoundOps.SLClient.UI.Controls.ContactInfo
                 new PropertyMetadata(null));
 
         #endregion
-
-        private void LabelRadComboBox_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count <= 0) return;
-
-            var contactInfo = (Core.Models.CoreEntities.ContactInfo)((FrameworkElement)sender).DataContext;
-            if (contactInfo != null)
-                contactInfo.Label = (string)e.AddedItems[0];
-        }
-
-        //Manually update label
-        private void LabelRadComboBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var contactInfo = (Core.Models.CoreEntities.ContactInfo)((FrameworkElement)sender).DataContext;
-            var comboBoxText = ((RadComboBox)sender).Text;
-            if (contactInfo != null && !String.IsNullOrEmpty(comboBoxText))
-            {
-                if (contactInfo.Label != comboBoxText) //To fix CancelChanges
-                    contactInfo.Label = comboBoxText;
-            }
-        }
-
-        private void RadComboBox_KeyDown(object sender, KeyEventArgs e) //To continually trigger update
-        {
-            LabelRadComboBox_LostFocus(sender, null);
-        }
     }
 }

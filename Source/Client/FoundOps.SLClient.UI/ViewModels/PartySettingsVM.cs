@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

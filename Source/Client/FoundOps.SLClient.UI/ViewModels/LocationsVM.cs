@@ -130,8 +130,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             #region DomainCollectionView
 
             //Whenever the OwnerAccount, or the Client or Region context changes, update the DCV
-            this.ContextManager.OwnerAccountObservable
-                .Select(_ => true).Merge(ContextManager.GetContextObservable<Client>().Select(_ => true)).Merge(this.ContextManager.GetContextObservable<Region>().Select(_ => true))
+            this.ContextManager.OwnerAccountObservable.AsGeneric().Merge(ContextManager.GetContextObservable<Client>().AsGeneric()).Merge(this.ContextManager.GetContextObservable<Region>().AsGeneric())
                 .Throttle(new TimeSpan(0, 0, 0, 0, 200))
                 .ObserveOnDispatcher().Subscribe(_ =>
             {
@@ -151,8 +150,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Whenever the DCV changes, sort by Name
-            this.DomainCollectionViewObservable.Subscribe(
-                dcv => dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending)));
+            this.DomainCollectionViewObservable.Subscribe(dcv => dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending)));
 
             #endregion
 
@@ -178,18 +176,15 @@ namespace FoundOps.SLClient.UI.ViewModels
             #region Entity
 
             //Hookup _selectedLocationVM to SelectedLocationVMObservable
-            _selectedLocationVM =
-                SelectedLocationVMObservable.ToProperty(this, x => x.SelectedLocationVM);
+            _selectedLocationVM = SelectedLocationVMObservable.ToProperty(this, x => x.SelectedLocationVM);
 
             //Hookup _selectedSubLocationsVM to SelectedSubLocationsVMObservable
             _selectedSubLocationsVM =
-                SelectedSubLocationsVMObservable.ToProperty(this, x => x.SelectedSubLocationsVM,
-                new SubLocationsVM(dataManager, locationsDataService, null));
+                SelectedSubLocationsVMObservable.ToProperty(this, x => x.SelectedSubLocationsVM, new SubLocationsVM(dataManager, locationsDataService, SelectedEntity));
 
             //Whenever the SelectedEntity changes: create a new LocationVM and SubLocationsVM; update the SearchText
             SelectedEntityObservable.ObserveOnDispatcher().Subscribe(selectedLocation =>
             {
-                //If there is not selected location clear the location and sub locations view model
                 if (selectedLocation == null)
                 {
                     _selectedLocationVMObservable.OnNext(null);
@@ -262,11 +257,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public override void DeleteEntity(Location locationToDelete)
         {
+            //Remove Location and it's EntityGraphToRemove
             //This is not automatically done because the DCV is not backed by an EntityList
-            LoadedLocations.Remove(locationToDelete);
+            var locationEntitiesToRemove = locationToDelete.EntityGraphToRemove;
+            DataManager.RemoveEntities(locationEntitiesToRemove);
 
             base.DeleteEntity(locationToDelete);
-
         }
 
         #endregion

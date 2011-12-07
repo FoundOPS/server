@@ -1,18 +1,19 @@
 ﻿using System;
-using ReactiveUI; 
-using System.Linq; 
+using ReactiveUI;
+using System.Linq;
 using FoundOps.Common.NET;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Context.Services.Interface;
+using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -115,12 +116,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// A command for manually setting the Location's latitude and longitude.
         /// </summary>
         public RelayCommand<Tuple<decimal, decimal>> ManuallySetLatitudeLongitude { get; private set; }
-        
+
         /// <summary>
         /// A command to Search for an address.
         /// </summary>
         public RelayCommand SearchCommand { get; private set; }
-        
+
         /// <summary>
         /// A command for setting the Location's information based off a GeocoderResult.
         /// </summary>
@@ -187,7 +188,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Setup the ContactInfoVM and update the Geocoder properties
             ContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.Locations,
-                                              entity.ContactInfoSet);
+                                              entity != null ? entity.ContactInfoSet : null);
 
             //Set ManuallySelectGeocoderResult to the Entity if it has a Latitude/Longitude
 
@@ -207,16 +208,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Set the default SearchText
             SearchText = string.Format("{0}, {1}, {2}, {3}", entity.AddressLineOne, entity.City, entity.State, entity.ZipCode);
 
-
-
             #region Subscribe to Location state validation
             //Setup ValidLatitudeLongitude observable, it will be valid as long as the Entity's lat & long have a value
             //Start with a value
             ValidLatitudeLongitudeState = new BehaviorSubject<bool>(Entity.Latitude.HasValue && Entity.Longitude.HasValue);
             // Subscribe to changes
             Observable2.FromPropertyChangedPattern(Entity, x => x.Latitude).CombineLatest(
-                Observable2.FromPropertyChangedPattern(Entity, x => x.Longitude),(a, b) => a.HasValue && b.HasValue).Throttle(new TimeSpan(0, 0, 0, 0, 250))
-                .Subscribe((BehaviorSubject<bool>) ValidLatitudeLongitudeState);
+                Observable2.FromPropertyChangedPattern(Entity, x => x.Longitude), (a, b) => a.HasValue && b.HasValue).Throttle(new TimeSpan(0, 0, 0, 0, 250))
+                .Subscribe((BehaviorSubject<bool>)ValidLatitudeLongitudeState);
 
             #endregion
 

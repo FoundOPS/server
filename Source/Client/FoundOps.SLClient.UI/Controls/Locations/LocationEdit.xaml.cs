@@ -93,10 +93,5 @@ namespace FoundOps.SLClient.UI.Controls.Locations
             else
                 Map.Provider = new YahooMapsProvider(MapMode.Aerial);
         }
-
-
-
-
-
     }
 }

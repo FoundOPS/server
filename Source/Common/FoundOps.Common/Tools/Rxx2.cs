@@ -34,7 +34,7 @@ namespace FoundOps.Common.Tools
         /// <param name="collection">The collection.</param>
         public static IObservable<bool> FromCollectionChangedEventGeneric(this INotifyCollectionChanged collection)
         {
-            return collection.FromCollectionChangedEvent().Select(_ => true);
+            return collection.FromCollectionChangedEvent().AsGeneric();
         }
 
         #endregion
@@ -65,7 +65,7 @@ namespace FoundOps.Common.Tools
         /// <returns>True whenever the ObservableCollection changed or set</returns>
         public static IObservable<bool> FromCollectionChangedOrSetGeneric<T>(this IObservable<ObservableCollection<T>> observableCollectionObservable)
         {
-            return observableCollectionObservable.FromCollectionChangedOrSet().Select(_ => true);
+            return observableCollectionObservable.FromCollectionChangedOrSet().AsGeneric();
         }
 
         #endregion
@@ -259,6 +259,25 @@ namespace FoundOps.Common.Tools
 
                     return disposables;
                 });
+        }
+
+        /// <summary>
+        /// Merges an observable with an immediate true.
+        /// </summary>
+        /// <param name="observable">The observable to trigger now as well.</param>
+        public static IObservable<bool> AndNow(this IObservable<bool> observable)
+        {
+            return observable.Merge(new[] { true }.ToObservable());
+        }
+
+        /// <summary>
+        /// Makes the observable return true whenever it fires.
+        /// </summary>
+        /// <param name="observable">The observable.</param>
+        /// <returns></returns>
+        public static IObservable<bool> AsGeneric<T>(this IObservable<T> observable)
+        {
+            return observable.Select(_ => true);
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net;
-using System.Runtime.Serialization;
+using System.Linq;
 using System.Xml.Linq;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 //Only works in .NET (not Silverlight) for now because PlaceFinder's Cross Domain Policy is messed up
 namespace FoundOps.Common.NET
@@ -63,7 +63,8 @@ namespace FoundOps.Common.NET
             XDocument xmlResultSet = XDocument.Parse(xmlContent);
             var results =
                 xmlResultSet.Elements("ResultSet").Elements("Result").Select(
-                    result => new GeocoderResult
+                    result =>
+                        new GeocoderResult
                                   {
                                       Name = result.Element("name").Value,
                                       Precision = result.Element("quality").Value,
@@ -72,7 +73,7 @@ namespace FoundOps.Common.NET
                                       AddressLineOne = result.Element("line1").Value,
                                       AddressLineTwo = result.Element("line2").Value,
                                       City = result.Element("city").Value,
-                                      State = result.Element("state").Value,
+                                      State = result.Element("statecode").Value,
                                       ZipCode = result.Element("postal").Value
                                   });
 

@@ -18,8 +18,9 @@
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
             * Ability to add an image to user accounts, business accounts, and employees.<LineBreak/>
             * Added the day of the week to service occurences.<LineBreak/>
+            * User accounts can have employees.<LineBreak/>
+            * Updated the locations grid in clients to be more dynamic.<LineBreak/>
             * Bug fixes.<LineBreak/>
-            * <LineBreak/>
             <LineBreak/>
             (11/10/2011)<LineBreak/>
             * Added Latest Updates screen.<LineBreak/>

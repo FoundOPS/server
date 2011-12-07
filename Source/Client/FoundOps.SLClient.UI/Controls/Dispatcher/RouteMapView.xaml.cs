@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using FoundOps.Common.Silverlight.Extensions.Telerik;
 using FoundOps.Common.Silverlight.Tools;
+using FoundOps.Common.Silverlight.Tools.Location;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using GalaSoft.MvvmLight.Messaging;

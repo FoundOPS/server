@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.ServiceModel.DomainServices.Client;
-using System.Windows;
-using FoundOps.Common.Silverlight.Controls;
-using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using ReactiveUI;
+using System.Linq;
 using ReactiveUI.Xaml;
 using System.ComponentModel;
 using MEFedMVVM.ViewModelLocator;
@@ -14,6 +10,9 @@ using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
+using FoundOps.Common.Silverlight.Controls;
+using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

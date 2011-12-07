@@ -22,9 +22,12 @@ Thumbs.db
 *.log
 [Bb]in
 [Dd]ebug*/
+
 *.lib
 *.sbr
+*.g.cs
 obj/
 [Rr]elease*/
 _ReSharper*/
+Generated_Code/
 [Tt]est[Rr]esult*

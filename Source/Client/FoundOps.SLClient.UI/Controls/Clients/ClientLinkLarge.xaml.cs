@@ -1,41 +1,23 @@
 ﻿using System.Windows;
-using System.Windows.Data;
+using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Tools;
-using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.Clients
 {
+    /// <summary>
+    /// The UI for selecting a single Client from the loaded Clients.
+    /// </summary>
     public partial class ClientLinkLarge
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientLinkLarge"/> class.
+        /// </summary>
         public ClientLinkLarge()
         {
             InitializeComponent();
 
-            if (!ClientsVM.IsLoading)
-                SetupTwoWayBinding();
-
-            ClientsVM.PropertyChanged += (sender, e) =>
-            {
-                //After the clients are loaded, setup two way binding
-                if (e.PropertyName == "IsLoading")
-                    if (ClientsVM.IsLoading)
-                        ClearTwoWayBinding();
-                    else
-                        SetupTwoWayBinding();
-            };
-
             this.DependentWhenVisible(ClientsVM);
-        }
-
-        private void ClearTwoWayBinding()
-        {
-            ClientsRadComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("SelectedClient") { Source = this });
-        }
-        private void SetupTwoWayBinding()
-        {
-            ClientsRadComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("SelectedClient") { Source = this, Mode = BindingMode.TwoWay });
         }
 
         public ClientsVM ClientsVM

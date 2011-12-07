@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
+using FoundOps.Common.Tools;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
@@ -29,8 +30,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the Employee or Vehicle Conntext changes:
             //a) update the filter
             //b) select the closest Route to today
-            this.ContextManager.GetContextObservable<Employee>().Select(_ => true)
-                .Merge(this.ContextManager.GetContextObservable<Vehicle>().Select(_ => true))
+            this.ContextManager.GetContextObservable<Employee>().AsGeneric()
+                .Merge(this.ContextManager.GetContextObservable<Vehicle>().AsGeneric())
                 .ObserveOnDispatcher().Subscribe(_ =>
             {
                 if (DomainCollectionView == null)

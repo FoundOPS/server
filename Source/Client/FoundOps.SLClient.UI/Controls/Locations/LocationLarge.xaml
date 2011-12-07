@@ -9,12 +9,10 @@
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
     <UserControl.Resources>
-        <Converters1:ExistsBoolConverter x:Key="ExistsBoolConverter"/>
         <Converters1:VisibilityConverter x:Key="VisibilityConverter" />
         <Converters2:LocationToStringConverter x:Key="LocationToStringConverter" />
         <Converters3:OwnerPartyToClientConverter x:Key="OwnerPartyToClientConverter"/>
         <Style TargetType="UserControl" x:Key="visibindstyle">
-            
             <Style.Setters>
                 <Setter Property="Visibility" Value="{Binding SelectedLocationVM, Converter={StaticResource VisibilityConverter}}"/>
             </Style.Setters>
@@ -44,7 +42,12 @@
         </Border>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel>
-                <Locations1:LocationEdit />
+                <toolkit:Expander Style="{StaticResource ExpanderStyle}" BorderBrush="{StaticResource LocationBrush}" Margin="5" IsExpanded="True" >
+                    <toolkit:Expander.Header>
+                        <TextBlock TextWrapping="Wrap" Text="Location(s)" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
+                    </toolkit:Expander.Header>
+                    <Locations1:LocationEdit />
+                </toolkit:Expander>
                 <ContactInfo:ContactInfoEdit ContactInfoVM="{Binding SelectedLocationVM.ContactInfoVM}" />
                 <my1:ClientLinkLarge SelectedClient="{Binding DataContext.SelectedEntity.Party, ElementName=myLocationLarge, Mode=TwoWay, Converter={StaticResource OwnerPartyToClientConverter}}"/>
                 <Regions1:RegionLinkLarge SelectedRegion="{Binding DataContext.SelectedEntity.Region, ElementName=myLocationLarge, Mode=TwoWay}"/>

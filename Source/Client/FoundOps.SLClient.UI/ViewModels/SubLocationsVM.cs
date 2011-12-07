@@ -127,6 +127,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 };
             _selectedLocation = selectedLocation;
             _locationsDataService = locationsDataService;
+
             if (_selectedLocation != null)
             {
                 DomainCollectionViewObservable.OnNext(new DomainCollectionViewFactory<SubLocation>(_selectedLocation.SubLocations).View);
