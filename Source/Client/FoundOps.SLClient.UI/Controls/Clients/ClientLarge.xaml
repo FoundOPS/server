@@ -109,8 +109,7 @@
                     <!--Use Grid to allow scrollviewer to work-->
                     <Grid>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource MultipleItemVisibilityConverter}}">
-                            <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False"
-                                    ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
+                            <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource ZeroOrOneItemVisibilityConverter}}">
                             <Locations:LocationEdit DataContext="{Binding DataContext, Source={StaticResource LocationsVMHolder}}" />

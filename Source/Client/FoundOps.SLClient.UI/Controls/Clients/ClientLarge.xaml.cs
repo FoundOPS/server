@@ -15,42 +15,7 @@ namespace FoundOps.SLClient.UI.Controls.Clients
     /// </summary>
     public partial class ClientLarge
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ClientLarge"/> class.
-        /// </summary>
-        public ClientLarge()
-        {
-            // Required to initialize variables
-            InitializeComponent();
-
-#if DEBUG
-            if (DesignerProperties.IsInDesignTool)
-                return;
-#endif
-            this.DependentWhenVisible(LocationsVM);
-
-            //Hookup the AddDeleteLocation logic
-            AddDeleteLocation.CreateNewItem = () => this.LocationsVM.StartCreationOfLocation();
-            AddDeleteLocation.RemoveCurrentItem = (item) => this.LocationsVM.DeleteLocationInCreation();
-
-            LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
-        }
-
-        /// <summary>
-        /// Gets the clients VM.
-        /// </summary>
-        public ClientsVM ClientsVM
-        {
-            get
-            {
-                return (ClientsVM)this.DataContext;
-            }
-        }
-
-        /// <summary>
-        /// Gets the locations VM.
-        /// </summary>
-        public LocationsVM LocationsVM { get { return (LocationsVM)LocationsVMHolder.DataContext; } }
+        #region Properties
 
         #region ClientsListVM Dependency Property
 
@@ -76,6 +41,39 @@ namespace FoundOps.SLClient.UI.Controls.Clients
         #endregion
 
         /// <summary>
+        /// Gets the clients VM.
+        /// </summary>
+        public ClientsVM ClientsVM { get { return (ClientsVM)this.DataContext; } }
+
+        /// <summary>
+        /// Gets the locations VM.
+        /// </summary>
+        public LocationsVM LocationsVM { get { return (LocationsVM) ((FrameworkElement) this.Resources["LocationsVMHolder"]).DataContext; } }
+
+        #endregion
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientLarge"/> class.
+        /// </summary>
+        public ClientLarge()
+        {
+            // Required to initialize variables
+            InitializeComponent();
+
+#if DEBUG
+            if (DesignerProperties.IsInDesignTool)
+                return;
+#endif
+            this.DependentWhenVisible(LocationsVM);
+
+            //Hookup the AddDeleteLocation logic
+            AddDeleteLocation.CreateNewItem = () => this.LocationsVM.StartCreationOfLocation();
+            AddDeleteLocation.RemoveCurrentItem = (item) => this.LocationsVM.DeleteLocationInCreation();
+
+            LocationsGrid.LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
+        }
+
+        /// <summary>
         /// Called whenever the Add Existing or Add New location button is clicked.
         /// </summary>
         private void AddLocationButtonClicked(object sender, RoutedEventArgs e)
@@ -88,7 +86,7 @@ namespace FoundOps.SLClient.UI.Controls.Clients
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs e)
         {
-            ((IProvideContext)LocationsVMHolder.DataContext).MoveToDetailsView.Execute(null);
+            LocationsVM.MoveToDetailsView.Execute(null);
         }
     }
 }

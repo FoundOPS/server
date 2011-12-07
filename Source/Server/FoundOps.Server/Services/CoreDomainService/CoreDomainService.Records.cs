@@ -31,7 +31,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var clients =
                 ((ObjectQuery<Client>)this.ObjectContext.Clients.Where(client => client.VendorId == businessForRole.Id))
-                    .Include("OwnedParty").Include("OwnedParty.ContactInfoSet").Include("BillingLocation");
+                    .Include("OwnedParty").Include("OwnedParty.ContactInfoSet");
 
             //Force load OwnedParty.PartyImage
             var t = (from c in clients
