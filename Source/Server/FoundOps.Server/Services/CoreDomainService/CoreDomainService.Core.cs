@@ -163,9 +163,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         public void DeleteContactInfo(ContactInfo contactInfo)
         {
             var loadedContactInfo = this.ObjectContext.ContactInfoSet.FirstOrDefault(ci => ci.Id == contactInfo.Id);
-
-            if (loadedContactInfo != null)
-                this.ObjectContext.Detach(contactInfo);
+            if (!ObjectContext.PreDelete(loadedContactInfo))
+                return;
 
             if ((contactInfo.EntityState == EntityState.Detached))
                 this.ObjectContext.ContactInfoSet.Attach(contactInfo);
