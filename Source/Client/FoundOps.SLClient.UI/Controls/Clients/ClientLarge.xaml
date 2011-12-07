@@ -13,6 +13,7 @@
              d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM"><!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities"-->
     <UserControl.Resources>
         <Converters:ClientTitleConverter x:Key="ClientTitleConverter" />
+        <Converters:LocationTitleConverter x:Key="LocationTitleConverter" />
         <Converters1:AddButtonTextConverter x:Key="AddButtonTextConverter"/>
         <Converters2:MultipleItemVisibilityConverter x:Key="MultipleItemVisibilityConverter"/>
         <Converters2:ZeroOrOneItemVisibilityConverter x:Key="ZeroOrOneItemVisibilityConverter"/>
@@ -99,14 +100,13 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock TextWrapping="Wrap" Text="Locations" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
+                            <TextBlock TextWrapping="Wrap" Text="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource LocationTitleConverter}}" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
                             <AddEditDelete:AddDelete x:Name="AddDeleteLocation" Grid.Column="1" AddMenuItemCustomTemplate="{StaticResource AddMenuTemplate}"
                                 AddCommand="{Binding AddLocationCommand}" DeleteCommand="{Binding DeleteLocationCommand}"
                                 CommandParameter="{Binding DataContext, Source={StaticResource LocationsVMHolder}}" 
                                 AddDeleteMode="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource AddDeleteModeConverter}}"/>
                         </Grid>
                     </toolkit:Expander.Header>
-                    <!--Use Grid to allow scrollviewer to work-->
                     <Grid>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource MultipleItemVisibilityConverter}}">
                             <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>

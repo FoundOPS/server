@@ -244,6 +244,8 @@
                     </StackPanel>
                     <Button x:Name="EditLocationButton" Grid.ColumnSpan="2" Content="Edit Location" Margin="0,2,0,0"
                             Visibility="Visible" Click="EditLocationButtonClick" />
+                    <Button x:Name="MoreDetailsButton" Grid.ColumnSpan="2" Content="More Details" Margin="0,2,0,0"
+                            Visibility="Visible" Click="MoreDetailsButtonClick" />
                 </StackPanel>
             </Grid>
             <!--<TextBlock Grid.Row="2" Text="Notes: " HorizontalAlignment="Right" Margin="0,7,0,0" Foreground="Black" Grid.Column="4" />

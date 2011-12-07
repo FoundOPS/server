@@ -2,20 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
-             xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters2="clr-namespace:FoundOps.Framework.Views.Converters"
-             xmlns:Converters3="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:Locations1="clr-namespace:FoundOps.SLClient.UI.Controls.Locations"
+             xmlns:Converters2="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:Converters3="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" 
+             xmlns:Locations1="clr-namespace:FoundOps.SLClient.UI.Controls.Locations"
              xmlns:Regions1="clr-namespace:FoundOps.SLClient.UI.Controls.Regions" xmlns:my1="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400">
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400" 
+             Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <UserControl.Resources>
-        <Converters1:VisibilityConverter x:Key="VisibilityConverter" />
         <Converters2:LocationToStringConverter x:Key="LocationToStringConverter" />
         <Converters3:OwnerPartyToClientConverter x:Key="OwnerPartyToClientConverter"/>
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
-    <Grid x:Name="LayoutRoot" Background="White"
-            Visibility="{Binding SelectedLocationVM.Entity, Converter={StaticResource VisibilityConverter}}">
+    <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

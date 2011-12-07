@@ -86,6 +86,11 @@ namespace FoundOps.SLClient.UI.Controls.Locations
             VisualStateManager.GoToState(this, "MapSearch", true);
         }
 
+        private void MoreDetailsButtonClick(object sender, RoutedEventArgs e)
+        {
+            LocationsVM.MoveToDetailsView.Execute(null);
+        }
+
         private void MapTypeSelectorSelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (this.MapTypeSelector.SelectedIndex == 0)
