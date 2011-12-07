@@ -53,8 +53,6 @@
     -moz-border-radius:2px;
     -webkit-border-radius:2px;
     border-radius:2px;
-    background:#000 url(assets/loader.gif) center no-repeat;
-    background:rgba(0,0,0,.7) url(assets/loader.gif) center no-repeat;
     z-index:4;
     display:none;
 }
@@ -297,7 +295,6 @@ display:none;
 #rotator-tooltip.txt-up{
 margin-left:-10px;
 margin-bottom:5px;
-background:url(assets/vtip.png) no-repeat;
 background-position:10px bottom;
 background-position-x:10px;
 background-position-y:bottom;

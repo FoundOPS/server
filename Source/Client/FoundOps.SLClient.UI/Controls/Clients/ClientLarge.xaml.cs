@@ -1,7 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
 using System.Windows;
+using Telerik.Windows;
+using System.ComponentModel;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
+using Telerik.Windows.Controls.GridView;
+using PropertyMetadata = System.Windows.PropertyMetadata;
+using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 
 namespace FoundOps.SLClient.UI.Controls.Clients
 {
@@ -28,6 +33,8 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             //Hookup the AddDeleteLocation logic
             AddDeleteLocation.CreateNewItem = () => this.LocationsVM.StartCreationOfLocation();
             AddDeleteLocation.RemoveCurrentItem = (item) => this.LocationsVM.DeleteLocationInCreation();
+
+            LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
         }
 
         /// <summary>
@@ -44,13 +51,7 @@ namespace FoundOps.SLClient.UI.Controls.Clients
         /// <summary>
         /// Gets the locations VM.
         /// </summary>
-        public LocationsVM LocationsVM
-        {
-            get
-            {
-                return (LocationsVM)this.LocationsGrid.DataContext;
-            }
-        }
+        public LocationsVM LocationsVM { get { return (LocationsVM)LocationsVMHolder.DataContext; } }
 
         #region ClientsListVM Dependency Property
 
@@ -84,6 +85,11 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             AddDeleteLocation.AddedCurrentItem();
             //Must do this manually because the AddLocationCommand takes a LocationsVM instead of the entity as a parameter
             ClientsVM.AddLocationCommand.Execute(LocationsVM);
+        }
+
+        private void OnCellDoubleClick(object sender, RadRoutedEventArgs e)
+        {
+            ((IProvideContext)LocationsVMHolder.DataContext).MoveToDetailsView.Execute(null);
         }
     }
 }

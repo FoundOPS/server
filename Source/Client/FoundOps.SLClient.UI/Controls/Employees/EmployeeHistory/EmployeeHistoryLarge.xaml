@@ -71,14 +71,14 @@
                         <TextBox TextWrapping="Wrap" Text="{Binding Notes, Mode=TwoWay}"/>
                     </Grid>
                 </toolkit:Expander>
-                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource EmployeeBrush}">
+                <!--<toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource EmployeeBrush}">
                     <toolkit:Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap" Text="Attached Files" Margin="0,3,5,3" FontSize="13"
                             Foreground="{StaticResource EmployeeBrush}" />
                         </StackPanel>
                     </toolkit:Expander.Header>
-                </toolkit:Expander>
+                </toolkit:Expander>-->
             </StackPanel>
         </ScrollViewer>
     </StackPanel>

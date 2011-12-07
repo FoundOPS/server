@@ -4,16 +4,17 @@
              xmlns:my="clr-namespace:FoundOps.Framework.Views.Controls.Services" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
              xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices" 
-             xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo"
-             xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Contacts="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
-             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
+             xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
              mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM">
     <UserControl.Resources>
-        <Converters:ClientTitleConverter x:Key="ClientTitleConverter" />
+        <Converters:ClientTitleConverter x:Key="ClientTitleConverter"/>
+        <Converters2:ExistsBoolConverter x:Key="ExistsBoolConverter"/>
         <Converters1:AddButtonTextConverter x:Key="AddButtonTextConverter"/>
-        <StackPanel x:Key="LocationsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM"/>
+        <StackPanel x:Name="LocationsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM"/>
         <DataTemplate x:Key="AddMenuTemplate">
             <Grid DataContext="{Binding DataContext, Source={StaticResource LocationsVMHolder}}">
                 <Grid.RowDefinitions>
@@ -95,7 +96,7 @@
                     <Contacts:ContactsGrid x:Name="ContactsGrid" />
                 </toolkit:Expander>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource LocationBrush}"
-                        BorderBrush="{StaticResource LocationBrush}" IsEnabled="{Binding DataContext.IsLoading, ElementName=LocationsGrid, Converter={StaticResource NotExistsBoolConverter}}">
+                        BorderBrush="{StaticResource LocationBrush}">
                     <toolkit:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -108,14 +109,28 @@
                                 CommandParameter="{Binding DataContext, Source={StaticResource LocationsVMHolder}}" AddDeleteMode="AddDeleteCustomTemplate"/>
                         </Grid>
                     </toolkit:Expander.Header>
-                    <!--Use Grid to allow RadComboBox's Scroll to work-->
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False"
-                                ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
+                        <Controls:RadGridView x:Name="LocationsRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
+                                 RowIndicatorVisibility="Collapsed" ItemsSource="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness.Locations}">
+                            <Controls:RadGridView.Columns>
+                                <Controls:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}" />
+                                <Controls:GridViewDataColumn Header="Billing Address" Width="*">
+                                    <Controls:GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <RadioButton GroupName="BillingLocation" Content="Bill to this location"/>
+                                                <!--Checked="{Binding Party.ClientOwner.BillingLocation, 
+                                                    Converter={StaticResource ExistsBoolConverter}, Mode=TwoWay}"-->
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </Controls:GridViewColumn.CellTemplate>
+                                </Controls:GridViewDataColumn>
+                            </Controls:RadGridView.Columns>
+                        </Controls:RadGridView>
                     </Grid>
                 </toolkit:Expander>
                 <RecurringServices:RecurringServicesLinkLarge/>

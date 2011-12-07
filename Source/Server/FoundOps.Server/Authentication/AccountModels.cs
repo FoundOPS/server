@@ -54,7 +54,7 @@ namespace FoundOps.Server.Authentication
         [DisplayName("Password")]
         public string Password { get; set; }
 
-        [DisplayName("Remember me?")]
+        [DisplayName("Remember Me?")]
         public bool RememberMe { get; set; }
 
         public string RedirectUrl { get; set; }
