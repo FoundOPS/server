@@ -31,14 +31,10 @@
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <LinkedServerProject>
     </LinkedServerProject>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
     <Utf8Output>true</Utf8Output>
     <ExpressionBlendVersion>4.1.10405.0</ExpressionBlendVersion>
     <TargetFrameworkProfile />
@@ -443,6 +439,9 @@
     </Compile>
     <Compile Include="Controls\Parties\UserAccounts\UserAccountLarge.xaml.cs">
       <DependentUpon>UserAccountLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\UserAccounts\UserAccountLinkLarge.xaml.cs">
+      <DependentUpon>UserAccountLinkLarge.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Parties\UserAccounts\UserAccountsGrid.xaml.cs">
       <DependentUpon>UserAccountsGrid.xaml</DependentUpon>
@@ -869,6 +868,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Parties\UserAccounts\UserAccountLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Parties\UserAccounts\UserAccountLinkLarge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -82,7 +82,7 @@
                             <Dispatcher2:RoutesListView x:Name="RoutesListView" telerik:RadDragAndDropManager.AllowDrop="True" AllowDrop="True"/>
                         </telerik:RadBusyIndicator>
                     </telerik:RadPane>
-                    <telerik:RadPane Header="Route Schedule" Visibility="Collapsed" telerik:RadDocking.SerializationTag="RouteSchedule" CanUserClose="False">
+                    <!--<telerik:RadPane Header="Route Schedule" Visibility="Collapsed" telerik:RadDocking.SerializationTag="RouteSchedule" CanUserClose="False">
                         <telerik:RadBusyIndicator VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BusyContent="Loading Routes" IsBusy="{Binding RoutesLoading}">
                             <Dispatcher2:RouteScheduleView/>
                         </telerik:RadBusyIndicator>
@@ -92,7 +92,7 @@
                         <telerik:RadBusyIndicator VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BusyContent="Loading Routes" IsBusy="{Binding RoutesLoading}">
                             <Dispatcher2:RouteMapView x:Name="RouteMapView" />
                         </telerik:RadBusyIndicator>
-                    </telerik:RadPane>
+                    </telerik:RadPane>-->
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>
             <!--<my:RouteManifestViewer Grid.RowSpan="2" HorizontalAlignment="Left" Margin="15,15,0,0" Name="routeManifestViewer1" VerticalAlignment="Top" />-->

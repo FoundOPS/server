@@ -7502,6 +7502,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _OwnerPartyId;
         partial void OnOwnerPartyIdChanging(Nullable<global::System.Guid> value);
         partial void OnOwnerPartyIdChanged();
+    
+        /// <summary>
+        /// The Role&apos;s type. Defaults to custom.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int16 RoleTypeInt
+        {
+            get
+            {
+                return _RoleTypeInt;
+            }
+            set
+            {
+                OnRoleTypeIntChanging(value);
+                ReportPropertyChanging("RoleTypeInt");
+                _RoleTypeInt = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RoleTypeInt");
+                OnRoleTypeIntChanged();
+            }
+        }
+        private global::System.Int16 _RoleTypeInt = 0;
+        partial void OnRoleTypeIntChanging(global::System.Int16 value);
+        partial void OnRoleTypeIntChanged();
 
         #endregion
     
@@ -10426,7 +10450,7 @@ namespace FoundOps.Core.Models.CoreEntities
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeeUserAccount", "Employee")]
-        public EntityCollection<Employee> OfEmployees
+        public EntityCollection<Employee> LinkedEmployees
         {
             get
             {

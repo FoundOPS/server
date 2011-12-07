@@ -7,7 +7,7 @@
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files" xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM" d:DesignWidth="400">
+             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM" d:DesignWidth="400">
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}" 
           Visibility="{Binding DataContext.SelectedEntity, ElementName=myEmployeeLarge, Converter={StaticResource VisibilityConverter}}">
@@ -116,6 +116,7 @@
                 <!--Only visible if role has permission to see clients assigned to them (salesperson) and filter to show their clients-->
                 <Dispatcher:RoutesLogGrid MaxHeight="150"/>
                 <!--Only show for if role has permission to be routes (technician/driver, operations manager) -->
+                <UserAccounts:UserAccountLinkLarge SelectedUserAccount="{Binding DataContext.SelectedEntity.LinkedUserAccount, ElementName=myEmployeeLarge, Mode=TwoWay}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

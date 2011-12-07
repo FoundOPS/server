@@ -31,14 +31,10 @@
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <LinkedServerProject>
     </LinkedServerProject>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -112,6 +108,7 @@
     <Compile Include="Tools\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\UriExtensions.cs" />
     <Compile Include="Tools\OrthodromicDistanceCalculator.cs" />
+    <Compile Include="Tools\PasswordTools.cs" />
     <Compile Include="Tools\Rxx2.cs" />
     <Compile Include="Tools\SerializationTools.cs" />
     <Compile Include="Tools\StreamHelpers.cs" />

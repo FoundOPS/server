@@ -3,10 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" 
-             xmlns:Controls1="clr-namespace:FoundOps.Common.Silverlight.UI.Controls;assembly=FoundOps.Common.Silverlight.UI" xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts"
-             xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
+             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             mc:Ignorable="d" d:DesignWidth="400">
+             xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Employees="clr-namespace:FoundOps.SLClient.UI.Controls.Employees"
+             xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" mc:Ignorable="d" d:DesignWidth="500">
+    <UserControl.Resources>
+        <Converters:VisibilityConverter x:Key="VisibilityConverter"/>
+    </UserControl.Resources>
     <telerik:RadBusyIndicator x:Name="BusyIndicator" BusyContent="Loading Data" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsBusy="{Binding IsLoading}">
         <Grid x:Name="LayoutRoot" DataContext="{Binding Entity, ElementName=myUserAccountEdit}">
             <Grid.RowDefinitions>
@@ -49,20 +53,36 @@
                             <RowDefinition/>
                             <RowDefinition Height="{StaticResource DetailRowHeight}"/>
                             <RowDefinition/>
+                            <RowDefinition Height="{StaticResource DetailRowHeight}"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="{StaticResource DetailRowHeight}"/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="First Name:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                         <TextBox Grid.Column="2" Text="{Binding FirstName, Mode=TwoWay}" />
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Last Name:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                         <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding LastName, Mode=TwoWay}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Email Address:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                        <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding EmailAddress, Mode=TwoWay}"/>
                     </Grid>
                 </Controls:Expander>
-
                 <!--PASSWORD-->
                 <Controls:Expander Margin="5" IsExpanded="true" Style="{StaticResource ExpanderStyle}" BorderBrush="{StaticResource PermissionBrush}">
                     <Controls:Expander.Header>
                         <TextBlock Text="Password" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource PermissionBrush}" />
                     </Controls:Expander.Header>
-                    <HyperlinkButton Content="Change Password" Foreground="Black" BorderThickness="1"  HorizontalAlignment="Center" Click="HyperlinkButtonClick"/>
+                    <StackPanel HorizontalAlignment="Center">
+                        <Grid Grid.Row="6" Visibility="{Binding TemporaryPassword, Converter={StaticResource VisibilityConverter}}" Height="25" Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource LargeLabelColumn}" />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Temporary Password:" VerticalAlignment="Center"  HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Column="2" Text="{Binding TemporaryPassword}" Foreground="#488FCD" VerticalAlignment="Center"/>
+                        </Grid>
+                    <HyperlinkButton Content="Change Password" Foreground="Black" BorderThickness="1"  HorizontalAlignment="Center" Click="HyperlinkButtonClick" Margin="5"/>
+                    </StackPanel>
                 </Controls:Expander>
             </StackPanel>
         </Grid>

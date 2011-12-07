@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;

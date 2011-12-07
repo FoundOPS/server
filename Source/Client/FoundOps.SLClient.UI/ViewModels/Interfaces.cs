@@ -1,6 +1,5 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
 using GalaSoft.MvvmLight.Command;
-using ReactiveUI.Xaml;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -16,6 +15,20 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Delete the Selected CommandParameter (of Type T)
         /// </summary>
         RelayCommand<Client> DeleteSelectedClientCommand { get; set; }
+    }
+
+    public interface IAddDeleteSelectedEmployee
+    {
+
+        /// <summary>
+        /// Add the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Employee> AddSelectedEmployeeCommand { get; set; }
+
+        /// <summary>
+        /// Delete the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Employee> DeleteSelectedEmployeeCommand { get; set; }
     }
 
     public interface IAddDeleteSelectedLocation

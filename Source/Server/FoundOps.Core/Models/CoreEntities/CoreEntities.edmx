@@ -374,6 +374,7 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
     <Property Name="OwnerPartyId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="RoleTypeInt" Type="smallint" Nullable="false" DefaultValue="0" />
   </EntityType>
   <EntityType Name="Parties">
     <Key>
@@ -2028,6 +2029,11 @@
           <NavigationProperty Name="MemberParties" Relationship="CoreEntities.PartyRole" FromRole="Role" ToRole="Party" />
           <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.PartyRole1" FromRole="Role" ToRole="Party" />
           <Property Name="OwnerPartyId" Nullable="true" Type="Guid" />
+          <Property Type="Int16" Name="RoleTypeInt" Nullable="false" DefaultValue="0" >
+            <Documentation>
+              <Summary>The Role's type. Defaults to custom.</Summary>
+            </Documentation>
+          </Property>
         </EntityType>
         <EntityType Name="Party" Abstract="false">
           <Key>
@@ -2555,7 +2561,7 @@
           <NavigationProperty Name="TrackPoints" Relationship="CoreEntities.UserAccountTrackPoint" FromRole="UserAccount" ToRole="TrackPoint" />
           <NavigationProperty Name="UserAccountLog" Relationship="CoreEntities.UserAccountUserAccountLogEntry" FromRole="UserAccount" ToRole="UserAccountLogEntry" />
           <Property Type="DateTime" Name="CreationDate" Nullable="false" />
-          <NavigationProperty Name="OfEmployees" Relationship="CoreEntities.EmployeeUserAccount" FromRole="UserAccount" ToRole="Employee" />
+          <NavigationProperty Name="LinkedEmployees" Relationship="CoreEntities.EmployeeUserAccount" FromRole="UserAccount" ToRole="Employee" />
         </EntityType>
         <Association Name="UserAccountTrackPoint">
           <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="1" />
@@ -3257,6 +3263,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="OwnerPartyId" ColumnName="OwnerPartyId" />
+          <ScalarProperty Name="RoleTypeInt" ColumnName="RoleTypeInt" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3750,7 +3757,7 @@
     <edmx:Diagrams>
       <Diagram Name="CoreEntities" ZoomLevel="82" >
         <EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="19.75" PointY="205.625" Height="2.7494921874999818" />
-        <EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="17.5" PointY="205.875" Height="2.3648893229166674" />
+        <EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="17.5" PointY="205.875" Height="2.5571907552083246" />
         <EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="14.875" PointY="205.625" Height="2.7494921875000102" />
         <EntityTypeShape EntityType="CoreEntities.Person" Width="1.5" PointX="10.25" PointY="216.25" Height="2.3648893229166674" />
         <InheritanceConnector EntityType="CoreEntities.Person" ManuallyRouted="false" >
@@ -3790,8 +3797,8 @@
           <ConnectorPoint PointX="14.875" PointY="207.12474609375" />
         </AssociationConnector>
         <AssociationConnector Association="CoreEntities.RoleBlock">
-          <ConnectorPoint PointX="19" PointY="207.05744466145833" />
-          <ConnectorPoint PointX="19.75" PointY="207.05744466145833" />
+          <ConnectorPoint PointX="19" PointY="207.12474609375" />
+          <ConnectorPoint PointX="19.75" PointY="207.12474609375" />
         </AssociationConnector>
         <EntityTypeShape EntityType="CoreEntities.Repeat" Width="1.5" PointX="14.375" PointY="190.125" Height="2.557190755208353" />
         <EntityTypeShape EntityType="CoreEntities.Location" PointX="10.375" PointY="204.625" Width="1.5" Height="4.864807942708353" />
@@ -4149,12 +4156,12 @@
           <ConnectorPoint PointX="14.375" PointY="196.08869466145831" />
         </AssociationConnector>
         <AssociationConnector Association="CoreEntities.PartyRole">
-          <ConnectorPoint PointX="16.75" PointY="207.48644994099936" />
-          <ConnectorPoint PointX="17.5" PointY="207.48644994099936" />
+          <ConnectorPoint PointX="16.75" PointY="207.58898466428121" />
+          <ConnectorPoint PointX="17.5" PointY="207.58898466428121" />
         </AssociationConnector>
         <AssociationConnector Association="CoreEntities.PartyRole1">
-          <ConnectorPoint PointX="16.75" PointY="206.61822497049968" />
-          <ConnectorPoint PointX="17.5" PointY="206.61822497049968" />
+          <ConnectorPoint PointX="16.75" PointY="206.66949233214061" />
+          <ConnectorPoint PointX="17.5" PointY="206.66949233214061" />
         </AssociationConnector>
         <AssociationConnector Association="CoreEntities.LocationParty1">
           <ConnectorPoint PointX="11.875" PointY="208.67101800394482" />

@@ -76,7 +76,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         private void InitializeDefaultRoles()
         {
             //Setup FoundOPS' Role
-            FoundOpsAdministratorRole = new Role { Name = "Administrator", OwnerParty = BusinessAccountsDesignData.FoundOps };
+            FoundOpsAdministratorRole = new Role { Name = "Administrator", OwnerParty = BusinessAccountsDesignData.FoundOps, RoleType = RoleType.Administrator};
 
             foreach (var adminConsoleBlock in _blocksData.AdministrativeConsoleBlocks)
             {
@@ -103,12 +103,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             //Setup UserAccounts' default UserAccountRole
             foreach (var userAccount in _userAccountsDesignData.DesignUserAccounts)
-                DesignUserAccountRoles.Add(SetupDefaultUserAccountRole(userAccount));
+                DesignUserAccountRoles.Add(SetupDefaultUserAccountRole(userAccount, _blocksData.UserAccountBlocks));
         }
 
         private Role SetupServiceProviderAdministratorRole(BusinessAccount ownerParty)
         {
-            var role = new Role { Name = "Administrator", OwnerParty = ownerParty };
+            var role = new Role { Name = "Administrator", OwnerParty = ownerParty, RoleType = RoleType.Administrator};
 
             foreach (var block in _blocksData.ManagerBlocks)
                 role.Blocks.Add(block);
@@ -119,18 +119,17 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             return role;
         }
 
-        private Role SetupDefaultUserAccountRole(UserAccount userAccount)
+        public static Role SetupDefaultUserAccountRole(UserAccount userAccount, IEnumerable<Block> userAccountBlocks)
         {
             var userRole = new Role
                                {
                                    Name = String.Format("{0} {1}", userAccount.FirstName, userAccount.LastName),
-                                   OwnerParty = userAccount
+                                   OwnerParty = userAccount,
+                                   RoleType = RoleType.Administrator
                                };
 
-            foreach (var block in _blocksData.UserAccountBlocks)
-            {
+            foreach (var block in userAccountBlocks)
                 userRole.Blocks.Add(block);
-            }
 
             return userRole;
         }
