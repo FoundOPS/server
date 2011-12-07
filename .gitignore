@@ -31,5 +31,5 @@ obj/
 _ReSharper*/
 Generated_Code/
 [Tt]est[Rr]esult*
-ClientBin/*.zip
-ClientBin/*.xap
+Source/Server/FoundOps.Server/ClientBin/*.zip
+Source/Server/FoundOps.Server/ClientBin/*.xap
