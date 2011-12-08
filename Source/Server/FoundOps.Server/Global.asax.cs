@@ -15,8 +15,16 @@ namespace FoundOps.Core.Server
 
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.IgnoreRoute("{*allsvc}", new { allsvc = @".*\.svc(/.*)?" }); //Ignore All Services, For WCF RIA Services
+            routes.IgnoreRoute("{*allsvc}", new { allsvc = @".*\.svc(/.*)?" });
+            //Ignore All Services, For WCF RIA Services
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            //Route for the Beta page: wp.foundops.com/beta
+            routes.MapRoute("WP pages",
+                "{page}",
+                new { controller = "Home", action = "WP" },
+                new { page = @"^beta$|^product$|^team$|^values$|^jobs$|^contact$|^blog$" }
+                );
 
             //Route for team profiles: wp.foundops.com/namehere to Home/Team
             routes.MapRoute(
@@ -24,7 +32,7 @@ namespace FoundOps.Core.Server
                 "Names",
                 // URL with parameters
                 "{id}",
-                new { controller = "Home", action = "Team"},
+                new { controller = "Home", action = "Team" },
                 new { id = @"((?:[a-z][a-z0-9_]*))" }
                 );
 
@@ -46,11 +54,11 @@ namespace FoundOps.Core.Server
 #if DEBUG
             IsDebugMode = true;
             RootUrl = "http://localhost:31820";
-            RootBlogUrl = "http://localhost:55206";
+            //RootBlogUrl = "http://localhost:55206";
 #else
             RootUrl = "http://www.foundops.com";
-            RootBlogUrl = "http://wp.foundops.com";
 #endif
+            RootBlogUrl = "http://wp.foundops.com";
 
             RegisterRoutes(RouteTable.Routes);
         }

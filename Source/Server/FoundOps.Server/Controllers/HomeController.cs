@@ -43,6 +43,18 @@ namespace FoundOps.Server.Controllers
             return Redirect(String.Format("{0}/Team?id={1}", Global.RootBlogUrl, id));
         }
 
+        /// <summary>
+        /// Redirects to the respective wordpress page
+        /// </summary>
+        /// <param name="page">The page to redirect to.</param>
+        public ActionResult WP(string page)
+        {
+            if (page.ToLower() == "blog")
+                page = ""; //wp.foundops.com
+
+            return Redirect(String.Format("{0}/{1}", Global.RootBlogUrl, page));
+        }
+
         public ContentResult Sitemap()
         {
             XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
