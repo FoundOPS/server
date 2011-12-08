@@ -375,7 +375,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var locations =
                 ((ObjectQuery<Location>)this.ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id))
-                .Include("ContactInfoSet").Include("Region").Include("Party").Include("SubLocations").ToArray();
+                .Include("ContactInfoSet").Include("Region").Include("Party").Include("Party.ClientOwner").Include("SubLocations").ToArray();
 
             return locations;
         }
