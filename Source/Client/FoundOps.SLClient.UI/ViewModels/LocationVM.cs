@@ -131,7 +131,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Observables
 
-        private readonly BehaviorSubject<IEnumerable<GeocoderResult>> _geocodeCompletion = new BehaviorSubject<IEnumerable<GeocoderResult>>(null);
+        private readonly Subject<IEnumerable<GeocoderResult>> _geocodeCompletion = new Subject<IEnumerable<GeocoderResult>>();
         /// <summary>
         /// An observable that publishes whenever Geocoding has completed.
         /// </summary>
@@ -218,9 +218,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 .Subscribe((BehaviorSubject<bool>)ValidLatitudeLongitudeState);
 
             #endregion
-
-            // Subscribe to Geocoding completion, aka Search completion.
-            Observable2.FromPropertyChangedPattern(this, x => x.GeocoderResults).Subscribe(GeocodeCompletion as BehaviorSubject<IEnumerable<GeocoderResult>>);
         }
 
         #region Logic
@@ -239,8 +236,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             _locationsDataService.TryGeocode(SearchText, results =>
                                                              {
                                                                  GeocoderResults = new ObservableCollection<GeocoderResult>(results);
-                                                                 //TODO: Signal end of search event
-                                                                 GeocodeCompletion.Next();
+                                                                 //Signal end of search event
+                                                                 _geocodeCompletion.OnNext(GeocoderResults);
                                                              });
 
             ManuallySelectGeocoderResult.Latitude = null;

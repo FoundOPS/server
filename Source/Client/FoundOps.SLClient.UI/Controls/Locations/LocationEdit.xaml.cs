@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.Common.Tools;
 using ReactiveUI;
 using System.Windows;
 using System.Reactive.Linq;
@@ -24,19 +25,14 @@ namespace FoundOps.SLClient.UI.Controls.Locations
             InitializeComponent();
             if (System.ComponentModel.DesignerProperties.IsInDesignTool) return;
 
-
-            // Zoom to BestView when selection changed on  geocode results.
-            var georesultselectionchanged = Observable.FromEventPattern<System.Windows.Controls.SelectionChangedEventArgs>(GeocoderResultsListBox, "SelectionChanged");
-            georesultselectionchanged.ObserveOnDispatcher().Subscribe(_=>InformationLayer.SetBestView());
+            // Zoom to BestView when selection changed on  geocode results (when there is more than just the one default option).
+            var georesultselectionchanged = Observable.FromEventPattern<System.Windows.Controls.SelectionChangedEventArgs>(GeocoderResultsListBox, "SelectionChanged")
+                .Where(_ => GeocoderResultsListBox.Items.Count > 1).AsGeneric();
 
             // Zoom to BestView when Geocoding is completed (i.e. When Search completes)
-            LocationsVM.SelectedLocationVMObservable.Where(lvm => lvm != null)
-                .SelectMany(lvm => lvm.GeocodeCompletion).ObserveOnDispatcher().Subscribe(_ =>
-                {
-                    if (InformationLayer.Items.Count > 0)
-                        InformationLayer.SetBestView();
-                });
-
+            LocationsVM.SelectedLocationVMObservable.Where(lvm => lvm != null).SelectMany(lvm => lvm.GeocodeCompletion).AsGeneric()
+                .Merge(georesultselectionchanged).Throttle(new TimeSpan(0, 0, 0, 1))
+                .ObserveOnDispatcher().Subscribe(_ => InformationLayer.SetBestView());
 
             // Subscribe to changes of latitude/longitude by changing visual state according to validity.
             LocationsVM.SelectedLocationVMObservable.Where(lvm => lvm != null)
