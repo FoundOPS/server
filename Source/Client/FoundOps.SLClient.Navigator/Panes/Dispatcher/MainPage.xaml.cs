@@ -315,10 +315,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     newRouteDestination.RouteTasks.Add(task);
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
-                    TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddToRouteDestinationFromTaskBoard", task.Name, 1);
+                    RecordAnalytics(task, "AddToRouteDestinationFromTaskBoard");
                 }
 
                 (((RouteDestination)destination).Route).RouteDestinationsListWrapper.Insert(((RouteDestination)destination).OrderInRoute, newRouteDestination);
@@ -333,10 +330,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     newRouteDestination.RouteTasks.Add(task);
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route task
-                    TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddToRouteTaskFromTaskBoard", task.Name, 1);
+                    RecordAnalytics(task, "AddToRouteTaskFromTaskBoard");
                 }
             }
 
@@ -370,17 +364,27 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                     //Checks to see if the route is empty. If not its sets lastDestinationOrderInRoute appropriately 
                     if (((Route)destination).RouteDestinationsListWrapper.Count != 0)
-                        lastDestinationOrderInRoute = ((Route)destination).RouteDestinationsListWrapper.LastOrDefault().OrderInRoute;
+                    {
+                        var lastOrDefault = ((Route)destination).RouteDestinationsListWrapper.LastOrDefault();
+                        if (lastOrDefault != null)
+                            lastDestinationOrderInRoute = lastOrDefault.OrderInRoute;
+                    }
 
                     ((Route)destination).RouteDestinationsListWrapper.Insert(lastDestinationOrderInRoute, newRouteDestination);
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route
-                    TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddToRouteFromTaskBoard", task.Name, 1);
+                    RecordAnalytics(task, "AddToRouteFromTaskBoard");
                 }
             }
+        }
+
+        private void RecordAnalytics(RouteTask task, string dragDropDescriptor)
+        {
+            //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
+            TrackEventAction.Track(
+                    RoutesVM.AutoAssignButtonHasBeenClicked
+                        ? "Drag and Drop After AutoDispatch"
+                        : "Drag and Drop", dragDropDescriptor, task.Name, 1);
         }
 
         #endregion
