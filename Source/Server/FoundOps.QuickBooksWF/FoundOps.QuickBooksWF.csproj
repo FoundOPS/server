@@ -76,7 +76,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Service1.xamlx">
+    <Content Include="Create.xamlx">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Content>
