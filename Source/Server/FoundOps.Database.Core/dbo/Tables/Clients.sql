@@ -12,11 +12,11 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_ClientParty1]
-    ON [dbo].[Clients]([LinkedPartyId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_BusinessAccountClient]
+    ON [dbo].[Clients]([VendorId] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_BusinessAccountClient]
-    ON [dbo].[Clients]([VendorId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_ClientParty1]
+    ON [dbo].[Clients]([LinkedPartyId] ASC);
 

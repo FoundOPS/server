@@ -51,6 +51,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             this.DispatcherToolBar.ResetLayoutButton.Click += ResetLayoutButtonClick;
 
             this.DependentWhenVisible(RoutesVM);
+            this.DependentWhenVisible(RegionsVM);
 
             RadDragAndDropManager.AddDragQueryHandler(this.TaskBoard, OnDragQuery);
             RadDragAndDropManager.AddDropQueryHandler(this.TaskBoard, OnDropQuery);
@@ -85,12 +86,14 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         }
 
         /// <summary>
-        /// Gets the routes VM.
+        /// Gets the RoutesVM.
         /// </summary>
-        public RoutesVM RoutesVM
-        {
-            get { return (RoutesVM)this.DataContext; }
-        }
+        public RoutesVM RoutesVM { get { return (RoutesVM)this.DataContext; } }
+
+        /// <summary>
+        /// Gets the RegionsVM.
+        /// </summary>
+        public RegionsVM RegionsVM { get { return (RegionsVM)((FrameworkElement)this.Resources["RegionsVMHolder"]).DataContext; } }
 
         #region DragAndDrop
 

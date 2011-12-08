@@ -19,11 +19,11 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_EmployeeUserAccount]
-    ON [dbo].[Employees]([LinkedUserAccountId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_EmployeeBusinessAccount]
+    ON [dbo].[Employees]([EmployerId] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_EmployeeBusinessAccount]
-    ON [dbo].[Employees]([EmployerId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_EmployeeUserAccount]
+    ON [dbo].[Employees]([LinkedUserAccountId] ASC);
 

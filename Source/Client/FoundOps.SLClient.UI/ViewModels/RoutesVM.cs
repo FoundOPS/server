@@ -395,9 +395,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 //It meets the region filter if: a) a route has no destinations
                 //or b) a route has a destination with no location (because it hasnt loaded) or a location of a selected region
-                var meetsRegionFilter = route.NumberOfRouteDestinations == 0 ||
-                    route.RouteDestinations.Any(rd => rd.Location == null || rd.Location.Region == null
-                        || SelectedRegions.Contains(rd.Location.Region.Name));
+                //var meetsRegionFilter = route.NumberOfRouteDestinations == 0 ||
+                //    route.RouteDestinations.Any(rd => rd.Location == null || rd.Location.Region == null
+                //        || SelectedRegions.Contains(rd.Location.Region.Name));
+
+                //TODO: Uncomment above
+                var meetsRegionFilter = true;
 
                 //It meets the route type filter if: a) a route has no RouteType selected or
                 //b) a route is the type of a SelectedRouteType

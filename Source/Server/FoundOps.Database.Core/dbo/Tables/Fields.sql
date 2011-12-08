@@ -13,11 +13,11 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_FieldField]
-    ON [dbo].[Fields]([ParentFieldId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_ServiceTemplateField]
+    ON [dbo].[Fields]([ServiceTemplateId] ASC);
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_ServiceTemplateField]
-    ON [dbo].[Fields]([ServiceTemplateId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_FieldField]
+    ON [dbo].[Fields]([ParentFieldId] ASC);
 
