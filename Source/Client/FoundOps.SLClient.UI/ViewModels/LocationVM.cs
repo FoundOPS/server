@@ -234,11 +234,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         private void OnSearch()
         {
             _locationsDataService.TryGeocode(SearchText, results =>
-                                                             {
-                                                                 GeocoderResults = new ObservableCollection<GeocoderResult>(results);
-                                                                 //Signal end of search event
-                                                                 _geocodeCompletion.OnNext(GeocoderResults);
-                                                             });
+            {
+                GeocoderResults = new ObservableCollection<GeocoderResult>(results);
+                //Signal end of search event
+                _geocodeCompletion.OnNext(GeocoderResults);
+            });
 
             ManuallySelectGeocoderResult.Latitude = null;
             ManuallySelectGeocoderResult.Longitude = null;
