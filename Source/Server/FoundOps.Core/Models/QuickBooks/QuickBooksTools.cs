@@ -440,6 +440,7 @@ namespace FoundOps.Core.Models.QuickBooks
             var responseString = consumerRequest.ReadBody();
         }
 
+        #region Delete - Not Allowed in Production Apps Yet
         /// <summary>
         /// Makes a call to the QuickBooks Online Data Services to delete the specified invoice
         /// </summary>
@@ -499,6 +500,7 @@ namespace FoundOps.Core.Models.QuickBooks
             //var responseString = consumerRequest.ReadBody();
             #endregion
         }
+        #endregion
 
         #endregion
 
@@ -724,7 +726,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
         #endregion
 
-        #region Azure Tables
+        #region Azure Tables (Add, Remove, GetList)
 
         /// <summary>
         /// Adds the item to the table only if the item does not already exist in the table.

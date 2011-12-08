@@ -1,3 +1,0 @@
-C:\FoundOps\GitHub\Source\Common\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj,634584411270336113,
-C:\FoundOps\GitHub\Source\Common\FoundOps.Common.Silverlight\FoundOps.Common.Silverlight.csproj,634568912450649450,
-C:\FoundOps\GitHub\Source\Common\FoundOps.Common\FoundOps.Common.csproj,634569542543558703,
