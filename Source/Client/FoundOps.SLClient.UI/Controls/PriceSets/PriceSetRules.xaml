@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.Price_Sets.PriceSetRules"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" mc:Ignorable="d">
+
+    <ScrollViewer x:Name="LayoutRoot" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+        <ItemsControl ItemsSource="s">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="If the " VerticalAlignment="Center"/>
+                        
+                        <!--Conditions-->
+                        <ItemsControl>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Top" Orientation="Horizontal">
+                                        
+                                        <telerik:RadComboBox>
+                                            <telerik:RadComboBoxItem Content="Client's Number of Service Occurences"/>
+                                        </telerik:RadComboBox>
+                                        
+                                        <telerik:RadComboBox >
+                                            <telerik:RadComboBoxItem Content="Ever"/>
+                                            <telerik:RadComboBoxItem Content="In The Past"/>
+                                        </telerik:RadComboBox>
+                                        
+                                        <telerik:RadNumericUpDown/><!--Collapsed if Ever is Selected-->
+                                        
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="Then" Grid.Column="2" VerticalAlignment="Center"/>
+
+                        <!--Consequences-->
+                        <ItemsControl>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Grid.Column="3" VerticalAlignment="Top" Orientation="Horizontal">
+
+                                        <telerik:RadComboBox>
+                                            <telerik:RadComboBoxItem Content="Add"/>
+                                            <telerik:RadComboBoxItem Content="Subtract"/>
+                                            <telerik:RadComboBoxItem Content="Multiply by"/>
+                                            <telerik:RadComboBoxItem Content="Divide by"/>
+                                        </telerik:RadComboBox>
+
+                                        <telerik:RadNumericUpDown/>
+
+                                        <telerik:RadComboBox>
+                                            <telerik:RadComboBoxItem Content="US Dollars"/>
+                                            <telerik:RadComboBoxItem Content="Percent of"/>
+                                        </telerik:RadComboBox>
+
+                                        <telerik:RadComboBox><!--Collapsed if US Dollars is selected-->
+                                            <telerik:RadComboBoxItem Content="Total"/>
+                                            <telerik:RadComboBoxItem Content="SubTotal"/>
+                                        </telerik:RadComboBox>
+
+                                        <telerik:RadComboBox>
+                                            <telerik:RadComboBoxItem Content="."/>
+                                            <telerik:RadComboBoxItem Content=", And"/>
+                                            <telerik:RadComboBoxItem Content="Per"/>
+                                        </telerik:RadComboBox>
+
+                                        <telerik:RadNumericUpDown/>
+
+                                        <telerik:RadComboBox>
+                                            <telerik:RadComboBoxItem Content="Service Occurence"/><!--Replace with names of possible service types, EX. Oil Pumpout-->
+                                            <telerik:RadComboBoxItem Content="Service Field Data Units"/><!--List from field data collected on possible service types, EX. Miles-->
+                                        </telerik:RadComboBox>
+
+                                        <telerik:RadComboBox>
+                                            <telerik:RadComboBoxItem Content="."/>
+                                            <telerik:RadComboBoxItem Content=", And"/><!--Add an additional item to the control to make another consequence-->
+                                        </telerik:RadComboBox>
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+    
+    
+</UserControl>

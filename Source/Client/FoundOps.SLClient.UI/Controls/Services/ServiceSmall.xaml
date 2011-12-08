@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.Services.ServiceSmall" x:Name="myServiceSmall"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
+        xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" mc:Ignorable="d" d:DesignWidth="300" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM">
+    <UserControl.Resources>
+        <Converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter"/>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot"  Margin="0,0,0,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Background="{StaticResource ServiceBrush}">
+            <StackPanel Orientation="Horizontal" Margin="5,3" >
+                <TextBlock Text="Service - " FontSize="13" Foreground="White"/>
+                <TextBlock Text="{Binding SelectedEntity.ServiceTemplate.Name}" FontSize="13" Foreground="White"/>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{StaticResource SmallLabelColumn}" />
+                <ColumnDefinition Width="{StaticResource SmallValueColumn}"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Date: " HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeFormatConverter}, ConverterParameter='dd MMM yyy'}" HorizontalAlignment="Left" Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</UserControl>

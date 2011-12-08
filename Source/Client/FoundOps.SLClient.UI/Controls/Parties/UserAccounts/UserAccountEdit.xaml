@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Parties.UserAccounts.UserAccountEdit" x:Name="myUserAccountEdit" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" 
+             xmlns:Controls1="clr-namespace:FoundOps.Common.Silverlight.UI.Controls;assembly=FoundOps.Common.Silverlight.UI" xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts"
+             xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
+             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
+             mc:Ignorable="d" d:DesignWidth="400">
+    <telerik:RadBusyIndicator x:Name="BusyIndicator" BusyContent="Loading Data" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsBusy="{Binding IsLoading}">
+        <Grid x:Name="LayoutRoot" DataContext="{Binding Entity, ElementName=myUserAccountEdit}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="{StaticResource PermissionBrush}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="5,3" >
+                        <TextBlock Text="User Account Settings" FontSize="13" Foreground="White"/>
+                    </StackPanel>
+                    <SaveDiscardCancel:SaveCancel Name="saveCancel1" Grid.Column="1" ISaveDiscardChangesCommands="{Binding ISaveDiscardChangesCommands, RelativeSource={RelativeSource AncestorType=UserAccounts:UserAccountEdit}}" />
+                </Grid>
+            </Border>
+            <StackPanel Grid.Row="1">
+                <Controls:Expander Margin="5" IsExpanded="true" Style="{StaticResource ExpanderStyle}" BorderBrush="{StaticResource PermissionBrush}">
+                    <Controls:Expander.Header>
+                        <TextBlock Text="Image" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource PermissionBrush}" />
+                    </Controls:Expander.Header>
+                    <Files:ImageFileUpload x:Name="accountImage1" Margin="10" HorizontalAlignment="Center" DefaultFileTypeToCreate="CoreEntities:PartyImage" OwnerParty="{Binding}"  File="{Binding PartyImage, Mode=TwoWay}" />
+                </Controls:Expander>
+                <!--INFORMATION-->
+                <Controls:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">
+                    <Controls:Expander.Header>
+                        <TextBlock Text="Information" 
+                                   Margin="0,3,5,3" FontSize="13" 
+                                   Foreground="{StaticResource PermissionBrush}" />
+                    </Controls:Expander.Header>
+                    <Grid Margin="0,5" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{StaticResource LargeLabelColumn}" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="{StaticResource DetailRowHeight}"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="First Name:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                        <TextBox Grid.Column="2" Text="{Binding FirstName, Mode=TwoWay}" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Last Name:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding LastName, Mode=TwoWay}"/>
+                    </Grid>
+                </Controls:Expander>
+
+                <!--PASSWORD-->
+                <Controls:Expander Margin="5" IsExpanded="true" Style="{StaticResource ExpanderStyle}" BorderBrush="{StaticResource PermissionBrush}">
+                    <Controls:Expander.Header>
+                        <TextBlock Text="Password" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource PermissionBrush}" />
+                    </Controls:Expander.Header>
+                    <HyperlinkButton Content="Change Password" Foreground="Black" BorderThickness="1"  HorizontalAlignment="Center" Click="HyperlinkButtonClick"/>
+                </Controls:Expander>
+            </StackPanel>
+        </Grid>
+    </telerik:RadBusyIndicator>
+</UserControl>

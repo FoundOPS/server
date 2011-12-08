@@ -1,0 +1,43 @@
+﻿<UserControl xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows" x:Name="myRouteScheduleView"
+    x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.RouteScheduleView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.ScheduleView" 
+    xmlns:DragDrop="clr-namespace:Telerik.Windows.Controls.DragDrop;assembly=Telerik.Windows.Controls" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
+    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="631" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM" DataContext="{Binding RouteScheduleVM}">
+    <Controls:Grid x:Name="LayoutRoot" Background="White" DragDrop:RadDragAndDropManager.AllowDrag="False" DragDrop:RadDragAndDropManager.AllowDrop="False">
+        <Controls1:RadScheduleView MinTimeRulerExtent="7000" x:Name="RadScheduleView" ResourceTypesSource="{Binding ResourceTypesCollection}" 
+                   AppointmentsSource="{Binding AppointmentCollection}" NavigationHeaderVisibility="Collapsed"   
+                   AllowDrop="False" SnapAppointments="False" IsEnabled="True" IsInlineEditingEnabled="False">
+            <Controls1:RadScheduleView.AppointmentItemContentTemplate>
+                <DataTemplate>
+                    <StackPanel MinWidth="140" Margin="5">
+                        <TextBlock Text="{Binding Subject}"/>
+                        <!--Bind text to destination name-->
+                        <ListBox ItemsSource="{Binding Appointment.Tasks}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" Width="auto"/>
+                                    <!--Bind text to task name-->
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </DataTemplate>
+            </Controls1:RadScheduleView.AppointmentItemContentTemplate>
+            <Controls1:RadScheduleView.ViewDefinitions>
+                <Controls1:DayViewDefinition Orientation="Horizontal" DayStartTime="{Binding EarliestStartTime}" 
+                                             DayEndTime="{Binding LatestEndTime}"/>
+            </Controls1:RadScheduleView.ViewDefinitions>
+            <Controls1:RadScheduleView.GroupDescriptionsSource>
+                <Controls1:GroupDescriptionCollection>
+                    <Controls1:ResourceGroupDescription ResourceType="Route"/>
+                </Controls1:GroupDescriptionCollection>
+            </Controls1:RadScheduleView.GroupDescriptionsSource>
+        </Controls1:RadScheduleView>
+    </Controls:Grid>
+</UserControl>

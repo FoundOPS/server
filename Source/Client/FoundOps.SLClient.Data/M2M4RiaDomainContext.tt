@@ -1,0 +1,5 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".g.cs" #>
+
+<#@ include file="M2MGenerator.ttinclude" #>
+<#@ include file="..\..\Common\FoundOps.Common.NET\M2M4Ria\Client\M2M4RiaDomainContext.ttinclude" #>

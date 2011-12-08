@@ -1,0 +1,1074 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F3DE1685-C531-41A6-A9CB-896B502386E8}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FoundOps.SLClient.UI</RootNamespace>
+    <AssemblyName>FoundOps.SLClient.UI</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>FoundOps.SLClient.UI.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>FoundOps.Framework.Views.App</SilverlightAppEntry>
+    <TestPageFileName>FoundOps.Framework.Clients.ViewsTestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>false</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject>
+    </LinkedServerProject>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.1.10405.0</ExpressionBlendVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>Bin\Debug\FoundOps.SLClient.UI.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Croll.Silverlight.Controls">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Croll.Silverlight.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityGraph.Silverlight">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="EntityTools">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityTools.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Kent.Boogaart.HelperTrinity">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.HelperTrinity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Kent.Boogaart.KBCsv">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <Private>False</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.SL4">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MEFedMVVM.SL">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\MEFedMVVM.SL.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\Microsoft.CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ReactiveUI.Xaml_SL4">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI.Xaml_SL4.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI_SL4">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL4.dll</HintPath>
+    </Reference>
+    <Reference Include="Rxx">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Rxx.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Client, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Client.Web, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Data.Input, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Interactivity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Effects">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Effects.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Interactions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SLaB.Utilities">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\SLaB.Utilities.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SLaB.Utilities.Xaml">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\SLaB.Utilities.Xaml.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SLMultiBinding">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\SLMultiBinding.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.Composition.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=5.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core, Version=5.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Windows.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Input.Toolkit">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Toolkit">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Controls.Toolkit.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Toolkit.Internals">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Controls.Toolkit.Internals.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Windows.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Xml.Linq, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Xml.Linq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Data">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.DataVisualization">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Docking">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Docking.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.GridView">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Input">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Input.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Navigation">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Navigation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.ScheduleView">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Account\Business\BusinessDetailsView.xaml.cs">
+      <DependentUpon>BusinessDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Account\Person\PersonDetailsEdit.xaml.cs">
+      <DependentUpon>PersonDetailsEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Clients\ClientLarge.xaml.cs">
+      <DependentUpon>ClientLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Clients\ClientSmall.xaml.cs">
+      <DependentUpon>ClientSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Clients\ClientLinkLarge.xaml.cs">
+      <DependentUpon>ClientLinkLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Clients\ClientsGrid.xaml.cs">
+      <DependentUpon>ClientsGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Clients\ClientLinkSmall.xaml.cs">
+      <DependentUpon>ClientLinkSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Common\SelectedEntitiesLarge.xaml.cs">
+      <DependentUpon>SelectedEntitiesLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContactInfo\ContactInfoEdit.xaml.cs">
+      <DependentUpon>ContactInfoEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContactInfo\ContactInfoView.xaml.cs">
+      <DependentUpon>ContactInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Contacts\ClientTitleGrid.xaml.cs">
+      <DependentUpon>ClientTitleGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Contacts\ContactLarge.xaml.cs">
+      <DependentUpon>ContactLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Contacts\ContactsGrid.xaml.cs">
+      <DependentUpon>ContactsGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Contacts\ContactSmall.xaml.cs">
+      <DependentUpon>ContactSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Define\CheckBoxDefine.xaml.cs">
+      <DependentUpon>CheckBoxDefine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Define\OptionsFieldDefine.xaml.cs">
+      <DependentUpon>OptionsFieldDefine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Define\CurrencyDefine.xaml.cs">
+      <DependentUpon>CurrencyDefine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Edit\FieldsEditGrid.xaml.cs">
+      <DependentUpon>FieldsEditGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Define\FieldsDefineGrid.xaml.cs">
+      <DependentUpon>FieldsDefineGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Define\ImageDefine.xaml.cs">
+      <DependentUpon>ImageDefine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Define\NumberDefine.xaml.cs">
+      <DependentUpon>NumberDefine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Define\PercentageDefine.xaml.cs">
+      <DependentUpon>PercentageDefine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Define\TextDefine.xaml.cs">
+      <DependentUpon>TextDefine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Define\TimeDefine.xaml.cs">
+      <DependentUpon>TimeDefine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\Edit\LocationFieldEdit.xaml.cs">
+      <DependentUpon>LocationFieldEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\RouteMapView.xaml.cs">
+      <DependentUpon>RouteMapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\DestinationDetails.xaml.cs">
+      <DependentUpon>DestinationDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\Filter.xaml.cs">
+      <DependentUpon>Filter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\RouteScheduleView.xaml.cs">
+      <DependentUpon>RouteScheduleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\TaskBoard.xaml.cs">
+      <DependentUpon>TaskBoard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\RouteDetails.xaml.cs">
+      <DependentUpon>RouteDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\RouteManifest.xaml.cs">
+      <DependentUpon>RouteManifest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\RouteManifestOptions.xaml.cs">
+      <DependentUpon>RouteManifestOptions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\RouteManifestViewer.xaml.cs">
+      <DependentUpon>RouteManifestViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\RoutesLogGrid.xaml.cs">
+      <DependentUpon>RoutesLogGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\TaskDetails.xaml.cs">
+      <DependentUpon>TaskDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLinkLarge.xaml.cs">
+      <DependentUpon>EmployeeHistoryLinkLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistorySmall.xaml.cs">
+      <DependentUpon>EmployeeHistorySmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLinkSmall.xaml.cs">
+      <DependentUpon>EmployeeHistoryLinkSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Employees\EmployeesGrid.xaml.cs">
+      <DependentUpon>EmployeesGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Employees\EmployeeLarge.xaml.cs">
+      <DependentUpon>EmployeeLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryGrid.xaml.cs">
+      <DependentUpon>EmployeeHistoryGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Employees\SelectedEmployees.xaml.cs">
+      <DependentUpon>SelectedEmployees.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLarge.xaml.cs">
+      <DependentUpon>EmployeeHistoryLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Employees\EmployeeSmall.xaml.cs">
+      <DependentUpon>EmployeeSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Files\FileLarge.xaml.cs">
+      <DependentUpon>FileLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Files\FilesGrid.xaml.cs">
+      <DependentUpon>FilesGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Files\FilesLink.xaml.cs">
+      <DependentUpon>FilesLink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Files\ImageFileUpload.xaml.cs">
+      <DependentUpon>ImageFileUpload.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImportData\ImportDataGrid.xaml.cs">
+      <DependentUpon>ImportDataGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Invoices\InvoiceDetails.xaml.cs">
+      <DependentUpon>InvoiceDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Locations\LocationLinkSmall.xaml.cs">
+      <DependentUpon>LocationLinkSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Locations\LocationLinkLarge.xaml.cs">
+      <DependentUpon>LocationLinkLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Locations\LocationEdit.xaml.cs">
+      <DependentUpon>LocationEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Locations\LocationSmall.xaml.cs">
+      <DependentUpon>LocationSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Locations\SubLocations.xaml.cs">
+      <DependentUpon>SubLocations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\BusinessAccounts\BusinessAccountsGrid.xaml.cs">
+      <DependentUpon>BusinessAccountsGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\BusinessAccounts\BusinessAccountLarge.xaml.cs">
+      <DependentUpon>BusinessAccountLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\BusinessAccounts\BusinessAccountSmall.xaml.cs">
+      <DependentUpon>BusinessAccountSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\UserAccounts\UserAccountLarge.xaml.cs">
+      <DependentUpon>UserAccountLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\UserAccounts\UserAccountsGrid.xaml.cs">
+      <DependentUpon>UserAccountsGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml.cs">
+      <DependentUpon>UserAccountsLink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PriceSets\PriceSetRules.xaml.cs">
+      <DependentUpon>PriceSetRules.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Regions\RegionLinkSmall.xaml.cs">
+      <DependentUpon>RegionLinkSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Regions\RegionSmall.xaml.cs">
+      <DependentUpon>RegionSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Regions\RegionLinkLarge.xaml.cs">
+      <DependentUpon>RegionLinkLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Regions\RegionLarge.xaml.cs">
+      <DependentUpon>RegionLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Regions\RegionsGrid.xaml.cs">
+      <DependentUpon>RegionsGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Repeat.xaml.cs">
+      <DependentUpon>Repeat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Locations\LocationLarge.xaml.cs">
+      <DependentUpon>LocationLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Locations\LocationsGrid.xaml.cs">
+      <DependentUpon>LocationsGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\RoutesListView.xaml.cs">
+      <DependentUpon>RoutesListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\RecurringServices\RecurringServicesLinkSmall.xaml.cs">
+      <DependentUpon>RecurringServicesLinkSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\RecurringServices\RecurringServiceSmall.xaml.cs">
+      <DependentUpon>RecurringServiceSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\ServiceSmall.xaml.cs">
+      <DependentUpon>ServiceSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\InstanceEditChildWindow.xaml.cs">
+      <DependentUpon>InstanceEditChildWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\LocationServicesLinkSmall.xaml.cs">
+      <DependentUpon>LocationServicesLinkSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\RecurringServices\RecurringServiceLarge.xaml.cs">
+      <DependentUpon>RecurringServiceLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\RecurringServices\RecurringServicesGrid.xaml.cs">
+      <DependentUpon>RecurringServicesGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\RecurringServices\RecurringServicesLinkLarge.xaml.cs">
+      <DependentUpon>RecurringServicesLinkLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\ServiceLarge.xaml.cs">
+      <DependentUpon>ServiceLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\ServiceOccurencesLink.xaml.cs">
+      <DependentUpon>ServiceOccurencesLink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\ServicesGrid.xaml.cs">
+      <DependentUpon>ServicesGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\ServiceTemplate\ServiceTemplateEdit.xaml.cs">
+      <DependentUpon>ServiceTemplateEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\ServiceTemplate\ServiceTemplateLarge.xaml.cs">
+      <DependentUpon>ServiceTemplateLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\ServiceTemplate\ServiceTemplatesGrid.xaml.cs">
+      <DependentUpon>ServiceTemplatesGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Services\ServiceTemplate\ServiceTemplatesLink.xaml.cs">
+      <DependentUpon>ServiceTemplatesLink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\BusinessAccounts\BusinessAccountSettings.xaml.cs">
+      <DependentUpon>BusinessAccountSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings\QuickbooksSettings.xaml.cs">
+      <DependentUpon>QuickbooksSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\UserAccounts\UserAccountEdit.xaml.cs">
+      <DependentUpon>UserAccountEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Settings\UserAccountSettings.xaml.cs">
+      <DependentUpon>UserAccountSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Vehicles\Maintenance\MaintenanceLinkSmall.xaml.cs">
+      <DependentUpon>MaintenanceLinkSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Vehicles\Maintenance\MaintenanceSmall.xaml.cs">
+      <DependentUpon>MaintenanceSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Vehicles\Maintenance\MaintenanceGrid.xaml.cs">
+      <DependentUpon>MaintenanceGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Vehicles\Maintenance\MaintenanceLarge.xaml.cs">
+      <DependentUpon>MaintenanceLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Vehicles\VehicleSmall.xaml.cs">
+      <DependentUpon>VehicleSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Vehicles\VehicleLarge.xaml.cs">
+      <DependentUpon>VehicleLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\Converters\ClientConverters.cs" />
+    <Compile Include="Controls\Dispatcher\Converters\LocationConverters.cs" />
+    <Compile Include="Controls\Dispatcher\Converters\ScheduleConverters.cs" />
+    <Compile Include="Controls\Vehicles\VehiclesGrid.xaml.cs">
+      <DependentUpon>VehiclesGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Vehicles\SelectedVehicles.xaml.cs">
+      <DependentUpon>SelectedVehicles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\ContactInfoConverters.cs" />
+    <Compile Include="Converters\ContactInfoDataTemplateSelector.cs" />
+    <Compile Include="Converters\AddButtonTextConverters.cs" />
+    <Compile Include="Converters\RouteDestinationsOpacityConverters.cs" />
+    <Compile Include="Converters\FilterConverters.cs" />
+    <Compile Include="Converters\RouteLogConverters.cs" />
+    <Compile Include="Converters\NumericFieldConverters.cs" />
+    <Compile Include="Converters\OptionsFieldConverters.cs" />
+    <Compile Include="Converters\FieldDefaultValueStringConverter.cs" />
+    <Compile Include="Converters\FieldToTypeStringConverters.cs" />
+    <Compile Include="Converters\ScheduleModeBoolConverters.cs" />
+    <Compile Include="Converters\RepeatConverters.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Selectors\FieldDataTemplateSelector.cs" />
+    <Compile Include="Tools\ServiceGenerator.cs" />
+    <Compile Include="ViewModels\BusinessAccountsVM.cs" />
+    <Compile Include="ViewModels\BusinessVM.cs" />
+    <Compile Include="ViewModels\ContactInfoVM.cs" />
+    <Compile Include="ViewModels\ContactsVM.cs" />
+    <Compile Include="ViewModels\ClientTitlesVM.cs" />
+    <Compile Include="ViewModels\BusinessAccountSettingsVM.cs" />
+    <Compile Include="ViewModels\Interfaces.cs" />
+    <Compile Include="ViewModels\PartySettingsVM.cs" />
+    <Compile Include="ViewModels\PartyVM.cs" />
+    <Compile Include="ViewModels\PersonVM.cs" />
+    <Compile Include="ViewModels\RouteScheduleVM.cs" />
+    <Compile Include="ViewModels\RoutesDragDropVM.cs" />
+    <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />
+    <Compile Include="ViewModels\UserAccountSettingsVM.cs" />
+    <Compile Include="ViewModels\UserAccountsVM.cs" />
+    <Compile Include="ViewModels\RegionsVM.cs" />
+    <Compile Include="ViewModels\SelectedEmployeesVM.cs" />
+    <Compile Include="ViewModels\EmployeeHistoryVM.cs" />
+    <Compile Include="ViewModels\OptionsFieldVM.cs" />
+    <Compile Include="ViewModels\ClientsVM.cs" />
+    <Compile Include="ViewModels\RouteMapVM.cs" />
+    <Compile Include="ViewModels\RecurringServicesVM.cs" />
+    <Compile Include="ViewModels\ServiceTemplatesVM.cs" />
+    <Compile Include="ViewModels\SubLocationsVM.cs" />
+    <Compile Include="ViewModels\ImportDataVM.cs" />
+    <Compile Include="ViewModels\EmployeesVM.cs" />
+    <Compile Include="ViewModels\RouteManifestVM.cs" />
+    <Compile Include="ViewModels\SelectedVehiclesVM.cs" />
+    <Compile Include="ViewModels\VehicleMaintenanceVM.cs" />
+    <Compile Include="ViewModels\VehiclesVM.cs" />
+    <Compile Include="ViewModels\RoutesVM.cs" />
+    <Compile Include="ViewModels\FieldsVM.cs" />
+    <Compile Include="ViewModels\LocationVM.cs" />
+    <Compile Include="ViewModels\ServicesVM.cs" />
+    <Compile Include="ViewModels\LocationsVM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="Controls\Account\Business\BusinessDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Account\Person\PersonDetailsEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Clients\ClientLarge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Clients\ClientSmall.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Clients\ClientLinkLarge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Clients\ClientsGrid.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Clients\ClientLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Common\SelectedEntitiesLarge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContactInfo\ContactInfoEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContactInfo\ContactInfoView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Contacts\ClientTitleGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Contacts\ContactLarge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Contacts\ContactsGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Contacts\ContactSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\CheckBoxDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\OptionsFieldDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\CurrencyDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Edit\FieldsEditGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\FieldsDefineGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\ImageDefine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\NumberDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\PercentageDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\TextDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\TimeDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Edit\LocationFieldEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\RouteMapView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dispatcher\DestinationDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\Filter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\RouteScheduleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\TaskBoard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\RouteDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\RouteManifest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\RouteManifestOptions.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dispatcher\RouteManifestViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\RoutesLogGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\TaskDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLinkLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistorySmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Employees\EmployeesGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Employees\EmployeeLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistoryGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Employees\SelectedEmployees.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Employees\EmployeeSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Files\FileLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Files\FilesGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Files\FilesLink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Files\ImageFileUpload.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ImportData\ImportDataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Invoices\InvoiceDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Locations\LocationLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Locations\LocationLinkLarge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Locations\LocationEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Locations\LocationLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Locations\LocationSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Locations\LocationsGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\RoutesListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Locations\SubLocations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Parties\BusinessAccounts\BusinessAccountsGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Parties\BusinessAccounts\BusinessAccountLarge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Parties\BusinessAccounts\BusinessAccountSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Parties\UserAccounts\UserAccountLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Parties\UserAccounts\UserAccountsGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PriceSets\PriceSetRules.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Regions\RegionLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Regions\RegionSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Regions\RegionLinkLarge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Regions\RegionLarge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Regions\RegionsGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Repeat.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Services\RecurringServices\RecurringServicesLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Services\RecurringServices\RecurringServiceSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Services\ServiceSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Services\InstanceEditChildWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Services\LocationServicesLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Services\RecurringServices\RecurringServiceLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Services\RecurringServices\RecurringServicesGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Services\RecurringServices\RecurringServicesLinkLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Services\ServiceLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Services\ServiceOccurencesLink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Services\ServicesGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Services\ServiceTemplate\ServiceTemplateEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Services\ServiceTemplate\ServiceTemplateLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Services\ServiceTemplate\ServiceTemplatesGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Services\ServiceTemplate\ServiceTemplatesLink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Parties\BusinessAccounts\BusinessAccountSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Settings\QuickbooksSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Parties\UserAccounts\UserAccountEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\UserAccountSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Vehicles\Maintenance\MaintenanceLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Vehicles\Maintenance\MaintenanceSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Vehicles\Maintenance\MaintenanceGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Vehicles\Maintenance\MaintenanceLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Vehicles\VehicleSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Vehicles\VehicleLarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Vehicles\VehiclesGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Vehicles\SelectedVehicles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj">
+      <Project>{BB748726-9C39-4FDA-8B02-9CC12CD9D34D}</Project>
+      <Name>FoundOps.Common.Silverlight.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\FoundOps.Common.Silverlight\FoundOps.Common.Silverlight.csproj">
+      <Project>{14ADDE30-D51B-4A1C-A855-D556431FDA0A}</Project>
+      <Name>FoundOps.Common.Silverlight</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\FoundOps.Common\FoundOps.Common.csproj">
+      <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
+      <Name>FoundOps.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FoundOps.SLClient.Data\FoundOps.SLClient.Data.csproj">
+      <Project>{0F4FBB4B-0807-4903-8503-67A7021D82BF}</Project>
+      <Name>FoundOps.SLClient.Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\Parties\AdmininistrativeConsole\" />
+    <Folder Include="Tools\MarkupExtensions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

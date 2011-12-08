@@ -1,0 +1,8 @@
+﻿<#
+EdmxFilePath = @"C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx";
+EntityModelNamespace = "FoundOps.Core.Models.CoreEntities";
+DomainServiceNamespace = "FoundOps.Server.Services.CoreDomainService";
+DomainServiceName = "CoreDomainService";
+DomainContextName = "CoreDomainContext";
+IsJoinTypeEntitySetAccessibleFromDomainContext = true;
+#>

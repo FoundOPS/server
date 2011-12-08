@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Contacts.ClientTitleGrid" x:Name="myClientTitleGrid"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
+        xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientTitlesVM" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="AddMenuTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="ClientsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" />
+                <TextBlock Text="Client" />
+                <telerik:RadComboBox Grid.Row="1" MinWidth="150" StaysOpenOnEdit="True" IsEditable="True" TextSearchMode="Contains" DisplayMemberPath="DisplayName" 
+                       SelectedValue="{Binding Client, Mode=TwoWay}" ItemsSource="{Binding DataContext.DomainCollectionView, ElementName=ClientsVMHolder}"/>
+                <StackPanel x:Name="ClientTitlesVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientTitlesVM" />
+                <TextBlock Text="Role" Grid.Row="2"/>
+                <telerik:RadComboBox Grid.Row="3" MinWidth="150" StaysOpenOnEdit="True" IsEditable="True" TextSearchMode="Contains" 
+                        Text="{Binding Title, Mode=TwoWay}" ItemsSource="{Binding DataContext.DistinctTitles, ElementName=ClientTitlesVMHolder}"/>
+                <Button Grid.Row="4" Content="Done" Margin="5,0,0,0" Click="AddClientTitleButtonClicked" Command="{Binding DataContext.AddCommand, ElementName=ClientTitlesVMHolder}"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ClientBrush}">
+        <toolkit:Expander.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock TextWrapping="Wrap" Text="Clients" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ClientBrush}" />
+                <AddEditDelete:AddDelete x:Name="AddDeleteClientTitle" Grid.Column="1" AddDeleteMode="AddNewItemDeleteCustomTemplate" 
+                                    AddMenuItemCustomTemplate="{StaticResource AddMenuTemplate}" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" />
+            </Grid>
+        </toolkit:Expander.Header>
+        <Grid Margin="5" x:Name="LayoutRoot">
+            <StackPanel x:Name="ClientsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM"/>
+            <telerik:RadGridView x:Name="ClientTitleRadGridView" Grid.Row="1" ShowGroupPanel="False" AutoGenerateColumns="False"
+                    RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}">
+                <telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn UniqueName="ClientTitle" Header="Title" IsReadOnly="True" DataMemberBinding="{Binding Title}"/>
+                    <telerik:GridViewDataColumn UniqueName="OwnedPartyDisplayName" Header="Name" IsReadOnly="True" DataMemberBinding="{Binding Client.DisplayName}" Width="*" />
+                </telerik:RadGridView.Columns>
+            </telerik:RadGridView>
+        </Grid>
+    </toolkit:Expander>
+</UserControl>

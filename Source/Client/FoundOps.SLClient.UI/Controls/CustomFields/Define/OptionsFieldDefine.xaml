@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.CustomFields.Define.OptionsFieldDefine" x:Name="myOptionsFieldDefine" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
+    xmlns:Controls2="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
+             mc:Ignorable="d" Width="250">
+    <StackPanel DataContext="{Binding OptionsFieldVM, ElementName=myOptionsFieldDefine}">
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition MinWidth="5" />
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" MinWidth="80" />
+                <ColumnDefinition MinWidth="5" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="5" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Name:" HorizontalAlignment="Right" Grid.Column="1"/>
+            <TextBox Grid.Column="3" Text="{Binding OptionsField.Name, Mode=TwoWay}"/>
+            <!--Bind to field name-->
+
+            <TextBlock Text="Tooltip:" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" ToolTipService.ToolTip="This is a tooltip. When the user hovers over the field, whatever helpful information you've inputted here will be displayed in a box like this one."/>
+            <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding OptionsField.Tooltip, Mode=TwoWay}"/>
+            <!--Bind to tooltip-->
+
+            <!--Future Feature: Minimum # of selected values or maximum # of selected values-->
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="5"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Possible Values" HorizontalAlignment="Center" Grid.Column="1"/>
+            <AddEditDelete:AddDelete HorizontalAlignment="Right" Grid.Column="2" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"/>
+        </Grid>
+        <telerik:RadGridView x:Name="OptionsFieldRadGridView" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Center" AutoGenerateColumns="False" ShowGroupPanel="False" RowIndicatorVisibility="Collapsed"
+                                 SelectedItem="{Binding SelectedOption, Mode=TwoWay}" ItemsSource="{Binding OptionsField.OptionsWrapper}" SelectionMode="Single">
+            <!--bind to item source of checklist and default isselected values-->
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Value" DataMemberBinding="{Binding Name, Mode=TwoWay}" />
+                <telerik:GridViewDataColumn Header="Default Selection" DataMemberBinding="{Binding IsChecked, Mode=TwoWay}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Checked="OptionCheckBoxChecked"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+    </StackPanel>
+</UserControl>

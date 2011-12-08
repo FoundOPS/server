@@ -1,0 +1,125 @@
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ServiceModel.DomainServices.Client;
+using FoundOps.Core.Context.Services.Interface;
+using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.Data.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Command;
+using FoundOps.Core.Context.Services;
+using System.ComponentModel.Composition;
+using FoundOps.Core.Models.CoreEntities;
+using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+
+namespace FoundOps.SLClient.UI.ViewModels
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    [ExportViewModel("RouteMapVM")]
+    public class RouteMapVM : CoreEntityCollectionVM<RouteDestination>
+    {
+        #region Public Properties
+
+        public RelayCommand<Tuple<decimal, decimal>> ManuallySetLatitudeLongitude { get; private set; }
+
+        private ObservableCollection<Route> _shownRoutes;
+        public ObservableCollection<Route> ShownRoutes
+        {
+            get { return _shownRoutes; }
+            private set
+            {
+                _shownRoutes = value;
+                this.RaisePropertyChanged("ShownRoutes");
+            }
+        }
+
+        #region Implementation of ISaveDiscardChangesCommands
+
+        #endregion
+
+        #endregion
+
+        // Local Variables
+
+        private readonly IRouteDataService _routeDataService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RouteMapVM"/> class.
+        /// </summary>
+        /// <param name="routeDataService">The route data service.</param>
+        /// <param name="dataManager">The data manager.</param>
+        [ImportingConstructor]
+        public RouteMapVM(IRouteDataService routeDataService, DataManager dataManager)
+            : base(false, dataManager)
+        {
+            _routeDataService = routeDataService;
+
+            //Register Commands
+            ManuallySetLatitudeLongitude = new RelayCommand<Tuple<decimal, decimal>>(OnManuallySetLatitudeLongitude, (latitudeLongitude) => true);
+
+            //TODO: I do not think this is correct
+
+            //_routeDataService.PropertyChanged += (sender, e) =>
+            //{
+            //    SaveCommand.RaiseCanExecuteChanged();
+            //    DiscardCommand.RaiseCanExecuteChanged();
+            //};
+
+            //TODO: I do not think this is correct
+
+            //_routeDataService.GetRoutesForServiceProviderOnDay(ContextManager.RoleId, DateTime.Now, getRoutesCallback =>
+            //{
+            //    ShownRoutes = getRoutesCallback;
+            //    MessageBus.Current.SendMessage(new RefreshRouteMapView());
+            //});
+        }
+
+        #region RouteMapVM's Logic
+
+        private void OnManuallySetLatitudeLongitude(Tuple<decimal, decimal> latitudeLongitude)
+        {
+            if (SelectedEntity == null) return;
+
+
+            SelectedEntity.Location.Latitude = Convert.ToDecimal(latitudeLongitude.Item1);
+            SelectedEntity.Location.Longitude = Convert.ToDecimal(latitudeLongitude.Item2);
+
+            if (SelectedEntity.Location.TelerikLocation != null)
+                MessageBus.Current.SendMessage(new RouteDestinationSetMessage(SelectedEntity.Location.TelerikLocation.Value));
+            
+            this.RaisePropertyChanged("ShownRoutes");
+        }
+
+        protected override void OnSelectedEntityChanged(RouteDestination oldValue, RouteDestination newValue)
+        {
+            ShownRoutes = new ObservableCollection<Route>();
+
+            if (newValue == null) return;
+
+            if (newValue.Location.Latitude != null && newValue.Location.Longitude != null)
+            {
+                if (newValue.Location.TelerikLocation != null)
+                    MessageBus.Current.SendMessage(new RouteDestinationSetMessage(newValue.Location.TelerikLocation.Value));
+            }
+        }
+
+        public class RouteDestinationSetMessage
+        {
+            public Telerik.Windows.Controls.Map.Location SetRouteDestination { get; private set; }
+
+            public RouteDestinationSetMessage(Telerik.Windows.Controls.Map.Location routeDestination)
+            {
+                SetRouteDestination = routeDestination;
+            }
+        }
+
+        #endregion
+    }
+
+    public class RefreshRouteMapView
+    {
+    }
+}

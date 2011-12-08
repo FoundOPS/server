@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.CustomFields.Edit.LocationFieldEdit" x:Name="myLocationFieldEdit" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
+    xmlns:Converters1="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
+    <UserControl.Resources>
+        <Converters1:FilterLocationsCollectionViewByClient x:Key="FilterLocationsCollectionViewByClient"/>
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot" Background="White" Margin="0,0,0,5" HorizontalAlignment="Center" DataContext="{Binding LocationField, ElementName=myLocationFieldEdit}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
+            <TextBlock Text=":" />
+        </StackPanel>
+        <!--Disable the Location combobox if it is a generated service. TODO: Change this if LocationField has other types than just Destination-->
+        <telerik:RadComboBox x:Name="LocationFieldComboBox" Grid.Column="2" SelectedValue="{Binding Value}" DisplayMemberPath="Name" IsEditable="True">
+            <local:BindingUtil.MultiBindings>
+                <local:MultiBindings>
+                    <!--Filter Collection by SelectedClient if the current ServiceTemplate is on Service-->
+                    <local:MultiBinding TargetProperty="ItemsSource" Converter="{StaticResource FilterLocationsCollectionViewByClient}">
+                        <local:BindingCollection>
+                            <Binding Path="DataContext.DomainCollectionView" ElementName="myLocationFieldEdit" /> <!--The LocationsVM.DomainCollectionView-->
+                            <Binding Path="OwnerServiceTemplate" />
+                            <Binding Path="OwnerServiceTemplate.OwnerService.Client" /> <!--For updates-->
+                        </local:BindingCollection>
+                    </local:MultiBinding>
+                </local:MultiBindings>
+            </local:BindingUtil.MultiBindings>
+        </telerik:RadComboBox>
+    </Grid>
+</UserControl>

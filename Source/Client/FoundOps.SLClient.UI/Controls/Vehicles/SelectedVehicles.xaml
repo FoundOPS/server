@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Vehicles.SelectedVehicles" x:Name="mySelectedVehicles"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Common="clr-namespace:FoundOps.SLClient.UI.Controls.Common" xmlns:Vehicles="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles"
+             mc:Ignorable="d" d:DesignWidth="200">
+    <UserControl.Resources>
+        <DataTemplate x:Key="NewVehicleTemplate">
+            <TextBlock Text="{Binding VehicleId}" />
+        </DataTemplate>
+        <DataTemplate x:Key="ExistingVehicleTemplate">
+            <TextBox Text="{Binding VehicleId, Mode=TwoWay}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <Common:SelectedEntitiesLarge EntityText="Vehicles" CoreSelectedEntitiesCollectionVM="{Binding SelectedVehiclesVM, RelativeSource={RelativeSource AncestorType=Vehicles:SelectedVehicles}}"
+                                  NewEntityTemplate="{StaticResource ExistingVehicleTemplate}" ExistingEntityTemplate="{StaticResource NewVehicleTemplate}" />
+</UserControl>

@@ -1,0 +1,60 @@
+﻿using FoundOps.Core.Models.CoreEntities;
+using GalaSoft.MvvmLight.Command;
+using ReactiveUI.Xaml;
+
+namespace FoundOps.SLClient.UI.ViewModels
+{
+    public interface IAddDeleteSelectedClient
+    {
+
+        /// <summary>
+        /// Add the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Client> AddSelectedClientCommand { get; set; }
+
+        /// <summary>
+        /// Delete the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Client> DeleteSelectedClientCommand { get; set; }
+    }
+
+    public interface IAddDeleteSelectedLocation
+    {
+        /// <summary>
+        /// Add the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Location> AddSelectedLocationCommand { get; set; }
+
+        /// <summary>
+        /// Delete the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Location> DeleteSelectedLocationCommand { get; set; }
+    }
+
+    public interface IAddDeleteSelectedRegion
+    {
+        /// <summary>
+        /// Add the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Region> AddSelectedRegionCommand { get; set; }
+
+        /// <summary>
+        /// Delete the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Region> DeleteSelectedRegionCommand { get; set; }
+    }
+
+    public interface IAddDeleteSelectedService
+    {
+
+        /// <summary>
+        /// Add the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Service> AddSelectedServiceCommand { get; set; }
+
+        /// <summary>
+        /// Delete the Selected CommandParameter (of Type T)
+        /// </summary>
+        RelayCommand<Service> DeleteSelectedServiceCommand { get; set; }
+    }
+}

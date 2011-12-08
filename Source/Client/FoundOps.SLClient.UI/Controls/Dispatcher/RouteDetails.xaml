@@ -1,0 +1,44 @@
+﻿<UserControl x:Name="myRouteDetails" x:Class="FoundOps.Framework.Views.Controls.Dispatcher.RouteDetails" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" 
+    xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
+    xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Vehicles="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles" 
+    xmlns:Employees1="clr-namespace:FoundOps.SLClient.UI.Controls.Employees" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM" 
+     d:DesignWidth="230" mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converters:DateTimeOfTodayToTimeSpanConverter x:Key="DateTimeOfTodayToTimeSpanConverter"/>
+    </UserControl.Resources>
+    <ScrollViewer x:Name="LayoutRoot" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" DataContext="{Binding SelectedEntity}">
+        <StackPanel>
+            <TextBox Text="{Binding Name, Mode=TwoWay}" TextAlignment="Center" FontWeight="Bold"/>
+            <!--Bind to Route Name, For A New Route, autoname it Untitled #1 etc -->
+            <telerik:RadComboBox AllowDrop="True" ItemsSource="{Binding DataContext.RouteTypes, ElementName=myRouteDetails}" Width="150" SelectedValue="{Binding RouteType, Mode=TwoWay}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="5"/>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="Auto" MinWidth="80"/>
+                    <ColumnDefinition MinWidth="5" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Sch. Start:" HorizontalAlignment="Right" Grid.Column="1"/>
+                <telerik:RadTimePicker Foreground="Black" Grid.Column="3" EndTime="{Binding EndTime, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}" SelectedTime="{Binding StartTime, Mode=TwoWay, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}"/>
+                <TextBlock Text="Sch. End:" Grid.Row="1" HorizontalAlignment="Right" Grid.Column="1"/>
+                <telerik:RadTimePicker Foreground="Black" Grid.Row="1" Grid.Column="3" StartTime="{Binding StartTime, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}"  SelectedTime="{Binding EndTime, Mode=TwoWay, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}"/>
+                <TextBlock Text="Est. End:" TextWrapping="Wrap" Grid.Row="2" HorizontalAlignment="Right" Grid.Column="1" TextAlignment="Right" />
+                <TextBlock Text="5ish" Grid.Row="2" Grid.Column="3"/>
+                <!--If exceeds estimated end time vs. scheduled end time, set foregound to red and -->
+            </Grid>
+            <Rectangle Fill="Black" Height="1" Margin="5,3"/>
+            <Employees1:SelectedEmployees SelectedEmployeesVM="{Binding DataContext.SelectedRouteSelectedEmployeesVM, ElementName=myRouteDetails}"/>
+            <Rectangle Fill="Black" Height="1" Margin="5,3"/>
+            <Vehicles:SelectedVehicles SelectedVehiclesVM="{Binding DataContext.SelectedRouteSelectedVehiclesVM, ElementName=myRouteDetails}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
