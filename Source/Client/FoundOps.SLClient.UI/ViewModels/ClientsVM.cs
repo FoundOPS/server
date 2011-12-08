@@ -182,6 +182,16 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             newClient.OwnedParty = new Business { Name = "" };
             newClient.Vendor = (BusinessAccount)this.ContextManager.OwnerAccount;
+
+            //Add a default Location
+            //Set the OwnerParty to the current OwnerAccount
+            var defaultLocation = new Location
+                                      {
+                                          OwnerParty = ContextManager.OwnerAccount,
+                                          Region = ContextManager.GetContext<Region>()
+                                      };
+            newClient.OwnedParty.Locations.Add(defaultLocation);
+
             this.RaisePropertyChanged("ClientsView");
 
             var availableServicesForServiceProvider = _loadedServiceTemplates.Where(st =>

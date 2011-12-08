@@ -3,10 +3,9 @@
           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sdk="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
           xmlns:Settings="clr-namespace:FoundOps.SLClient.UI.Controls.Settings;assembly=FoundOps.SLClient.UI" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
           xmlns:InfiniteAccordion="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;assembly=FoundOps.Common.Silverlight.UI"
-          xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts;assembly=FoundOps.SLClient.UI"
           mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="1200">
     <sdk:Page.Resources>
-        <Converters:SelectedItemVisibilityConverter x:Key="SelectedItemVisibilityConverter"/>
+        <Converters:EqualsVisibilityConverter x:Key="EqualsVisibilityConverter"/>
     </sdk:Page.Resources>
     <InfiniteAccordion:ThirdsListDetails>
         <InfiniteAccordion:ThirdsListDetails.List>
@@ -25,8 +24,8 @@
         </InfiniteAccordion:ThirdsListDetails.List>
         <InfiniteAccordion:ThirdsListDetails.Details>
             <StackPanel Grid.Column="2" MinWidth="250">
-                <Settings:UserAccountSettings Visibility="{Binding ElementName=list, Path=SelectedIndex, Converter={StaticResource SelectedItemVisibilityConverter}, ConverterParameter=0}"/>
-                <Settings:BusinessAccountSettings Visibility="{Binding ElementName=list, Path=SelectedIndex, Converter={StaticResource SelectedItemVisibilityConverter}, ConverterParameter=1}"/>
+                <Settings:UserAccountSettings Visibility="{Binding ElementName=list, Path=SelectedIndex, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=0}"/>
+                <Settings:BusinessAccountSettings Visibility="{Binding ElementName=list, Path=SelectedIndex, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=1}"/>
                 <!--<Settings:QuickbooksSettings Visibility="{Binding ElementName=list, Path=SelectedIndex, Converter={StaticResource SelectedItemVisibilityConverter}, ConverterParameter=2}"/>-->
             </StackPanel>
         </InfiniteAccordion:ThirdsListDetails.Details>

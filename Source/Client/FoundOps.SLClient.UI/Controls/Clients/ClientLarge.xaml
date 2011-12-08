@@ -2,21 +2,21 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:my="clr-namespace:FoundOps.Framework.Views.Controls.Services" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
-             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices" 
              xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo"
              xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Contacts="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files" 
+             xmlns:Contacts="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
+             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d" 
              d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM"><!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities"-->
     <UserControl.Resources>
         <Converters:ClientTitleConverter x:Key="ClientTitleConverter" />
         <Converters:LocationTitleConverter x:Key="LocationTitleConverter" />
         <Converters1:AddButtonTextConverter x:Key="AddButtonTextConverter"/>
-        <Converters2:MultipleItemVisibilityConverter x:Key="MultipleItemVisibilityConverter"/>
-        <Converters2:ZeroOrOneItemVisibilityConverter x:Key="ZeroOrOneItemVisibilityConverter"/>
+        <Converters2:NotEqualsVisibilityConverter x:Key="NotEqualsVisibilityConverter"/>
+        <Converters2:EqualsVisibilityConverter x:Key="EqualsVisibilityConverter"/>
         <Converters2:AddDeleteModeConverter x:Key="AddDeleteModeConverter"/>
         <StackPanel x:Key="LocationsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM"/>
         <DataTemplate x:Key="AddMenuTemplate">
@@ -108,10 +108,10 @@
                         </Grid>
                     </toolkit:Expander.Header>
                     <Grid>
-                        <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource MultipleItemVisibilityConverter}}">
+                        <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource NotEqualsVisibilityConverter}, ConverterParameter=1}">
                             <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
                         </StackPanel>
-                        <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource ZeroOrOneItemVisibilityConverter}}">
+                        <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=1}">
                             <Locations:LocationEdit DataContext="{Binding DataContext, Source={StaticResource LocationsVMHolder}}" />
                         </StackPanel>
                     </Grid>

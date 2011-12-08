@@ -102,9 +102,9 @@ namespace FoundOps.Common.Silverlight.Converters
         {
             int numberOfVariables = values.Length;
 
-            VisibilityConverter visibilityConverter = new VisibilityConverter();
+            var visibilityConverter = new VisibilityConverter();
 
-            for (int i = 0; i < numberOfVariables; i++)
+            for (var i = 0; i < numberOfVariables; i++)
             {
                 if ((Visibility)visibilityConverter.Convert(values[i], null, null, null) == Visibility.Collapsed)
                     return Visibility.Collapsed;
@@ -123,31 +123,13 @@ namespace FoundOps.Common.Silverlight.Converters
     /// <summary>
     /// Visibility based on matching selected integer value to the given integer parameter.
     /// </summary>
-    public class SelectedItemVisibilityConverter : IValueConverter
-    {
-        #region IValueConverter Members
-
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return (int)value == System.Convert.ToInt32(parameter) ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-    }
-
-    //In Clients, show LocationEdit if there is zero or one location.
-    public class ZeroOrOneItemVisibilityConverter : IValueConverter
+    public class EqualsVisibilityConverter : IValueConverter
     {
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((int)value <= 1) ? Visibility.Visible : Visibility.Collapsed;
+            return (int)value == System.Convert.ToInt32(parameter) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -158,14 +140,33 @@ namespace FoundOps.Common.Silverlight.Converters
         #endregion
     }
 
-    //In Clients, show LocationsGrid if there are multiple locations.
-    public class MultipleItemVisibilityConverter : IValueConverter
+    /// <summary>
+    /// If the value is greater than 1 it will return Visible.
+    /// </summary>
+    public class GreaterThanVisibilityConverter : IValueConverter
     {
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((int)value > 1) ? Visibility.Visible : Visibility.Collapsed;
+            return (System.Convert.ToInt32(value) > System.Convert.ToInt32(parameter)) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
+    public class NotEqualsVisibilityConverter : IValueConverter
+    {
+        #region IValueConverter Members
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (System.Convert.ToInt32(value) != System.Convert.ToInt32(parameter)) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
