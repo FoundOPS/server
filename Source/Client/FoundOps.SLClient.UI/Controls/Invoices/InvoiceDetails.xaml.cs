@@ -1,47 +1,21 @@
-﻿using System.ComponentModel;
-using System.Windows.Data;
-using FoundOps.SLClient.UI.ViewModels;
-using Telerik.Windows.Controls;
+﻿using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
 
 namespace FoundOps.SLClient.UI.Controls.Invoices
 {
+    /// <summary>
+    /// UI for viewing and editing an Invoice's details.
+    /// </summary>
     public partial class InvoiceDetails
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvoiceDetails"/> class.
+        /// </summary>
         public InvoiceDetails()
         {
             InitializeComponent();
 
-#if DEBUG 
-            if(DesignerProperties.IsInDesignTool) return;
-#endif
-
-            LocationsVM.PropertyChanged += (sender, e) =>
-            {
-                //After the locations are loaded, setup two way binding
-                if (e.PropertyName == "IsLoading")
-                    if (LocationsVM.IsLoading)
-                        ClearTwoWayBinding();
-                    else
-                        SetupTwoWayBinding();
-            };
-
-            this.DependentWhenVisible(LocationsVM);
-        }
-
-        private void ClearTwoWayBinding()
-        {
-            LocationsComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("BillToLocation"));
-        }
-
-        private void SetupTwoWayBinding()
-        {
-            LocationsComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("BillToLocation") { Mode = BindingMode.TwoWay });
-        }
-
-        public LocationsVM LocationsVM
-        {
-            get { return (LocationsVM)LocationsVMHolderStackPanel.DataContext; }
+            //this.DependentWhenVisible(VMTools.LocationsVM);
         }
     }
 }
