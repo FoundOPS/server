@@ -15,7 +15,7 @@ namespace FoundOps.SLClient.UI.Controls.Invoices
         {
             InitializeComponent();
 
-            //this.DependentWhenVisible(VMTools.LocationsVM);
+            this.DependentWhenVisible(VM.Locations);
         }
     }
 }
