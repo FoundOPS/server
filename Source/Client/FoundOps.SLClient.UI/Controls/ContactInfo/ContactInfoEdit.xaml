@@ -20,7 +20,7 @@
                 <telerik:RadComboBox x:Name="LabelsComboBox" MinWidth="100" IsEditable="True" CanAutocompleteSelectItems="True" CanKeyboardNavigationSelectItems="True" 
                                      StaysOpenOnEdit="True" TextSearchMode="Contains" OpenDropDownOnFocus="True" 
                                      ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoLabels, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}" 
-                                     Text="{Binding Label, Mode=TwoWay}" >
+                                     Text="{Binding Label, Mode=TwoWay}" SelectedValue="{Binding Label}" >
                     <i:Interaction.Behaviors>
                         <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=telerik:RadComboBox.TextProperty}"/>
                     </i:Interaction.Behaviors>

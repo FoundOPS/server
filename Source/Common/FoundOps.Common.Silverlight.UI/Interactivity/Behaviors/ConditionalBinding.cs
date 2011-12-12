@@ -29,16 +29,24 @@ namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
 
         protected override void OnAttached()
         {
-            AssociatedObject.RegisterForNotification(RequiredDependencyPropertyName,
-                                                     (dp, dpea) => CorrectConditionalDependencyPropertyBinding(dpea.NewValue != null));
-
+            //Correct the binding initially 
             CorrectConditionalDependencyPropertyBinding(AssociatedObject.GetProperty<object>(RequiredDependencyPropertyName) != null);
+
+            //and correct the binding whenever the RequiredDepenendencyProperty's value changes
+            AssociatedObject.RegisterForNotification(RequiredDependencyPropertyName,
+                                                     (dp, dpea) =>
+                                                     {
+                                                         if (dpea.NewValue != dpea.OldValue)
+                                                             CorrectConditionalDependencyPropertyBinding(dpea.NewValue != null);
+                                                     });
 
             base.OnAttached();
         }
 
         //Clears the last setBinding observable
-        SerialDisposable _setBinding = new SerialDisposable();
+        readonly SerialDisposable _setBinding = new SerialDisposable();
+
+        private Binding _lastBinding;
 
         /// <summary>
         /// Corrects the conditional dependency property binding.
@@ -46,22 +54,22 @@ namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
         /// </summary>
         private void CorrectConditionalDependencyPropertyBinding(bool requiredDependencyPropertyHasValue)
         {
-            var binding =
-                AssociatedObject.GetBindingExpression(ConditionalDependencyProperty).ParentBinding;
+            var bindingExpression = AssociatedObject.GetBindingExpression(ConditionalDependencyProperty);
 
-            if (binding == null) return;
+            if (bindingExpression == null || bindingExpression.ParentBinding == null) return;
 
             if (_setBinding.Disposable != null)
                 _setBinding.Dispose();
 
-            var bindingCopy = binding.CopyBinding();
+            _lastBinding = bindingExpression.ParentBinding;
+            var bindingCopy = _lastBinding.CopyBinding();
 
             //When the RequiredDependencyProperty has a value set the UpdateSourceTrigger = Default, otherwise the UpdateSourceTrigger = Explicit.
             bindingCopy.UpdateSourceTrigger = requiredDependencyPropertyHasValue ? UpdateSourceTrigger.Default : UpdateSourceTrigger.Explicit;
 
             //If the UpdateSourceTrigger is Default, wait half a second to allow the proper value to propogate then set the binding
             if (bindingCopy.UpdateSourceTrigger == UpdateSourceTrigger.Default)
-                _setBinding.Disposable = Observable.Interval(TimeSpan.FromSeconds(0.75)).Take(1).ObserveOnDispatcher()
+                _setBinding.Disposable = Observable.Interval(TimeSpan.FromSeconds(.5)).Take(1).ObserveOnDispatcher()
                      .Subscribe(_ => AssociatedObject.SetBinding(ConditionalDependencyProperty, bindingCopy));
             else
                 AssociatedObject.SetBinding(ConditionalDependencyProperty, bindingCopy);
