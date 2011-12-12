@@ -2,6 +2,7 @@
 using System.Windows;
 using Telerik.Windows;
 using System.ComponentModel;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using Telerik.Windows.Controls.GridView;
@@ -44,11 +45,6 @@ namespace FoundOps.SLClient.UI.Controls.Clients
         /// </summary>
         public ClientsVM ClientsVM { get { return (ClientsVM)this.DataContext; } }
 
-        /// <summary>
-        /// Gets the locations VM.
-        /// </summary>
-        public LocationsVM LocationsVM { get { return (LocationsVM) ((FrameworkElement) this.Resources["LocationsVMHolder"]).DataContext; } }
-
         #endregion
 
         /// <summary>
@@ -63,11 +59,11 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             if (DesignerProperties.IsInDesignTool)
                 return;
 #endif
-            this.DependentWhenVisible(LocationsVM);
+            this.DependentWhenVisible(VM.Locations);
 
             //Hookup the AddDeleteLocation logic
-            AddDeleteLocation.CreateNewItem = () => this.LocationsVM.StartCreationOfLocation();
-            AddDeleteLocation.RemoveCurrentItem = (item) => this.LocationsVM.DeleteLocationInCreation();
+            AddDeleteLocation.CreateNewItem = () => VM.Locations.StartCreationOfLocation();
+            AddDeleteLocation.RemoveCurrentItem = (item) => VM.Locations.DeleteLocationInCreation();
 
             LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
         }
@@ -80,12 +76,12 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             //Call this to trigger the AddLocationCommand, and to close the contextmenu after adding an item
             AddDeleteLocation.AddedCurrentItem();
             //Must do this manually because the AddLocationCommand takes a LocationsVM instead of the entity as a parameter
-            ClientsVM.AddLocationCommand.Execute(LocationsVM);
+            ClientsVM.AddLocationCommand.Execute(VM.Locations);
         }
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs e)
         {
-            LocationsVM.MoveToDetailsView.Execute(null);
+            VM.Locations.MoveToDetailsView.Execute(null);
         }
     }
 }

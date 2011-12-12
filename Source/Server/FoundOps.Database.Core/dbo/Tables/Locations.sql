@@ -19,8 +19,8 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_LocationParty]
-    ON [dbo].[Locations]([OwnerPartyId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_RegionLocation]
+    ON [dbo].[Locations]([RegionId] ASC);
 
 
 GO
@@ -29,6 +29,6 @@ CREATE NONCLUSTERED INDEX [IX_FK_LocationParty1]
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_RegionLocation]
-    ON [dbo].[Locations]([RegionId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_LocationParty]
+    ON [dbo].[Locations]([OwnerPartyId] ASC);
 

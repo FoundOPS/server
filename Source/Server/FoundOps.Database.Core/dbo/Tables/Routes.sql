@@ -11,8 +11,6 @@
 );
 
 
-
-
 GO
 CREATE NONCLUSTERED INDEX [IX_FK_BusinessAccountRoute]
     ON [dbo].[Routes]([OwnerBusinessAccountId] ASC);

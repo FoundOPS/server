@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Diagnostics;
 using System.Reactive.Linq;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Models;
 using System.Reactive.Subjects;
@@ -15,7 +14,6 @@ using FoundOps.Common.Silverlight.Controls;
 using Microsoft.Windows.Data.DomainServices;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Server.Services.CoreDomainService;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 
 namespace FoundOps.SLClient.Data.Services
 {

@@ -76,14 +76,14 @@
                     <ItemsControl ItemsSource="{Binding RouteTypes}" ItemTemplate="{StaticResource CheckBoxTemplate}"/>
                 </StackPanel>
             </telerik:RadPanelBarItem>
-            <telerik:RadPanelBarItem IsExpanded="True">
+            <!--<telerik:RadPanelBarItem IsExpanded="True">
                 <telerik:RadPanelBarItem.Header>
                     <TextBlock Text="Regions" Margin="5,3" />
                 </telerik:RadPanelBarItem.Header>
                 <Grid x:Name="GridRegions" Background="White">
                     <ItemsControl ItemsSource="{Binding Regions}" ItemTemplate="{StaticResource RegionsTextBlockTemplate}"/>
                 </Grid>
-            </telerik:RadPanelBarItem>
+            </telerik:RadPanelBarItem>-->
         </telerik:RadPanelBar>
     </Grid>
 </UserControl>

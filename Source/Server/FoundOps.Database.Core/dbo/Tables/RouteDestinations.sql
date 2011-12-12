@@ -12,8 +12,8 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_RouteDestinationLocation]
-    ON [dbo].[RouteDestinations]([LocationId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_RouteDestinationClient]
+    ON [dbo].[RouteDestinations]([ClientId] ASC);
 
 
 GO
@@ -22,6 +22,6 @@ CREATE NONCLUSTERED INDEX [IX_FK_RouteDestinationRoute]
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_RouteDestinationClient]
-    ON [dbo].[RouteDestinations]([ClientId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_RouteDestinationLocation]
+    ON [dbo].[RouteDestinations]([LocationId] ASC);
 

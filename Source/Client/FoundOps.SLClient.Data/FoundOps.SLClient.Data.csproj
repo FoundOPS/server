@@ -291,7 +291,7 @@
     <Compile Include="Services\DataManager.cs" />
     <Compile Include="Services\Design\DesignContactInfoDataService.cs" />
     <Compile Include="Services\Interface\IContactInfoDataService.cs" />
-    <Compile Include="Services\Analytics\AnalyticsManager.cs" />
+    <Compile Include="Services\Analytics.cs" />
     <Compile Include="Services\Manager.cs" />
     <Compile Include="Tools\DataFedVMExtensions.cs" />
     <Compile Include="Tools\ContextManagerMarkupExtensions.cs" />
