@@ -5,11 +5,11 @@
              xmlns:Converters2="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:Locations1="clr-namespace:FoundOps.SLClient.UI.Controls.Locations"
              xmlns:Regions1="clr-namespace:FoundOps.SLClient.UI.Controls.Regions" xmlns:my1="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
-             xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400" 
+             xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400" 
              Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <UserControl.Resources>
         <Converters2:LocationToStringConverter x:Key="LocationToStringConverter" />
+        <Converters:OwnerPartyToClientConverter x:Key="OwnerPartyToClientConverter" />
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White">
@@ -35,7 +35,7 @@
             <StackPanel>
                 <Locations1:LocationEdit />
                 <ContactInfo:ContactInfoEdit ContactInfoVM="{Binding SelectedLocationVM.ContactInfoVM}" />
-                <my1:ClientLinkLarge SelectedClient="{Binding DataContext.SelectedEntity.Party.ClientOwner, ElementName=myLocationLarge, Mode=TwoWay}"/>
+                <my1:ClientLinkLarge SelectedClient="{Binding DataContext.SelectedEntity.Party, ElementName=myLocationLarge, Mode=TwoWay, Converter={StaticResource OwnerPartyToClientConverter}}" />
                 <Regions1:RegionLinkLarge SelectedRegion="{Binding DataContext.SelectedEntity.Region, ElementName=myLocationLarge, Mode=TwoWay}"/>
                 <Locations1:SubLocations SubLocationsVM="{Binding DataContext.SelectedSubLocationsVM, ElementName=myLocationLarge}"/>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource ServiceBrush}" IsEnabled="{Binding DataContext.IsLoading, ElementName=ServicesGrid, Converter={StaticResource NotExistsBoolConverter}}"

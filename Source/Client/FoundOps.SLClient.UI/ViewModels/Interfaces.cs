@@ -56,18 +56,4 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         RelayCommand<Region> DeleteSelectedRegionCommand { get; set; }
     }
-
-    public interface IAddDeleteSelectedService
-    {
-
-        /// <summary>
-        /// Add the Selected CommandParameter (of Type T)
-        /// </summary>
-        RelayCommand<Service> AddSelectedServiceCommand { get; set; }
-
-        /// <summary>
-        /// Delete the Selected CommandParameter (of Type T)
-        /// </summary>
-        RelayCommand<Service> DeleteSelectedServiceCommand { get; set; }
-    }
 }

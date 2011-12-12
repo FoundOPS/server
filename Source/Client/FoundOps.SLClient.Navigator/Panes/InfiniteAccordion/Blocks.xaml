@@ -44,7 +44,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Business Accounts" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness}" />
+                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.Entity}" />
                                 </Grid>
                             </Border>
                             <AdministrativeConsole:BusinessAccountsGrid x:Name="BusinessAccountsGrid" IsMainGrid="True" Grid.Row="1" />
@@ -72,7 +72,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Clients" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness}" />
+                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.Entity}" />
                                 </Grid>
                             </Border>
                             <Clients1:ClientsGrid x:Name="ClientsGrid" IsMainGrid="True" Grid.Row="1" />
@@ -100,7 +100,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Contacts" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness}" />
+                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.Entity}" />
                                 </Grid>
                             </Border>
                             <Contacts1:ContactsGrid x:Name="ContactsGrid" IsMainGrid="True" Grid.Row="1" />

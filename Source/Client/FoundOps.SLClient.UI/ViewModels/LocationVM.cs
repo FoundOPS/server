@@ -34,9 +34,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Gets the location entity this viewmodel is for.
         /// </summary>
-        /// <value>
-        /// The location entity.
-        /// </value>
         public Location Entity { get { return _entity; } }
 
         #region Geocoder Results
@@ -186,14 +183,13 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             _entity = entity;
 
-            //Setup the ContactInfoVM and update the Geocoder properties
-            ContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.Locations,
-                                              entity != null ? entity.ContactInfoSet : null);
+            //Setup the ContactInfoVM
+            ContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.Locations, entity != null ? entity.ContactInfoSet : null);
 
             //Set ManuallySelectGeocoderResult to the Entity if it has a Latitude/Longitude
-
             ManuallySelectGeocoderResult = new GeocoderResult { Name = ManuallySelectLocationString, AddressLineOne = ClickOnTheMapString };
 
+            //Update the Geocoder properties
             if (entity.Latitude != null && entity.Longitude != null)
             {
                 ManuallySelectGeocoderResult.Latitude = entity.Latitude.Value.ToString();

@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Specialized;
+﻿using System;
+using System.Reactive.Disposables;
 using System.Windows;
+using System.Reactive.Linq;
 using System.Windows.Data;
+using System.Windows.Interactivity;
 using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.UI.Tools;
-using Telerik.Windows.Controls;
-using System.Windows.Interactivity;
 using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 
 namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
@@ -37,6 +37,9 @@ namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
             base.OnAttached();
         }
 
+        //Clears the last setBinding observable
+        SerialDisposable _setBinding = new SerialDisposable();
+
         /// <summary>
         /// Corrects the conditional dependency property binding.
         /// When the RequiredDependencyProperty has a value: UpdateSourceTrigger = Default, otherwise the UpdateSourceTrigger = Explicit.
@@ -48,12 +51,20 @@ namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
 
             if (binding == null) return;
 
+            if (_setBinding.Disposable != null)
+                _setBinding.Dispose();
+
             var bindingCopy = binding.CopyBinding();
 
-            // When the RequiredDependencyProperty has a value: UpdateSourceTrigger = Default, otherwise the UpdateSourceTrigger = Explicit.
-            bindingCopy.UpdateSourceTrigger = requiredDependencyPropertyHasValue ? UpdateSourceTrigger.Explicit : UpdateSourceTrigger.Default;
+            //When the RequiredDependencyProperty has a value set the UpdateSourceTrigger = Default, otherwise the UpdateSourceTrigger = Explicit.
+            bindingCopy.UpdateSourceTrigger = requiredDependencyPropertyHasValue ? UpdateSourceTrigger.Default : UpdateSourceTrigger.Explicit;
 
-            AssociatedObject.SetBinding(ConditionalDependencyProperty, bindingCopy);
+            //If the UpdateSourceTrigger is Default, wait half a second to allow the proper value to propogate then set the binding
+            if (bindingCopy.UpdateSourceTrigger == UpdateSourceTrigger.Default)
+                _setBinding.Disposable = Observable.Interval(TimeSpan.FromSeconds(0.75)).Take(1).ObserveOnDispatcher()
+                     .Subscribe(_ => AssociatedObject.SetBinding(ConditionalDependencyProperty, bindingCopy));
+            else
+                AssociatedObject.SetBinding(ConditionalDependencyProperty, bindingCopy);
         }
     }
 }

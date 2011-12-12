@@ -579,7 +579,6 @@
     <Compile Include="Selectors\FieldDataTemplateSelector.cs" />
     <Compile Include="Tools\ServiceGenerator.cs" />
     <Compile Include="ViewModels\BusinessAccountsVM.cs" />
-    <Compile Include="ViewModels\BusinessVM.cs" />
     <Compile Include="ViewModels\ContactInfoVM.cs" />
     <Compile Include="ViewModels\ContactsVM.cs" />
     <Compile Include="ViewModels\ClientTitlesVM.cs" />
@@ -587,7 +586,6 @@
     <Compile Include="ViewModels\Interfaces.cs" />
     <Compile Include="ViewModels\PartySettingsVM.cs" />
     <Compile Include="ViewModels\PartyVM.cs" />
-    <Compile Include="ViewModels\PersonVM.cs" />
     <Compile Include="ViewModels\RouteScheduleVM.cs" />
     <Compile Include="ViewModels\RoutesDragDropVM.cs" />
     <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />

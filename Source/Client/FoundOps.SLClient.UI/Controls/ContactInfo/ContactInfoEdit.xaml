@@ -12,7 +12,7 @@
             <StackPanel Orientation="Horizontal">
                 <telerik:RadComboBox x:Name="TypesComboBox" Width="100" EmptyText="Info Type" CanKeyboardNavigationSelectItems="True" 
                                      ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoTypes, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}" 
-                                     SelectedValue="{Binding Type, Mode=TwoWay}" >
+                                     SelectedValue="{Binding Type, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" >
                     <i:Interaction.Behaviors>
                         <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=telerik:Selector.SelectedValueProperty}"/>
                     </i:Interaction.Behaviors>
@@ -20,9 +20,9 @@
                 <telerik:RadComboBox x:Name="LabelsComboBox" MinWidth="100" IsEditable="True" CanAutocompleteSelectItems="True" CanKeyboardNavigationSelectItems="True" 
                                      StaysOpenOnEdit="True" TextSearchMode="Contains" OpenDropDownOnFocus="True" 
                                      ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoLabels, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}" 
-                                     SelectedValue="{Binding Label, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" >
+                                     Text="{Binding Label, Mode=TwoWay}" >
                     <i:Interaction.Behaviors>
-                        <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=telerik:Selector.SelectedValueProperty}"/>
+                        <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=telerik:RadComboBox.TextProperty}"/>
                     </i:Interaction.Behaviors>
                 </telerik:RadComboBox>
                 <!--Bind Items to all of the currently used Labels of the Selected Info Type-->
