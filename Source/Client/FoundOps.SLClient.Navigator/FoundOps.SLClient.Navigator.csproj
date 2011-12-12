@@ -31,10 +31,14 @@
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <LinkedServerProject>
     </LinkedServerProject>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <Utf8Output>true</Utf8Output>
     <ExpressionBlendVersion>4.1.10405.0</ExpressionBlendVersion>
     <TargetFrameworkProfile />
@@ -398,6 +402,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Content\SiteLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Panes\Dispatcher\DefaultDispatcherLayout.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

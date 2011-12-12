@@ -106,4 +106,25 @@ namespace FoundOps.Common.Silverlight.Converters
 
         #endregion
     }
+
+    public class TrueIfValueEqualsParameter : IValueConverter
+    {
+        #region IValueConverter Members
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if((value != null) && (parameter != null))
+                return System.Convert.ToString(value) == System.Convert.ToString(parameter);
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if ((bool)value)
+                return parameter;
+            return null;
+        }
+
+        #endregion
+    }
 }

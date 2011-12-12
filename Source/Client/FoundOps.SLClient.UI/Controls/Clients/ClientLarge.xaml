@@ -3,18 +3,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:my="clr-namespace:FoundOps.Framework.Views.Controls.Services" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
              xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
-             xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices" 
+             xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" 
+             xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices" 
              xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo"
-             xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Contacts="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
+             xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
+             xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:Contacts="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts"
+             xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d" 
-             d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM"><!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities"-->
+             xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
+             mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM"><!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities"-->
     <UserControl.Resources>
         <Converters:ClientTitleConverter x:Key="ClientTitleConverter" />
         <Converters:LocationTitleConverter x:Key="LocationTitleConverter" />
         <Converters1:AddButtonTextConverter x:Key="AddButtonTextConverter"/>
+        <Converters2:TrueIfValueEqualsParameter x:Key="TrueIfValueEqualsParameter"/>
         <Converters2:NotEqualsVisibilityConverter x:Key="NotEqualsVisibilityConverter"/>
         <Converters2:EqualsVisibilityConverter x:Key="EqualsVisibilityConverter"/>
         <Converters2:AddDeleteModeConverter x:Key="AddDeleteModeConverter"/>
@@ -109,7 +113,21 @@
                     </toolkit:Expander.Header>
                     <Grid>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource NotEqualsVisibilityConverter}, ConverterParameter=1}">
-                            <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
+                            <Controls:RadGridView x:Name="LocationsRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
+                                                  RowIndicatorVisibility="Collapsed" ItemsSource="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness.Locations}">
+                                <Controls:RadGridView.Columns>
+                                    <Controls:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}"/>
+                                    <Controls:GridViewDataColumn Header="Billing Address" Width="*">
+                                        <Controls:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <RadioButton Content="{Binding Party.ClientOwner.BillingLocation.Id}" GroupName="BillingLocationGroup" />
+                                                             <!--IsChecked="{Binding Id, 
+                                                             Converter={StaticResource TrueIfValueEqualsParameter}, ConverterParameter={Binding Party.ClientOwner.BillingLocation.Id}, Mode=TwoWay}"-->
+                                            </DataTemplate>
+                                        </Controls:GridViewDataColumn.CellTemplate>
+                                    </Controls:GridViewDataColumn>
+                                </Controls:RadGridView.Columns>
+                            </Controls:RadGridView>
                         </StackPanel>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=1}">
                             <Locations:LocationEdit DataContext="{Binding DataContext, Source={StaticResource LocationsVMHolder}}" />

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Xml;
 using System.Linq;
 using System.Windows;
 using System.Collections;
 using System.Windows.Media;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.Services.Analytics;
+using System.Windows.Controls;
 using Telerik.Windows.Controls;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
@@ -493,16 +493,21 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         /// </summary>
         public void LoadDefaultLayout()
         {
-            try
-            {
+            //try
+            //{
                 using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
                 using (var isoStream = storage.OpenFile("RadDocking_DefaultLayout.xml", FileMode.Open))
                     this.radDocking.LoadLayout(isoStream);
-            }
-            catch
-            {
+                //var stream = GetType().Assembly.GetManifestResourceStream("DefaultDispatcherLayout.xml");
+
+            //var stream = new FileStream(Path.GetFullPath("DefaultDispatcherLayout.xml"), FileMode.Open, FileAccess.Read);
+            //this.radDocking.LoadLayout(stream);
+
+            //}
+            //catch
+            //{
                 //If it gets here Save Default Layout never happened?
-            }
+            //}
         }
 
         /// <summary>
@@ -521,10 +526,35 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     isoStream.Seek(0, SeekOrigin.Begin);
                     var reader = new StreamReader(isoStream);
                     xml = reader.ReadToEnd();
+
+                    ////Save to local file system (for FoundOPS use when resetting default layout)
+                    //SaveToFileSystem(xml);
                 }
             }
             // Return the generated XML
             return xml;
+        }
+
+        private void SaveToFileSystem(string xml)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                DefaultExt = "xml",
+                Filter = "XML Files (*.xml)|*.xml|All files (*.*)|*.*",
+                FilterIndex = 1
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                using (var stream = saveFileDialog.OpenFile())
+                {
+                    var sw = new StreamWriter(stream, System.Text.Encoding.UTF8);
+                    sw.Write(xml);
+                    sw.Close();
+
+                    stream.Close();
+                }
+            }
         }
 
         //Saves the initial layout to be used to reset the layout back to the default

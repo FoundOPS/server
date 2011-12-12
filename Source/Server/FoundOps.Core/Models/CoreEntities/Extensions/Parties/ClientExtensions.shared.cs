@@ -1,5 +1,6 @@
 ﻿using System;
 using FoundOps.Common.Composite.Entities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 
 namespace FoundOps.Core.Models.CoreEntities
 {

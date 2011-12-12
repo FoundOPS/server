@@ -82,6 +82,10 @@ namespace FoundOps.SLClient.Data.Tools
 
         protected override object ProvideValueInternal(IServiceProvider serviceProvider)
         {
+            //Convert the value if there is a converter
+            if (Converter != null)
+                return Converter.Convert(_lastValue, null, null, null);
+
             return _lastValue;
         }
     }

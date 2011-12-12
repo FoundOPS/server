@@ -1,7 +1,8 @@
 ﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
-        xmlns:telerik1="http://schemas.telerik.com/2008/xaml/presentation" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" x:Class="FoundOps.SLClient.UI.Controls.Account.Person.PersonDetailsEdit" x:Name="myPersonDetailsEdit" mc:Ignorable="d" >
+        xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" x:Name="myPersonDetailsEdit" mc:Ignorable="d"
+        xmlns:telerik1="http://schemas.telerik.com/2008/xaml/presentation" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
+        xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" x:Class="FoundOps.SLClient.UI.Controls.Account.Person.PersonDetailsEdit">
     <!-- Design This: ViewModelLocator:ViewModelLocator.SharedViewModel="UserVM" DataContext="{Binding SelectedUser}"-->
     <!--Runtime or Design Parent: DataContext="{Binding UserVM.SelectedUser, ElementName=myUserDetailsEdit}"-->
     <UserControl.Resources>
@@ -22,14 +23,12 @@
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="{StaticResource LargeValueColumn}"/>
         </Grid.ColumnDefinitions>
-        
         <TextBlock Text="Name:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
         <StackPanel Orientation="Horizontal" Grid.Column="2">
             <telerik:RadMaskedTextBox MaskType="None" EmptyContent="First" MinWidth="100" Margin="0,0,2.5,0" Value="{Binding FirstName, Mode=TwoWay}" />
             <telerik:RadMaskedTextBox Mask="l" EmptyContent="MI" Margin="0,0,2.5,0" Placeholder=" " Value="{Binding MiddleInitial, Mode=TwoWay}" />
             <telerik:RadMaskedTextBox MaskType="None" EmptyContent="Last" MinWidth="100" Placeholder=" " Value="{Binding LastName, Mode=TwoWay}"/>
         </StackPanel>
-        
         <TextBlock Text="Gender:" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="2">
             <telerik1:RadRadioButton Content="Male" Margin="0,0,2.5,0" IsThreeState="True" GroupName="Gender"
@@ -37,10 +36,8 @@
             <telerik1:RadRadioButton Content="Female" GroupName="Gender" IsThreeState="True"
                     IsChecked="{Binding Gender, Mode=TwoWay, Converter={StaticResource TrueIfEnumValueEqualsParameter}, ConverterParameter={StaticResource Female}}" />
         </StackPanel>
-        
         <TextBlock Text="Date of Birth:" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"/>
         <telerik:RadDateTimePicker Grid.Row="4" Grid.Column="2" InputMode="DatePicker" SelectedDate="{Binding DateOfBirth, Mode=TwoWay}"
                 IsTooltipEnabled="False" />
-
     </Grid>
 </UserControl>

@@ -69,7 +69,7 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             AddDeleteLocation.CreateNewItem = () => this.LocationsVM.StartCreationOfLocation();
             AddDeleteLocation.RemoveCurrentItem = (item) => this.LocationsVM.DeleteLocationInCreation();
 
-            LocationsGrid.LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
+            LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
         }
 
         /// <summary>
