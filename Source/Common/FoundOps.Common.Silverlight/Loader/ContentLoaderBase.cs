@@ -2,20 +2,13 @@
 using System.Windows;
 using System.Windows.Navigation;
 
-namespace FoundOps.Core.Navigator.Loader
+namespace FoundOps.Common.Silverlight.Loader
 {
     /// <summary>
     /// A Utility class that simplifies creation of an INavigationContentLoader.
     /// </summary>
     public abstract class ContentLoaderBase : DependencyObject, INavigationContentLoader
     {
-        /// <summary>
-        /// Constructs a ContentLoaderBase.
-        /// </summary>
-        protected ContentLoaderBase()
-        {
-        }
-
         /// <summary>
         /// Creates an instance of a LoaderBase that will be used to handle loading.
         /// </summary>
@@ -56,9 +49,8 @@ namespace FoundOps.Core.Navigator.Loader
         /// <returns>An object that stores information about the asynchronous operation.</returns>
         public IAsyncResult BeginLoad(Uri targetUri, Uri currentUri, AsyncCallback userCallback, object asyncState)
         {
-            LoaderBase loader = CreateLoaderPrivate();
-            ContentLoaderBaseAsyncResult result = new ContentLoaderBaseAsyncResult(asyncState, loader, userCallback);
-            result.BeginLoadCompleted = false;
+            var loader = CreateLoaderPrivate();
+            var result = new ContentLoaderBaseAsyncResult(asyncState, loader, userCallback) {BeginLoadCompleted = false};
             loader.Result = result;
             lock (result.Lock)
             {
@@ -98,16 +90,10 @@ namespace FoundOps.Core.Navigator.Loader
         /// <returns>An object that represents the result of the asynchronous content loading operation.</returns>
         public LoadResult EndLoad(IAsyncResult asyncResult)
         {
-            ContentLoaderBaseAsyncResult result = (ContentLoaderBaseAsyncResult)asyncResult;
+            var result = (ContentLoaderBaseAsyncResult)asyncResult;
             if (result.Error != null)
-            {
                 throw result.Error;
-            }
-            if (result.Page != null)
-            {
-                return new LoadResult(result.Page);
-            }
-            return new LoadResult(result.RedirectUri);
+            return result.Page != null ? new LoadResult(result.Page) : new LoadResult(result.RedirectUri);
         }
 
         #endregion

@@ -578,6 +578,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selectors\FieldDataTemplateSelector.cs" />
     <Compile Include="Tools\ServiceGenerator.cs" />
+    <Compile Include="Tools\VM.cs" />
     <Compile Include="ViewModels\BusinessAccountsVM.cs" />
     <Compile Include="ViewModels\ContactInfoVM.cs" />
     <Compile Include="ViewModels\ContactsVM.cs" />
@@ -613,10 +614,10 @@
     <Compile Include="ViewModels\LocationsVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </ApplicationDefinition>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\Account\Business\BusinessDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

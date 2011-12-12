@@ -6,8 +6,6 @@ using System.Collections;
 using System.Windows.Media;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.Services.Analytics;
 using Telerik.Windows.Controls;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
@@ -20,6 +18,7 @@ using Telerik.Windows.Controls.GridView;
 using Telerik.Windows.Controls.TreeView;
 using FoundOps.Common.Silverlight.Blocks;
 using FoundOps.Common.Silverlight.UI.Tools;
+using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 
 namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 {
@@ -562,15 +561,15 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             SaveLayout();
 
             //Get the context
-            var businessAccount = (RoutesVM)DataContext;
+            //var businessAccount = (RoutesVM)DataContext;
 
             //Analytic to track when the layout is reset
             //Check if there is at least 1 UnroutedRouteTask
-            var firstOrDefault = businessAccount.UnroutedTasks.FirstOrDefault();
-            TrackEventAction.Track("Dispatcher", "LayoutChanged",
-                                   firstOrDefault != null ? firstOrDefault.OwnerBusinessAccount.DisplayName : " ", 1);
+            //var firstOrDefault = businessAccount.UnroutedTasks.FirstOrDefault();
+            //TrackEventAction.Track("Dispatcher", "LayoutChanged",
+            //                       firstOrDefault != null ? firstOrDefault.OwnerBusinessAccount.DisplayName : " ", 1);
 
-            //if (_analytics != null) _analytics.DispatcherLayoutChanged();
+            Analytics.DispatcherLayoutChanged();
         }
 
         /// <summary>
