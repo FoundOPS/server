@@ -275,6 +275,7 @@
     <Compile Include="Converters\BoolConverters.cs" />
     <Compile Include="Converters\CollectionViewConverters.cs" />
     <Compile Include="Converters\ColorConverters.cs" />
+    <Compile Include="Converters\ConvertBackWhenExists.cs" />
     <Compile Include="Converters\DateTimeConverters.cs" />
     <Compile Include="Converters\DebuggingConverters.cs" />
     <Compile Include="Converters\DecimalConverters.cs" />

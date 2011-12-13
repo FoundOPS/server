@@ -1,8 +1,6 @@
-﻿using System;
-using System.Reactive.Disposables;
-using System.Windows;
-using System.Reactive.Linq;
+﻿using System.Windows;
 using System.Windows.Data;
+using System.Reactive.Disposables;
 using System.Windows.Interactivity;
 using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.UI.Tools;
@@ -43,9 +41,6 @@ namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
             base.OnAttached();
         }
 
-        //Clears the last setBinding observable
-        readonly SerialDisposable _setBinding = new SerialDisposable();
-
         private Binding _lastBinding;
 
         /// <summary>
@@ -58,21 +53,13 @@ namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
 
             if (bindingExpression == null || bindingExpression.ParentBinding == null) return;
 
-            if (_setBinding.Disposable != null)
-                _setBinding.Dispose();
-
             _lastBinding = bindingExpression.ParentBinding;
             var bindingCopy = _lastBinding.CopyBinding();
 
             //When the RequiredDependencyProperty has a value set the UpdateSourceTrigger = Default, otherwise the UpdateSourceTrigger = Explicit.
             bindingCopy.UpdateSourceTrigger = requiredDependencyPropertyHasValue ? UpdateSourceTrigger.Default : UpdateSourceTrigger.Explicit;
 
-            //If the UpdateSourceTrigger is Default, wait half a second to allow the proper value to propogate then set the binding
-            if (bindingCopy.UpdateSourceTrigger == UpdateSourceTrigger.Default)
-                _setBinding.Disposable = Observable.Interval(TimeSpan.FromSeconds(.5)).Take(1).ObserveOnDispatcher()
-                     .Subscribe(_ => AssociatedObject.SetBinding(ConditionalDependencyProperty, bindingCopy));
-            else
-                AssociatedObject.SetBinding(ConditionalDependencyProperty, bindingCopy);
+            AssociatedObject.SetBinding(ConditionalDependencyProperty, bindingCopy);
         }
     }
 }

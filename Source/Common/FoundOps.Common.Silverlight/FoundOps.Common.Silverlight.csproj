@@ -220,6 +220,7 @@
     <Compile Include="Services\Interfaces\ISaveChanges.cs" />
     <Compile Include="Tools\DynamicTools.cs" />
     <Compile Include="Tools\ExtensionMethods\CollectionExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\ComboBoxExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\DomainCollectionViewExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\ItemsControlExtensions.cs" />
