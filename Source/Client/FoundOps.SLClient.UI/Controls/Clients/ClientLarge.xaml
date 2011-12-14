@@ -9,7 +9,8 @@
              xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Contacts="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d" 
+             xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" mc:Ignorable="d" 
              d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
             <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
     <UserControl.Resources>
@@ -110,7 +111,7 @@
                     </toolkit:Expander.Header>
                     <Grid>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource NotEqualsVisibilityConverter}, ConverterParameter=1}">
-                            <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
+                            <Clients:ClientLocationsGrid x:Name="LocationsGrid" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=1}">
                             <Locations:LocationEdit DataContext="{Binding DataContext, Source={StaticResource LocationsVMHolder}}" />

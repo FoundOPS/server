@@ -318,8 +318,7 @@
                                                              DeleteCommand="{Binding DataContext.DeleteCommand, Source={StaticResource ServiceTemplatesHolder}}"
                                                              CommandParameter="{Binding DataContext.SelectedEntity, Source={StaticResource ServiceTemplatesHolder}}" 
                                                              ItemsSource="{Binding DataContext.AdditionalServiceTemplatesForServiceProvider, Source={StaticResource ServiceTemplatesHolder}}"
-                                                             AddDeleteMode="{Tools:GetContextObservableValue Converter={StaticResource ServiceTemplatesAddDeleteModeConverter}, 
-                                        ContextType=CoreEntities1:BusinessAccount, ContextManager={Binding DataContext.ContextManager, Source={StaticResource ServiceTemplatesHolder}}}">
+                                                             AddDeleteMode="{Tools:GetContextObservableValue Converter={StaticResource ServiceTemplatesAddDeleteModeConverter}, ContextType=CoreEntities1:BusinessAccount}">
                                         <AddEditDelete:AddDelete.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Name}"/>

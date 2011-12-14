@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Reflection;
+using System.Xaml;
 using System.Windows;
+using System.Reflection;
 using System.Windows.Data;
 using System.Windows.Markup;
-using System.Xaml;
 
 namespace FoundOps.Common.Silverlight.Tools
 {

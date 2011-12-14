@@ -28,7 +28,7 @@ namespace FoundOps.Common.Silverlight.Tools
 
         private static void StringValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            AppendNumberToStringMarkupExtension c = d as AppendNumberToStringMarkupExtension;
+            var c = d as AppendNumberToStringMarkupExtension;
             if (c != null)
             {
                 c.UpdateValue(AppendNumberToStringHelper((string)e.NewValue, c.NumberValue));

@@ -78,6 +78,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "PartyPartyImage", "Party", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Party), "PartyImage", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.PartyImage), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountInvoice", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientInvoice", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "ClientLocation", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 
 #endregion
 
@@ -1672,6 +1673,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _VendorId;
         partial void OnVendorIdChanging(global::System.Guid value);
         partial void OnVendorIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> DefaultBillingLocationId
+        {
+            get
+            {
+                return _DefaultBillingLocationId;
+            }
+            set
+            {
+                OnDefaultBillingLocationIdChanging(value);
+                ReportPropertyChanging("DefaultBillingLocationId");
+                _DefaultBillingLocationId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DefaultBillingLocationId");
+                OnDefaultBillingLocationIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _DefaultBillingLocationId;
+        partial void OnDefaultBillingLocationIdChanging(Nullable<global::System.Guid> value);
+        partial void OnDefaultBillingLocationIdChanged();
 
         #endregion
     
@@ -1941,6 +1966,44 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Invoice>("CoreEntities.ClientInvoice", "Invoice", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "ClientLocation", "Location")]
+        public Location DefaultBillingLocation
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Location>("CoreEntities.ClientLocation", "Location").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Location>("CoreEntities.ClientLocation", "Location").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Location> DefaultBillingLocationReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Location>("CoreEntities.ClientLocation", "Location");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Location>("CoreEntities.ClientLocation", "Location", value);
                 }
             }
         }
@@ -5375,6 +5438,28 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Invoice>("CoreEntities.InvoiceLocation", "Invoice", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "ClientLocation", "Client")]
+        public EntityCollection<Client> ClientsWhereBillingLocation
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Client>("CoreEntities.ClientLocation", "Client");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Client>("CoreEntities.ClientLocation", "Client", value);
                 }
             }
         }

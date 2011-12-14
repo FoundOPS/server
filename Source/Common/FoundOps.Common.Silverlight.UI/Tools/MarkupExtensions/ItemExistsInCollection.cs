@@ -1,16 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Windows;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
 namespace FoundOps.Common.Silverlight.Tools
 {
@@ -49,7 +41,6 @@ namespace FoundOps.Common.Silverlight.Tools
 
         #endregion
 
-
         #region Collection Dependency Property
 
         /// <summary>
@@ -76,7 +67,7 @@ namespace FoundOps.Common.Silverlight.Tools
             var c = d as ItemExistsInCollection;
             if (c != null)
             {
-                Common.Tools.CollectionExtensions.HookupToCollectionChanged((INotifyCollectionChanged)e.OldValue, 
+                Common.Tools.CollectionExtensions.HookupToCollectionChanged((INotifyCollectionChanged)e.OldValue,
                     (INotifyCollectionChanged)e.NewValue, c.ItemExistsInCollectionCollectionChanged);
 
                 if (e.NewValue != null)
@@ -96,12 +87,13 @@ namespace FoundOps.Common.Silverlight.Tools
             if (item == null || collection == null) return false;
 
             var itemExists = collection.Any(i =>
-                                                {
-                                                    if (i is string && item is string)
-                                                        return String.CompareOrdinal((string) i, (string) item) == 0;
+            {
+                if (i is string && item is string)
+                    return String.CompareOrdinal((string)i, (string)item) == 0;
 
-                                                    return i == item;
-                                                });
+                return i == item;
+            });
+
             return itemExists;
         }
 

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive.Linq;
-using System.Windows;
-using System.Reflection;
 using System.Reactive.Disposables;
+using FoundOps.Common.Composite.Tools;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Common.Silverlight.Tools;
 
@@ -15,36 +15,6 @@ namespace FoundOps.SLClient.Data.Tools
     /// </summary>
     public class GetContextObservableValue : UpdatableMarkupExtension<object>
     {
-        #region ContextManager Dependency Property
-
-        /// <summary>
-        /// ContextManager
-        /// </summary>
-        public ContextManager ContextManager
-        {
-            get { return (ContextManager)GetValue(ContextManagerProperty); }
-            set { SetValue(ContextManagerProperty, value); }
-        }
-
-        /// <summary>
-        /// ContextManager Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty ContextManagerProperty =
-            DependencyProperty.Register(
-                "ContextManager",
-                typeof(ContextManager),
-                typeof(GetContextObservableValue),
-                new PropertyMetadata(new PropertyChangedCallback(ContextManagerChanged)));
-
-        private static void ContextManagerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var c = d as GetContextObservableValue;
-            if (c != null)
-                c.SetupContextObservable((ContextManager)e.NewValue);
-        }
-
-        #endregion
-
         private Type _contextType;
 
         /// <summary>
@@ -56,33 +26,81 @@ namespace FoundOps.SLClient.Data.Tools
             set
             {
                 _contextType = value;
-                SetupContextObservable(ContextManager);
+                SetupContextObservable();
             }
         }
 
+        /// <summary>
+        /// The (optional) path to return.
+        /// </summary>
+        public string Path { get; set; }
+
         private object _lastValue;
+        /// <summary>
+        /// Gets or sets the last known value.
+        /// </summary>
+        private object LastValue
+        {
+            get { return _lastValue; }
+            set
+            {
+                if (_lastValue as INotifyPropertyChanged != null)
+                    ((INotifyPropertyChanged)_lastValue).PropertyChanged -= LastValuePropertyChanged;
+
+                _lastValue = value;
+
+                if (_lastValue as INotifyPropertyChanged != null)
+                    ((INotifyPropertyChanged)_lastValue).PropertyChanged += LastValuePropertyChanged;
+            }
+        }
+
+        //Listen to property changes. If the changed property is the same as Path then UpdateValue
+        void LastValuePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(Path)) return;
+
+            if (Path == e.PropertyName)
+                UpdateValue(Value);
+        }
 
         private readonly SerialDisposable _serialDisposable = new SerialDisposable();
 
-        private void SetupContextObservable(ContextManager contextManager)
+        private void SetupContextObservable()
         {
-            if (contextManager == null || ContextType == null) return;
+            if (ContextType == null) return;
 
-            MethodInfo method = typeof(ContextManager).GetMethod("GetContextObservable");
-            MethodInfo generic = method.MakeGenericMethod(ContextType);
-            var contextObservable = (IObservable<object>)generic.Invoke(contextManager, null);
+            //LastValue = Manager.Context.GetContext<ContextType>
+            LastValue = typeof(ContextManager).GetMethod("GetContext")
+                .MakeGenericMethod(ContextType).Invoke(Manager.Context, null);
 
-            //Update the MarkupExtension's value whenever the ContextObservable changes
+            //Set contextObservable = Manager.Context.GetContextObservable<ContextType>
+            var contextObservable =
+                (IObservable<object>)typeof(ContextManager).GetMethod("GetContextObservable")
+                .MakeGenericMethod(ContextType).Invoke(Manager.Context, null);
+
+            //Update the MarkupExtension's _lastValue whenever the ContextObservable changes
             _serialDisposable.Disposable = contextObservable.ObserveOnDispatcher().Subscribe(val =>
             {
-                _lastValue = val;
-                UpdateValue(val);
+                LastValue = val;
+
+                UpdateValue(Value);
             });
         }
 
         protected override object ProvideValueInternal(IServiceProvider serviceProvider)
         {
-            return _lastValue;
+            return Value;
+        }
+
+        private object Value
+        {
+            get
+            {
+                if (LastValue == null)
+                    return null;
+
+                return Path != null ? LastValue.GetProperty<object>(Path) : LastValue;
+            }
         }
     }
 }
