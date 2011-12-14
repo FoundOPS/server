@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Border Background="{StaticResource ClientBrush}">
-            <TextBlock TextWrapping="Wrap" Text="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness.Name, Converter={StaticResource ClientTitleConverter}}"
+            <TextBlock TextWrapping="Wrap" Text="{Binding SelectedClientOwnedBusinessVM.Entity.Name, Converter={StaticResource ClientTitleConverter}}"
             Margin="5,3" FontSize="13" Foreground="White" />
         </Border>
         <Grid Grid.Row="1" HorizontalAlignment="Center">

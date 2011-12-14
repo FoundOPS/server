@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Net;
-using FoundOps.Server.Authentication;
 using Recaptcha;
 using System.Text;
 using System.Net.Mail;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
-using FoundOps.Core.Models.Account;
+using FoundOps.Server.Authentication;
+using FoundOps.Common.Silverlight.Tools;
 
 namespace FoundOps.Server.Controllers
 {
@@ -24,26 +24,6 @@ namespace FoundOps.Server.Controllers
             if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
 
             base.Initialize(requestContext);
-        }
-
-        public string GeneratePassword()
-        {
-            var password = "";
-            var random = new Random();
-            var length = 8;
-            for (var i = 0; i < length; i++)
-            {
-                if (random.Next(0, 3) == 0) //if random.Next() == 0 then we generate a random character
-                {
-                    password += ((char)random.Next(65, 91)).ToString();
-                }
-                else //if random.Next() == 0 then we generate a random digit
-                {
-                    password += random.Next(0, 9);
-                }
-            }
-
-            return password;
         }
 
         private ActionResult LogOnLogic(LogOnModel model, string returnUrl, string redirectToOnFailureAction)
@@ -273,7 +253,7 @@ namespace FoundOps.Server.Controllers
                 if (MembershipService.ValidateReset(model.EmailAddress) && PerformRecaptcha()) //Ensure the EmailAddress is valid
                 {
                     //Set new temporary password
-                    var temporaryPassword = GeneratePassword();
+                    var temporaryPassword = PasswordTools.GeneratePassword();
 
                     //Send email
                     var ss = new SmtpClient("smtp.gmail.com", 587)

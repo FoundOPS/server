@@ -22,6 +22,14 @@
 );
 
 
+GO
+CREATE NONCLUSTERED INDEX [IX_FK_ClientInvoice]
+    ON [dbo].[Invoices]([ClientId] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_FK_BusinessAccountInvoice]
+    ON [dbo].[Invoices]([BusinessAccountId] ASC);
 
 
 GO

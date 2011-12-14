@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.Common.Tools;
 using ReactiveUI;
 using System.Linq;
 using System.Reactive.Linq;
@@ -82,9 +83,9 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             var filter =
                 //a) an entity is Added. Delay is to wait until after it is added.
-                AddCommand.Delay(new TimeSpan(0, 0, 0, 0, 300)).Select(_ => true)
+                AddCommand.Delay(new TimeSpan(0, 0, 0, 0, 300)).AsGeneric()
                 //b) the DomainCollectionView changes
-                .Merge(this.DomainCollectionViewObservable.Select(_ => true))
+                .Merge(this.DomainCollectionViewObservable.AsGeneric())
                 //c) the Context changes
                 .Merge(this.ContextManager.ContextChangedObservable);
 
@@ -136,8 +137,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             if (DomainCollectionView == null || DomainCollectionView.IsAddingNew)
                 return;
 
-            if (DesignerProperties.IsInDesignTool)
-                return;
+            if (DesignerProperties.IsInDesignTool) return;
 
             DomainCollectionView.Filter = null;
 

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
+using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.SLClient.Data.Services;
+using FoundOps.Common.Silverlight.Tools;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
@@ -39,7 +42,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Must override or else it will create a Party
         protected override Party AddNewEntity(object commandParameter)
         {
-            var newUserAccount = new UserAccount();
+            var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword() };
             ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newUserAccount);
             return newUserAccount;
         }
@@ -64,7 +67,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             var serviceProviderContext = ContextManager.GetContext<BusinessAccount>();
             if (serviceProviderContext != null)
-                entityIsPartOfView = serviceProviderContext.OwnedRoles.Any(r => r.MemberParties.Any(mp => mp.Id == entity.Id));
+                entityIsPartOfView = serviceProviderContext.OwnedRoles.Any(r => r.MemberParties.Any(mp => mp != null && mp.Id == entity.Id));
 
             return entityIsPartOfView;
         }

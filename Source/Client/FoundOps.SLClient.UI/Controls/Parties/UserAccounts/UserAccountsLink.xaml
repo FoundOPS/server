@@ -3,7 +3,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
              xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="UserAccountsVM" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
+             mc:Ignorable="d" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="UserAccountsVM" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
     <Grid x:Name="LayoutRoot" Background="White">
         <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">
             <toolkit:Expander.Header>

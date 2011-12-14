@@ -3,12 +3,8 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Server.Services.CoreDomainService;
-using GalaSoft.MvvmLight.Messaging;
 using ReactiveUI;
 using ReactiveUI.Xaml;
-using System.ComponentModel;
-using GalaSoft.MvvmLight.Command;
-using FoundOps.Core.Context.Services;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Common.Silverlight.UI.ViewModels;
 using System.ServiceModel.DomainServices.Client;
@@ -69,20 +65,10 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         protected readonly DataManager DataManager;
 
-        private ContextManager _contextManager;
-
         /// <summary>
         /// Gets the context manager.
         /// </summary>
-        public ContextManager ContextManager
-        {
-            get { return _contextManager; }
-            private set
-            {
-                _contextManager = value;
-                this.RaisePropertyChanged("ContextManager");
-            }
-        }
+        public ContextManager ContextManager { get; private set; }
 
         private readonly Subject<bool> _discardObservable = new Subject<bool>();
         /// <summary>

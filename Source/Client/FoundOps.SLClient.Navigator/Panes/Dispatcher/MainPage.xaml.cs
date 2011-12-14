@@ -6,8 +6,6 @@ using System.Collections;
 using System.Windows.Media;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.Services.Analytics;
 using Telerik.Windows.Controls;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
@@ -20,6 +18,7 @@ using Telerik.Windows.Controls.GridView;
 using Telerik.Windows.Controls.TreeView;
 using FoundOps.Common.Silverlight.Blocks;
 using FoundOps.Common.Silverlight.UI.Tools;
+using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 
 namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 {
@@ -51,6 +50,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             this.DispatcherToolBar.ResetLayoutButton.Click += ResetLayoutButtonClick;
 
             this.DependentWhenVisible(RoutesVM);
+            this.DependentWhenVisible(RegionsVM);
 
             RadDragAndDropManager.AddDragQueryHandler(this.TaskBoard, OnDragQuery);
             RadDragAndDropManager.AddDropQueryHandler(this.TaskBoard, OnDropQuery);
@@ -85,12 +85,14 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         }
 
         /// <summary>
-        /// Gets the routes VM.
+        /// Gets the RoutesVM.
         /// </summary>
-        public RoutesVM RoutesVM
-        {
-            get { return (RoutesVM)this.DataContext; }
-        }
+        public RoutesVM RoutesVM { get { return (RoutesVM)this.DataContext; } }
+
+        /// <summary>
+        /// Gets the RegionsVM.
+        /// </summary>
+        public RegionsVM RegionsVM { get { return (RegionsVM)((FrameworkElement)this.Resources["RegionsVMHolder"]).DataContext; } }
 
         #region DragAndDrop
 
@@ -315,10 +317,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     newRouteDestination.RouteTasks.Add(task);
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
-                    TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddToRouteDestinationFromTaskBoard", task.Name, 1);
+                    RecordAnalytics(task, "AddToRouteDestinationFromTaskBoard");
                 }
 
                 (((RouteDestination)destination).Route).RouteDestinationsListWrapper.Insert(((RouteDestination)destination).OrderInRoute, newRouteDestination);
@@ -333,10 +332,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     newRouteDestination.RouteTasks.Add(task);
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route task
-                    TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddToRouteTaskFromTaskBoard", task.Name, 1);
+                    RecordAnalytics(task, "AddToRouteTaskFromTaskBoard");
                 }
             }
 
@@ -370,17 +366,27 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                     //Checks to see if the route is empty. If not its sets lastDestinationOrderInRoute appropriately 
                     if (((Route)destination).RouteDestinationsListWrapper.Count != 0)
-                        lastDestinationOrderInRoute = ((Route)destination).RouteDestinationsListWrapper.LastOrDefault().OrderInRoute;
+                    {
+                        var lastOrDefault = ((Route)destination).RouteDestinationsListWrapper.LastOrDefault();
+                        if (lastOrDefault != null)
+                            lastDestinationOrderInRoute = lastOrDefault.OrderInRoute;
+                    }
 
                     ((Route)destination).RouteDestinationsListWrapper.Insert(lastDestinationOrderInRoute, newRouteDestination);
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route
-                    TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddToRouteFromTaskBoard", task.Name, 1);
+                    RecordAnalytics(task, "AddToRouteFromTaskBoard");
                 }
             }
+        }
+
+        private void RecordAnalytics(RouteTask task, string dragDropDescriptor)
+        {
+            //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
+            TrackEventAction.Track(
+                    RoutesVM.AutoAssignButtonHasBeenClicked
+                        ? "Drag and Drop After AutoDispatch"
+                        : "Drag and Drop", dragDropDescriptor, task.Name, 1);
         }
 
         #endregion
@@ -461,10 +467,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         //Insures the route map stays the correct size
         private void RouteMapPaneSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (RouteMapView.Content as FrameworkElement == null) return;
+            //if (RouteMapView.Content as FrameworkElement == null) return;
 
-            ((FrameworkElement)RouteMapView.Content).Width = RouteMapPane.Width * .99;
-            ((FrameworkElement)RouteMapView.Content).Height = RouteMapPane.Height * .99;
+            //((FrameworkElement)RouteMapView.Content).Width = RouteMapPane.Width * .99;
+            //((FrameworkElement)RouteMapView.Content).Height = RouteMapPane.Height * .99;
         }
 
         #region Layout
@@ -555,15 +561,15 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             SaveLayout();
 
             //Get the context
-            var businessAccount = (RoutesVM)DataContext;
+            //var businessAccount = (RoutesVM)DataContext;
 
             //Analytic to track when the layout is reset
             //Check if there is at least 1 UnroutedRouteTask
-            var firstOrDefault = businessAccount.UnroutedTasks.FirstOrDefault();
-            TrackEventAction.Track("Dispatcher", "LayoutChanged",
-                                   firstOrDefault != null ? firstOrDefault.OwnerBusinessAccount.DisplayName : " ", 1);
+            //var firstOrDefault = businessAccount.UnroutedTasks.FirstOrDefault();
+            //TrackEventAction.Track("Dispatcher", "LayoutChanged",
+            //                       firstOrDefault != null ? firstOrDefault.OwnerBusinessAccount.DisplayName : " ", 1);
 
-            //if (_analytics != null) _analytics.DispatcherLayoutChanged();
+            Analytics.DispatcherLayoutChanged();
         }
 
         /// <summary>

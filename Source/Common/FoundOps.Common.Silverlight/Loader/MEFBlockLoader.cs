@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Linq;
+using System.ComponentModel;
 using System.Windows.Browser;
 using System.Windows.Controls;
-using FoundOps.Common.Composite.Tools;
+using System.Collections.Generic;
+using FoundOps.Core.Navigator.Loader;
+using System.ComponentModel.Composition;
 using FoundOps.Common.Silverlight.Blocks;
 using FoundOps.Common.Tools.ExtensionMethods;
+using System.ComponentModel.Composition.Hosting;
 
-namespace FoundOps.Core.Navigator.Loader
+namespace FoundOps.Common.Silverlight.Loader
 {
     public class MEFBlockLoader : ContentLoaderBase, INotifyPropertyChanged
     {

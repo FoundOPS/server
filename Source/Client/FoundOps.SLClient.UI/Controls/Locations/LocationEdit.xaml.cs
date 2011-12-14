@@ -1,70 +1,50 @@
 ﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using FoundOps.Common.Silverlight.Tools;
-using FoundOps.SLClient.UI.ViewModels;
+using FoundOps.Common.Tools;
 using ReactiveUI;
+using System.Windows;
+using System.Reactive.Linq;
 using Telerik.Windows.Controls.Map;
-using GalaSoft.MvvmLight.Messaging;
+using FoundOps.SLClient.UI.ViewModels;
+using FoundOps.Common.Silverlight.Tools.Location;
 using FoundOps.Common.Silverlight.Extensions.Telerik;
 
 namespace FoundOps.SLClient.UI.Controls.Locations
 {
-    public partial class LocationEdit : UserControl
+    /// <summary>
+    /// Allows you to select a Location's address and latitude/longitude
+    /// </summary>
+    public partial class LocationEdit
     {
-        #region LocationVM Dependency Property
+        private LocationsVM LocationsVM { get { return (LocationsVM)this.DataContext; } }
 
         /// <summary>
-        /// LocationVM
+        /// Initializes a new instance of the <see cref="LocationEdit"/> class.
         /// </summary>
-        public LocationVM LocationVM
-        {
-            get { return (LocationVM)GetValue(LocationVMProperty); }
-            set { SetValue(LocationVMProperty, value); }
-        }
-
-        /// <summary>
-        /// LocationVM Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty LocationVMProperty =
-            DependencyProperty.Register(
-                "LocationVM",
-                typeof(LocationVM),
-                typeof(LocationEdit),
-                new PropertyMetadata(new PropertyChangedCallback(LocationVMChanged)));
-
-        private static void LocationVMChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var c = d as LocationEdit;
-            if (c != null)
-            {
-                var oldVM = (LocationVM)e.OldValue;
-                if (oldVM != null)
-                    oldVM.PropertyChanged -= c.LocationVMPropertyChanged;
-                var newVM = (LocationVM)e.NewValue;
-                if (newVM != null)
-                    newVM.PropertyChanged += c.LocationVMPropertyChanged;
-            }
-        }
-
-        void LocationVMPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "GeocoderResults")
-            {
-                if (_onLocationSetHandled)
-                    InformationLayer.SetBestView();
-                else
-                    _onLocationSetHandled = true;
-            }
-        }
-
-        private bool _onLocationSetHandled = true;
-
-        #endregion
-
         public LocationEdit()
         {
             InitializeComponent();
+            if (System.ComponentModel.DesignerProperties.IsInDesignTool) return;
+
+            // Zoom to BestView when selection changed on  geocode results (when there is more than just the one default option).
+            var georesultselectionchanged = Observable.FromEventPattern<System.Windows.Controls.SelectionChangedEventArgs>(GeocoderResultsListBox, "SelectionChanged")
+                .Where(_ => GeocoderResultsListBox.Items.Count > 1).AsGeneric();
+
+            // Zoom to BestView when Geocoding is completed (i.e. When Search completes)
+            LocationsVM.SelectedLocationVMObservable.Where(lvm => lvm != null).SelectMany(lvm => lvm.GeocodeCompletion).AsGeneric()
+                .Merge(georesultselectionchanged).Throttle(new TimeSpan(0, 0, 0, 1))
+                .ObserveOnDispatcher().Subscribe(_ => InformationLayer.SetBestView());
+
+            // Subscribe to changes of latitude/longitude by changing visual state according to validity.
+            LocationsVM.SelectedLocationVMObservable.Where(lvm => lvm != null)
+                .SelectMany(lvm => lvm.ValidLatitudeLongitudeState)
+                .Throttle(new TimeSpan(0, 0, 0, 0, 500))
+                .ObserveOnDispatcher().Subscribe(validstate =>
+            {
+                if (validstate)
+                    VisualStateManager.GoToState(this, "MapDetails", false);
+                else
+                    VisualStateManager.GoToState(this, "MapSearch", true);
+            });
 
             //Initializes the MapView to the RoadView setting via OSM
             this.MapTypeSelector.SelectedIndex = 0;
@@ -72,40 +52,42 @@ namespace FoundOps.SLClient.UI.Controls.Locations
             InformationLayer.CenterMapBasedOnIpInfo();
 
             MessageBus.Current.Listen<LocationSetMessage>().Subscribe(OnLocationSet);
-            MessageBus.Current.Listen<ResetMapMessage>().Subscribe(OnLocationNotSet);
         }
 
+        /// <summary>
+        /// Selects the latitude longitude when manually selecting the latitude and longitude by clicking the map.
+        /// </summary>
         private void MapSelectLatitudeLongitude(object sender, MapMouseRoutedEventArgs eventArgs)
         {
             var latitudeLongitude = new Tuple<decimal, decimal>((decimal)eventArgs.Location.Latitude,
                                                                 (decimal)eventArgs.Location.Longitude);
 
-            if ((VisualStateGroup.CurrentState == null || VisualStateGroup.CurrentState.Name != "MapViewOnly") && LocationVM.ManuallySetLatitudeLongitude.CanExecute(latitudeLongitude))
-                LocationVM.ManuallySetLatitudeLongitude.Execute(latitudeLongitude);
+            //In MapEditMode call ManuallySelectLatitudeLongitude command
+            if ((VisualStateGroup.CurrentState == null || VisualStateGroup.CurrentState.Name != "MapDetails") &&
+                LocationsVM.SelectedLocationVM.ManuallySetLatitudeLongitude.CanExecute(latitudeLongitude))
+                LocationsVM.SelectedLocationVM.ManuallySetLatitudeLongitude.Execute(latitudeLongitude);
         }
 
         private void OnLocationSet(LocationSetMessage locationSetMessage)
         {
-            VisualStateManager.GoToState(this, "MapViewOnly", true);
+            VisualStateManager.GoToState(this, "MapDetails", true);
             Map.Center = locationSetMessage.SetLocation;
             Map.ZoomLevel = 14;
             Map.ZoomLevel = 15;
-            _onLocationSetHandled = false;
-        }
-
-        private void OnLocationNotSet(ResetMapMessage obj)
-        {
-            VisualStateManager.GoToState(this, "MapEdit", true);
-            InformationLayer.CenterMapBasedOnIpInfo();
         }
 
         private void EditLocationButtonClick(object sender, RoutedEventArgs e)
         {
             InformationLayer.SetBestView();
-            VisualStateManager.GoToState(this, "MapEdit", true);
+            VisualStateManager.GoToState(this, "MapSearch", true);
         }
 
-        private void MapTypeSelector_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)
+        private void MoreDetailsButtonClick(object sender, RoutedEventArgs e)
+        {
+            LocationsVM.MoveToDetailsView.Execute(null);
+        }
+
+        private void MapTypeSelectorSelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (this.MapTypeSelector.SelectedIndex == 0)
                 Map.Provider = new OpenStreetMapProvider();

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
 {
+    /// <summary>
+    /// Displays a list of User Accounts
+    /// </summary>
     public partial class UserAccountsLink : UserControl
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserAccountsLink"/> class.
+        /// </summary>
         public UserAccountsLink()
         {
             InitializeComponent();

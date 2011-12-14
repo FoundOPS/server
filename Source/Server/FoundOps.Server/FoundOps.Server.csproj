@@ -161,6 +161,9 @@
     <Reference Include="System.ServiceModel">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ServiceModel.DomainServices.Client">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.ServiceModel.DomainServices.Client.dll</HintPath>
+    </Reference>
     <Reference Include="System.ServiceModel.DomainServices.EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <Private>True</Private>
     </Reference>
@@ -287,36 +290,6 @@
     <Content Include="Content\TouchIcon.png" />
     <Content Include="Content\twitter.png" />
     <Content Include="Content\wt-rotator.css" />
-    <Content Include="Lib\EntityFramework.dll" />
-    <Content Include="Lib\LinqKit.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.EntityFramework.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.EntityFramework.xml" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Hosting.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Hosting.xml" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.LinqToSql.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.LinqToSql.xml" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Server.UnitTesting.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Server.UnitTesting.xml" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Tools.TextTemplate.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Tools.TextTemplate.xml" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.WindowsAzure.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.WindowsAzure.xml" />
-    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.Design.dll" />
-    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.Design.xml" />
-    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.dll" />
-    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.xml" />
-    <Content Include="Lib\Microsoft.WindowsAzure.CloudDrive.dll" />
-    <Content Include="Lib\Microsoft.WindowsAzure.CloudDrive.xml" />
-    <Content Include="Lib\Microsoft.WindowsAzure.Diagnostics.dll" />
-    <Content Include="Lib\Microsoft.WindowsAzure.Diagnostics.xml" />
-    <Content Include="Lib\Microsoft.WindowsAzure.ServiceRuntime.dll" />
-    <Content Include="Lib\Microsoft.WindowsAzure.ServiceRuntime.xml" />
-    <Content Include="Lib\Microsoft.WindowsAzure.StorageClient.dll" />
-    <Content Include="Lib\Microsoft.WindowsAzure.StorageClient.xml" />
-    <Content Include="Lib\Recaptcha.dll" />
-    <Content Include="Lib\System.Web.Mvc.dll" />
-    <Content Include="Lib\zxing.dll" />
-    <Content Include="Lib\zxing.pdb" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.1.min.js" />
@@ -378,6 +351,7 @@
     <Compile Include="Services\CoreDomainService\CoreDomainService.ServiceTemplates.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Invoicing.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Records.cs" />
+    <Compile Include="Services\DomainServiceTools.cs" />
     <Compile Include="Services\TechnicianDomainService.cs" />
     <Compile Include="Services\M2M4RiaLinqToEntitiesDomainService.g.cs">
       <AutoGen>True</AutoGen>

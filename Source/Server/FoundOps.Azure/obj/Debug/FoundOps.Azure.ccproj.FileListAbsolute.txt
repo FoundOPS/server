@@ -1,1 +1,0 @@
-C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Azure\bin\Debug\ServiceConfiguration.cscfg

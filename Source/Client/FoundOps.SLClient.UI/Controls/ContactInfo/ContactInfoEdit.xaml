@@ -1,23 +1,23 @@
-﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:Converters="clr-namespace:FoundOps.Core.Views.Converters"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
-             xmlns:Triggers="clr-namespace:FoundOps.Common.Silverlight.Interactivity.Triggers;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d"
-        x:Class="FoundOps.SLClient.UI.Controls.ContactInfo.ContactInfoEdit" x:Name="myContactInfoEdit" MinWidth="100">
-    <!-- Design This: Remove DataContext on LayoutRoot, NOTE: ContactInfoTypesComboBox will not show because of inability to bind to own control in Design View-->
-    <!-- Runtime or Design Parent: DataContext="{Binding ContactInfoVM, ElementName=myContactInfoEdit}"-->
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.ContactInfo.ContactInfoEdit" x:Name="myContactInfoEdit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:Converters="clr-namespace:FoundOps.Core.Views.Converters"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
+             xmlns:Triggers="clr-namespace:FoundOps.Common.Silverlight.Interactivity.Triggers;assembly=FoundOps.Common.Silverlight.UI" xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo"
+             xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.UI.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             mc:Ignorable="d" MinWidth="100">
     <UserControl.Resources>
         <Converters:OrderByTypeLabelConverter x:Key="OrderByTypeLabelConverter" />
+        <Converters1:ConvertBackWhenExists x:Key="ConvertBackWhenExists" />
         <DataTemplate x:Key="ContactInfoTemplate">
             <StackPanel Orientation="Horizontal">
-                <telerik:RadComboBox x:Name="TypesComboBox" Width="100" EmptyText="Info Type" SelectedItem="{Binding Type, Mode=TwoWay}"
-    				ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoTypes, ElementName=myContactInfoEdit}"
-    				CanKeyboardNavigationSelectItems="True" />
-                <telerik:RadComboBox x:Name="LabelsComboBox" MinWidth="100" IsEditable="True" CanAutocompleteSelectItems="True" CanKeyboardNavigationSelectItems="True"
-    				StaysOpenOnEdit="True" TextSearchMode="Contains" OpenDropDownOnFocus="True"
-    				ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoLabels, ElementName=myContactInfoEdit}"
-    				Text="{Binding Label, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" SelectionChanged="LabelRadComboBox_SelectionChanged" LostFocus="LabelRadComboBox_LostFocus" KeyDown="RadComboBox_KeyDown"/>
+                <telerik:RadComboBox x:Name="TypesComboBox" Width="100"
+                                     ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoTypes, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}" 
+                                     SelectedValue="{Binding Type, Mode=TwoWay, Converter={StaticResource ConvertBackWhenExists}}" />
+                <telerik:RadComboBox x:Name="LabelsComboBox" MinWidth="100" IsEditable="True" CanAutocompleteSelectItems="True" CanKeyboardNavigationSelectItems="True" 
+                                     StaysOpenOnEdit="True" TextSearchMode="Contains" OpenDropDownOnFocus="True"
+                                     ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoLabels, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}"
+                                     EmptyText="{Binding Type}" Text="{Binding Label, Mode=TwoWay, Converter={StaticResource ConvertBackWhenExists}}" />
                 <!--Bind Items to all of the currently used Labels of the Selected Info Type-->
                 <telerik:RadMaskedTextBox MaskType="None" Width="180" EmptyContent="{Binding Type}" Value="{Binding Data, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" />
                 <!--MaskType, EmptyContent, and Mask is bound to selected InfoType-->

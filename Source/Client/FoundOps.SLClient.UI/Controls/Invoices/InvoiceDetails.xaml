@@ -1,20 +1,20 @@
-﻿<UserControl x:Name="myInvoiceDetails"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" 
-    xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:Converters="clr-namespace:FoundOps.SLClient.UI.Converters"
-             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             x:Class="FoundOps.SLClient.UI.Controls.Invoices.InvoiceDetails" mc:Ignorable="d"
-    d:DesignWidth="600">
+<UserControl x:Class="FoundOps.SLClient.UI.Controls.Invoices.InvoiceDetails" x:Name="myInvoiceDetails" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
+             xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+             xmlns:Converters="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:Behaviors="clr-namespace:FoundOps.Common.Silverlight.UI.Interactivity.Behaviors;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI" xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.ViewModel="ServiceTemplatesVM" d:DesignWidth="600">
     <UserControl.Resources>
+        <StackPanel x:Key="LocationsVMHolder" ViewModelLocator:ViewModelLocator.ViewModel="LocationsVM"/>
         <Converters:ScheduleModeConverter x:Key="ScheduleModeConverter"/>
     </UserControl.Resources>
     <toolkit:Expander x:Name="LayoutRoot" DataContext="{Binding SelectedEntity.Invoice}" Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ServiceBrush}">
         <toolkit:Expander.Header>
             <TextBlock Text="Invoicing" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
         </toolkit:Expander.Header>
-        <Grid Margin="0,5" HorizontalAlignment="Center" DataContext="{Binding ServiceTemplate.Invoice}">
+        <Grid Margin="0,5" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{StaticResource LargeLabelColumn}" />
                 <ColumnDefinition Width="5" />
@@ -37,8 +37,9 @@
             </Grid.RowDefinitions>
             <TextBlock Text="Bill to:" TextAlignment="Right"/>
             <!--Bind to list of locations-->
-            <StackPanel x:Name="LocationsVMHolderStackPanel" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM"/>
-            <Controls:RadComboBox x:Name="LocationsComboBox" Grid.Column="2" DisplayMemberPath="Name" ItemsSource="{Binding DataContext.DomainCollectionView, ElementName=LocationsVMHolderStackPanel}" SelectedItem="{Binding BillToLocation}"/>
+            <Controls:RadComboBox x:Name="LocationsComboBox" Grid.Column="2" DisplayMemberPath="Name" SelectedValue="{Binding BillToLocation, Mode=TwoWay}" ItemsSource="{Binding DataContext.DomainCollectionView, Source={StaticResource LocationsVMHolder}}">
+                <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=Controls1:Selector.SelectedValueProperty}"/>
+            </Controls:RadComboBox>
             <TextBlock Text="Invoice Schedule:" Grid.Row="2" TextAlignment="Right"/>
             <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="2">
                 <RadioButton x:Name="fixedButton" IsChecked="{Binding ScheduleMode, Converter={StaticResource ScheduleModeConverter}, ConverterParameter=FixedDate, Mode=TwoWay}"  Content="Fixed Date" Margin="0,0,10,0">
@@ -83,7 +84,7 @@
             <TextBlock Text="Invoice Date:" Grid.Row="6" TextAlignment="Right"/>
             <TextBlock Grid.Column="2" Grid.Row="6" Text="" Height="25"/>
             <TextBlock Text="Terms:" Grid.Row="8" TextAlignment="Right"/>
-            <Controls:RadComboBox x:Name="SalesTermComboBox" Grid.Row="8" Grid.Column="2" DisplayMemberPath="Name" ItemsSource="{Binding ServiceTemplate.OwnerServiceProvider.SalesTerms, ElementName=myInvoiceDetails}" SelectedItem="{Binding SalesTerm}" />
+            <TextBox Grid.Column="2" Grid.Row="8" Text="" />
             <TextBlock Text="Due Date:" Grid.Row="10" TextAlignment="Right"/>
             <Controls:RadDatePicker Grid.Column="2" Grid.Row="10" SelectedDate="{Binding DueDate, Mode=TwoWay}" Height="25" />
             <TextBlock Text="Memo:" Grid.Row="12" TextAlignment="Right"/>

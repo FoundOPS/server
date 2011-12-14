@@ -2,6 +2,7 @@
 using System.Data.Objects;
 using FoundOps.Common.NET;
 using System.Collections.Generic;
+using FoundOps.Core.Server.Blocks;
 using FoundOps.Server.Controllers;
 using System.Security.Authentication;
 using FoundOps.Server.Authentication;
@@ -57,10 +58,20 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessForRole(roleId);
 
-            //make sure current account is a foundops account
-            if (businessForRole.Id == BusinessAccountsDesignData.FoundOps.Id)
-                return this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates").Include("ContactInfoSet").Include("PartyImage");
-            return null;
+            //Make sure current account is a FoundOPS account
+            if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
+                return null;
+
+            var businessAccounts = this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates").Include("ContactInfoSet");
+
+            //Force load PartyImage
+            var t = (from ba in businessAccounts
+                     join pi in this.ObjectContext.Files.OfType<PartyImage>()
+                         on ba.Id equals pi.Id
+                     select pi).ToArray();
+            var count = t.Count();
+
+            return businessAccounts;
         }
 
         public BusinessAccount BusinessAccountWithClientsForRole(Guid roleId)
@@ -151,10 +162,13 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteContactInfo(ContactInfo contactInfo)
         {
+            var loadedContactInfo = this.ObjectContext.ContactInfoSet.FirstOrDefault(ci => ci.Id == contactInfo.Id);
+            if (!ObjectContext.PreDelete(loadedContactInfo))
+                return;
+
             if ((contactInfo.EntityState == EntityState.Detached))
-            {
                 this.ObjectContext.ContactInfoSet.Attach(contactInfo);
-            }
+
             this.ObjectContext.ContactInfoSet.DeleteObject(contactInfo);
         }
 
@@ -238,6 +252,10 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteParty(Party party)
         {
+            var loadedParty = this.ObjectContext.Parties.FirstOrDefault(p => p.Id == party.Id);
+            if (loadedParty != null)
+                this.ObjectContext.Detach(loadedParty);
+
             if ((party.EntityState == EntityState.Detached))
                 this.ObjectContext.Parties.Attach(party);
 
@@ -245,8 +263,12 @@ namespace FoundOps.Server.Services.CoreDomainService
             party.OfClients.Load();
             party.ContactInfoSet.Load();
             party.PartyImageReference.Load();
-            
-            if(party.PartyImage!=null)
+            party.OwnedRoles.Load();
+
+            party.RoleMembership.Load();
+            party.RoleMembership.Clear();
+
+            if (party.PartyImage != null)
                 this.DeleteFile(party.PartyImage);
 
             var partyLocations = party.Locations.ToList();
@@ -263,9 +285,11 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var contactInfoSetToRemove = party.ContactInfoSet.ToList();
             foreach (var contactInfo in contactInfoSetToRemove)
-            {
                 this.DeleteContactInfo(contactInfo);
-            }
+
+            var ownedRolesToDelete = party.OwnedRoles.ToArray();
+            foreach (var ownedRole in ownedRolesToDelete)
+                this.DeleteRole(ownedRole);
 
             if ((party.EntityState != EntityState.Detached))
             {
@@ -333,6 +357,14 @@ namespace FoundOps.Server.Services.CoreDomainService
             return availableRoles;
         }
 
+        private void DeleteRole(Role ownedRole)
+        {
+            if ((ownedRole.EntityState == EntityState.Detached))
+                this.ObjectContext.Roles.Attach(ownedRole);
+
+            this.ObjectContext.Roles.DeleteObject(ownedRole);
+        }
+
         #endregion
 
         #region User Accounts
@@ -340,7 +372,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         public UserAccount CurrentUserAccount()
         {
             var currentUserAccount = ((ObjectQuery<UserAccount>)AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext))
-                 .Include("RoleMembership").Include("RoleMembership.OwnerParty").Include("RoleMembership.Blocks").Include("OwnedRoles").Include("OwnedRoles.Blocks")
+                 .Include("RoleMembership").Include("RoleMembership.OwnerParty").Include("RoleMembership.Blocks").Include("OwnedRoles").Include("OwnedRoles.Blocks").Include("LinkedEmployees")
                  .FirstOrDefault();
 
             if (currentUserAccount != null)
@@ -349,7 +381,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             return currentUserAccount;
         }
 
-        public IQueryable<Party> GetAllUserAccounts(Guid roleId)
+        public IEnumerable<Party> GetAllUserAccounts(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessForRole(roleId);
 
@@ -357,7 +389,28 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole.Id == BusinessAccountsDesignData.FoundOps.Id)
                 return this.ObjectContext.Parties.OfType<UserAccount>();
 
-            return this.ObjectContext.Parties.OfType<UserAccount>();
+            //Filter by current businesses role
+            return businessForRole.OwnedRoles.SelectMany(or => or.MemberParties);
+        }
+
+        public void InsertUserAccount(UserAccount userAccount)
+        {
+            if ((userAccount.EntityState != EntityState.Detached))
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(userAccount, EntityState.Added);
+            }
+            else
+            {
+                //Set the password to the temporary password
+                userAccount.PasswordHash = EncryptionTools.Hash(userAccount.TemporaryPassword);
+
+                //Setup the Default UserAccount role
+                var userAccountBlocks =
+                    this.ObjectContext.Blocks.Where(block => BlocksData.DefaultUserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
+                RolesDesignData.SetupDefaultUserAccountRole(userAccount, userAccountBlocks);
+
+                this.ObjectContext.Parties.AddObject(userAccount);
+            }
         }
 
         [Update]
@@ -366,11 +419,15 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (!ObjectContext.CurrentUserCanAdministerThisParty(currentUserAccount.Id))
                 throw new AuthenticationException();
 
+            //Check if there is a temporary password
+            if (string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
+            {
+                currentUserAccount.PasswordHash = EncryptionTools.Hash(currentUserAccount.TemporaryPassword);
+            }
+
             this.ObjectContext.Parties.AttachAsModified(currentUserAccount);
         }
 
         #endregion
     }
 }
-
-

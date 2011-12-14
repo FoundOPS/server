@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Browser;
 using System.Windows.Controls;
 using FoundOps.Core.Navigator.VMs;
-using FoundOps.Core.Navigator.Loader;
+using FoundOps.Common.Silverlight.Loader;
 using FoundOps.SLClient.Navigator.ViewModels;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 
@@ -67,9 +67,7 @@ namespace FoundOps.SLClient.Navigator
             var navigationState = Application.Current.Host.NavigationState;
 
             if (!String.IsNullOrEmpty(navigationState)) //Navigate to navigation state if it exists (after the Block Mapping is setup)
-            {
                 ContentFrame.Navigate(new Uri(navigationState, UriKind.RelativeOrAbsolute));
-            }
         }
 
         private void OnNavigateToMessageRecieved(NavigateToMessage navigateToMessage)

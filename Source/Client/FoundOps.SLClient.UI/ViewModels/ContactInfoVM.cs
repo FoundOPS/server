@@ -1,30 +1,18 @@
-﻿using System.ComponentModel.Composition;
-using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.UI.ViewModels;
-using FoundOps.Core.Context.Services;
-using FoundOps.Core.Context.Services.Interface;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.Core.Models.CoreEntities;
+﻿using System;
+using System.Reactive.Linq;
+using FoundOps.Common.Tools;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
+using FoundOps.SLClient.Data.Services;
+using System.ComponentModel.Composition;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Context.Services.Interface;
+using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Silverlight.UI.ViewModels;
+using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
-    /// <summary>
-    /// The different ContactInfoTypes
-    /// </summary>
-    public enum ContactInfoType
-    {
-        /// <summary>
-        /// Locations' Contact Info
-        /// </summary>
-        Locations,
-        /// <summary>
-        /// OwnedParties' Contact Info
-        /// </summary>
-        OwnedParties
-    }
-
     /// <summary>
     /// Contains the logic for displaying ContactInfo
     /// </summary>
@@ -47,6 +35,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the ContactInfoSet.
+        /// </summary>
         public EntityCollection<ContactInfo> ContactInfoSet { get; private set; }
 
         private RelayCommand _addNewContactInfoCommand;
@@ -85,18 +76,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactInfoVM"/> class.
         /// </summary>
-        /// <param name="contactInfoDataService">The contact info data service.</param>
-        /// <param name="contactInfoSet">The contact info set.</param>
-        [ImportingConstructor]
-        public ContactInfoVM(IContactInfoDataService contactInfoDataService, EntityCollection<ContactInfo> contactInfoSet)
-        {
-            ContactInfoSet = contactInfoSet;
-            ContactInfoDataService = contactInfoDataService;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContactInfoVM"/> class.
-        /// </summary>
         /// <param name="dataManager">The data manager.</param>
         /// <param name="contactInfoType">Type of the contact info.</param>
         /// <param name="contactInfoSet">The contact info set.</param>
@@ -104,22 +83,25 @@ namespace FoundOps.SLClient.UI.ViewModels
         public ContactInfoVM(DataManager dataManager, ContactInfoType contactInfoType, EntityCollection<ContactInfo> contactInfoSet)
         {
             _dataManager = dataManager;
-            dataManager.Context.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == "LocationsContactInfoDataService" || e.PropertyName == "PartyContactInfoDataService")
-                    UpdateContactInfoDataService(contactInfoType);
-            };
-            ContactInfoSet = contactInfoSet;
-            UpdateContactInfoDataService(contactInfoType);
-        }
 
-        private void UpdateContactInfoDataService(ContactInfoType contactInfoType)
-        {
-            if (_dataManager.ContextManager.OwnerAccount != null)
-                if (contactInfoType == ContactInfoType.Locations)
-                    ContactInfoDataService = _dataManager.Context.LocationsContactInfoDataService(_dataManager.ContextManager.OwnerAccount.Id);
-                else if (contactInfoType == ContactInfoType.OwnedParties)
-                    ContactInfoDataService = _dataManager.Context.PartyContactInfoDataService(_dataManager.ContextManager.OwnerAccount.Id);
+            //Update the ContactInfoDataService whenever the LocationsContactInfoDataService or the PartyContactInfoDataService changes
+            dataManager.Context.FromAnyPropertyChanged()
+                .Where(pce => pce.PropertyName == "LocationsContactInfoDataService" || pce.PropertyName == "PartyContactInfoDataService")
+                .AsGeneric().AndNow().SubscribeOnDispatcher().Subscribe(_ =>
+                {
+                    if (_dataManager.ContextManager.OwnerAccount != null)
+                        switch (contactInfoType)
+                        {
+                            case ContactInfoType.Locations:
+                                ContactInfoDataService = _dataManager.Context.LocationsContactInfoDataService(_dataManager.ContextManager.OwnerAccount.Id);
+                                break;
+                            case ContactInfoType.OwnedParties:
+                                ContactInfoDataService = _dataManager.Context.PartyContactInfoDataService(_dataManager.ContextManager.OwnerAccount.Id);
+                                break;
+                        }
+                });
+
+            ContactInfoSet = contactInfoSet;
         }
 
         #region Logic

@@ -252,7 +252,7 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\VehiclesDesignData.cs">
       <Link>DesignData\VehiclesDesignData.cs</Link>
     </Compile>
-    <Compile Include="Converters\ClientToOwnerParty.cs" />
+    <Compile Include="Converters\ClientToOwnedParty.cs" />
     <Compile Include="Converters\LocationConverters.cs" />
     <Compile Include="Converters\ServiceTemplatesConverters.cs" />
     <Compile Include="ExportContext.cs" />
@@ -289,7 +289,7 @@
     <Compile Include="Services\DataManager.cs" />
     <Compile Include="Services\Design\DesignContactInfoDataService.cs" />
     <Compile Include="Services\Interface\IContactInfoDataService.cs" />
-    <Compile Include="Services\Analytics\AnalyticsManager.cs" />
+    <Compile Include="Services\Analytics.cs" />
     <Compile Include="Services\Manager.cs" />
     <Compile Include="Tools\DataFedVMExtensions.cs" />
     <Compile Include="Tools\ContextManagerMarkupExtensions.cs" />

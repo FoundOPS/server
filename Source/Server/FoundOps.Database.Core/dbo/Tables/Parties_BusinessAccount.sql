@@ -9,6 +9,3 @@
     CONSTRAINT [FK_BusinessAccount_inherits_Business] FOREIGN KEY ([Id]) REFERENCES [dbo].[Parties_Business] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-
-
-

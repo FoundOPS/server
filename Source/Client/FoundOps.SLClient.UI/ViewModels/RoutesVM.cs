@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 using FoundOps.Common.Tools;
+using FoundOps.Server.Services.CoreDomainService;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
@@ -367,7 +368,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //c) the SelectedRegions changes
                 .Merge(SelectedRegions.FromCollectionChangedEventGeneric())
                 //d) a route's RouteType is changed
-                .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectMany(rts => rts.Select(rt => Observable2.FromPropertyChangedPattern(rt, x => x.RouteType))).Select(_ => true));
+                .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectMany(rts => rts.Select(rt => Observable2.FromPropertyChangedPattern(rt, x => x.RouteType))).AsGeneric());
 
             #endregion
 
@@ -394,9 +395,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 //It meets the region filter if: a) a route has no destinations
                 //or b) a route has a destination with no location (because it hasnt loaded) or a location of a selected region
-                var meetsRegionFilter = route.NumberOfRouteDestinations == 0 ||
-                    route.RouteDestinations.Any(rd => rd.Location == null || rd.Location.Region == null
-                        || SelectedRegions.Contains(rd.Location.Region.Name));
+                //var meetsRegionFilter = route.NumberOfRouteDestinations == 0 ||
+                //    route.RouteDestinations.Any(rd => rd.Location == null || rd.Location.Region == null
+                //        || SelectedRegions.Contains(rd.Location.Region.Name));
+
+                //TODO: Uncomment above
+                var meetsRegionFilter = true;
 
                 //It meets the route type filter if: a) a route has no RouteType selected or
                 //b) a route is the type of a SelectedRouteType
@@ -415,7 +419,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Update the counts on the Dispatcher Filter whenever:
             var updateFilterCounts =
                 //a) routesOrFiltersChanged
-            _updateFilter.Throttle(new TimeSpan(0, 0, 0, 0, 250)).Select(_ => true) //delay to wait until DCV is updated
+            _updateFilter.Throttle(new TimeSpan(0, 0, 0, 0, 250)).AsGeneric() //delay to wait until DCV is updated
                 //merge with b) whenever a Task is added to a route
                 .Merge(
                 //whenever loadedRoutes is changed or set
@@ -427,7 +431,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                           routeDestinations.Select(rd => rd.RouteTasks.NowAndWhenCollectionChanged())
                           .Merge()) //Merge loadedRoutes.RouteDestinations.RouteTasks collection changed events
                         ).Merge() //Merge loadedRoutes.RouteDestinations collection changed events
-                       ).Select(_ => true)
+                       ).AsGeneric()
                        );
 
             //Setup ForceFilterCountUpdate property

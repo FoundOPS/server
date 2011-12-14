@@ -1,14 +1,16 @@
 ﻿using System;
-using System.Windows;
-using FoundOps.Common.Silverlight.Extensions.Telerik;
-using FoundOps.Common.Silverlight.Tools;
-using FoundOps.SLClient.UI.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
 using ReactiveUI;
+using System.Windows;
 using Telerik.Windows.Controls.Map;
+using FoundOps.SLClient.UI.ViewModels;
+using FoundOps.Common.Silverlight.Tools.Location;
+using FoundOps.Common.Silverlight.Extensions.Telerik;
 
 namespace FoundOps.SLClient.UI.Controls.Locations
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class SubLocations
     {
         #region SubLocationsVM Dependency Property
@@ -43,10 +45,13 @@ namespace FoundOps.SLClient.UI.Controls.Locations
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SubLocations"/> class.
+        /// </summary>
         public SubLocations()
         {
             InitializeComponent();
-
+            if (System.ComponentModel.DesignerProperties.IsInDesignTool) return;
             //Initializes the MapView to the RoadView setting via OSM
             this.MapTypeSelector.SelectedIndex = 0;
 

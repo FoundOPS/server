@@ -13,8 +13,8 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_ServiceClient]
-    ON [dbo].[Services]([ClientId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_RecurringServiceService]
+    ON [dbo].[Services]([RecurringServiceId] ASC);
 
 
 GO
@@ -23,6 +23,6 @@ CREATE NONCLUSTERED INDEX [IX_FK_BusinessAccountService]
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_RecurringServiceService]
-    ON [dbo].[Services]([RecurringServiceId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_ServiceClient]
+    ON [dbo].[Services]([ClientId] ASC);
 

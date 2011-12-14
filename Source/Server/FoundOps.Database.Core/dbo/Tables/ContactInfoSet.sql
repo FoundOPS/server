@@ -12,14 +12,12 @@
 );
 
 
+GO
+CREATE NONCLUSTERED INDEX [IX_FK_LocationContactInfo]
+    ON [dbo].[ContactInfoSet]([LocationId] ASC);
 
 
 GO
 CREATE NONCLUSTERED INDEX [IX_FK_ContactInfoParty]
     ON [dbo].[ContactInfoSet]([PartyId] ASC);
-
-
-GO
-CREATE NONCLUSTERED INDEX [IX_FK_LocationContactInfo]
-    ON [dbo].[ContactInfoSet]([LocationId] ASC);
 

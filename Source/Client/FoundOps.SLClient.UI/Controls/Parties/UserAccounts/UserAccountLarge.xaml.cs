@@ -1,22 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using System.ComponentModel;
+using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
 {
-    public partial class UserAccountLarge : UserControl
+    /// <summary>
+    /// UI for editing a UserAccount.
+    /// </summary>
+    public partial class UserAccountLarge
     {
+        /// <summary>
+        /// Gets the EmployeesVM.
+        /// </summary>
+        public EmployeesVM EmployeesVM { get { return (EmployeesVM)EmployeesVMHolder.DataContext; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserAccountLarge"/> class.
+        /// </summary>
         public UserAccountLarge()
         {
             InitializeComponent();
+
+#if DEBUG
+            if (DesignerProperties.IsInDesignTool) return;
+#endif
+            EmployeesVM.DependentWhenVisible(this);
         }
     }
 }

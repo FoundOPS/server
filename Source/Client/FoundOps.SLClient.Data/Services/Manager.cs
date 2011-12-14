@@ -1,51 +1,20 @@
-﻿using FoundOps.Core.Navigator.Loader;
-using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.Services.Analytics;
+﻿using MEFedMVVM.ViewModelLocator;
 
 namespace FoundOps.SLClient.Data.Services
 {
     /// <summary>
-    /// Imports all the manager classes
+    /// An access point for the manager classes.
     /// </summary>
-    public class Manager
+    public static class Manager
     {
         /// <summary>
-        /// Gets or sets the analytics.
+        /// Gets the ContextManager.
         /// </summary>
-        //[Import]
-        public AnalyticsManager Analytics { get; set; }
+        public static ContextManager Context { get { return ViewModelRepository.Instance.Resolver.Container.GetExportedValue<ContextManager>(); } }
 
         /// <summary>
-        /// Gets or sets the context manager.
+        /// Gets the DataManager.
         /// </summary>
-        //[Import]
-        public ContextManager Context { get; set; }
-
-        /// <summary>
-        /// Gets or sets the aggregate catalog service.
-        /// </summary>
-        //[Import]
-        public IAggregateCatalogService AggregateCatalogService { get; set; }
-
-        /// <summary>
-        /// Gets or sets the data manager.
-        /// </summary>
-        //[Import]
-        public DataManager Data { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Manager"/> class.
-        /// </summary>
-        public Manager()
-        {
-            CompositionInitializer.SatisfyImports(this);
-
-            //var contextManager = AggregateCatalogService.AggregateCatalog.GetExports(
-            //   new ImportDefinition((exportDef) => exportDef.ContractName == typeof(ContextManager).ToString(),
-            //                         typeof(ContextManager).ToString(), ImportCardinality.ExactlyOne, false, false)).ElementAt(0);
-
-            //var part = contextManager.Item1.CreatePart();
-            //var contextManagerValue = part.GetExportedValue(contextManager.Item2);
-        }
+        public static DataManager Data {get{ return ViewModelRepository.Instance.Resolver.Container.GetExportedValue<DataManager>(); } }
     }
 }

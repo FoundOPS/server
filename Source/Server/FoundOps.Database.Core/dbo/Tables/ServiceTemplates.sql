@@ -13,8 +13,8 @@
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_ServiceTemplateBusinessAccount]
-    ON [dbo].[ServiceTemplates]([OwnerServiceProviderId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_ServiceTemplateServiceTemplate]
+    ON [dbo].[ServiceTemplates]([OwnerServiceTemplateId] ASC);
 
 
 GO
@@ -23,6 +23,6 @@ CREATE NONCLUSTERED INDEX [IX_FK_ClientServiceTemplate]
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_ServiceTemplateServiceTemplate]
-    ON [dbo].[ServiceTemplates]([OwnerServiceTemplateId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_ServiceTemplateBusinessAccount]
+    ON [dbo].[ServiceTemplates]([OwnerServiceProviderId] ASC);
 

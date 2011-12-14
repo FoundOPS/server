@@ -246,6 +246,12 @@ namespace FoundOps.Server.Services.CoreDomainService
                  on e.Id equals p.Id
              select p.ContactInfoSet).ToArray();
 
+            //Force load LinkedUserAccount
+            (from e in employeesQueryable
+             join p in this.ObjectContext.Parties
+                 on e.LinkedUserAccount.Id equals p.Id
+             select p).ToArray();
+
             //Force load OwnedPerson.PartyImage
             var t = (from e in employeesQueryable
                 join pi in this.ObjectContext.Files.OfType<PartyImage>()
@@ -369,7 +375,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var locations =
                 ((ObjectQuery<Location>)this.ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id))
-                .Include("ContactInfoSet").Include("Region").Include("Party").Include("SubLocations").ToArray();
+                .Include("ContactInfoSet").Include("Region").Include("Party").Include("Party.ClientOwner").Include("SubLocations").ToArray();
 
             return locations;
         }

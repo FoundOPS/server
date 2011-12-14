@@ -2,10 +2,15 @@
 using System.Linq;
 using System.Collections.Generic;
 using FoundOps.Common.Composite.Entities;
-using FoundOps.Core.Server.Blocks;
 
 namespace FoundOps.Core.Models.CoreEntities
 {
+    public enum RoleType
+    {
+        Custom = 0,
+        Administrator = 1
+    }
+
     public partial class Role : IEntityDefaultCreation
     {
         #region Implementation of IEntityDefaultCreation
@@ -42,6 +47,18 @@ namespace FoundOps.Core.Models.CoreEntities
                 if (logoutBlock != null)
                     orderedBlocks.Add(logoutBlock);
                 return orderedBlocks;
+            }
+        }
+
+        public RoleType RoleType
+        {
+            get
+            {
+                return (RoleType)Convert.ToInt32(this.RoleTypeInt);
+            }
+            set
+            {
+                this.RoleTypeInt = Convert.ToInt16(value);
             }
         }
     }

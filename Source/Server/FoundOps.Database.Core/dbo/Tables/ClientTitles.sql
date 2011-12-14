@@ -9,8 +9,6 @@
 );
 
 
-
-
 GO
 CREATE NONCLUSTERED INDEX [IX_FK_ClientTitleContact]
     ON [dbo].[ClientTitles]([ContactId] ASC);

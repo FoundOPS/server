@@ -1,10 +1,12 @@
 ﻿using System.Linq;
+using System.Reactive.Linq;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.Core.Context.Services;
 using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
+using FoundOps.SLClient.Data.ViewModels;
+using ReactiveUI;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -14,20 +16,11 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("ContactsVM")]
     public class ContactsVM : CoreEntityCollectionInfiniteAccordionVM<Contact>
     {
-        //Public Properties
-        private PersonVM _selectedContactPersonVM;
+        private readonly ObservableAsPropertyHelper<PartyVM> _selectedContactPersonVM;
         /// <summary>
-        /// Gets the selected contact person VM.
+        /// Gets the selected Contact's PartyVM
         /// </summary>
-        public PersonVM SelectedContactPersonVM
-        {
-            get { return _selectedContactPersonVM; }
-            private set
-            {
-                _selectedContactPersonVM = value;
-                this.RaisePropertyChanged("SelectedContactPersonVM");
-            }
-        }
+        public PartyVM SelectedContactPersonVM { get { return _selectedContactPersonVM.Value; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactsVM"/> class.
@@ -38,9 +31,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         public ContactsVM(IPartyDataService partyDataService, DataManager dataManager)
             : base(dataManager)
         {
-            SelectedContactPersonVM = new PersonVM(dataManager, partyDataService);
-
             this.SetupMainQuery(DataManager.Query.Contacts, null, "DisplayName");
+
+            //Setup the selected contact's OwnedPerson PartyVM whenever the selected contact changes
+            _selectedContactPersonVM =
+                SelectedEntityObservable.Where(se => se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
+                .ToProperty(this, x => x.SelectedContactPersonVM);
         }
 
         #region Logic
@@ -81,13 +77,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             newEntity.OwnerParty = this.ContextManager.OwnerAccount;
 
             base.OnAddEntity(newEntity);
-        }
-
-        protected override void OnSelectedEntityChanged(Contact oldValue, Contact newValue)
-        {
-            SelectedContactPersonVM.SelectedPerson = newValue != null ? newValue.OwnedPerson : null;
-
-            base.OnSelectedEntityChanged(oldValue, newValue);
         }
 
         #endregion

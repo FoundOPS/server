@@ -30,7 +30,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
             //Update the Manifest when: RouteManifestVM or RouteManifestSettings changes or this is Loaded
             RoutesVM.RouteManifestVM.RouteManifestSettings.FromAnyPropertyChanged().Where(p => RouteManifestSettings.DestinationsProperties.Contains(p.PropertyName))
-            .Select(_ => true).Merge(Observable.FromEventPattern<RoutedEventArgs>(this, "Loaded").Select(r => true)).Throttle(new TimeSpan(0, 0, 0, 1))
+            .AsGeneric().Merge(Observable.FromEventPattern<RoutedEventArgs>(this, "Loaded").Select(r => true)).Throttle(new TimeSpan(0, 0, 0, 1))
             .ObserveOnDispatcher().Subscribe(a => UpdateControl());
         }
 

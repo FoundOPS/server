@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 12/02/2011 11:59:31
+-- Date Created: 12/02/2011 16:40:58
 -- Generated from EDMX file: C:\FoundOps\Agile5\Source-DEV\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -209,12 +209,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ClientInvoice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_ClientInvoice];
 GO
-IF OBJECT_ID(N'[dbo].[FK_SalesTermClient]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_SalesTermClient];
-GO
-IF OBJECT_ID(N'[dbo].[FK_SalesTermBusinessAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[SalesTerms] DROP CONSTRAINT [FK_SalesTermBusinessAccount];
-GO
 IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
 GO
@@ -414,7 +408,8 @@ CREATE TABLE [dbo].[Roles] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NULL,
     [Description] nvarchar(max)  NULL,
-    [OwnerPartyId] uniqueidentifier  NULL
+    [OwnerPartyId] uniqueidentifier  NULL,
+    [RoleTypeInt] smallint  NOT NULL
 );
 GO
 
@@ -559,8 +554,7 @@ CREATE TABLE [dbo].[Clients] (
     [DateAdded] datetime  NOT NULL,
     [Salesperson] nvarchar(max)  NULL,
     [LinkedPartyId] uniqueidentifier  NULL,
-    [VendorId] uniqueidentifier  NOT NULL,
-    [SalesTermId] uniqueidentifier  NOT NULL
+    [VendorId] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -705,12 +699,7 @@ CREATE TABLE [dbo].[Invoices] (
     [CreateTime] nvarchar(max)  NULL,
     [LastUpdatedTime] nvarchar(max)  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
-    [ClientId] uniqueidentifier  NULL,
-    [QuickBooksId] nvarchar(max)  NULL,
-    [IsMemoChanged] bit  NOT NULL,
-    [IsBillToLocationChanged] bit  NOT NULL,
-    [IsDueDateChanged] bit  NOT NULL,
-    [IsSalesTermChanged] bit  NOT NULL
+    [ClientId] uniqueidentifier  NULL
 );
 GO
 
@@ -718,14 +707,7 @@ GO
 CREATE TABLE [dbo].[SalesTerms] (
     [Id] uniqueidentifier  NOT NULL,
     [DueDays] int  NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [BusinessAccountId] uniqueidentifier  NULL,
-    [QuickBooksId] nvarchar(max)  NOT NULL,
-    [IsNameChanged] bit  NOT NULL,
-    [IsDueDaysChanged] bit  NOT NULL,
-    [SyncToken] nvarchar(max)  NULL,
-    [CreateTime] nvarchar(max)  NULL,
-    [LastUpdatedTime] nvarchar(max)  NULL
+    [Name] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -734,10 +716,7 @@ CREATE TABLE [dbo].[LineItems] (
     [Id] uniqueidentifier  NOT NULL,
     [InvoiceId] uniqueidentifier  NOT NULL,
     [Description] nvarchar(max)  NULL,
-    [Amount] nvarchar(max)  NULL,
-    [IsAmountChanged] bit  NOT NULL,
-    [IsDescriptionChanged] bit  NOT NULL,
-    [QuickBooksId] nvarchar(max)  NOT NULL
+    [Amount] nvarchar(max)  NULL
 );
 GO
 
@@ -752,7 +731,7 @@ CREATE TABLE [dbo].[RouteTasks] (
     [BusinessAccountId] uniqueidentifier  NOT NULL,
     [EstimatedDuration] time  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [ReadyToInvoice] bit  NOT NULL,
+    [ReadyToInvoice] bit  NULL,
     [Date] datetime  NOT NULL
 );
 GO
@@ -1140,25 +1119,25 @@ GO
 -- Creating primary key on [Roles_Id], [Blocks_Id] in table 'RoleBlock'
 ALTER TABLE [dbo].[RoleBlock]
 ADD CONSTRAINT [PK_RoleBlock]
-    PRIMARY KEY NONCLUSTERED ([Roles_Id], [Blocks_Id] ASC);
+    PRIMARY KEY CLUSTERED ([Roles_Id], [Blocks_Id] ASC);
 GO
 
 -- Creating primary key on [Routes_Id], [Vehicles_Id] in table 'RouteVehicle'
 ALTER TABLE [dbo].[RouteVehicle]
 ADD CONSTRAINT [PK_RouteVehicle]
-    PRIMARY KEY NONCLUSTERED ([Routes_Id], [Vehicles_Id] ASC);
+    PRIMARY KEY CLUSTERED ([Routes_Id], [Vehicles_Id] ASC);
 GO
 
 -- Creating primary key on [MemberParties_Id], [RoleMembership_Id] in table 'PartyRole'
 ALTER TABLE [dbo].[PartyRole]
 ADD CONSTRAINT [PK_PartyRole]
-    PRIMARY KEY NONCLUSTERED ([MemberParties_Id], [RoleMembership_Id] ASC);
+    PRIMARY KEY CLUSTERED ([MemberParties_Id], [RoleMembership_Id] ASC);
 GO
 
 -- Creating primary key on [Routes_Id], [Technicians_Id] in table 'RouteEmployee'
 ALTER TABLE [dbo].[RouteEmployee]
 ADD CONSTRAINT [PK_RouteEmployee]
-    PRIMARY KEY NONCLUSTERED ([Routes_Id], [Technicians_Id] ASC);
+    PRIMARY KEY CLUSTERED ([Routes_Id], [Technicians_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -1999,34 +1978,6 @@ ADD CONSTRAINT [FK_ClientInvoice]
 CREATE INDEX [IX_FK_ClientInvoice]
 ON [dbo].[Invoices]
     ([ClientId]);
-GO
-
--- Creating foreign key on [SalesTermId] in table 'Clients'
-ALTER TABLE [dbo].[Clients]
-ADD CONSTRAINT [FK_SalesTermClient]
-    FOREIGN KEY ([SalesTermId])
-    REFERENCES [dbo].[SalesTerms]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_SalesTermClient'
-CREATE INDEX [IX_FK_SalesTermClient]
-ON [dbo].[Clients]
-    ([SalesTermId]);
-GO
-
--- Creating foreign key on [BusinessAccountId] in table 'SalesTerms'
-ALTER TABLE [dbo].[SalesTerms]
-ADD CONSTRAINT [FK_SalesTermBusinessAccount]
-    FOREIGN KEY ([BusinessAccountId])
-    REFERENCES [dbo].[Parties_BusinessAccount]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_SalesTermBusinessAccount'
-CREATE INDEX [IX_FK_SalesTermBusinessAccount]
-ON [dbo].[SalesTerms]
-    ([BusinessAccountId]);
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Business'

@@ -25,6 +25,7 @@ namespace FoundOps.SLClient.Navigator
         
         private void ApplicationStartup(object sender, StartupEventArgs e)
         {
+            //Required for MEF
             LocatorBootstrapper.ApplyComposer(this);
 
             //Add IP Info to Resources
