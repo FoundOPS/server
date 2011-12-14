@@ -58,7 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\ServiceReference1\Reference.cs">
+    <Compile Include="Service References\Create\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\UpdateDelete\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -70,31 +75,52 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Service References\ServiceReference1\Service1.wsdl" />
-    <None Include="Service References\ServiceReference1\Service1.xsd">
+    <None Include="Service References\Create\Create.wsdl" />
+    <None Include="Service References\Create\Create.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\UpdateDelete\UpdateDelete.wsdl" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FoundOps.Core\FoundOps.Core.csproj">
+      <Project>{C5170A8A-CAD2-47E2-8552-FEF87C771C03}</Project>
+      <Name>FoundOps.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FoundOps.QuickBooksWF\FoundOps.QuickBooksWF.csproj">
       <Project>{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}</Project>
       <Name>FoundOps.QuickBooksWF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
+    <WCFMetadataStorage Include="Service References\Create\" />
+    <WCFMetadataStorage Include="Service References\UpdateDelete\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ServiceReference1\Service1.disco" />
+    <None Include="Service References\UpdateDelete\UpdateDelete.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
+    <None Include="Service References\UpdateDelete\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ServiceReference1\configuration.svcinfo" />
+    <None Include="Service References\UpdateDelete\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ServiceReference1\Reference.svcmap">
+    <None Include="Service References\UpdateDelete\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Create\Create.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Create\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Create\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Create\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

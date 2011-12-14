@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Reactive.Linq;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Tools.ExtensionMethods;
 
@@ -44,7 +45,7 @@ namespace FoundOps.Common.Silverlight.Tools
             //When the access key returns, post the file at the insert access Url
 
             //It is a SelectMany because both GetResponse methods return an Observables
-            return insertAccessKey.SelectMany(accessKey => Rxx2.HttpPut(AzureTools.BuildFileUrl(ownerPartyId, fileId, accessKey), data));
+            return insertAccessKey.SelectMany(accessKey => Rxx3.HttpPut(AzureTools.BuildFileUrl(ownerPartyId, fileId, accessKey), data));
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace FoundOps.Common.Silverlight.Tools
         public static IObservable<WebResponse> DeleteFile(Guid ownerPartyId, Guid fileId)
         {
             //Get the delete Url
-            return Rxx2.HttpPut(String.Format(@"{0}/DeleteBlob?ownerPartyId={1}&fileGuid={2}", FileControllerUrl,
+            return Rxx3.HttpPut(String.Format(@"{0}/DeleteBlob?ownerPartyId={1}&fileGuid={2}", FileControllerUrl,
                 ownerPartyId, fileId), null, verb: "POST");
         }
     }

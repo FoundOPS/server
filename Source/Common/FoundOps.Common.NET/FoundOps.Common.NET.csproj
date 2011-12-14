@@ -61,6 +61,14 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -68,6 +76,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FoundOps.Common\Models\FieldAttribute.cs">
+      <Link>Silverlight\Models\FieldAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Models\ObservationState.cs">
+      <Link>Silverlight\Models\ObservationState.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\AzureTools.cs">
+      <Link>Silverlight\Tools\AzureTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\DateRange.cs">
+      <Link>Silverlight\Tools\DateRange.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\DateTimeTools.cs">
+      <Link>Silverlight\Tools\DateTimeTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\ExtensionMethods\GenericExtensions.cs">
+      <Link>Silverlight\ExtensionMethods\GenericExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\ExtensionMethods\LinqExtensions.cs">
+      <Link>Silverlight\ExtensionMethods\LinqExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\ExtensionMethods\ReflectionExtensions.cs">
+      <Link>Silverlight\ExtensionMethods\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\FileTools.cs">
+      <Link>Silverlight\Tools\FileTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\OrthodromicDistanceCalculator.cs">
+      <Link>Silverlight\Tools\OrthodromicDistanceCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\Rxx2.cs">
+      <Link>Silverlight\Tools\Rxx2.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\SerializationTools.cs">
+      <Link>Silverlight\Tools\SerializationTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\StreamHelpers.cs">
+      <Link>Silverlight\Tools\StreamHelpers.cs</Link>
+    </Compile>
     <Compile Include="EncryptionTools.cs" />
     <Compile Include="EntityCloneTools.cs" />
     <Compile Include="PlaceFinder.cs" />
@@ -103,13 +150,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FoundOps.Common\FoundOps.Common.csproj">
-      <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
-      <Name>FoundOps.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Lib\" />
+    <Content Include="Lib\System.Reactive.dll" />
+    <Content Include="Lib\System.Reactive.Providers.dll" />
+    <Content Include="Lib\System.Reactive.Providers.xml" />
+    <Content Include="Lib\System.Reactive.Windows.Threading.dll" />
+    <Content Include="Lib\System.Reactive.Windows.Threading.xml" />
+    <Content Include="Lib\System.Reactive.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

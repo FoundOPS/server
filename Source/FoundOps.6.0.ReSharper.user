@@ -10,15 +10,19 @@
   <RecentFiles>
     <RecentFiles>
       <File id="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB/f:UserSpecificResourcesWrapper.cs" caret="610" fromTop="19" />
-      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="38413" fromTop="20" />
+      <File id="43D5B3DA-7DCD-454A-BA3D-667901D304CE/d:Tools/d:ExtensionMethods/f:UriExtensions.cs" caret="15" fromTop="1" />
+      <File id="F3DE1685-C531-41A6-A9CB-896B502386E8/d:ViewModels/f:ClientsVM.cs" caret="0" fromTop="0" />
+      <File id="14ADDE30-D51B-4A1C-A855-D556431FDA0A/d:Tools/d:ExtensionMethods/f:Rxx3.cs" caret="3897" fromTop="69" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="16050" fromTop="26" />
+      <File id="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB/d:Silverlight/f:FileTools.cs/l:..?..?FoundOps.Common?Tools?FileTools.cs" caret="951" fromTop="15" />
+      <File id="F3DE1685-C531-41A6-A9CB-896B502386E8/d:Controls/d:Clients/f:ClientLarge.xaml.cs" caret="1473" fromTop="1" />
+      <File id="14ADDE30-D51B-4A1C-A855-D556431FDA0A/d:Tools/f:FileManager.cs" caret="2870" fromTop="38" />
+      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:CoreEntities/d:Extensions/d:Core/f:FileExtensions.shared.cs" caret="42" fromTop="1" />
+      <File id="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB/d:Silverlight/d:Models/f:ObservationState.cs/l:..?..?..?FoundOps.Common?Models?ObservationState.cs" caret="234" fromTop="10" />
+      <File id="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB/d:Silverlight/f:Rxx2.cs/l:..?..?FoundOps.Common?Tools?Rxx2.cs" caret="370" fromTop="14" />
+      <File id="BB748726-9C39-4FDA-8B02-9CC12CD9D34D/d:Controls/d:AddEditDelete/f:AddDelete.xaml.cs" caret="0" fromTop="0" />
     </RecentFiles>
     <RecentEdits>
-      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="17" />
-      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="33" />
-      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="39" />
-      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="45" />
-      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="41" />
-      <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="47" />
       <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="43" />
       <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="18" />
       <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="32095" fromTop="17" />
@@ -43,6 +47,12 @@
       <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="1592" fromTop="9" />
       <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="24211" fromTop="15" />
       <File id="C5170A8A-CAD2-47E2-8552-FEF87C771C03/d:Models/d:QuickBooks/f:QuickBooksTools.cs" caret="33578" fromTop="23" />
+      <File id="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB/d:Silverlight/f:Rxx2.cs/l:..?..?FoundOps.Common?Tools?Rxx2.cs" caret="97" fromTop="4" />
+      <File id="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB/d:Silverlight/f:FileTools.cs/l:..?..?FoundOps.Common?Tools?FileTools.cs" caret="800" fromTop="12" />
+      <File id="DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB/d:Silverlight/f:Rxx2.cs/l:..?..?FoundOps.Common?Tools?Rxx2.cs" caret="5513" fromTop="20" />
+      <File id="14ADDE30-D51B-4A1C-A855-D556431FDA0A/d:Tools/d:ExtensionMethods/f:Rxx3.cs" caret="3892" fromTop="45" />
+      <File id="14ADDE30-D51B-4A1C-A855-D556431FDA0A/d:Tools/f:FileManager.cs" caret="2280" fromTop="25" />
+      <File id="14ADDE30-D51B-4A1C-A855-D556431FDA0A/d:Tools/f:FileManager.cs" caret="2870" fromTop="38" />
     </RecentEdits>
   </RecentFiles>
   <NAntValidationSettings>
