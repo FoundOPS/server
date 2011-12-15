@@ -323,6 +323,7 @@
     <Compile Include="Tools\ExtensionMethods\FrameworkElementExtensions.cs" />
     <Compile Include="Tools\FileTools.cs" />
     <Compile Include="Tools\MarkupExtensions\AppendNumberToStringMarkupExtension.cs" />
+    <Compile Include="Tools\MarkupExtensions\AreEqual.cs" />
     <Compile Include="Tools\MarkupExtensions\DataContextEquals.cs" />
     <Compile Include="Tools\MarkupExtensions\ItemExistsInCollection.cs" />
     <Compile Include="Tools\MarkupExtensions\StaticMarkupExtensions.cs" />

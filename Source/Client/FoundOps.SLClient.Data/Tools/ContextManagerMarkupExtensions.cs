@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Reactive.Disposables;
 using FoundOps.Common.Composite.Tools;
+using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Common.Silverlight.Tools;
 
@@ -68,14 +69,11 @@ namespace FoundOps.SLClient.Data.Tools
 
         #region Logic
 
-        //Returns the Value after considering the Path and Converter
+        //Returns the Value after considering the Path
         private object GetValue()
         {
             //Take path into consideration
-            var val = Path != null ? LastValue.GetProperty<object>(Path) : LastValue;
-
-            //Take converter into consideration
-            return Converter != null ? Converter.Convert(val, null, null, null) : val;
+            return LastValue != null && Path != null ? LastValue.GetProperty<object>(Path) : LastValue;
         }
 
         //Listen to property changes. If the changed property is the same as Path then UpdateValue
@@ -114,7 +112,89 @@ namespace FoundOps.SLClient.Data.Tools
                 UpdateValue(GetValue());
             });
         }
-      
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Gets the CurrentContextProviderObservable, and returns the value anytime it changes
+    /// </summary>
+    public class GetCurrentContextProvider : UpdatableMarkupExtension<object>
+    {
+        #region Properties and Variables
+
+        //Public
+
+        /// <summary>
+        /// The (optional) path to return.
+        /// </summary>
+        public string Path { get; set; }
+
+        #region Private
+
+        //Clears the LastValue updating subscription whenever the Context changes
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+
+        private IProvideContext _lastValue;
+        /// <summary>
+        /// The last known value of the observable.
+        /// </summary>
+        private IProvideContext LastValue
+        {
+            get { return _lastValue; }
+            set
+            {
+                if (_lastValue as INotifyPropertyChanged != null)
+                    _lastValue.PropertyChanged -= LastValuePropertyChanged;
+
+                _lastValue = value;
+
+                if (_lastValue as INotifyPropertyChanged != null)
+                    _lastValue.PropertyChanged += LastValuePropertyChanged;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Logic
+
+        //Returns the Value after considering the Path
+        private object GetValue()
+        {
+            //Take path into consideration
+            return LastValue != null && Path != null ? LastValue.GetProperty<object>(Path) : LastValue;
+        }
+
+        //Listen to property changes. If the changed property is the same as Path then UpdateValue
+        void LastValuePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(Path)) return;
+
+            if (Path == e.PropertyName)
+                UpdateValue(GetValue());
+        }
+
+        protected override object ProvideValueInternal(IServiceProvider serviceProvider)
+        {
+            SetupContextObservable();
+            return GetValue();
+        }
+
+        private void SetupContextObservable()
+        {
+            //Set the LastValue to the CurrentContextProvider
+            LastValue = Manager.Context.CurrentContextProvider;
+
+            //Update the MarkupExtension's _lastValue whenever the CurrentContextProvider changes
+            _serialDisposable.Disposable = Manager.Context.CurrentContextProviderObservable.ObserveOnDispatcher().Subscribe(val =>
+            {
+                LastValue = val;
+                UpdateValue(GetValue());
+            });
+        }
+
         #endregion
     }
 }

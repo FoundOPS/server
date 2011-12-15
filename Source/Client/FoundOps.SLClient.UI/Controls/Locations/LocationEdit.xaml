@@ -3,8 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.Controls.Icons;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Tools="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
-             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
+             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
              mc:Ignorable="d" d:DesignWidth="650" Foreground="Black" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
     <UserControl.Resources>
         <DataTemplate x:Key="GeocoderResultTemplate" >
@@ -247,7 +247,7 @@
                     <Button x:Name="EditLocationButton" Content="Edit Location" Margin="0,2,0,0"
                             Visibility="Visible" Click="EditLocationButtonClick" />
                     <Button x:Name="MoreDetailsButton" Content="More Details" Margin="0,2,0,0" Click="MoreDetailsButtonClick"
-                            Visibility="{Tools:GetContextObservableValue Converter={StaticResource NotVisibilityConverter}, ContextType=CoreEntities1:Client}" />
+                            Visibility="{MarkupExtensions:AreEqual Converter={StaticResource VisibilityConverter}, ItemTwo={MarkupExtensions:Static MemberType=CoreEntities:Client}, ItemOne={Tools:GetCurrentContextProvider Path=ObjectTypeProvided}}" />
                 </StackPanel>
             </Grid>
             <!--<TextBlock Grid.Row="2" Text="Notes: " HorizontalAlignment="Right" Margin="0,7,0,0" Foreground="Black" Grid.Column="4" />

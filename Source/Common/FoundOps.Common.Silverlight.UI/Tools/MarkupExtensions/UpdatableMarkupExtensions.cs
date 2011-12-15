@@ -66,7 +66,13 @@ namespace FoundOps.Common.Silverlight.Tools
                 _targetProperty = target.TargetProperty;
             }
 
-            return (TE)ProvideValueInternal(serviceProvider);
+            var value = ProvideValueInternal(serviceProvider);
+
+            //Convert the value if there is a converter
+            if (Converter != null)
+                value = Converter.Convert(value, null, null, null);
+
+            return (TE) value;
         }
     }
 }

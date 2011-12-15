@@ -114,7 +114,13 @@ namespace FoundOps.SLClient.Data.ViewModels
                         //Ask the user to: Save or Discard their changes before moving on, or Cancel to stay on the changed entity
 
                         //set the new value
-                        Action selectNewValue = () => SelectedEntity = value;
+                        Action selectNewValue = () =>
+                        {
+                            DisableSaveDiscardCancel = true;
+                            SelectedEntity = value;
+                            DisableSaveDiscardCancel = false;
+                        };
+
                         Action customDiscardAction = () => this.DiscardCommand.Execute(null);
                         //Move back to the old value
                         Action moveToOldValue = () => DomainCollectionView.MoveCurrentTo(SelectedEntity);

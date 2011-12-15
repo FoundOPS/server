@@ -6,7 +6,8 @@ using System.Xaml;
 namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {
     /// <summary>
-    ///  Class to make a MarkupExtension XAML to retrieve the values ​​of static fields or properties.
+    /// Class to make a MarkupExtension XAML to retrieve the values ​​of static fields or properties.
+    /// If only a MemberType is set, it will return the Type.
     /// </summary>
     public class Static : IMarkupExtension<Object>
     {
@@ -140,10 +141,12 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
                     }
                 }
             }
-            else
+            else if(MemberType!=null)
             {
-                throw new InvalidOperationException();
+                return MemberType;
             }
+            else
+                throw new InvalidOperationException();
 
             return ret;
         }
