@@ -112,7 +112,11 @@
       <Name>FoundOps.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Lib\DevDefined.OAuth.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.ServiceRuntime.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.StorageClient.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
