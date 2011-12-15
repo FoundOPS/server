@@ -121,7 +121,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <summary>
         /// Stores each query's loading status observable.
         /// </summary>
-        private readonly Dictionary<object, Subject<bool>> _queriesIsLoadingSubjects = new Dictionary<object, Subject<bool>>();
+        private readonly Dictionary<object, BehaviorSubject<bool>> _queriesIsLoadingSubjects = new Dictionary<object, BehaviorSubject<bool>>();
 
         /// <summary>
         /// Stores each query's entityList subject. NOTE: object is a BehaviorSubject'EntityList' (could not figure a way to make it covariant)
@@ -283,7 +283,7 @@ namespace FoundOps.SLClient.Data.Services
             //setup a CombinedObservationState
             //setup an IsLoading subject
             _observationStateQueries.Add(queryKey, new CombinedObservationState());
-            _queriesIsLoadingSubjects.Add(queryKey, new Subject<bool>());
+            _queriesIsLoadingSubjects.Add(queryKey, new BehaviorSubject<bool>(false));
 
             //setup the QueryExecution
             SetupExecuteQueryHelper(queryKey, entityQuery, entitySet, loadQuery);
@@ -305,7 +305,7 @@ namespace FoundOps.SLClient.Data.Services
             //setup a CombinedObservationState
             //setup an IsLoading subject
             _observationStateQueries.Add(query, new CombinedObservationState());
-            _queriesIsLoadingSubjects.Add(query, new Subject<bool>());
+            _queriesIsLoadingSubjects.Add(query, new BehaviorSubject<bool>(false));
 
             //setup the QueryExecution
             SetupExecuteQueryHelper(query, entityQuery, entitySet);

@@ -17,7 +17,7 @@
                 <telerik:RadComboBox x:Name="LabelsComboBox" MinWidth="100" IsEditable="True" CanAutocompleteSelectItems="True" CanKeyboardNavigationSelectItems="True" 
                                      StaysOpenOnEdit="True" TextSearchMode="Contains" OpenDropDownOnFocus="True"
                                      ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoLabels, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}"
-                                     EmptyText="{Binding Type}" Text="{Binding Label, Mode=TwoWay, Converter={StaticResource ConvertBackWhenExists}}" />
+                                     EmptyText="Label" Text="{Binding Label, Mode=TwoWay, Converter={StaticResource ConvertBackWhenExists}}" />
                 <!--Bind Items to all of the currently used Labels of the Selected Info Type-->
                 <telerik:RadMaskedTextBox MaskType="None" Width="180" EmptyContent="{Binding Type}" Value="{Binding Data, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" />
                 <!--MaskType, EmptyContent, and Mask is bound to selected InfoType-->
