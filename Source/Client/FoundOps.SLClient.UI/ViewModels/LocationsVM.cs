@@ -28,21 +28,15 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public ObservableAsPropertyHelper<IEnumerable<Location>> _locationsWithoutClient;
         /// <summary>
-        /// Gets the not selected entities.
+        /// Gets the Locations without Clients.
         /// </summary>
         public IEnumerable<Location> LocationsWithoutClient { get { return _locationsWithoutClient.Value; } }
 
         private readonly Subject<LocationVM> _selectedLocationVMObservable = new Subject<LocationVM>();
         /// <summary>
-        /// Gets or sets the location VM observable.
+        /// Gets the location VM observable.
         /// </summary>
-        /// <value>
-        /// The location VM observable.
-        /// </value>
-        public IObservable<LocationVM> SelectedLocationVMObservable
-        {
-            get { return _selectedLocationVMObservable; }
-        }
+        public IObservable<LocationVM> SelectedLocationVMObservable { get { return _selectedLocationVMObservable; } }
 
         private readonly ObservableAsPropertyHelper<LocationVM> _selectedLocationVM;
         /// <summary>

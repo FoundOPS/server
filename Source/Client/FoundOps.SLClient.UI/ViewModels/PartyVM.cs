@@ -1,7 +1,8 @@
-﻿using FoundOps.SLClient.Data.Services;
+﻿using System.Windows;
+using GalaSoft.MvvmLight.Command;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
-using System.ServiceModel.DomainServices.Client;
 using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -9,53 +10,63 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// <summary>
     /// Contains the logic for displaying Party
     /// </summary>
-    public abstract class PartyVM : CoreEntityVM
+    public class PartyVM : CoreEntityVM, IAddDeleteSelectedLocation
     {
         #region Public Properties
 
-        private Party _selectedParty;
-        public Party SelectedParty
+        private readonly Party _entity;
+        /// <summary>
+        /// Gets the Party entity this viewmodel is for.
+        /// </summary>
+        public Party Entity { get { return _entity; } }
+
+        /// <summary>
+        /// Gets the ContactInfoVM for the Party
+        /// </summary>
+        public ContactInfoVM ContactInfoVM { get; private set; }
+
+        #region Implementation of IAddDeleteSelectedLocation
+
+        public RelayCommand<Location> AddSelectedLocationCommand { get; set; }
+        public RelayCommand<Location> DeleteSelectedLocationCommand { get; set; }
+
+        #endregion
+
+
+        public PartyVM(Party entity, DataManager dataManager):base(dataManager)
         {
-            get
-            {
-                return _selectedParty;
-            }
-            set
-            {
-                if (SelectedParty == value) return;
+            _entity = entity;
 
-                _selectedParty = value;
-                ContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.OwnedParties, this.ContactInfoSet);
-                this.RaisePropertyChanged("SelectedParty");
-                if (SelectedParty == null) return;
-            }
-        }
+            //Setup the ContactInfoVM
+            ContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.OwnedParties, entity != null ? entity.ContactInfoSet : null);
 
-        protected PartyVM(DataManager dataManager):base(dataManager)
-        {
-        }
+            #region Register Commands
 
-        #region Implementation of IContactInfoDataService
+            AddSelectedLocationCommand = new RelayCommand<Location>(OnAddSelectedLocation);
+            DeleteSelectedLocationCommand = new RelayCommand<Location>(OnDeleteSelectedLocation);
 
-        public EntityCollection<ContactInfo> ContactInfoSet
-        {
-            get
-            {
-                return SelectedParty == null ? null : SelectedParty.ContactInfoSet;
-            }
+            #endregion
         }
 
         #endregion
 
-        private ContactInfoVM _contactInfoVM;
-        public ContactInfoVM ContactInfoVM
+        #region Logic
+
+        private void OnAddSelectedLocation(Location locationToAdd)
         {
-            get { return _contactInfoVM; }
-            protected set
+            if (locationToAdd == null)
+                MessageBox.Show("Please select a Location to add");
+            else
             {
-                _contactInfoVM = value;
-                this.RaisePropertyChanged("ContactInfoVM");
+                this.Entity.Locations.Add(locationToAdd);
+                RaisePropertyChanged("SelectedBusiness"); //This updates CurrentContext on ClientsVM
             }
+        }
+
+        private void OnDeleteSelectedLocation(Location locationToRemove)
+        {
+            this.Entity.Locations.Remove(locationToRemove);
+            RaisePropertyChanged("SelectedBusiness"); //This updates CurrentContext on ClientsVM
         }
 
         #endregion

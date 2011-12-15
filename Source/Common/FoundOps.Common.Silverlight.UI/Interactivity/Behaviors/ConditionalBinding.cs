@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Specialized;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Data;
+using System.Reactive.Disposables;
+using System.Windows.Interactivity;
 using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.UI.Tools;
-using Telerik.Windows.Controls;
-using System.Windows.Interactivity;
 using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 
 namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
@@ -29,13 +27,21 @@ namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
 
         protected override void OnAttached()
         {
-            AssociatedObject.RegisterForNotification(RequiredDependencyPropertyName,
-                                                     (dp, dpea) => CorrectConditionalDependencyPropertyBinding(dpea.NewValue != null));
-
+            //Correct the binding initially 
             CorrectConditionalDependencyPropertyBinding(AssociatedObject.GetProperty<object>(RequiredDependencyPropertyName) != null);
+
+            //and correct the binding whenever the RequiredDepenendencyProperty's value changes
+            AssociatedObject.RegisterForNotification(RequiredDependencyPropertyName,
+                                                     (dp, dpea) =>
+                                                     {
+                                                         if (dpea.NewValue != dpea.OldValue)
+                                                             CorrectConditionalDependencyPropertyBinding(dpea.NewValue != null);
+                                                     });
 
             base.OnAttached();
         }
+
+        private Binding _lastBinding;
 
         /// <summary>
         /// Corrects the conditional dependency property binding.
@@ -43,15 +49,15 @@ namespace FoundOps.Common.Silverlight.UI.Interactivity.Behaviors
         /// </summary>
         private void CorrectConditionalDependencyPropertyBinding(bool requiredDependencyPropertyHasValue)
         {
-            var binding =
-                AssociatedObject.GetBindingExpression(ConditionalDependencyProperty).ParentBinding;
+            var bindingExpression = AssociatedObject.GetBindingExpression(ConditionalDependencyProperty);
 
-            if (binding == null) return;
+            if (bindingExpression == null || bindingExpression.ParentBinding == null) return;
 
-            var bindingCopy = binding.CopyBinding();
+            _lastBinding = bindingExpression.ParentBinding;
+            var bindingCopy = _lastBinding.CopyBinding();
 
-            // When the RequiredDependencyProperty has a value: UpdateSourceTrigger = Default, otherwise the UpdateSourceTrigger = Explicit.
-            bindingCopy.UpdateSourceTrigger = requiredDependencyPropertyHasValue ? UpdateSourceTrigger.Explicit : UpdateSourceTrigger.Default;
+            //When the RequiredDependencyProperty has a value set the UpdateSourceTrigger = Default, otherwise the UpdateSourceTrigger = Explicit.
+            bindingCopy.UpdateSourceTrigger = requiredDependencyPropertyHasValue ? UpdateSourceTrigger.Default : UpdateSourceTrigger.Explicit;
 
             AssociatedObject.SetBinding(ConditionalDependencyProperty, bindingCopy);
         }

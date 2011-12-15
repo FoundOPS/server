@@ -279,6 +279,7 @@
     <Compile Include="Converters\BoolConverters.cs" />
     <Compile Include="Converters\CollectionViewConverters.cs" />
     <Compile Include="Converters\ColorConverters.cs" />
+    <Compile Include="Converters\ConvertBackWhenExists.cs" />
     <Compile Include="Converters\DateTimeConverters.cs" />
     <Compile Include="Converters\DebuggingConverters.cs" />
     <Compile Include="Converters\DecimalConverters.cs" />
@@ -489,34 +490,6 @@
       <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
       <Name>FoundOps.Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Lib\Microsoft.Practices.ServiceLocation.dll" />
-    <Content Include="Lib\Microsoft.Practices.ServiceLocation.pdb" />
-    <Content Include="Lib\Microsoft.Practices.ServiceLocation.xml" />
-    <Content Include="Lib\Microsoft.Reactive.Testing.dll" />
-    <Content Include="Lib\Microsoft.Reactive.Testing.xml" />
-    <Content Include="Lib\Newtonsoft.Json.Silverlight.dll" />
-    <Content Include="Lib\Newtonsoft.Json.Silverlight.pdb" />
-    <Content Include="Lib\Newtonsoft.Json.Silverlight.xml" />
-    <Content Include="Lib\ReactiveUI.Blend_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Blend_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Blend_SL4.xml" />
-    <Content Include="Lib\ReactiveUI.Routing_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Routing_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Routing_SL4.xml" />
-    <Content Include="Lib\ReactiveUI.Serialization_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Serialization_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Serialization_SL4.xml" />
-    <Content Include="Lib\ReactiveUI.Testing_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Testing_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Testing_SL4.xml" />
-    <Content Include="Lib\ReactiveUI.Xaml_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Xaml_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Xaml_SL4.xml" />
-    <Content Include="Lib\ReactiveUI_SL4.dll" />
-    <Content Include="Lib\ReactiveUI_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI_SL4.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ReactiveUI;
+using System.Reactive.Linq;
 using MEFedMVVM.ViewModelLocator;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Context.Services;
@@ -15,39 +16,13 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class EmployeesVM : CoreEntityCollectionInfiniteAccordionVM<Employee>
     {
         //Public Properties
-        private PersonVM _selectedEmployeePersonVM;
+
+        private readonly ObservableAsPropertyHelper<PartyVM> _selectedEmployeePersonVM;
         /// <summary>
-        /// Gets the selected employee person VM.
+        /// Gets the selected Employee's PartyVM
         /// </summary>
-        public PersonVM SelectedEmployeePersonVM
-        {
-            get { return _selectedEmployeePersonVM; }
-            private set
-            {
-                if (SelectedEmployeePersonVM != null)
-                    SelectedEmployeePersonVM.PropertyChanged -= SelectedEmployeePersonVMPropertyChanged; _selectedEmployeePersonVM = value;
-                if (SelectedEmployeePersonVM != null)
-                    SelectedEmployeePersonVM.PropertyChanged += SelectedEmployeePersonVMPropertyChanged;
-                this.RaisePropertyChanged("SelectedEmployeePersonVM");
-            }
-        }
+        public PartyVM SelectedEmployeePersonVM { get { return _selectedEmployeePersonVM.Value; } }
 
-        void SelectedEmployeePersonVMPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "SelectedPerson")
-            {
-                if (SelectedEmployeePersonVM.SelectedPerson == null)
-                {
-                    SelectedEntity = null;
-                    return;
-                }
-
-                if (SelectedEntity != SelectedEmployeePersonVM.SelectedPerson.OwnerEmployee)
-                {
-                    SelectedEntity = SelectedEmployeePersonVM.SelectedPerson.OwnerEmployee;
-                }
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeesVM"/> class.
@@ -58,7 +33,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         public EmployeesVM(DataManager dataManager, IPartyDataService partyDataService)
             : base(dataManager)
         {
-            SelectedEmployeePersonVM = new PersonVM(dataManager, partyDataService);
+            //Setup the selected Employee's OwnedPerson PartyVM whenever the selected employee changes
+            _selectedEmployeePersonVM =
+                SelectedEntityObservable.Where(se => se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
+                .ToProperty(this, x => x.SelectedEmployeePersonVM);
 
             //Load the employees
             SetupMainQuery(DataManager.Query.Employees, null, "DisplayName");
@@ -87,13 +65,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             newEmployee.OwnedPerson = new Person();
             ((BusinessAccount)ContextManager.OwnerAccount).Employees.Add(newEmployee);
-        }
-
-        protected override void OnSelectedEntityChanged(Employee oldValue, Employee newValue)
-        {
-            base.OnSelectedEntityChanged(oldValue, newValue);
-
-            SelectedEmployeePersonVM.SelectedPerson = newValue != null ? newValue.OwnedPerson : null;
         }
 
         #endregion

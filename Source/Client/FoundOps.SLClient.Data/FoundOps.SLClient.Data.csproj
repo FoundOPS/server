@@ -256,6 +256,7 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\VehiclesDesignData.cs">
       <Link>DesignData\VehiclesDesignData.cs</Link>
     </Compile>
+    <Compile Include="Converters\ClientToOwnedParty.cs" />
     <Compile Include="Converters\LocationConverters.cs" />
     <Compile Include="Converters\ServiceTemplatesConverters.cs" />
     <Compile Include="ExportContext.cs" />
