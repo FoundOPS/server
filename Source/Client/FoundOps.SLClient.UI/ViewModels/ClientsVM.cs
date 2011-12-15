@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Disposables;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
@@ -148,6 +149,24 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             #endregion
+
+            var serialDisposable = new SerialDisposable();
+
+            //Whenever the client name changes update the default location name
+            //There is a default location as long as there is only one location
+            SelectedEntityObservable.Where(se => se.OwnedParty != null).Subscribe(selectedClient =>
+            {
+                serialDisposable.Disposable = Observable2.FromPropertyChangedPattern(selectedClient, x => x.DisplayName)
+                    .Subscribe(displayName =>
+                    {
+                        var defaultLocation = selectedClient.OwnedParty.Locations.Count == 1
+                                                  ? selectedClient.OwnedParty.Locations.First()
+                                                  : null;
+
+                        if (defaultLocation == null) return;
+                        defaultLocation.Name = displayName;
+                    });
+            });
         }
 
         #region Logic
@@ -166,6 +185,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                                       };
 
             newClient.OwnedParty.Locations.Add(defaultLocation);
+            //set the default billing location
+            newClient.DefaultBillingLocation = defaultLocation;
 
             this.RaisePropertyChanged("ClientsView");
 

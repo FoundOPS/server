@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Markup;
 using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 
@@ -18,7 +17,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
         /// </summary>
         public object Item
         {
-            get { return (object)GetValue(ItemProperty); }
+            get { return GetValue(ItemProperty); }
             set { SetValue(ItemProperty, value); }
         }
 
@@ -43,32 +42,20 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 
         #endregion
 
-        private FrameworkElement _targetFrameworkElement;
-        private FrameworkElement TargetFrameworkElement
-        {
-            get { return _targetFrameworkElement; }
-            set
-            {
-                _targetFrameworkElement = value;
-                if (_targetFrameworkElement == null) return;
-
-                TargetFrameworkElement.RegisterForNotification("DataContext", (a, e) => UpdateValue(EqualsDataContextHelper(Item)));
-            }
-        }
-
         protected override object ProvideValueInternal(IServiceProvider serviceProvider)
         {
-            var ipvt = (IProvideValueTarget)serviceProvider.GetService(typeof(IProvideValueTarget));
-            TargetFrameworkElement = ipvt.TargetObject as FrameworkElement;
+            //Whenever the DataContext changes, update the value
+            ((FrameworkElement)TargetObject).RegisterForNotification("DataContext", 
+                (_, __) => UpdateValue(EqualsDataContextHelper(Item)));
 
             return EqualsDataContextHelper(Item);
         }
 
         private bool EqualsDataContextHelper(object item)
         {
-            if (TargetFrameworkElement == null) return false;
+            if (this.TargetObject == null) return false;
 
-            return TargetFrameworkElement.DataContext == item;
+            return ((FrameworkElement)TargetObject).DataContext == item;
         }
     }
 }

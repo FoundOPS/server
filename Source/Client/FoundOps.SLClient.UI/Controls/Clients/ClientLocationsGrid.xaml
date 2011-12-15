@@ -15,7 +15,7 @@
                 <telerik:GridViewDataColumn.CellTemplate>
                     <DataTemplate>
                         <RadioButton DataContext="{Binding}" GroupName="BillingLocationGroup" Checked="BillingLocationToggleButton_OnChecked" 
-                                     IsChecked="{MarkupExtensions:DataContextEquals Item={Binding DefaultBillingLocation, Source={Tools:GetContextObservableValue ContextType=CoreEntities:Client}}}" />
+                                     IsChecked="{MarkupExtensions:DataContextEquals Item={Tools:GetContextObservableValue Path=DefaultBillingLocation, ContextType=CoreEntities:Client}}" />
                     </DataTemplate>
                 </telerik:GridViewDataColumn.CellTemplate>
             </telerik:GridViewDataColumn>

@@ -247,7 +247,7 @@
                     <Button x:Name="EditLocationButton" Content="Edit Location" Margin="0,2,0,0"
                             Visibility="Visible" Click="EditLocationButtonClick" />
                     <Button x:Name="MoreDetailsButton" Content="More Details" Margin="0,2,0,0" Click="MoreDetailsButtonClick"
-                            Visibility="{Tools:GetContextObservableValue ContextType=CoreEntities1:Client, Converter={StaticResource VisibilityConverter}}" />
+                            Visibility="{Tools:GetContextObservableValue Converter={StaticResource NotVisibilityConverter}, ContextType=CoreEntities1:Client}" />
                 </StackPanel>
             </Grid>
             <!--<TextBlock Grid.Row="2" Text="Notes: " HorizontalAlignment="Right" Margin="0,7,0,0" Foreground="Black" Grid.Column="4" />

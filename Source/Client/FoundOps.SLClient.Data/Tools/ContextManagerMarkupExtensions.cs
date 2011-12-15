@@ -15,8 +15,11 @@ namespace FoundOps.SLClient.Data.Tools
     /// </summary>
     public class GetContextObservableValue : UpdatableMarkupExtension<object>
     {
-        private Type _contextType;
+        #region Properties and Variables
 
+        //Public
+
+        private Type _contextType;
         /// <summary>
         /// The ContextType to get the context observable for.
         /// </summary>
@@ -35,9 +38,14 @@ namespace FoundOps.SLClient.Data.Tools
         /// </summary>
         public string Path { get; set; }
 
+        #region Private
+
+        //Clears the LastValue updating subscription whenever the Context changes
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+
         private object _lastValue;
         /// <summary>
-        /// Gets or sets the last known value.
+        /// The last known value of the observable.
         /// </summary>
         private object LastValue
         {
@@ -54,16 +62,35 @@ namespace FoundOps.SLClient.Data.Tools
             }
         }
 
+        #endregion
+
+        #endregion
+
+        #region Logic
+
+        //Returns the Value after considering the Path and Converter
+        private object GetValue()
+        {
+            //Take path into consideration
+            var val = Path != null ? LastValue.GetProperty<object>(Path) : LastValue;
+
+            //Take converter into consideration
+            return Converter != null ? Converter.Convert(val, null, null, null) : val;
+        }
+
         //Listen to property changes. If the changed property is the same as Path then UpdateValue
         void LastValuePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (String.IsNullOrEmpty(Path)) return;
 
             if (Path == e.PropertyName)
-                UpdateValue(Value);
+                UpdateValue(GetValue());
         }
 
-        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+        protected override object ProvideValueInternal(IServiceProvider serviceProvider)
+        {
+            return GetValue();
+        }
 
         private void SetupContextObservable()
         {
@@ -84,26 +111,10 @@ namespace FoundOps.SLClient.Data.Tools
             _serialDisposable.Disposable = contextObservable.ObserveOnDispatcher().Subscribe(val =>
             {
                 LastValue = val;
-
-                UpdateValue(Value);
+                UpdateValue(GetValue());
             });
         }
-
-        protected override object ProvideValueInternal(IServiceProvider serviceProvider)
-        {
-            return Converter != null ? Converter.Convert(Value, null, null, null) : Value;
-        }
-
-        //Returns the Value
-        private object Value
-        {
-            get
-            {
-                if (LastValue == null)
-                    return null;
-
-                return Path != null ? LastValue.GetProperty<object>(Path) : LastValue;
-            }
-        }
+      
+        #endregion
     }
 }
