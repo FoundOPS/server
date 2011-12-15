@@ -17,7 +17,9 @@
              xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" 
              xmlns:Tools="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
              xmlns:AdministrativeConsole="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts;assembly=FoundOps.SLClient.UI"
-             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts;assembly=FoundOps.SLClient.UI">
+             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts;assembly=FoundOps.SLClient.UI"
+             xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools;assembly=FoundOps.SLClient.UI"
+             xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI">
     <UserControl.Resources>
         <Converters:ServiceTemplatesAddDeleteModeConverter x:Key="ServiceTemplatesAddDeleteModeConverter"/>
         <StackPanel x:Key="ServiceTemplatesHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ServiceTemplatesVM"/>
@@ -243,7 +245,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Recurring Services" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding DataContext.ServiceTemplatesForClient, Source={StaticResource ServiceTemplatesHolder}}">
+                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForClient, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}">
                                         <AddEditDelete:AddDelete.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Name}"/>

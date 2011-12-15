@@ -1,5 +1,6 @@
 ﻿using System;
 using FoundOps.Common.Tools;
+using FoundOps.SLClient.UI.Tools;
 using ReactiveUI;
 using System.Windows;
 using System.Reactive.Linq;
@@ -15,7 +16,7 @@ namespace FoundOps.SLClient.UI.Controls.Locations
     /// </summary>
     public partial class LocationEdit
     {
-        private LocationsVM LocationsVM { get { return (LocationsVM)this.DataContext; } }
+        private LocationsVM LocationsVM { get { return VM.Locations; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationEdit"/> class.

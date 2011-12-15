@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Reactive.Disposables;
@@ -69,10 +69,12 @@ namespace FoundOps.SLClient.Data.Tools
         {
             if (ContextType == null) return;
 
+            //Set the LastValue to the current Context
             //LastValue = Manager.Context.GetContext<ContextType>
             LastValue = typeof(ContextManager).GetMethod("GetContext")
                 .MakeGenericMethod(ContextType).Invoke(Manager.Context, null);
 
+            //Update the last value whenever the ContextChanges
             //Set contextObservable = Manager.Context.GetContextObservable<ContextType>
             var contextObservable =
                 (IObservable<object>)typeof(ContextManager).GetMethod("GetContextObservable")
@@ -89,9 +91,10 @@ namespace FoundOps.SLClient.Data.Tools
 
         protected override object ProvideValueInternal(IServiceProvider serviceProvider)
         {
-            return Value;
+            return Converter != null ? Converter.Convert(Value, null, null, null) : Value;
         }
 
+        //Returns the Value
         private object Value
         {
             get

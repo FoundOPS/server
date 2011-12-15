@@ -1,4 +1,7 @@
-﻿using FoundOps.SLClient.UI.ViewModels;
+﻿using System;
+using System.Linq;
+using System.Windows.Markup;
+using FoundOps.SLClient.UI.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System.ComponentModel.Composition;
 
@@ -53,4 +56,27 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
     }
+
+    /// <summary>
+    /// Gets the VM.
+    /// </summary>
+    public class GetVM : MarkupExtension
+    {
+        /// <summary>
+        /// The type of VM to retrieve.
+        /// </summary>
+        public Type Type { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            var viewModelName = Type.ToString().Split('.').Last();
+            return ViewModelRepository.Instance.Resolver.GetViewModelByContract(viewModelName, null, CreationPolicy.Shared).Value;
+        }
+    }
+
 }

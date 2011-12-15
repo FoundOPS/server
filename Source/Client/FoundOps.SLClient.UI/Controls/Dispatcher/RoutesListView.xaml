@@ -90,7 +90,6 @@
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <Grid>
-            <StackPanel x:Name="RoutesDragDropVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesDragDropVM"/>
             <ListBox x:Name="RoutesListBox" ItemTemplate="{StaticResource RouteTemplate}" ItemsSource="{Binding DomainCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemContainerStyle="{StaticResource draggableItemStyle}"
                  telerikDragDrop:RadDragAndDropManager.AllowDrag="True" Background="Transparent">
                 <ItemsControl.ItemsPanel>
