@@ -528,7 +528,7 @@
     <Property Name="Salesperson" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LinkedPartyId" Type="uniqueidentifier" Nullable="true" />
     <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="SalesTermId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="DefaultSalesTermId" Type="uniqueidentifier" Nullable="true" />
   </EntityType>
   <EntityType Name="ServiceTemplates">
     <Key>
@@ -688,7 +688,7 @@
     <Property Name="DueDays" Type="int" Nullable="true" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="true" />
-    <Property Name="QuickBooksId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="QuickBooksId" Type="nvarchar(max)" Nullable="true" />
     <Property Name="IsNameChanged" Type="bit" Nullable="false" />
     <Property Name="IsDueDaysChanged" Type="bit" Nullable="false" />
     <Property Name="SyncToken" Type="nvarchar(max)" Nullable="true" />
@@ -1524,14 +1524,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="SalesTermClient">
-    <End Role="SalesTerm" Type="CoreEntities.Store.SalesTerms" Multiplicity="1" />
+    <End Role="SalesTerm" Type="CoreEntities.Store.SalesTerms" Multiplicity="0..1" />
     <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="SalesTerm">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Client">
-        <PropertyRef Name="SalesTermId" />
+        <PropertyRef Name="DefaultSalesTermId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2475,7 +2475,7 @@
           <NavigationProperty Name="ClientTitles" Relationship="CoreEntities.ClientTitleClient" FromRole="Client" ToRole="ClientTitle" />
           <NavigationProperty Name="Invoices" Relationship="CoreEntities.ClientInvoice" FromRole="Client" ToRole="Invoice" />
           <NavigationProperty Name="DefaultSalesTerm" Relationship="CoreEntities.SalesTermClient" FromRole="Client" ToRole="SalesTerm" />
-          <Property Type="Guid" Name="SalesTermId" Nullable="false" />
+          <Property Type="Guid" Name="DefaultSalesTermId" Nullable="true" />
         </EntityType>
         <Association Name="ClientParty">
           <End Type="CoreEntities.Client" Multiplicity="0..1" Role="Client" />
@@ -3202,7 +3202,7 @@
           <NavigationProperty Name="Clients" Relationship="CoreEntities.SalesTermClient" FromRole="SalesTerm" ToRole="Client" />
           <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.SalesTermBusinessAccount" FromRole="SalesTerm" ToRole="BusinessAccount" />
           <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
-          <Property Type="String" Name="QuickBooksId" Nullable="false" />
+          <Property Type="String" Name="QuickBooksId" Nullable="true" />
           <Property Type="Boolean" Name="IsNameChanged" Nullable="false" />
           <Property Type="Boolean" Name="IsDueDaysChanged" Nullable="false" />
           <Property Type="String" Name="SyncToken" Nullable="true" />
@@ -3313,14 +3313,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="SalesTermClient">
-          <End Type="CoreEntities.SalesTerm" Role="SalesTerm" Multiplicity="1" />
+          <End Type="CoreEntities.SalesTerm" Role="SalesTerm" Multiplicity="0..1" />
           <End Type="CoreEntities.Client" Role="Client" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SalesTerm">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Client">
-              <PropertyRef Name="SalesTermId" />
+              <PropertyRef Name="DefaultSalesTermId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3597,7 +3597,7 @@
           <ScalarProperty Name="Salesperson" ColumnName="Salesperson" />
           <ScalarProperty Name="LinkedPartyId" ColumnName="LinkedPartyId" />
           <ScalarProperty Name="VendorId" ColumnName="VendorId" />
-          <ScalarProperty Name="SalesTermId" ColumnName="SalesTermId" />
+          <ScalarProperty Name="DefaultSalesTermId" ColumnName="DefaultSalesTermId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3871,7 +3871,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="CoreEntities" ZoomLevel="116" >
+      <Diagram Name="CoreEntities" ZoomLevel="90" >
         <EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="19.75" PointY="205.625" Height="2.7494921874999818" />
         <EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="17.5" PointY="205.875" Height="2.5571907552083246" />
         <EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="14.875" PointY="205.625" Height="2.7494921875000102" />

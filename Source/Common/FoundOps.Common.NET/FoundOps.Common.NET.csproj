@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -100,11 +100,11 @@
     <Compile Include="..\FoundOps.Common\Tools\ExtensionMethods\ReflectionExtensions.cs">
       <Link>Silverlight\ExtensionMethods\ReflectionExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FoundOps.Common\Tools\FileTools.cs">
-      <Link>Silverlight\Tools\FileTools.cs</Link>
-    </Compile>
     <Compile Include="..\FoundOps.Common\Tools\OrthodromicDistanceCalculator.cs">
       <Link>Silverlight\Tools\OrthodromicDistanceCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\PasswordTools.cs">
+      <Link>Silverlight\Tools\PasswordTools.cs</Link>
     </Compile>
     <Compile Include="..\FoundOps.Common\Tools\Rxx2.cs">
       <Link>Silverlight\Tools\Rxx2.cs</Link>

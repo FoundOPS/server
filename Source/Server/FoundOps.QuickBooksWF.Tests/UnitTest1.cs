@@ -1,23 +1,33 @@
 ﻿using System;
 using System.IO;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Xaml;
 using System.Activities.Tracking;
 using System.ServiceModel.Activities;
 using System.ServiceModel.Description;
 using System.ServiceModel.Activities.Description;
+using Microsoft.Activities.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FoundOps.QuickBooksWF.Tests.Create;
 
 namespace FoundOps.QuickBooksWF.Tests
 {
     [TestClass]
     public class UnitTest1
     {
+        /// <summary>
+        ///   The endpoint address to be used by the test host
+        /// </summary>
+        private readonly EndpointAddress _serviceAddress = new EndpointAddress("net.pipe://localhost/Create.xamlx");
+
         [TestMethod]
         public void TestMethod1()
         {
+            #region Test
+
             CallWorkflow();
-            
+
             //var workflowRuntime = new System.Workflow.Runtime.WorkflowRuntime();
             //create the workflow instance and start it
 
@@ -37,15 +47,16 @@ namespace FoundOps.QuickBooksWF.Tests
             //var gdr= new GetDataRequest();
 
             //proxy.Close();
+            #endregion
         }
 
         private void CallWorkflow()
         {
-            const string baseAddress = "http://localhost:37069/QuickbooksWF";
+            const string baseAddress = "http://localhost:37070/";
 
             var serviceImplementation = XamlServices.Load(@"C:\FoundOps\GitHub\Source\Server\FoundOps.QuickBooksWF\Create.xamlx") as WorkflowService;
 
-            if(serviceImplementation == null)
+            if (serviceImplementation == null)
             {
                 throw new NullReferenceException(String.Format("Unable to load service definition"));
             }
@@ -54,7 +65,7 @@ namespace FoundOps.QuickBooksWF.Tests
             {
                 host.Description.Behaviors.Add(new ServiceMetadataBehavior() { HttpGetEnabled = true });
 
-                host.AddServiceEndpoint("ServiceDefinition", new BasicHttpBinding(), baseAddress);
+                host.AddServiceEndpoint("Create", new BasicHttpBinding(), baseAddress);
 
                 var fileTrackingProfile = new TrackingProfile();
                 fileTrackingProfile.Queries.Add(new WorkflowInstanceQuery
@@ -91,51 +102,14 @@ namespace FoundOps.QuickBooksWF.Tests
 
 
                 host.Open();
+
+                var proxy = new CreateClient(new BasicHttpBinding(), new EndpointAddress(baseAddress));
+
+                proxy.Start();
+
+                host.Close();
             }
         }
-
-        public WorkflowService ToWorkflowService (string value)
-{
-    WorkflowService service = null;
-
-    // 1. assume value is Xaml
-    string xaml = value;
-
-    // 2. if value is file path,
-    if (File.Exists (value))
-    {
-        // 2a. read contents to xaml
-        xaml = File.ReadAllText (value);
-    }
-
-    // 3. build service
-    using (var xamlReader = new StringReader (xaml))
-    {
-        object untypedService = null;
-
-        // NOTE: XamlServices, NOT ActivityXamlServices
-        untypedService = XamlServices.Load (xamlReader);
-
-        if (untypedService is WorkflowService)
-        {
-            service = (WorkflowService)(untypedService);
-        }
-        else
-        {
-            throw new ArgumentException (
-                string.Format (
-                "Unexpected error reading WorkflowService from " + 
-                "value [{0}] and Xaml [{1}]. Xaml does not define a " + 
-                "WorkflowService, but an instance of [{2}].", 
-                value, 
-                xaml, 
-                untypedService.GetType ()));
-        }
-    }
-
-    return service;
-}
-
     }
 }
 

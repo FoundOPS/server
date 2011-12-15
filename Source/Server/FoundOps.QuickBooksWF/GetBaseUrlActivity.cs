@@ -1,4 +1,5 @@
-﻿using System.Activities;
+﻿using System;
+using System.Activities;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.QuickBooks;
 
@@ -9,6 +10,9 @@ namespace FoundOps.QuickBooksWF
         // Define an activity input argument of type BunsinessAccount
         public InArgument<BusinessAccount> CurrentBusinessAccount { get; set; }
 
+        // Define an activity output argument of a list of RouteTasks
+        public OutArgument<String> BaseUrl { get; set; }
+
         public CoreEntitiesContainer CoreEntitiesContainer;
 
         // If your activity returns a value, derive from CodeActivity<TResult>
@@ -18,7 +22,11 @@ namespace FoundOps.QuickBooksWF
             CoreEntitiesContainer = new CoreEntitiesContainer();
 
             var currentBusinessAccount = CurrentBusinessAccount.Get<BusinessAccount>(context);
-            QuickBooksTools.GetBaseUrl(currentBusinessAccount, CoreEntitiesContainer);
+
+            //Gets the BaseUrl
+            var baseUrl = QuickBooksTools.GetBaseUrl(currentBusinessAccount, CoreEntitiesContainer);
+
+            BaseUrl.Set(context, baseUrl);
         }
     }
 }

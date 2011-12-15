@@ -62,19 +62,23 @@ namespace FoundOps.Core.Models.QuickBooks
             };
 
             //Generates the OAuth session based on the constants for our IntuitAnywhere App and the ConsumerContext created above 
-            OAuthSession oSession = new OAuthSession(consumerContext, OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlRequestToken,
+            var oSession = new OAuthSession(consumerContext,
+                                                     OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlRequestToken,
                                                      OauthConstants.AuthorizeUrl,
-                                                     OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlAccessToken);
+                                                     OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlAccessToken)
+                                        {
+                                            ConsumerContext = { UseHeaderForOAuthParameters = true },
+                                            AccessToken = new TokenBase
+                                                              {
+                                                                  Token = currentBusinessAccount.QuickBooksAccessToken,
+                                                                  ConsumerKey = OauthConstants.ConsumerKey,
+                                                                  TokenSecret =
+                                                                      currentBusinessAccount.QuickBooksAccessTokenSecret
+                                                              }
+                                        };
 
-            oSession.ConsumerContext.UseHeaderForOAuthParameters = true;
 
             //Access Token is generated from storage here and saved into the OauthSession
-            oSession.AccessToken = new TokenBase
-            {
-                Token = currentBusinessAccount.QuickBooksAccessToken,
-                ConsumerKey = OauthConstants.ConsumerKey,
-                TokenSecret = currentBusinessAccount.QuickBooksAccessTokenSecret
-            };
             return oSession;
         }
 
@@ -153,15 +157,34 @@ namespace FoundOps.Core.Models.QuickBooks
 
         #region Base Url, User Info and Entity List
 
+
         /// <summary>
         /// Finds the BaseURL for the current QuickBooks user
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
-        public static void GetBaseUrl(BusinessAccount currentBusinessAccount, CoreEntitiesContainer coreEntitiesContainer)
+        /// <returns>
+        /// The BaseUrl for a check in WF. Null means that something is wrong with their QuickBooks Settings.
+        /// A good BaseUrl means that it worked and that the workflow can continue.
+        /// </returns>
+        public static string GetBaseUrl(BusinessAccount currentBusinessAccount, CoreEntitiesContainer coreEntitiesContainer)
         {
-            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
+            var quickBooksSession = new QuickBooksSession();
 
+            // Checks to be sure that both QuickBooks is enabled on the current account and that the account has a pre-established QuickBooksSession
+            if (currentBusinessAccount.QuickBooksSessionXml != null || currentBusinessAccount.QuickBooksEnabled == false)
+                quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
+            else
+            {
+                quickBooksSession.BaseUrl = null;
+
+                //Ensures that the BaseURL is saved for later use
+                currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
+                coreEntitiesContainer.SaveChanges();
+
+                //Used in WF
+                return "";
+            }
             //URL for the QuickBooks Data Service for getting the BaseURL
             var serviceEndPoint = String.Format("https://qbo.intuit.com/qbo1/rest/user/v2/" + quickBooksSession.RealmId);
 
@@ -193,6 +216,9 @@ namespace FoundOps.Core.Models.QuickBooks
             //Ensures that the BaseURL is saved for later use
             currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
             coreEntitiesContainer.SaveChanges();
+
+            //Used for a check in WF
+            return quickBooksSession.BaseUrl;
         }
 
         /// <summary>

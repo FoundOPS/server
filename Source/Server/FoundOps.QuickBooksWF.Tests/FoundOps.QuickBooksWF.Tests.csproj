@@ -37,6 +37,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Activities.Extensions">
+      <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.1.7\lib\Net40\Microsoft.Activities.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Activities.UnitTesting">
+      <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.1.7\lib\Net40\Microsoft.Activities.UnitTesting.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -75,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Service References\Create\Create.wsdl" />
     <None Include="Service References\Create\Create.xsd">
       <SubType>Designer</SubType>

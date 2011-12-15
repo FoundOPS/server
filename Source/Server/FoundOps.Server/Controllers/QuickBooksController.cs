@@ -112,7 +112,7 @@ namespace FoundOps.Server.Controllers
             QuickBooksTools.GetAccessToken(currentBusinessAccount, CoreEntitiesContainer);
 
             //Saves the base url needed for QuickBooks APIs for this user
-            QuickBooksTools.GetBaseUrl(currentBusinessAccount, CoreEntitiesContainer);
+            var baseURL = QuickBooksTools.GetBaseUrl(currentBusinessAccount, CoreEntitiesContainer);
 
             return View();
         }

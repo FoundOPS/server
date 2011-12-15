@@ -78,7 +78,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "PartyPartyImage", "Party", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Party), "PartyImage", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.PartyImage), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountInvoice", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientInvoice", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "SalesTermClient", "SalesTerm", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.SalesTerm), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "SalesTermClient", "SalesTerm", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.SalesTerm), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "SalesTermBusinessAccount", "SalesTerm", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.SalesTerm), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 
 #endregion
@@ -1562,14 +1562,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="dateAdded">Initial value of the DateAdded property.</param>
         /// <param name="vendorId">Initial value of the VendorId property.</param>
-        /// <param name="salesTermId">Initial value of the SalesTermId property.</param>
-        public static Client CreateClient(global::System.Guid id, global::System.DateTime dateAdded, global::System.Guid vendorId, global::System.Guid salesTermId)
+        public static Client CreateClient(global::System.Guid id, global::System.DateTime dateAdded, global::System.Guid vendorId)
         {
             Client client = new Client();
             client.Id = id;
             client.DateAdded = dateAdded;
             client.VendorId = vendorId;
-            client.SalesTermId = salesTermId;
             return client;
         }
 
@@ -1702,26 +1700,26 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Guid SalesTermId
+        public Nullable<global::System.Guid> DefaultSalesTermId
         {
             get
             {
-                return _SalesTermId;
+                return _DefaultSalesTermId;
             }
             set
             {
-                OnSalesTermIdChanging(value);
-                ReportPropertyChanging("SalesTermId");
-                _SalesTermId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("SalesTermId");
-                OnSalesTermIdChanged();
+                OnDefaultSalesTermIdChanging(value);
+                ReportPropertyChanging("DefaultSalesTermId");
+                _DefaultSalesTermId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DefaultSalesTermId");
+                OnDefaultSalesTermIdChanged();
             }
         }
-        private global::System.Guid _SalesTermId;
-        partial void OnSalesTermIdChanging(global::System.Guid value);
-        partial void OnSalesTermIdChanged();
+        private Nullable<global::System.Guid> _DefaultSalesTermId;
+        partial void OnDefaultSalesTermIdChanging(Nullable<global::System.Guid> value);
+        partial void OnDefaultSalesTermIdChanged();
 
         #endregion
     
@@ -9114,15 +9112,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="quickBooksId">Initial value of the QuickBooksId property.</param>
         /// <param name="isNameChanged">Initial value of the IsNameChanged property.</param>
         /// <param name="isDueDaysChanged">Initial value of the IsDueDaysChanged property.</param>
-        public static SalesTerm CreateSalesTerm(global::System.Guid id, global::System.String name, global::System.String quickBooksId, global::System.Boolean isNameChanged, global::System.Boolean isDueDaysChanged)
+        public static SalesTerm CreateSalesTerm(global::System.Guid id, global::System.String name, global::System.Boolean isNameChanged, global::System.Boolean isDueDaysChanged)
         {
             SalesTerm salesTerm = new SalesTerm();
             salesTerm.Id = id;
             salesTerm.Name = name;
-            salesTerm.QuickBooksId = quickBooksId;
             salesTerm.IsNameChanged = isNameChanged;
             salesTerm.IsDueDaysChanged = isDueDaysChanged;
             return salesTerm;
@@ -9233,7 +9229,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String QuickBooksId
         {
@@ -9245,7 +9241,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnQuickBooksIdChanging(value);
                 ReportPropertyChanging("QuickBooksId");
-                _QuickBooksId = StructuralObject.SetValidValue(value, false);
+                _QuickBooksId = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("QuickBooksId");
                 OnQuickBooksIdChanged();
             }
