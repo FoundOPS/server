@@ -30,5 +30,27 @@ namespace FoundOps.SLClient.UI.Tools
                 return (RegionsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RegionsVM", null, CreationPolicy.Shared).Value;
             }
         }
+
+        /// <summary>
+        /// Gets the RoutesVM.
+        /// </summary>
+        public static RoutesVM Routes
+        {
+            get
+            {
+                return (RoutesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the RoutesDragDropVM.
+        /// </summary>
+        public static RoutesDragDropVM RoutesDragDrop
+        {
+            get
+            {
+                return (RoutesDragDropVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesDragDropVM", null, CreationPolicy.Shared).Value;
+            }
+        }
     }
 }

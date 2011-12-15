@@ -15,7 +15,6 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="telerik:RadDragAndDropManager.AllowDrag" Value="True" />
         </Style>
-        <StackPanel x:Key="RegionsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM"/>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>

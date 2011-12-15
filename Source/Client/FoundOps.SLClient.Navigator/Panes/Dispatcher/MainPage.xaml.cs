@@ -6,6 +6,7 @@ using System.Collections;
 using System.Windows.Media;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
+using FoundOps.SLClient.UI.Tools;
 using Telerik.Windows.Controls;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
@@ -28,10 +29,28 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
     [ExportPage("Dispatcher")]
     public partial class MainPage
     {
-        ///// <summary>
-        ///// Gets or sets the analytics.
-        ///// </summary>
-        //private readonly AnalyticsManager _analytics;
+        #region Properties and Variables
+
+        #region Public
+
+        /// <summary>
+        /// Gets the RoutesVM.
+        /// </summary>
+        public RoutesVM RoutesVM { get { return VM.Routes; } }
+
+        /// <summary>
+        /// Gets the RegionsVM.
+        /// </summary>
+        public RegionsVM RegionsVM { get { return VM.Regions; } }
+
+        /// <summary>
+        /// Gets the routes drag drop VM.
+        /// </summary>
+        public RoutesDragDropVM RoutesDragDropVM { get { return VM.RoutesDragDrop; } }
+
+        #endregion
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainPage"/> class.
@@ -84,25 +103,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 });
         }
 
-        /// <summary>
-        /// Gets the RoutesVM.
-        /// </summary>
-        public RoutesVM RoutesVM { get { return (RoutesVM)this.DataContext; } }
-
-        /// <summary>
-        /// Gets the RegionsVM.
-        /// </summary>
-        public RegionsVM RegionsVM { get { return (RegionsVM)((FrameworkElement)this.Resources["RegionsVMHolder"]).DataContext; } }
-
         #region DragAndDrop
 
-        /// <summary>
-        /// Gets the routes drag drop VM.
-        /// </summary>
-        public RoutesDragDropVM RoutesDragDropVM
-        {
-            get { return (RoutesDragDropVM)RoutesDragDropVMHolder.DataContext; }
-        }
+        #region Methods For OnDragInfo
 
         private void OnDragInfo(object sender, DragDropEventArgs e)
         {
@@ -133,8 +136,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 AddToRoute(e, draggedItems);
             }
         }
-
-        #region Methods For OnDragInfo
 
         /// <summary>
         /// Sets the DragCue for the specified item being dragged and its current potential drop location.
@@ -450,7 +451,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 this.TaskBoard.PublicTaskBoardRadGridView.Background = new SolidColorBrush(Colors.White);
             }
         }
-
         private static void OnDropQuery(object sender, DragDropQueryEventArgs e)
         {
             if (e.Options.Source is GridViewHeaderCell)
@@ -476,6 +476,23 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         #region Layout
 
         /// <summary>
+        /// Resets the layout to the stored default.
+        /// </summary>
+        public void LoadDefaultLayout()
+        {
+            try
+            {
+                using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
+                using (var isoStream = storage.OpenFile("RadDocking_DefaultLayout.xml", FileMode.Open))
+                    this.radDocking.LoadLayout(isoStream);
+            }
+            catch
+            {
+                //If it gets here Save Default Layout never happened?
+            }
+        }
+
+        /// <summary>
         /// Loads the layout from isolated storage.
         /// </summary>
         private void LoadLayout()
@@ -495,23 +512,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         }
 
         /// <summary>
-        /// Resets the layout to the stored default.
-        /// </summary>
-        public void LoadDefaultLayout()
-        {
-            try
-            {
-                using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
-                using (var isoStream = storage.OpenFile("RadDocking_DefaultLayout.xml", FileMode.Open))
-                    this.radDocking.LoadLayout(isoStream);
-            }
-            catch
-            {
-                //If it gets here Save Default Layout never happened?
-            }
-        }
-
-        /// <summary>
         /// Saves the current layout. Called every time the layout is changed.
         /// </summary>
         /// <returns>The layout xml.</returns>
@@ -522,25 +522,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 using (var isoStream = storage.OpenFile("RadDocking_Layout.xml", FileMode.OpenOrCreate))
-                {
-                    this.radDocking.SaveLayout(isoStream);
-                    isoStream.Seek(0, SeekOrigin.Begin);
-                    var reader = new StreamReader(isoStream);
-                    xml = reader.ReadToEnd();
-                }
-            }
-            // Return the generated XML
-            return xml;
-        }
-
-        //Saves the initial layout to be used to reset the layout back to the default
-        private string SaveDefaultLayout()
-        {
-            string xml;
-            // Save your layout
-            using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (var isoStream = storage.OpenFile("RadDocking_DefaultLayout.xml", FileMode.OpenOrCreate))
                 {
                     this.radDocking.SaveLayout(isoStream);
                     isoStream.Seek(0, SeekOrigin.Begin);
