@@ -8,24 +8,14 @@
         <telerik:RadToolBar Height="24" GripVisibility="Collapsed" OverflowButtonVisibility="Collapsed" HorizontalContentAlignment="Left" FlowDirection="LeftToRight">
             <telerik:RadButton Content="Today" Command="{Binding SetSelectedDayToToday}"/>
             <!--If SelectedDate=Today, Then IsEnabled=False-->
-            <telerik:RadButton Padding="0"  Command="{Binding SetSelectedDayOneDayPrevious}">
+            <telerik:RadButton Padding="0"  Command="{Binding SetSelectedDayOneDayPrevious}" Click="PreviousDayButtonClick">
                 <Image Source="/FoundOps.Common.Silverlight;component/Resources/LeftArrow.png"/>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <Tools:TrackEventAction Category="Dispatcher" Action="PreviousDayButtonClicked" Value="1" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
             </telerik:RadButton>
             <!--1 day previous-->
             <telerik:RadDatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay}" />
             <!--Bind SelectedDate-->
-            <telerik:RadButton Padding="0"  Command="{Binding SetSelectedDayOneDayForward}">
+            <telerik:RadButton Padding="0"  Command="{Binding SetSelectedDayOneDayForward}" Click="NextDayButtonClick">
                 <Image Source="/FoundOps.Common.Silverlight;component/Resources/RightArrow.png"/>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <Tools:TrackEventAction Category="Dispatcher" Action="NextDayButtonClicked" Value="1" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
             </telerik:RadButton>
             <!--1 day forward-->
             <telerik:RadToolBarSeparator/>

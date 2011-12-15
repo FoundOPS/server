@@ -1,1 +1,43 @@
-﻿<?xml version="1.0" encoding="utf-8"?><RadDocking><SplitContainers><RadSplitContainer Dock="DockedBottom" Height="180"><Items><RadPaneGroup SelectedIndex="0"><Items><RadPane SerializationTag="TaskBoard" IsDockable="True" Title="Task Board" Header="Task Board" CanUserClose="False" /></Items></RadPaneGroup></Items></RadSplitContainer><RadSplitContainer Dock="DockedLeft" Width="240"><Items><RadPaneGroup SelectedIndex="0"><Items><RadPane SerializationTag="Filter" IsDockable="True" Title="Filter" Header="Filter" CanUserClose="False" /></Items></RadPaneGroup></Items></RadSplitContainer><RadSplitContainer Dock="DockedRight" Width="220" Orientation="Horizontal"><Items><RadPaneGroup SelectedIndex="0"><Items><RadPane SerializationTag="Route" IsDockable="True" Title="Route" Header="Route" CanUserClose="False" /><RadPane SerializationTag="Destination" IsDockable="True" Title="Destination" Header="Destination" CanUserClose="False" /><RadPane SerializationTag="Task" IsDockable="True" Title="Task" Header="Task" CanUserClose="False" /></Items></RadPaneGroup></Items></RadSplitContainer><RadSplitContainer Dock="DockedLeft" Orientation="Horizontal"><Items><RadPaneGroup SelectedIndex="0"><Items><RadPane SerializationTag="RouteList" IsDockable="True" Title="Route List" Header="Route List" CanUserClose="False" /><RadPane SerializationTag="RouteSchedule" IsDockable="True" Title="Route Schedule" Header="Route Schedule" CanUserClose="False" /><RadPane SerializationTag="RouteMap" IsDockable="True" Title="Route Map" Header="Route Map" CanUserClose="False" /></Items></RadPaneGroup></Items></RadSplitContainer></SplitContainers></RadDocking>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RadDocking>
+  <SplitContainers>
+    <RadSplitContainer Dock="DockedBottom" Height="180">
+      <Items>
+        <RadPaneGroup SelectedIndex="0">
+          <Items>
+            <RadPane SerializationTag="TaskBoard" IsDockable="True" Title="Task Board" Header="Task Board" CanUserClose="False" />
+          </Items>
+        </RadPaneGroup>
+      </Items>
+    </RadSplitContainer>
+    <RadSplitContainer Dock="DockedLeft" Width="240">
+      <Items>
+        <RadPaneGroup SelectedIndex="0">
+          <Items>
+            <RadPane SerializationTag="Filter" IsDockable="True" Title="Filter" Header="Filter" CanUserClose="False" />
+          </Items>
+        </RadPaneGroup>
+      </Items>
+    </RadSplitContainer>
+    <RadSplitContainer Dock="DockedRight" Width="220" Orientation="Horizontal">
+      <Items>
+        <RadPaneGroup SelectedIndex="0">
+          <Items>
+            <RadPane SerializationTag="Route" IsDockable="True" Title="Route" Header="Route" CanUserClose="False" />
+            <RadPane SerializationTag="Destination" IsDockable="True" Title="Destination" Header="Destination" CanUserClose="False" />
+            <RadPane SerializationTag="Task" IsDockable="True" Title="Task" Header="Task" CanUserClose="False" />
+          </Items>
+        </RadPaneGroup>
+      </Items>
+    </RadSplitContainer>
+    <RadSplitContainer Dock="DockedLeft" Orientation="Horizontal">
+      <Items>
+        <RadPaneGroup SelectedIndex="0">
+          <Items>
+            <RadPane SerializationTag="RouteList" IsDockable="True" Title="Route List" Header="Route List" CanUserClose="False" />
+          </Items>
+        </RadPaneGroup>
+      </Items>
+    </RadSplitContainer>
+  </SplitContainers>
+</RadDocking>

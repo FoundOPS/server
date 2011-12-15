@@ -192,8 +192,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                                       };
             newClient.OwnedParty.Locations.Add(defaultLocation);
 
-            newClient.BillingLocation = newClient.OwnedParty.Locations.FirstOrDefault();
-
             this.RaisePropertyChanged("ClientsView");
 
             var availableServicesForServiceProvider = _loadedServiceTemplates.Where(st =>

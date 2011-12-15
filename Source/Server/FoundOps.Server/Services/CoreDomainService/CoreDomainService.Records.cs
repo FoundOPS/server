@@ -31,7 +31,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var clients =
                 ((ObjectQuery<Client>)this.ObjectContext.Clients.Where(client => client.VendorId == businessForRole.Id))
-                    .Include("OwnedParty").Include("OwnedParty.ContactInfoSet").Include("BillingLocation");
+                    .Include("OwnedParty").Include("OwnedParty.ContactInfoSet");
 
             //Force load OwnedParty.PartyImage
             var t = (from c in clients
@@ -375,7 +375,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var locations =
                 ((ObjectQuery<Location>)this.ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id))
-                .Include("ContactInfoSet").Include("Region").Include("Party").Include("Party.ClientOwner").Include("SubLocations").Include("ClientsWithBillingLocation").ToArray();
+                .Include("ContactInfoSet").Include("Region").Include("Party").Include("Party.ClientOwner").Include("SubLocations").ToArray();
 
             return locations;
         }

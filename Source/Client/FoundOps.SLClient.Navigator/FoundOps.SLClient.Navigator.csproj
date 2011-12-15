@@ -404,7 +404,9 @@
     <Resource Include="Content\SiteLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Panes\Dispatcher\DefaultDispatcherLayout.xml" />
+    <EmbeddedResource Include="Panes\Dispatcher\DefaultDispatcherLayout.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

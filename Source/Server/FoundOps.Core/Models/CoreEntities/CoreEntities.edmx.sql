@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 12/08/2011 13:17:47
+-- Date Created: 12/14/2011 13:24:52
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -208,9 +208,6 @@ IF OBJECT_ID(N'[dbo].[FK_BusinessAccountInvoice]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ClientInvoice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_ClientInvoice];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ClientLocation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientLocation];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
@@ -557,8 +554,7 @@ CREATE TABLE [dbo].[Clients] (
     [DateAdded] datetime  NOT NULL,
     [Salesperson] nvarchar(max)  NULL,
     [LinkedPartyId] uniqueidentifier  NULL,
-    [VendorId] uniqueidentifier  NOT NULL,
-    [BillingLocationId] uniqueidentifier  NULL
+    [VendorId] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -1123,25 +1119,25 @@ GO
 -- Creating primary key on [Roles_Id], [Blocks_Id] in table 'RoleBlock'
 ALTER TABLE [dbo].[RoleBlock]
 ADD CONSTRAINT [PK_RoleBlock]
-    PRIMARY KEY CLUSTERED ([Roles_Id], [Blocks_Id] ASC);
+    PRIMARY KEY NONCLUSTERED ([Roles_Id], [Blocks_Id] ASC);
 GO
 
 -- Creating primary key on [Routes_Id], [Vehicles_Id] in table 'RouteVehicle'
 ALTER TABLE [dbo].[RouteVehicle]
 ADD CONSTRAINT [PK_RouteVehicle]
-    PRIMARY KEY CLUSTERED ([Routes_Id], [Vehicles_Id] ASC);
+    PRIMARY KEY NONCLUSTERED ([Routes_Id], [Vehicles_Id] ASC);
 GO
 
 -- Creating primary key on [MemberParties_Id], [RoleMembership_Id] in table 'PartyRole'
 ALTER TABLE [dbo].[PartyRole]
 ADD CONSTRAINT [PK_PartyRole]
-    PRIMARY KEY CLUSTERED ([MemberParties_Id], [RoleMembership_Id] ASC);
+    PRIMARY KEY NONCLUSTERED ([MemberParties_Id], [RoleMembership_Id] ASC);
 GO
 
 -- Creating primary key on [Routes_Id], [Technicians_Id] in table 'RouteEmployee'
 ALTER TABLE [dbo].[RouteEmployee]
 ADD CONSTRAINT [PK_RouteEmployee]
-    PRIMARY KEY CLUSTERED ([Routes_Id], [Technicians_Id] ASC);
+    PRIMARY KEY NONCLUSTERED ([Routes_Id], [Technicians_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -1982,20 +1978,6 @@ ADD CONSTRAINT [FK_ClientInvoice]
 CREATE INDEX [IX_FK_ClientInvoice]
 ON [dbo].[Invoices]
     ([ClientId]);
-GO
-
--- Creating foreign key on [BillingLocationId] in table 'Clients'
-ALTER TABLE [dbo].[Clients]
-ADD CONSTRAINT [FK_ClientLocation]
-    FOREIGN KEY ([BillingLocationId])
-    REFERENCES [dbo].[Locations]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ClientLocation'
-CREATE INDEX [IX_FK_ClientLocation]
-ON [dbo].[Clients]
-    ([BillingLocationId]);
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Business'

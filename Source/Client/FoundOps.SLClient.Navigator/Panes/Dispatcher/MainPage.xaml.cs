@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Xml;
 using System.Linq;
 using System.Windows;
 using System.Collections;
 using System.Windows.Media;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
+using System.Windows.Controls;
 using Telerik.Windows.Controls;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
@@ -318,7 +318,14 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     newRouteDestination.RouteTasks.Add(task);
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
-                    RecordAnalytics(task, "AddToRouteDestinationFromTaskBoard");
+                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                    {
+                        Analytics.AddToRouteDestinationFromTaskBoardAfterAutoDispatch(task.ToString());
+                    }
+                    else
+                    {
+                        Analytics.AddToRouteDestinationFromTaskBoard(task.ToString());
+                    }
                 }
 
                 (((RouteDestination)destination).Route).RouteDestinationsListWrapper.Insert(((RouteDestination)destination).OrderInRoute, newRouteDestination);
@@ -333,7 +340,14 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     newRouteDestination.RouteTasks.Add(task);
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route task
-                    RecordAnalytics(task, "AddToRouteTaskFromTaskBoard");
+                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                    {
+                        Analytics.AddToRouteTaskFromTaskBoardAfterAutoDispatch(task.ToString());
+                    }
+                    else
+                    {
+                        Analytics.AddToRouteTaskFromTaskBoard(task.ToString());
+                    }
                 }
             }
 
@@ -376,18 +390,17 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     ((Route)destination).RouteDestinationsListWrapper.Insert(lastDestinationOrderInRoute, newRouteDestination);
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route
-                    RecordAnalytics(task, "AddToRouteFromTaskBoard");
+                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                    {
+                        Analytics.AddToRouteFromTaskBoardAfterAutoDispatch(task.ToString());
+                    }
+                    else
+                    {
+                        Analytics.AddToRouteFromTaskBoard(task.ToString());
+                    }
+
                 }
             }
-        }
-
-        private void RecordAnalytics(RouteTask task, string dragDropDescriptor)
-        {
-            //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
-            TrackEventAction.Track(
-                    RoutesVM.AutoAssignButtonHasBeenClicked
-                        ? "Drag and Drop After AutoDispatch"
-                        : "Drag and Drop", dragDropDescriptor, task.Name, 1);
         }
 
         #endregion
@@ -487,11 +500,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 using (var isoStream = storage.OpenFile("RadDocking_Layout.xml", FileMode.Open))
                     this.radDocking.LoadLayout(isoStream);
             }
-            //If there is an exception it means that there is no saved layout. 
-            //Save the dafault layout here. Used for resetting.
             catch
             {
-                SaveDefaultLayout();
+                LoadDefaultLayout();
+                SaveLayout();
             }
         }
 
@@ -500,21 +512,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         /// </summary>
         public void LoadDefaultLayout()
         {
-            //try
-            //{
-                using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
-                using (var isoStream = storage.OpenFile("RadDocking_DefaultLayout.xml", FileMode.Open))
-                    this.radDocking.LoadLayout(isoStream);
-                //var stream = GetType().Assembly.GetManifestResourceStream("DefaultDispatcherLayout.xml");
-
-            //var stream = new FileStream(Path.GetFullPath("DefaultDispatcherLayout.xml"), FileMode.Open, FileAccess.Read);
-            //this.radDocking.LoadLayout(stream);
-
-            //}
-            //catch
-            //{
-                //If it gets here Save Default Layout never happened?
-            //}
+            var stream = GetType().Assembly.GetManifestResourceStream("FoundOps.SLClient.Navigator.Panes.Dispatcher.DefaultDispatcherLayout.xml");
+            this.radDocking.LoadLayout(stream);
         }
 
         /// <summary>
@@ -564,42 +563,14 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             }
         }
 
-        //Saves the initial layout to be used to reset the layout back to the default
-        private string SaveDefaultLayout()
-        {
-            string xml;
-            // Save your layout
-            using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (var isoStream = storage.OpenFile("RadDocking_DefaultLayout.xml", FileMode.OpenOrCreate))
-                {
-                    this.radDocking.SaveLayout(isoStream);
-                    isoStream.Seek(0, SeekOrigin.Begin);
-                    var reader = new StreamReader(isoStream);
-                    xml = reader.ReadToEnd();
-                }
-            }
-            // Return the generated XML
-            return xml;
-        }
-
         /// <summary>
         /// Called whenever the RadDockingLayout is changed.
         /// </summary>
         private void RadDockingLayoutChangeEnded(object sender, EventArgs e)
         {
-            //Save the layout
             SaveLayout();
 
-            //Get the context
-            //var businessAccount = (RoutesVM)DataContext;
-
-            //Analytic to track when the layout is reset
-            //Check if there is at least 1 UnroutedRouteTask
-            //var firstOrDefault = businessAccount.UnroutedTasks.FirstOrDefault();
-            //TrackEventAction.Track("Dispatcher", "LayoutChanged",
-            //                       firstOrDefault != null ? firstOrDefault.OwnerBusinessAccount.DisplayName : " ", 1);
-
+            //call the analytic for handling layout changing in dispatcher
             Analytics.DispatcherLayoutChanged();
         }
 
@@ -611,14 +582,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             LoadDefaultLayout();
             SaveLayout();
 
-            //Get the context
-            var businessAccount = (RoutesVM)DataContext;
-
-            //Analytic to track when the layout is reset
-            //Check if there is at least 1 UnroutedRouteTask
-            var firstOrDefault = businessAccount.UnroutedTasks.FirstOrDefault();
-            TrackEventAction.Track("Dispatcher", "LayoutReset",
-                                   firstOrDefault != null ? firstOrDefault.OwnerBusinessAccount.DisplayName : " ", 1);
+            //call the analytic for handling layout changing in dispatcher
+            Analytics.DispatcherLayoutReset();
         }
 
         #endregion
@@ -637,13 +602,13 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         private void AddNewRouteTaskButtonClick(object sender, RoutedEventArgs e)
         {
             //Analytics - Track when a new route task is created
-            TrackEventAction.Track("Dispatcher", "AddNewRouteTask", 1);
+            Analytics.AddNewRouteTask();
         }
 
         private void DeleteRouteTaskButtonClick(object sender, RoutedEventArgs e)
         {
             //Analytics - Track when a route task is deleted
-            TrackEventAction.Track("Dispatcher", "DeleteRouteTask", 1);
+            Analytics.DeleteRouteTask();
         }
 
         #endregion
