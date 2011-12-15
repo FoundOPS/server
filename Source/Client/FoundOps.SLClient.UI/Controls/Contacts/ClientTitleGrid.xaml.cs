@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.ComponentModel;
 using System.Windows.Controls;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 
@@ -8,6 +9,9 @@ namespace FoundOps.SLClient.UI.Controls.Contacts
 {
     public partial class ClientTitleGrid : UserControl, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientTitleGrid"/> class.
+        /// </summary>
         public ClientTitleGrid()
         {
             InitializeComponent();
@@ -19,21 +23,15 @@ namespace FoundOps.SLClient.UI.Controls.Contacts
             AddDeleteClientTitle.RemoveCurrentItem = (item) => ClientTitlesVM.DeleteClientTitleInCreation();
         }
 
-        public ClientsVM ClientsVM
-        {
-            get
-            {
-                return (ClientsVM)this.ClientsVMHolder.DataContext;
-            }
-        }
+        /// <summary>
+        /// Gets the ClientsVM.
+        /// </summary>
+        public ClientsVM ClientsVM{get{return VM.Clients;}}
 
-        public ClientTitlesVM ClientTitlesVM
-        {
-            get
-            {
-                return (ClientTitlesVM)this.DataContext;
-            }
-        }
+        /// <summary>
+        /// Gets the ClientTitlesVM.
+        /// </summary>
+        public ClientTitlesVM ClientTitlesVM{get{return VM.ClientTitles;}}
 
 
         #region ParentContextVM Dependency Property

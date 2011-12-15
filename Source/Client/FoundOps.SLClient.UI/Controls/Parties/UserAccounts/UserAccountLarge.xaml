@@ -4,9 +4,6 @@
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts"
              xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              ViewModelLocator:ViewModelLocator.SharedViewModel="UserAccountsVM" mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="400">
-    <UserControl.Resources>
-        <StackPanel x:Name="EmployeesVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM"/>
-    </UserControl.Resources>
     <StackPanel>
         <UserAccounts:UserAccountEdit ISaveDiscardChangesCommands="{Binding}" Entity="{Binding SelectedEntity}"/>
         <!--Employees Grid-->

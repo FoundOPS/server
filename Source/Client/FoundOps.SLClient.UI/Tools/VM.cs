@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Markup;
-using FoundOps.SLClient.UI.ViewModels;
 using MEFedMVVM.ViewModelLocator;
+using FoundOps.SLClient.UI.ViewModels;
 using System.ComponentModel.Composition;
 
 namespace FoundOps.SLClient.UI.Tools
@@ -53,6 +53,61 @@ namespace FoundOps.SLClient.UI.Tools
             get
             {
                 return (RoutesDragDropVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesDragDropVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the FieldsVM.
+        /// </summary>
+        public static FieldsVM Fields
+        {
+            get
+            {
+                return (FieldsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("FieldsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ServiceTemplatesVM.
+        /// </summary>
+        public static ServiceTemplatesVM ServiceTemplates
+        {
+            get
+            {
+                return (ServiceTemplatesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ServiceTemplatesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the EmployeesVM.
+        /// </summary>
+        public static EmployeesVM Employees
+        {
+            get
+            {
+                return (EmployeesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("EmployeesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ClientsVM.
+        /// </summary>
+        public static ClientsVM Clients
+        {
+            get
+            {
+                return (ClientsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ClientTitlesVM.
+        /// </summary>
+        public static ClientTitlesVM ClientTitles
+        {
+            get
+            {
+                return (ClientTitlesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientTitlesVM", null, CreationPolicy.Shared).Value;
             }
         }
     }

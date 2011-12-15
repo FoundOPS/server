@@ -7,8 +7,6 @@
     mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM" d:DesignWidth="400">
     <Controls1:RadBusyIndicator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BusyContent="Loading Tasks" IsBusy="{Binding TasksLoading}">
         <Grid x:Name="LayoutRoot" Background="White">
-            <StackPanel x:Name="ClientsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM"/>
-            <StackPanel x:Name="LocationsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM"/>
             <telerik:RadGridView x:Name="TaskBoardRadGridView" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding UnroutedTasks}" 
                              SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Multiple">
                 <telerik:RadGridView.RowStyle>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
@@ -11,7 +12,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         /// <summary>
         /// Gets the EmployeesVM.
         /// </summary>
-        public EmployeesVM EmployeesVM { get { return (EmployeesVM)EmployeesVMHolder.DataContext; } }
+        public EmployeesVM EmployeesVM { get { return VM.Employees; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAccountLarge"/> class.

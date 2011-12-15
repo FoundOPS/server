@@ -4,8 +4,7 @@
     xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"  
     xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" 
     xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" 
-    xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields"
-             xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d">
+    xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields" xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:ComboBoxSelectedItemConverter x:Key="ComboBoxSelectedItemConverter"/>
@@ -106,7 +105,6 @@
                     <ColumnDefinition Width="5" />
                     <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
                 </Grid.ColumnDefinitions>
-                <!--<StackPanel x:Name="FieldHolder" DataContext="{Binding}"/>-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
                     <TextBlock Text=":" />
@@ -121,7 +119,6 @@
                     <ColumnDefinition Width="5" />
                     <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
                 </Grid.ColumnDefinitions>
-                <!--<StackPanel x:Name="FieldHolder" DataContext="{Binding}"/>-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
                     <TextBlock Text=":" />

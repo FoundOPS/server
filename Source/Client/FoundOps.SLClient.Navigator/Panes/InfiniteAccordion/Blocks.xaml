@@ -1,6 +1,5 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.Navigator.Panes.InfiniteAccordion.Blocks" x:Name="myBlocks"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Locations="clr-namespace:FoundOps.Framework.Views.Controls.Locations;assembly=FoundOps.SLClient.UI"
              xmlns:InfiniteAccordion="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Vehicles="clr-namespace:FoundOps.Framework.Views.Controls.Vehicles;assembly=FoundOps.SLClient.UI" xmlns:Maintenance="clr-namespace:FoundOps.Framework.Views.Controls.Vehicles.Maintenance;assembly=FoundOps.SLClient.UI"
              xmlns:Employees="clr-namespace:FoundOps.Framework.Views.Controls.Employees;assembly=FoundOps.SLClient.UI" xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices;assembly=FoundOps.SLClient.UI"
@@ -14,15 +13,12 @@
              xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services;assembly=FoundOps.SLClient.UI" xmlns:EmployeeHistory1="clr-namespace:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory;assembly=FoundOps.SLClient.UI" 
              xmlns:ServiceTemplate1="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate;assembly=FoundOps.SLClient.UI" xmlns:Maintenance1="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles.Maintenance;assembly=FoundOps.SLClient.UI"  
              xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" 
-             xmlns:Tools="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
+             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:Tools="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
              xmlns:AdministrativeConsole="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts;assembly=FoundOps.SLClient.UI"
              xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts;assembly=FoundOps.SLClient.UI"
-             xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools;assembly=FoundOps.SLClient.UI"
-             xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI">
+             xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools;assembly=FoundOps.SLClient.UI" xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI">
     <UserControl.Resources>
         <Converters:ServiceTemplatesAddDeleteModeConverter x:Key="ServiceTemplatesAddDeleteModeConverter"/>
-        <StackPanel x:Key="ServiceTemplatesHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ServiceTemplatesVM"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -280,7 +276,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Services" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding DataContext.ServiceTemplatesForServiceProvider, Source={StaticResource ServiceTemplatesHolder}}">
+                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForServiceProvider, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}">
                                         <AddEditDelete:AddDelete.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Name}"/>
@@ -315,11 +311,11 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Service Templates" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <!--AddDeleteMode within FoundOPS context: AddDelete, all other serviceproviders: AddItemDelete  -->
-                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding DataContext.AddCommand, Source={StaticResource ServiceTemplatesHolder}}"
-                                                             AddItemCommand="{Binding DataContext.AddCommand, Source={StaticResource ServiceTemplatesHolder}}" 
-                                                             DeleteCommand="{Binding DataContext.DeleteCommand, Source={StaticResource ServiceTemplatesHolder}}"
-                                                             CommandParameter="{Binding DataContext.SelectedEntity, Source={StaticResource ServiceTemplatesHolder}}" 
-                                                             ItemsSource="{Binding DataContext.AdditionalServiceTemplatesForServiceProvider, Source={StaticResource ServiceTemplatesHolder}}"
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
+                                                             AddItemCommand="{Binding AddCommand, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}" 
+                                                             DeleteCommand="{Binding DeleteCommand, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
+                                                             CommandParameter="{Binding SelectedEntity, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}" 
+                                                             ItemsSource="{Binding AdditionalServiceTemplatesForServiceProvider, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
                                                              AddDeleteMode="{Tools:GetContextObservableValue Converter={StaticResource ServiceTemplatesAddDeleteModeConverter}, ContextType=CoreEntities1:BusinessAccount}">
                                         <AddEditDelete:AddDelete.ItemTemplate>
                                             <DataTemplate>
