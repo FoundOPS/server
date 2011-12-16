@@ -8,7 +8,6 @@
         <Services1:ServiceStyleSelector x:Key="ServiceStyleSelector" />
     </UserControl.Resources>
     <Grid>
-        <StackPanel x:Name="ServiceTemplatesVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ServiceTemplatesVM"/>
         <telerik:RadGridView x:Name="ServicesRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False"
             RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}" RowStyleSelector="{StaticResource ServiceStyleSelector}" 
                             IsFilteringAllowed="False" EnableRowVirtualization="True" SelectionMode="Single" SelectionUnit="FullRow" SelectionChanged="ServicesRadGridViewSelectionChanged">

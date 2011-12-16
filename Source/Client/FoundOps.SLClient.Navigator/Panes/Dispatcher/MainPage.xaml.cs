@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -6,6 +6,8 @@ using System.Collections;
 using System.Windows.Media;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
+using System.Windows.Controls;
+using FoundOps.SLClient.UI.Tools;
 using Telerik.Windows.Controls;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
@@ -17,7 +19,6 @@ using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.GridView;
 using Telerik.Windows.Controls.TreeView;
 using FoundOps.Common.Silverlight.Blocks;
-using FoundOps.Common.Silverlight.UI.Tools;
 using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 
 namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
@@ -28,10 +29,24 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
     [ExportPage("Dispatcher")]
     public partial class MainPage
     {
-        ///// <summary>
-        ///// Gets or sets the analytics.
-        ///// </summary>
-        //private readonly AnalyticsManager _analytics;
+        #region Properties and Variables
+
+        /// <summary>
+        /// Gets the RegionsVM.
+        /// </summary>
+        public RegionsVM RegionsVM { get { return VM.Regions; } }
+
+        /// <summary>
+        /// Gets the RoutesVM.
+        /// </summary>
+        public RoutesVM RoutesVM { get { return VM.Routes; } }
+
+        /// <summary>
+        /// Gets the routes drag drop VM.
+        /// </summary>
+        public RoutesDragDropVM RoutesDragDropVM { get { return VM.RoutesDragDrop; } }
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainPage"/> class.
@@ -84,57 +99,154 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 });
         }
 
-        /// <summary>
-        /// Gets the RoutesVM.
-        /// </summary>
-        public RoutesVM RoutesVM { get { return (RoutesVM)this.DataContext; } }
+        #region Logic
 
-        /// <summary>
-        /// Gets the RegionsVM.
-        /// </summary>
-        public RegionsVM RegionsVM { get { return (RegionsVM)((FrameworkElement)this.Resources["RegionsVMHolder"]).DataContext; } }
+        #region Analytics
+
+        //Tracks the selected pane in the group containing the route list, schedule view and map view
+        private void MainGroupSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            //if (mainGroup == null)
+            //    return;
+            //
+            //TrackEventAction.Track("RoutePanes", "RoutePanesSelectionChanged", mainGroup.SelectedPane.ToString());
+        }
+
+        private void AddNewRouteTaskButtonClick(object sender, RoutedEventArgs e)
+        {
+            //Analytics - Track when a new route task is created
+            Analytics.AddNewRouteTask();
+        }
+
+        private void DeleteRouteTaskButtonClick(object sender, RoutedEventArgs e)
+        {
+            //Analytics - Track when a route task is deleted
+            Analytics.DeleteRouteTask();
+        }
+
+        #endregion
 
         #region DragAndDrop
 
         /// <summary>
-        /// Gets the routes drag drop VM.
+        /// Adds draggedItems to route.
         /// </summary>
-        public RoutesDragDropVM RoutesDragDropVM
+        private void AddToRoute(DragDropEventArgs e, IEnumerable draggedItems)
         {
-            get { return (RoutesDragDropVM)RoutesDragDropVMHolder.DataContext; }
-        }
-
-        private void OnDragInfo(object sender, DragDropEventArgs e)
-        {
-            if (e.Options.Source is GridViewHeaderCell)
+            var destination = e.Options.Destination.DataContext;
+            if (destination is RouteDestination)
             {
-                return;
+                var newRouteDestination = new RouteDestination
+                {
+                    Id = Guid.NewGuid(),
+                    Client = draggedItems.OfType<RouteTask>().FirstOrDefault().Client,
+                };
+
+                if (draggedItems.OfType<RouteTask>().FirstOrDefault().Location != null)
+                    newRouteDestination.Location = draggedItems.OfType<RouteTask>().FirstOrDefault().Location;
+                else
+                    newRouteDestination.Location = null;
+
+                foreach (var task in draggedItems.OfType<RouteTask>())
+                {
+                    newRouteDestination.RouteTasks.Add(task);
+
+                    //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
+                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                    {
+                        Analytics.AddToRouteDestinationFromTaskBoardAfterAutoDispatch(task.ToString());
+                    }
+                    else
+                    {
+                        Analytics.AddToRouteDestinationFromTaskBoard(task.ToString());
+                    }
+                }
+
+                (((RouteDestination)destination).Route).RouteDestinationsListWrapper.Insert(((RouteDestination)destination).OrderInRoute, newRouteDestination);
             }
 
-            RoutesDragDropVM.OriginalDragSource = DragSource.UnroutedTaskBoard;
-
-            var draggedItems = e.Options.Payload as IEnumerable;
-            var cue = e.Options.DragCue;
-
-            DragCueSetter(draggedItems, e);
-
-            cue = e.Options.DragCue;
-
-            if (e.Options.Status == DragStatus.DragComplete && ((TreeViewDragCue)cue).IsDropPossible)
+            if (destination is RouteTask)
             {
-                //Gets hit if you try and drop a task onto the Taskboard
-                //Checks to be sure you are trying to drop into one of the Routes
-                if (!(e.Options.Destination is RadTreeView)) return;
+                var newRouteDestination = ((RouteTask)destination).RouteDestination;
 
-                var source = this.TaskBoard.PublicTaskBoardRadGridView.ItemsSource as IList;
+                foreach (var task in draggedItems.OfType<RouteTask>())
+                {
+                    newRouteDestination.RouteTasks.Add(task);
 
-                RemoveFromTaskBoard(source, draggedItems);
+                    //Analytics - Drag and Drop. When dragging a task from the task board to a route task
+                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                    {
+                        Analytics.AddToRouteTaskFromTaskBoardAfterAutoDispatch(task.ToString());
+                    }
+                    else
+                    {
+                        Analytics.AddToRouteTaskFromTaskBoard(task.ToString());
+                    }
+                }
+            }
 
-                AddToRoute(e, draggedItems);
+            if (destination is Route)
+            {
+                var routeDestinations =
+                    (ObservableCollection<RouteDestination>)((RadTreeView)e.Options.Destination).ItemsSource;
+
+                var newOrderInRoute = routeDestinations.Count;
+                //For new RouteDestinations
+                foreach (var task in draggedItems.OfType<RouteTask>())
+                {
+                    var newRouteDestination = new RouteDestination
+                    {
+                        Id = Guid.NewGuid(),
+                        OrderInRoute = newOrderInRoute
+                    };
+
+                    if (task.Client != null)
+                        newRouteDestination.Client = task.Client;
+
+                    if (task.Location != null)
+                        newRouteDestination.Location = task.Location;
+
+                    newRouteDestination.RouteTasks.Add(task);
+
+                    newOrderInRoute++;
+
+                    //Set to 0 initially because you might be dropping into an empty route
+                    var lastDestinationOrderInRoute = 0;
+
+                    //Checks to see if the route is empty. If not its sets lastDestinationOrderInRoute appropriately 
+                    if (((Route)destination).RouteDestinationsListWrapper.Count != 0)
+                    {
+                        var lastOrDefault = ((Route)destination).RouteDestinationsListWrapper.LastOrDefault();
+                        if (lastOrDefault != null)
+                            lastDestinationOrderInRoute = lastOrDefault.OrderInRoute;
+                    }
+
+                    ((Route)destination).RouteDestinationsListWrapper.Insert(lastDestinationOrderInRoute, newRouteDestination);
+
+                    //Analytics - Drag and Drop. When dragging a task from the task board to a route
+                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                    {
+                        Analytics.AddToRouteFromTaskBoardAfterAutoDispatch(task.ToString());
+                    }
+                    else
+                    {
+                        Analytics.AddToRouteFromTaskBoard(task.ToString());
+                    }
+
+                }
             }
         }
 
-        #region Methods For OnDragInfo
+        #region Dragging
+
+        private static object CreateDragCue(string errorString, TreeViewDragCue cue)
+        {
+            cue.DragTooltipContent = null;
+            cue.DragActionContent = String.Format(errorString);
+            cue.IsDropPossible = false;
+
+            return cue;
+        }
 
         /// <summary>
         /// Sets the DragCue for the specified item being dragged and its current potential drop location.
@@ -270,126 +382,35 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 e.Options.DragCue = cue;
         }
 
-        private static object CreateDragCue(string errorString, TreeViewDragCue cue)
+        private void OnDragInfo(object sender, DragDropEventArgs e)
         {
-            cue.DragTooltipContent = null;
-            cue.DragActionContent = String.Format(errorString);
-            cue.IsDropPossible = false;
-
-            return cue;
-        }
-
-        /// <summary>
-        /// Removes DraggedItems from the TaskBoard.
-        /// </summary>
-        private static void RemoveFromTaskBoard(IList source, IEnumerable draggedItems)
-        {
-            foreach (RouteTask draggedItem in draggedItems.OfType<RouteTask>())
+            if (e.Options.Source is GridViewHeaderCell)
             {
-                if (source != null)
-                {
-                    source.Remove(draggedItem);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds draggedItems to route.
-        /// </summary>
-        private void AddToRoute(DragDropEventArgs e, IEnumerable draggedItems)
-        {
-            var destination = e.Options.Destination.DataContext;
-            if (destination is RouteDestination)
-            {
-                var newRouteDestination = new RouteDestination
-                {
-                    Id = Guid.NewGuid(),
-                    Client = draggedItems.OfType<RouteTask>().FirstOrDefault().Client,
-                };
-
-                if (draggedItems.OfType<RouteTask>().FirstOrDefault().Location != null)
-                    newRouteDestination.Location = draggedItems.OfType<RouteTask>().FirstOrDefault().Location;
-                else
-                    newRouteDestination.Location = null;
-
-                foreach (var task in draggedItems.OfType<RouteTask>())
-                {
-                    newRouteDestination.RouteTasks.Add(task);
-
-                    //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
-                    RecordAnalytics(task, "AddToRouteDestinationFromTaskBoard");
-                }
-
-                (((RouteDestination)destination).Route).RouteDestinationsListWrapper.Insert(((RouteDestination)destination).OrderInRoute, newRouteDestination);
+                return;
             }
 
-            if (destination is RouteTask)
+            RoutesDragDropVM.OriginalDragSource = DragSource.UnroutedTaskBoard;
+
+            var draggedItems = e.Options.Payload as IEnumerable;
+            var cue = e.Options.DragCue;
+
+            DragCueSetter(draggedItems, e);
+
+            cue = e.Options.DragCue;
+
+            if (e.Options.Status == DragStatus.DragComplete && ((TreeViewDragCue)cue).IsDropPossible)
             {
-                var newRouteDestination = ((RouteTask)destination).RouteDestination;
+                //Gets hit if you try and drop a task onto the Taskboard
+                //Checks to be sure you are trying to drop into one of the Routes
+                if (!(e.Options.Destination is RadTreeView)) return;
 
-                foreach (var task in draggedItems.OfType<RouteTask>())
-                {
-                    newRouteDestination.RouteTasks.Add(task);
+                var source = this.TaskBoard.PublicTaskBoardRadGridView.ItemsSource as IList;
 
-                    //Analytics - Drag and Drop. When dragging a task from the task board to a route task
-                    RecordAnalytics(task, "AddToRouteTaskFromTaskBoard");
-                }
-            }
+                RemoveFromTaskBoard(source, draggedItems);
 
-            if (destination is Route)
-            {
-                var routeDestinations =
-                    (ObservableCollection<RouteDestination>)((RadTreeView)e.Options.Destination).ItemsSource;
-
-                var newOrderInRoute = routeDestinations.Count;
-                //For new RouteDestinations
-                foreach (var task in draggedItems.OfType<RouteTask>())
-                {
-                    var newRouteDestination = new RouteDestination
-                    {
-                        Id = Guid.NewGuid(),
-                        OrderInRoute = newOrderInRoute
-                    };
-
-                    if (task.Client != null)
-                        newRouteDestination.Client = task.Client;
-
-                    if (task.Location != null)
-                        newRouteDestination.Location = task.Location;
-
-                    newRouteDestination.RouteTasks.Add(task);
-
-                    newOrderInRoute++;
-
-                    //Set to 0 initially because you might be dropping into an empty route
-                    var lastDestinationOrderInRoute = 0;
-
-                    //Checks to see if the route is empty. If not its sets lastDestinationOrderInRoute appropriately 
-                    if (((Route)destination).RouteDestinationsListWrapper.Count != 0)
-                    {
-                        var lastOrDefault = ((Route)destination).RouteDestinationsListWrapper.LastOrDefault();
-                        if (lastOrDefault != null)
-                            lastDestinationOrderInRoute = lastOrDefault.OrderInRoute;
-                    }
-
-                    ((Route)destination).RouteDestinationsListWrapper.Insert(lastDestinationOrderInRoute, newRouteDestination);
-
-                    //Analytics - Drag and Drop. When dragging a task from the task board to a route
-                    RecordAnalytics(task, "AddToRouteFromTaskBoard");
-                }
+                AddToRoute(e, draggedItems);
             }
         }
-
-        private void RecordAnalytics(RouteTask task, string dragDropDescriptor)
-        {
-            //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
-            TrackEventAction.Track(
-                    RoutesVM.AutoAssignButtonHasBeenClicked
-                        ? "Drag and Drop After AutoDispatch"
-                        : "Drag and Drop", dragDropDescriptor, task.Name, 1);
-        }
-
-        #endregion
 
         private void OnDragQuery(object sender, DragDropQueryEventArgs e)
         {
@@ -412,6 +433,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             e.QueryResult = true;
             e.Handled = true;
         }
+
+        #endregion
+
+        #region Dropping
 
         /// <summary>
         /// Sets up the initial DragCue
@@ -464,16 +489,25 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
         #endregion
 
-        //Insures the route map stays the correct size
-        private void RouteMapPaneSizeChanged(object sender, SizeChangedEventArgs e)
+        /// <summary>
+        /// Removes DraggedItems from the TaskBoard.
+        /// </summary>
+        private static void RemoveFromTaskBoard(IList source, IEnumerable draggedItems)
         {
-            //if (RouteMapView.Content as FrameworkElement == null) return;
-
-            //((FrameworkElement)RouteMapView.Content).Width = RouteMapPane.Width * .99;
-            //((FrameworkElement)RouteMapView.Content).Height = RouteMapPane.Height * .99;
+            foreach (RouteTask draggedItem in draggedItems.OfType<RouteTask>())
+            {
+                if (source != null)
+                {
+                    source.Remove(draggedItem);
+                }
+            }
         }
 
+        #endregion
+
         #region Layout
+
+        #region Loading and Saving Layout
 
         /// <summary>
         /// Loads the layout from isolated storage.
@@ -486,11 +520,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 using (var isoStream = storage.OpenFile("RadDocking_Layout.xml", FileMode.Open))
                     this.radDocking.LoadLayout(isoStream);
             }
-            //If there is an exception it means that there is no saved layout. 
-            //Save the dafault layout here. Used for resetting.
             catch
             {
-                SaveDefaultLayout();
+                LoadDefaultLayout();
+                SaveLayout();
             }
         }
 
@@ -499,16 +532,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         /// </summary>
         public void LoadDefaultLayout()
         {
-            try
-            {
-                using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
-                using (var isoStream = storage.OpenFile("RadDocking_DefaultLayout.xml", FileMode.Open))
-                    this.radDocking.LoadLayout(isoStream);
-            }
-            catch
-            {
-                //If it gets here Save Default Layout never happened?
-            }
+            var stream = GetType().Assembly.GetManifestResourceStream("FoundOps.SLClient.Navigator.Panes.Dispatcher.DefaultDispatcherLayout.xml");
+            this.radDocking.LoadLayout(stream);
         }
 
         /// <summary>
@@ -527,50 +552,64 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     isoStream.Seek(0, SeekOrigin.Begin);
                     var reader = new StreamReader(isoStream);
                     xml = reader.ReadToEnd();
+
+                    ////Save to local file system (for FoundOPS use when resetting default layout)
+                    //SaveToFileSystem(xml);
                 }
             }
             // Return the generated XML
             return xml;
         }
 
-        //Saves the initial layout to be used to reset the layout back to the default
-        private string SaveDefaultLayout()
+        //Save to local file system (for FoundOPS use when resetting default layout)
+        private void SaveToFileSystem(string xml)
         {
-            string xml;
-            // Save your layout
-            using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
+            var saveFileDialog = new SaveFileDialog
             {
-                using (var isoStream = storage.OpenFile("RadDocking_DefaultLayout.xml", FileMode.OpenOrCreate))
+                DefaultExt = "xml",
+                Filter = "XML Files (*.xml)|*.xml|All files (*.*)|*.*",
+                FilterIndex = 1
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                using (var stream = saveFileDialog.OpenFile())
                 {
-                    this.radDocking.SaveLayout(isoStream);
-                    isoStream.Seek(0, SeekOrigin.Begin);
-                    var reader = new StreamReader(isoStream);
-                    xml = reader.ReadToEnd();
+                    var sw = new StreamWriter(stream, System.Text.Encoding.UTF8);
+                    sw.Write(xml);
+                    sw.Close();
+
+                    stream.Close();
                 }
             }
-            // Return the generated XML
-            return xml;
         }
+
+        #endregion
+
+        #region Layout Changes
 
         /// <summary>
         /// Called whenever the RadDockingLayout is changed.
         /// </summary>
         private void RadDockingLayoutChangeEnded(object sender, EventArgs e)
         {
-            //Save the layout
+            //save the Layout whenever it changes
             SaveLayout();
 
-            //Get the context
-            //var businessAccount = (RoutesVM)DataContext;
-
-            //Analytic to track when the layout is reset
-            //Check if there is at least 1 UnroutedRouteTask
-            //var firstOrDefault = businessAccount.UnroutedTasks.FirstOrDefault();
-            //TrackEventAction.Track("Dispatcher", "LayoutChanged",
-            //                       firstOrDefault != null ? firstOrDefault.OwnerBusinessAccount.DisplayName : " ", 1);
-
+            //call the analytic for handling layout changing in dispatcher
             Analytics.DispatcherLayoutChanged();
         }
+
+        //Insures the route map stays the correct size
+        private void RouteMapPaneSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //if (RouteMapView.Content as FrameworkElement == null) return;
+
+            //((FrameworkElement)RouteMapView.Content).Width = RouteMapPane.Width * .99;
+            //((FrameworkElement)RouteMapView.Content).Height = RouteMapPane.Height * .99;
+        }
+
+        #endregion
 
         /// <summary>
         /// Resets the layout.
@@ -580,40 +619,11 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             LoadDefaultLayout();
             SaveLayout();
 
-            //Get the context
-            var businessAccount = (RoutesVM)DataContext;
-
-            //Analytic to track when the layout is reset
-            //Check if there is at least 1 UnroutedRouteTask
-            var firstOrDefault = businessAccount.UnroutedTasks.FirstOrDefault();
-            TrackEventAction.Track("Dispatcher", "LayoutReset",
-                                   firstOrDefault != null ? firstOrDefault.OwnerBusinessAccount.DisplayName : " ", 1);
+            //call the analytic for handling layout changing in dispatcher
+            Analytics.DispatcherLayoutReset();
         }
 
         #endregion
-
-        #region Analytics
-
-        //Tracks the selected pane in the group containing the route list, schedule view and map view
-        private void MainGroupSelectionChanged(object sender, RoutedEventArgs e)
-        {
-            //if (mainGroup == null)
-            //    return;
-            //
-            //TrackEventAction.Track("RoutePanes", "RoutePanesSelectionChanged", mainGroup.SelectedPane.ToString());
-        }
-
-        private void AddNewRouteTaskButtonClick(object sender, RoutedEventArgs e)
-        {
-            //Analytics - Track when a new route task is created
-            TrackEventAction.Track("Dispatcher", "AddNewRouteTask", 1);
-        }
-
-        private void DeleteRouteTaskButtonClick(object sender, RoutedEventArgs e)
-        {
-            //Analytics - Track when a route task is deleted
-            TrackEventAction.Track("Dispatcher", "DeleteRouteTask", 1);
-        }
 
         #endregion
     }

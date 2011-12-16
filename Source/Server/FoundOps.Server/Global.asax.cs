@@ -54,11 +54,12 @@ namespace FoundOps.Core.Server
 #if DEBUG
             IsDebugMode = true;
             RootUrl = "http://localhost:31820";
-            //RootBlogUrl = "http://localhost:55206";
+            RootBlogUrl = "http://localhost:55206";
 #else
             RootUrl = "http://www.foundops.com";
-#endif
             RootBlogUrl = "http://wp.foundops.com";
+#endif
+            //RootBlogUrl = "http://wp.foundops.com";
 
             RegisterRoutes(RouteTable.Routes);
         }

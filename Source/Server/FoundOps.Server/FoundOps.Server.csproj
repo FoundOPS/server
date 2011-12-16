@@ -13,10 +13,14 @@
     <RootNamespace>FoundOps.Server</RootNamespace>
     <AssemblyName>FoundOps.Server</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <SilverlightApplicationList>{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}|..\..\Client\FoundOps.SLClient.Navigator\FoundOps.SLClient.Navigator.csproj|ClientBin|False</SilverlightApplicationList>
     <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
@@ -51,7 +55,7 @@
     </Reference>
     <Reference Include="LinqKit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\LinqKit.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\LinqKit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -118,7 +122,7 @@
     </Reference>
     <Reference Include="Recaptcha, Version=1.0.5.0, Culture=neutral, PublicKeyToken=9afc4d65b28c38c2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\Recaptcha.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Recaptcha.dll</HintPath>
     </Reference>
     <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -258,7 +262,7 @@
     </Reference>
     <Reference Include="zxing, Version=1.0.4216.32187, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\zxing.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\zxing.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +276,7 @@
     <Content Include="Content\bgLogo.png" />
     <Content Include="Content\BlankPhoto.png" />
     <Content Include="Content\Chimp.png" />
+    <Content Include="Content\DefaultDispatcherLayout.xml" />
     <Content Include="Content\facebook.png" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\footerBg.png" />

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Collections;
 using System.Windows.Data;
 using System.Globalization;
+using FoundOps.SLClient.UI.Tools;
 using Telerik.Windows.Controls;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,13 +14,29 @@ using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.GridView;
 using Telerik.Windows.Controls.TreeView;
 using System.Windows.Controls.Primitives;
-using FoundOps.Common.Silverlight.UI.Tools;
 using ListBox = System.Windows.Controls.ListBox;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
+    /// <summary>
+    /// UI for displaying Routes as lists
+    /// </summary>
     public partial class RoutesListView
     {
+        #region Properties and Variables
+
+        /// <summary>
+        /// Gets the routes VM.
+        /// </summary>
+        public RoutesVM RoutesVM { get { return VM.Routes; } }
+
+        /// <summary>
+        /// Gets the routes drag drop VM.
+        /// </summary>
+        public RoutesDragDropVM RoutesDragDropVM { get { return VM.RoutesDragDrop; } }
+
+        #endregion
+
         /// <summary>
         /// Gets the public routes list box.
         /// </summary>
@@ -34,22 +51,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         public RoutesListView()
         {
             InitializeComponent();
-        }
-
-        /// <summary>
-        /// Gets the routes VM.
-        /// </summary>
-        public RoutesVM RoutesVM
-        {
-            get { return (RoutesVM)this.DataContext; }
-        }
-
-        /// <summary>
-        /// Gets the routes drag drop VM.
-        /// </summary>
-        public RoutesDragDropVM RoutesDragDropVM
-        {
-            get { return (RoutesDragDropVM)RoutesDragDropVMHolder.DataContext; }
         }
 
         private void RouteTreeViewLoaded(object sender, System.Windows.RoutedEventArgs e)
@@ -86,10 +87,15 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 {
                     foreach (var draggedItem in draggedItems)
                     {
-                        TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddTaskToTaskBoardFromRoute", draggedItem.ToString(), 1);
+                        //Analytics - to track when a task is dragged from a route to the task board
+                        if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                        {
+                            Data.Services.Analytics.AddTaskToTaskBoardFromRouteAfterAutoDispatch(draggedItem.ToString());
+                        }
+                        else
+                        {
+                            Data.Services.Analytics.AddTaskToTaskBoardFromRoute(draggedItem.ToString());
+                        }
                     }
                 }
 
@@ -383,10 +389,14 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     ((RouteDestination)destination).RouteTasks.Add(task);
 
                     //Analytics - Drag and Drop. When dragging a task from another route to a route destination
-                    TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddToRouteDestinationFromRoute", task.Name, 1);
+                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                    {
+                        Data.Services.Analytics.AddToRouteDestinationFromRouteAfterAutoDispatch(task.Name);
+                    }
+                    else
+                    {
+                        Data.Services.Analytics.AddToRouteDestinationFromRoute(task.Name);
+                    }
                 }
             }
 
@@ -401,10 +411,14 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     newRouteDestination.RouteTasks.Add(task);
 
                     //Analytics - Drag and Drop. When dragging a task from another route to a route task
-                    TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddToRouteTaskFromRoute", task.Name, 1);
+                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                    {
+                        Data.Services.Analytics.AddToRouteTaskFromRouteAfterAutoDispatch(task.Name);
+                    }
+                    else
+                    {
+                        Data.Services.Analytics.AddToRouteTaskFromRoute(task.Name);
+                    }
                 }
             }
 
@@ -444,10 +458,14 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     ((Route)destination).RouteDestinationsListWrapper.Insert(lastDestinationOrderInRoute, newRouteDestination);
 
                     //Analytics - Drag and Drop. When dragging a task from another route to a route
-                    TrackEventAction.Track(
-                            RoutesVM.AutoAssignButtonHasBeenClicked
-                                ? "Drag and Drop After AutoDispatch"
-                                : "Drag and Drop", "AddToRouteFromRoute", task.Name, 1);
+                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
+                    {
+                        Data.Services.Analytics.AddToRouteFromRouteAfterAutoDispatch(task.Name);
+                    }
+                    else
+                    {
+                        Data.Services.Analytics.AddToRouteFromRoute(task.Name);
+                    }
                 }
             }
         }

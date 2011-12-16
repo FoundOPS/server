@@ -160,9 +160,6 @@ namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
                         this.CurrentContext.Add(CurrentlySelectedContextProvider.SelectedContext);
                         //Notify that the context was added
                         MessageBus.Current.SendMessage(new AddContextMessage(CurrentlySelectedContextProvider.SelectedContext));
-
-                        //Analytics - Track when a route task is deleted
-                        TrackEventAction.Track("Infinite Accordion", "", "", 1);
                     }
                     break;
                 case MoveStrategy.StartFresh:

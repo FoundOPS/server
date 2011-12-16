@@ -5,9 +5,9 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
              xmlns:Converters="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:Behaviors="clr-namespace:FoundOps.Common.Silverlight.UI.Interactivity.Behaviors;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI" xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels"
              mc:Ignorable="d" ViewModelLocator:ViewModelLocator.ViewModel="ServiceTemplatesVM" d:DesignWidth="600">
     <UserControl.Resources>
-        <StackPanel x:Key="LocationsVMHolder" ViewModelLocator:ViewModelLocator.ViewModel="LocationsVM"/>
         <Converters:ScheduleModeConverter x:Key="ScheduleModeConverter"/>
     </UserControl.Resources>
     <toolkit:Expander x:Name="LayoutRoot" DataContext="{Binding SelectedEntity.Invoice}" Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ServiceBrush}">
@@ -37,7 +37,8 @@
             </Grid.RowDefinitions>
             <TextBlock Text="Bill to:" TextAlignment="Right"/>
             <!--Bind to list of locations-->
-            <Controls:RadComboBox x:Name="LocationsComboBox" Grid.Column="2" DisplayMemberPath="Name" SelectedValue="{Binding BillToLocation, Mode=TwoWay}" ItemsSource="{Binding DataContext.DomainCollectionView, Source={StaticResource LocationsVMHolder}}">
+            <Controls:RadComboBox x:Name="LocationsComboBox" Grid.Column="2" DisplayMemberPath="Name" SelectedValue="{Binding BillToLocation, Mode=TwoWay}" 
+                                  ItemsSource="{Binding DomainCollectionView, Source={Tools1:GetVM Type=CoreEntities:LocationsVM}}">
                 <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=Controls1:Selector.SelectedValueProperty}"/>
             </Controls:RadComboBox>
             <TextBlock Text="Invoice Schedule:" Grid.Row="2" TextAlignment="Right"/>

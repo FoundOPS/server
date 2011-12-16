@@ -48,8 +48,8 @@ namespace FoundOps.SLClient.Navigator.Controls
 
             ((NavigationBarVM)DataContext).BlockClickedOn = selectedBlock;
 
-            //Analytics - Track when a blobk icon is clicked
-            TrackEventAction.Track("Block Icons", "RadRibbonButtonClick", radButton.CommandParameter.ToString(), 1);
+            //Analytics - Track when a blobk icon is clicked 
+            Data.Services.Analytics.RadRibbonButtonClick(radButton.CommandParameter.ToString());
         }
 
         #region Implementation of INotifyPropertyChanged

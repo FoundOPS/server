@@ -1,11 +1,11 @@
 ﻿using ReactiveUI;
 using System.Reactive.Linq;
 using MEFedMVVM.ViewModelLocator;
-using System.ComponentModel.Composition;
 using FoundOps.Core.Context.Services;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
+using System.ComponentModel.Composition;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -35,7 +35,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Setup the selected Employee's OwnedPerson PartyVM whenever the selected employee changes
             _selectedEmployeePersonVM =
-                SelectedEntityObservable.Where(se => se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
+                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
                 .ToProperty(this, x => x.SelectedEmployeePersonVM);
 
             //Load the employees

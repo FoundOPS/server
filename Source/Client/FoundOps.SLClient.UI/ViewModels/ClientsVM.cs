@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Disposables;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
@@ -58,11 +59,15 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup the MainQuery to load Clients
             SetupMainQuery(DataManager.Query.Clients, null, "DisplayName");
 
+            //ClientsVM requires ServiceTemplate
             DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, entities => _loadedServiceTemplates = entities);
+
+            //Can only add whenever ServiceTemplates is loaded
+            DataManager.GetIsLoadingObservable(DataManager.Query.ServiceTemplates).Subscribe(isLoading => CanAddSubject.OnNext(!isLoading));
 
             //Setup the selected client's OwnedParty PartyVM whenever the selected client changes
             _selectedClientOwnedBusinessVM =
-                SelectedEntityObservable.Where(se => se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty, this.DataManager))
+                SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty, this.DataManager))
                 .ToProperty(this, x => x.SelectedClientOwnedBusinessVM);
 
             #region Register Commands
@@ -148,6 +153,24 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             #endregion
+
+            var serialDisposable = new SerialDisposable();
+
+            //Whenever the client name changes update the default location name
+            //There is a default location as long as there is only one location
+            SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Subscribe(selectedClient =>
+            {
+                serialDisposable.Disposable = Observable2.FromPropertyChangedPattern(selectedClient, x => x.DisplayName)
+                    .Subscribe(displayName =>
+                    {
+                        var defaultLocation = selectedClient.OwnedParty.Locations.Count == 1
+                                                  ? selectedClient.OwnedParty.Locations.First()
+                                                  : null;
+
+                        if (defaultLocation == null) return;
+                        defaultLocation.Name = displayName;
+                    });
+            });
         }
 
         #region Logic
@@ -166,6 +189,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                                       };
 
             newClient.OwnedParty.Locations.Add(defaultLocation);
+            //set the default billing location
+            newClient.DefaultBillingLocation = defaultLocation;
 
             this.RaisePropertyChanged("ClientsView");
 

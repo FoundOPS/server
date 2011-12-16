@@ -17,10 +17,14 @@
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -319,16 +323,18 @@
     <Compile Include="Tools\ExtensionMethods\FrameworkElementExtensions.cs" />
     <Compile Include="Tools\FileTools.cs" />
     <Compile Include="Tools\MarkupExtensions\AppendNumberToStringMarkupExtension.cs" />
+    <Compile Include="Tools\MarkupExtensions\AreEqual.cs" />
+    <Compile Include="Tools\MarkupExtensions\DataContextEquals.cs" />
     <Compile Include="Tools\MarkupExtensions\ItemExistsInCollection.cs" />
     <Compile Include="Tools\MarkupExtensions\StaticMarkupExtensions.cs" />
     <Compile Include="Tools\MarkupExtensions\UpdatableMarkupExtensions.cs" />
+    <Compile Include="Controls\EditRadioButtonColumn.cs" />
     <Compile Include="Tools\TrackEventAction.cs" />
     <Compile Include="ViewModels\IAddDeleteCommands.cs" />
     <Compile Include="ViewModels\ISaveDiscardChangesCommands.cs" />
     <Compile Include="ViewModels\ThreadableVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
@@ -486,6 +492,17 @@
       <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
       <Name>FoundOps.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\Microsoft.Practices.ServiceLocation.dll" />
+    <Content Include="Lib\Microsoft.Reactive.Testing.dll" />
+    <Content Include="Lib\Newtonsoft.Json.Silverlight.dll" />
+    <Content Include="Lib\ReactiveUI.Blend_SL4.dll" />
+    <Content Include="Lib\ReactiveUI.Routing_SL4.dll" />
+    <Content Include="Lib\ReactiveUI.Serialization_SL4.dll" />
+    <Content Include="Lib\ReactiveUI.Testing_SL4.dll" />
+    <Content Include="Lib\ReactiveUI.Xaml_SL4.dll" />
+    <Content Include="Lib\ReactiveUI_SL4.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

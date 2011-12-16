@@ -1,31 +1,28 @@
 ﻿using System;
+using FoundOps.SLClient.UI.Controls.Dispatcher;
+using ReactiveUI;
+using MEFedMVVM.ViewModelLocator;
+using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ServiceModel.DomainServices.Client;
-using FoundOps.Core.Context.Services.Interface;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Command;
-using FoundOps.Core.Context.Services;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
-using MEFedMVVM.ViewModelLocator;
-using ReactiveUI;
+using FoundOps.Core.Context.Services.Interface;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [ExportViewModel("RouteMapVM")]
     public class RouteMapVM : CoreEntityCollectionVM<RouteDestination>
     {
-        #region Public Properties
+        //Public Properties
 
         public RelayCommand<Tuple<decimal, decimal>> ManuallySetLatitudeLongitude { get; private set; }
 
         private ObservableCollection<Route> _shownRoutes;
+        /// <summary>
+        /// Gets the shown routes.
+        /// </summary>
         public ObservableCollection<Route> ShownRoutes
         {
             get { return _shownRoutes; }
@@ -35,12 +32,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 this.RaisePropertyChanged("ShownRoutes");
             }
         }
-
-        #region Implementation of ISaveDiscardChangesCommands
-
-        #endregion
-
-        #endregion
 
         // Local Variables
 
@@ -108,8 +99,15 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public class RouteDestinationSetMessage
         {
+            /// <summary>
+            /// Gets the set route destination.
+            /// </summary>
             public Telerik.Windows.Controls.Map.Location SetRouteDestination { get; private set; }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="RouteDestinationSetMessage"/> class.
+            /// </summary>
+            /// <param name="routeDestination">The route destination.</param>
             public RouteDestinationSetMessage(Telerik.Windows.Controls.Map.Location routeDestination)
             {
                 SetRouteDestination = routeDestination;

@@ -6,7 +6,7 @@ using System.Globalization;
 namespace FoundOps.Common.Silverlight.UI.Converters
 {
     /// <summary>
-    /// Cancels a ConvertBack if the newValue is null
+    /// Cancels a ConvertBack if the newValue is null.
     /// </summary>
     public class ConvertBackWhenExists : IValueConverter
     {

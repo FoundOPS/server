@@ -15,14 +15,12 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="telerik:RadDragAndDropManager.AllowDrag" Value="True" />
         </Style>
-        <StackPanel x:Key="RegionsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM"/>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel x:Name="RoutesDragDropVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesDragDropVM"/>
         <Dispatcher:DispatcherToolBar x:Name="DispatcherToolBar"/>
         <telerik:RadDocking x:Name="radDocking" Grid.Row="1" LayoutChangeEnded="RadDockingLayoutChangeEnded" HasDocumentHost="False">
             <telerik:RadSplitContainer InitialPosition="DockedBottom">
@@ -86,13 +84,13 @@
                         <telerik:RadBusyIndicator VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BusyContent="Loading Routes" IsBusy="{Binding RoutesLoading}">
                             <Dispatcher2:RouteScheduleView/>
                         </telerik:RadBusyIndicator>
-                    </telerik:RadPane>
-                    <telerik:RadPane Header="Route Map" Visibility="Collapsed" telerik:RadDocking.SerializationTag="RouteMap" x:Name="RouteMapPane" 
+                    </telerik:RadPane>-->
+                    <telerik:RadPane Header="Route Map" Visibility="Visible" telerik:RadDocking.SerializationTag="RouteMap" x:Name="RouteMapPane" 
                                      CanUserClose="False" SizeChanged="RouteMapPaneSizeChanged">
                         <telerik:RadBusyIndicator VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BusyContent="Loading Routes" IsBusy="{Binding RoutesLoading}">
                             <Dispatcher2:RouteMapView x:Name="RouteMapView" />
                         </telerik:RadBusyIndicator>
-                    </telerik:RadPane>-->
+                    </telerik:RadPane>
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>
             <!--<my:RouteManifestViewer Grid.RowSpan="2" HorizontalAlignment="Left" Margin="15,15,0,0" Name="routeManifestViewer1" VerticalAlignment="Top" />-->

@@ -4,12 +4,9 @@
         xmlns:telerikDragDrop="clr-namespace:Telerik.Windows.Controls.DragDrop;assembly=Telerik.Windows.Controls"
         xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" xmlns:Controls2="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation" 
         xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:local="clr-namespace:FoundOps.Common.Silverlight.UI.Interactivity.Behaviors;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:SLMultiBinding="clr-namespace:SLMultiBinding;assembly=SLMultiBinding"
-             xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters"
-             x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView" 
-        mc:Ignorable="d" HorizontalAlignment="Stretch" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM">
+        xmlns:SLMultiBinding="clr-namespace:SLMultiBinding;assembly=SLMultiBinding" xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters"
+        xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels"
+        x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.RoutesListView" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM" mc:Ignorable="d" HorizontalAlignment="Stretch">
     <UserControl.Resources>
         <DataTemplate x:Key="DragCueTemplate">
             <Controls1:RadDockPanel Margin="2" MaxWidth="200">
@@ -19,7 +16,6 @@
         <Converters:StringToColorConverter x:Key="StringToColorConverter"/>
         <Converters1:RouteDestinationsOpacityConverter x:Key="RouteDestinationsOpacityConverter"/>
         <Converters1:RouteTasksOpacityConverter x:Key="RouteTasksOpacityConverter"/>
-        <StackPanel x:Name="RoutesVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM"/>
         <Style TargetType="ListBoxItem" x:Key="draggableItemStyle">
             <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrag" Value="True" />
             <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrop" Value="True" />
@@ -55,8 +51,8 @@
                                                 <SLMultiBinding:MultiBinding TargetProperty="Opacity" Converter="{StaticResource RouteTasksOpacityConverter}">
                                                     <SLMultiBinding:BindingCollection>
                                                         <Binding />
-                                                        <Binding Path="DataContext" Source="{StaticResource RoutesVMHolder}" />
-                                                        <Binding Path="DataContext.SelectedTypesBool" Source="{StaticResource RoutesVMHolder}" /> <!--For updates-->
+                                                        <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
+                                                        <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" /> <!--For updates-->
                                                     </SLMultiBinding:BindingCollection>
                                                 </SLMultiBinding:MultiBinding>
                                             </SLMultiBinding:MultiBindings>
@@ -72,8 +68,8 @@
                                             <SLMultiBinding:MultiBinding TargetProperty="Opacity" Converter="{StaticResource RouteDestinationsOpacityConverter}">
                                                 <SLMultiBinding:BindingCollection>
                                                     <Binding />
-                                                    <Binding Path="DataContext" Source="{StaticResource RoutesVMHolder}" />
-                                                    <Binding Path="DataContext.SelectedTypesBool" Source="{StaticResource RoutesVMHolder}" />
+                                                    <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
+                                                    <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
                                                     <!--For updates-->
                                                 </SLMultiBinding:BindingCollection>
                                             </SLMultiBinding:MultiBinding>
@@ -90,7 +86,6 @@
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <Grid>
-            <StackPanel x:Name="RoutesDragDropVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesDragDropVM"/>
             <ListBox x:Name="RoutesListBox" ItemTemplate="{StaticResource RouteTemplate}" ItemsSource="{Binding DomainCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemContainerStyle="{StaticResource draggableItemStyle}"
                  telerikDragDrop:RadDragAndDropManager.AllowDrag="True" Background="Transparent">
                 <ItemsControl.ItemsPanel>

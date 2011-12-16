@@ -1,5 +1,8 @@
-﻿using FoundOps.SLClient.UI.ViewModels;
+﻿using System;
+using System.Linq;
+using System.Windows.Markup;
 using MEFedMVVM.ViewModelLocator;
+using FoundOps.SLClient.UI.ViewModels;
 using System.ComponentModel.Composition;
 
 namespace FoundOps.SLClient.UI.Tools
@@ -30,5 +33,105 @@ namespace FoundOps.SLClient.UI.Tools
                 return (RegionsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RegionsVM", null, CreationPolicy.Shared).Value;
             }
         }
+
+        /// <summary>
+        /// Gets the RoutesVM.
+        /// </summary>
+        public static RoutesVM Routes
+        {
+            get
+            {
+                return (RoutesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the RoutesDragDropVM.
+        /// </summary>
+        public static RoutesDragDropVM RoutesDragDrop
+        {
+            get
+            {
+                return (RoutesDragDropVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesDragDropVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the FieldsVM.
+        /// </summary>
+        public static FieldsVM Fields
+        {
+            get
+            {
+                return (FieldsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("FieldsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ServiceTemplatesVM.
+        /// </summary>
+        public static ServiceTemplatesVM ServiceTemplates
+        {
+            get
+            {
+                return (ServiceTemplatesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ServiceTemplatesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the EmployeesVM.
+        /// </summary>
+        public static EmployeesVM Employees
+        {
+            get
+            {
+                return (EmployeesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("EmployeesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ClientsVM.
+        /// </summary>
+        public static ClientsVM Clients
+        {
+            get
+            {
+                return (ClientsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ClientTitlesVM.
+        /// </summary>
+        public static ClientTitlesVM ClientTitles
+        {
+            get
+            {
+                return (ClientTitlesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientTitlesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
     }
+
+    /// <summary>
+    /// Gets the VM.
+    /// </summary>
+    public class GetVM : MarkupExtension
+    {
+        /// <summary>
+        /// The type of VM to retrieve.
+        /// </summary>
+        public Type Type { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            var viewModelName = Type.ToString().Split('.').Last();
+            return ViewModelRepository.Instance.Resolver.GetViewModelByContract(viewModelName, null, CreationPolicy.Shared).Value;
+        }
+    }
+
 }

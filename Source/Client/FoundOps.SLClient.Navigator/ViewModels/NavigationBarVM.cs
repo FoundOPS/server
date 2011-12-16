@@ -11,7 +11,6 @@ using FoundOps.SLClient.Data.Services;
 using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
 using FoundOps.Common.Silverlight.Loader;
-using FoundOps.Common.Silverlight.UI.Tools;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.UI.ViewModels;
 using FoundOps.Common.Silverlight.MVVM.Interfaces;
@@ -205,7 +204,7 @@ namespace FoundOps.SLClient.Navigator.ViewModels
                 _aBlockHasBeenClicked = true;
 
                 //Trigger analytic here
-                TrackEventAction.Track("Block Icons", "FirstBlockNavigatedTo", value.Name, 1);
+                Data.Services.Analytics.FirstBlockNavigatedTo(value.Name);
             }
         }
 

@@ -31,10 +31,14 @@
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <LinkedServerProject>
     </LinkedServerProject>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <Utf8Output>true</Utf8Output>
     <ExpressionBlendVersion>4.1.10405.0</ExpressionBlendVersion>
     <TargetFrameworkProfile />
@@ -280,6 +284,9 @@
     </Compile>
     <Compile Include="Controls\Clients\ClientLinkSmall.xaml.cs">
       <DependentUpon>ClientLinkSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Clients\ClientLocationsGrid.xaml.cs">
+      <DependentUpon>ClientLocationsGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Common\SelectedEntitiesLarge.xaml.cs">
       <DependentUpon>SelectedEntitiesLarge.xaml</DependentUpon>
@@ -643,6 +650,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Clients\ClientLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Clients\ClientLocationsGrid.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

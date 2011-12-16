@@ -65,10 +65,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\System.Reactive.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\System.Reactive.Windows.Threading.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -150,12 +146,24 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lib\System.Reactive.dll" />
-    <Content Include="Lib\System.Reactive.Providers.dll" />
-    <Content Include="Lib\System.Reactive.Providers.xml" />
-    <Content Include="Lib\System.Reactive.Windows.Threading.dll" />
-    <Content Include="Lib\System.Reactive.Windows.Threading.xml" />
-    <Content Include="Lib\System.Reactive.xml" />
+    <Content Include="Lib\DevDefined.OAuth.dll" />
+    <Content Include="Lib\EntityFramework.dll" />
+    <Content Include="Lib\LinqKit.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.EntityFramework.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Hosting.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.LinqToSql.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Server.UnitTesting.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Tools.TextTemplate.dll" />
+    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.WindowsAzure.dll" />
+    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.Design.dll" />
+    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.CloudDrive.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.Diagnostics.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.ServiceRuntime.dll" />
+    <Content Include="Lib\Microsoft.WindowsAzure.StorageClient.dll" />
+    <Content Include="Lib\Recaptcha.dll" />
+    <Content Include="Lib\System.Web.Mvc.dll" />
+    <Content Include="Lib\zxing.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

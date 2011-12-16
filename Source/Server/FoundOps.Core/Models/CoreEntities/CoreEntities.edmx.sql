@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 12/14/2011 11:30:48
+-- Date Created: 12/16/2011 11:42:34
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -211,6 +211,9 @@ IF OBJECT_ID(N'[dbo].[FK_ClientInvoice]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_SalesTermClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_SalesTermClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ClientLocation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientLocation];
 GO
 IF OBJECT_ID(N'[dbo].[FK_SalesTermBusinessAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[SalesTerms] DROP CONSTRAINT [FK_SalesTermBusinessAccount];
@@ -561,7 +564,8 @@ CREATE TABLE [dbo].[Clients] (
     [Salesperson] nvarchar(max)  NULL,
     [LinkedPartyId] uniqueidentifier  NULL,
     [VendorId] uniqueidentifier  NOT NULL,
-    [DefaultSalesTermId] uniqueidentifier  NULL
+    [DefaultSalesTermId] uniqueidentifier  NULL,
+    [DefaultBillingLocationId] uniqueidentifier  NULL
 );
 GO
 
@@ -2014,6 +2018,20 @@ ADD CONSTRAINT [FK_SalesTermClient]
 CREATE INDEX [IX_FK_SalesTermClient]
 ON [dbo].[Clients]
     ([DefaultSalesTermId]);
+GO
+
+-- Creating foreign key on [DefaultBillingLocationId] in table 'Clients'
+ALTER TABLE [dbo].[Clients]
+ADD CONSTRAINT [FK_ClientLocation]
+    FOREIGN KEY ([DefaultBillingLocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ClientLocation'
+CREATE INDEX [IX_FK_ClientLocation]
+ON [dbo].[Clients]
+    ([DefaultBillingLocationId]);
 GO
 
 -- Creating foreign key on [BusinessAccountId] in table 'SalesTerms'
