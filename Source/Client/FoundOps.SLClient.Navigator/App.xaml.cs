@@ -3,6 +3,8 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using EntityGraph.Validation;
+using FoundOps.Core.Models.CoreEntities;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.Core.Navigator.Loader;
 using FoundOps.Core.Navigator.Controls;
@@ -27,6 +29,9 @@ namespace FoundOps.SLClient.Navigator
         {
             //Required for MEF
             LocatorBootstrapper.ApplyComposer(this);
+
+            //Required for EntityFramework Validation
+            MEFValidationRules.RegisterAssembly(typeof(Party).Assembly);
 
             //Add IP Info to Resources
             var ipAddressLocationQuery = String.Format("http://api.ipinfodb.com/v3/ip-city/?key={0}", "50191ba897c5677bc6a49f46f5da10787c7898f34b8a11d8e1c01546b8a08470");

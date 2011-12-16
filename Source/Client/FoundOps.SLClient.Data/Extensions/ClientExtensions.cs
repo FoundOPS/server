@@ -1,10 +1,11 @@
-﻿using System;
-using System.Reactive.Linq;
-using RiaServicesContrib;
-using RiaServicesContrib.DomainServices.Client;
-using FoundOps.Common.Silverlight.MVVM.Interfaces;
+﻿using EntityGraph;
+using EntityGraph.RIA;
+using FoundOps.Common.Silverlight.Interfaces;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class Client : IReject
     {
@@ -29,12 +30,12 @@ namespace FoundOps.Core.Models.CoreEntities
                 if (this.OwnedParty == null) return;
                 OwnedParty.PropertyChanged += (s, args) =>
                 {
-                    if(args.PropertyName!= "DisplayName") return;
+                    if (args.PropertyName != "DisplayName") return;
                     this.CompositeRaiseEntityPropertyChanged("DisplayName");
                 };
             };
 
-            if(this.OwnedParty!=null)
+            if (this.OwnedParty != null)
                 OwnedParty.PropertyChanged += (s, args) =>
                 {
                     if (args.PropertyName != "DisplayName") return;
@@ -42,15 +43,10 @@ namespace FoundOps.Core.Models.CoreEntities
                 };
         }
 
-        public void Reject()
-        {
-            this.RejectChanges();
-        }
-
         /// <summary>
         /// Gets the entity graph of Client to remove.
         /// </summary>
-        public EntityGraph EntityGraphToRemove
+        public EntityGraph<Client> EntityGraphToRemove
         {
             get
             {
@@ -59,8 +55,13 @@ namespace FoundOps.Core.Models.CoreEntities
                     .Edge<Client, ServiceTemplate>(client => client.ServiceTemplates).Edge<ServiceTemplate, Field>(st => st.Fields)
                     .Edge<OptionsField, Option>(of => of.Options);
 
-                return new EntityGraph(this, graphShape);
+                return new EntityGraph<Client>(this, graphShape);
             }
+        }
+
+        public void Reject()
+        {
+            this.RejectChanges();
         }
     }
 }

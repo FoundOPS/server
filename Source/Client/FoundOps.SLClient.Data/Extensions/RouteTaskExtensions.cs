@@ -1,7 +1,11 @@
 ﻿using System;
-using RiaServicesContrib.DomainServices.Client;
+using EntityGraph;
+using EntityGraph.RIA;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class RouteTask
     {
@@ -11,22 +15,19 @@ namespace FoundOps.Core.Models.CoreEntities
                 this.RouteDestination.Tasks.Remove(this);
         }
 
-        public EntityGraph EntityGraph
+        public EntityGraph<RouteTask> EntityGraph
         {
             get
             {
-                var entityGraph = new EntityGraph(this, new RiaServicesContrib.EntityGraphShape());
-
-                return entityGraph;
+                return new EntityGraph<RouteTask>(this, new EntityGraphShape());
             }
         }
 
-        public EntityGraph EntityGraphWithService
+        public EntityGraph<RouteTask> EntityGraphWithService
         {
             get
             {
-                var entityGraph = new EntityGraph(this,
-                                                  new RiaServicesContrib.EntityGraphShape().Edge<RouteTask, Service>(rt => rt.Service));
+                var entityGraph = new EntityGraph<RouteTask>(this, new EntityGraphShape().Edge<RouteTask, Service>(rt => rt.Service));
 
                 return entityGraph;
             }

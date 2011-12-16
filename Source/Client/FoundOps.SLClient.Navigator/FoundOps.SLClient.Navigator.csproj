@@ -89,6 +89,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityGraph">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
       <Private>True</Private>

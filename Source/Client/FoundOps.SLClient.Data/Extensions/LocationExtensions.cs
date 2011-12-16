@@ -1,12 +1,15 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
-using FoundOps.Common.Silverlight.MVVM.Validation;
+using EntityGraph;
 using ReactiveUI;
-using RiaServicesContrib;
-using RiaServicesContrib.DomainServices.Client;
+using EntityGraph.RIA;
+using System.ComponentModel;
+using FoundOps.Common.Silverlight.Interfaces;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class Location : IRaiseValidationErrors, IReactiveNotifyPropertyChanged
     {
@@ -90,12 +93,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets the entity graph of Location to remove.
         /// </summary>
-        public EntityGraph EntityGraphToRemove
+        public EntityGraph<Location> EntityGraphToRemove
         {
             get
             {
                 var graphShape = new EntityGraphShape().Edge<Location, ContactInfo>(location => location.ContactInfoSet);
-                return new EntityGraph(this, graphShape);
+                return new EntityGraph<Location>(this, graphShape);
             }
         }
     }

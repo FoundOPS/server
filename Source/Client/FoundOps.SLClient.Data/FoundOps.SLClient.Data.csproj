@@ -86,6 +86,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityGraph">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.dll</HintPath>
+    </Reference>
     <Reference Include="EntityGraph.Silverlight">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
       <Private>False</Private>
@@ -297,6 +300,7 @@
     <Compile Include="Tools\DataFedVMExtensions.cs" />
     <Compile Include="Tools\ContextManagerMarkupExtensions.cs" />
     <Compile Include="Tools\SimpleRouteCalculator.cs" />
+    <Compile Include="Validation\FieldRequired.cs" />
     <Compile Include="ViewModels\CoreEntityVM.cs" />
     <Compile Include="ViewModels\CoreEntityCollectionInfiniteAccordionVM.cs" />
     <Compile Include="ViewModels\CoreEntityCollectionVM.cs" />

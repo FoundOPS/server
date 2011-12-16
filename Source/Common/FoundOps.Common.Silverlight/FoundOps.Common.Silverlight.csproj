@@ -87,9 +87,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityGraph.Silverlight">
-      <HintPath>..\Lib\EntityGraph.Silverlight.dll</HintPath>
-    </Reference>
+    <Reference Include="EntityGraph, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
       <Private>True</Private>
@@ -326,7 +324,7 @@
   <ItemGroup>
     <Content Include="Lib\Croll.Silverlight.Controls.dll" />
     <Content Include="Lib\DataValidationFramework.Silverlight.dll" />
-    <Content Include="Lib\EntityGraph.Silverlight.dll" />
+    <Content Include="Lib\EntityGraph.dll" />
     <Content Include="Lib\EntityTools.dll" />
     <Content Include="Lib\GalaSoft.MvvmLight.SL4.dll" />
     <Content Include="Lib\Kent.Boogaart.HelperTrinity.dll" />

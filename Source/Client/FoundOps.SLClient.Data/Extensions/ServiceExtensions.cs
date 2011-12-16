@@ -1,10 +1,12 @@
-﻿using System.Linq;
-using RiaServicesContrib;
-using RiaServicesContrib.DomainServices.Client;
-using FoundOps.Common.Silverlight.MVVM.Interfaces;
-using FoundOps.Common.Silverlight.MVVM.Validation;
+﻿using EntityGraph;
+using System.Linq;
+using EntityGraph.RIA;
+using FoundOps.Common.Silverlight.Interfaces;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class Service : IRaiseValidationErrors, IReject
     {
@@ -47,7 +49,7 @@ namespace FoundOps.Core.Models.CoreEntities
             this.RejectChanges();
         }
 
-        public EntityGraph EntityGraph
+        public EntityGraph<Service> EntityGraph
         {
             get
             {
@@ -55,7 +57,7 @@ namespace FoundOps.Core.Models.CoreEntities
                     new EntityGraphShape().Edge<Service, ServiceTemplate>(service => service.ServiceTemplate).Edge
                         <ServiceTemplate, Field>(st => st.Fields).Edge<OptionsField, Option>(of => of.Options);
 
-                return new EntityGraph(this, graphShape);
+                return new EntityGraph<Service>(this, graphShape);
             }
         }
 

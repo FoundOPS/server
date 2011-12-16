@@ -1,5 +1,6 @@
 ﻿using System;
-using RiaServicesContrib.DomainServices.Client;
+using EntityGraph;
+using EntityGraph.RIA;
 
 
 // ReSharper disable CheckNamespace
@@ -15,7 +16,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         protected virtual Field MakeChildSilverlight()
         {
-            var entityGraph = new EntityGraph(this, new RiaServicesContrib.EntityGraphShape());
+            var entityGraph = new EntityGraph<Field>(this, new EntityGraphShape());
 
             //Clone using RIA Services Contrib's Entity Graph
             var fieldChild = (Field)entityGraph.Clone();

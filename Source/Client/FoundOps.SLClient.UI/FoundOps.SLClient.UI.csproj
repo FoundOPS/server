@@ -92,6 +92,9 @@
     <Reference Include="Croll.Silverlight.Controls">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Croll.Silverlight.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="EntityGraph">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.dll</HintPath>
+    </Reference>
     <Reference Include="EntityGraph.Silverlight">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
       <Private>False</Private>
