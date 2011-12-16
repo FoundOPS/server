@@ -30,12 +30,12 @@ namespace FoundOps.Core.Models.QuickBooks
             //AKA oauthLink
             public const string AuthorizeUrl = "https://workplace.intuit.com/Connect/Begin";
 
-            public static readonly string GrantUrl = "http://localhost:31820/QuickBooks/OAuthGrantLogin";
+            public const string GrantUrl = "http://localhost:31820/QuickBooks/OAuthGrantLogin";
 
-            public static readonly string ConsumerKey = ConfigurationManager.AppSettings["consumerKey"];
-            public static readonly string ConsumerSecret = ConfigurationManager.AppSettings["consumerSecret"];
+            public const string ConsumerKey = "qyprdFc7q3QeH04htbj4pPtXdlmX0f"; //ConfigurationManager.AppSettings["consumerKey"];
+            public const string ConsumerSecret = "nxKtqCZGm0kpwWiVG85Ur6HGHUDvTW45NLmdGUWL"; //ConfigurationManager.AppSettings["consumerSecret"];
 
-            public static readonly string OauthCallbackUrl = "http://localhost:31820/QuickBooks/OAuthGrantHandler";
+            public const string OauthCallbackUrl = "http://localhost:31820/QuickBooks/OAuthGrantHandler";
         }
 
         #endregion
@@ -65,17 +65,15 @@ namespace FoundOps.Core.Models.QuickBooks
             var oSession = new OAuthSession(consumerContext,
                                                      OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlRequestToken,
                                                      OauthConstants.AuthorizeUrl,
-                                                     OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlAccessToken)
-                                        {
-                                            ConsumerContext = { UseHeaderForOAuthParameters = true },
-                                            AccessToken = new TokenBase
-                                                              {
-                                                                  Token = currentBusinessAccount.QuickBooksAccessToken,
-                                                                  ConsumerKey = OauthConstants.ConsumerKey,
-                                                                  TokenSecret =
-                                                                      currentBusinessAccount.QuickBooksAccessTokenSecret
-                                                              }
-                                        };
+                                                     OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlAccessToken);
+            oSession.AccessToken = new TokenBase
+                                       {
+                                           Token = currentBusinessAccount.QuickBooksAccessToken,
+                                           ConsumerKey = OauthConstants.ConsumerKey,
+                                           TokenSecret =
+                                               currentBusinessAccount.QuickBooksAccessTokenSecret
+                                       };
+            oSession.ConsumerContext.UseHeaderForOAuthParameters = true;
 
 
             //Access Token is generated from storage here and saved into the OauthSession
@@ -401,7 +399,7 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest = consumerRequest.SignWithToken();
 
             //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
+            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes(body));
 
             //Reads the response XML
             return consumerRequest.ReadBody();

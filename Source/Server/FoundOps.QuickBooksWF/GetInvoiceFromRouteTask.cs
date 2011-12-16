@@ -21,6 +21,12 @@ namespace FoundOps.QuickBooksWF
 
             var newInvoice = currentRouteTask.Service.ServiceTemplate.Invoice;
 
+            if(newInvoice == null)
+            {
+                //create new invoice
+                var test = "";
+            }
+
             //Adds the create notification to the Azure Table
             QuickBooksTools.AddUpdateDeleteToTable(newInvoice, Operation.Create);
 
