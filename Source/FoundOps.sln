@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Server", "Server\F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Core", "Server\FoundOps.Core\FoundOps.Core.csproj", "{C5170A8A-CAD2-47E2-8552-FEF87C771C03}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E6A6977B-F6C4-46B7-BCA0-22B3F52742C3}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = FoundOps.vsmdi

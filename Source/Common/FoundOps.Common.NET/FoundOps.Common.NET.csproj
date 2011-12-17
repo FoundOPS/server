@@ -113,6 +113,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Lib\DataValidationFramework.EF.dll" />
+    <Content Include="Lib\DataValidationFramework.Net.dll" />
     <Content Include="Lib\DevDefined.OAuth.dll" />
     <Content Include="Lib\EntityFramework.dll" />
     <Content Include="Lib\EntityGraph.Web.dll" />
