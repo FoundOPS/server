@@ -1,11 +1,11 @@
 ﻿using System;
-using EntityGraph;
 using System.Linq;
-using EntityGraph.RIA;
+using RiaServicesContrib;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Silverlight.Tools;
+using RiaServicesContrib.DomainServices.Client;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
@@ -16,10 +16,10 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         protected override Field MakeChildSilverlight()
         {
-            var entityGraph = new EntityGraph<OptionsField>(this, new EntityGraphShape().Edge<OptionsField, Option>(of => of.Options));
+            var entityGraphShape = new EntityGraphShape().Edge<OptionsField, Option>(of => of.Options);
 
             //Clone using RIA Services Contrib's Entity Graph
-            var childOptionsField = (OptionsField)entityGraph.Clone();
+            var childOptionsField = this.Clone(entityGraphShape);
 
             //Update the Id
             childOptionsField.Id = Guid.NewGuid();

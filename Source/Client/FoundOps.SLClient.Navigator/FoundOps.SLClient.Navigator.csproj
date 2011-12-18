@@ -89,8 +89,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityGraph">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.dll</HintPath>
+    <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL" >
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\DataValidationFramework.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
@@ -127,7 +127,6 @@
     <Reference Include="ReactiveUI_SL5">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL5.dll</HintPath>
     </Reference>
-    <Reference Include="SilverlightAnalytics, Version=1.0.4315.25154, Culture=neutral, PublicKeyToken=04377c7cb0a56f74, processorArchitecture=MSIL" />
     <Reference Include="System.Reactive">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>
     </Reference>

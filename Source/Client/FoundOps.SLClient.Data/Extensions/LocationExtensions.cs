@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using EntityGraph;
 using ReactiveUI;
-using EntityGraph.RIA;
+using RiaServicesContrib;
 using System.ComponentModel;
 using FoundOps.Common.Silverlight.Interfaces;
 

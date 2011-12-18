@@ -86,15 +86,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataValidationFramework.Silverlight">
+    <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL" >
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\DataValidationFramework.Silverlight.dll</HintPath>
     </Reference>
-    <Reference Include="EntityGraph">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityTools">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityTools.dll</HintPath>
-    </Reference>
+    <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
       <Private>False</Private>

@@ -1,6 +1,6 @@
 ﻿using System;
-using EntityGraph;
-using EntityGraph.RIA;
+using RiaServicesContrib;
+using RiaServicesContrib.DomainServices.Client;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
@@ -15,21 +15,11 @@ namespace FoundOps.Core.Models.CoreEntities
                 this.RouteDestination.Tasks.Remove(this);
         }
 
-        public EntityGraph<RouteTask> EntityGraph
+        public EntityGraphShape EntityGraphWithServiceShape
         {
             get
             {
-                return new EntityGraph<RouteTask>(this, new EntityGraphShape());
-            }
-        }
-
-        public EntityGraph<RouteTask> EntityGraphWithService
-        {
-            get
-            {
-                var entityGraph = new EntityGraph<RouteTask>(this, new EntityGraphShape().Edge<RouteTask, Service>(rt => rt.Service));
-
-                return entityGraph;
+                return new EntityGraphShape().Edge<RouteTask, Service>(rt => rt.Service);
             }
         }
 
@@ -39,7 +29,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="withService">if set to <c>true</c> [clones the service and service template as well].</param>
         public RouteTask Clone(bool withService)
         {
-            var clonedRouteTask = withService ? (RouteTask)this.EntityGraphWithService.Clone() : (RouteTask)this.EntityGraph.Clone();
+            var clonedRouteTask = withService ? this.Clone(EntityGraphWithServiceShape) : this.Clone(new EntityGraphShape());
 
             //Update to the Id to a new one
             clonedRouteTask.Id = Guid.NewGuid();

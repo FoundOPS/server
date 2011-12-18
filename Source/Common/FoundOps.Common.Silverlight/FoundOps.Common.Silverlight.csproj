@@ -87,7 +87,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityGraph, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
       <Private>True</Private>
@@ -324,8 +324,7 @@
   <ItemGroup>
     <Content Include="Lib\Croll.Silverlight.Controls.dll" />
     <Content Include="Lib\DataValidationFramework.Silverlight.dll" />
-    <Content Include="Lib\EntityGraph.dll" />
-    <Content Include="Lib\EntityTools.dll" />
+    <Content Include="Lib\EntityGraph.Silverlight.dll" />
     <Content Include="Lib\GalaSoft.MvvmLight.SL4.dll" />
     <Content Include="Lib\Kent.Boogaart.HelperTrinity.dll" />
     <Content Include="Lib\Kent.Boogaart.KBCsv.dll" />
@@ -335,6 +334,7 @@
     <Content Include="Lib\Microsoft.Expression.Effects.dll" />
     <Content Include="Lib\Microsoft.Expression.Interactions.dll" />
     <Content Include="Lib\Microsoft.Expression.Prototyping.Interactivity.dll" />
+    <Content Include="Lib\NLog.dll" />
     <Content Include="Lib\Rxx.Contracts.dll" />
     <Content Include="Lib\Rxx.dll" />
     <Content Include="Lib\SilverlightAnalytics.dll" />
@@ -343,6 +343,7 @@
     <Content Include="Lib\SLaB.Utilities.Xaml.dll" />
     <Content Include="Lib\SLMultiBinding.dll" />
     <Content Include="Lib\System.Reactive.dll" />
+    <Content Include="Lib\System.Reactive.Providers.dll" />
     <Content Include="Lib\System.Reactive.Windows.Threading.dll" />
     <Content Include="Lib\System.ServiceModel.DomainServices.Client.dll" />
     <Content Include="Lib\System.ServiceModel.DomainServices.Client.Web.dll" />

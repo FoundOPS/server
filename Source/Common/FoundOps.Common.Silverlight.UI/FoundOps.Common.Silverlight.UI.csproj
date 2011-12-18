@@ -72,9 +72,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityGraph">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\EntityGraph.dll</HintPath>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
       <Private>False</Private>
@@ -497,12 +494,8 @@
     <Content Include="Lib\Microsoft.Practices.ServiceLocation.dll" />
     <Content Include="Lib\Microsoft.Reactive.Testing.dll" />
     <Content Include="Lib\Newtonsoft.Json.Silverlight.dll" />
-    <Content Include="Lib\ReactiveUI.Blend_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Routing_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Serialization_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Testing_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Xaml_SL4.dll" />
-    <Content Include="Lib\ReactiveUI_SL4.dll" />
+    <Content Include="Lib\ReactiveUI.Xaml_SL5.dll" />
+    <Content Include="Lib\ReactiveUI_SL5.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

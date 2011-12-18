@@ -1,5 +1,4 @@
-﻿using EntityGraph;
-using EntityGraph.RIA;
+﻿using RiaServicesContrib;
 using FoundOps.Common.Silverlight.Interfaces;
 
 //Partial class must be part of same namespace

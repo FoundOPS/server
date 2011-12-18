@@ -92,12 +92,8 @@
     <Reference Include="Croll.Silverlight.Controls">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Croll.Silverlight.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="EntityGraph">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityTools">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityTools.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" >
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="Kent.Boogaart.HelperTrinity">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.HelperTrinity.dll</HintPath>

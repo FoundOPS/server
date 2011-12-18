@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using EntityGraph;
-using EntityGraph.RIA;
+using RiaServicesContrib;
+using RiaServicesContrib.DomainServices.Client;
 
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
@@ -72,9 +72,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         private ServiceTemplate MakeFamilyMember()
         {
-            var entityGraph = new EntityGraph<ServiceTemplate>(this, new EntityGraphShape());
-
-            var serviceTemplateFamilyMember = (ServiceTemplate)entityGraph.Clone();
+            var serviceTemplateFamilyMember = this.Clone(new EntityGraphShape());
 
             if (serviceTemplateFamilyMember.ServiceTemplateLevel == ServiceTemplateLevel.FoundOpsDefined)
             {

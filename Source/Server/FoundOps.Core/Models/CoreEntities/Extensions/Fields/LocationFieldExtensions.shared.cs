@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.Common.Composite.Entities;
 
 namespace FoundOps.Core.Models.CoreEntities
 {
@@ -7,8 +8,32 @@ namespace FoundOps.Core.Models.CoreEntities
         Destination = 0
     }
 
-    public partial class LocationField
+    public partial class LocationField : IEntityDefaultCreation
     {
+        #region Implementation of IEntityDefaultCreation
+
+#if SILVERLIGHT
+        partial void OnCreated()
+        {
+            ((IEntityDefaultCreation) this).OnCreate();
+        }
+#else
+        public LocationField()
+        {
+            ((IEntityDefaultCreation)this).OnCreate();
+        }
+#endif
+
+        partial void OnCreation(); //For Extensions on Silverlight Side
+
+        public new void OnCreate()
+        {
+            base.OnCreate();
+            OnCreation();
+        }
+
+        #endregion
+
         public LocationFieldType LocationFieldType
         {
             get

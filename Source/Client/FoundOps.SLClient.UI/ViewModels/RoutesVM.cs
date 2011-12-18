@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Windows.Controls;
-using FoundOps.Common.Tools;
-using FoundOps.Server.Services.CoreDomainService;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
-using System.Windows.Media;
+using RiaServicesContrib;
+using FoundOps.Common.Tools;
 using System.Reactive.Linq;
+using System.Windows.Controls;
 using System.Reactive.Subjects;
 using Telerik.Windows.Controls;
 using MEFedMVVM.ViewModelLocator;
@@ -19,9 +18,8 @@ using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
 using Microsoft.Windows.Data.DomainServices;
-using FoundOps.Common.Silverlight.Extensions;
-using FoundOps.Common.Silverlight.Converters;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
+using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -624,7 +622,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Detach all related entities to RouteTasks that are not part of a route (do not have a RouteDestination) except the ones to keep
             //You must exclude the ones to keep (because existing entities will become new ones if you detach and add them)
-            DataManager.DetachEntities(Context.RouteTasks.Where(rt => rt.RouteDestination == null).Except(routeTasksToKeep).SelectMany(rt => rt.EntityGraphWithService));
+            DataManager.DetachEntities(Context.RouteTasks.Where(rt => rt.RouteDestination == null).Except(routeTasksToKeep).SelectMany(rt => new EntityGraph<RouteTask>(rt, rt.EntityGraphWithServiceShape)));
 
             _loadedRouteTasks.OnNext(routeTasksToKeep);
         }
