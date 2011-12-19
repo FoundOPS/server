@@ -175,6 +175,9 @@
     <Compile Include="Controls\AddEditDelete\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CsvButton.xaml.cs">
+      <DependentUpon>CsvButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GlobalDaysOfWeek.xaml.cs">
       <DependentUpon>GlobalDaysOfWeek.xaml</DependentUpon>
     </Compile>
@@ -352,6 +355,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\AddEditDelete\EditButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CsvButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
