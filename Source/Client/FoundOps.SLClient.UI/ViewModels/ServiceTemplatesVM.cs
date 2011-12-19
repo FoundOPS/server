@@ -57,6 +57,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public ObservableCollection<ServiceTemplate> LoadedServiceTemplates { get { return _loadedServiceTemplates.Value; } }
 
+        private readonly ObservableAsPropertyHelper<ObservableCollection<SalesTerm>> _loadedSalesTerms;
+        /// <summary>
+        /// Gets the loaded sales terms.
+        /// </summary>
+        public ObservableCollection<SalesTerm> LoadedSalesTerms { get { return _loadedSalesTerms.Value; } }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceTemplatesVM"/> class.
         /// </summary>
@@ -70,9 +76,14 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Setup Data Properties
 
-            var loadedServiceTemplates = DataManager.GetEntityListObservable<ServiceTemplate>(DataManager.Query.ServiceTemplates);
             //Setup LoadedServiceTemplates property
+            var loadedServiceTemplates = DataManager.GetEntityListObservable<ServiceTemplate>(DataManager.Query.ServiceTemplates);
             _loadedServiceTemplates = loadedServiceTemplates.ToProperty(this, x => x.LoadedServiceTemplates, new ObservableCollection<ServiceTemplate>());
+
+            //Setup LoadedSalesTerms property
+            var loadedSalesTerms = DataManager.GetEntityListObservable<SalesTerm>(DataManager.Query.SalesTerms);
+            _loadedSalesTerms = loadedSalesTerms.ToProperty(this, x => x.LoadedSalesTerms, new ObservableCollection<SalesTerm>());
+            DataManager.Subscribe<SalesTerm>(DataManager.Query.SalesTerms, ObservationState, null);
 
             //_collectionView = loadedServiceTemplates.Select(lst => new CollectionViewSource { Source = lst }.View)
             //    .ToProperty(this, x => x.CollectionView);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -276,7 +277,7 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="entityType">The type of QuickBooks Entity you want to get a list of</param>
         /// <param name="filter">Specifies the filter if one is provided</param>
-        private static string GetEntityList(BusinessAccount currentBusinessAccount, string entityType, string filter = null)
+        public static string GetEntityList(BusinessAccount currentBusinessAccount, string entityType, string filter = null)
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
@@ -611,12 +612,12 @@ namespace FoundOps.Core.Models.QuickBooks
                     var split = item.Split('>');
                     qbInvoice.QuickBooksId = split[1];
                 }
-                if (item.Contains("Note"))
+                if (item.Contains("Note>"))
                 {
                     var split = item.Split('>');
                     qbInvoice.Memo = split[1];
                 }
-                if (item.Contains("DueDate"))
+                if (item.Contains("DueDate>"))
                 {
                     var split = item.Split('>');
                     //Now we split just the date part
@@ -650,40 +651,41 @@ namespace FoundOps.Core.Models.QuickBooks
 
                         foreach (var sr in salesTermSplit)
                         {
-                            if (sr.Contains("qbo:Id"))
+                            if (sr.Contains("Id idDomain"))
                             {
                                 var tempSplit = sr.Split('>');
                                 newSalesTerm.QuickBooksId = tempSplit[1];
                             }
 
-                            if (sr.Contains("SyncToken"))
+                            if (sr.Contains("SyncToken>"))
                             {
                                 var tempSplit = sr.Split('>');
                                 newSalesTerm.SyncToken = tempSplit[1];
                             }
 
-                            if (sr.Contains("CreateTime"))
+                            if (sr.Contains("CreateTime>"))
                             {
                                 var tempSplit = sr.Split('>');
                                 newSalesTerm.CreateTime = tempSplit[1];
                             }
 
-                            if (sr.Contains("LastUpdatedTime"))
+                            if (sr.Contains("LastUpdatedTime>"))
                             {
                                 var tempSplit = sr.Split('>');
                                 newSalesTerm.LastUpdatedTime = tempSplit[1];
                             }
 
-                            if (sr.Contains("Name"))
+                            if (sr.Contains("Name>"))
                             {
                                 var tempSplit = sr.Split('>');
                                 newSalesTerm.Name = tempSplit[1];
                             }
 
-                            if (sr.Contains("DueDays"))
+                            if (sr.Contains("DueDays>"))
                             {
                                 var tempSplit = sr.Split('>');
-                                newSalesTerm.DueDays = Convert.ToInt32(tempSplit[1]);
+                                if (!tempSplit[0].Contains('/'))
+                                    newSalesTerm.DueDays = Convert.ToInt32(tempSplit[1]);
                             }
                         }
 
@@ -746,6 +748,79 @@ namespace FoundOps.Core.Models.QuickBooks
             #endregion
 
             return qbInvoice;
+        }
+
+        /// <summary>
+        /// Creates the sales terms from the quick books response.
+        /// </summary>
+        /// <param name="quickBooksSalesTermXml">The quick books sales term XML.</param>
+        /// <returns></returns>
+        public static ObservableCollection<SalesTerm> CreateSalesTermsFromQuickBooksResponse(string quickBooksSalesTermXml)
+        {
+            var listOfSalesTerms = new ObservableCollection<SalesTerm>();
+
+            var splitBySalesTerms = Regex.Split(quickBooksSalesTermXml, "<SalesTerm>");
+
+            foreach (var salesTerm in splitBySalesTerms)
+            {
+                //Filters out the heading of the XML from being added as a SalesTerm
+                if (salesTerm.Contains("intuit.com"))
+                    continue;
+
+                var newSalesTerm = new SalesTerm();
+
+                var splitByLine = salesTerm.Split('<');
+
+                foreach (var line in splitByLine)
+                {
+                    #region Set all Properties
+                    if (line.Contains("Id idDomain"))
+                    {
+                        var split = line.Split('>');
+                        if (!split[0].Contains('/'))
+                            newSalesTerm.QuickBooksId = split[1];
+                    }
+
+                    if (line.Contains("SyncToken>"))
+                    {
+                        var split = line.Split('>');
+                        if (!split[0].Contains('/'))
+                            newSalesTerm.SyncToken = split[1];
+                    }
+
+                    if (line.Contains("CreateTime>"))
+                    {
+                        var split = line.Split('>');
+                        if (!split[0].Contains('/'))
+                            newSalesTerm.CreateTime = split[1];
+                    }
+
+                    if (line.Contains("LastUpdatedTime>"))
+                    {
+                        var split = line.Split('>');
+                        if (!split[0].Contains('/'))
+                            newSalesTerm.LastUpdatedTime = split[1];
+                    }
+
+                    if (line.Contains("Name>"))
+                    {
+                        var split = line.Split('>');
+                        if (!split[0].Contains('/'))
+                            newSalesTerm.Name = split[1];
+                    }
+
+                    if (line.Contains("DueDays>"))
+                    {
+                        var split = line.Split('>');
+                        if (!split[0].Contains('/'))
+                            newSalesTerm.DueDays = Convert.ToInt32(split[1]);
+                    }
+                    #endregion
+                }
+                listOfSalesTerms.Add(newSalesTerm);
+            }
+
+            return listOfSalesTerms;
         }
 
         #endregion

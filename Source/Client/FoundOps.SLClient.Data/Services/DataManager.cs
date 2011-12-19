@@ -70,6 +70,10 @@ namespace FoundOps.SLClient.Data.Services
             /// </summary>
             RouteLog,
             /// <summary>
+            /// Loads all of SalesTerms related to the current RoleId
+            /// </summary>
+            SalesTerms,
+            /// <summary>
             /// Loads all of the existing Services related to the current RoleId
             /// </summary>
             Services,
@@ -175,6 +179,9 @@ namespace FoundOps.SLClient.Data.Services
 
             //Setup RouteLog query
             SetupQuery(Query.RouteLog, roleId => _coreDomainContext.GetRouteLogForServiceProviderQuery(roleId), _coreDomainContext.Routes);
+
+            //Setup SalesTerm query
+            SetupQuery(Query.SalesTerms, roleId => _coreDomainContext.GetSalesTermsQuery(roleId), _coreDomainContext.SalesTerms);
 
             //Setup Services query
             SetupQuery(Query.Services, roleId => _coreDomainContext.GetServicesForRoleQuery(roleId), _coreDomainContext.Services);

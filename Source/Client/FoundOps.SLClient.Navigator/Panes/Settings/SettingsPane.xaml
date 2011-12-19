@@ -17,7 +17,7 @@
                     <ListBox x:Name="list" FontSize="13" SelectedIndex="0">
                         <ListBoxItem x:Name="lbPersonal" Content="Personal"/>
                         <ListBoxItem x:Name="lbBusiness" Content="Business"/>
-                        <!--<ListBoxItem x:Name="lbQuickbooks" Content="QuickBooks"/>-->
+                        <ListBoxItem x:Name="lbQuickbooks" Content="QuickBooks"/>
                     </ListBox>
                 </Border>
             </StackPanel>
@@ -26,7 +26,7 @@
             <StackPanel Grid.Column="2" MinWidth="250">
                 <Settings:UserAccountSettings Visibility="{Binding ElementName=list, Path=SelectedIndex, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=0}"/>
                 <Settings:BusinessAccountSettings Visibility="{Binding ElementName=list, Path=SelectedIndex, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=1}"/>
-                <!--<Settings:QuickbooksSettings Visibility="{Binding ElementName=list, Path=SelectedIndex, Converter={StaticResource SelectedItemVisibilityConverter}, ConverterParameter=2}"/>-->
+                <Settings:QuickbooksSettings Visibility="{Binding ElementName=list, Path=SelectedIndex, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=2}"/>
             </StackPanel>
         </InfiniteAccordion:ThirdsListDetails.Details>
     </InfiniteAccordion:ThirdsListDetails>

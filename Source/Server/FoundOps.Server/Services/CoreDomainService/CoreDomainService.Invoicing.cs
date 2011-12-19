@@ -1,15 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Data;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.EntityFramework;
 using FoundOps.Core.Models.QuickBooks;
+using FoundOps.Server.Authentication;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
     /// <summary>
     /// Holds the domain service operations for any invoice entities:
-    /// Invoice and SalesTerms
+    /// Invoice, SalesTerms and LineItems
     /// </summary>
     public partial class CoreDomainService
     {
@@ -53,9 +55,30 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region SalesTerm
 
-        public IQueryable<SalesTerm> GetSalesTerms()
+        public IQueryable<SalesTerm> GetSalesTerms(Guid roleId)
         {
-            return this.ObjectContext.SalesTerms;
+            var businessAccountForRole = ObjectContext.BusinessAccountForRole(roleId);
+
+            var salesTermsXml = QuickBooksTools.GetEntityList(businessAccountForRole, "sales-terms");
+
+            var quickBooksSalesTerms = QuickBooksTools.CreateSalesTermsFromQuickBooksResponse(salesTermsXml);
+
+            foreach (var salesTerm in quickBooksSalesTerms)
+            {
+                var exists = businessAccountForRole.SalesTerms.Where(st => st.QuickBooksId == salesTerm.QuickBooksId).FirstOrDefault();
+                
+                if (exists != null)
+                {
+                    businessAccountForRole.SalesTerms.Remove(exists);
+                }
+                //Always add the new sales term because it either never existed or the old one was removed from the business account above.
+                businessAccountForRole.SalesTerms.Add(salesTerm);
+            }
+
+            this.ObjectContext.SaveChanges();
+
+            var salesTerms =  this.ObjectContext.SalesTerms.Where(st => st.BusinessAccountId == businessAccountForRole.Id);
+            return salesTerms;
         }
 
         public void InsertSalesTerm(SalesTerm salesTerm)
