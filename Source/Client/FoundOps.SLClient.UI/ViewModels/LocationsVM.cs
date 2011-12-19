@@ -123,9 +123,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region DomainCollectionView
 
-            //Whenever the OwnerAccount, or the Client or Region context changes, update the DCV
-            this.ContextManager.OwnerAccountObservable.AsGeneric().Merge(ContextManager.GetContextObservable<Client>().AsGeneric()).Merge(this.ContextManager.GetContextObservable<Region>().AsGeneric())
-                .Throttle(new TimeSpan(0, 0, 0, 0, 200))
+            //Whenever the OwnerAccount, or the Client or Region context changes, and when the loaded locations changes, update the DCV
+            this.ContextManager.OwnerAccountObservable.AsGeneric().Merge(ContextManager.GetContextObservable<Client>().AsGeneric()).Merge(this.ContextManager.GetContextObservable<Region>().AsGeneric()).Merge(_loadedLocations.AsGeneric())
+                .Throttle(TimeSpan.FromMilliseconds(200))
                 .ObserveOnDispatcher().Subscribe(_ =>
             {
                 IEnumerable<Location> setOfLocations;
@@ -143,8 +143,12 @@ namespace FoundOps.SLClient.UI.ViewModels
                 this.DomainCollectionViewObservable.OnNext(DomainCollectionViewFactory<Location>.GetDomainCollectionView(setOfLocations));
             });
 
-            //Whenever the DCV changes, sort by Name
-            this.DomainCollectionViewObservable.Subscribe(dcv => dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending)));
+            //Whenever the DCV changes, sort by Name and select the first entity
+            this.DomainCollectionViewObservable.Subscribe(dcv =>
+            {
+                dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+                this.SelectedEntity = this.DomainCollectionView.FirstOrDefault();
+            });
 
             #endregion
 
