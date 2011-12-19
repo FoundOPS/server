@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Windows.Controls;
+using Kent.Boogaart.KBCsv;
 using ReactiveUI;
 using System.Linq;
 using System.Reactive.Linq;
@@ -15,6 +18,7 @@ using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.Services;
 using Microsoft.Windows.Data.DomainServices;
 using FoundOps.Core.Context.Services.Interface;
+using ReactiveUI.Xaml;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -25,6 +29,17 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class LocationsVM : CoreEntityCollectionInfiniteAccordionVM<Location>
     {
         #region Public Properties
+
+        private readonly ObservableAsPropertyHelper<bool> _canExportCSV;
+        /// <summary>
+        /// Gets a value indicating whether this instance can export CSV.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance can export CSV; otherwise, <c>false</c>.
+        /// </value>
+        public bool CanExportCSV { get { return _canExportCSV.Value; } }
+
+        #region Location Properties
 
         public ObservableAsPropertyHelper<IEnumerable<Location>> _locationsWithoutClient;
         /// <summary>
@@ -44,6 +59,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public LocationVM SelectedLocationVM { get { return _selectedLocationVM.Value; } }
 
+        #endregion
+
+        #region SubLocation Properties
+
         private readonly Subject<SubLocationsVM> _selectedSubLocationsVMObservable = new Subject<SubLocationsVM>();
         /// <summary>
         /// Gets or sets the location VM observable.
@@ -61,6 +80,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Gets the selected location's SubLocationsVM.
         /// </summary>
         public SubLocationsVM SelectedSubLocationsVM { get { return _selectedSubLocationsVM.Value; } }
+
+        #endregion
 
         #endregion
 
@@ -118,6 +139,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Subscribe to the locations query
             IsLoadingObservable = DataManager.Subscribe<Location>(DataManager.Query.Locations, this.ObservationState, null);
+
+            IsLoadingObservable.Subscribe(l =>
+                                              {
+
+                                              });
+
             _loadedLocations = DataManager.GetEntityListObservable<Location>(DataManager.Query.Locations);
             _loadedLocationsProperty = _loadedLocations.ToProperty(this, x => x.LoadedLocations);
 
@@ -144,7 +171,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Whenever the DCV changes, sort by Name and select the first entity
-            this.DomainCollectionViewObservable.Subscribe(dcv =>
+            this.DomainCollectionViewObservable.Throttle(TimeSpan.FromMilliseconds(300)) //wait for UI to load
+                .ObserveOnDispatcher().Subscribe(dcv =>
             {
                 dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
                 this.SelectedEntity = this.DomainCollectionView.FirstOrDefault();
@@ -198,9 +226,53 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             #endregion
+
+            //Setup CanExportCSV property
+            //it can execute when Locations, Clients, and Regions are loaded
+            var canExportCSV = IsLoadingObservable.CombineLatest(DataManager.GetIsLoadingObservable(DataManager.Query.Clients), DataManager.GetIsLoadingObservable(DataManager.Query.Regions),
+                                                  (locationsLoading, clientsLoading, regionsLoading) => !locationsLoading && !clientsLoading && !regionsLoading);
+            _canExportCSV = canExportCSV.ToProperty(this, x => x.CanExportCSV);
         }
 
         #region Logic
+
+        #region Export to CSV
+
+        /// <summary>
+        /// Exports to a CSV file.
+        /// NOTE: Must be called directly in a user initiated event handler (like a click) for security purposes for SaveFileDialog. Therefore it cannot be executed from a command.
+        /// </summary>
+        public void ExportToCSV()
+        {
+            var fileName = String.Format("LocationsExport {0}.csv", DateTime.Now.ToString("MM'-'dd'-'yyyy"));
+            var saveFileDialog = new SaveFileDialog { DefaultFileName = fileName, DefaultExt = ".csv", Filter = "CSV File|*.csv" };
+
+            if(saveFileDialog.ShowDialog() == true)
+            {
+                using (var fileWriter = new StreamWriter(saveFileDialog.OpenFile()))
+                {
+                    var csvWriter = new CsvWriter(fileWriter);
+
+                    csvWriter.WriteHeaderRecord("Name", "Region", "Client",
+                                             "Address 1", "Address 2", "City", "State", "Zip Code",
+                                             "Latitude", "Longitude");
+
+                    foreach (var location in DomainCollectionView)
+                    {
+                        csvWriter.WriteDataRecord(location.Name,
+                                               location.Region != null ? location.Region.Name : "",
+                                               location.Party != null && location.Party.ClientOwner != null ? location.Party.DisplayName : "",
+                                               location.AddressLineOne, location.AddressLineTwo, location.City, location.State, location.ZipCode,
+                                               location.Latitude, location.Longitude);
+                    }
+
+                    csvWriter.Close();
+                    fileWriter.Close();
+                }
+            }
+        }
+
+        #endregion
 
         #region Location in creation (for adding a Location to an entity)
 

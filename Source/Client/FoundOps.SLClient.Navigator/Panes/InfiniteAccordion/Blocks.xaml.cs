@@ -1,4 +1,6 @@
 ﻿using System;
+using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.UI.Tools;
 using ReactiveUI;
 using System.Windows;
 using System.Windows.Controls;
@@ -92,6 +94,11 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         public UIElement ThisUIElement
         {
             get { return this; }
+        }
+
+        private void ExportLocationsCSV_OnClick(object sender, RoutedEventArgs e)
+        {
+            VM.Locations.ExportToCSV();
         }
     }
 }
