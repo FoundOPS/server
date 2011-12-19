@@ -183,14 +183,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Add a default Location
             //Set the OwnerParty to the current OwnerAccount
             var defaultLocation = new Location
-                                      {
-                                          OwnerParty = ContextManager.OwnerAccount,
-                                          Region = ContextManager.GetContext<Region>()
-                                      };
-
+            {
+                OwnerParty = ContextManager.OwnerAccount,
+                Region = ContextManager.GetContext<Region>()
+            };
             newClient.OwnedParty.Locations.Add(defaultLocation);
-            //set the default billing location
-            newClient.DefaultBillingLocation = defaultLocation;
 
             this.RaisePropertyChanged("ClientsView");
 

@@ -162,7 +162,17 @@ namespace FoundOps.Common.Tools
         /// <param name="observable">The observable to trigger now as well.</param>
         public static IObservable<bool> AndNow(this IObservable<bool> observable)
         {
-            return observable.Merge(new[] { true }.ToObservable());
+            return observable.AndNow(true);
+        }
+
+        /// <summary>
+        /// Merges an observable with an immediate <paramref name="now"/>
+        /// </summary>
+        /// <param name="observable">The observable to trigger now as well.</param>
+        /// <param name="now">The object to send now.</param>
+        public static IObservable<T> AndNow<T>(this IObservable<T> observable, T now)
+        {
+            return observable.Merge(new[] { now }.ToObservable());
         }
 
         /// <summary>

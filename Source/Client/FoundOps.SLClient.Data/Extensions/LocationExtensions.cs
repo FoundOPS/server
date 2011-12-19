@@ -50,19 +50,14 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             //Setup IReactiveNotifyPropertyChanged
             _reactiveHelper = new MakeObjectReactiveHelper(this);
-            this.SubLocations.EntityAdded += SubLocationsEntityAdded;
-            this.SubLocations.EntityRemoved += SubLocationsEntityRemoved;
-        }
 
-        void SubLocationsEntityAdded(object sender, System.ServiceModel.DomainServices.Client.EntityCollectionChangedEventArgs<SubLocation> e)
-        {
-            e.Entity.Number = SubLocations.Count;
-        }
-
-        void SubLocationsEntityRemoved(object sender, System.ServiceModel.DomainServices.Client.EntityCollectionChangedEventArgs<SubLocation> e)
-        {
-            foreach (var subLocation in this.SubLocations.Where(subLocation => subLocation.Number > e.Entity.Number))
-                subLocation.Number = subLocation.Number - 1;
+            //Setup SubLocation automatic numbering operations
+            this.SubLocations.EntityAdded += (s, e) => e.Entity.Number = SubLocations.Count;
+            this.SubLocations.EntityRemoved += (s, e) =>
+            {
+                foreach (var subLocation in this.SubLocations.Where(subLocation => subLocation.Number > e.Entity.Number))
+                    subLocation.Number = subLocation.Number - 1;
+            };
         }
 
         /// <summary>
