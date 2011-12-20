@@ -37,7 +37,7 @@
             <StackPanel>
                 <Locations1:LocationEdit />
                 <ContactInfo:ContactInfoEdit ContactInfoVM="{Binding SelectedLocationVM.ContactInfoVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
-                <my1:ClientLinkLarge SelectedClient="{Binding SelectedEntity, Mode=TwoWay, Converter={StaticResource OwnerPartyToClientConverter}, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
+                <my1:ClientLinkLarge SelectedClient="{Binding SelectedEntity.Party, Mode=TwoWay, Converter={StaticResource OwnerPartyToClientConverter}, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <Regions1:RegionLinkLarge SelectedRegion="{Binding SelectedEntity.Region, Mode=TwoWay, Source={Tools:GetVM Type=ViewModels:LocationsVM}}"/>
                 <Locations1:SubLocations SubLocationsVM="{Binding SelectedSubLocationsVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}"/>
                 <toolkit:Expander Margin="5" IsExpanded="True" 
