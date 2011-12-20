@@ -12,13 +12,13 @@ namespace FoundOps.SLClient.Data.Converters
    {
        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
        {
-           var ownerParty = (Party)value;
+           var ownerParty = value as Party;
            return ownerParty == null ? null : ownerParty.ClientOwner;
        }
 
        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
        {
-           var client = (Client)value;
+           var client = value as Client;
            return client == null ? null : client.OwnedParty;
        }
    }

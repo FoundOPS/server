@@ -86,7 +86,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL" >
+    <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\DataValidationFramework.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" />
@@ -253,7 +253,7 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\VehiclesDesignData.cs">
       <Link>DesignData\VehiclesDesignData.cs</Link>
     </Compile>
-    <Compile Include="Converters\ClientToOwnedParty.cs" />
+    <Compile Include="Converters\OwnerPartyToClientConverter.cs" />
     <Compile Include="Converters\LocationConverters.cs" />
     <Compile Include="Converters\ServiceTemplatesConverters.cs" />
     <Compile Include="ExportContext.cs" />
