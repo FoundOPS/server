@@ -6,7 +6,7 @@
         xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.Controls.Icons;assembly=FoundOps.Common.Silverlight.UI"
         xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
         mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550" ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM" 
-        Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+        IsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}}">
     <UserControl.Resources>
         <DataTemplate x:Key="PinPointTemplate">
             <Icons:PinPointIcon x:Name="MapPinPoint" HorizontalAlignment="Right" VerticalAlignment="Top" Map:MapLayer.Location="{Binding TelerikLocation}">

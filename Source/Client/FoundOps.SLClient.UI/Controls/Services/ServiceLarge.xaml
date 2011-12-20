@@ -7,7 +7,7 @@
              mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM">
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White"
-            Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+            IsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
