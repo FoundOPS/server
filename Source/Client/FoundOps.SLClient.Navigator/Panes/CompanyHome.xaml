@@ -12,14 +12,26 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (12/08/2011)
+                (12/19/2011)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * Upgraded project from Silverlight 5 Beta to Silverlight 5 Final. FoundOPS can now be easily accessed from any Mac or PC.<LineBreak/>
+            * Ability to export locations to csv. Available next to the delete button on Locations.<LineBreak/>
+            * When a client only has one location, the location name copies changes from the client name.<LineBreak/>
+            * When a client only has one location, newly added recurring services have their service destination set by default.<LineBreak/>
+            * When a client has more than one location, ability to choose the billing location.<LineBreak/>
+            * Resolved issues setting a Location's client and setting a Location's region.<LineBreak/>
+            * Resolved issues with resetting the dispatcher layout.<LineBreak/>
+            * Resolved contact info issues.<LineBreak/>
+            * Other small bug fixes.<LineBreak/>
+            <LineBreak/>
+            (12/08/2011)<LineBreak/>
             * Ability to add an image to clients and employees.<LineBreak/>
-            * Added the day of the week to service occurences.<LineBreak/>
+            * Added the day of the week to service occurrences.<LineBreak/>
             * Employees can now be linked with user accounts.<LineBreak/>
-            * Updated the locations grid in clients to be more dynamic.<LineBreak/>
+            * Updated the locations grid in clients to be more dynamic. <LineBreak/>
+            If a client has only one location, some location information will be displayed from within Client details.<LineBreak/>
             * Bug fixes.<LineBreak/>
             <LineBreak/>
             (11/10/2011)<LineBreak/>
