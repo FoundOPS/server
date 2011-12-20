@@ -1072,9 +1072,6 @@
                                         <DoubleAnimation Duration="0" To="0.2" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="outerCircle" d:IsOptimized="True"/>
                                         <DoubleAnimation Duration="0" To="0.2" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="innerCircle" d:IsOptimized="True"/>
                                         <DoubleAnimation Duration="0" To="0.2" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Gradient" d:IsOptimized="True"/>
-                                        <ColorAnimation Duration="0" To="#FF9F9F9F" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="path" d:IsOptimized="True"/>
-                                        <ColorAnimation Duration="0" To="#FF9F9F9F" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="path1" d:IsOptimized="True"/>
-                                        <ColorAnimation Duration="0" To="#FF9F9F9F" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path2" d:IsOptimized="True"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
