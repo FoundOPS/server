@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Linq;
+using RiaServicesContrib;
 using System.ComponentModel;
 using System.Reactive.Linq;
-using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Tools;
+using FoundOps.Common.Silverlight.Tools;
 using RiaServicesContrib.DomainServices.Client;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class OptionsField
     {
         protected override Field MakeChildSilverlight()
         {
-            var entityGraph = new EntityGraph(this, new RiaServicesContrib.EntityGraphShape().Edge<OptionsField, Option>(of => of.Options));
+            var entityGraphShape = new EntityGraphShape().Edge<OptionsField, Option>(of => of.Options);
 
             //Clone using RIA Services Contrib's Entity Graph
-            var childOptionsField = (OptionsField)entityGraph.Clone();
+            var childOptionsField = this.Clone(entityGraphShape);
 
             //Update the Id
             childOptionsField.Id = Guid.NewGuid();

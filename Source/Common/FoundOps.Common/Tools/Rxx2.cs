@@ -1,12 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Linq;
 using System.Net.Browser;
 using System.Reactive.Linq;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Reactive.Disposables;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
@@ -157,117 +154,22 @@ namespace FoundOps.Common.Tools
         #endregion
 
         /// <summary>
-        /// An N-ary CombineLatest.
-        /// It's designed with considerations for performance, memory consumption (written in terms of IEnumerable, without requiring an initial buffer for a total count)
-        /// and to avoid stack overflows. From http://social.msdn.microsoft.com/Forums/en-ca/rx/thread/daaa84db-b560-4eda-871e-e523098db20c
-        /// </summary>
-        /// <typeparam name="TSource">The type of the source.</typeparam>
-        /// <param name="sources">The sources.</param>
-        /// <returns>An IObservable of a List of the combined items</returns>
-        public static IObservable<IList<TSource>> CombineLatest<TSource>(this IEnumerable<IObservable<TSource>> sources)
-        {
-            return Observable.Create<IList<TSource>>(
-                observer =>
-                {
-                    object gate = new object();
-                    var disposables = new CompositeDisposable();
-                    var list = new List<TSource>();
-                    var hasValueFlags = new List<bool>();
-                    var actionSubscriptions = 0;
-                    bool hasSources, hasValueFromEach = false;
-
-                    using (var e = sources.GetEnumerator())
-                    {
-                        bool subscribing = hasSources = e.MoveNext();
-
-                        while (subscribing)
-                        {
-                            var source = e.Current;
-                            int index;
-
-                            lock (gate)
-                            {
-                                actionSubscriptions++;
-
-                                list.Add(default(TSource));
-                                hasValueFlags.Add(false);
-
-                                index = list.Count - 1;
-
-                                subscribing = e.MoveNext();
-                            }
-
-                            disposables.Add(
-                                source.Subscribe(
-                                    value =>
-                                    {
-                                        IList<TSource> snapshot;
-
-                                        lock (gate)
-                                        {
-                                            list[index] = value;
-
-                                            if (!hasValueFromEach)
-                                            {
-                                                hasValueFlags[index] = true;
-
-                                                if (!subscribing)
-                                                {
-                                                    hasValueFromEach = hasValueFlags.All(b => b);
-                                                }
-                                            }
-
-                                            if (subscribing || !hasValueFromEach)
-                                            {
-                                                snapshot = null;
-                                            }
-                                            else
-                                            {
-                                                snapshot = list.ToList().AsReadOnly();
-                                            }
-                                        }
-
-                                        if (snapshot != null)
-                                        {
-                                            observer.OnNext(snapshot);
-                                        }
-                                    },
-                                    observer.OnError,
-                                    () =>
-                                    {
-                                        bool completeNow;
-
-                                        lock (gate)
-                                        {
-                                            actionSubscriptions--;
-
-                                            completeNow = actionSubscriptions == 0 && !subscribing;
-                                        }
-
-                                        if (completeNow)
-                                        {
-                                            observer.OnCompleted();
-                                        }
-                                    }));
-                        }
-                    }
-
-                    if (!hasSources)
-                    {
-                        observer.OnCompleted();
-                    }
-
-                    return disposables;
-                });
-        }
-
-        /// <summary>
         /// Merges an observable with an immediate true.
         /// </summary>
         /// <param name="observable">The observable to trigger now as well.</param>
         public static IObservable<bool> AndNow(this IObservable<bool> observable)
         {
-            return observable.Merge(new[] { true }.ToObservable());
+            return observable.AndNow(true);
+        }
+
+        /// <summary>
+        /// Merges an observable with an immediate <paramref name="now"/>
+        /// </summary>
+        /// <param name="observable">The observable to trigger now as well.</param>
+        /// <param name="now">The object to send now.</param>
+        public static IObservable<T> AndNow<T>(this IObservable<T> observable, T now)
+        {
+            return observable.Merge(new[] { now }.ToObservable());
         }
 
         /// <summary>

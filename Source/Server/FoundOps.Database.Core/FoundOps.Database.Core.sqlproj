@@ -131,6 +131,7 @@
     <None Include="Snapshots\FoundOps.Database.Core_20111111_05-32-19.sqlx" />
     <None Include="Snapshots\FoundOps.Database.Core_20111123_01-17-21.sqlx" />
     <None Include="Snapshots\FoundOps.Database.Core_20111208_12-07-24.sqlx" />
+    <None Include="Snapshots\FoundOps.Database.Core_20111219_11-39-38.sqlx" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\RouteEmployee.sql">
@@ -317,5 +318,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
+    <Build Include="dbo\Tables\IX_FK_ClientLocation.sql" />
   </ItemGroup>
 </Project>

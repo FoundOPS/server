@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace FoundOps.Core.Navigator.Loader
+namespace FoundOps.Common.Silverlight.Loader
 {
     internal class ContentLoaderBaseAsyncResult : IAsyncResult
     {

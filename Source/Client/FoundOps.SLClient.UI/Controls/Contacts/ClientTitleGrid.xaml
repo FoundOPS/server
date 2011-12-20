@@ -2,9 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
-        xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientTitlesVM" d:DesignWidth="300">
+        xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools"
+        xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
+        xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientTitlesVM" d:DesignWidth="300">
     <UserControl.Resources>
         <DataTemplate x:Key="AddMenuTemplate">
             <Grid>
@@ -15,15 +15,13 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <StackPanel x:Name="ClientsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" />
                 <TextBlock Text="Client" />
                 <telerik:RadComboBox Grid.Row="1" MinWidth="150" StaysOpenOnEdit="True" IsEditable="True" TextSearchMode="Contains" DisplayMemberPath="DisplayName" 
-                       SelectedValue="{Binding Client, Mode=TwoWay}" ItemsSource="{Binding DataContext.DomainCollectionView, ElementName=ClientsVMHolder}"/>
-                <StackPanel x:Name="ClientTitlesVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientTitlesVM" />
+                       SelectedValue="{Binding Client, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView, Source={Tools1:GetVM Type=CoreEntities:ClientsVM}}"/>
                 <TextBlock Text="Role" Grid.Row="2"/>
                 <telerik:RadComboBox Grid.Row="3" MinWidth="150" StaysOpenOnEdit="True" IsEditable="True" TextSearchMode="Contains" 
-                        Text="{Binding Title, Mode=TwoWay}" ItemsSource="{Binding DataContext.DistinctTitles, ElementName=ClientTitlesVMHolder}"/>
-                <Button Grid.Row="4" Content="Done" Margin="5,0,0,0" Click="AddClientTitleButtonClicked" Command="{Binding DataContext.AddCommand, ElementName=ClientTitlesVMHolder}"/>
+                        Text="{Binding Title, Mode=TwoWay}" ItemsSource="{Binding DistinctTitles, Source={Tools1:GetVM Type=CoreEntities:ClientTitlesVM}}"/>
+                <Button Grid.Row="4" Content="Done" Margin="5,0,0,0" Click="AddClientTitleButtonClicked" Command="{Binding AddCommand, Source={Tools1:GetVM Type=CoreEntities:ClientTitlesVM}}"/>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
@@ -40,7 +38,6 @@
             </Grid>
         </toolkit:Expander.Header>
         <Grid Margin="5" x:Name="LayoutRoot">
-            <StackPanel x:Name="ClientsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM"/>
             <telerik:RadGridView x:Name="ClientTitleRadGridView" Grid.Row="1" ShowGroupPanel="False" AutoGenerateColumns="False"
                     RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}">
                 <telerik:RadGridView.Columns>

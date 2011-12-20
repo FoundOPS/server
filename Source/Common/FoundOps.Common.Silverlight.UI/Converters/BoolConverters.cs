@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -6,6 +7,9 @@ using System.Collections.Generic;
 
 namespace FoundOps.Common.Silverlight.Converters
 {
+    /// <summary>
+    /// If the object exists the converter will return true.
+    /// </summary>
     public class ExistsBoolConverter : IValueConverter
     {
         #region IValueConverter Members
@@ -37,7 +41,7 @@ namespace FoundOps.Common.Silverlight.Converters
             }
             else if (value is Guid)
             {
-                return ((Guid) value) != Guid.Empty;
+                return ((Guid)value) != Guid.Empty;
             }
             else if (value is TimeSpan)
             {
@@ -67,6 +71,9 @@ namespace FoundOps.Common.Silverlight.Converters
         #endregion
     }
 
+    /// <summary>
+    /// If the object does not exist the converter will return true.
+    /// </summary>
     public class NotExistsBoolConverter : IValueConverter
     {
         readonly ExistsBoolConverter _existsBoolConverter = new ExistsBoolConverter();
@@ -81,13 +88,16 @@ namespace FoundOps.Common.Silverlight.Converters
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is bool?)
-                return value;
+                return !(bool?)value;
             throw new NotImplementedException();
         }
 
         #endregion
     }
 
+    /// <summary>
+    /// Checks if the current enum value is the same as the ConverterParameter.
+    /// </summary>
     public class TrueIfEnumValueEqualsParameter : IValueConverter
     {
         #region IValueConverter Members
@@ -105,5 +115,21 @@ namespace FoundOps.Common.Silverlight.Converters
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Returns whether or not the value equals the parameter.
+    /// </summary>
+    public class EqualsConverterParameter:IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value == parameter;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

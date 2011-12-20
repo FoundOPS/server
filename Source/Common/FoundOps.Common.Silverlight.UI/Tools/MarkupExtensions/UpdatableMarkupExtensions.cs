@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Reflection;
+using System.Xaml;
 using System.Windows;
+using System.Reflection;
 using System.Windows.Data;
 using System.Windows.Markup;
-using System.Xaml;
 
 namespace FoundOps.Common.Silverlight.Tools
 {
@@ -66,7 +66,13 @@ namespace FoundOps.Common.Silverlight.Tools
                 _targetProperty = target.TargetProperty;
             }
 
-            return (TE)ProvideValueInternal(serviceProvider);
+            var value = ProvideValueInternal(serviceProvider);
+
+            //Convert the value if there is a converter
+            if (Converter != null)
+                value = Converter.Convert(value, null, null, null);
+
+            return (TE) value;
         }
     }
 }

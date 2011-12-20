@@ -1,8 +1,9 @@
 using System;
+using System.Reactive.Disposables;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
-using System.ComponentModel;
+using System.Reactive.Linq;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.Core.Context.Services;
 using FoundOps.SLClient.Data.Services;
@@ -34,40 +35,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public IReactiveCommand DeleteLocationCommand { get; private set; }
 
-
-        private BusinessVM _selectedClientOwnedBusinessVM;
+        private readonly ObservableAsPropertyHelper<PartyVM> _selectedClientOwnedBusinessVM;
         /// <summary>
-        /// Gets the selected client owned business VM.
+        /// Gets the selected Client's OwnedParty's PartyVM. (The OwnedPary is a Business)
         /// </summary>
-        public BusinessVM SelectedClientOwnedBusinessVM
-        {
-            get { return _selectedClientOwnedBusinessVM; }
-            private set
-            {
-                if (SelectedClientOwnedBusinessVM != null)
-                    SelectedClientOwnedBusinessVM.PropertyChanged -= SelectedClientOwnedBusinessVMPropertyChanged; _selectedClientOwnedBusinessVM = value;
-                if (SelectedClientOwnedBusinessVM != null)
-                    SelectedClientOwnedBusinessVM.PropertyChanged += SelectedClientOwnedBusinessVMPropertyChanged;
-                this.RaisePropertyChanged("SelectedClientOwnedBusinessVM");
-            }
-        }
-
-        void SelectedClientOwnedBusinessVMPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName != "SelectedBusiness") return;
-
-            if (SelectedClientOwnedBusinessVM.SelectedParty == null)
-            {
-                SelectedEntity = null;
-                return;
-            }
-
-            this.RaisePropertyChanged("SelectedContext"); //In case the BusinessVM adds a Location
-
-            if (SelectedEntity == SelectedClientOwnedBusinessVM.SelectedParty.ClientOwner) return;
-
-            SelectedEntity = SelectedClientOwnedBusinessVM.SelectedParty.ClientOwner;
-        }
+        public PartyVM SelectedClientOwnedBusinessVM { get { return _selectedClientOwnedBusinessVM.Value; } }
 
         #endregion
 
@@ -84,12 +56,19 @@ namespace FoundOps.SLClient.UI.ViewModels
         public ClientsVM(IPartyDataService partyDataService, DataManager dataManager)
             : base(dataManager)
         {
-            SelectedClientOwnedBusinessVM = new BusinessVM(dataManager, partyDataService);
-
             //Setup the MainQuery to load Clients
             SetupMainQuery(DataManager.Query.Clients, null, "DisplayName");
 
+            //ClientsVM requires ServiceTemplate
             DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, entities => _loadedServiceTemplates = entities);
+
+            //Can only add whenever ServiceTemplates is loaded
+            DataManager.GetIsLoadingObservable(DataManager.Query.ServiceTemplates).Subscribe(isLoading => CanAddSubject.OnNext(!isLoading));
+
+            //Setup the selected client's OwnedParty PartyVM whenever the selected client changes
+            _selectedClientOwnedBusinessVM =
+                SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty, this.DataManager))
+                .ToProperty(this, x => x.SelectedClientOwnedBusinessVM);
 
             #region Register Commands
 
@@ -174,6 +153,24 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             #endregion
+
+            var serialDisposable = new SerialDisposable();
+
+            //Whenever the client name changes update the default location name
+            //There is a default location as long as there is only one location
+            SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Subscribe(selectedClient =>
+            {
+                serialDisposable.Disposable = Observable2.FromPropertyChangedPattern(selectedClient, x => x.DisplayName)
+                    .Subscribe(displayName =>
+                    {
+                        var defaultLocation = selectedClient.OwnedParty.Locations.Count == 1
+                                                  ? selectedClient.OwnedParty.Locations.First()
+                                                  : null;
+
+                        if (defaultLocation == null) return;
+                        defaultLocation.Name = displayName;
+                    });
+            });
         }
 
         #region Logic
@@ -186,10 +183,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Add a default Location
             //Set the OwnerParty to the current OwnerAccount
             var defaultLocation = new Location
-                                      {
-                                          OwnerParty = ContextManager.OwnerAccount,
-                                          Region = ContextManager.GetContext<Region>()
-                                      };
+            {
+                OwnerParty = ContextManager.OwnerAccount,
+                Region = ContextManager.GetContext<Region>()
+            };
             newClient.OwnedParty.Locations.Add(defaultLocation);
 
             this.RaisePropertyChanged("ClientsView");
@@ -217,16 +214,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             var clientEntitiesToRemove = entityToDelete.EntityGraphToRemove;
 
             DataManager.RemoveEntities(clientEntitiesToRemove);
-        }
-
-        protected override void OnSelectedEntityChanged(Client oldValue, Client newValue)
-        {
-            if (newValue == null || !(newValue.OwnedParty is Business))
-                SelectedClientOwnedBusinessVM.SelectedBusiness = null;
-            else
-                SelectedClientOwnedBusinessVM.SelectedBusiness = (Business)newValue.OwnedParty;
-
-            base.OnSelectedEntityChanged(oldValue, newValue);
         }
 
         #endregion

@@ -25,7 +25,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         partial void OnCreation(); //For Extensions on Silverlight Side
 
-        void IEntityDefaultCreation.OnCreate()
+        public void OnCreate()
         {
             Id = Guid.NewGuid();
             OnCreation();

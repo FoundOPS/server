@@ -162,37 +162,54 @@ namespace FoundOps.SLClient.Data.Services
             #region CurrentContext property
 
             //Setup the CurrentContext property
-            _currentContext = this._currentContextSubject.ToProperty(this, x => x.CurrentContext, new ObservableCollection<object>());
+            _currentContext = _currentContextSubject.ToProperty(this, x => x.CurrentContext, new ObservableCollection<object>());
 
             //Whenever the collection is changed or set, publish the CurrentContext
-            this._currentContextSubject.FromCollectionChangedOrSet().Subscribe(this._currentContextSubject);
+            _currentContextSubject.FromCollectionChangedOrSet().Subscribe(_currentContextSubject);
 
             //Listen to the AddContext and RemoveContext messages, and update the CurrentContext
             MessageBus.Current.Listen<AddContextMessage>().Where(message => message.Context != null)
-                .Subscribe(message => this.CurrentContext.Add(message.Context));
+                .Subscribe(message => CurrentContext.Add(message.Context));
             MessageBus.Current.Listen<RemoveContextMessage>().Where(message => message.Context != null)
-                .Subscribe(message => this.CurrentContext.Remove(message.Context));
+                .Subscribe(message => CurrentContext.Remove(message.Context));
 
             #endregion
 
             //Setup the CurrentContextProvider property
-            _currentContextProvider = this._currentContextProviderSubject.ToProperty(this, x => x.CurrentContextProvider);
+            _currentContextProvider = _currentContextProviderSubject.ToProperty(this, x => x.CurrentContextProvider);
 
             //Listen to the ContextProviderChanged messages, and update the CurrentContextProviderSubject
-            MessageBus.Current.Listen<ContextProviderChangedMessage>().Subscribe(message => this._currentContextProviderSubject.OnNext(message.CurrentContextProvider));
+            MessageBus.Current.Listen<ContextProviderChangedMessage>().Subscribe(message => _currentContextProviderSubject.OnNext(message.CurrentContextProvider));
 
             //Setup ContextChangedObservable to trigger whenever:
             _contextChangedObservable =
                 //a) the CurrentContext changes
-                this.CurrentContextObservable.AsGeneric()
+                CurrentContextObservable.AsGeneric()
                 //b) the CurrentContextProvider changes
-                .Merge(this.CurrentContextProviderObservable.AsGeneric())
+                .Merge(CurrentContextProviderObservable.AsGeneric())
                 //c) the CurrentContextProvider's SelectedContext changes
-                .Merge(this.CurrentContextProviderObservable.SelectMany(ccp =>
+                .Merge(CurrentContextProviderObservable.SelectMany(ccp =>
                     ccp == null ? new[] { true }.ToObservable() : //If the CurrentContextProvider is empty, update once
                     ccp.SelectedContextObservable.AsGeneric())); //Select the SelectedContextObservable changes
 
             #endregion
+
+            //Analytics - Track when a user moves to a details view
+            CurrentContextProviderObservable.Subscribe(newContextProvider =>
+            {
+                var currentContextType = CurrentContextProvider != null && CurrentContextProvider.SelectedContext != null
+                                             ? CurrentContextProvider.SelectedContext.GetType().ToString().Split('.').Last()
+                                             : "";
+                if((newContextProvider == null)) return;
+                var nextContextType = newContextProvider.ObjectTypeProvided.ToString().Split('.').Last();
+
+                //Make sure that there is a context and the context is actually changing
+                if ((nextContextType == currentContextType) || (CurrentContext.Count == 0) || (currentContextType == "")) return;
+                Analytics.ContextChanged(currentContextType, nextContextType);
+
+                //Analytics - Track the context depth
+                Analytics.ContextDepth(CurrentContext.Count);
+            });
         }
 
         //Logic
@@ -224,7 +241,7 @@ namespace FoundOps.SLClient.Data.Services
         {
             var clientContextSubject = new Subject<T>();
             //When any context changes, publish the GetContext<T>
-            this.ContextChangedObservable.Throttle(new TimeSpan(0, 0, 0, 0, 250)).Subscribe(_ => clientContextSubject.OnNext(GetContext<T>()));
+            ContextChangedObservable.Throttle(new TimeSpan(0, 0, 0, 0, 250)).Subscribe(_ => clientContextSubject.OnNext(GetContext<T>()));
             //Only return the Distinct changes
             return clientContextSubject.DistinctUntilChanged().AsObservable();
         }

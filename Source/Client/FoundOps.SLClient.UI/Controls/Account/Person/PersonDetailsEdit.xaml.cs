@@ -1,11 +1,16 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.UI.Controls.Account.Person
 {
-    public partial class PersonDetailsEdit : UserControl
+    /// <summary>
+    /// The UI for viewing and editing a Person
+    /// </summary>
+    public partial class PersonDetailsEdit
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersonDetailsEdit"/> class.
+        /// </summary>
         public PersonDetailsEdit()
         {
             InitializeComponent();
@@ -16,9 +21,9 @@ namespace FoundOps.SLClient.UI.Controls.Account.Person
         /// <summary>
         /// PersonVM
         /// </summary>
-        public PersonVM PersonVM
+        public PartyVM PersonVM
         {
-            get { return (PersonVM)GetValue(PersonVMProperty); }
+            get { return (PartyVM)GetValue(PersonVMProperty); }
             set { SetValue(PersonVMProperty, value); }
         }
 
@@ -28,7 +33,7 @@ namespace FoundOps.SLClient.UI.Controls.Account.Person
         public static readonly DependencyProperty PersonVMProperty =
             DependencyProperty.Register(
                 "PersonVM",
-                typeof(PersonVM),
+                typeof(PartyVM),
                 typeof(PersonDetailsEdit),
                 new PropertyMetadata(null));
 

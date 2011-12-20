@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Tools;
@@ -57,7 +58,10 @@ namespace FoundOps.SLClient.UI.Controls.Services
 
         public ServicesVM ServicesVM { get { return (ServicesVM)this.DataContext; } }
 
-        public ServiceTemplatesVM ServiceTemplatesVM { get { return (ServiceTemplatesVM)ServiceTemplatesVMHolder.DataContext; } }
+        /// <summary>
+        /// Gets the ServiceTemplatesVM.
+        /// </summary>
+        public ServiceTemplatesVM ServiceTemplatesVM { get { return VM.ServiceTemplates; } }
 
         private GridViewScrollViewer _servicesRadGridViewScrollViewer;
         private GridViewScrollViewer ServicesRadGridViewScrollViewer

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace FoundOps.Core.Navigator.Loader
+namespace FoundOps.Common.Silverlight.Loader
 {
     /// <summary>
     /// A base class for loaders that interface with the ContentLoaderBase to simplify creation
@@ -12,7 +12,7 @@ namespace FoundOps.Core.Navigator.Loader
         /// <summary>
         /// Constructs a LoaderBase.
         /// </summary>
-        public LoaderBase() { }
+        protected LoaderBase() { }
         private bool cancelled;
         internal ContentLoaderBase ContentLoader { get; set; }
         internal ContentLoaderBaseAsyncResult Result { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.ViewModels;
-using FoundOps.Common.Silverlight.UI.Tools;
 
 namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 {
@@ -20,13 +20,13 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         private void AddNewRouteClick(object sender, Telerik.Windows.RadRoutedEventArgs e)
         {
             //Analytics - Track when a new route is created
-            TrackEventAction.Track("Dispatcher", "AddNewRoute", 1);
+            Analytics.AddNewRoute();
         }
 
         private void AddNewRouteTaskClick(object sender, Telerik.Windows.RadRoutedEventArgs e)
         {
             //Analytics - Track when a new route task is created
-            TrackEventAction.Track("Dispatcher", "AddNewRouteTask", 1);
+            Analytics.AddNewRouteTask();
         }
 
         private void AutoCalcRoutesButtonClick(object sender, System.Windows.RoutedEventArgs e)
@@ -35,7 +35,19 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             ((RoutesVM)DataContext).AutoAsignButtonClickedOn = (Button)sender;
 
             //Analytics - Track when a AutoAsignJobs button is clicked
-            TrackEventAction.Track("Dispatcher", "AutoAsignJobs", 1);
+            Analytics.AutoAsignJobs();
+        }
+
+        private void PreviousDayButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            //Analytics - Track when a AutoAsignJobs button is clicked
+            Analytics.PreviousDay();
+        }
+
+        private void NextDayButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            //Analytics - Track when a NextDay button is clicked
+            Analytics.NextDay();
         }
     }
 }

@@ -71,11 +71,9 @@ namespace FoundOps.SLClient.UI.Controls.Clients
 
         private static void IsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ClientLinkLarge c = d as ClientLinkLarge;
+            var c = d as ClientLinkLarge;
             if (c != null)
-            {
                 c.ClientsRadComboBox.IsEnabled = !((bool)e.NewValue);
-            }
         }
 
         #endregion

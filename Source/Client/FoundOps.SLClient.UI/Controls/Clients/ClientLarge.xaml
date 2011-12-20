@@ -8,9 +8,11 @@
              xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Contacts="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
-             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d" 
-             d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM"><!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities"-->
+             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
+             xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools"
+             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" mc:Ignorable="d" 
+             d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+            <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
     <UserControl.Resources>
         <Converters:ClientTitleConverter x:Key="ClientTitleConverter" />
         <Converters:LocationTitleConverter x:Key="LocationTitleConverter" />
@@ -18,9 +20,8 @@
         <Converters2:NotEqualsVisibilityConverter x:Key="NotEqualsVisibilityConverter"/>
         <Converters2:EqualsVisibilityConverter x:Key="EqualsVisibilityConverter"/>
         <Converters2:AddDeleteModeConverter x:Key="AddDeleteModeConverter"/>
-        <StackPanel x:Key="LocationsVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM"/>
         <DataTemplate x:Key="AddMenuTemplate">
-            <Grid DataContext="{Binding DataContext, Source={StaticResource LocationsVMHolder}}">
+            <Grid DataContext="{Tools1:GetVM Type=ViewModels:LocationsVM}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -36,7 +37,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
-    <Grid x:Name="LayoutRoot" Visibility="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness, Converter={StaticResource VisibilityConverter}}">
+    <Grid x:Name="LayoutRoot" Visibility="{Binding SelectedClientOwnedBusinessVM.Entity, Converter={StaticResource VisibilityConverter}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -48,7 +49,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="5,3" >
-                    <TextBlock TextWrapping="Wrap" Text="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness.Name, Converter={StaticResource ClientTitleConverter}}"
+                    <TextBlock TextWrapping="Wrap" Text="{Binding SelectedClientOwnedBusinessVM.Entity.Name, Converter={StaticResource ClientTitleConverter}}"
                                Margin="5,3" FontSize="13" Foreground="White" />
                 </StackPanel>
                 <SaveDiscardCancel:SaveCancel Grid.Column="1" ISaveDiscardChangesCommands="{Binding}"/>
@@ -79,7 +80,7 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <TextBlock Text="Name:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-                        <TextBox Text="{Binding SelectedClientOwnedBusinessVM.SelectedBusiness.Name, Mode=TwoWay}" Grid.Column="2" />
+                        <TextBox Text="{Binding SelectedClientOwnedBusinessVM.Entity.Name, Mode=TwoWay}" Grid.Column="2" />
                         <TextBlock Text="Date Added:" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="3" />
                         <telerik:RadDateTimePicker Grid.Column="2" Grid.Row="3" InputMode="DatePicker" SelectedValue="{Binding SelectedEntity.DateAdded, Mode=TwoWay}"/>
                     </Grid>
@@ -100,19 +101,20 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock TextWrapping="Wrap" Text="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource LocationTitleConverter}}" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
+                            <TextBlock TextWrapping="Wrap" Text="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource LocationTitleConverter}}" 
+                                       Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
                             <AddEditDelete:AddDelete x:Name="AddDeleteLocation" Grid.Column="1" AddMenuItemCustomTemplate="{StaticResource AddMenuTemplate}"
                                 AddCommand="{Binding AddLocationCommand}" DeleteCommand="{Binding DeleteLocationCommand}"
-                                CommandParameter="{Binding DataContext, Source={StaticResource LocationsVMHolder}}" 
+                                CommandParameter="{Tools1:GetVM Type=ViewModels:LocationsVM}" 
                                 AddDeleteMode="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource AddDeleteModeConverter}}"/>
                         </Grid>
                     </toolkit:Expander.Header>
                     <Grid>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource NotEqualsVisibilityConverter}, ConverterParameter=1}">
-                            <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
+                            <Clients:ClientLocationsGrid x:Name="LocationsGrid" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=1}">
-                            <Locations:LocationEdit DataContext="{Binding DataContext, Source={StaticResource LocationsVMHolder}}" />
+                            <Locations:LocationEdit DataContext="{Tools1:GetVM Type=ViewModels:LocationsVM}" />
                         </StackPanel>
                     </Grid>
                 </toolkit:Expander>

@@ -2,30 +2,32 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation" 
     xmlns:Tools="clr-namespace:FoundOps.Common.Silverlight.Tools;assembly=FoundOps.Common.Silverlight.UI" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
-    xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding" xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher" 
-             mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM">
+    xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding"
+    xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM"
+    xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels" mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300">
     <UserControl.Resources>
         <Converters1:RouteTypeFilterConverter x:Key="RouteTypeFilterConverter"/>
         <Converters1:RegionFilterConverter x:Key="RegionFilterConverter"/>
-        <StackPanel x:Name="RoutesVMHolder" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM"/>
         <DataTemplate x:Key="CheckBoxTemplate">
-                <CheckBox IsChecked="{Tools:ItemExistsInCollection Item={Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}, 
-                 Collection={Binding DataContext.SelectedRouteTypes, ElementName=myFilter}}" Checked="RouteTypeCheckBoxChecked" Unchecked="RouteTypeCheckBoxUnchecked">
-                    <local:BindingUtil.MultiBindings>
-                        <local:MultiBindings>
-                            <!--MultiBinding that determines the number of RouteTasks that exist in the DCV that correspond to each ServiceType-->
-                            <!--Outputs in the following format: "Oil (12)"-->
-                            <local:MultiBinding TargetProperty="Content" Converter="{StaticResource RouteTypeFilterConverter}">
-                                <local:BindingCollection>
-                                    <Binding />
-                                <Binding Path="DataContext.SelectedRegions" Source="{StaticResource RoutesVMHolder}" />
-                                <Binding Path="DataContext" Source="{StaticResource RoutesVMHolder}" />
-                                <Binding Path="DataContext.ForceFilterCountUpdate" Source="{StaticResource RoutesVMHolder}"/><!--For updates-->
-                                </local:BindingCollection>
-                            </local:MultiBinding>
-                        </local:MultiBindings>
-                    </local:BindingUtil.MultiBindings>
-                </CheckBox>
+            <CheckBox Checked="RouteTypeCheckBoxChecked" Unchecked="RouteTypeCheckBoxUnchecked" 
+                      IsChecked="{Tools:ItemExistsInCollection Item={Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}, 
+                Collection={Binding SelectedRouteTypes, Source={Tools1:GetVM Type=CoreEntities:RoutesVM}}}" >
+                <local:BindingUtil.MultiBindings>
+                    <local:MultiBindings>
+                        <!--MultiBinding that determines the number of RouteTasks that exist in the DCV that correspond to each ServiceType-->
+                        <!--Outputs in the following format: "Oil (12)"-->
+                        <local:MultiBinding TargetProperty="Content" Converter="{StaticResource RouteTypeFilterConverter}">
+                            <local:BindingCollection>
+                                <Binding />
+                                <Binding Path="SelectedRegions" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
+                                <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
+                                <Binding Path="ForceFilterCountUpdate" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}"/>
+                                <!--For updates-->
+                            </local:BindingCollection>
+                        </local:MultiBinding>
+                    </local:MultiBindings>
+                </local:BindingUtil.MultiBindings>
+            </CheckBox>
         </DataTemplate>
         <DataTemplate x:Key="RegionsTextBlockTemplate">
             <TextBlock>
@@ -36,9 +38,9 @@
                         <local:MultiBinding TargetProperty="Text" Converter="{StaticResource RegionFilterConverter}">
                             <local:BindingCollection>
                                 <Binding />
-                                <Binding Path="DataContext.SelectedRouteTypes" Source="{StaticResource RoutesVMHolder}" />
-                                <Binding Path="DataContext" Source="{StaticResource RoutesVMHolder}" />
-                                <Binding Path="DataContext.ForceFilterCountUpdate" Source="{StaticResource RoutesVMHolder}" />
+                                <Binding Path="SelectedRouteTypes" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
+                                <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
+                                <Binding Path="ForceFilterCountUpdate" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
                                 <!--For updates-->
                             </local:BindingCollection>
                         </local:MultiBinding>
@@ -47,23 +49,24 @@
             </TextBlock>
         </DataTemplate>
         <DataTemplate x:Key="RegionsCheckBoxTemplate">
-                <CheckBox IsChecked="{Tools:ItemExistsInCollection Item={Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}, 
+            <CheckBox IsChecked="{Tools:ItemExistsInCollection Item={Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}, 
                 Collection={Binding DataContext.SelectedRegions, ElementName=myFilter}}" Checked="RegionsCheckBoxChecked" Unchecked="RegionsCheckBoxUnchecked">
-                    <local:BindingUtil.MultiBindings>
-                        <local:MultiBindings>
+                <local:BindingUtil.MultiBindings>
+                    <local:MultiBindings>
                         <!--MultiBinding that determines the number of RouteTasks that exist in the DCV that correspond to each Region-->
                         <!--Outputs in the following format: "NorthEastern (12)"-->
                         <local:MultiBinding TargetProperty="Content" Converter="{StaticResource RegionFilterConverter}">
-                                <local:BindingCollection>
-                                    <Binding />
-                                <Binding Path="DataContext.SelectedRouteTypes" Source="{StaticResource RoutesVMHolder}" />
-                                <Binding Path="DataContext" Source="{StaticResource RoutesVMHolder}" />
-                                <Binding Path="DataContext.ForceFilterCountUpdate" Source="{StaticResource RoutesVMHolder}" /><!--For updates-->
-                                </local:BindingCollection>
-                            </local:MultiBinding>
-                        </local:MultiBindings>
-                    </local:BindingUtil.MultiBindings>
-                </CheckBox>
+                            <local:BindingCollection>
+                                <Binding />
+                                <Binding Path="SelectedRouteTypes" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
+                                <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
+                                <Binding Path="ForceFilterCountUpdate" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
+                                <!--For updates-->
+                            </local:BindingCollection>
+                        </local:MultiBinding>
+                    </local:MultiBindings>
+                </local:BindingUtil.MultiBindings>
+            </CheckBox>
         </DataTemplate>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">

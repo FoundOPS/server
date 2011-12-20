@@ -1,14 +1,10 @@
 ﻿using System;
-using FoundOps.Common.Tools;
 using ReactiveUI;
-using System.Linq;
 using System.Reactive.Linq;
+using FoundOps.Common.Tools;
 using System.ComponentModel;
 using System.Reactive.Subjects;
 using GalaSoft.MvvmLight.Command;
-using System.Collections.Generic;
-using GalaSoft.MvvmLight.Messaging;
-using System.Collections.ObjectModel;
 using FoundOps.SLClient.Data.Services;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.MVVM.Interfaces;

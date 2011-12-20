@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using System.Windows;
+using FoundOps.Common.Silverlight.Interfaces;
 using System.ServiceModel.DomainServices.Client;
 
-namespace FoundOps.Common.Silverlight.MVVM.Validation
+namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
 {
     public static class ValidationExtensions
     {

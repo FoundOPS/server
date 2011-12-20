@@ -34,3 +34,4 @@ Generated_Code/
 Source/Server/FoundOps.Server/ClientBin/*.zip
 Source/Server/FoundOps.Server/ClientBin/*.xap
 Developer.config
+Source/Server/FoundOps.Server/Resources/Developer.config

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using FoundOps.Common.Silverlight.Services;
+using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
@@ -53,6 +55,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             var copiedTemplate = clientLevelServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
             copiedTemplate.Id = newRecurringService.Id;
             newRecurringService.ServiceTemplate = copiedTemplate;
+
+            var currentClient = ContextManager.GetContext<Client>();
+
+            //If there is only one location, try to set the destination (assuming this Service Template has a destination field)
+            if (currentClient.OwnedParty.Locations.Count == 1)
+                newRecurringService.ServiceTemplate.SetDestination(currentClient.OwnedParty.Locations.First());
 
             return newRecurringService;
         }

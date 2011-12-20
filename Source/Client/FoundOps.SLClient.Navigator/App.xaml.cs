@@ -7,8 +7,10 @@ using MEFedMVVM.ViewModelLocator;
 using FoundOps.Core.Navigator.Loader;
 using FoundOps.Core.Navigator.Controls;
 using System.ComponentModel.Composition;
+using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
+using RiaServicesContrib.DataValidation;
 
 namespace FoundOps.SLClient.Navigator
 {
@@ -25,7 +27,11 @@ namespace FoundOps.SLClient.Navigator
         
         private void ApplicationStartup(object sender, StartupEventArgs e)
         {
+            //Required for MEF
             LocatorBootstrapper.ApplyComposer(this);
+
+            //Required for EntityFramework Validation
+            MEFValidationRules.RegisterAssembly(typeof(LocationField).Assembly);
 
             //Add IP Info to Resources
             var ipAddressLocationQuery = String.Format("http://api.ipinfodb.com/v3/ip-city/?key={0}", "50191ba897c5677bc6a49f46f5da10787c7898f34b8a11d8e1c01546b8a08470");

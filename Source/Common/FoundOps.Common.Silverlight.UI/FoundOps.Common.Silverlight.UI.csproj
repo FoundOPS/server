@@ -17,10 +17,14 @@
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -68,9 +72,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityGraph.Silverlight">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
       <Private>False</Private>
@@ -84,6 +85,12 @@
       <HintPath>..\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="ReactiveUI.Xaml_SL5">
+      <HintPath>Lib\ReactiveUI.Xaml_SL5.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI_SL5">
+      <HintPath>Lib\ReactiveUI_SL5.dll</HintPath>
+    </Reference>
     <Reference Include="SLMultiBinding">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\SLMultiBinding.dll</HintPath>
     </Reference>
@@ -104,17 +111,11 @@
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Reactive">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\System.Reactive.Windows.Threading.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI_SL4, Version=2.4.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>Lib\ReactiveUI_SL4.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Xaml_SL4, Version=2.4.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>Lib\ReactiveUI.Xaml_SL4.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.DomainServices.Client, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -173,6 +174,9 @@
     </Compile>
     <Compile Include="Controls\AddEditDelete\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CsvButton.xaml.cs">
+      <DependentUpon>CsvButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\GlobalDaysOfWeek.xaml.cs">
       <DependentUpon>GlobalDaysOfWeek.xaml</DependentUpon>
@@ -275,6 +279,7 @@
     <Compile Include="Converters\BoolConverters.cs" />
     <Compile Include="Converters\CollectionViewConverters.cs" />
     <Compile Include="Converters\ColorConverters.cs" />
+    <Compile Include="Converters\ConvertBackWhenExists.cs" />
     <Compile Include="Converters\DateTimeConverters.cs" />
     <Compile Include="Converters\DebuggingConverters.cs" />
     <Compile Include="Converters\DecimalConverters.cs" />
@@ -318,16 +323,18 @@
     <Compile Include="Tools\ExtensionMethods\FrameworkElementExtensions.cs" />
     <Compile Include="Tools\FileTools.cs" />
     <Compile Include="Tools\MarkupExtensions\AppendNumberToStringMarkupExtension.cs" />
+    <Compile Include="Tools\MarkupExtensions\AreEqual.cs" />
+    <Compile Include="Tools\MarkupExtensions\DataContextEquals.cs" />
     <Compile Include="Tools\MarkupExtensions\ItemExistsInCollection.cs" />
     <Compile Include="Tools\MarkupExtensions\StaticMarkupExtensions.cs" />
     <Compile Include="Tools\MarkupExtensions\UpdatableMarkupExtensions.cs" />
+    <Compile Include="Controls\EditRadioButtonColumn.cs" />
     <Compile Include="Tools\TrackEventAction.cs" />
     <Compile Include="ViewModels\IAddDeleteCommands.cs" />
     <Compile Include="ViewModels\ISaveDiscardChangesCommands.cs" />
     <Compile Include="ViewModels\ThreadableVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
@@ -348,6 +355,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\AddEditDelete\EditButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CsvButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -488,31 +499,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\Microsoft.Practices.ServiceLocation.dll" />
-    <Content Include="Lib\Microsoft.Practices.ServiceLocation.pdb" />
-    <Content Include="Lib\Microsoft.Practices.ServiceLocation.xml" />
     <Content Include="Lib\Microsoft.Reactive.Testing.dll" />
-    <Content Include="Lib\Microsoft.Reactive.Testing.xml" />
     <Content Include="Lib\Newtonsoft.Json.Silverlight.dll" />
-    <Content Include="Lib\Newtonsoft.Json.Silverlight.pdb" />
-    <Content Include="Lib\Newtonsoft.Json.Silverlight.xml" />
-    <Content Include="Lib\ReactiveUI.Blend_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Blend_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Blend_SL4.xml" />
-    <Content Include="Lib\ReactiveUI.Routing_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Routing_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Routing_SL4.xml" />
-    <Content Include="Lib\ReactiveUI.Serialization_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Serialization_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Serialization_SL4.xml" />
-    <Content Include="Lib\ReactiveUI.Testing_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Testing_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Testing_SL4.xml" />
-    <Content Include="Lib\ReactiveUI.Xaml_SL4.dll" />
-    <Content Include="Lib\ReactiveUI.Xaml_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI.Xaml_SL4.xml" />
-    <Content Include="Lib\ReactiveUI_SL4.dll" />
-    <Content Include="Lib\ReactiveUI_SL4.pdb" />
-    <Content Include="Lib\ReactiveUI_SL4.xml" />
+    <Content Include="Lib\ReactiveUI.Xaml_SL5.dll" />
+    <Content Include="Lib\ReactiveUI_SL5.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

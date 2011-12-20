@@ -59,8 +59,8 @@ namespace FoundOps.SLClient.UI.Converters
             return String.Format("{0} ({1})", serviceType, count);
         }
 
-        /// <summary>
-        /// Converts the back.
+        /// <summary> 
+        /// Converts the specified values.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="targetTypes">The target types.</param>
@@ -127,7 +127,7 @@ namespace FoundOps.SLClient.UI.Converters
         }
 
         /// <summary>
-        /// Converts the back.
+        /// Converts the specified values.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="targetTypes">The target types.</param>

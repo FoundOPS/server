@@ -31,10 +31,14 @@
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <LinkedServerProject>
     </LinkedServerProject>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -83,11 +87,12 @@
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>
-    </Reference>
     <Reference Include="system" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>

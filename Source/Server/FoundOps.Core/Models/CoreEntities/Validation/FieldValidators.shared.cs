@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Core.Models.CoreEntities.Validation
 {

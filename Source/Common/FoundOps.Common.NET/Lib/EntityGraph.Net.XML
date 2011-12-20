@@ -1,0 +1,377 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EntityGraph.Net</name>
+    </assembly>
+    <members>
+        <member name="M:RiaServicesContrib.EntityGraphShapeExtensions.Union``1(``0,RiaServicesContrib.EntityGraphShape)">
+            <summary>
+            Produces the set union of two entity graph shapes by using the default equality comparer.
+            </summary>
+            <typeparam name="TEntityGraphShape"></typeparam>
+            <param name="current"></param>
+            <param name="shape"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphShapeExtensions.CopyTo``2(RiaServicesContrib.IEntityGraphShape,``0,RiaServicesContrib.ITypeMapper)">
+            <summary>
+            Copies a graph of entities of base type TFrom to a similar entity graph with base type TTo given the
+            provided entity graph shape and type mapper.
+            </summary>
+            <typeparam name="TFrom">The base type of the source entity graph</typeparam>
+            <typeparam name="TTo">The base type of the target entity graph</typeparam>
+            <param name="shape">The entity graph shape defining the structure of the graph</param>
+            <param name="fromEntity">The original entity</param>
+            <param name="typeMapper">A class implementing ITypeMapper that maps subtypes of TFrom to sub types of TTo</param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphShapeExtensions.GetDataMembers(System.Type,System.Type,System.Boolean)">
+            <summary>
+            This method returns an array of ProperTypeInfo objects which from the data member (I.e., non-naviagion) properties 
+            that must be copied.
+            The list is determined as follows:
+            1) A property must have the DataMemberAttribute defined on both the fromObjectType and the toObjectType.
+            2) If includeKeys==false, the KeyAttribute should not be defined on both types
+            3) The property must be readable on fromObjectType
+            4) The property must be writable on toObjectType
+            The returnd list consists of ProperTypeInfo objects for type toObjectType.
+            </summary>
+            <param name="fromObjectType"></param>
+            <param name="toObjectType"></param>
+            <param name="includeKeys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphShapeExtensions.CopyDataMembers(System.Object,System.Object)">
+            <summary>
+            Copies properties annotated with the DataMemberAttribute from fromObject to toObject.
+            If property types are not assignable, consider them as complex types and call CopyDataMembers
+            recursively on their values.
+            </summary>
+            <param name="fromObject"></param>
+            <param name="toObject"></param>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.#ctor(`0,RiaServicesContrib.IEntityGraphShape)">
+            <summary>
+            Initializes a new instance of the EntityGraph class with given shape for given source entity.
+            </summary>
+            <param name="source"></param>
+            <param name="graphShape"></param>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.BuildEntityGraph(`0,RiaServicesContrib.EntityRelationGraph{`0})">
+            <summary>
+            Returns the entity graph as defined by associations that are marked with the 'EntityGraphAttribute' attribute.
+            The resulting graph consists of a list of GraphNodes. Each GraphNode has an element 'Node' of type 'T', 
+            which represents the actual node, a set, SingleEdges, which correspond to EntityRefs, and a
+            a set, ListEdges, which correspond to EntityCollections. 
+            </summary>
+            <param name="entity"></param>
+            <param name="graph"></param>
+        </member>
+        <member name="F:RiaServicesContrib.EntityGraph`1.EntityRelationGraphResetting">
+            <summary>
+            Eventhandler that is called just before the EntityRelationGraph is reset.
+            </summary>
+        </member>
+        <member name="F:RiaServicesContrib.EntityGraph`1.EntityRelationGraphResetted">
+            <summary>
+            Eventhandler that is called right after the EntityRelationGraph is reset.
+            </summary>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.AcceptChanges">
+            <summary>
+            Resets the entity graph’s state to unchanged by accepting the modifications of all its entities.
+            </summary>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.GraphMap(System.Func{`0,`0})">
+            <summary>
+            Method that implements a generic traversal over an entity graph (defined by 
+            associations marked with an entity graph attibute and applies 'action' to each visited node.
+            </summary>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.BuildEntityGraph(System.Collections.Generic.Dictionary{`0,`0},RiaServicesContrib.EntityRelationGraph{`0})">
+            <summary>
+            (Re-)builds the associations between the nodes of the graph.
+            </summary>
+            <param name="nodes"></param>
+            <param name="graph"></param>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.DisposeGraphValidation">
+            <summary>
+            Dispose method
+            </summary>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.Validator_CollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Callback method that is called when a CollectionChanged event is received from the entity graph.
+            We obtain the node and edge in the entity graph for this collection and then call the Validate
+            method of the validation engine for them.
+            </summary>
+            <param name="sender"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.Validator_PropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Callback method that is called when a PropertyChanged event is received from the entity graph.
+            We call the Validate method of the validation engine for the object and property name of the 
+            changed property.
+            </summary>
+            <param name="sender"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.EntityGraphEqual(RiaServicesContrib.EntityGraph{`0},System.Func{`0,`0,System.Boolean})">
+            <summary>
+            Determines whether two entity graphs are equal using the given comparer function.
+            </summary>
+            <param name="graph"></param>
+            <param name="comparer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraph`1.EntityGraphEqual(RiaServicesContrib.EntityGraph{`0})">
+            <summary>
+            Determines whether two entity graphs are equal using a default equality comparison of all entities
+            </summary>
+            <param name="graph"></param>
+            <returns></returns>
+        </member>
+        <member name="P:RiaServicesContrib.EntityGraph`1.Source">
+            <summary>
+            Gets the source entity of this entity graph.
+            </summary>
+        </member>
+        <member name="P:RiaServicesContrib.EntityGraph`1.IsChanged">
+            <summary>
+            Gets the changed status of the entity graph.
+            </summary>
+        </member>
+        <member name="E:RiaServicesContrib.EntityGraph`1.CollectionChanged">
+            <summary>
+            Handler to receive collection changed events
+            </summary>
+        </member>
+        <member name="E:RiaServicesContrib.EntityGraph`1.PropertyChanged">
+            <summary>
+            handler to receive property changed events.
+            </summary>
+        </member>
+        <member name="T:System.ComponentModel.DataAnnotations.EntityGraphAttribute">
+            <summary>
+            Specifies that an edge is part of a graph of related entities 
+            that should be handled as a unit during cloning, detaching, deleting, and so on.
+            </summary>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.EntityGraphAttribute.#ctor(System.String)">
+            <summary>
+            Constructor. Sets the name of the entity graph to 'name'
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:System.ComponentModel.DataAnnotations.EntityGraphAttribute.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="P:System.ComponentModel.DataAnnotations.EntityGraphAttribute.Name">
+            <summary>
+            Gets/sets the name of the entity graph
+            </summary>
+        </member>
+        <member name="T:RiaServicesContrib.ITypeMapper">
+            <summary>
+            Interface used by EntityGraphShape.CopyTo. It contains a single method 'Map' that maps one type into another.
+            </summary>
+        </member>
+        <member name="M:RiaServicesContrib.ITypeMapper.Map(System.Type)">
+            <summary>
+            Method that maps fromType to another type. 
+            </summary>
+            <param name="fromType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:RiaServicesContrib.AssemblyTypeMapper`1">
+            <summary>
+            Class that maps a given type 'TFrom' to a type 'TTo' where 'TTo' has the same name as `TFrom' but is
+            defined in the namespace/assembly of the generic type parameter 'ToType'.
+            from the assembly and namespace 
+            </summary>
+            <typeparam name="ToType"></typeparam>
+        </member>
+        <member name="M:RiaServicesContrib.AssemblyTypeMapper`1.#ctor">
+            <summary>
+            Initializes a new instance of the AssemblyTypeMapper class.
+            </summary>
+        </member>
+        <member name="T:RiaServicesContrib.EntityGraphFactory`1">
+            <summary>
+            Class that implements a cache for instantiated entity graphs using weak references.
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphFactory`1.GetOrCreate(`0,RiaServicesContrib.IEntityGraphShape)">
+            <summary>
+            Creates a new entity graph for the given entity and shape and stores it in the
+            cache, or returns the graph from the cache if it is already present there.
+            </summary>
+            <param name="entity"></param>
+            <param name="shape"></param>
+            <returns></returns>
+        </member>
+        <member name="T:RiaServicesContrib.IEntityGraphShape">
+            <summary>
+            Interface with methods to define the shape of an entity graph by means of its edges.
+            </summary>
+        </member>
+        <member name="M:RiaServicesContrib.IEntityGraphShape.OutEdges(System.Object)">
+            <summary>
+            Returns an IEnumerable that iterates over the out edges of the given entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.IEntityGraphShape.IsEdge(System.Reflection.PropertyInfo)">
+            <summary>
+            Indicates of the given property info represents an edge in this graph shape object.
+            </summary>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.IEntityGraphShape.GetNode(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Returns the object that is reachable from entity via the given edge.
+            </summary>
+            <param name="entity"></param>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.IEntityGraphShape.GetNodes(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Returns the collection of objects that is reachable from entity via the given edge.
+            </summary>
+            <param name="entity"></param>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphShape.OutEdges(System.Object)">
+            <summary>
+            Returns an IEnumerable that iterates over the out edges of the given entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphShape.IsEdge(System.Reflection.PropertyInfo)">
+            <summary>
+            Indicates of the given property info represents an edge in this graph shape object.
+            </summary>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphShape.GetNode(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Returns the object that is reachable from entity via the given edge.
+            </summary>
+            <param name="entity"></param>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphShape.GetNodes(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Returns the collection of objects that is reachable from entity via the given edge.
+            </summary>
+            <param name="entity"></param>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphAttributeShape.#ctor">
+            <summary>
+            Initializes a new instance of the EntityGraphAttributeShape class. 
+            </summary>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphAttributeShape.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the EntityGraphAttributeShape class. 
+            </summary>
+            <param name="Name"></param>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphAttributeShape.OutEdges(System.Object)">
+            <summary>
+            Returns an IEnumerable of PropertyInfo objects for properties which have the "RiaServicesContrib.EntityGraph" attribute. 
+            If Name is not null, the name of the entity graph attribute shape should match the name of the attribute.
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphAttributeShape.IsEdge(System.Reflection.PropertyInfo)">
+            <summary>
+            Indicates of the given property info represents an edge in this graph shape object.
+            </summary>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphAttributeShape.GetNode(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Returns the object that is reachable from entity via the given edge.
+            </summary>
+            <param name="entity"></param>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.EntityGraphAttributeShape.GetNodes(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Returns the collection og objects that is reachable from entity via the given edge.
+            </summary>
+            <param name="entity"></param>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="P:RiaServicesContrib.EntityGraphAttributeShape.Name">
+            <summary>
+            Gets the name of this entity graph shape.
+            </summary>
+        </member>
+        <member name="T:RiaServicesContrib.DynamicGraphShape">
+            <summary>
+            This class implements a dynamic graph shape that uses a property filter for selecting edges.
+            It can typically be used to define a full graph for an object graph where all edges can be
+            identified in a similar way (e.g., because they all have the AssociationAttribute). Using 
+            this EntityGraphShape prevents you from having to define all edges explicitely.
+            </summary>
+        </member>
+        <member name="M:RiaServicesContrib.DynamicGraphShape.#ctor(System.Func{System.Reflection.PropertyInfo,System.Boolean})">
+            <summary>
+            Initializes a new instance of the DynamicGraphShape class with given property filter.
+            </summary>
+            <param name="isEdgeFilter"></param>
+        </member>
+        <member name="M:RiaServicesContrib.DynamicGraphShape.OutEdges(System.Object)">
+            <summary>
+            Returns an IEnumerable that iterates over the out edges of the given entity
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.DynamicGraphShape.IsEdge(System.Reflection.PropertyInfo)">
+            <summary>
+            Indicates of the given property info represents an edge in this graph shape object.
+            </summary>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.DynamicGraphShape.GetNode(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Returns the object that is reachable from entity via the given edge.
+            </summary>
+            <param name="entity"></param>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RiaServicesContrib.DynamicGraphShape.GetNodes(System.Object,System.Reflection.PropertyInfo)">
+            <summary>
+            Returns the collection of objects that is reachable from entity via the given edge.
+            </summary>
+            <param name="entity"></param>
+            <param name="edge"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

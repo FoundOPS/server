@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using ReactiveUI;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using FoundOps.Common.Silverlight.Extensions.Telerik;
-using FoundOps.Common.Silverlight.Tools;
-using FoundOps.Common.Silverlight.Tools.Location;
+using Telerik.Windows.Controls.Map;
+using System.Collections.ObjectModel;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
-using GalaSoft.MvvmLight.Messaging;
-using ReactiveUI;
-using Telerik.Windows.Controls.Map;
+using FoundOps.Common.Silverlight.Tools.Location;
+using FoundOps.Common.Silverlight.Extensions.Telerik;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
@@ -49,7 +47,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             {
                 this.Points = new LocationCollection();
             }
-  
+
+            /// <summary>
+            /// Gets the points.
+            /// </summary>
             public LocationCollection Points
             {
                 get;
@@ -72,32 +73,33 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// </summary>
         protected void RefreshRouteMapView()
         {
-            foreach (var route in RouteMapVM.ShownRoutes)
-            {
-                //Create a MapPolyline for each route
-                var mapPolyline = new MapShapeItem {Route = route};
-
-                //Only show pinpoints for RouteDestinations that have locations
-                foreach (var routeDestination in route.RouteDestinations.Where(rd => rd.Location != null))
+            if (RouteMapVM.ShownRoutes != null)
+                foreach (var route in RouteMapVM.ShownRoutes)
                 {
-                    var routeDestinationControl = new ContentControl
-                                                      {
-                                                          ContentTemplate = (DataTemplate) this.Resources["RouteDestination"],
-                                                          Content = routeDestination,
-                                                          VerticalAlignment = VerticalAlignment.Top
-                                                      };
+                    //Create a MapPolyline for each route
+                    var mapPolyline = new MapShapeItem {Route = route};
 
-                    if (routeDestination.Location.TelerikLocation == null) return;
+                    //Only show pinpoints for RouteDestinations that have locations
+                    foreach (var routeDestination in route.RouteDestinations.Where(rd => rd.Location != null))
+                    {
+                        var routeDestinationControl = new ContentControl
+                                                          {
+                                                              ContentTemplate = (DataTemplate) this.Resources["RouteDestination"],
+                                                              Content = routeDestination,
+                                                              VerticalAlignment = VerticalAlignment.Top
+                                                          };
+
+                        if (routeDestination.Location.TelerikLocation == null) return;
                         MapLayer.SetLocation(routeDestinationControl, routeDestination.Location.TelerikLocation.Value);
                         InformationLayer.Items.Add(routeDestinationControl);
 
                         //Add a point to the polyline for each routeDestination
                         mapPolyline.Points.Add(routeDestination.Location.TelerikLocation.Value);
-                }
-                collection.Add(mapPolyline);
+                    }
+                    collection.Add(mapPolyline);
                 
-                InformationLayer2.ItemsSource = collection;
-            }
+                    InformationLayer2.ItemsSource = collection;
+                }
 
             InformationLayer.SetBestView();
         }
@@ -112,7 +114,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         private void MapTypeSelector_SelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (this.MapTypeSelector.SelectedIndex == 0)
-                Map.Provider = new OpenStreetMapProvider();  
+                Map.Provider = new OpenStreetMapProvider();
+                
             else
                 Map.Provider = new YahooMapsProvider(MapMode.Aerial);
         }

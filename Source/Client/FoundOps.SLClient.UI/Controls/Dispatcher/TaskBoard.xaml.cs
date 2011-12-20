@@ -1,10 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
-using FoundOps.SLClient.UI.ViewModels;
+using System.ComponentModel;
 using Telerik.Windows.Controls;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
+using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
@@ -31,7 +32,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// </summary>
         public ClientsVM ClientsVM
         {
-            get { return (ClientsVM)ClientsVMHolder.DataContext; }
+            get { return VM.Clients; }
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// </summary>
         public LocationsVM LocationsVM
         {
-            get { return (LocationsVM)LocationsVMHolder.DataContext; }
+            get { return VM.Locations; }
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// </summary>
         public RoutesVM RoutesVM
         {
-            get { return (RoutesVM)this.DataContext; }
+            get { return VM.Routes; }
         }
 
         #endregion
