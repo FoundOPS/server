@@ -161,26 +161,18 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
     <Reference Include="Telerik.Windows.Controls">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Data.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Data.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.DomainServices">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DomainServices.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.ScheduleView">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
-    </Reference>
-    <Reference Include="Telerik.Windows.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

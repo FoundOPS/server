@@ -132,33 +132,36 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.GridView">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.GridView.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Input">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Input.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Input.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Navigation">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Navigation.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Navigation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.RibbonBar">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.RibbonBar.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.RibbonBar.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.RibbonView">
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.RibbonView.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.ScheduleView">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Data">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows" />

@@ -152,6 +152,8 @@ namespace FoundOps.SLClient.UI.Controls.Services
         private object _lastItemScrolledTo;
         private void ScrollToMiddle(object item)
         {
+            return;
+
             if (item == null) return;
             //ScrollIntoViewAsync to allow the ItemContainerGenerator to generate the container, and scroll it to the top
             ServicesRadGridView.ScrollIntoViewAsync(item, (callback) =>
