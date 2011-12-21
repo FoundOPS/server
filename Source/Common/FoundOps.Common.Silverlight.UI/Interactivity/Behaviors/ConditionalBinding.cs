@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Data;
-using System.Reactive.Disposables;
 using System.Windows.Interactivity;
 using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.UI.Tools;
