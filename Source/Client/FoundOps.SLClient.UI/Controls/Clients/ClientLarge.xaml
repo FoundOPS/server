@@ -29,6 +29,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Location" />
                 <telerik:RadComboBox x:Name="LocationsComboBox" Grid.Row="1" MinWidth="120" StaysOpenOnEdit="True" IsEditable="True" 
+                                     EditableTemplate="{StaticResource SL5BugWorkaround}"
                                      ItemsSource="{Binding LocationsWithoutClient}" Text="{Binding LocationInCreation.Name, Mode=TwoWay}"
                                      DisplayMemberPath="Name" SelectedValue="{Binding SelectedEntity, Mode=TwoWay}" TextSearchMode="StartsWithCaseSensitive" />
                 <Button Grid.Row="2" Content="{Binding SelectedValue, ElementName=LocationsComboBox, Converter={StaticResource AddButtonTextConverter}}"
