@@ -5,7 +5,7 @@
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields"
              xmlns:my3="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM"
-             IsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}}">
+             Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>

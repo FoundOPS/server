@@ -5,7 +5,7 @@
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Maintenance="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles.Maintenance"
              xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="VehiclesVM" IsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}}">
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="VehiclesVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
         <Grid.RowDefinitions>

@@ -5,7 +5,7 @@
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Contacts1="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts"
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              mc:Ignorable="d" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="ContactsVM"
-             IsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}}">
+             Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
         <Grid.RowDefinitions>

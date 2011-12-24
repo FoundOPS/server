@@ -11,7 +11,7 @@
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
              xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools"
              xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" mc:Ignorable="d" 
-             d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" IsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}}">
+             d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
             <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
     <UserControl.Resources>
         <Converters:ClientTitleConverter x:Key="ClientTitleConverter" />
