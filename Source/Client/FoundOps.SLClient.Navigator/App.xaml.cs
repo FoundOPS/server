@@ -24,7 +24,7 @@ namespace FoundOps.SLClient.Navigator
 
             InitializeComponent();
         }
-        
+
         private void ApplicationStartup(object sender, StartupEventArgs e)
         {
             //Required for MEF
@@ -33,12 +33,18 @@ namespace FoundOps.SLClient.Navigator
             //Required for EntityFramework Validation
             MEFValidationRules.RegisterAssembly(typeof(LocationField).Assembly);
 
-            //Add IP Info to Resources
+            #region Add IP Info to Resources
+
             var ipAddressLocationQuery = String.Format("http://api.ipinfodb.com/v3/ip-city/?key={0}", "50191ba897c5677bc6a49f46f5da10787c7898f34b8a11d8e1c01546b8a08470");
             var ipGeocoderService = new WebClient();
-            ipGeocoderService.DownloadStringCompleted +=
-                (s, args) => Current.Resources.Add("IPInformation", args.Result);
+            ipGeocoderService.DownloadStringCompleted += (s, args) =>
+            {
+                if (args.Error != null) return;
+                Current.Resources.Add("IPInformation", args.Result);
+            };
             ipGeocoderService.DownloadStringAsync(new Uri(ipAddressLocationQuery));
+
+            #endregion
 
             this.RootVisual = new TextBlock(); //To Prevent ThreadableVM from having issues, first load another rootvisual
             this.RootVisual = new MainPage();

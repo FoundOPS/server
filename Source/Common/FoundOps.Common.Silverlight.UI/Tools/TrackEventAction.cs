@@ -130,6 +130,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         /// <param name="value">The value.</param>
         public static void Track(string category, string action, int value)
         {
+#if !DEBUG
             try
             {
                 HtmlPage.Window.Invoke("trackEvent", new object[] { category, action, value });
@@ -137,6 +138,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             catch
             {
             }
+#endif
         }
     }
 
