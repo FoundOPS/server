@@ -5916,14 +5916,14 @@
         </member>
         <member name="P:Telerik.Windows.Controls.SelectionChangeEventArgs.RemovedItems">
             <summary>
-            Gets a list that contains the items that were selected.
-            <value>Items that were selected</value>
+            Gets a list that contains the items that were unselected.
+            <value>Items that were unselected.</value>
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.SelectionChangeEventArgs.AddedItems">
             <summary>
-            Gets a list that contains the items that were unselected.
-            <value>Items that were unselected.</value>
+            Gets a list that contains the items that were selected.
+            <value>Items that were selected</value>
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.SelectionChangingEventArgs">

@@ -101,11 +101,11 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.GridViewCellBase"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.GridView.GridViewCellBase.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+        <member name="M:Telerik.Windows.Controls.GridView.GridViewCellBase.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
             <summary>
-            Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonUp"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+            Called when the user presses the left mouse button over the ListBoxItem. 
             </summary>
-            <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was released.</param>
+            <param name="e">The event data.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.GridView.GridViewCellBase.OnApplyTemplate">
             <summary>

@@ -5842,6 +5842,15 @@
             <param name="end">The end.</param>
             <param name="resources">The resources for the Slot.</param>
         </member>
+        <member name="M:Telerik.Windows.Controls.ScheduleView.Slot.#ctor(System.DateTime,System.DateTime,System.Collections.IEnumerable,System.TimeZoneInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ScheduleView.Slot"/> class.
+            </summary>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+            <param name="resources">The resources for the Slot.</param>
+            <param name="timeZone">The timeZone for the Slot.</param>
+        </member>
         <member name="M:Telerik.Windows.Controls.ScheduleView.Slot.#ctor(Telerik.Windows.Controls.ScheduleView.IDateSpan)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ScheduleView.Slot"/> class.

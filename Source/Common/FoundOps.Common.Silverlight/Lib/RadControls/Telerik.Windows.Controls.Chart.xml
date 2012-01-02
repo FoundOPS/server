@@ -1166,11 +1166,6 @@
             Gets the collection with all the series currently plotted by this instance.
             </summary>
         </member>
-        <member name="P:Telerik.Charting.ChartAreaModel.Indicators">
-            <summary>
-            Gets the collection with all the indicators currently plotted by this instance.
-            </summary>
-        </member>
         <member name="P:Telerik.Charting.ChartAreaModel.IsTreeLoaded">
             <summary>
             Determines whether the node is loaded.

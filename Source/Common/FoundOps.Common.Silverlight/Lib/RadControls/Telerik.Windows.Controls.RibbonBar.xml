@@ -1178,6 +1178,21 @@
             This is a dependency property.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.RibbonCommands">
+            <summary>
+            Available Ribbon Routed commands.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RibbonCommands.MinimizeRibbonCommand">
+            <summary>
+            Gets the Minimize ribbon routed command.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RibbonCommands.ToggleQATPositionCommand">
+            <summary>
+            Gets the Toggle ribbon's QAT position routed command.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.RibbonBar.KeyTipActivation">
             <summary>
             Class used to attach event handlers to execute when key tip is activated.

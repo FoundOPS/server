@@ -6406,11 +6406,6 @@
             Identifies the RoleKey dependency property.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.RadMenuItem.IsSubmenuOpenPropertyKey">
-            <summary>
-            Identifies the IsSubmenuOpen dependency property.
-            </summary>
-        </member>
         <member name="F:Telerik.Windows.Controls.RadMenuItem.IsHighlightedPropertyKey">
             <summary>
             Identifies the IsHighlighted dependency property.

@@ -289,6 +289,12 @@
             Identifies the SelectedPane dependency property.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.Docking.PaneGroupBase.OnGotFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.GotFocus"/> event occurs.
+            </summary>
+            <param name="e">The event data.</param>
+        </member>
         <member name="M:Telerik.Windows.Controls.Docking.PaneGroupBase.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadDocking"/> class.
@@ -782,6 +788,11 @@
         <member name="M:Telerik.Windows.Controls.Docking.PaneHeader.OnApplyTemplate">
             <summary>
             When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Docking.PaneHeader.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            When Left button up on RadPaneHeader the RadPaneGroup is focused if the focus is not within it.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.Docking.PaneHeader.OnCreateAutomationPeer">
