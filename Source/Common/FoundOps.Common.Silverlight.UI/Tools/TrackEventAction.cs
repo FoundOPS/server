@@ -91,6 +91,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
 
         protected override void Invoke(object parameter)
         {
+#if !DEBUG
             try
             {
                 HtmlPage.Window.Invoke("trackEvent", new object[] { Category, Action, Label, Value });
@@ -98,6 +99,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             catch
             {
             }
+#endif
         }
 
         /// <summary>
@@ -109,6 +111,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         /// /// <param name="value">The value.</param>
         public static void Track(string category, string action, string label, int value)
         {
+#if !DEBUG
             try
             {
                 HtmlPage.Window.Invoke("trackEvent", new object[] { category, action, label, value });
@@ -116,6 +119,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             catch
             {
             }
+#endif
         }
 
         /// <summary>
