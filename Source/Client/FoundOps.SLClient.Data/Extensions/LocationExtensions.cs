@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.ServiceModel.DomainServices.Client;
 using ReactiveUI;
 using RiaServicesContrib;
 using System.ComponentModel;
@@ -87,12 +88,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets the entity graph of Location to remove.
         /// </summary>
-        public EntityGraph<Location> EntityGraphToRemove
+        public EntityGraph<Entity> EntityGraphToRemove
         {
             get
             {
                 var graphShape = new EntityGraphShape().Edge<Location, ContactInfo>(location => location.ContactInfoSet);
-                return new EntityGraph<Location>(this, graphShape);
+                return new EntityGraph<Entity>(this, graphShape);
             }
         }
     }

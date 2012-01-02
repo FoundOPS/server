@@ -21,6 +21,7 @@ using Microsoft.Windows.Data.DomainServices;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
 using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -622,7 +623,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Detach all related entities to RouteTasks that are not part of a route (do not have a RouteDestination) except the ones to keep
             //You must exclude the ones to keep (because existing entities will become new ones if you detach and add them)
-            DataManager.DetachEntities(Context.RouteTasks.Where(rt => rt.RouteDestination == null).Except(routeTasksToKeep).SelectMany(rt => new EntityGraph<RouteTask>(rt, rt.EntityGraphWithServiceShape)));
+            DataManager.DetachEntities(Context.RouteTasks.Where(rt => rt.RouteDestination == null).Except(routeTasksToKeep).SelectMany(rt => new EntityGraph<Entity>(rt, rt.EntityGraphWithServiceShape)));
 
             _loadedRouteTasks.OnNext(routeTasksToKeep);
         }
