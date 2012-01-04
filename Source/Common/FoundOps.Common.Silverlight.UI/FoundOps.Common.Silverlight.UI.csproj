@@ -175,6 +175,9 @@
     <Compile Include="Controls\AddEditDelete\AddDelete.xaml.cs">
       <DependentUpon>AddDelete.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AddEditDelete\AddToDeleteFrom.xaml.cs">
+      <DependentUpon>AddToDeleteFrom.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AddEditDelete\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
     </Compile>
@@ -356,6 +359,10 @@
     <Page Include="Controls\AddEditDelete\AddDelete.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\AddEditDelete\AddToDeleteFrom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\AddEditDelete\EditButton.xaml">
       <Generator>MSBuild:Compile</Generator>

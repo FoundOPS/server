@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using FoundOps.Common.Silverlight.MVVM.Messages;
-using FoundOps.Server.Services.CoreDomainService;
 using ReactiveUI;
 using ReactiveUI.Xaml;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Common.Silverlight.UI.ViewModels;
 using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Silverlight.MVVM.Messages;
+using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.Data.ViewModels
 {
