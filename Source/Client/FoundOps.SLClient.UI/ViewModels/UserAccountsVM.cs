@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Reactive.Linq;
 using System.ComponentModel;
@@ -12,6 +13,7 @@ using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.Services;
 using Microsoft.Windows.Data.DomainServices;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -19,8 +21,19 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the UserAccounts
     /// </summary>
     [ExportViewModel("UserAccountsVM")]
-    public class UserAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party> //Base class is Party because DomainCollectionView does not work well with inheritance
+    public class UserAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, IAddToDeleteFromProvider //Base class is Party because DomainCollectionView does not work well with inheritance
     {
+        #region Implementation of IAddToDeleteFromProvider
+
+        public IEnumerable ExistingItemsSource { get { return DomainCollectionView; } }
+
+        private readonly Func<string, object> _createNewItemFromString;
+        public Func<string, object> CreateNewItemFromString { get { return _createNewItemFromString; } }
+
+        public string MemberPath { get { return "DisplayName"; } }
+
+        #endregion
+
         /// <summary>
         /// Gets the object type provided (for the InfiniteAccordion). Overriden because base class is Party.
         /// </summary>
@@ -44,7 +57,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             var loadedUserAccounts = DataManager.GetEntityListObservable<Party>(DataManager.Query.UserAccounts);
 
-            ////Whenever the BusinessAccount context changes, and when the loaded UserAccounts changes, update the DCV
+            //Whenever the BusinessAccount context changes, and when the loaded UserAccounts changes, update the DCV
             ContextManager.GetContextObservable<BusinessAccount>().AsGeneric().Merge(loadedUserAccounts.AsGeneric())
                 .Throttle(TimeSpan.FromMilliseconds(200))
                 .ObserveOnDispatcher().Subscribe(_ =>
@@ -60,13 +73,48 @@ namespace FoundOps.SLClient.UI.ViewModels
                     this.DomainCollectionViewObservable.OnNext(DomainCollectionViewFactory<Party>.GetDomainCollectionView(new EntityList<Party>(Context.Parties, setOfUserAccounts)));
                 });
 
-            //Whenever the DCV changes, sort by Name and select the first entity
+            //Whenever the DCV changes:
+            //a) sort by Name 
+            //b) select the first entity
             this.DomainCollectionViewObservable.Throttle(TimeSpan.FromMilliseconds(300)) //wait for UI to load
                 .ObserveOnDispatcher().Subscribe(dcv =>
                 {
+                    //a) sort by Name 
                     dcv.SortDescriptions.Add(new SortDescription("DisplayName", ListSortDirection.Ascending));
+                    //b) select the first entity
                     this.SelectedEntity = this.DomainCollectionView.FirstOrDefault();
+
                 });
+
+            #endregion
+
+            #region Implementation of IAddToDeleteFromProvider
+
+            //Whenever the DCV changes notify ExistingItemsSource changed
+            this.DomainCollectionViewObservable.ObserveOnDispatcher().Subscribe(dcv => RaisePropertyChanged("ExistingItemsSource"));
+
+            _createNewItemFromString = name =>
+            {
+                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword() };
+
+                //Try to guess the name
+                if (!String.IsNullOrEmpty(name))
+                {
+                    var firstLastName = name.Split(' ');
+                    if (firstLastName.Count() == 2)
+                    {
+                        newUserAccount.FirstName = firstLastName.First();
+                        newUserAccount.LastName = firstLastName.Last();
+                    }
+                    else
+                        newUserAccount.FirstName = name;
+                }
+
+                //Add the new entity to the EntityList so it gets tracked/saved
+                ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newUserAccount);
+
+                return _createNewItemFromString;
+            };
 
             #endregion
         }
@@ -76,9 +124,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Must override or else it will create a Party
         protected override Party AddNewEntity(object commandParameter)
         {
-            var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword() };
-            ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newUserAccount);
-            return newUserAccount;
+            //Reuse the _createNewItemFromString method
+            return (Party)_createNewItemFromString("");
         }
 
         protected override void OnAddEntity(Party newUserAccount)

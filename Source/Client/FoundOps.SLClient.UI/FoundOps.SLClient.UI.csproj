@@ -258,10 +258,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Account\Business\BusinessDetailsView.xaml.cs">
+    <Compile Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml.cs">
       <DependentUpon>BusinessDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Account\Person\PersonDetailsEdit.xaml.cs">
+    <Compile Include="Controls\Parties\Person\PersonDetailsEdit.xaml.cs">
       <DependentUpon>PersonDetailsEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Clients\ClientLarge.xaml.cs">
@@ -619,11 +619,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Account\Business\BusinessDetailsView.xaml">
+    <Page Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Account\Person\PersonDetailsEdit.xaml">
+    <Page Include="Controls\Parties\Person\PersonDetailsEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

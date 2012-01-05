@@ -23,6 +23,6 @@
                 </telerik:RadContextMenu>
             </telerik:RadContextMenu.ContextMenu>
         </Button>
-        <Button  Margin="2" x:Name="DeleteButton" Command="{Binding DeleteCommand}" CommandParameter="{Binding CommandParameter}" Style="{StaticResource DeleteButtonStyle}"  ToolTipService.ToolTip="Delete"/>
+        <Button  Margin="2" x:Name="DeleteButton" ToolTipService.ToolTip="Delete" Click="DeleteButtonClick" Command="{Binding DeleteCommand}" CommandParameter="{Binding CommandParameter}" Style="{StaticResource DeleteButtonStyle}"/>
     </StackPanel>
 </UserControl>

@@ -35,7 +35,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Setup the selected contact's OwnedPerson PartyVM whenever the selected contact changes
             _selectedContactPersonVM =
-                SelectedEntityObservable.Where(se => se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
+                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
                 .ToProperty(this, x => x.SelectedContactPersonVM);
         }
 
