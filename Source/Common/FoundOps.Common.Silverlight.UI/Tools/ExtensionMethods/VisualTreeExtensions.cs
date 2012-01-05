@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace FoundOps.Common.Silverlight.Tools
+namespace FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods
 {
     public static class VisualTreeExtensions
     {

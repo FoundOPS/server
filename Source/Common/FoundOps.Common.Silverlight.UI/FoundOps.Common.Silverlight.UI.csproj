@@ -332,10 +332,14 @@
     <Compile Include="Tools\MarkupExtensions\AreEqual.cs" />
     <Compile Include="Tools\MarkupExtensions\DataContextEquals.cs" />
     <Compile Include="Tools\MarkupExtensions\ItemExistsInCollection.cs" />
+    <Compile Include="Tools\MarkupExtensions\MarkupExtensionHelpers.cs" />
+    <Compile Include="Tools\MarkupExtensions\Resolver.cs" />
     <Compile Include="Tools\MarkupExtensions\StaticMarkupExtensions.cs" />
     <Compile Include="Tools\MarkupExtensions\UpdatableMarkupExtensions.cs" />
     <Compile Include="Controls\EditRadioButtonColumn.cs" />
+    <Compile Include="Tools\MarkupExtensions\VisualTreeMarkupExtensions.cs" />
     <Compile Include="Tools\TrackEventAction.cs" />
+    <Compile Include="Tools\ExtensionMethods\VisualTreeExtensions.cs" />
     <Compile Include="ViewModels\IAddDeleteCommands.cs" />
     <Compile Include="ViewModels\ISaveDiscardChangesCommands.cs" />
     <Compile Include="ViewModels\ThreadableVM.cs" />

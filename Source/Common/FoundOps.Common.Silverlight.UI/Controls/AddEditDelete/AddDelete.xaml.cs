@@ -308,19 +308,20 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
             AddButton.Click += (s, args) =>
             {
-                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) || RadContextMenu.IsOpen)
+                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplateDelete) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) || RadContextMenu.IsOpen)
                     return;
 
                 //When the AddButton is clicked open the RadContextMenu and
                 RadContextMenu.IsOpen = true;
 
                 //create the default item
-                CustomAddMenuItem.Content = CreateNewItem.Invoke();
+                if (CreateNewItem != null)
+                    CustomAddMenuItem.Content = CreateNewItem.Invoke();
             };
 
             RadContextMenu.Closed += (s, args) =>
             {
-                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate)) return;
+                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplateDelete) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate)) return;
 
                 var item = CustomAddMenuItem.Content;
 
@@ -329,8 +330,11 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
                 //if the currentItem was not added, remove it
                 if (!_currentItemAdded)
                 {
-                    RemoveCurrentItem.Invoke(item);
-                    return;
+                    if (RemoveCurrentItem != null)
+                    {
+                        RemoveCurrentItem.Invoke(item);
+                        return;
+                    }
                 }
 
                 //if the currentItem was added, call Add && AddCommand.Execute

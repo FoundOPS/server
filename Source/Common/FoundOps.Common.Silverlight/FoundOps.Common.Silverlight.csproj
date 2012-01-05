@@ -233,7 +233,6 @@
     <Compile Include="Tools\ExtensionMethods\ItemsControlExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\Rxx3.cs" />
     <Compile Include="Tools\ExtensionMethods\ValidationExtensions.cs" />
-    <Compile Include="Tools\ExtensionMethods\VisualTreeExtensions.cs" />
     <Compile Include="Tools\FileManager.cs" />
     <Compile Include="Tools\Location\MapTools.cs" />
     <Compile Include="Tools\Location\StateUtilities.cs" />

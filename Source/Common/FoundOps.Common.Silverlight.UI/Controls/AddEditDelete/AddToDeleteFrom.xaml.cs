@@ -98,8 +98,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
             //Set the AddDelete's AddButton visibility
             c.AddDelete.AddButton.Visibility = addMode == AddMode.None
-                                                   ? Visibility.Visible
-                                                   : Visibility.Collapsed;
+                                                   ? Visibility.Collapsed
+                                                   : Visibility.Visible;
 
             //Set the AddDelete's AddDeleteMode
             c.AddDelete.AddDeleteMode = addMode != AddMode.AddNewExisting
@@ -138,7 +138,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
             var deleteMode = (AddMode)e.NewValue;
 
             //Set the DeleteButton visibility
-            c.AddDelete.DeleteButton.Visibility = deleteMode == AddMode.None ? Visibility.Visible : Visibility.Collapsed;
+            c.AddDelete.DeleteButton.Visibility = deleteMode == AddMode.None ? Visibility.Collapsed : Visibility.Visible;
         }
 
         #endregion
@@ -196,7 +196,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public object SelectedExistingItem
         {
-            get { return (object) GetValue(SelectedExistingItemProperty); }
+            get { return (object)GetValue(SelectedExistingItemProperty); }
             set { SetValue(SelectedExistingItemProperty, value); }
         }
 
@@ -206,8 +206,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         public static readonly DependencyProperty SelectedExistingItemProperty =
             DependencyProperty.Register(
                 "SelectedExistingItem",
-                typeof (object),
-                typeof (AddToDeleteFrom),
+                typeof(object),
+                typeof(AddToDeleteFrom),
                 new PropertyMetadata(null));
 
         #endregion
@@ -219,7 +219,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public string ExistingItemsComboBoxText
         {
-            get { return (string) GetValue(ExistingItemsComboBoxTextProperty); }
+            get { return (string)GetValue(ExistingItemsComboBoxTextProperty); }
             set { SetValue(ExistingItemsComboBoxTextProperty, value); }
         }
 
@@ -229,8 +229,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         public static readonly DependencyProperty ExistingItemsComboBoxTextProperty =
             DependencyProperty.Register(
                 "ExistingItemsComboBoxText",
-                typeof (string),
-                typeof (AddToDeleteFrom),
+                typeof(string),
+                typeof(AddToDeleteFrom),
                 new PropertyMetadata(null));
 
         #endregion
@@ -287,12 +287,12 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         private void AddNewButtonClick(object sender, RoutedEventArgs e)
         {
-            if(Provider == null)return;
+            if (Provider == null) return;
 
-            Provider.CreateNewItemFromString("");
+            var newItem = Provider.CreateNewItemFromString("");
 
             dynamic addableCollection = Collection;
-            addableCollection.Add(SelectedExistingItem);
+            addableCollection.Add(newItem);
         }
 
         private void AddExistingButtonClick(object sender, RoutedEventArgs e)
