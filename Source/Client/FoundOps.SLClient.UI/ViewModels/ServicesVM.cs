@@ -157,7 +157,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Select the clientContext.RecurringServices changes
                           clientContext.RecurringServices.Select(rs => rs.RepeatChangedObservable()).Merge()
                               //whenever the clientContext.RecurringServices Collection changes
-                      .Merge(clientContext.RecurringServices.FromCollectionChanged()
+                      .Merge(clientContext.RecurringServices.FromEntityCollectionChanged()
                               //Delay to allow Repeat association to be set
                       .Delay(new TimeSpan(0, 0, 0, 0, 250))
                               //Also choose the clientContext.RecurringServices changes from

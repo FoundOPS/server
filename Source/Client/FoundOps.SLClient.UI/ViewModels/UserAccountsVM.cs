@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Tools;
+using ReactiveUI;
 using System.Linq;
+using System.Collections;
 using System.Reactive.Linq;
 using System.ComponentModel;
-using FoundOps.Common.Tools;
 using System.Collections.Generic;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.SLClient.Data.Services;
@@ -21,16 +23,24 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the UserAccounts
     /// </summary>
     [ExportViewModel("UserAccountsVM")]
-    public class UserAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, IAddToDeleteFromProvider //Base class is Party because DomainCollectionView does not work well with inheritance
+    public class UserAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, IAddToDeleteFromSource //Base class is Party because DomainCollectionView does not work well with inheritance
     {
-        #region Implementation of IAddToDeleteFromProvider
+        #region Properties and Variables
 
-        public IEnumerable ExistingItemsSource { get { return DomainCollectionView; } }
+        #region Public
 
-        private readonly Func<string, object> _createNewItemFromString;
-        public Func<string, object> CreateNewItemFromString { get { return _createNewItemFromString; } }
+        #region Implementation of IAddToDeleteFromSource
+
+        private readonly ObservableAsPropertyHelper<IEnumerable> _loadedUserAccounts;
+        public IEnumerable ExistingItemsSource { get { return _loadedUserAccounts.Value; } }
 
         public string MemberPath { get { return "DisplayName"; } }
+
+        private readonly Func<string, object> _createNewItemFromString;
+        /// <summary>
+        /// A function to create a new item from a string.
+        /// </summary>
+        public Func<string, object> CreateNewItemFromString { get { return _createNewItemFromString; } }
 
         #endregion
 
@@ -41,6 +51,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             get { return typeof(UserAccount); }
         }
+
+        #endregion
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAccountsVM"/> class.
@@ -57,8 +71,21 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             var loadedUserAccounts = DataManager.GetEntityListObservable<Party>(DataManager.Query.UserAccounts);
 
-            //Whenever the BusinessAccount context changes, and when the loaded UserAccounts changes, update the DCV
-            ContextManager.GetContextObservable<BusinessAccount>().AsGeneric().Merge(loadedUserAccounts.AsGeneric())
+            //Update the DCV
+            //a) the loaded UserAccounts changes
+            //b) whenever the BusinessAccount context changes
+            //c) the BusinessAccount context OwnedRoles changes
+            //d) the BusinessAccount context OwnedRoles' MemberParties changes
+
+            //a) the loaded UserAccounts changes
+            loadedUserAccounts.AsGeneric().Merge(
+                ContextManager.GetContextObservable<BusinessAccount>().Where(ba => ba != null)
+                .SelectMany(ba =>//c) the BusinessAccount context OwnedRoles changes
+                                ba.OwnedRoles.FromEntityCollectionChangedGenericAndNow()
+                                .SelectMany(_ => //d) the BusinessAccount context OwnedRoles' MemberParties changes
+                                                ba.OwnedRoles.Select(or => or.MemberParties.FromCollectionChangedEventGenericAndNow()).Merge()))
+                //b) whenever the BusinessAccount context changes
+                 .AndNow())
                 .Throttle(TimeSpan.FromMilliseconds(200))
                 .ObserveOnDispatcher().Subscribe(_ =>
                 {
@@ -83,15 +110,14 @@ namespace FoundOps.SLClient.UI.ViewModels
                     dcv.SortDescriptions.Add(new SortDescription("DisplayName", ListSortDirection.Ascending));
                     //b) select the first entity
                     this.SelectedEntity = this.DomainCollectionView.FirstOrDefault();
-
                 });
 
             #endregion
 
             #region Implementation of IAddToDeleteFromProvider
 
-            //Whenever the DCV changes notify ExistingItemsSource changed
-            this.DomainCollectionViewObservable.ObserveOnDispatcher().Subscribe(dcv => RaisePropertyChanged("ExistingItemsSource"));
+            //Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
+            _loadedUserAccounts = loadedUserAccounts.ToProperty(this, x => x.ExistingItemsSource);
 
             _createNewItemFromString = name =>
             {
@@ -113,7 +139,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Add the new entity to the EntityList so it gets tracked/saved
                 ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newUserAccount);
 
-                return _createNewItemFromString;
+                return newUserAccount;
             };
 
             #endregion

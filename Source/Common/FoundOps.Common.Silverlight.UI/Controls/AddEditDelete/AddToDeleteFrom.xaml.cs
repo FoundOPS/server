@@ -41,24 +41,48 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         RemoveOrDeletePrompt
     }
 
-    public interface IAddToDeleteFromProvider : INotifyPropertyChanged
+    /// <summary>
+    /// The source of items for the AddToDeleteFrom control
+    /// </summary>
+    public interface IAddToDeleteFromSource : INotifyPropertyChanged
     {
+        /// <summary>
+        /// A function to create a new item from a string.
+        /// </summary>
+        Func<string, object> CreateNewItemFromString { get; }
+
         /// <summary>
         /// Returns the existing items.
         /// </summary>
         IEnumerable ExistingItemsSource { get; }
 
         /// <summary>
-        /// The function is called to create a new item.
-        /// It is passed the value of the combobox text.
-        /// Note: Make sure to add it to a list for tracking as well if necessary for storage.
-        /// </summary>
-        Func<string, object> CreateNewItemFromString { get; }
-
-        /// <summary>
         /// The member path to be used for searching and displaying existing items.
         /// </summary>
         string MemberPath { get; }
+    }
+
+    /// <summary>
+    /// The provider for the AddToDeleteFrom control
+    /// </summary>
+    public interface IAddToDeleteFromProvider : INotifyPropertyChanged
+    {
+        /// <summary>
+        /// The function is called to add a new item from a string.
+        /// It is passed the value of the combobox text.
+        /// </summary>
+        Action<string> AddNewItemFromString { get; }
+
+        /// <summary>
+        /// The function is called to add an existing item.
+        /// It is passed the existing item.
+        /// </summary>
+        Action<object > AddExistingItem { get; }
+
+        /// <summary>
+        /// Returns the destination items source.
+        /// </summary>
+        IEnumerable DestinationItemsSource { get; }
     }
 
     /// <summary>
@@ -143,37 +167,14 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        #region Collection Dependency Property
-
-        /// <summary>
-        /// The collection to add objects to or remove from.
-        /// </summary>
-        public IEnumerable Collection
-        {
-            get { return (IEnumerable)GetValue(CollectionProperty); }
-            set { SetValue(CollectionProperty, value); }
-        }
-
-        /// <summary>
-        /// Collection Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty CollectionProperty =
-            DependencyProperty.Register(
-                "Collection",
-                typeof(IEnumerable),
-                typeof(AddToDeleteFrom),
-                new PropertyMetadata(null));
-
-        #endregion
-
         #region Provider Dependency Property
 
         /// <summary>
-        /// A provider of the objects to Create New or choose Existing from.
+        /// Provider
         /// </summary>
         public IAddToDeleteFromProvider Provider
         {
-            get { return (IAddToDeleteFromProvider)GetValue(ProviderProperty); }
+            get { return (IAddToDeleteFromProvider) GetValue(ProviderProperty); }
             set { SetValue(ProviderProperty, value); }
         }
 
@@ -183,8 +184,31 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         public static readonly DependencyProperty ProviderProperty =
             DependencyProperty.Register(
                 "Provider",
-                typeof(IAddToDeleteFromProvider),
-                typeof(AddToDeleteFrom),
+                typeof (IAddToDeleteFromProvider),
+                typeof (AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+
+        #region Source Dependency Property
+
+        /// <summary>
+        /// Source
+        /// </summary>
+        public IAddToDeleteFromSource Source
+        {
+            get { return (IAddToDeleteFromSource) GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
+
+        /// <summary>
+        /// Source Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty SourceProperty =
+            DependencyProperty.Register(
+                "Source",
+                typeof (IAddToDeleteFromSource),
+                typeof (AddToDeleteFrom),
                 new PropertyMetadata(null));
 
         #endregion
@@ -256,7 +280,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
                 case AddMode.None:
                     return;
                 case AddMode.Add:
-
+                    if (Provider == null) return;
+                    Provider.AddNewItemFromString(ExistingItemsComboBoxText);
                     break;
                 case AddMode.AddNewExisting:
                     return; //This logic is handled in the AddMode.AddNewExisting region below
@@ -289,18 +314,14 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         {
             if (Provider == null) return;
 
-            var newItem = Provider.CreateNewItemFromString("");
-
-            dynamic addableCollection = Collection;
-            addableCollection.Add(newItem);
+            Provider.AddNewItemFromString(ExistingItemsComboBoxText);
         }
 
         private void AddExistingButtonClick(object sender, RoutedEventArgs e)
         {
-            if (SelectedExistingItem == null) return;
+            if (Provider == null || SelectedExistingItem == null) return;
 
-            dynamic addableCollection = Collection;
-            addableCollection.Add(SelectedExistingItem);
+            Provider.AddExistingItem(SelectedExistingItem);
         }
 
         #endregion

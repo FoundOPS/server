@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using FoundOps.Common.Composite.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
-using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Tools
 {

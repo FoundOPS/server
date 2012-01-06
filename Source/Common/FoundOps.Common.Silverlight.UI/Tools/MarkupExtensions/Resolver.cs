@@ -1,4 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.Tools;
@@ -7,6 +10,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {
     /// <summary>
     /// Resolves a property on a source
+    /// TODO: Change PropertyName->Path. Add property change tracking on PropertyName
     /// </summary>
     public class Resolver : UpdatableMarkupExtension<object>
     {
@@ -77,20 +81,18 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 
         private object ResolverHelper(object source, string propertyName)
         {
-            if (String.IsNullOrEmpty(propertyName))
+            if (source == null) return null;
+
+            var value = source;
+            var properties = propertyName.Split('.');
+
+            foreach (var propName in properties)
             {
-                UpdateValue(source);
-                return source;
+                value = value.GetProperty<object>(propName);
             }
 
-            if (source != null)
-            {
-                var val = source.GetProperty<object>(propertyName);
-                UpdateValue(val);
-                return val;
-            }
-
-            return null;
+            UpdateValue(value);
+            return value;
         }
     }
 }

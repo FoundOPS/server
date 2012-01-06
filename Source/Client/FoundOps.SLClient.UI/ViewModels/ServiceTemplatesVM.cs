@@ -164,7 +164,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             var serviceTemplatesForClient =
                 selectServiceTemplateObservable.Merge(ContextManager.GetContextObservable<Client>().Where(c => c != null)
-                .SelectMany(c => c.ServiceTemplates.FromCollectionChanged()).Select(_ => LoadedServiceTemplates)).Throttle(new TimeSpan(0, 0, 0, 0, 250))
+                .SelectMany(c => c.ServiceTemplates.FromEntityCollectionChanged()).Select(_ => LoadedServiceTemplates)).Throttle(new TimeSpan(0, 0, 0, 0, 250))
                 .Select(lsts =>
                 {
                     var clientContext = ContextManager.GetContext<Client>();

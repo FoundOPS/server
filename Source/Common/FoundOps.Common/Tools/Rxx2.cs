@@ -34,6 +34,16 @@ namespace FoundOps.Common.Tools
             return collection.FromCollectionChangedEvent().AsGeneric();
         }
 
+
+        /// <summary>
+        /// Creates an Observable of bool whenever a collection changes.
+        /// </summary>
+        /// <param name="collection">The collection.</param>
+        public static IObservable<bool> FromCollectionChangedEventGenericAndNow(this INotifyCollectionChanged collection)
+        {
+            return collection.FromCollectionChangedEvent().AsGeneric().AndNow();
+        }
+
         #endregion
 
         #region FromCollectionChangedOrSet
@@ -75,6 +85,17 @@ namespace FoundOps.Common.Tools
         public static IObservable<PropertyChangedEventArgs> FromAnyPropertyChanged<T>(this T obj) where T : INotifyPropertyChanged
         {
             return Observable.FromEventPattern<PropertyChangedEventArgs>(obj, "PropertyChanged").Select(ep => ep.EventArgs);
+        }
+
+        /// <summary>
+        /// Creates an Observable of PropertyChangedEventArgs from a class which implements INotifyPropertyChanged.
+        /// </summary>
+        /// <typeparam name="T">Must implement INotifyPropertyChanged.</typeparam>
+        /// <param name="obj">The obj to create the PropertyChangedEventArgs observable.</param>
+        /// <param name="propertyName">The name of the property changes to observe.</param>
+        public static IObservable<PropertyChangedEventArgs> FromPropertyChanged<T>(this T obj, string propertyName) where T : INotifyPropertyChanged
+        {
+            return obj.FromAnyPropertyChanged().Where(p => p.PropertyName == propertyName);
         }
 
         #region Web Requests

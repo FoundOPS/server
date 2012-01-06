@@ -118,25 +118,23 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        //Locals
-        private readonly ILocationsDataService _locationsDataService;
+        #region Locals
 
         //The loaded locations entity list observable
         private readonly IObservable<EntityList<Location>> _loadedLocations;
         private readonly ObservableAsPropertyHelper<EntityList<Location>> _loadedLocationsProperty;
         private EntityList<Location> LoadedLocations { get { return _loadedLocationsProperty.Value; } }
 
+        #endregion
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationsVM"/> class.
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
-        /// <param name="locationsDataService">The locations data service.</param>
         [ImportingConstructor]
-        public LocationsVM(DataManager dataManager, ILocationsDataService locationsDataService)
+        public LocationsVM(DataManager dataManager)
             : base(dataManager)
         {
-            _locationsDataService = locationsDataService;
-
             //Subscribe to the locations query
             IsLoadingObservable = DataManager.Subscribe<Location>(DataManager.Query.Locations, this.ObservationState, null);
 
@@ -206,7 +204,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Hookup _selectedSubLocationsVM to SelectedSubLocationsVMObservable
             _selectedSubLocationsVM =
-                SelectedSubLocationsVMObservable.ToProperty(this, x => x.SelectedSubLocationsVM, new SubLocationsVM(dataManager, locationsDataService, SelectedEntity));
+                SelectedSubLocationsVMObservable.ToProperty(this, x => x.SelectedSubLocationsVM, new SubLocationsVM(dataManager, SelectedEntity));
 
             //Whenever the SelectedEntity changes: create a new LocationVM and SubLocationsVM; update the SearchText
             SelectedEntityObservable.ObserveOnDispatcher().Subscribe(selectedLocation =>
@@ -219,10 +217,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                 }
 
                 //Create a new LocationVM
-                _selectedLocationVMObservable.OnNext(new LocationVM(selectedLocation, dataManager, locationsDataService));
+                _selectedLocationVMObservable.OnNext(new LocationVM(selectedLocation, dataManager));
 
                 //Create a new SubLocationsVM
-                _selectedSubLocationsVMObservable.OnNext(new SubLocationsVM(DataManager, _locationsDataService, selectedLocation));
+                _selectedSubLocationsVMObservable.OnNext(new SubLocationsVM(DataManager, selectedLocation));
             });
 
             #endregion
@@ -247,7 +245,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             var fileName = String.Format("LocationsExport {0}.csv", DateTime.Now.ToString("MM'-'dd'-'yyyy"));
             var saveFileDialog = new SaveFileDialog { DefaultFileName = fileName, DefaultExt = ".csv", Filter = "CSV File|*.csv" };
 
-            if(saveFileDialog.ShowDialog() == true)
+            if (saveFileDialog.ShowDialog() == true)
             {
                 using (var fileWriter = new StreamWriter(saveFileDialog.OpenFile()))
                 {

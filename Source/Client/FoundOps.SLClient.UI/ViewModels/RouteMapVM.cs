@@ -35,19 +35,14 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         // Local Variables
 
-        private readonly IRouteDataService _routeDataService;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteMapVM"/> class.
         /// </summary>
-        /// <param name="routeDataService">The route data service.</param>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public RouteMapVM(IRouteDataService routeDataService, DataManager dataManager)
+        public RouteMapVM(DataManager dataManager)
             : base(false, dataManager)
         {
-            _routeDataService = routeDataService;
-
             //Register Commands
             ManuallySetLatitudeLongitude = new RelayCommand<Tuple<decimal, decimal>>(OnManuallySetLatitudeLongitude, (latitudeLongitude) => true);
 

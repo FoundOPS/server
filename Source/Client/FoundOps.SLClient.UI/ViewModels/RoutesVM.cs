@@ -424,10 +424,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //whenever loadedRoutes is changed or set
                 loadedRoutesChanged.FromCollectionChangedOrSet().SelectMany(lrs =>
                     //whenever loadedRoutes.RouteDestinations is changed (and now)
-                  lrs.Select(lr => lr.RouteDestinations.NowAndWhenCollectionChanged()
+                  lrs.Select(lr => lr.RouteDestinations.NowAndWhenEntityCollectionChanged()
                       //whenever the loadedRoutes.RouteDestinations.RouteTasks is changed (and now)
                       .SelectMany(routeDestinations =>
-                          routeDestinations.Select(rd => rd.RouteTasks.NowAndWhenCollectionChanged())
+                          routeDestinations.Select(rd => rd.RouteTasks.NowAndWhenEntityCollectionChanged())
                           .Merge()) //Merge loadedRoutes.RouteDestinations.RouteTasks collection changed events
                         ).Merge() //Merge loadedRoutes.RouteDestinations collection changed events
                        ).AsGeneric()

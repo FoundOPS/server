@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Reactive.Linq;
+using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
@@ -16,9 +19,21 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying BusinessAccounts
     /// </summary>
     [ExportViewModel("BusinessAccountsVM")]
-    public class BusinessAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party> //Base class is Party because DomainCollectionView does not work well with inheritance
+    public class BusinessAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, IAddToDeleteFromProvider //Base class is Party because DomainCollectionView does not work well with inheritance
     {
         #region Public
+
+        #region Implementation of IAddToDeleteFromProvider
+
+        private readonly Action<string> _addNewItemFromString;
+        public Action<string> AddNewItemFromString { get { return _addNewItemFromString; } }
+
+        private readonly Action<object> _addExistingItem;
+        public Action<object> AddExistingItem { get { return _addExistingItem; } }
+
+        public IEnumerable DestinationItemsSource { get { return SelectedEntity.FirstOwnedRole.MemberParties; } }
+
+        #endregion
 
         /// <summary>
         /// Gets the object type provided (for the InfiniteAccordion). Overriden because base class is Party.
@@ -56,6 +71,26 @@ namespace FoundOps.SLClient.UI.ViewModels
             : base(dataManager, true)
         {
             SetupMainQuery(DataManager.Query.BusinessAccounts);
+
+            #region Implementation of IAddToDeleteFromSource
+
+            //Whenever the SelectedEntity changes, notify the DestinationItemsSource changed
+            this.SelectedEntityObservable.ObserveOnDispatcher().Subscribe(
+                _ => this.RaisePropertyChanged("DestinationItemsSource"));
+
+            _addNewItemFromString = name =>
+            {
+                var newUserAccount = (Party)VM.UserAccounts.CreateNewItemFromString(name);
+                this.SelectedEntity.FirstOwnedRole.MemberParties.Add(newUserAccount);
+            };
+
+            _addExistingItem = existingItem =>
+            {
+                this.SelectedEntity.FirstOwnedRole.MemberParties.Add((Party) existingItem);
+            };
+
+            #endregion
+
         }
 
         #region Logic

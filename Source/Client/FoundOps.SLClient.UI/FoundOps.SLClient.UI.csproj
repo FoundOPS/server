@@ -1049,7 +1049,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\Parties\AdmininistrativeConsole\" />
-    <Folder Include="Tools\MarkupExtensions\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

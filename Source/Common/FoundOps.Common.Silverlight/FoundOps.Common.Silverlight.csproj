@@ -220,12 +220,7 @@
     <Compile Include="Models\Import\ImportColumnType.cs" />
     <Compile Include="Models\Import\ValueWithOptionalAssociation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DesignDataService.cs" />
-    <Compile Include="Services\DesignLoader.cs" />
-    <Compile Include="Services\DomainCollectionViewFactory.cs" />
-    <Compile Include="Services\DomainContextDataService.cs" />
-    <Compile Include="Services\Interfaces\IDataService.cs" />
-    <Compile Include="Services\Interfaces\ISaveChanges.cs" />
+    <Compile Include="Tools\DomainCollectionViewFactory.cs" />
     <Compile Include="Tools\DynamicTools.cs" />
     <Compile Include="Tools\ExtensionMethods\CollectionExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\DependencyObjectExtensions.cs" />
@@ -313,10 +308,6 @@
     <ProjectReference Include="..\FoundOps.Common\FoundOps.Common.csproj">
       <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
       <Name>FoundOps.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj">
-      <Project>{BB748726-9C39-4FDA-8B02-9CC12CD9D34D}</Project>
-      <Name>FoundOps.Common.Silverlight.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

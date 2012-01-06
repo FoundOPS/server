@@ -50,10 +50,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientsVM"/> class.
         /// </summary>
-        /// <param name="partyDataService">The party data service.</param>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ClientsVM(IPartyDataService partyDataService, DataManager dataManager)
+        public ClientsVM(DataManager dataManager)
             : base(dataManager)
         {
             //Setup the MainQuery to load Clients

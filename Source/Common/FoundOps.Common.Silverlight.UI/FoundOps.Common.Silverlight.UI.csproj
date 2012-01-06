@@ -331,6 +331,7 @@
     <Compile Include="Tools\MarkupExtensions\AppendNumberToStringMarkupExtension.cs" />
     <Compile Include="Tools\MarkupExtensions\AreEqual.cs" />
     <Compile Include="Tools\MarkupExtensions\DataContextEquals.cs" />
+    <Compile Include="Tools\MarkupExtensions\Except.cs" />
     <Compile Include="Tools\MarkupExtensions\ItemExistsInCollection.cs" />
     <Compile Include="Tools\MarkupExtensions\MarkupExtensionHelpers.cs" />
     <Compile Include="Tools\MarkupExtensions\Resolver.cs" />
@@ -506,6 +507,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FoundOps.Common.Silverlight\FoundOps.Common.Silverlight.csproj">
+      <Project>{14ADDE30-D51B-4A1C-A855-D556431FDA0A}</Project>
+      <Name>FoundOps.Common.Silverlight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FoundOps.Common\FoundOps.Common.csproj">
       <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
       <Name>FoundOps.Common</Name>

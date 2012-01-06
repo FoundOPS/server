@@ -25,10 +25,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactsVM"/> class.
         /// </summary>
-        /// <param name="partyDataService">The party data service.</param>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ContactsVM(IPartyDataService partyDataService, DataManager dataManager)
+        public ContactsVM(DataManager dataManager)
             : base(dataManager)
         {
             this.SetupMainQuery(DataManager.Query.Contacts, null, "DisplayName");

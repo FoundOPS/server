@@ -146,7 +146,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Private Properties
 
         private const string ClickOnTheMapString = "(click on the map)";
-        private readonly ILocationsDataService _locationsDataService;
         private const string ManuallySelectLocationString = "Manually select the location";
 
         #endregion
@@ -158,11 +157,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="entity">The entity this viewmodel is for</param>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public LocationVM(Location entity, DataManager dataManager, ILocationsDataService locationsDataService)
+        public LocationVM(Location entity, DataManager dataManager)
             : base(dataManager)
         {
-            this._locationsDataService = locationsDataService;
-
             #region Register Commands
 
             SearchCommand = new RelayCommand(OnSearch);
@@ -229,7 +226,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void OnSearch()
         {
-            _locationsDataService.TryGeocode(SearchText, results =>
+            DataManager.TryGeocode(SearchText, results =>
             {
                 GeocoderResults = new ObservableCollection<GeocoderResult>(results);
                 //Signal end of search event

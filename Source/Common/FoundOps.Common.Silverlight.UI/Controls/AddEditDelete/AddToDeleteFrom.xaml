@@ -15,8 +15,10 @@
                 <telerik:RadComboBox x:Name="RadComboBox" Grid.Row="1" MinWidth="120" StaysOpenOnEdit="True" IsEditable="True"
                                      EditableTemplate="{StaticResource SL5BugWorkaround}"
                                      DataContext="{MarkupExtensions:RootElement}"
-                                     ItemsSource="{Binding Provider.ExistingItemsSource}" DisplayMemberPath="{Binding Provider.MemberPath}"
-                                     SelectedValue="{Binding SelectedExistingItem, Mode=TwoWay}" Text="{Binding ExistingItemsComboBoxText, Mode=TwoWay}"
+                                     ItemsSource="{MarkupExtensions:Except Collection={Binding Source.ExistingItemsSource, Source={MarkupExtensions:RootElement}}, 
+                    ExceptCollection={Binding Provider.DestinationItemsSource, Source={MarkupExtensions:RootElement}}}" 
+                                     DisplayMemberPath="{Binding Source.MemberPath}" SelectedValue="{Binding SelectedExistingItem, Mode=TwoWay}" 
+                                     Text="{Binding ExistingItemsComboBoxText, Mode=TwoWay}"
                                      TextSearchMode="StartsWith" />
                 <StackPanel Orientation="Horizontal" Margin="5,2,0,0" Grid.Row="2">
                     <Button Grid.Row="2" Content="Add New" Margin="0,2,0,0" Click="AddNewButtonClick" IsEnabled="{Binding SelectedValue, ElementName=RadComboBox, Converter={StaticResource NotExistsBoolConverter}}"/>
