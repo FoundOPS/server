@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using System.Reactive.Linq;
-using FoundOps.Common.Silverlight.Tools;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.SLClient.Data.Services;
@@ -12,6 +9,7 @@ using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
 using FoundOps.Server.Services.CoreDomainService;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -19,19 +17,53 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying BusinessAccounts
     /// </summary>
     [ExportViewModel("BusinessAccountsVM")]
-    public class BusinessAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, IAddToDeleteFromProvider //Base class is Party because DomainCollectionView does not work well with inheritance
+    public class BusinessAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, //Base class is Party instead of BusinessAccount because DomainCollectionView does not work well with inheritance
+        IAddToDeleteFromDestination<BusinessAccount>, IAddNewExisting<UserAccount>, IRemoveDelete<UserAccount>  
     {
         #region Public
 
         #region Implementation of IAddToDeleteFromProvider
 
-        private readonly Action<string> _addNewItemFromString;
-        public Action<string> AddNewItemFromString { get { return _addNewItemFromString; } }
+        public IEnumerable DestinationItemsSource
+        {
+            get
+            {
+                if (SelectedEntity == null || SelectedEntity.FirstOwnedRole == null)
+                    return null;
 
-        private readonly Action<object> _addExistingItem;
-        public Action<object> AddExistingItem { get { return _addExistingItem; } }
+                return SelectedEntity.FirstOwnedRole.MemberParties;
+            }
+        }
 
-        public IEnumerable DestinationItemsSource { get { return SelectedEntity.FirstOwnedRole.MemberParties; } }
+        /// <summary>
+        /// Links to the LinkToAddToDeleteFromControl events.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="sourceType">Type of the source.</param>
+        public void LinkToAddToDeleteFromEvents(AddToDeleteFrom control, Type sourceType)
+        {
+            if (sourceType == typeof (UserAccount))
+            {
+                control.AddExistingItem += (s, existingItem) => this.AddExistingItem((UserAccount) existingItem);
+                control.AddNewItem += (s, newItemText) => this.AddNewItem(newItemText);
+                control.RemoveItem += (s, e) => this.RemoveItem();
+                control.DeleteItem += (s, e) => this.DeleteItem();
+            }
+        }
+
+        #endregion
+
+        #region Implementation of IAddNewExisting<in Party>
+
+        public Action<string> AddNewItem { get; private set; }
+        public Action<UserAccount> AddExistingItem { get; private set; }
+
+        #endregion
+
+        #region Implementation of IRemoveDelete<in Party>
+
+        public Func<UserAccount> RemoveItem { get; private set; }
+        public Func<UserAccount> DeleteItem { get; private set; }
 
         #endregion
 
@@ -78,15 +110,30 @@ namespace FoundOps.SLClient.UI.ViewModels
             this.SelectedEntityObservable.ObserveOnDispatcher().Subscribe(
                 _ => this.RaisePropertyChanged("DestinationItemsSource"));
 
-            _addNewItemFromString = name =>
+            AddNewItem = name =>
             {
-                var newUserAccount = (Party)VM.UserAccounts.CreateNewItemFromString(name);
+                var newUserAccount = VM.UserAccounts.CreateNewItem(name);
                 this.SelectedEntity.FirstOwnedRole.MemberParties.Add(newUserAccount);
             };
 
-            _addExistingItem = existingItem =>
+            AddExistingItem = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add(existingItem);
+
+            RemoveItem = () =>
             {
-                this.SelectedEntity.FirstOwnedRole.MemberParties.Add((Party) existingItem);
+                var selectedUserAccount = VM.UserAccounts.SelectedEntity;
+                if (selectedUserAccount != null)
+                    this.SelectedEntity.FirstOwnedRole.MemberParties.Remove(selectedUserAccount);
+
+                return (UserAccount) selectedUserAccount;
+            };
+
+            DeleteItem = () =>
+            {
+                var selectedUserAccount = RemoveItem();
+                if (selectedUserAccount != null)
+                    VM.UserAccounts.DeleteEntity(selectedUserAccount);
+
+                return selectedUserAccount;
             };
 
             #endregion

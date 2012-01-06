@@ -10,7 +10,8 @@
         </Controls:ContainerBindingCollection>
     </UserControl.Resources>
     <StackPanel x:Name="LayoutRoot" Orientation="Horizontal" DataContext="{Binding ElementName=myAddDelete}">
-        <Button Margin="2" x:Name="AddButton" Click="AddButtonClick" Command="{Binding AddCommand}" CommandParameter="{Binding CommandParameter}" Style="{StaticResource AddButtonStyle}" ToolTipService.ToolTip="Add New">
+        <Button Margin="2" x:Name="AddButton" ToolTipService.ToolTip="Add New" Style="{StaticResource AddButtonStyle}" Click="AddButtonClick" 
+                Command="{Binding AddCommand}" CommandParameter="{Binding CommandParameter}" IsEnabled="{Binding AddIsEnabled}">
             <telerik:RadContextMenu.ContextMenu>
                 <telerik:RadContextMenu x:Name="RadContextMenu" IconColumnWidth="0" x:FieldModifier="public">
                     <!--New Existing Menu Items-->
@@ -23,6 +24,7 @@
                 </telerik:RadContextMenu>
             </telerik:RadContextMenu.ContextMenu>
         </Button>
-        <Button  Margin="2" x:Name="DeleteButton" ToolTipService.ToolTip="Delete" Click="DeleteButtonClick" Command="{Binding DeleteCommand}" CommandParameter="{Binding CommandParameter}" Style="{StaticResource DeleteButtonStyle}"/>
+        <Button  Margin="2" x:Name="DeleteButton" ToolTipService.ToolTip="Delete" Style="{StaticResource DeleteButtonStyle}" Click="DeleteButtonClick" 
+                 Command="{Binding DeleteCommand}" CommandParameter="{Binding CommandParameter}" IsEnabled="{Binding DeleteIsEnabled}"/>
     </StackPanel>
 </UserControl>

@@ -1,5 +1,6 @@
 using System;
 using System.Reactive.Disposables;
+using FoundOps.Common.Silverlight.UI.Controls;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
@@ -121,8 +122,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Set up the pop up text box to have the client and locations name
                 var removeDeleteCancel = new RemoveDeleteCancel
                 {
-                    LocationNameTextBox = location.Name,
-                    ClientNameTextBox = location.Party.DisplayName
+                    EntityToRemoveString = location.Name,
+                    EntityToRemoveFromString = location.Party.DisplayName
                 };
 
                 removeDeleteCancel.RemoveButton.Click += (sender, e) =>
@@ -139,16 +140,13 @@ namespace FoundOps.SLClient.UI.ViewModels
                     DataManager.EnqueueSubmitOperation();
                     removeDeleteCancel.Close();
                 };
-                removeDeleteCancel.CancelButtonRDC.Click += (sender, e) =>
+                removeDeleteCancel.CancelButton.Click += (sender, e) =>
                 {
                     //Do nothing and close the window
                     removeDeleteCancel.Close();
-                    return;
                 };
 
                 removeDeleteCancel.Show();
-
-                return;
             });
 
             #endregion

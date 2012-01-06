@@ -123,6 +123,53 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
+        #region AddIsEnabled Dependency Property
+
+        /// <summary>
+        /// AddIsEnabled
+        /// </summary>
+        public bool AddIsEnabled
+        {
+            get { return (bool) GetValue(AddIsEnabledProperty); }
+            set { SetValue(AddIsEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// AddIsEnabled Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty AddIsEnabledProperty =
+            DependencyProperty.Register(
+                "AddIsEnabled",
+                typeof (bool),
+                typeof (AddDelete),
+                new PropertyMetadata(true));
+
+        #endregion
+        #region DeleteIsEnabled Dependency Property
+
+        /// <summary>
+        /// DeleteIsEnabled
+        /// </summary>
+        public bool DeleteIsEnabled
+        {
+            get { return (bool) GetValue(DeleteIsEnabledProperty); }
+            set { SetValue(DeleteIsEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// DeleteIsEnabled Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty DeleteIsEnabledProperty =
+            DependencyProperty.Register(
+                "DeleteIsEnabled",
+                typeof (bool),
+                typeof (AddDelete),
+                new PropertyMetadata(true));
+
+        #endregion
+
+        #region Commands
+
         #region AddCommand Dependency Property
 
         /// <summary>
@@ -146,23 +193,23 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        #region DeleteCommand Dependency Property
+        #region AddItemCommand Dependency Property
 
         /// <summary>
-        /// DeleteCommand
+        /// AddExistingCommand
         /// </summary>
-        public ICommand DeleteCommand
+        public ICommand AddItemCommand
         {
-            get { return (ICommand)GetValue(DeleteCommandProperty); }
-            set { SetValue(DeleteCommandProperty, value); }
+            get { return (ICommand)GetValue(AddItemCommandProperty); }
+            set { SetValue(AddItemCommandProperty, value); }
         }
 
         /// <summary>
-        /// DeleteCommand Dependency Property.
+        /// AddExistingCommand Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty DeleteCommandProperty =
+        public static readonly DependencyProperty AddItemCommandProperty =
             DependencyProperty.Register(
-                "DeleteCommand",
+                "AddItemCommand",
                 typeof(ICommand),
                 typeof(AddDelete),
                 new PropertyMetadata(null));
@@ -192,52 +239,55 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        #region AddItemCommand Dependency Property
+        #region DeleteCommand Dependency Property
 
         /// <summary>
-        /// AddExistingCommand
+        /// DeleteCommand
         /// </summary>
-        public ICommand AddItemCommand
+        public ICommand DeleteCommand
         {
-            get { return (ICommand)GetValue(AddItemCommandProperty); }
-            set { SetValue(AddItemCommandProperty, value); }
+            get { return (ICommand)GetValue(DeleteCommandProperty); }
+            set { SetValue(DeleteCommandProperty, value); }
         }
 
         /// <summary>
-        /// AddExistingCommand Dependency Property.
+        /// DeleteCommand Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty AddItemCommandProperty =
+        public static readonly DependencyProperty DeleteCommandProperty =
             DependencyProperty.Register(
-                "AddItemCommand",
+                "DeleteCommand",
                 typeof(ICommand),
                 typeof(AddDelete),
                 new PropertyMetadata(null));
 
         #endregion
 
-        #region ItemsSource Dependency Property
+        #endregion
+
+        #region Templates
+
+        #region AddMenuItemCustomTemplate Dependency Property
 
         /// <summary>
-        /// ExistingItemsSource
+        /// AddMenuItemCustomTemplate
         /// </summary>
-        public IEnumerable ItemsSource
+        public DataTemplate AddMenuItemCustomTemplate
         {
-            get { return (IEnumerable)GetValue(ItemsSourceProperty); }
-            set { SetValue(ItemsSourceProperty, value); }
+            get { return (DataTemplate)GetValue(AddMenuItemCustomTemplateProperty); }
+            set { SetValue(AddMenuItemCustomTemplateProperty, value); }
         }
 
         /// <summary>
-        /// ExistingItemsSource Dependency Property.
+        /// AddMenuItemCustomTemplate Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty ItemsSourceProperty =
+        public static readonly DependencyProperty AddMenuItemCustomTemplateProperty =
             DependencyProperty.Register(
-                "ItemsSource",
-                typeof(IEnumerable),
+                "AddMenuItemCustomTemplate",
+                typeof(DataTemplate),
                 typeof(AddDelete),
                 new PropertyMetadata(null));
 
         #endregion
-
         #region ItemTemplate Dependency Property
 
         /// <summary>
@@ -274,24 +324,26 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        #region AddMenuItemCustomTemplate Dependency Property
+        #endregion
+
+        #region ItemsSource Dependency Property
 
         /// <summary>
-        /// AddMenuItemCustomTemplate
+        /// ExistingItemsSource
         /// </summary>
-        public DataTemplate AddMenuItemCustomTemplate
+        public IEnumerable ItemsSource
         {
-            get { return (DataTemplate)GetValue(AddMenuItemCustomTemplateProperty); }
-            set { SetValue(AddMenuItemCustomTemplateProperty, value); }
+            get { return (IEnumerable)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
         }
 
         /// <summary>
-        /// AddMenuItemCustomTemplate Dependency Property.
+        /// ExistingItemsSource Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty AddMenuItemCustomTemplateProperty =
+        public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register(
-                "AddMenuItemCustomTemplate",
-                typeof(DataTemplate),
+                "ItemsSource",
+                typeof(IEnumerable),
                 typeof(AddDelete),
                 new PropertyMetadata(null));
 

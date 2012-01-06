@@ -4,10 +4,8 @@ using System.Windows;
 using System.Collections;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
-using System.Reactive.Disposables;
 using System.Collections.Specialized;
 using FoundOps.Common.Silverlight.Tools;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 
 namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {
@@ -77,9 +75,6 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
         {
             return ExceptHelper(Collection, ExceptCollection);
         }
-
-        private readonly SerialDisposable _collectionSubscriptionDisposable = new SerialDisposable();
-        private readonly SerialDisposable _exceptCollectionSubscriptionDisposable = new SerialDisposable();
 
         private IEnumerable ExceptHelper(IEnumerable collection, IEnumerable exceptCollection)
         {

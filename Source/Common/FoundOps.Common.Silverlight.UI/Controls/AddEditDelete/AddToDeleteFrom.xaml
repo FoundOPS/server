@@ -16,7 +16,7 @@
                                      EditableTemplate="{StaticResource SL5BugWorkaround}"
                                      DataContext="{MarkupExtensions:RootElement}"
                                      ItemsSource="{MarkupExtensions:Except Collection={Binding Source.ExistingItemsSource, Source={MarkupExtensions:RootElement}}, 
-                    ExceptCollection={Binding Provider.DestinationItemsSource, Source={MarkupExtensions:RootElement}}}" 
+                    ExceptCollection={Binding Destination.DestinationItemsSource, Source={MarkupExtensions:RootElement}}}" 
                                      DisplayMemberPath="{Binding Source.MemberPath}" SelectedValue="{Binding SelectedExistingItem, Mode=TwoWay}" 
                                      Text="{Binding ExistingItemsComboBoxText, Mode=TwoWay}"
                                      TextSearchMode="StartsWith" />
@@ -28,6 +28,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
-        <AddEditDelete:AddDelete x:Name="AddDelete" Add="AddDelete_OnAdd" Delete="AddDelete_OnDelete" AddDeleteMode="AddDelete" AddMenuItemCustomTemplate="{StaticResource AddMenuTemplate}" />
+        <AddEditDelete:AddDelete x:Name="AddDelete" AddDeleteMode="AddDelete" AddMenuItemCustomTemplate="{StaticResource AddMenuTemplate}" 
+                                 Add="AddDelete_OnAdd" Delete="AddDelete_OnDelete" />
     </Grid>
 </UserControl>

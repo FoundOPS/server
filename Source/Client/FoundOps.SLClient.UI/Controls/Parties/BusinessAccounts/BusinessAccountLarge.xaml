@@ -6,6 +6,8 @@
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI" 
              xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI"
+             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              mc:Ignorable="d" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="BusinessAccountsVM"
              Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}"> <!-- Note: You cannot remove CoreEntities, it is used by GetVM-->
     <!--Use grid to allow scrollviewer to work-->
@@ -61,8 +63,10 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock TextWrapping="Wrap" Text="User Accounts" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource PermissionBrush}" />
-                            <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Source="{Tools:GetVM Type=CoreEntities:UserAccountsVM}"
-                                                           Provider="{Tools:GetVM Type=CoreEntities:BusinessAccountsVM}"/>
+                            <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" 
+                                                           SourceType="{MarkupExtensions:Static MemberType=CoreEntities1:UserAccount}"
+                                                           DeleteIsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:UserAccountsVM}}"
+                                                           Source="{Tools:GetVM Type=CoreEntities:UserAccountsVM}" Destination="{Tools:GetVM Type=CoreEntities:BusinessAccountsVM}" />
                         </Grid>
                     </toolkit:Expander.Header>
                     <UserAccounts:UserAccountsGrid IsMainGrid="False" MaxHeight="150" />

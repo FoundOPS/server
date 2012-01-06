@@ -5,6 +5,8 @@ using System.ComponentModel;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 {
+    #region Mode Enums
+
     public enum AddMode
     {
         /// <summary>
@@ -41,18 +43,24 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         RemoveOrDeletePrompt
     }
 
+    #endregion
+
+    #region Interfaces
+
+    //Source interface
     /// <summary>
     /// The source of items for the AddToDeleteFrom control
     /// </summary>
-    public interface IAddToDeleteFromSource : INotifyPropertyChanged
+    /// <typeparam name="T">The type of source item.</typeparam>
+    public interface IAddToDeleteFromSource<out T> : INotifyPropertyChanged
     {
         /// <summary>
-        /// A function to create a new item from a string.
+        /// A method to create a new item. It is passed the RadComboBox string.
         /// </summary>
-        Func<string, object> CreateNewItemFromString { get; }
+        Func<string, T> CreateNewItem { get; }
 
         /// <summary>
-        /// Returns the existing items.
+        /// Returns the existing items. This is not generic because of inheritance issues and entitylists.
         /// </summary>
         IEnumerable ExistingItemsSource { get; }
 
@@ -62,28 +70,89 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         string MemberPath { get; }
     }
 
+    #region Destination interfaces
+
     /// <summary>
-    /// The provider for the AddToDeleteFrom control
+    /// The destination of items for the AddToDeleteFrom control
     /// </summary>
-    public interface IAddToDeleteFromProvider : INotifyPropertyChanged
+    /// <typeparam name="T">The type of destination item.</typeparam>
+    public interface IAddToDeleteFromDestination<out T> : INotifyPropertyChanged, IAddNew<T>
     {
         /// <summary>
-        /// The function is called to add a new item from a string.
-        /// It is passed the value of the combobox text.
-        /// </summary>
-        Action<string> AddNewItemFromString { get; }
-
-        /// <summary>
-        /// The function is called to add an existing item.
-        /// It is passed the existing item.
-        /// </summary>
-        Action<object > AddExistingItem { get; }
-
-        /// <summary>
-        /// Returns the destination items source.
+        /// Returns the destination items source. This is not generic because of inheritance issues and entitylists.
         /// </summary>
         IEnumerable DestinationItemsSource { get; }
+
+        /// <summary>
+        /// Links to the add delete from control events.
+        /// Workaround for wrestling with the type system.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="sourceType">The source type of the AddToDeleteFrom control. </param>
+        void LinkToAddToDeleteFromEvents(AddToDeleteFrom control, Type sourceType);
     }
+
+    #region Add interfaces
+
+    /// <summary>
+    /// A destination which adds new items.
+    /// </summary>
+    /// <typeparam name="T">The type of items it can add.</typeparam>
+    public interface IAddNew<out T>
+    {
+        /// <summary>
+        /// A method to add a new item. It is passed the RadComboBox string.
+        /// </summary>
+        Action<string> AddNewItem { get; }
+    }
+
+    /// <summary>
+    /// A destination which adds new and existing items.
+    /// </summary>
+    /// <typeparam name="T">The type of items it can add.</typeparam>
+    public interface IAddNewExisting<T> : IAddNew<T>
+    {
+        /// <summary>
+        /// A method to add an existing item. It is passed the selected existing item.
+        /// </summary>
+        Action<T> AddExistingItem { get; }
+    }
+
+    #endregion
+
+    #region Remove and Delete interfaces
+
+    /// <summary>
+    /// A destination which removes items.
+    /// </summary>
+    /// <typeparam name="T">The type of items it can remove.</typeparam>
+    public interface IRemove<out T>
+    {
+        /// <summary>
+        /// A method to remove the current item.
+        /// Returns the removed item.
+        /// </summary>
+        Func<T> RemoveItem { get; }
+    }
+
+    /// <summary>
+    /// A destination which removes and delete items.
+    /// </summary>
+    /// <typeparam name="T">The type of items it can remove and delete.</typeparam>
+    public interface IRemoveDelete<out T> : IRemove<T>
+    {
+        /// <summary>
+        /// A method to delete the current item.
+        /// Returns the deleted item.
+        /// </summary>
+        Func<T> DeleteItem { get; }
+    }
+
+    #endregion
+
+    #endregion
+
+    #endregion
 
     /// <summary>
     /// A control to allow adding to and deleting from an enumerable of objects.
@@ -91,6 +160,35 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
     public partial class AddToDeleteFrom
     {
         #region Public Properties
+
+        #region Events
+
+        public delegate void AddNewItemEventArgs(AddToDeleteFrom sender, string newItemText);
+        public delegate void AddExistingItemEventArgs(AddToDeleteFrom sender, object existingItem);
+
+        /// <summary>
+        /// Occurs when [add new item] is clicked.
+        /// Passes the RadComboBox text in the event args.
+        /// </summary>
+        public event AddNewItemEventArgs AddNewItem;
+        /// <summary>
+        /// Occurs when [add existing item] is clicked.
+        /// Passes the selected item in the event args.
+        /// </summary>
+        public event AddExistingItemEventArgs AddExistingItem;
+
+        /// <summary>
+        /// Occurs when [remove item] is called.
+        /// </summary>
+        public event EventHandler RemoveItem;
+        /// <summary>
+        /// Occurs when [delete item] is called.
+        /// </summary>
+        public event EventHandler DeleteItem;
+
+        #endregion
+
+        #region Modes
 
         #region AddMode Dependency Property
 
@@ -167,37 +265,54 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        #region Provider Dependency Property
+        #endregion
+
+        #region Data source and destination provider for the AddToDeleteFrom operations
+
+        #region Destination Dependency Property
 
         /// <summary>
-        /// Provider
+        /// Destination
         /// </summary>
-        public IAddToDeleteFromProvider Provider
+        public IAddToDeleteFromDestination<object> Destination
         {
-            get { return (IAddToDeleteFromProvider) GetValue(ProviderProperty); }
-            set { SetValue(ProviderProperty, value); }
+            get { return (IAddToDeleteFromDestination<object>) GetValue(DestinationProperty); }
+            set { SetValue(DestinationProperty, value); }
         }
 
         /// <summary>
-        /// Provider Dependency Property.
+        /// Destination Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty ProviderProperty =
+        public static readonly DependencyProperty DestinationProperty =
             DependencyProperty.Register(
-                "Provider",
-                typeof (IAddToDeleteFromProvider),
+                "Destination",
+                typeof (IAddToDeleteFromDestination<object>),
                 typeof (AddToDeleteFrom),
-                new PropertyMetadata(null));
+                new PropertyMetadata(DestinationChanged));
+
+        private static void DestinationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var c = d as AddToDeleteFrom;
+            if (c == null) return;
+
+            if (e.NewValue != null && c.Source != null)
+                ((IAddToDeleteFromDestination<object>)e.NewValue).LinkToAddToDeleteFromEvents(c, c.SourceType);
+        }
 
         #endregion
 
+        /// <summary>
+        /// Gets or sets the type of the source. Used for linking the Destination.
+        /// </summary>
+        public Type SourceType { get; set; }
         #region Source Dependency Property
 
         /// <summary>
         /// Source
         /// </summary>
-        public IAddToDeleteFromSource Source
+        public IAddToDeleteFromSource<object> Source
         {
-            get { return (IAddToDeleteFromSource) GetValue(SourceProperty); }
+            get { return (IAddToDeleteFromSource<object>) GetValue(SourceProperty); }
             set { SetValue(SourceProperty, value); }
         }
 
@@ -207,30 +322,53 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.Register(
                 "Source",
-                typeof (IAddToDeleteFromSource),
-                typeof (AddToDeleteFrom),
-                new PropertyMetadata(null));
+                typeof (IAddToDeleteFromSource<object>),
+                typeof (AddToDeleteFrom), null);
 
         #endregion
 
-        #region SelectedExistingItem Dependency Property
+        #endregion
+
+        #region AddIsEnabled Dependency Property
 
         /// <summary>
-        /// SelectedExistingItem
+        /// AddIsEnabled
         /// </summary>
-        public object SelectedExistingItem
+        public bool AddIsEnabled
         {
-            get { return (object)GetValue(SelectedExistingItemProperty); }
-            set { SetValue(SelectedExistingItemProperty, value); }
+            get { return (bool)GetValue(AddIsEnabledProperty); }
+            set { SetValue(AddIsEnabledProperty, value); }
         }
 
         /// <summary>
-        /// SelectedExistingItem Dependency Property.
+        /// AddIsEnabled Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty SelectedExistingItemProperty =
+        public static readonly DependencyProperty AddIsEnabledProperty =
             DependencyProperty.Register(
-                "SelectedExistingItem",
-                typeof(object),
+                "AddIsEnabled",
+                typeof(bool),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+        #region DeleteIsEnabled Dependency Property
+
+        /// <summary>
+        /// DeleteIsEnabled
+        /// </summary>
+        public bool DeleteIsEnabled
+        {
+            get { return (bool)GetValue(DeleteIsEnabledProperty); }
+            set { SetValue(DeleteIsEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// DeleteIsEnabled Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty DeleteIsEnabledProperty =
+            DependencyProperty.Register(
+                "DeleteIsEnabled",
+                typeof(bool),
                 typeof(AddToDeleteFrom),
                 new PropertyMetadata(null));
 
@@ -258,6 +396,77 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
                 new PropertyMetadata(null));
 
         #endregion
+        #region SelectedExistingItem Dependency Property
+
+        /// <summary>
+        /// The SelectedExistingItem in the Add New/Existing combobox
+        /// </summary>
+        public object SelectedExistingItem
+        {
+            get { return (object)GetValue(SelectedExistingItemProperty); }
+            set { SetValue(SelectedExistingItemProperty, value); }
+        }
+
+        /// <summary>
+        /// SelectedExistingItem Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty SelectedExistingItemProperty =
+            DependencyProperty.Register(
+                "SelectedExistingItem",
+                typeof(object),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+
+        #region Remove or Delete properties
+
+        #region EntityToRemoveString Dependency Property
+
+        /// <summary>
+        /// The potential EntityToRemove description string
+        /// </summary>
+        public string EntityToRemoveString
+        {
+            get { return (string)GetValue(EntityToRemoveStringProperty); }
+            set { SetValue(EntityToRemoveStringProperty, value); }
+        }
+
+        /// <summary>
+        /// EntityToRemoveString Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty EntityToRemoveStringProperty =
+            DependencyProperty.Register(
+                "EntityToRemoveString",
+                typeof(string),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+        #region EntityToRemoveFromString Dependency Property
+
+        /// <summary>
+        /// The potentital EntityToRemove from description string
+        /// </summary>
+        public string EntityToRemoveFromString
+        {
+            get { return (string)GetValue(EntityToRemoveFromStringProperty); }
+            set { SetValue(EntityToRemoveFromStringProperty, value); }
+        }
+
+        /// <summary>
+        /// EntityToRemoveFromString Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty EntityToRemoveFromStringProperty =
+            DependencyProperty.Register(
+                "EntityToRemoveFromString",
+                typeof(string),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+
+        #endregion
 
         #endregion
 
@@ -275,53 +484,101 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         private void AddDelete_OnAdd(AddDelete sender, object item)
         {
-            switch (AddMode)
-            {
-                case AddMode.None:
-                    return;
-                case AddMode.Add:
-                    if (Provider == null) return;
-                    Provider.AddNewItemFromString(ExistingItemsComboBoxText);
-                    break;
-                case AddMode.AddNewExisting:
-                    return; //This logic is handled in the AddMode.AddNewExisting region below
-            }
+            //The AddMode.None should do nothing and
+            //the AddNewExisting logic is handled in the AddMode.AddNewExisting region below
+            if (AddMode != AddMode.Add) return;
+
+            AddNewItemHelper();
         }
 
         private void AddDelete_OnDelete(AddDelete sender, object item)
         {
-            switch (DeleteMode)
+            //The DeleteMode.None should do nothing
+
+            if (DeleteMode == DeleteMode.Delete)
+                DeleteItemHelper();
+
+            if (DeleteMode == DeleteMode.DeletePrompt)
             {
-                case DeleteMode.None:
+                if (MessageBox.Show(String.Format("Are you sure you want to delete {0}?", EntityToRemoveString), String.Format("Delete {0}?", EntityToRemoveString), MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
                     return;
-                case DeleteMode.Delete:
 
-                    break;
-                case DeleteMode.DeletePrompt:
+                //Since the user clicked OK, delete the item
+                DeleteItemHelper();
+            }
 
-                    break;
-                case DeleteMode.RemoveOrDeletePrompt:
+            if (DeleteMode == DeleteMode.RemoveOrDeletePrompt)
+            {
+                //Setup the RemoveDeleteCancel prompt
+                var removeDeleteCancel = new RemoveDeleteCancel
+                {
+                    EntityToRemoveString = EntityToRemoveString,
+                    EntityToRemoveFromString = EntityToRemoveFromString
+                };
 
-                    break;
+                removeDeleteCancel.RemoveButton.Click += (s, e) =>
+                {
+                    RemoveItemHelper();
+                    removeDeleteCancel.Close();
+                };
+                removeDeleteCancel.DeleteButton.Click += (s, e) =>
+                {
+                    DeleteItemHelper();
+                    removeDeleteCancel.Close();
+                };
+
+                //If the user clicked Cancel, do nothing and close the window
+                removeDeleteCancel.CancelButton.Click += (s, e) => removeDeleteCancel.Close();
+
+                //Now that the RemoveDeleteCancel is setup, show it to the user
+                removeDeleteCancel.Show();
             }
         }
 
         #endregion
 
-        #region AddMode.AddNewExisting
+        #region AddMode.AddNewExisting Mode logic
 
         private void AddNewButtonClick(object sender, RoutedEventArgs e)
         {
-            if (Provider == null) return;
-
-            Provider.AddNewItemFromString(ExistingItemsComboBoxText);
+            AddNewItemHelper();
         }
 
         private void AddExistingButtonClick(object sender, RoutedEventArgs e)
         {
-            if (Provider == null || SelectedExistingItem == null) return;
+            AddExistingItemHelper();
+        }
 
-            Provider.AddExistingItem(SelectedExistingItem);
+        #endregion
+
+        #region Add, Remove, Delete helpers
+
+        //Calls the AddNewItem event
+        private void AddNewItemHelper()
+        {
+            if (AddNewItem != null)
+                AddNewItem(this, ExistingItemsComboBoxText);
+        }
+
+        //Calls the AddExistingItem event
+        private void AddExistingItemHelper()
+        {
+            if (AddExistingItem != null)
+                AddExistingItem(this, SelectedExistingItem);
+        }
+
+        //Calls the RemoveItem event
+        private void RemoveItemHelper()
+        {
+            if (RemoveItem != null)
+                RemoveItem(this, null);
+        }
+
+        //Calls the DeleteItem event
+        private void DeleteItemHelper()
+        {
+            if (DeleteItem != null)
+                DeleteItem(this, null);
         }
 
         #endregion

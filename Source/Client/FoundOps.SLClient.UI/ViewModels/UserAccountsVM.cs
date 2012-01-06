@@ -23,7 +23,8 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the UserAccounts
     /// </summary>
     [ExportViewModel("UserAccountsVM")]
-    public class UserAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, IAddToDeleteFromSource //Base class is Party because DomainCollectionView does not work well with inheritance
+    public class UserAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, //Base class is Party because DomainCollectionView does not work well with inheritance
+        IAddToDeleteFromSource<Party> //Base class is Party because loadedUserAccounts is EntityList<Party>
     {
         #region Properties and Variables
 
@@ -36,11 +37,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public string MemberPath { get { return "DisplayName"; } }
 
-        private readonly Func<string, object> _createNewItemFromString;
         /// <summary>
         /// A function to create a new item from a string.
         /// </summary>
-        public Func<string, object> CreateNewItemFromString { get { return _createNewItemFromString; } }
+        public Func<string, Party> CreateNewItem { get; private set; }
 
         #endregion
 
@@ -119,7 +119,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
             _loadedUserAccounts = loadedUserAccounts.ToProperty(this, x => x.ExistingItemsSource);
 
-            _createNewItemFromString = name =>
+            CreateNewItem = name =>
             {
                 var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword() };
 
@@ -137,7 +137,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 }
 
                 //Add the new entity to the EntityList so it gets tracked/saved
-                ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newUserAccount);
+                ((EntityList<Party>)ExistingItemsSource).Add(newUserAccount);
 
                 return newUserAccount;
             };
@@ -150,8 +150,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Must override or else it will create a Party
         protected override Party AddNewEntity(object commandParameter)
         {
-            //Reuse the _createNewItemFromString method
-            return (Party)_createNewItemFromString("");
+            //Reuse the CreateNewItem method
+            return CreateNewItem("");
         }
 
         protected override void OnAddEntity(Party newUserAccount)
