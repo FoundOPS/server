@@ -11,7 +11,7 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBlock Text="Location" />
+                <TextBlock Text="{Binding Label, Source={MarkupExtensions:RootElement}}" />
                 <telerik:RadComboBox x:Name="RadComboBox" Grid.Row="1" MinWidth="120" StaysOpenOnEdit="True" IsEditable="True"
                                      EditableTemplate="{StaticResource SL5BugWorkaround}"
                                      DataContext="{MarkupExtensions:RootElement}"

@@ -76,7 +76,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
     /// The destination of items for the AddToDeleteFrom control
     /// </summary>
     /// <typeparam name="T">The type of destination item.</typeparam>
-    public interface IAddToDeleteFromDestination<out T> : INotifyPropertyChanged, IAddNew<T>
+    public interface IAddToDeleteFromDestination<out T> : INotifyPropertyChanged
     {
         /// <summary>
         /// Returns the destination items source. This is not generic because of inheritance issues and entitylists.
@@ -103,7 +103,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// <summary>
         /// A method to add a new item. It is passed the RadComboBox string.
         /// </summary>
-        Action<string> AddNewItem { get; }
+        Func<string, T> AddNewItem { get; }
     }
 
     /// <summary>
@@ -134,7 +134,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         Func<T> RemoveItem { get; }
     }
-
+ 
     /// <summary>
     /// A destination which removes and delete items.
     /// </summary>
@@ -161,6 +161,207 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
     {
         #region Public Properties
 
+        #region Add, Remove and Delete properties
+
+        #region AddIsEnabled Dependency Property
+
+        /// <summary>
+        /// AddIsEnabled
+        /// </summary>
+        public bool AddIsEnabled
+        {
+            get { return (bool)GetValue(AddIsEnabledProperty); }
+            set { SetValue(AddIsEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// AddIsEnabled Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty AddIsEnabledProperty =
+            DependencyProperty.Register(
+                "AddIsEnabled",
+                typeof(bool),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+        #region DeleteIsEnabled Dependency Property
+
+        /// <summary>
+        /// DeleteIsEnabled
+        /// </summary>
+        public bool DeleteIsEnabled
+        {
+            get { return (bool)GetValue(DeleteIsEnabledProperty); }
+            set { SetValue(DeleteIsEnabledProperty, value); }
+        }
+
+        /// <summary>
+        /// DeleteIsEnabled Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty DeleteIsEnabledProperty =
+            DependencyProperty.Register(
+                "DeleteIsEnabled",
+                typeof(bool),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+
+        #region EntityToRemoveString Dependency Property
+
+        /// <summary>
+        /// The potential EntityToRemove description string
+        /// </summary>
+        public string EntityToRemoveString
+        {
+            get { return (string)GetValue(EntityToRemoveStringProperty); }
+            set { SetValue(EntityToRemoveStringProperty, value); }
+        }
+
+        /// <summary>
+        /// EntityToRemoveString Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty EntityToRemoveStringProperty =
+            DependencyProperty.Register(
+                "EntityToRemoveString",
+                typeof(string),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+        #region EntityToRemoveFromString Dependency Property
+
+        /// <summary>
+        /// The potentital EntityToRemove from description string
+        /// </summary>
+        public string EntityToRemoveFromString
+        {
+            get { return (string)GetValue(EntityToRemoveFromStringProperty); }
+            set { SetValue(EntityToRemoveFromStringProperty, value); }
+        }
+
+        /// <summary>
+        /// EntityToRemoveFromString Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty EntityToRemoveFromStringProperty =
+            DependencyProperty.Register(
+                "EntityToRemoveFromString",
+                typeof(string),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+
+        #endregion
+
+        #region Data source, destination, and selected items
+
+        #region Destination Dependency Property
+
+        /// <summary>
+        /// Destination
+        /// </summary>
+        public IAddToDeleteFromDestination<object> Destination
+        {
+            get { return (IAddToDeleteFromDestination<object>)GetValue(DestinationProperty); }
+            set { SetValue(DestinationProperty, value); }
+        }
+
+        /// <summary>
+        /// Destination Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty DestinationProperty =
+            DependencyProperty.Register(
+                "Destination",
+                typeof(IAddToDeleteFromDestination<object>),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(DestinationChanged));
+
+        private static void DestinationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var c = d as AddToDeleteFrom;
+            if (c == null) return;
+
+            if (e.NewValue != null && c.Source != null)
+                ((IAddToDeleteFromDestination<object>)e.NewValue).LinkToAddToDeleteFromEvents(c, c.SourceType);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Gets or sets the type of the source. Used for linking the Destination.
+        /// </summary>
+        public Type SourceType { get; set; }
+        #region Source Dependency Property
+
+        /// <summary>
+        /// Source
+        /// </summary>
+        public IAddToDeleteFromSource<object> Source
+        {
+            get { return (IAddToDeleteFromSource<object>)GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
+
+        /// <summary>
+        /// Source Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty SourceProperty =
+            DependencyProperty.Register(
+                "Source",
+                typeof(IAddToDeleteFromSource<object>),
+                typeof(AddToDeleteFrom), null);
+
+        #endregion
+
+        #region ExistingItemsComboBoxText Dependency Property
+
+        /// <summary>
+        /// ExistingItemsComboBoxText
+        /// </summary>
+        public string ExistingItemsComboBoxText
+        {
+            get { return (string)GetValue(ExistingItemsComboBoxTextProperty); }
+            set { SetValue(ExistingItemsComboBoxTextProperty, value); }
+        }
+
+        /// <summary>
+        /// ExistingItemsComboBoxText Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty ExistingItemsComboBoxTextProperty =
+            DependencyProperty.Register(
+                "ExistingItemsComboBoxText",
+                typeof(string),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+        #region SelectedExistingItem Dependency Property
+
+        /// <summary>
+        /// The SelectedExistingItem in the Add New/Existing combobox
+        /// </summary>
+        public object SelectedExistingItem
+        {
+            get { return (object)GetValue(SelectedExistingItemProperty); }
+            set { SetValue(SelectedExistingItemProperty, value); }
+        }
+
+        /// <summary>
+        /// SelectedExistingItem Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty SelectedExistingItemProperty =
+            DependencyProperty.Register(
+                "SelectedExistingItem",
+                typeof(object),
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
+
+        #endregion
+
+        #endregion
+
         #region Events
 
         public delegate void AddNewItemEventArgs(AddToDeleteFrom sender, string newItemText);
@@ -185,6 +386,29 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// Occurs when [delete item] is called.
         /// </summary>
         public event EventHandler DeleteItem;
+
+        #endregion
+
+        #region Label Dependency Property
+
+        /// <summary>
+        /// Label
+        /// </summary>
+        public string Label
+        {
+            get { return (string) GetValue(LabelProperty); }
+            set { SetValue(LabelProperty, value); }
+        }
+
+        /// <summary>
+        /// Label Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty LabelProperty =
+            DependencyProperty.Register(
+                "Label",
+                typeof (string),
+                typeof (AddToDeleteFrom),
+                new PropertyMetadata(""));
 
         #endregion
 
@@ -262,207 +486,6 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
             //Set the DeleteButton visibility
             c.AddDelete.DeleteButton.Visibility = deleteMode == AddMode.None ? Visibility.Collapsed : Visibility.Visible;
         }
-
-        #endregion
-
-        #endregion
-
-        #region Data source and destination provider for the AddToDeleteFrom operations
-
-        #region Destination Dependency Property
-
-        /// <summary>
-        /// Destination
-        /// </summary>
-        public IAddToDeleteFromDestination<object> Destination
-        {
-            get { return (IAddToDeleteFromDestination<object>) GetValue(DestinationProperty); }
-            set { SetValue(DestinationProperty, value); }
-        }
-
-        /// <summary>
-        /// Destination Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty DestinationProperty =
-            DependencyProperty.Register(
-                "Destination",
-                typeof (IAddToDeleteFromDestination<object>),
-                typeof (AddToDeleteFrom),
-                new PropertyMetadata(DestinationChanged));
-
-        private static void DestinationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var c = d as AddToDeleteFrom;
-            if (c == null) return;
-
-            if (e.NewValue != null && c.Source != null)
-                ((IAddToDeleteFromDestination<object>)e.NewValue).LinkToAddToDeleteFromEvents(c, c.SourceType);
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Gets or sets the type of the source. Used for linking the Destination.
-        /// </summary>
-        public Type SourceType { get; set; }
-        #region Source Dependency Property
-
-        /// <summary>
-        /// Source
-        /// </summary>
-        public IAddToDeleteFromSource<object> Source
-        {
-            get { return (IAddToDeleteFromSource<object>) GetValue(SourceProperty); }
-            set { SetValue(SourceProperty, value); }
-        }
-
-        /// <summary>
-        /// Source Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty SourceProperty =
-            DependencyProperty.Register(
-                "Source",
-                typeof (IAddToDeleteFromSource<object>),
-                typeof (AddToDeleteFrom), null);
-
-        #endregion
-
-        #endregion
-
-        #region AddIsEnabled Dependency Property
-
-        /// <summary>
-        /// AddIsEnabled
-        /// </summary>
-        public bool AddIsEnabled
-        {
-            get { return (bool)GetValue(AddIsEnabledProperty); }
-            set { SetValue(AddIsEnabledProperty, value); }
-        }
-
-        /// <summary>
-        /// AddIsEnabled Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty AddIsEnabledProperty =
-            DependencyProperty.Register(
-                "AddIsEnabled",
-                typeof(bool),
-                typeof(AddToDeleteFrom),
-                new PropertyMetadata(null));
-
-        #endregion
-        #region DeleteIsEnabled Dependency Property
-
-        /// <summary>
-        /// DeleteIsEnabled
-        /// </summary>
-        public bool DeleteIsEnabled
-        {
-            get { return (bool)GetValue(DeleteIsEnabledProperty); }
-            set { SetValue(DeleteIsEnabledProperty, value); }
-        }
-
-        /// <summary>
-        /// DeleteIsEnabled Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty DeleteIsEnabledProperty =
-            DependencyProperty.Register(
-                "DeleteIsEnabled",
-                typeof(bool),
-                typeof(AddToDeleteFrom),
-                new PropertyMetadata(null));
-
-        #endregion
-
-        #region ExistingItemsComboBoxText Dependency Property
-
-        /// <summary>
-        /// ExistingItemsComboBoxText
-        /// </summary>
-        public string ExistingItemsComboBoxText
-        {
-            get { return (string)GetValue(ExistingItemsComboBoxTextProperty); }
-            set { SetValue(ExistingItemsComboBoxTextProperty, value); }
-        }
-
-        /// <summary>
-        /// ExistingItemsComboBoxText Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty ExistingItemsComboBoxTextProperty =
-            DependencyProperty.Register(
-                "ExistingItemsComboBoxText",
-                typeof(string),
-                typeof(AddToDeleteFrom),
-                new PropertyMetadata(null));
-
-        #endregion
-        #region SelectedExistingItem Dependency Property
-
-        /// <summary>
-        /// The SelectedExistingItem in the Add New/Existing combobox
-        /// </summary>
-        public object SelectedExistingItem
-        {
-            get { return (object)GetValue(SelectedExistingItemProperty); }
-            set { SetValue(SelectedExistingItemProperty, value); }
-        }
-
-        /// <summary>
-        /// SelectedExistingItem Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty SelectedExistingItemProperty =
-            DependencyProperty.Register(
-                "SelectedExistingItem",
-                typeof(object),
-                typeof(AddToDeleteFrom),
-                new PropertyMetadata(null));
-
-        #endregion
-
-        #region Remove or Delete properties
-
-        #region EntityToRemoveString Dependency Property
-
-        /// <summary>
-        /// The potential EntityToRemove description string
-        /// </summary>
-        public string EntityToRemoveString
-        {
-            get { return (string)GetValue(EntityToRemoveStringProperty); }
-            set { SetValue(EntityToRemoveStringProperty, value); }
-        }
-
-        /// <summary>
-        /// EntityToRemoveString Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty EntityToRemoveStringProperty =
-            DependencyProperty.Register(
-                "EntityToRemoveString",
-                typeof(string),
-                typeof(AddToDeleteFrom),
-                new PropertyMetadata(null));
-
-        #endregion
-        #region EntityToRemoveFromString Dependency Property
-
-        /// <summary>
-        /// The potentital EntityToRemove from description string
-        /// </summary>
-        public string EntityToRemoveFromString
-        {
-            get { return (string)GetValue(EntityToRemoveFromStringProperty); }
-            set { SetValue(EntityToRemoveFromStringProperty, value); }
-        }
-
-        /// <summary>
-        /// EntityToRemoveFromString Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty EntityToRemoveFromStringProperty =
-            DependencyProperty.Register(
-                "EntityToRemoveFromString",
-                typeof(string),
-                typeof(AddToDeleteFrom),
-                new PropertyMetadata(null));
 
         #endregion
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using ReactiveUI;
 using System.Linq;
@@ -15,6 +14,7 @@ using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.Services;
 using Microsoft.Windows.Data.DomainServices;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -114,7 +114,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
 
-            #region Implementation of IAddToDeleteFromProvider
+            #region Implementation of IAddToDeleteFromSource<Party>
 
             //Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
             _loadedUserAccounts = loadedUserAccounts.ToProperty(this, x => x.ExistingItemsSource);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Reactive.Linq;
+using System.Windows;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.SLClient.Data.Services;
@@ -18,11 +19,12 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// </summary>
     [ExportViewModel("BusinessAccountsVM")]
     public class BusinessAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, //Base class is Party instead of BusinessAccount because DomainCollectionView does not work well with inheritance
-        IAddToDeleteFromDestination<BusinessAccount>, IAddNewExisting<UserAccount>, IRemoveDelete<UserAccount>  
+        IAddToDeleteFromDestination<BusinessAccount>, IAddNewExisting<UserAccount>, IRemoveDelete<UserAccount>,
+        IAddNewExisting<ServiceTemplate>, IRemoveDelete<ServiceTemplate>
     {
         #region Public
 
-        #region Implementation of IAddToDeleteFromProvider
+        #region Implementation of IAddToDeleteFromProvider<BusinessAccount>
 
         public IEnumerable DestinationItemsSource
         {
@@ -42,28 +44,46 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="sourceType">Type of the source.</param>
         public void LinkToAddToDeleteFromEvents(AddToDeleteFrom control, Type sourceType)
         {
-            if (sourceType == typeof (UserAccount))
+            if (sourceType == typeof(UserAccount))
             {
-                control.AddExistingItem += (s, existingItem) => this.AddExistingItem((UserAccount) existingItem);
-                control.AddNewItem += (s, newItemText) => this.AddNewItem(newItemText);
-                control.RemoveItem += (s, e) => this.RemoveItem();
-                control.DeleteItem += (s, e) => this.DeleteItem();
+                control.AddExistingItem += (s, existingItem) => this.AddExistingItemUserAccount((UserAccount)existingItem);
+                control.AddNewItem += (s, newItemText) => this.AddNewItemUserAccount(newItemText);
+                control.RemoveItem += (s, e) => this.RemoveItemUserAccount();
+                control.DeleteItem += (s, e) => this.DeleteItemUserAccount();
             }
         }
 
         #endregion
 
-        #region Implementation of IAddNewExisting<in Party>
+        #region Implementation of IAddNewExisting<ServiceTemplate> & IRemoveDelete<ServiceTemplate>
 
-        public Action<string> AddNewItem { get; private set; }
-        public Action<UserAccount> AddExistingItem { get; private set; }
+        public Func<string, ServiceTemplate> AddNewItemServiceTemplate { get; private set; }
+        Func<string, ServiceTemplate> IAddNew<ServiceTemplate>.AddNewItem { get { return AddNewItemServiceTemplate; } }
+
+        public Action<ServiceTemplate> AddExistingItemServiceTemplate { get; private set; }
+        Action<ServiceTemplate> IAddNewExisting<ServiceTemplate>.AddExistingItem { get { return AddExistingItemServiceTemplate; } }
+
+        public Func<ServiceTemplate> RemoveItemServiceTemplate { get; private set; }
+        Func<ServiceTemplate> IRemove<ServiceTemplate>.RemoveItem { get { return RemoveItemServiceTemplate; } }
+
+        public Func<ServiceTemplate> DeleteItemServiceTemplate { get; private set; }
+        Func<ServiceTemplate> IRemoveDelete<ServiceTemplate>.DeleteItem { get { return DeleteItemServiceTemplate; } }
 
         #endregion
 
-        #region Implementation of IRemoveDelete<in Party>
+        #region Implementation of IAddNewExisting<UserAccount> & IRemoveDelete<UserAccount>
 
-        public Func<UserAccount> RemoveItem { get; private set; }
-        public Func<UserAccount> DeleteItem { get; private set; }
+        public Func<string, UserAccount> AddNewItemUserAccount { get; private set; }
+        Func<string, UserAccount> IAddNew<UserAccount>.AddNewItem { get { return AddNewItemUserAccount; } }
+
+        public Action<UserAccount> AddExistingItemUserAccount { get; private set; }
+        Action<UserAccount> IAddNewExisting<UserAccount>.AddExistingItem { get { return AddExistingItemUserAccount; } }
+
+        public Func<UserAccount> RemoveItemUserAccount { get; private set; }
+        Func<UserAccount> IRemove<UserAccount>.RemoveItem { get { return RemoveItemUserAccount; } }
+
+        public Func<UserAccount> DeleteItemUserAccount { get; private set; }
+        Func<UserAccount> IRemoveDelete<UserAccount>.DeleteItem { get { return DeleteItemUserAccount; } }
 
         #endregion
 
@@ -104,32 +124,64 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             SetupMainQuery(DataManager.Query.BusinessAccounts);
 
-            #region Implementation of IAddToDeleteFromSource
+            #region Implementation of IAddToDeleteFromProvider<BusinessAccount>
 
             //Whenever the SelectedEntity changes, notify the DestinationItemsSource changed
             this.SelectedEntityObservable.ObserveOnDispatcher().Subscribe(
                 _ => this.RaisePropertyChanged("DestinationItemsSource"));
 
-            AddNewItem = name =>
+            #endregion
+
+            #region Implementation of IAddNewExisting<ServiceTemplate> & IRemoveDelete<ServiceTemplate>
+
+            AddNewItemServiceTemplate = name =>
+            {
+                return VM.ServiceTemplates.CreateNewItem(name);
+            };
+
+            AddExistingItemServiceTemplate = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add(existingItem);
+
+            RemoveItemServiceTemplate = () =>
+            {
+                //TODO
+                //MessageBox.Show("You cannot remove FoundOPS ServiceTemplates manually.");
+                
+                return null;
+            };
+
+            DeleteItemServiceTemplate = () =>
+            {
+                //TODO
+                //MessageBox.Show("You cannot delete FoundOPS ServiceTemplates manually.");
+
+                return null;
+            };
+
+            #endregion
+
+            #region Implementation of IAddNewExisting<UserAccount> & IRemoveDelete<UserAccount>
+
+            AddNewItemUserAccount = name =>
             {
                 var newUserAccount = VM.UserAccounts.CreateNewItem(name);
                 this.SelectedEntity.FirstOwnedRole.MemberParties.Add(newUserAccount);
+                return (UserAccount)newUserAccount;
             };
 
-            AddExistingItem = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add(existingItem);
+            AddExistingItemUserAccount = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add(existingItem);
 
-            RemoveItem = () =>
+            RemoveItemUserAccount = () =>
             {
                 var selectedUserAccount = VM.UserAccounts.SelectedEntity;
                 if (selectedUserAccount != null)
                     this.SelectedEntity.FirstOwnedRole.MemberParties.Remove(selectedUserAccount);
 
-                return (UserAccount) selectedUserAccount;
+                return (UserAccount)selectedUserAccount;
             };
 
-            DeleteItem = () =>
+            DeleteItemUserAccount = () =>
             {
-                var selectedUserAccount = RemoveItem();
+                var selectedUserAccount = RemoveItemUserAccount();
                 if (selectedUserAccount != null)
                     VM.UserAccounts.DeleteEntity(selectedUserAccount);
 
