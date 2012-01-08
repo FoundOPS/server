@@ -134,12 +134,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Implementation of IAddNewExisting<ServiceTemplate> & IRemoveDelete<ServiceTemplate>
 
-            AddNewItemServiceTemplate = name =>
-            {
-                return VM.ServiceTemplates.CreateNewItem(name);
-            };
+            AddNewItemServiceTemplate = name => VM.ServiceTemplates.CreateNewItem(name);
 
-            AddExistingItemServiceTemplate = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add(existingItem);
+            //AddExistingItemServiceTemplate = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add(existingItem);
 
             RemoveItemServiceTemplate = () =>
             {
