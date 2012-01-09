@@ -198,7 +198,7 @@ namespace FoundOps.SLClient.Data.Services
             //Tracks if a PerformNextSave is hookup up to the currentSubmitOperation.Completed event
             var performNextSaveHooked = false;
             //Whenever a SubmitOperation is enqueued: try to Submit as soon as possible
-            this._nextSubmitOperationsQueue.FromCollectionChangedEvent().Where(e => e.Action == NotifyCollectionChangedAction.Add)
+            this._nextSubmitOperationsQueue.FromCollectionChanged().Where(e => e.EventArgs != null && e.EventArgs.Action == NotifyCollectionChangedAction.Add)
                 //Wait until after CollectionChangedEvent. Otherwise you will not be able to clear the collection in PerformNextSave().
                 .Throttle(new TimeSpan(0, 0, 0, 0, 100)).SubscribeOnDispatcher().ObserveOnDispatcher()
                 .Subscribe(_ =>

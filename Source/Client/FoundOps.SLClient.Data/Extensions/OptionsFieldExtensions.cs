@@ -53,9 +53,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 this.RaisePropertyChanged("OptionsWrapper");
 
                 //Whenever an option changes, notify that ThisField changed
-                OptionsWrapper.FromCollectionChangedEvent().Where(e=>e.NewItems!=null).SelectMany(e =>
+                OptionsWrapper.FromCollectionChanged().Where(e=>e.EventArgs!=null && e.EventArgs.NewItems!=null).SelectMany(e =>
                 {
-                    var newItems = new object[e.NewItems.Count]; e.NewItems.CopyTo(newItems, 0);
+                    var newItems = new object[e.EventArgs.NewItems.Count]; e.EventArgs.NewItems.CopyTo(newItems, 0);
                     return newItems.Select(ni => ni as INotifyPropertyChanged).Where(ni => ni != null)
                         .Select(ni => ni.FromAnyPropertyChanged()).Merge();
                 }).Throttle(new TimeSpan(0, 0, 0, 0, 250)).ObserveOnDispatcher()

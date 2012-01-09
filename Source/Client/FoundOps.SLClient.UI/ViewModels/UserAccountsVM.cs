@@ -32,6 +32,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Implementation of IAddToDeleteFromSource
 
+        //Want to use the default comparer. So this has need to be set.
+        public IEqualityComparer<object> CustomComparer { get; set; }
+
         private readonly ObservableAsPropertyHelper<IEnumerable> _loadedUserAccounts;
         public IEnumerable ExistingItemsSource { get { return _loadedUserAccounts.Value; } }
 
@@ -81,9 +84,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             loadedUserAccounts.AsGeneric().Merge(
                 ContextManager.GetContextObservable<BusinessAccount>().Where(ba => ba != null)
                 .SelectMany(ba =>//c) the BusinessAccount context OwnedRoles changes
-                                ba.OwnedRoles.FromEntityCollectionChangedGenericAndNow()
+                                ba.OwnedRoles.FromCollectionChangedAndNow()
                                 .SelectMany(_ => //d) the BusinessAccount context OwnedRoles' MemberParties changes
-                                                ba.OwnedRoles.Select(or => or.MemberParties.FromCollectionChangedEventGenericAndNow()).Merge()))
+                                                ba.OwnedRoles.Select(or => or.MemberParties.FromCollectionChangedGenericAndNow()).Merge()))
                 //b) whenever the BusinessAccount context changes
                  .AndNow())
                 .Throttle(TimeSpan.FromMilliseconds(200))

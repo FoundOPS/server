@@ -203,7 +203,8 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             AddCommand = new ReactiveCommand(canAddCommand);
 
-            AddCommand.Subscribe(x =>
+            AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher()
+                .Subscribe(x =>
             {
                 _disableSelectedEntity = true;
                 var newEntity = AddNewEntity(x);

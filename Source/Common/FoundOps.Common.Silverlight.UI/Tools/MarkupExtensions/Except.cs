@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Windows;
 using System.Collections;
 using System.Reactive.Linq;
@@ -36,11 +38,10 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
         {
             var c = d as Except;
             if (c != null)
-                c.UpdateValue(c.ExceptHelper(e.NewValue as IEnumerable, c.ExceptCollection));
+                c.UpdateValue(c.ExceptHelper(e.NewValue as IEnumerable, c.ExceptCollection, c.CustomComparer));
         }
 
         #endregion
-
         #region ExceptCollection Dependency Property
 
         /// <summary>
@@ -60,23 +61,56 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
                 "ExceptCollection",
                 typeof(IEnumerable),
                 typeof(Except),
-                new PropertyMetadata(new PropertyChangedCallback(ExceptCollectionChanged)));
+                new PropertyMetadata(ExceptCollectionChanged));
 
         private static void ExceptCollectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var c = d as Except;
             if (c != null)
-                c.UpdateValue(c.ExceptHelper(c.Collection, e.NewValue as IEnumerable));
+                c.UpdateValue(c.ExceptHelper(c.Collection, e.NewValue as IEnumerable, c.CustomComparer));
+        }
+
+        #endregion
+
+        #region CustomComparer Dependency Property
+
+        /// <summary>
+        /// CustomComparer
+        /// </summary>
+        public IEqualityComparer<object> CustomComparer
+        {
+            get { return (IEqualityComparer<object>)GetValue(CustomComparerProperty); }
+            set { SetValue(CustomComparerProperty, value); }
+        }
+
+        /// <summary>
+        /// CustomComparer Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty CustomComparerProperty =
+            DependencyProperty.Register(
+                "CustomComparer",
+                typeof(IEqualityComparer<object>),
+                typeof(Except),
+                new PropertyMetadata(new PropertyChangedCallback(CustomComparerChanged)));
+
+        private static void CustomComparerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var c = d as Except;
+            if (c != null)
+                c.UpdateValue(c.ExceptHelper(c.Collection, c.ExceptCollection, e.NewValue as IEqualityComparer<object>));
         }
 
         #endregion
 
         protected override object ProvideValueInternal(IServiceProvider serviceProvider)
         {
-            return ExceptHelper(Collection, ExceptCollection);
+            return ExceptHelper(Collection, ExceptCollection, CustomComparer);
         }
 
-        private IEnumerable ExceptHelper(IEnumerable collection, IEnumerable exceptCollection)
+        readonly SerialDisposable _collectionChangedSubscription = new SerialDisposable();
+        readonly SerialDisposable _exceptCollectionChangedSubscription = new SerialDisposable();
+
+        private IEnumerable ExceptHelper(IEnumerable collection, IEnumerable exceptCollection, IEqualityComparer<object> customComparer)
         {
             if (collection == null) return null;
 
@@ -85,8 +119,9 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
             //Listen for collection changes and update the value
             if (collection as INotifyCollectionChanged != null)
             {
-                var collectionChanged = ((INotifyCollectionChanged)collection).FromCollectionChangedEventGeneric();
-                collectionChanged.ObserveOnDispatcher().Subscribe(_ => UpdateValue(ExceptHelper(collection, exceptCollection)));
+                var collectionChanged = ((INotifyCollectionChanged)collection).FromCollectionChanged();
+                _collectionChangedSubscription.Disposable =
+                    collectionChanged.ObserveOnDispatcher().Subscribe(_ => UpdateValue(ExceptHelper(collection, exceptCollection, customComparer)));
             }
 
             #endregion
@@ -99,12 +134,17 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
             //Listen for exceptCollection changes and update the value
             if (exceptCollection as INotifyCollectionChanged != null)
             {
-                var exceptCollectionChanged = ((INotifyCollectionChanged)exceptCollection).FromCollectionChangedEventGeneric();
-                exceptCollectionChanged.ObserveOnDispatcher().Subscribe(_ => UpdateValue(ExceptHelper(collection, exceptCollection)));
+                var exceptCollectionChanged = ((INotifyCollectionChanged)exceptCollection).FromCollectionChanged();
+                _exceptCollectionChangedSubscription.Disposable =
+                    exceptCollectionChanged.ObserveOnDispatcher().Subscribe(_ => UpdateValue(ExceptHelper(collection, exceptCollection, customComparer)));
             }
             #endregion
 
-            return collection.Cast<object>().Except(exceptCollection.Cast<object>());
+            return customComparer == null
+                       ? collection.Cast<object>().Except(exceptCollection.Cast<object>()).ToArray()
+                //Using Where(!exceptCollection.Contains) instead of Except as a workaround
+                //so the IEqualityComparers do not need to implement a custom GetHashCode method
+                       : collection.Cast<object>().Where(a => !exceptCollection.Cast<object>().Contains(a, customComparer)).ToArray();
         }
     }
 }

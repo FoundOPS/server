@@ -361,11 +361,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             _updateFilter =
                 //a) routes are changed or set
-               loadedRoutesChanged.FromCollectionChangedOrSetGeneric()
+               loadedRoutesChanged.FromCollectionChangedOrSet().AsGeneric()
                 //b) the SelectedRouteType changes
-                .Merge(SelectedRouteTypes.FromCollectionChangedEventGeneric())
+                .Merge(SelectedRouteTypes.FromCollectionChangedGeneric())
                 //c) the SelectedRegions changes
-                .Merge(SelectedRegions.FromCollectionChangedEventGeneric())
+                .Merge(SelectedRegions.FromCollectionChangedGeneric())
                 //d) a route's RouteType is changed
                 .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectMany(rts => rts.Select(rt => Observable2.FromPropertyChangedPattern(rt, x => x.RouteType))).AsGeneric());
 
@@ -424,10 +424,11 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //whenever loadedRoutes is changed or set
                 loadedRoutesChanged.FromCollectionChangedOrSet().SelectMany(lrs =>
                     //whenever loadedRoutes.RouteDestinations is changed (and now)
-                  lrs.Select(lr => lr.RouteDestinations.NowAndWhenEntityCollectionChanged()
+                  lrs.Select(lr => lr.RouteDestinations.FromCollectionChangedAndNow()
                       //whenever the loadedRoutes.RouteDestinations.RouteTasks is changed (and now)
+                      .Select(ea=> (EntityCollection<RouteDestination>)ea.Sender)
                       .SelectMany(routeDestinations =>
-                          routeDestinations.Select(rd => rd.RouteTasks.NowAndWhenEntityCollectionChanged())
+                          routeDestinations.Select(rd => rd.RouteTasks.FromCollectionChangedAndNow())
                           .Merge()) //Merge loadedRoutes.RouteDestinations.RouteTasks collection changed events
                         ).Merge() //Merge loadedRoutes.RouteDestinations collection changed events
                        ).AsGeneric()
