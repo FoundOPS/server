@@ -69,37 +69,61 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public IEnumerable ServiceTemplatesDestinationItemsSource
         {
-            get { return SelectedEntity == null ? null : ((BusinessAccount) SelectedEntity).ServiceTemplates; }
+            get { return SelectedEntity == null ? null : ((BusinessAccount)SelectedEntity).ServiceTemplates; }
         }
 
         #endregion
 
         #region Implementation of IAddNewExisting<ServiceTemplate> & IRemoveDelete<ServiceTemplate>
 
+        /// <summary>
+        /// An action to add a new ServiceTemplate to the current BusinessAccount.
+        /// </summary>
         public Func<string, ServiceTemplate> AddNewItemServiceTemplate { get; private set; }
         Func<string, ServiceTemplate> IAddNew<ServiceTemplate>.AddNewItem { get { return AddNewItemServiceTemplate; } }
 
+        /// <summary>
+        /// An action to add an existing ServiceTemplate to the current BusinessAccount.
+        /// </summary>
         public Action<ServiceTemplate> AddExistingItemServiceTemplate { get; private set; }
         Action<ServiceTemplate> IAddNewExisting<ServiceTemplate>.AddExistingItem { get { return AddExistingItemServiceTemplate; } }
 
+        /// <summary>
+        /// An action to remove a ServiceTemplate from the current BusinessAccount.
+        /// </summary>
         public Func<ServiceTemplate> RemoveItemServiceTemplate { get; private set; }
         Func<ServiceTemplate> IRemove<ServiceTemplate>.RemoveItem { get { return RemoveItemServiceTemplate; } }
 
+        /// <summary>
+        /// An action to remove a ServiceTemplate from the current BusinessAccount and delete it.
+        /// </summary>
         public Func<ServiceTemplate> DeleteItemServiceTemplate { get; private set; }
         Func<ServiceTemplate> IRemoveDelete<ServiceTemplate>.DeleteItem { get { return DeleteItemServiceTemplate; } }
 
         #endregion
         #region Implementation of IAddNewExisting<UserAccount> & IRemoveDelete<UserAccount>
 
+        /// <summary>
+        /// An action to add a new UserAccount to the current BusinessAccount.
+        /// </summary>
         public Func<string, UserAccount> AddNewItemUserAccount { get; private set; }
         Func<string, UserAccount> IAddNew<UserAccount>.AddNewItem { get { return AddNewItemUserAccount; } }
 
+        /// <summary>
+        /// Gets the add existing item user account.
+        /// </summary>
         public Action<UserAccount> AddExistingItemUserAccount { get; private set; }
         Action<UserAccount> IAddNewExisting<UserAccount>.AddExistingItem { get { return AddExistingItemUserAccount; } }
 
+        /// <summary>
+        /// An action to remove a UserAccount from the current BusinessAccount.
+        /// </summary>
         public Func<UserAccount> RemoveItemUserAccount { get; private set; }
         Func<UserAccount> IRemove<UserAccount>.RemoveItem { get { return RemoveItemUserAccount; } }
 
+        /// <summary>
+        /// An action to remove a UserAccount from the current BusinessAccount and delete it.
+        /// </summary>
         public Func<UserAccount> DeleteItemUserAccount { get; private set; }
         Func<UserAccount> IRemoveDelete<UserAccount>.DeleteItem { get { return DeleteItemUserAccount; } }
 
@@ -157,21 +181,15 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             AddNewItemServiceTemplate = name => VM.ServiceTemplates.CreateNewItem(name);
 
-            //AddExistingItemServiceTemplate = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add(existingItem);
-
-            RemoveItemServiceTemplate = () =>
+            AddExistingItemServiceTemplate = existingItem =>
             {
-                //TODO
-                //MessageBox.Show("You cannot remove FoundOPS ServiceTemplates manually.");
-
-                return null;
+                var serviceTemplateChild = existingItem.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
+                ((BusinessAccount)SelectedEntity).ServiceTemplates.Add(serviceTemplateChild);
             };
 
             DeleteItemServiceTemplate = () =>
             {
-                //TODO
-                //MessageBox.Show("You cannot delete FoundOPS ServiceTemplates manually.");
-
+                MessageBox.Show("You cannot delete FoundOPS ServiceTemplates manually yet.");
                 return null;
             };
 
@@ -207,7 +225,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             };
 
             #endregion
-
         }
 
         #region Logic
@@ -218,6 +235,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newBusinessAccount = new BusinessAccount();
             ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newBusinessAccount);
             return newBusinessAccount;
+        }
+
+        public override void DeleteEntity(Party entityToDelete)
+        {
+            MessageBox.Show("Cannot manually delete Service Providers.");
         }
 
         /// <summary>

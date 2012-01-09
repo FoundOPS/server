@@ -50,7 +50,7 @@
                         </Grid>
                     </InfiniteAccordion:ThirdsListDetails.List>
                     <InfiniteAccordion:ThirdsListDetails.Details>
-                        <BusinessAccounts:BusinessAccountLarge />
+                        <AdministrativeConsole:BusinessAccountLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
                     <InfiniteAccordion:ThirdsListDetails.Summary>
                         <BusinessAccounts:BusinessAccountSmall />

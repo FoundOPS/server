@@ -107,7 +107,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
             return ExceptHelper(Collection, ExceptCollection, CustomComparer);
         }
 
-        readonly SerialDisposable _collectionChangedSubscription =  new SerialDisposable();
+        readonly SerialDisposable _collectionChangedSubscription = new SerialDisposable();
         readonly SerialDisposable _exceptCollectionChangedSubscription = new SerialDisposable();
 
         private IEnumerable ExceptHelper(IEnumerable collection, IEnumerable exceptCollection, IEqualityComparer<object> customComparer)
@@ -140,9 +140,11 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
             }
             #endregion
 
-            return customComparer != null
-                       ? collection.Cast<object>().Where(a=>!exceptCollection.Cast<object>().Contains(a, customComparer)).ToArray()
-                       : collection.Cast<object>().Except(exceptCollection.Cast<object>()).ToArray();
+            return customComparer == null
+                       ? collection.Cast<object>().Except(exceptCollection.Cast<object>()).ToArray()
+                //Using Where(!exceptCollection.Contains) instead of Except as a workaround
+                //so the IEqualityComparers do not need to implement a custom GetHashCode method
+                       : collection.Cast<object>().Where(a => !exceptCollection.Cast<object>().Contains(a, customComparer)).ToArray();
         }
     }
 }
