@@ -87,9 +87,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityGraph.Silverlight">
-      <HintPath>..\Lib\EntityGraph.Silverlight.dll</HintPath>
-    </Reference>
+    <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
       <Private>True</Private>
@@ -128,8 +126,8 @@
     <Reference Include="System.Net">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Reactive, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.ServiceModel.DomainServices.Client">
       <Private>True</Private>
     </Reference>
@@ -186,8 +184,14 @@
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Xml.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.Windows.Controls, Version=2011.1.315.1040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
-    <Reference Include="Telerik.Windows.Controls.DataVisualization, Version=2011.1.315.1040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.Windows.Controls">
+      <HintPath>..\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.DataVisualization">
+      <HintPath>..\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IRaiseValidationErrors.cs" />
@@ -216,12 +220,7 @@
     <Compile Include="Models\Import\ImportColumnType.cs" />
     <Compile Include="Models\Import\ValueWithOptionalAssociation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DesignDataService.cs" />
-    <Compile Include="Services\DesignLoader.cs" />
-    <Compile Include="Services\DomainCollectionViewFactory.cs" />
-    <Compile Include="Services\DomainContextDataService.cs" />
-    <Compile Include="Services\Interfaces\IDataService.cs" />
-    <Compile Include="Services\Interfaces\ISaveChanges.cs" />
+    <Compile Include="Tools\DomainCollectionViewFactory.cs" />
     <Compile Include="Tools\DynamicTools.cs" />
     <Compile Include="Tools\ExtensionMethods\CollectionExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\DependencyObjectExtensions.cs" />
@@ -229,7 +228,6 @@
     <Compile Include="Tools\ExtensionMethods\ItemsControlExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\Rxx3.cs" />
     <Compile Include="Tools\ExtensionMethods\ValidationExtensions.cs" />
-    <Compile Include="Tools\ExtensionMethods\VisualTreeExtensions.cs" />
     <Compile Include="Tools\FileManager.cs" />
     <Compile Include="Tools\Location\MapTools.cs" />
     <Compile Include="Tools\Location\StateUtilities.cs" />
@@ -311,10 +309,6 @@
       <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
       <Name>FoundOps.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj">
-      <Project>{BB748726-9C39-4FDA-8B02-9CC12CD9D34D}</Project>
-      <Name>FoundOps.Common.Silverlight.UI</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\reset.png" />
@@ -327,7 +321,6 @@
     <Content Include="Lib\Croll.Silverlight.Controls.dll" />
     <Content Include="Lib\DataValidationFramework.Silverlight.dll" />
     <Content Include="Lib\EntityGraph.Silverlight.dll" />
-    <Content Include="Lib\EntityTools.dll" />
     <Content Include="Lib\GalaSoft.MvvmLight.SL4.dll" />
     <Content Include="Lib\Kent.Boogaart.HelperTrinity.dll" />
     <Content Include="Lib\Kent.Boogaart.KBCsv.dll" />
@@ -337,6 +330,26 @@
     <Content Include="Lib\Microsoft.Expression.Effects.dll" />
     <Content Include="Lib\Microsoft.Expression.Interactions.dll" />
     <Content Include="Lib\Microsoft.Expression.Prototyping.Interactivity.dll" />
+    <Content Include="Lib\NLog.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Data.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.DataServices.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Docking.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.DomainServices.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Expressions.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.GridView.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Input.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Navigation.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.RadRichTextBoxRibbonBarUI.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.RibbonBar.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.RibbonView.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.RichTextBoxUI.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Scheduler.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Data.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Themes.Expression_Dark.dll" />
+    <Content Include="Lib\RadControls\Telerik.Windows.Zip.dll" />
     <Content Include="Lib\Rxx.Contracts.dll" />
     <Content Include="Lib\Rxx.dll" />
     <Content Include="Lib\SilverlightAnalytics.dll" />
@@ -345,6 +358,7 @@
     <Content Include="Lib\SLaB.Utilities.Xaml.dll" />
     <Content Include="Lib\SLMultiBinding.dll" />
     <Content Include="Lib\System.Reactive.dll" />
+    <Content Include="Lib\System.Reactive.Providers.dll" />
     <Content Include="Lib\System.Reactive.Windows.Threading.dll" />
     <Content Include="Lib\System.ServiceModel.DomainServices.Client.dll" />
     <Content Include="Lib\System.ServiceModel.DomainServices.Client.Web.dll" />
@@ -354,25 +368,8 @@
     <Content Include="Lib\System.Windows.Controls.Toolkit.dll" />
     <Content Include="Lib\System.Windows.Controls.Toolkit.Internals.dll" />
     <Content Include="Lib\System.Windows.Interactivity.dll" />
-    <Content Include="Lib\Telerik.Silverlight.Controls.Test.Common.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.Charting.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.Data.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.DataVisualization.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.Docking.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.DomainServices.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.Editor.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.Expressions.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.Gauge.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.GridView.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.Input.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.Navigation.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.RibbonBar.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.RichTextBoxUI.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.Scheduler.dll" />
-    <Content Include="Lib\Telerik.Windows.Controls.ScheduleView.dll" />
-    <Content Include="Lib\Telerik.Windows.Data.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

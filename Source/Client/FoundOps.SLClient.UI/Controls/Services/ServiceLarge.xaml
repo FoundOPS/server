@@ -4,10 +4,10 @@
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields"
              xmlns:my3="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM">
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM"
+             Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--Use grid to allow scrollviewer to work-->
-    <Grid x:Name="LayoutRoot" Background="White"
-            Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+    <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

@@ -212,14 +212,23 @@ ul.tabs.homeTab
     font-size: 11px;
     color: #ccc;
 }
+#password {
+    top: -34px;
+    left: 220px;   
+}
 #rememberMe
 {
     top: -33px;
-    left: 38px;
+    left: 36px;
+}
+#rememberMe label
+{
+    position: relative;
+    top: -2px;
 }
 #forgotPass
 {
-    top: -48px;
+    top: -49px;
 }
 .ValSummary
 {
@@ -228,8 +237,8 @@ ul.tabs.homeTab
 #loginBtn
 {
     position: relative;
-    top: -89px;
-    left: 420px;
+    top: -87px;
+    left: 400px;
     height: 21px;
     width: 65px;
     color: #eee;

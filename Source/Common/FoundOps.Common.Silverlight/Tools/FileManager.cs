@@ -23,11 +23,11 @@ namespace FoundOps.Common.Silverlight.Tools
         public static IObservable<byte[]> GetFile(Guid ownerPartyId, Guid fileId)
         {
             //Get the get access key
-            var getAccessKey = Rxx2.HttpGetAsString(String.Format(@"{0}/GetBlobUrl?ownerPartyId={1}&fileGuid={2}", FileControllerUrl, ownerPartyId, fileId));
+            var getAccessKey = Rxx3.HttpGetAsString(String.Format(@"{0}/GetBlobUrl?ownerPartyId={1}&fileGuid={2}", FileControllerUrl, ownerPartyId, fileId));
 
             //When the access key returns, get the file at the url + key (as a byte array)
             //It is a SelectMany because both GetResponse methods return an Observables
-            return getAccessKey.SelectMany(accessKey => Rxx2.HttpGetAsByteArray(AzureTools.BuildFileUrl(ownerPartyId, fileId, accessKey)));
+            return getAccessKey.SelectMany(accessKey => Rxx3.HttpGetAsByteArray(AzureTools.BuildFileUrl(ownerPartyId, fileId, accessKey)));
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace FoundOps.Common.Silverlight.Tools
         public static IObservable<WebResponse> InsertFile(Guid ownerPartyId, Guid fileId, byte[] data)
         {
             //Get the insert access Url
-            var insertAccessKey = Rxx2.HttpGetAsString(String.Format(@"{0}/InsertBlobUrl?ownerPartyId={1}&fileGuid={2}", FileControllerUrl, ownerPartyId, fileId));
+            var insertAccessKey = Rxx3.HttpGetAsString(String.Format(@"{0}/InsertBlobUrl?ownerPartyId={1}&fileGuid={2}", FileControllerUrl, ownerPartyId, fileId));
 
             //When the access key returns, post the file at the insert access Url
 

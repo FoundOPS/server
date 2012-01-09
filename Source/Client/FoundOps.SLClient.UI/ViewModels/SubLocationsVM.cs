@@ -103,7 +103,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Private Properties
 
-        private readonly ILocationsDataService _locationsDataService;
         private const string ManuallySelectLocationString = "Manually select the location";
         private const string ClickOnTheMapString = "(click on the map)";
 
@@ -113,10 +112,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="SubLocationsVM"/> class.
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
-        /// <param name="locationsDataService">The locations data service.</param>
         /// <param name="selectedLocation">The selected location.</param>
         [ImportingConstructor]
-        public SubLocationsVM(DataManager dataManager, ILocationsDataService locationsDataService, Location selectedLocation)
+        public SubLocationsVM(DataManager dataManager, Location selectedLocation)
             : base(false, dataManager)
         {
             GeocoderResults = new ObservableCollection<GeocoderResult>();
@@ -126,7 +124,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                     AddressLineOne = ClickOnTheMapString
                 };
             _selectedLocation = selectedLocation;
-            _locationsDataService = locationsDataService;
 
             if (_selectedLocation != null)
             {
@@ -180,7 +177,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void OnSearch()
         {
-            _locationsDataService.TryGeocode(SearchText, OnGeocodingComplete);
+            DataManager.TryGeocode(SearchText, OnGeocodingComplete);
             ManuallySelectGeocoderResult.Latitude = null;
             ManuallySelectGeocoderResult.Longitude = null;
         }

@@ -12,12 +12,12 @@ namespace FoundOps.Common.Silverlight.Tools
         private object _targetObject;
         private object _targetProperty;
 
-        protected object TargetObject
+        public object TargetObject
         {
             get { return _targetObject; }
         }
 
-        protected object TargetProperty
+        public object TargetProperty
         {
             get { return _targetProperty; }
         }
@@ -57,7 +57,7 @@ namespace FoundOps.Common.Silverlight.Tools
 
         public IValueConverter Converter { get; set; }
 
-        TE IMarkupExtension<TE>.ProvideValue(IServiceProvider serviceProvider)
+        public TE ProvideValue(IServiceProvider serviceProvider)
         {
             var target = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
             if (target != null)

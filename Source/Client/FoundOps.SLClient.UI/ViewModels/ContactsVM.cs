@@ -25,17 +25,16 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactsVM"/> class.
         /// </summary>
-        /// <param name="partyDataService">The party data service.</param>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ContactsVM(IPartyDataService partyDataService, DataManager dataManager)
+        public ContactsVM(DataManager dataManager)
             : base(dataManager)
         {
             this.SetupMainQuery(DataManager.Query.Contacts, null, "DisplayName");
 
             //Setup the selected contact's OwnedPerson PartyVM whenever the selected contact changes
             _selectedContactPersonVM =
-                SelectedEntityObservable.Where(se => se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
+                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
                 .ToProperty(this, x => x.SelectedContactPersonVM);
         }
 

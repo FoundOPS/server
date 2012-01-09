@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Windows.Controls;
-using FoundOps.Common.Tools;
-using FoundOps.Server.Services.CoreDomainService;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
-using System.Windows.Media;
+using RiaServicesContrib;
+using FoundOps.Common.Tools;
 using System.Reactive.Linq;
+using System.Windows.Controls;
 using System.Reactive.Subjects;
 using Telerik.Windows.Controls;
 using MEFedMVVM.ViewModelLocator;
@@ -19,10 +18,10 @@ using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
 using Microsoft.Windows.Data.DomainServices;
-using FoundOps.Common.Silverlight.Extensions;
-using FoundOps.Common.Silverlight.Converters;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
+using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -362,11 +361,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             _updateFilter =
                 //a) routes are changed or set
-               loadedRoutesChanged.FromCollectionChangedOrSetGeneric()
+               loadedRoutesChanged.FromCollectionChangedOrSet().AsGeneric()
                 //b) the SelectedRouteType changes
-                .Merge(SelectedRouteTypes.FromCollectionChangedEventGeneric())
+                .Merge(SelectedRouteTypes.FromCollectionChangedGeneric())
                 //c) the SelectedRegions changes
-                .Merge(SelectedRegions.FromCollectionChangedEventGeneric())
+                .Merge(SelectedRegions.FromCollectionChangedGeneric())
                 //d) a route's RouteType is changed
                 .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectMany(rts => rts.Select(rt => Observable2.FromPropertyChangedPattern(rt, x => x.RouteType))).AsGeneric());
 
@@ -425,10 +424,11 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //whenever loadedRoutes is changed or set
                 loadedRoutesChanged.FromCollectionChangedOrSet().SelectMany(lrs =>
                     //whenever loadedRoutes.RouteDestinations is changed (and now)
-                  lrs.Select(lr => lr.RouteDestinations.NowAndWhenCollectionChanged()
+                  lrs.Select(lr => lr.RouteDestinations.FromCollectionChangedAndNow()
                       //whenever the loadedRoutes.RouteDestinations.RouteTasks is changed (and now)
+                      .Select(ea=> (EntityCollection<RouteDestination>)ea.Sender)
                       .SelectMany(routeDestinations =>
-                          routeDestinations.Select(rd => rd.RouteTasks.NowAndWhenCollectionChanged())
+                          routeDestinations.Select(rd => rd.RouteTasks.FromCollectionChangedAndNow())
                           .Merge()) //Merge loadedRoutes.RouteDestinations.RouteTasks collection changed events
                         ).Merge() //Merge loadedRoutes.RouteDestinations collection changed events
                        ).AsGeneric()
@@ -624,7 +624,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Detach all related entities to RouteTasks that are not part of a route (do not have a RouteDestination) except the ones to keep
             //You must exclude the ones to keep (because existing entities will become new ones if you detach and add them)
-            DataManager.DetachEntities(Context.RouteTasks.Where(rt => rt.RouteDestination == null).Except(routeTasksToKeep).SelectMany(rt => rt.EntityGraphWithService));
+            DataManager.DetachEntities(Context.RouteTasks.Where(rt => rt.RouteDestination == null).Except(routeTasksToKeep).SelectMany(rt => new EntityGraph<Entity>(rt, rt.EntityGraphWithServiceShape)));
 
             _loadedRouteTasks.OnNext(routeTasksToKeep);
         }

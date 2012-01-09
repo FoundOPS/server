@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.Windows.Controls.FixedDocumentViewers</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource">
+            <summary>
+            Represents a fixed document source, which can load a document from URI or stream.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.#ctor(System.Uri)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource"/> class.
+            </summary>
+            <param name="uri">The URI from which to load the fixed document.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource"/> class.
+            </summary>
+            <param name="stream">The stream from which to load the fixed document.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.OnLoaded(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:Loaded"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.CreateDocumentFromStreamOverride(System.IO.Stream)">
+            <summary>
+            Creates the document from a stream.
+            </summary>
+            <param name="stream">The stream from which to create the document.</param>
+        </member>
+        <member name="E:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.Loaded">
+            <summary>
+            Occurs when document is loaded. It can be loaded asynchronously in case the provided URI is absolute.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.Document">
+            <summary>
+            Gets the fixed document loaded from this instance.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSourceConverter">
+            <summary>
+            Converts an <see cref="T:System.Uri"/> to <see cref="T:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource"/>.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.PdfDocumentSource">
+            <summary>
+            Represents a PDF document source, which can load a document from URI or stream.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.PdfDocumentSource.#ctor(System.Uri)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.PdfDocumentSource"/> class.
+            </summary>
+            <param name="uri">The URI from which to load the PDF document.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.PdfDocumentSource.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.PdfDocumentSource"/> class.
+            </summary>
+            <param name="stream">The stream from which to load the PDF document.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.PdfDocumentSource.CreateDocumentFromStreamOverride(System.IO.Stream)">
+            <summary>
+            Creates the document from a stream.
+            </summary>
+            <param name="stream">The stream from which to create the document.</param>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.PdfDocumentSourceConverter">
+            <summary>
+            Converts an <see cref="T:System.Uri"/> to <see cref="T:Telerik.Windows.Documents.Fixed.PdfDocumentSource"/>.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.PdfDocumentSourceValueConverter">
+            <summary>
+            Represents value converter that can be used for data binding <see cref="T:Telerik.Windows.Controls.RadPdfViewer"/>. 
+            Supports conversion from string representing URI, Uri and stream.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.FixedDocumentViewerBase">
+            <summary>
+            Base document viewing control that can host <see cref="T:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument"/>.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RadPdfViewer">
+            <summary>
+            Represents a control for visualization of PDF documents.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadPdfViewer.DocumentSource">
+            <summary>
+            A <see cref="T:Telerik.Windows.Documents.Fixed.PdfDocumentSource"/> instance representing a PDF file.
+            </summary>
+        </member>
+    </members>
+</doc>

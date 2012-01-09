@@ -92,13 +92,8 @@
     <Reference Include="Croll.Silverlight.Controls">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Croll.Silverlight.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="EntityGraph.Silverlight">
+    <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="EntityTools">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityTools.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Kent.Boogaart.HelperTrinity">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.HelperTrinity.dll</HintPath>
@@ -125,16 +120,16 @@
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\Microsoft.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ReactiveUI.Xaml_SL4">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI.Xaml_SL4.dll</HintPath>
+    <Reference Include="ReactiveUI.Xaml_SL5">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI.Xaml_SL5.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI_SL4">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL4.dll</HintPath>
+    <Reference Include="ReactiveUI_SL5">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL5.dll</HintPath>
     </Reference>
     <Reference Include="Rxx">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Rxx.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Reactive">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading">
@@ -187,7 +182,6 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core, Version=5.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -225,38 +219,38 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Data.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Data.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Docking">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Docking.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Docking.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.GridView">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.GridView.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Input">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Input.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Input.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Navigation">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Navigation.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Navigation.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.ScheduleView">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -264,10 +258,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Account\Business\BusinessDetailsView.xaml.cs">
+    <Compile Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml.cs">
       <DependentUpon>BusinessDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Account\Person\PersonDetailsEdit.xaml.cs">
+    <Compile Include="Controls\Parties\Person\PersonDetailsEdit.xaml.cs">
       <DependentUpon>PersonDetailsEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Clients\ClientLarge.xaml.cs">
@@ -625,11 +619,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Account\Business\BusinessDetailsView.xaml">
+    <Page Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Account\Person\PersonDetailsEdit.xaml">
+    <Page Include="Controls\Parties\Person\PersonDetailsEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1054,7 +1048,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\Parties\AdmininistrativeConsole\" />
-    <Folder Include="Tools\MarkupExtensions\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

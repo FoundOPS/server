@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Linq;
+using RiaServicesContrib;
 using System.ComponentModel;
 using System.Reactive.Linq;
-using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Tools;
+using FoundOps.Common.Silverlight.Tools;
 using RiaServicesContrib.DomainServices.Client;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class OptionsField
     {
         protected override Field MakeChildSilverlight()
         {
-            var entityGraph = new EntityGraph(this, new RiaServicesContrib.EntityGraphShape().Edge<OptionsField, Option>(of => of.Options));
+            var entityGraphShape = new EntityGraphShape().Edge<OptionsField, Option>(of => of.Options);
 
             //Clone using RIA Services Contrib's Entity Graph
-            var childOptionsField = (OptionsField)entityGraph.Clone();
+            var childOptionsField = this.Clone(entityGraphShape);
 
             //Update the Id
             childOptionsField.Id = Guid.NewGuid();
@@ -50,9 +53,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 this.RaisePropertyChanged("OptionsWrapper");
 
                 //Whenever an option changes, notify that ThisField changed
-                OptionsWrapper.FromCollectionChangedEvent().Where(e=>e.NewItems!=null).SelectMany(e =>
+                OptionsWrapper.FromCollectionChanged().Where(e=>e.EventArgs!=null && e.EventArgs.NewItems!=null).SelectMany(e =>
                 {
-                    var newItems = new object[e.NewItems.Count]; e.NewItems.CopyTo(newItems, 0);
+                    var newItems = new object[e.EventArgs.NewItems.Count]; e.EventArgs.NewItems.CopyTo(newItems, 0);
                     return newItems.Select(ni => ni as INotifyPropertyChanged).Where(ni => ni != null)
                         .Select(ni => ni.FromAnyPropertyChanged()).Merge();
                 }).Throttle(new TimeSpan(0, 0, 0, 0, 250)).ObserveOnDispatcher()

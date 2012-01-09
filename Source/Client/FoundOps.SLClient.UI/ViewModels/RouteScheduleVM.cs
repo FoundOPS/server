@@ -94,7 +94,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Create a stream of the earliest Route.StartTime
 
             //For each collection change
-            routes.FromCollectionChangedEvent().SelectMany(
+            routes.FromCollectionChanged().SelectMany(
                 //Select the earliest route's StartTime
             new BehaviorSubject<DateTime>(routes.Select(rt => rt.StartTime).OrderBy(st => st).FirstOrDefault()).Merge(
                 //Merge with the StartTime property change's earliest StartTime
@@ -107,7 +107,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Create a stream of the latest Route.EndTime
 
             //For each collection change
-            routes.FromCollectionChangedEvent().SelectMany(
+            routes.FromCollectionChanged().SelectMany(
                 //Select the latest route's EndTime
             new BehaviorSubject<DateTime>(routes.Select(rt => rt.EndTime).OrderByDescending(st => st).FirstOrDefault()).Merge(
                 //Merge with the EndTime property change's latest EndTime
@@ -120,7 +120,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             ResourceTypesCollection = new ObservableCollection<ResourceType>();
             AppointmentCollection = new ObservableCollection<ScheduleViewAppointment>();
 
-            routes.FromCollectionChangedEvent().SubscribeOnDispatcher().Subscribe(routesCollectionChanged =>
+            routes.FromCollectionChanged().SubscribeOnDispatcher().Subscribe(routesCollectionChanged =>
             {
                 //Update the ResourceTypesCollection
                 var routeResourceType = new ResourceType("Route");

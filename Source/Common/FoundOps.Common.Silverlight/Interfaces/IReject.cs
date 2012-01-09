@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using RiaServicesContrib;
 using System.ServiceModel.DomainServices.Client;
-using RiaServicesContrib.DomainServices.Client;
 
-namespace FoundOps.Common.Silverlight.MVVM.Interfaces
+namespace FoundOps.Common.Silverlight.Interfaces
 {
     public interface IReject
     {
@@ -11,7 +11,7 @@ namespace FoundOps.Common.Silverlight.MVVM.Interfaces
 
     public static class RejectEntityExtensions
     {
-        public static void RejectChangesExtension<TEntityType>(this TEntityType entity, EntityGraph entityGraph) where TEntityType : Entity, IReject
+        public static void RejectChangesExtension<TEntityType>(this TEntityType entity, EntityGraph<TEntityType> entityGraph) where TEntityType : Entity, IReject
         {
             entity.Reject();
 

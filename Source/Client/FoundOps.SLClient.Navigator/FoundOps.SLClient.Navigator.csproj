@@ -89,6 +89,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\DataValidationFramework.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
       <Private>True</Private>
@@ -115,13 +118,21 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Interactions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ReactiveUI.Xaml_SL4, Version=2.4.5.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="ReactiveUI_SL4">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL4.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="SilverlightAnalytics, Version=1.0.4315.25154, Culture=neutral, PublicKeyToken=04377c7cb0a56f74, processorArchitecture=MSIL" />
-    <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="ReactiveUI.Xaml_SL5">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI.Xaml_SL5.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI_SL5">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL5.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
     <Reference Include="System.ServiceModel.DomainServices.Client, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
@@ -220,43 +231,35 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Docking">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Docking.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Docking.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.GridView">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.GridView.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Input">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Input.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Input.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Navigation">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Navigation.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Navigation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.RibbonBar">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.RibbonBar.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.RibbonBar.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.Scheduler">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Scheduler.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.ScheduleView">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

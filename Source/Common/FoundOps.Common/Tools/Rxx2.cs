@@ -1,11 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Linq;
+using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Reactive.Disposables;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
@@ -22,23 +18,43 @@ namespace FoundOps.Common.Tools
         /// Creates an Observable of NotifyCollectionChangedEventArgs from a collection.
         /// </summary>
         /// <param name="collection">The collection.</param>
-        public static IObservable<NotifyCollectionChangedEventArgs> FromCollectionChangedEvent(this INotifyCollectionChanged collection)
+        public static IObservable<EventPattern<NotifyCollectionChangedEventArgs>> FromCollectionChanged(this INotifyCollectionChanged collection)
         {
-            return Observable.FromEventPattern<NotifyCollectionChangedEventArgs>(collection, "CollectionChanged").Select(ep => ep.EventArgs);
+            //Need to specifically use the addHandler and removeHandler parameters on the FromEventPattern 
+            //because EntityCollections explicitly implements INotifyCollectionChanged
+            return Observable.FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
+                h => collection.CollectionChanged += h, h => collection.CollectionChanged -= h);
         }
 
         /// <summary>
         /// Creates an Observable of bool whenever a collection changes.
         /// </summary>
         /// <param name="collection">The collection.</param>
-        public static IObservable<bool> FromCollectionChangedEventGeneric(this INotifyCollectionChanged collection)
+        public static IObservable<EventPattern<NotifyCollectionChangedEventArgs>> FromCollectionChangedAndNow(this INotifyCollectionChanged collection)
         {
-            return collection.FromCollectionChangedEvent().AsGeneric();
+            return collection.FromCollectionChanged().AndNow(new EventPattern<NotifyCollectionChangedEventArgs>(collection, null));
+        }
+
+        /// <summary>
+        /// Creates an Observable of bool whenever a collection changes.
+        /// </summary>
+        /// <param name="collection">The collection.</param>
+        public static IObservable<bool> FromCollectionChangedGeneric(this INotifyCollectionChanged collection)
+        {
+            return collection.FromCollectionChanged().AsGeneric();
+        }
+
+
+        /// <summary>
+        /// Creates an Observable of bool whenever a collection changes.
+        /// </summary>
+        /// <param name="collection">The collection.</param>
+        public static IObservable<bool> FromCollectionChangedGenericAndNow(this INotifyCollectionChanged collection)
+        {
+            return collection.FromCollectionChanged().AsGeneric().AndNow();
         }
 
         #endregion
-
-        #region FromCollectionChangedOrSet
 
         /// <summary>
         /// Returns the ObservableCollection whenever it is changed or set.
@@ -51,23 +67,11 @@ namespace FoundOps.Common.Tools
 
             //An observable of when the collection is changed
             var collectionChanged =
-                observableCollectionObservable.SelectMany(collection => collection.FromCollectionChangedEvent().Select(cc => collection));
+                observableCollectionObservable.SelectMany(collection => collection.FromCollectionChanged().Select(cc => collection));
 
             //Merge the two
             return initiallySet.Merge(collectionChanged);
         }
-
-        /// <summary>
-        /// Returns true whenever the ObservableCollection is changed or set.
-        /// </summary>
-        /// <param name="observableCollectionObservable">The IObservable'ObservableCollection'.</param>
-        /// <returns>True whenever the ObservableCollection changed or set</returns>
-        public static IObservable<bool> FromCollectionChangedOrSetGeneric<T>(this IObservable<ObservableCollection<T>> observableCollectionObservable)
-        {
-            return observableCollectionObservable.FromCollectionChangedOrSet().AsGeneric();
-        }
-
-        #endregion
 
         /// <summary>
         /// Creates an Observable of PropertyChangedEventArgs from a class which implements INotifyPropertyChanged.
@@ -79,160 +83,15 @@ namespace FoundOps.Common.Tools
             return Observable.FromEventPattern<PropertyChangedEventArgs>(obj, "PropertyChanged").Select(ep => ep.EventArgs);
         }
 
-        #region Web Requests
-
         /// <summary>
-        /// Performs an HTTP Get. Publishes the response as a byte[] when it is recieved.
+        /// Creates an Observable of PropertyChangedEventArgs from a class which implements INotifyPropertyChanged.
         /// </summary>
-        /// <param name="uri">The Uri.</param>
-        /// <returns></returns>
-        public static IObservable<Stream> HttpGetAsStream(string uri)
+        /// <typeparam name="T">Must implement INotifyPropertyChanged.</typeparam>
+        /// <param name="obj">The obj to create the PropertyChangedEventArgs observable.</param>
+        /// <param name="propertyName">The name of the property changes to observe.</param>
+        public static IObservable<PropertyChangedEventArgs> FromPropertyChanged<T>(this T obj, string propertyName) where T : INotifyPropertyChanged
         {
-            var request = (HttpWebRequest)WebRequest.Create(new Uri(uri));
-            request.Method = "GET";
-            var getUrl = Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)()
-                //In case nothing could be downloaded, return an empty stream
-                .Catch(Observable.Empty<WebResponse>());
-
-            return getUrl.Select(webResponse => webResponse.GetResponseStream());
-        }
-
-        /// <summary>
-        /// Performs an HTTP Get. Publishes the response as a string when it is recieved.
-        /// </summary>
-        /// <param name="uri">The Uri.</param>
-        /// <returns></returns>
-        public static IObservable<string> HttpGetAsString(string uri)
-        {
-            return HttpGetAsStream(uri).Select(responseStream =>
-            {
-                using (var reader = new StreamReader(responseStream))
-                    return reader.ReadToEnd();
-            });
-        }
-
-        /// <summary>
-        /// Performs an HTTP Get. Publishes the response as a byte[] when it is recieved.
-        /// </summary>
-        /// <param name="uri">The Uri.</param>
-        /// <returns></returns>
-        public static IObservable<byte[]> HttpGetAsByteArray(string uri)
-        {
-            return HttpGetAsStream(uri).Select(responseStream =>
-            {
-                using (var ms = new MemoryStream())
-                {
-                    responseStream.CopyTo(ms);
-                    return ms.ToArray();
-                }
-            });
-        }
-
-        #endregion
-
-        /// <summary>
-        /// An N-ary CombineLatest.
-        /// It's designed with considerations for performance, memory consumption (written in terms of IEnumerable, without requiring an initial buffer for a total count)
-        /// and to avoid stack overflows. From http://social.msdn.microsoft.com/Forums/en-ca/rx/thread/daaa84db-b560-4eda-871e-e523098db20c
-        /// </summary>
-        /// <typeparam name="TSource">The type of the source.</typeparam>
-        /// <param name="sources">The sources.</param>
-        /// <returns>An IObservable of a List of the combined items</returns>
-        public static IObservable<IList<TSource>> CombineLatest<TSource>(this IEnumerable<IObservable<TSource>> sources)
-        {
-            return Observable.Create<IList<TSource>>(
-                observer =>
-                {
-                    object gate = new object();
-                    var disposables = new CompositeDisposable();
-                    var list = new List<TSource>();
-                    var hasValueFlags = new List<bool>();
-                    var actionSubscriptions = 0;
-                    bool hasSources, hasValueFromEach = false;
-
-                    using (var e = sources.GetEnumerator())
-                    {
-                        bool subscribing = hasSources = e.MoveNext();
-
-                        while (subscribing)
-                        {
-                            var source = e.Current;
-                            int index;
-
-                            lock (gate)
-                            {
-                                actionSubscriptions++;
-
-                                list.Add(default(TSource));
-                                hasValueFlags.Add(false);
-
-                                index = list.Count - 1;
-
-                                subscribing = e.MoveNext();
-                            }
-
-                            disposables.Add(
-                                source.Subscribe(
-                                    value =>
-                                    {
-                                        IList<TSource> snapshot;
-
-                                        lock (gate)
-                                        {
-                                            list[index] = value;
-
-                                            if (!hasValueFromEach)
-                                            {
-                                                hasValueFlags[index] = true;
-
-                                                if (!subscribing)
-                                                {
-                                                    hasValueFromEach = hasValueFlags.All(b => b);
-                                                }
-                                            }
-
-                                            if (subscribing || !hasValueFromEach)
-                                            {
-                                                snapshot = null;
-                                            }
-                                            else
-                                            {
-                                                snapshot = list.ToList().AsReadOnly();
-                                            }
-                                        }
-
-                                        if (snapshot != null)
-                                        {
-                                            observer.OnNext(snapshot);
-                                        }
-                                    },
-                                    observer.OnError,
-                                    () =>
-                                    {
-                                        bool completeNow;
-
-                                        lock (gate)
-                                        {
-                                            actionSubscriptions--;
-
-                                            completeNow = actionSubscriptions == 0 && !subscribing;
-                                        }
-
-                                        if (completeNow)
-                                        {
-                                            observer.OnCompleted();
-                                        }
-                                    }));
-                        }
-                    }
-
-                    if (!hasSources)
-                    {
-                        observer.OnCompleted();
-                    }
-
-                    return disposables;
-                });
+            return obj.FromAnyPropertyChanged().Where(p => p.PropertyName == propertyName);
         }
 
         /// <summary>
@@ -241,7 +100,17 @@ namespace FoundOps.Common.Tools
         /// <param name="observable">The observable to trigger now as well.</param>
         public static IObservable<bool> AndNow(this IObservable<bool> observable)
         {
-            return observable.Merge(new[] { true }.ToObservable());
+            return observable.AndNow(true);
+        }
+
+        /// <summary>
+        /// Merges an observable with an immediate <paramref name="now"/>
+        /// </summary>
+        /// <param name="observable">The observable to trigger now as well.</param>
+        /// <param name="now">The object to send now.</param>
+        public static IObservable<T> AndNow<T>(this IObservable<T> observable, T now)
+        {
+            return observable.Merge(new[] { now }.ToObservable());
         }
 
         /// <summary>

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.Services;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using Microsoft.Windows.Data.DomainServices;
 using ReactiveUI;
@@ -22,9 +24,12 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the ServiceTemplates
     /// </summary>
     [ExportViewModel("ServiceTemplatesVM")]
-    public class ServiceTemplatesVM : CoreEntityCollectionInfiniteAccordionVM<ServiceTemplate>
+    public class ServiceTemplatesVM : CoreEntityCollectionInfiniteAccordionVM<ServiceTemplate>,
+          IAddToDeleteFromSource<ServiceTemplate>
     {
         #region Public Properties
+
+        #region ServiceTemplate contexts
 
         private readonly ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _serviceTemplatesForServiceProvider;
         /// <summary>
@@ -49,6 +54,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Returns FoundOPS service templates.
         /// </summary>
         public IEnumerable<ServiceTemplate> FoundOPSServiceTemplates { get { return _foundOPSServiceTemplates.Value; } }
+
         #endregion
 
         private readonly ObservableAsPropertyHelper<ObservableCollection<ServiceTemplate>> _loadedServiceTemplates;
@@ -63,6 +69,21 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public ObservableCollection<SalesTerm> LoadedSalesTerms { get { return _loadedSalesTerms.Value; } }
 
+        #region Implementation of IAddToDeleteFromSource<ServiceTemplate>
+
+        public Func<string, ServiceTemplate> CreateNewItem { get; private set; }
+
+        public IEqualityComparer<object> CustomComparer { get; set; }
+
+        private readonly ObservableAsPropertyHelper<IEnumerable> _foundopsServiceTemplates;
+        public IEnumerable ExistingItemsSource { get { return _foundopsServiceTemplates.Value; } }
+
+        public string MemberPath { get; private set; }
+
+        #endregion
+
+        #endregion
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceTemplatesVM"/> class.
         /// </summary>
@@ -74,10 +95,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Subscribe to the ServiceTemplates query
             IsLoadingObservable = DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, null);
 
-            #region Setup Data Properties
+            #region Setup ServiceTemplate context Data Properties
 
-            //Setup LoadedServiceTemplates property
             var loadedServiceTemplates = DataManager.GetEntityListObservable<ServiceTemplate>(DataManager.Query.ServiceTemplates);
+            //Setup LoadedServiceTemplates property
             _loadedServiceTemplates = loadedServiceTemplates.ToProperty(this, x => x.LoadedServiceTemplates, new ObservableCollection<ServiceTemplate>());
 
             //Setup LoadedSalesTerms property
@@ -187,6 +208,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
 
+            #region Setup DomainCollectionView
+
             //Setup DomainCollectionView based on the current client context
             this.ContextManager.GetContextObservable<Client>().ObserveOnDispatcher().Subscribe(_ =>
             {
@@ -226,19 +249,32 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Whenever the DCV changes, sort by Name
             this.DomainCollectionViewObservable.Subscribe(dcv => dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending)));
+
+            #endregion
+
+            //Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
+            _foundopsServiceTemplates = foundOPSServiceTemplates.ToProperty(this, x => x.ExistingItemsSource);
+
+            MemberPath = "Name";
+
+            CreateNewItem = name => CreateNewServiceTemplate(null, name);
+
+            CustomComparer = new ServiceTemplateIsAncestorOrDescendent();
         }
 
         #region Logic
 
-        //Do not use default filter. This filters by ServiceTemplateLevel
+        //Do not use default filter. This filters by context (ServiceTemplateLevel)
         public override void UpdateFilter() { }
 
         protected override ServiceTemplate AddNewEntity(object commandParameter)
         {
-            //TODO: If one existed before, then was deleted, now being added again: Figure out if you can reconnect children to parent ServiceTemplate 
-            
-            var parentServiceTemplate = (ServiceTemplate)commandParameter;
+            return CreateNewServiceTemplate((ServiceTemplate)commandParameter);
+        }
 
+        //TODO: If a parent existed before, then was deleted, now being added again: Figure out if you can reconnect children to parent ServiceTemplate 
+        private ServiceTemplate CreateNewServiceTemplate(ServiceTemplate parentServiceTemplate, string name = "New Service")
+        {
             //Find if there is a recurring service context
             var recurringServiceContext = ContextManager.GetContext<RecurringService>();
 
@@ -249,6 +285,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 serviceTemplateChild.Id = recurringServiceContext.Id;
                 recurringServiceContext.ServiceTemplate = serviceTemplateChild;
 
+                //TODO: Check if necessary
                 this.Context.ServiceTemplates.Add(serviceTemplateChild);
 
                 return serviceTemplateChild;
@@ -263,7 +300,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
                 serviceTemplateChild.OwnerClient = clientContext;
 
+                //TODO: Check if necessary
                 this.Context.ServiceTemplates.Add(serviceTemplateChild);
+
                 return serviceTemplateChild;
             }
 
@@ -274,19 +313,12 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (serviceProvider.Id == BusinessAccountsDesignData.FoundOps.Id)
                 {
                     //If FoundOPS: create a FoundOPS defined template
-                    var newServiceTemplate = new ServiceTemplate { ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined };
+                    var newServiceTemplate = new ServiceTemplate { ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined, Name = name };
                     serviceProvider.ServiceTemplates.Add(newServiceTemplate);
                     return newServiceTemplate;
                 }
 
-                if (parentServiceTemplate != null) //If not FoundOPS: create a ServiceProviderDefined child of the current service template 
-                {
-                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
-                    serviceTemplateChild.OwnerServiceProvider = serviceProvider;
-
-                    this.Context.ServiceTemplates.Add(serviceTemplateChild);
-                    return serviceTemplateChild;
-                }
+                throw new NotImplementedException("New service templates should inherit from a FoundOPS template.");
             }
 
             return null;

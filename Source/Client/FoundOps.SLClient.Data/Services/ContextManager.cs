@@ -132,7 +132,7 @@ namespace FoundOps.SLClient.Data.Services
         /// Initializes a new instance of the <see cref="ContextManager"/> class.
         /// </summary>
         [ImportingConstructor]
-        public ContextManager(IPartyDataService partyDataService)
+        public ContextManager()
         {
             #region Current Account and Role Properties
 
@@ -150,10 +150,12 @@ namespace FoundOps.SLClient.Data.Services
             _userAccount = UserAccountObservable.ToProperty(this, x => x.UserAccount);
 
             //Load the current user account
-            partyDataService.GetCurrentUserAccount(userAccount => ((BehaviorSubject<UserAccount>)UserAccountObservable).OnNext(userAccount));
+            //Wait 200 milliseconds so MEF can resolve the classes (or else a circular dependency error will be thrown)
+            Observable.Interval(TimeSpan.FromMilliseconds(200)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
+            Manager.Data.GetCurrentUserAccount(userAccount => ((BehaviorSubject<UserAccount>)UserAccountObservable).OnNext(userAccount)));
 
             //Whenever the RoleId changes load the OwnerAccount
-            RoleIdObservable.Subscribe(roleId => partyDataService.GetCurrentParty(roleId, account => ((BehaviorSubject<Party>)OwnerAccountObservable).OnNext(account)));
+            RoleIdObservable.Subscribe(roleId => Manager.Data.GetCurrentParty(roleId, account => ((BehaviorSubject<Party>)OwnerAccountObservable).OnNext(account)));
 
             #endregion
 

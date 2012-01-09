@@ -72,7 +72,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             _notSelectedEntities = _notSelectedEntitiesObservable.ToProperty(this, x => x.NotSelectedEntities);
 
             //NotSelectedEntities are the loaded entities without the SelectedEntities
-            loadedEntities.FromCollectionChangedOrSet().Merge(SelectedEntities.FromCollectionChangedEvent().Select(a => LoadedEntities)) //Whenever loadedEntities or SelectedEntities changes
+            loadedEntities.FromCollectionChangedOrSet().Merge(SelectedEntities.FromCollectionChanged().Select(a => LoadedEntities)) //Whenever loadedEntities or SelectedEntities changes
                .Select(loadEnts => loadEnts.Except(SelectedEntities))  //Select the loadedEntities except the SelectedEntities
                .Subscribe(_notSelectedEntitiesObservable);
 

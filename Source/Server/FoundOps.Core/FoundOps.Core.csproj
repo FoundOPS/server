@@ -187,7 +187,6 @@
     <Compile Include="Models\RouteEntities\RouteRequest.cs" />
     <Compile Include="Models\RouteEntities\RouteResponse.cs" />
     <Compile Include="Models\RouteEntities\TimeWindow.cs" />
-    <Compile Include="Models\Validation\RequiredGuid.shared.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

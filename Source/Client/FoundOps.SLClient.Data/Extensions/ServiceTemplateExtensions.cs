@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using RiaServicesContrib;
 using RiaServicesContrib.DomainServices.Client;
 
 // ReSharper disable CheckNamespace
@@ -71,9 +73,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         private ServiceTemplate MakeFamilyMember()
         {
-            var entityGraph = new EntityGraph(this, new RiaServicesContrib.EntityGraphShape());
-
-            var serviceTemplateFamilyMember = (ServiceTemplate)entityGraph.Clone();
+            var serviceTemplateFamilyMember = this.Clone(new EntityGraphShape());
 
             if (serviceTemplateFamilyMember.ServiceTemplateLevel == ServiceTemplateLevel.FoundOpsDefined)
             {
@@ -102,6 +102,50 @@ namespace FoundOps.Core.Models.CoreEntities
 
             return serviceTemplateFamilyMember;
         }
+    }
+
+    /// <summary>
+    /// Compares two service templates to see if one is an ancestor of the other.
+    /// </summary>
+    public class ServiceTemplateIsAncestorOrDescendent: IEqualityComparer<object>
+    {
+        #region Implementation of IEqualityComparer<in ServiceTemplate>
+
+        bool IEqualityComparer<object>.Equals(object serviceTemplateA, object serviceTemplateB)
+        {
+            var a = (ServiceTemplate) serviceTemplateA;
+            var b = (ServiceTemplate) serviceTemplateB;
+
+            //Climb the parents of x and see if an ancestor is y
+            var currentServiceTemplate = a;
+            while(currentServiceTemplate!= null)
+            {
+                if (currentServiceTemplate == b)
+                    return true;
+
+                currentServiceTemplate = currentServiceTemplate.ParentServiceTemplate;
+            }
+
+            //Climb the parents of y and see if an ancestor is x
+            currentServiceTemplate = b;
+            while (currentServiceTemplate != null)
+            {
+                if (currentServiceTemplate == a)
+                    return true;
+
+                currentServiceTemplate = currentServiceTemplate.ParentServiceTemplate;
+            }
+
+            return false;
+        }
+
+        int IEqualityComparer<object>.GetHashCode(object obj)
+        {
+            var serviceTemplate = (ServiceTemplate) obj;
+            return obj.GetHashCode();
+        }
+
+        #endregion
     }
 }
 

@@ -1,4 +1,4 @@
-﻿namespace FoundOps.Common.Silverlight.MVVM.Validation
+﻿namespace FoundOps.Common.Silverlight.Interfaces
 {
     public interface IRaiseValidationErrors
     {

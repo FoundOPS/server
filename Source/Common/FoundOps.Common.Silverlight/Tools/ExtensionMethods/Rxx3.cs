@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net;
-using System.Net.Browser;
 using System.Windows;
+using System.Net.Browser;
 using System.Reactive.Linq;
-using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
 {
@@ -21,26 +20,54 @@ namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
             return source.SubscribeOnDispatcher().Subscribe(value => obj.SetValue(property, value));
         }
 
+
+        #region Web Requests
+
         /// <summary>
-        /// Returns the entityCollection whenever an entity is added or removed.
+        /// Performs an HTTP Get. Publishes the response as a byte[] when it is recieved.
         /// </summary>
-        /// <param name="entityCollection">The entityCollection.</param>
-        /// <returns>True whenever the ObservableCollection changed</returns>
-        public static IObservable<EntityCollection<T>> FromCollectionChanged<T>(this EntityCollection<T> entityCollection) where T : Entity
+        /// <param name="uri">The Uri.</param>
+        /// <returns></returns>
+        public static IObservable<Stream> HttpGetAsStream(string uri)
         {
-            var entityAdded = Observable.FromEventPattern<EntityCollectionChangedEventArgs<T>>(entityCollection, "EntityAdded");
-            var entityRemoved = Observable.FromEventPattern<EntityCollectionChangedEventArgs<T>>(entityCollection, "EntityRemoved");
-            return entityAdded.Select(_ => entityCollection).Merge(entityRemoved.Select(_ => entityCollection));
+            var request = (HttpWebRequest)WebRequest.Create(new Uri(uri));
+            request.Method = "GET";
+            var getUrl = Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)()
+                //In case nothing could be downloaded, return an empty stream
+                .Catch(Observable.Empty<WebResponse>());
+
+            return getUrl.Select(webResponse => webResponse.GetResponseStream());
         }
 
         /// <summary>
-        /// Returns the entityCollection when you call this method and whenever an entity is added or removed.
+        /// Performs an HTTP Get. Publishes the response as a string when it is recieved.
         /// </summary>
-        /// <param name="entityCollection">The entityCollection.</param>
-        /// <returns>True whenever the ObservableCollection changed</returns>
-        public static IObservable<EntityCollection<T>> NowAndWhenCollectionChanged<T>(this EntityCollection<T> entityCollection) where T : Entity
+        /// <param name="uri">The Uri.</param>
+        /// <returns></returns>
+        public static IObservable<string> HttpGetAsString(string uri)
         {
-            return entityCollection.FromCollectionChanged().Merge(new[] { entityCollection }.ToObservable());
+            return HttpGetAsStream(uri).Select(responseStream =>
+                                                   {
+                                                       using (var reader = new StreamReader(responseStream))
+                                                           return reader.ReadToEnd();
+                                                   });
+        }
+
+        /// <summary>
+        /// Performs an HTTP Get. Publishes the response as a byte[] when it is recieved.
+        /// </summary>
+        /// <param name="uri">The Uri.</param>
+        /// <returns></returns>
+        public static IObservable<byte[]> HttpGetAsByteArray(string uri)
+        {
+            return HttpGetAsStream(uri).Select(responseStream =>
+                                                   {
+                                                       using (var ms = new MemoryStream())
+                                                       {
+                                                           responseStream.CopyTo(ms);
+                                                           return ms.ToArray();
+                                                       }
+                                                   });
         }
 
         /// <summary>
@@ -67,5 +94,7 @@ namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
                                                            return fetchResponse();
                                                        }).Select(result => result);
         }
+
+        #endregion
     }
 }

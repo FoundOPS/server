@@ -9,24 +9,6 @@
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn UniqueName="OwnedPartyDisplayName" Header="Name" IsReadOnly="True" DataMemberBinding="{Binding DisplayName}" />
             <telerik:GridViewDataColumn Header="Date Added" IsReadOnly="True" DataMemberBinding="{Binding DateAdded}" DataFormatString="{}{0:d}" Width="*" />
-            <telerik:GridViewDataColumn UniqueName="DeleteSelectedClientFromParentContextVMColumn" Header="Delete">
-                <telerik:GridViewColumn.CellTemplate>
-                    <DataTemplate>
-                        <Button Height="20">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <!--Bind command to the ParentContextVM property of this UserControl-->
-                                    <!--Pass the selected row as CommandParameter-->
-                                    <Triggers:ConfirmBeforeCommandTrigger ConfirmationString="Delete?"
-                                            Command="{Binding ParentContextVM.DeleteSelectedClientCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=1}}"
-                                            CommandParameter="{Binding}" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <Image Source="/FoundOps.Common.Silverlight;component/Resources/Delete.png" Stretch="Fill" />
-                        </Button>
-                    </DataTemplate>
-                </telerik:GridViewColumn.CellTemplate>
-            </telerik:GridViewDataColumn>
         </telerik:RadGridView.Columns>
     </telerik:RadGridView>
 </UserControl>

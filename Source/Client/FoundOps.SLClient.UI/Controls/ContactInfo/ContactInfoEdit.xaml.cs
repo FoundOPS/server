@@ -1,7 +1,5 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using FoundOps.SLClient.UI.ViewModels;
-using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.ContactInfo
 {

@@ -11,10 +11,10 @@
         <Converters1:ConvertBackWhenExists x:Key="ConvertBackWhenExists" />
         <DataTemplate x:Key="ContactInfoTemplate">
             <StackPanel Orientation="Horizontal">
-                <telerik:RadComboBox x:Name="TypesComboBox" Width="100"
+                <telerik:RadComboBox x:Name="TypesComboBox" Width="100" IsMouseWheelEnabled="False"
                                      ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoTypes, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}" 
                                      SelectedValue="{Binding Type, Mode=TwoWay, Converter={StaticResource ConvertBackWhenExists}}" />
-                <telerik:RadComboBox x:Name="LabelsComboBox" MinWidth="100" IsEditable="True" CanAutocompleteSelectItems="True" CanKeyboardNavigationSelectItems="True" 
+                <telerik:RadComboBox x:Name="LabelsComboBox" MinWidth="100" IsEditable="True" IsMouseWheelEnabled="False" CanAutocompleteSelectItems="True" CanKeyboardNavigationSelectItems="True" 
                                      StaysOpenOnEdit="True" TextSearchMode="Contains" OpenDropDownOnFocus="True"
                                      ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoLabels, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}"
                                      EmptyText="Label" Text="{Binding Label, Mode=TwoWay, Converter={StaticResource ConvertBackWhenExists}}" />

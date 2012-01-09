@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Diagnostics;
 using System.Reactive.Linq;
+using FoundOps.Common.NET;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Models;
 using System.Reactive.Subjects;
@@ -11,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using FoundOps.Common.Silverlight.Controls;
+using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Server.Services.CoreDomainService;
@@ -38,13 +40,13 @@ namespace FoundOps.SLClient.Data.Services
             ///</summary>
             Clients,
             ///<summary>
-            /// Loads all of the Contacts related to the current RoleId
-            ///</summary>
-            Contacts,
-            ///<summary>
             /// Loads all of the Contacts's ClientTitles related to the current RoleId
             ///</summary>
             ClientTitles,
+            ///<summary>
+            /// Loads all of the Contacts related to the current RoleId
+            ///</summary>
+            Contacts,
             ///<summary>
             /// Loads all of the Employee's related to the current RoleId
             ///</summary>
@@ -203,7 +205,7 @@ namespace FoundOps.SLClient.Data.Services
             //Tracks if a PerformNextSave is hookup up to the currentSubmitOperation.Completed event
             var performNextSaveHooked = false;
             //Whenever a SubmitOperation is enqueued: try to Submit as soon as possible
-            this._nextSubmitOperationsQueue.FromCollectionChangedEvent().Where(e => e.Action == NotifyCollectionChangedAction.Add)
+            this._nextSubmitOperationsQueue.FromCollectionChanged().Where(e => e.EventArgs != null && e.EventArgs.Action == NotifyCollectionChangedAction.Add)
                 //Wait until after CollectionChangedEvent. Otherwise you will not be able to clear the collection in PerformNextSave().
                 .Throttle(new TimeSpan(0, 0, 0, 0, 100)).SubscribeOnDispatcher().ObserveOnDispatcher()
                 .Subscribe(_ =>
@@ -433,6 +435,36 @@ namespace FoundOps.SLClient.Data.Services
             return executeQuery;
         }
 
+        /// <summary>
+        /// Loads a single entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="query">The query.</param>
+        /// <param name="callback">The callback.</param>
+        public void LoadSingle<TEntity>(EntityQuery<TEntity> query, Action<TEntity> callback) where TEntity : Entity
+        {
+            Context.Load(query, loadOperation =>
+            {
+                if (loadOperation.HasError) return; //TODO Setup error callback
+                callback(loadOperation.Entities.FirstOrDefault());
+            }, null);
+        }
+
+        /// <summary>
+        /// Loads a collection.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="query">The query.</param>
+        /// <param name="callback">The callback.</param>
+        public void LoadCollection<TEntity>(EntityQuery<TEntity> query, Action<IEnumerable<TEntity>> callback) where TEntity : Entity
+        {
+            Context.Load(query, loadOperation =>
+            {
+                if (loadOperation.HasError) return; //TODO Setup error callback
+                callback(loadOperation.Entities);
+            }, null);
+        }
+
         #endregion
 
         #region Entity Methods
@@ -465,6 +497,56 @@ namespace FoundOps.SLClient.Data.Services
                 if (entitySetContainsEntity)
                     entitySet.Detach(entity);
             }
+        }
+
+        #endregion
+
+        #region Query Methods
+
+        /// <summary>
+        /// Gets the current party.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="getCurrentPartyCallback">The get current party callback.</param>
+        public void GetCurrentParty(Guid roleId, Action<Party> getCurrentPartyCallback)
+        {
+            LoadSingle(Context.PartyForRoleQuery(roleId), getCurrentPartyCallback);
+        }
+
+        /// <summary>
+        /// Gets the current user account.
+        /// </summary>
+        /// <param name="getCurrentUserAccountCallback">The get current user account callback.</param>
+        public void GetCurrentUserAccount(Action<UserAccount> getCurrentUserAccountCallback)
+        {
+            LoadSingle(Context.CurrentUserAccountQuery(), getCurrentUserAccountCallback);
+        }
+
+        /// <summary>
+        /// Tries to geocode search text.
+        /// </summary>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="geocoderResultsCallback">The geocoder results callback.</param>
+        public void TryGeocode(string searchText, Action<IEnumerable<GeocoderResult>> geocoderResultsCallback)
+        {
+            Context.TryGeocode(searchText, callback => geocoderResultsCallback(callback.Value), null);
+        }
+
+        /// <summary>
+        /// Gets the public blocks.
+        /// </summary>
+        /// <param name="getPublicBlocksCallback">The get public blocks callback.</param>
+        public void GetPublicBlocks(Action<ObservableCollection<Block>> getPublicBlocksCallback)
+        {
+            var query = Context.GetPublicBlocksQuery();
+            Context.Load(query, loadOperation =>
+            {
+                if (!loadOperation.HasError)
+                {
+                    getPublicBlocksCallback(new ObservableCollection<Block>(loadOperation.Entities));
+                }
+            }
+                , null);
         }
 
         #endregion
@@ -562,7 +644,7 @@ namespace FoundOps.SLClient.Data.Services
 
             //If there are no changes, call Cancelled
             var changes = this.Context.EntityContainer.GetChanges();
-            if(changes.Count()==0)
+            if (changes.Count() == 0)
             {
                 //Dequeue Actions
                 var dequeuedActions = _saveDiscardCancelActionQueue.ToArray();
@@ -571,7 +653,7 @@ namespace FoundOps.SLClient.Data.Services
                 //call each afterCancel action
                 foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item6 != null))
                     actionTuple.Item6();
-                
+
                 return;
             }
 

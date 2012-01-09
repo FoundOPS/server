@@ -203,7 +203,8 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             AddCommand = new ReactiveCommand(canAddCommand);
 
-            AddCommand.Subscribe(x =>
+            AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher()
+                .Subscribe(x =>
             {
                 _disableSelectedEntity = true;
                 var newEntity = AddNewEntity(x);
@@ -274,10 +275,11 @@ namespace FoundOps.SLClient.Data.ViewModels
             IsLoadingObservable = DataManager.Subscribe<TEntity>(queryKey, ObservationState, entities =>
             {
                 //Setup the DomainCollectionView
-                DomainCollectionViewObservable.OnNext(DomainCollectionViewFactory<TEntity>.GetDomainCollectionView(entities));
-
+                var domainCollectionView = DomainCollectionViewFactory<TEntity>.GetDomainCollectionView(entities);
                 if (sortBy != null)
-                    DomainCollectionView.SortDescriptions.Add(new SortDescription(sortBy, ListSortDirection.Ascending));
+                    domainCollectionView.SortDescriptions.Add(new SortDescription(sortBy, ListSortDirection.Ascending));
+
+                DomainCollectionViewObservable.OnNext(domainCollectionView);
 
                 if (action != null)
                     action(entities);
@@ -285,10 +287,10 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             //Set the SelectedEntity to the first entity (or null if there are none)
             if (selectFirstEntity)
-                DataManager.GetEntityListObservable<TEntity>(queryKey) //Delay .5 second to allow UI to catchup
-                    .ObserveOnDispatcher().Subscribe(entities =>
+                DataManager.GetEntityListObservable<TEntity>(queryKey).Throttle(TimeSpan.FromMilliseconds(300)) //Delay .3 second to allow UI to catchup
+                    .ObserveOnDispatcher().Subscribe(_ =>
                     {
-                        SelectedEntity = entities.FirstOrDefault();
+                        SelectedEntity = DomainCollectionView.FirstOrDefault();
                     });
 
             return DataManager.GetEntityListObservable<TEntity>(queryKey);

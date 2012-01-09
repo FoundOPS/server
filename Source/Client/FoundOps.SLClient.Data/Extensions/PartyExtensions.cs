@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ReactiveUI;
 using System.ComponentModel;
 
@@ -48,5 +49,10 @@ namespace FoundOps.Core.Models.CoreEntities
             //Setup IReactiveNotifyPropertyChanged
             _reactiveHelper = new MakeObjectReactiveHelper(this);
         }
+
+        /// <summary>
+        /// Returns the first owned role.
+        /// </summary>
+        public Role FirstOwnedRole { get { return this.OwnedRoles.FirstOrDefault(); } }
     }
 }

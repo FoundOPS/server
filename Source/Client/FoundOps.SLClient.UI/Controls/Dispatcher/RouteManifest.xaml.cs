@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Diagnostics;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
@@ -30,7 +31,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
             //Update the Manifest when: RouteManifestVM or RouteManifestSettings changes or this is Loaded
             RoutesVM.RouteManifestVM.RouteManifestSettings.FromAnyPropertyChanged().Where(p => RouteManifestSettings.DestinationsProperties.Contains(p.PropertyName))
-            .AsGeneric().Merge(Observable.FromEventPattern<RoutedEventArgs>(this, "Loaded").Select(r => true)).Throttle(new TimeSpan(0, 0, 0, 1))
+            .AsGeneric().Merge(Observable.FromEventPattern<RoutedEventArgs>(this, "Loaded").Select(r => true)).Throttle(TimeSpan.FromSeconds(.5))
             .ObserveOnDispatcher().Subscribe(a => UpdateControl());
         }
 
@@ -40,7 +41,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             if (((RoutesVM)this.DataContext).SelectedEntity != null)
             {
                 //Manually update the number of route tasks text
-                numberOfRouteTasks += ((RoutesVM) this.DataContext).SelectedEntity.RouteDestinationsListWrapper.Sum(routeDestination => routeDestination.RouteTasks.Count);
+                numberOfRouteTasks += ((RoutesVM)this.DataContext).SelectedEntity.RouteDestinationsListWrapper.Sum(routeDestination => routeDestination.RouteTasks.Count);
                 this.NumberOfTasks.Text = numberOfRouteTasks.ToString();
             }
 
@@ -71,25 +72,33 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
             if (RoutesVM.RouteManifestVM == null) return;
 
-            foreach (var property in RoutesVM.RouteManifestVM.RouteManifestSettings.GetType().GetProperties().Where(property => property.Name.Contains("Visible")))
+            //TOOD: in RouteManifestSettings class. Create static public string[] of all toggleablevisibilityproperties
+            var propertiesToForce = RoutesVM.RouteManifestVM.RouteManifestSettings.GetType().GetProperties().Where(property => property.Name.Contains("Visible"));
+
+            //Get the element names and visibilities to force
+            var elementNamesVisibilities = propertiesToForce.Select(property =>
             {
-                //Set visibility to the corresponding property's value in RouteManifestSettings
-                var visibility =
-                    ((bool)
-                     property.GetValue(RoutesVM.RouteManifestVM.RouteManifestSettings, null))
-                        ? Visibility.Visible
-                        : Visibility.Collapsed;
-
                 //Setup corresponding element name. Ex. "IsSummaryVisible" => "SummaryElement"
-                var correspondingElementName = string.Format("{0}Element",
-                                                             property.Name.Replace("Is", "").Replace("Visible", ""));
+                var correspondingElementName = string.Format("{0}Element", property.Name.Replace("Is", "").Replace("Visible", ""));
 
-                var elements =
-                    this.AllChildren<FrameworkElement>().Where(fe => fe.Name == correspondingElementName);
+                //Set visibility to the corresponding property's value in RouteManifestSettings
+                var visibility = ((bool)property.GetValue(RoutesVM.RouteManifestVM.RouteManifestSettings, null)) ? Visibility.Visible : Visibility.Collapsed;
 
-                foreach (var element in elements)
-                    element.Visibility = visibility;
-            }
+                return new Tuple<string, Visibility>(correspondingElementName, visibility);
+            });
+
+            //Go through each RouteDestinationStackPanel 
+            foreach (var routeDestinationStackPanel in this.RouteDestinationsItemsControl.GetChildObjects<StackPanel>("RouteDestinationStackPanel"))
+                //Then go through each element
+                foreach (var elementNameVisibility in elementNamesVisibilities)
+                {
+                    //Get each element and set the proper visibility
+                    
+                    var element = routeDestinationStackPanel.GetChildObject<FrameworkElement>(elementNameVisibility.Item1);
+
+                    if (element != null)
+                        element.Visibility = elementNameVisibility.Item2;
+                }
 
             //Force Summary visibility
             SummaryStackPanel.Visibility = this.IsFirstPage ? Visibility.Visible : Visibility.Collapsed;
