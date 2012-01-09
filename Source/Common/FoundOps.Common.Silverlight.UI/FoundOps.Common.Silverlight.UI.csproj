@@ -303,6 +303,7 @@
     <Compile Include="Converters\UriConverter.cs" />
     <Compile Include="Converters\VisibilityConverters.cs" />
     <Compile Include="DynamicallySizedWrapPanel\DynamicallySizedWrapPanel.cs" />
+    <Compile Include="DynamicallySizedWrapPanel\DynamicWrapPanelTools.cs" />
     <Compile Include="DynamicallySizedWrapPanel\LengthConverter.cs" />
     <Compile Include="DynamicallySizedWrapPanel\NumericExtensions.cs" />
     <Compile Include="DynamicallySizedWrapPanel\OrientedSize.cs" />
