@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Collections;
 using System.ComponentModel;
@@ -60,6 +63,12 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         Func<string, T> CreateNewItem { get; }
 
         /// <summary>
+        /// An optional comparer of source and destination items. 
+        /// It will affect which existing items show up as available options.
+        /// </summary>
+        IEqualityComparer<object> CustomComparer { get; }
+
+        /// <summary>
         /// Returns the existing items. This is not generic because of inheritance issues and entitylists.
         /// </summary>
         IEnumerable ExistingItemsSource { get; }
@@ -75,13 +84,14 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
     /// <summary>
     /// The destination of items for the AddToDeleteFrom control
     /// </summary>
-    /// <typeparam name="T">The type of destination item.</typeparam>
+    /// <typeparam name="T">The type of source item this is a destination for.</typeparam>
     public interface IAddToDeleteFromDestination<out T> : INotifyPropertyChanged
     {
         /// <summary>
+        /// Commented out because this should be implemented
         /// Returns the destination items source. This is not generic because of inheritance issues and entitylists.
         /// </summary>
-        IEnumerable DestinationItemsSource { get; }
+        /// IEnumerable DestinationItemsSource { get; }
 
         /// <summary>
         /// Links to the add delete from control events.
@@ -134,7 +144,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         Func<T> RemoveItem { get; }
     }
- 
+
     /// <summary>
     /// A destination which removes and delete items.
     /// </summary>
@@ -257,6 +267,34 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #region Data source, destination, and selected items
 
+        /// <summary>
+        /// Gets or sets the type of the source. 
+        /// Used for linking the Destination and the Destination's DestinationItemsSource.
+        /// </summary>
+        public Type SourceType { get; set; }
+
+        #region Source Dependency Property
+
+        /// <summary>
+        /// Source
+        /// </summary>
+        public IAddToDeleteFromSource<object> Source
+        {
+            get { return (IAddToDeleteFromSource<object>)GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
+
+        /// <summary>
+        /// Source Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty SourceProperty =
+            DependencyProperty.Register(
+                "Source",
+                typeof(IAddToDeleteFromSource<object>),
+                typeof(AddToDeleteFrom), null);
+
+        #endregion
+
         #region Destination Dependency Property
 
         /// <summary>
@@ -283,35 +321,33 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
             var c = d as AddToDeleteFrom;
             if (c == null) return;
 
-            if (e.NewValue != null && c.Source != null)
-                ((IAddToDeleteFromDestination<object>)e.NewValue).LinkToAddToDeleteFromEvents(c, c.SourceType);
+            if (e.NewValue == null || c.Source == null) return;
+            ((IAddToDeleteFromDestination<object>)e.NewValue).LinkToAddToDeleteFromEvents(c, c.SourceType);
         }
+
 
         #endregion
+        #region DestinationItemsSource Dependency Property
 
         /// <summary>
-        /// Gets or sets the type of the source. Used for linking the Destination.
+        /// DestinationItemsSource.
+        /// This is a seperate dependency property from Destination because explicit property bindings do not work in silverlight.
         /// </summary>
-        public Type SourceType { get; set; }
-        #region Source Dependency Property
-
-        /// <summary>
-        /// Source
-        /// </summary>
-        public IAddToDeleteFromSource<object> Source
+        public IEnumerable DestinationItemsSource
         {
-            get { return (IAddToDeleteFromSource<object>)GetValue(SourceProperty); }
-            set { SetValue(SourceProperty, value); }
+            get { return (IEnumerable) GetValue(DestinationItemsSourceProperty); }
+            set { SetValue(DestinationItemsSourceProperty, value); }
         }
 
         /// <summary>
-        /// Source Dependency Property.
+        /// DestinationItemsSource Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty SourceProperty =
+        public static readonly DependencyProperty DestinationItemsSourceProperty =
             DependencyProperty.Register(
-                "Source",
-                typeof(IAddToDeleteFromSource<object>),
-                typeof(AddToDeleteFrom), null);
+                "DestinationItemsSource",
+                typeof (IEnumerable),
+                typeof (AddToDeleteFrom),
+                new PropertyMetadata(null));
 
         #endregion
 
@@ -396,7 +432,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public string Label
         {
-            get { return (string) GetValue(LabelProperty); }
+            get { return (string)GetValue(LabelProperty); }
             set { SetValue(LabelProperty, value); }
         }
 
@@ -406,8 +442,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         public static readonly DependencyProperty LabelProperty =
             DependencyProperty.Register(
                 "Label",
-                typeof (string),
-                typeof (AddToDeleteFrom),
+                typeof(string),
+                typeof(AddToDeleteFrom),
                 new PropertyMetadata(""));
 
         #endregion

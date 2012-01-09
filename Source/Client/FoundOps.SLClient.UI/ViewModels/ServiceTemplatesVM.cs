@@ -66,7 +66,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Implementation of IAddToDeleteFromSource<ServiceTemplate>
 
         public Func<string, ServiceTemplate> CreateNewItem { get; private set; }
-        public IEnumerable ExistingItemsSource { get { return _loadedServiceTemplates.Value; } }
+
+        public IEqualityComparer<object> CustomComparer { get; set; }
+
+        private readonly ObservableAsPropertyHelper<IEnumerable> _foundopsServiceTemplates;
+        public IEnumerable ExistingItemsSource { get { return _foundopsServiceTemplates.Value; } }
+
         public string MemberPath { get; private set; }
 
         #endregion
@@ -180,7 +185,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             var serviceTemplatesForClient =
                 selectServiceTemplateObservable.Merge(ContextManager.GetContextObservable<Client>().Where(c => c != null)
-                .SelectMany(c => c.ServiceTemplates.FromEntityCollectionChanged()).Select(_ => LoadedServiceTemplates)).Throttle(new TimeSpan(0, 0, 0, 0, 250))
+                .SelectMany(c => c.ServiceTemplates.FromCollectionChanged()).Select(_ => LoadedServiceTemplates)).Throttle(new TimeSpan(0, 0, 0, 0, 250))
                 .Select(lsts =>
                 {
                     var clientContext = ContextManager.GetContext<Client>();
@@ -237,11 +242,13 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
 
             //Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
-            loadedServiceTemplates.ToProperty(this, x => x.ExistingItemsSource);
+            _foundopsServiceTemplates = foundOPSServiceTemplates.ToProperty(this, x => x.ExistingItemsSource);
 
             MemberPath = "Name";
 
             CreateNewItem = name => CreateNewServiceTemplate(null, name);
+
+            CustomComparer = new ServiceTemplateIsAncestorOrDescendent();
         }
 
         #region Logic

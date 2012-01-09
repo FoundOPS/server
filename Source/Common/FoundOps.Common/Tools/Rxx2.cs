@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Browser;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
@@ -20,18 +21,30 @@ namespace FoundOps.Common.Tools
         /// Creates an Observable of NotifyCollectionChangedEventArgs from a collection.
         /// </summary>
         /// <param name="collection">The collection.</param>
-        public static IObservable<NotifyCollectionChangedEventArgs> FromCollectionChangedEvent(this INotifyCollectionChanged collection)
+        public static IObservable<EventPattern<NotifyCollectionChangedEventArgs>> FromCollectionChanged(this INotifyCollectionChanged collection)
         {
-            return Observable.FromEventPattern<NotifyCollectionChangedEventArgs>(collection, "CollectionChanged").Select(ep => ep.EventArgs);
+            //Need to specifically use the addHandler and removeHandler parameters on the FromEventPattern 
+            //because EntityCollections explicitly implements INotifyCollectionChanged
+            return Observable.FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
+                h => collection.CollectionChanged += h, h => collection.CollectionChanged -= h);
         }
 
         /// <summary>
         /// Creates an Observable of bool whenever a collection changes.
         /// </summary>
         /// <param name="collection">The collection.</param>
-        public static IObservable<bool> FromCollectionChangedEventGeneric(this INotifyCollectionChanged collection)
+        public static IObservable<EventPattern<NotifyCollectionChangedEventArgs>> FromCollectionChangedAndNow(this INotifyCollectionChanged collection)
         {
-            return collection.FromCollectionChangedEvent().AsGeneric();
+            return collection.FromCollectionChanged().AndNow(new EventPattern<NotifyCollectionChangedEventArgs>(collection, null));
+        }
+
+        /// <summary>
+        /// Creates an Observable of bool whenever a collection changes.
+        /// </summary>
+        /// <param name="collection">The collection.</param>
+        public static IObservable<bool> FromCollectionChangedGeneric(this INotifyCollectionChanged collection)
+        {
+            return collection.FromCollectionChanged().AsGeneric();
         }
 
 
@@ -39,14 +52,12 @@ namespace FoundOps.Common.Tools
         /// Creates an Observable of bool whenever a collection changes.
         /// </summary>
         /// <param name="collection">The collection.</param>
-        public static IObservable<bool> FromCollectionChangedEventGenericAndNow(this INotifyCollectionChanged collection)
+        public static IObservable<bool> FromCollectionChangedGenericAndNow(this INotifyCollectionChanged collection)
         {
-            return collection.FromCollectionChangedEvent().AsGeneric().AndNow();
+            return collection.FromCollectionChanged().AsGeneric().AndNow();
         }
 
         #endregion
-
-        #region FromCollectionChangedOrSet
 
         /// <summary>
         /// Returns the ObservableCollection whenever it is changed or set.
@@ -59,23 +70,11 @@ namespace FoundOps.Common.Tools
 
             //An observable of when the collection is changed
             var collectionChanged =
-                observableCollectionObservable.SelectMany(collection => collection.FromCollectionChangedEvent().Select(cc => collection));
+                observableCollectionObservable.SelectMany(collection => collection.FromCollectionChanged().Select(cc => collection));
 
             //Merge the two
             return initiallySet.Merge(collectionChanged);
         }
-
-        /// <summary>
-        /// Returns true whenever the ObservableCollection is changed or set.
-        /// </summary>
-        /// <param name="observableCollectionObservable">The IObservable'ObservableCollection'.</param>
-        /// <returns>True whenever the ObservableCollection changed or set</returns>
-        public static IObservable<bool> FromCollectionChangedOrSetGeneric<T>(this IObservable<ObservableCollection<T>> observableCollectionObservable)
-        {
-            return observableCollectionObservable.FromCollectionChangedOrSet().AsGeneric();
-        }
-
-        #endregion
 
         /// <summary>
         /// Creates an Observable of PropertyChangedEventArgs from a class which implements INotifyPropertyChanged.

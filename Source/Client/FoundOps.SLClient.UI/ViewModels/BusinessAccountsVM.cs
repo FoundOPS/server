@@ -19,23 +19,12 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// </summary>
     [ExportViewModel("BusinessAccountsVM")]
     public class BusinessAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, //Base class is Party instead of BusinessAccount because DomainCollectionView does not work well with inheritance
-        IAddToDeleteFromDestination<BusinessAccount>, IAddNewExisting<UserAccount>, IRemoveDelete<UserAccount>,
-        IAddNewExisting<ServiceTemplate>, IRemoveDelete<ServiceTemplate>
+        IAddToDeleteFromDestination<UserAccount>, IAddNewExisting<UserAccount>, IRemoveDelete<UserAccount>,
+        IAddToDeleteFromDestination<ServiceTemplate>, IAddNewExisting<ServiceTemplate>, IRemoveDelete<ServiceTemplate>
     {
         #region Public
 
-        #region Implementation of IAddToDeleteFromProvider<BusinessAccount>
-
-        public IEnumerable DestinationItemsSource
-        {
-            get
-            {
-                if (SelectedEntity == null || SelectedEntity.FirstOwnedRole == null)
-                    return null;
-
-                return SelectedEntity.FirstOwnedRole.MemberParties;
-            }
-        }
+        #region Implementation of IAddToDeleteFromDestination
 
         /// <summary>
         /// Links to the LinkToAddToDeleteFromControl events.
@@ -51,6 +40,36 @@ namespace FoundOps.SLClient.UI.ViewModels
                 control.RemoveItem += (s, e) => this.RemoveItemUserAccount();
                 control.DeleteItem += (s, e) => this.DeleteItemUserAccount();
             }
+
+            if (sourceType == typeof(ServiceTemplate))
+            {
+                control.AddExistingItem += (s, existingItem) => this.AddExistingItemServiceTemplate((ServiceTemplate)existingItem);
+                control.AddNewItem += (s, newItemText) => this.AddNewItemServiceTemplate(newItemText);
+                control.RemoveItem += (s, e) => this.RemoveItemServiceTemplate();
+                control.DeleteItem += (s, e) => this.DeleteItemServiceTemplate();
+            }
+        }
+
+        /// <summary>
+        /// Gets the user account destination items source.
+        /// </summary>
+        public IEnumerable UserAccountsDestinationItemsSource
+        {
+            get
+            {
+                if (SelectedEntity == null || SelectedEntity.FirstOwnedRole == null)
+                    return null;
+
+                return SelectedEntity.FirstOwnedRole.MemberParties;
+            }
+        }
+
+        /// <summary>
+        /// Gets the service templates destination items source.
+        /// </summary>
+        public IEnumerable ServiceTemplatesDestinationItemsSource
+        {
+            get { return SelectedEntity == null ? null : ((BusinessAccount) SelectedEntity).ServiceTemplates; }
         }
 
         #endregion
@@ -70,7 +89,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         Func<ServiceTemplate> IRemoveDelete<ServiceTemplate>.DeleteItem { get { return DeleteItemServiceTemplate; } }
 
         #endregion
-
         #region Implementation of IAddNewExisting<UserAccount> & IRemoveDelete<UserAccount>
 
         public Func<string, UserAccount> AddNewItemUserAccount { get; private set; }
@@ -126,9 +144,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Implementation of IAddToDeleteFromProvider<BusinessAccount>
 
-            //Whenever the SelectedEntity changes, notify the DestinationItemsSource changed
-            this.SelectedEntityObservable.ObserveOnDispatcher().Subscribe(
-                _ => this.RaisePropertyChanged("DestinationItemsSource"));
+            //Whenever the SelectedEntity changes, notify the DestinationItemsSources changed
+            this.SelectedEntityObservable.ObserveOnDispatcher().Subscribe(_ =>
+            {
+                this.RaisePropertyChanged("UserAccountsDestinationItemsSource");
+                this.RaisePropertyChanged("ServiceTemplatesDestinationItemsSource");
+            });
 
             #endregion
 
@@ -142,7 +163,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 //TODO
                 //MessageBox.Show("You cannot remove FoundOPS ServiceTemplates manually.");
-                
+
                 return null;
             };
 
