@@ -115,7 +115,6 @@ namespace FoundOps.Common.Silverlight.UI.Controls.Printing
 
             //Start on first page
             var pageToPrint = 0;
-            var lastPageToPrint = 0;
 
             //Go through each page, render it, then move forward
             printDocument.PrintPage += (sender, e) =>
@@ -124,29 +123,28 @@ namespace FoundOps.Common.Silverlight.UI.Controls.Printing
                 CurrentPageIndex = pageToPrint;
                 e.PageVisual = this;
                 ForceBindingsUpdateLayout(e.PageVisual);
-
-                //Reset page count
-                if (CurrentPageIndex == 0)
-                    lastPageToPrint = this.PageCount - 1;
+                e.PageVisual.Measure(e.PrintableArea);
                 
+                //Continue printing if not past the last page
+                e.HasMorePages = pageToPrint < (this.PageCount - 1);
+
                 //Increase page to print
                 pageToPrint++;
 
-                //Continue printing if not past the last page
-                e.HasMorePages = pageToPrint <= lastPageToPrint;
-
                 Debug.WriteLine(e.HasMorePages);
+                Debug.WriteLine((pageToPrint));
+
             };
 
             //Move back to the first page at the end of printing
             printDocument.EndPrint += (s, e) => CurrentPageIndex = 0;
 
             //SL5 Release with Vector Printing
-            //PrinterFallbackSettings settings = new PrinterFallbackSettings();
-            //settings.ForceVector = true;
-            //printDocument.Print("Route Manifest", settings);
+            var settings = new PrinterFallbackSettings {ForceVector = true};
+            printDocument.Print("Route Manifest", settings);
 
-            printDocument.Print("Route Manifest");
+            //SL4 Printing
+            //printDocument.Print("Route Manifest");
         }
 
         #endregion

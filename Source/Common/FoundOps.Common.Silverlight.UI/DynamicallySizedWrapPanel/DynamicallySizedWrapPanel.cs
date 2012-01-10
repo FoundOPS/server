@@ -295,20 +295,53 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
 
 
             #region Copied From ArrangeOverride
-            var sizeArray = new int[children.Count];
+
+            var startOfColumnElementIndex = new int[numCols];
+
+            var endOfColumnElementIndex = new int[numCols];
+
+            var tallestHeight = 0;
+
+            //if (children.Count(c => c.DesiredSize.Height > 0) == numCols)
+            //{
+            //    var i = 0;
+            //    for (var counter = 0; counter < children.Count; counter++)
+            //    {
+            //        if (children[counter].DesiredSize.Height > 0)
+            //        {
+            //            startOfColumnElementIndex[i] = counter;
+            //            endOfColumnElementIndex[i] = counter;
+            //            i++;
+            //        }
+            //    }
+
+            //    foreach (var child in children.Where(child => child.DesiredSize.Height > tallestHeight))
+            //        tallestHeight = (int)child.DesiredSize.Height;
+                
+                
+            //    // Return the total size required as an un-oriented quantity
+            //    return new Size(totalSize.Width, tallestHeight); 
+            //}
+
+            var sizeArray = new int[(children.Where(c => c.DesiredSize.Height > 0)).Count()];
             var count = 0;
 
             //Iterates through the children to find the height for each and saves them to an arrays
             foreach (var child in Children)
             {
-                sizeArray[count] = (int)child.DesiredSize.Height;
-                count++;
+                if ((int)child.DesiredSize.Height != 0)
+                {
+                    sizeArray[count] = (int)child.DesiredSize.Height;
+                    count++;
+                }
             }
 
             //TODO: Figure out mean and standard deviation for the set
             //Had to specify double for the division that occurs below
             var totalChildHeight = sizeArray.Sum();
-            var averageChildHeight = sizeArray.Average();
+            double averageChildHeight = 0;
+            if (sizeArray.Length > 0)
+                averageChildHeight = sizeArray.Average();
 
             #region Standard Deviation Calculator
 
@@ -335,14 +368,11 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
             //Average height for a column
             var averageColumnHeight = totalChildHeight / numCols;
 
-            var startOfColumnElementIndex = new int[numCols];
-
-            var endOfColumnElementIndex = new int[numCols];
-
             startOfColumnElementIndex[0] = 0;
             //Set to negative 1 so that when the loop exits, the tracker will still be in the right position
             var positionTracker = -1;
             var maxHeight = 0;
+            var tallestColumn = 0;
 
             for (int i = 0; i < numCols; i++)
             {
@@ -350,23 +380,39 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
 
                 startOfColumnElementIndex[i] = (positionTracker + 1);
 
-                var maxHeightForColumn = (averageColumnHeight + (.5 * stDev));
+                var minHeightForColumn = (averageColumnHeight - (.5 * stDev));
 
-                while (thisColHeight < maxHeightForColumn && positionTracker < (children.Count - 1))
+                while (thisColHeight < minHeightForColumn && positionTracker < (children.Count - 1)) //(c => c.DesiredSize.Height > 0)
                 {
                     positionTracker++;
-                    thisColHeight += sizeArray[positionTracker];
+                    thisColHeight += (int)children[positionTracker].DesiredSize.Height;
                 }
+
+                //if (thisColHeight > maxHeightForColumn || startOfColumnElementIndex[i] == positionTracker)
+                //    positionTracker--;
 
                 endOfColumnElementIndex[i] = positionTracker;
 
+                if (i == (numCols - 1))
+                {
+                    endOfColumnElementIndex[i] = positionTracker - 1;
+                    //thisColHeight -= (int)children[positionTracker].DesiredSize.Height;
+                }
                 if (thisColHeight > maxHeight)
+                {
+                    tallestColumn = i;
                     maxHeight = thisColHeight;
+                }
             }
             #endregion
 
+            for (var i = startOfColumnElementIndex[tallestColumn]; i <= endOfColumnElementIndex[tallestColumn]; i++)
+            {
+                tallestHeight += (int)children[i].DesiredSize.Height;
+            }
+
             // Return the total size required as an un-oriented quantity
-            return new Size(totalSize.Width, maxHeight);
+            return new Size(totalSize.Width, tallestHeight);
         }
 
         /// <summary>
@@ -472,6 +518,7 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
             //Set to negative 1 so that when the loop exits, the tracker will still be in the right position
             var positionTracker = -1;
             var maxHeight = 0;
+            var tallestColumn = 0;
 
             for (int i = 0; i < numCols; i++)
             {
@@ -481,10 +528,10 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
 
                 var minHeightForColumn = (averageColumnHeight - (.5 * stDev));
 
-                while (thisColHeight < minHeightForColumn && positionTracker < (children.Count(c => c.DesiredSize.Height > 0) - 1))
+                while (thisColHeight < minHeightForColumn && positionTracker < (children.Count - 1)) //(c => c.DesiredSize.Height > 0)
                 {
                     positionTracker++;
-                    thisColHeight += sizeArray[positionTracker];
+                    thisColHeight += (int)children[positionTracker].DesiredSize.Height;
                 }
 
                 //if (thisColHeight > maxHeightForColumn || startOfColumnElementIndex[i] == positionTracker)
@@ -492,16 +539,45 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
 
                 endOfColumnElementIndex[i] = positionTracker;
 
+                if (i == (numCols - 1))
+                {
+                    endOfColumnElementIndex[i] = positionTracker - 1;
+                    //thisColHeight -= (int)children[positionTracker].DesiredSize.Height;
+                }
                 if (thisColHeight > maxHeight)
+                {
+                    tallestColumn = i;
                     maxHeight = thisColHeight;
+                }
             }
             //TODO: Print to the screen
             var colWidth = finalSize.Width / numCols;
 
             #region Print Elements to the screen
+            var tallestChild = 0;
 
-            int lineStart = 0;
-            int colCount = 0;
+            if (children.Count(c => c.DesiredSize.Height > 0) == numCols)
+            {
+                var i = 0;
+                for (var counter = 0; counter < children.Count; counter++)
+                {
+
+                    if (children[counter].DesiredSize.Height > 0)
+                    {
+                        startOfColumnElementIndex[i] = counter;
+                        endOfColumnElementIndex[i] = counter;
+                        i++;
+
+                        if (children[counter].DesiredSize.Height > tallestChild)
+                        {
+                            tallestChild = (int) children[counter].DesiredSize.Height;
+                            tallestColumn = i - 1;                        
+                        }
+                    }
+                }
+            }
+            var lineStart = 0;
+            var colCount = 0;
 
             bool firstCol = true;
             //Iterate through each column
@@ -511,6 +587,9 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                 for (int elementIndexToPrint = startOfColumnElementIndex[colIndex]; elementIndexToPrint <= endOfColumnElementIndex[colIndex]; elementIndexToPrint++)
                 {
                     UIElement element = children[elementIndexToPrint];
+
+                    if (Math.Abs(element.DesiredSize.Height - 0.0) <= 0)
+                        continue;
 
                     // Get the size of the element
                     var elementSize = new OrientedSize(
@@ -556,7 +635,16 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
 
             #endregion
 
-            return new Size(finalSize.Width, maxHeight);
+            var tallestHeight = 0;
+
+            for (var i = startOfColumnElementIndex[tallestColumn]; i <= endOfColumnElementIndex[tallestColumn]; i++)
+            {
+                tallestHeight += (int)children[i].DesiredSize.Height;
+            }
+
+            var test = maxHeight;
+             
+            return new Size(finalSize.Width, tallestHeight);
         }
 
         /// <summary>
