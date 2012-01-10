@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.Core.Server.Blocks;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.SLClient.Data.Services;
@@ -169,7 +171,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Implementation of IAddToDeleteFromProvider<BusinessAccount>
 
-            //Whenever the SelectedEntity changes, notify the DestinationItemsSources changed
+            //Whenever the SelectedEntity changes, notify the DestinationItemsSources changed)))
             this.SelectedEntityObservable.ObserveOnDispatcher().Subscribe(_ =>
             {
                 this.RaisePropertyChanged("UserAccountsDestinationItemsSource");
@@ -235,7 +237,13 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             var newBusinessAccount = new BusinessAccount();
 
-            RolesDesignData.SetupServiceProviderAdministratorRole(newBusinessAccount);
+            //Add default role
+            var role = new Role { Id = Guid.NewGuid(), Name = "Administrator", OwnerParty = newBusinessAccount, RoleType = RoleType.Administrator };
+
+            //Add the manager and business administrator blocks to the role
+            foreach(var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds))
+                role.RoleBlockToBlockSet.Add(new RoleBlock {BlockId = blockId});
+
             ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newBusinessAccount);
 
             return newBusinessAccount;

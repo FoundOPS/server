@@ -52,6 +52,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             return ObjectContext.Blocks.Where(block => block.LoginNotRequired);
         }
 
+        public IEnumerable<Block> GetBlocks()
+        {
+            return ObjectContext.Blocks;
+        }
+
         #region Businesses
 
         public IQueryable<Party> GetBusinessAccountsForRole(Guid roleId)
@@ -357,6 +362,18 @@ namespace FoundOps.Server.Services.CoreDomainService
             return availableRoles;
         }
 
+        public void InsertRole(Role role)
+        {
+            if ((role.EntityState != EntityState.Detached))
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(role, EntityState.Added);
+            }
+            else
+            {
+                this.ObjectContext.Roles.AddObject(role);
+            }
+        }
+
         private void DeleteRole(Role ownedRole)
         {
             if ((ownedRole.EntityState == EntityState.Detached))
@@ -406,7 +423,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                 //Setup the Default UserAccount role
                 var userAccountBlocks =
-                    this.ObjectContext.Blocks.Where(block => BlocksData.DefaultUserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
+                    this.ObjectContext.Blocks.Where(block => BlockConstants.UserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
+
                 RolesDesignData.SetupDefaultUserAccountRole(userAccount, userAccountBlocks);
 
                 this.ObjectContext.Parties.AddObject(userAccount);

@@ -31,6 +31,10 @@ namespace FoundOps.SLClient.Data.Services
         /// </summary>
         public enum Query
         {
+            /// <summary>
+            /// Loads all of the Blocks
+            /// </summary>
+            Blocks,
             ///<summary>
             /// Loads all of the BusinessAccounts related to the current RoleId
             ///</summary>
@@ -147,6 +151,9 @@ namespace FoundOps.SLClient.Data.Services
             _coreDomainContext = coreDomainContext;
 
             #region Setup Queries
+
+            //Setup Blocks query
+            SetupQuery(Query.Blocks, roleId => _coreDomainContext.GetBlocksQuery(), _coreDomainContext.Blocks);
 
             //Setup BusinessAccounts query
             SetupQuery(Query.BusinessAccounts, roleId => _coreDomainContext.GetBusinessAccountsForRoleQuery(roleId), _coreDomainContext.Parties);
