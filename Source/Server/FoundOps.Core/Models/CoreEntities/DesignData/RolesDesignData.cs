@@ -8,7 +8,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
     {
         private readonly BusinessAccountsDesignData _businessAccountsDesignData;
         private readonly UserAccountsDesignData _userAccountsDesignData;
-        private readonly BlocksData _blocksData;
 
         public Role FoundOpsAdministratorRole { get; private set; }
         public Role GotGreaseAdministratorRole { get; private set; }
@@ -19,15 +18,14 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         public List<Role> DesignUserAccountRoles { get; private set; }
 
         public RolesDesignData()
-            : this(new BusinessAccountsDesignData(), new UserAccountsDesignData(), new BlocksData())
+            : this(new BusinessAccountsDesignData(), new UserAccountsDesignData())
         {
         }
 
-        public RolesDesignData(BusinessAccountsDesignData businessAccountsDesignData, UserAccountsDesignData userAccountsDesignData, BlocksData blocksData)
+        public RolesDesignData(BusinessAccountsDesignData businessAccountsDesignData, UserAccountsDesignData userAccountsDesignData)
         {
             _businessAccountsDesignData = businessAccountsDesignData;
             _userAccountsDesignData = userAccountsDesignData;
-            _blocksData = blocksData;
 
             DesignBusinessAccountRoles = new List<Role>();
             DesignUserAccountRoles = new List<Role>();
@@ -78,7 +76,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             //Setup FoundOPS' Role
             FoundOpsAdministratorRole = new Role { Name = "Administrator", OwnerParty = BusinessAccountsDesignData.FoundOps, RoleType = RoleType.Administrator};
 
-            foreach (var adminConsoleBlock in _blocksData.AdministrativeConsoleBlocks)
+            foreach (var adminConsoleBlock in BlocksData.AdministrativeConsoleBlocks)
             {
                 FoundOpsAdministratorRole.Blocks.Add(adminConsoleBlock);
             }
@@ -103,17 +101,17 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             //Setup UserAccounts' default UserAccountRole
             foreach (var userAccount in _userAccountsDesignData.DesignUserAccounts)
-                DesignUserAccountRoles.Add(SetupDefaultUserAccountRole(userAccount, _blocksData.UserAccountBlocks));
+                DesignUserAccountRoles.Add(SetupDefaultUserAccountRole(userAccount, BlocksData.UserAccountBlocks));
         }
 
-        private Role SetupServiceProviderAdministratorRole(BusinessAccount ownerParty)
+        public static Role SetupServiceProviderAdministratorRole(BusinessAccount ownerParty)
         {
             var role = new Role { Name = "Administrator", OwnerParty = ownerParty, RoleType = RoleType.Administrator};
 
-            foreach (var block in _blocksData.ManagerBlocks)
+            foreach (var block in BlocksData.ManagerBlocks)
                 role.Blocks.Add(block);
 
-            foreach (var block in _blocksData.BusinessAdministratorBlocks)
+            foreach (var block in BlocksData.BusinessAdministratorBlocks)
                 role.Blocks.Add(block);
 
             return role;

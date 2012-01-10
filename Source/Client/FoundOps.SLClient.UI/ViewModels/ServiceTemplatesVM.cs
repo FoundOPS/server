@@ -241,6 +241,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
 
+            #region IAddToDeleteFromSource<ServiceTemplate> Implementation
+
             //Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
             _foundopsServiceTemplates = foundOPSServiceTemplates.ToProperty(this, x => x.ExistingItemsSource);
 
@@ -249,6 +251,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             CreateNewItem = name => CreateNewServiceTemplate(null, name);
 
             CustomComparer = new ServiceTemplateIsAncestorOrDescendent();
+
+            #endregion
         }
 
         #region Logic

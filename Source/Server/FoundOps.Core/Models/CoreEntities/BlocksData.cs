@@ -4,11 +4,11 @@ using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Core.Server.Blocks
 {
-    public class BlocksData
+    public static class BlocksData
     {
-        public List<Block> AllBlocks { get; private set; }
+        public static List<Block> AllBlocks { get; private set; }
 
-        public BlocksData()
+        static BlocksData()
         {
             SetupPartyBlocks();
 
@@ -25,19 +25,19 @@ namespace FoundOps.Core.Server.Blocks
         /// <summary>
         /// Contains a page to setup UserAccountSettings and BusinessAccountSettings.
         /// </summary>
-        public Block SettingsBlock { get; private set; }
+        public static Block SettingsBlock { get; private set; }
 
-        public Block LogoutBlock { get; private set; }
+        public static Block LogoutBlock { get; private set; }
 
         /// <summary>
         /// The Ids of the default UserAccount Role's Blocks
         /// </summary>
-        public static Guid[] DefaultUserAccountBlockIds = new[] { new Guid("B8ED1EF7-C43A-43DF-AF26-F5FB5BC0DE65"), new Guid("B8ED1EF7-C43A-43DF-AF26-F5FB5BC0DE65")};
+        public static Guid[] DefaultUserAccountBlockIds = new[] { new Guid("B8ED1EF7-C43A-43DF-AF26-F5FB5BC0DE65"), new Guid("B8ED1EF7-C43A-43DF-AF26-F5FB5BC0DE65") };
 
-        public List<Block> UserAccountBlocks { get; private set; }
-        public List<Block> BusinessAdministratorBlocks { get; private set; }
+        public static List<Block> UserAccountBlocks { get; private set; }
+        public static List<Block> BusinessAdministratorBlocks { get; private set; }
 
-        public void SetupPartyBlocks()
+        private static void SetupPartyBlocks()
         {
             SettingsBlock = new Block
             {
@@ -54,7 +54,7 @@ namespace FoundOps.Core.Server.Blocks
                 Name = "Logout",
                 NavigateUri = @"Account/LogOff"
             };
-            
+
             UserAccountBlocks = new List<Block> { LogoutBlock, SettingsBlock };
 
             #endregion
@@ -73,25 +73,25 @@ namespace FoundOps.Core.Server.Blocks
 
         #region Manager
 
-        public Block ClientsBlock { get; private set; }
-        public Block ContactsBlock { get; private set; }
-        public Block LocationsBlock { get; private set; }
-        public Block RegionsBlock { get; private set; }
-        public Block ServicesBlock { get; private set; }
+        public static Block ClientsBlock { get; private set; }
+        public static Block ContactsBlock { get; private set; }
+        public static Block LocationsBlock { get; private set; }
+        public static Block RegionsBlock { get; private set; }
+        public static Block ServicesBlock { get; private set; }
 
 
 
-        public Block DispatcherBlock { get; private set; }
+        public static Block DispatcherBlock { get; private set; }
 
-        public Block EmployeesBlock { get; private set; }
-        public Block ImportDataBlock { get; private set; }
+        public static Block EmployeesBlock { get; private set; }
+        public static Block ImportDataBlock { get; private set; }
 
-        public List<Block> ManagerBlocks { get; set; }
+        public static List<Block> ManagerBlocks { get; set; }
 
-        public Block VehiclesBlock { get; private set; }
-        public Block VehicleMaintenanceBlock { get; private set; }
+        public static Block VehiclesBlock { get; private set; }
+        public static Block VehicleMaintenanceBlock { get; private set; }
 
-        public void SetupManagerBlocks()
+        private static void SetupManagerBlocks()
         {
             ClientsBlock = new Block
                                {
@@ -177,7 +177,7 @@ namespace FoundOps.Core.Server.Blocks
                                     EmployeesBlock,
                                     VehiclesBlock,
                                     VehicleMaintenanceBlock,
-                                    ImportDataBlock,
+                                    //ImportDataBlock,
                                     LogoutBlock
                                 };
         }
@@ -186,10 +186,10 @@ namespace FoundOps.Core.Server.Blocks
 
         #region Public Blocks
 
-        public Block CompanyHomeBlock { get; private set; }
-        public List<Block> PublicBlocks { get; set; }
+        public static Block CompanyHomeBlock { get; private set; }
+        public static List<Block> PublicBlocks { get; set; }
 
-        public void SetupPublicBlocks()
+        private static void SetupPublicBlocks()
         {
             CompanyHomeBlock = new Block()
                                    {
@@ -209,11 +209,11 @@ namespace FoundOps.Core.Server.Blocks
 
         #region FoundOPS Administrative Console Blocks
 
-        public Block BusinessAccountsBlock { get; private set; }
-        public Block ServiceTemplatesBlock { get; private set; }
-        public List<Block> AdministrativeConsoleBlocks { get; private set; }
+        public static Block BusinessAccountsBlock { get; private set; }
+        public static Block ServiceTemplatesBlock { get; private set; }
+        public static List<Block> AdministrativeConsoleBlocks { get; private set; }
 
-        public void SetupAdministrativeConsoleBlocks()
+        private static void SetupAdministrativeConsoleBlocks()
         {
             BusinessAccountsBlock = new Block()
             {
@@ -238,7 +238,7 @@ namespace FoundOps.Core.Server.Blocks
 
         #endregion
 
-        private void SetupAllBlocks()
+        private static void SetupAllBlocks()
         {
             AllBlocks = new List<Block>();
 

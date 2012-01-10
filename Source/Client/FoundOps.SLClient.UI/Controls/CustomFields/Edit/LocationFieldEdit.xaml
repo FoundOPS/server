@@ -1,7 +1,12 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.CustomFields.Edit.LocationFieldEdit" x:Name="myLocationFieldEdit" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
-    xmlns:Converters1="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
+    xmlns:Converters1="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Behaviors="clr-namespace:FoundOps.Common.Silverlight.UI.Interactivity.Behaviors;assembly=FoundOps.Common.Silverlight.UI"
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
     <UserControl.Resources>
         <Converters1:FilterLocationsCollectionViewByClient x:Key="FilterLocationsCollectionViewByClient"/>
     </UserControl.Resources>
@@ -16,7 +21,8 @@
             <TextBlock Text=":" />
         </StackPanel>
         <!--Disable the Location combobox if it is a generated service. TODO: Change this if LocationField has other types than just Destination-->
-        <telerik:RadComboBox x:Name="LocationFieldComboBox" Grid.Column="2" SelectedValue="{Binding Value}" DisplayMemberPath="Name" IsEditable="True">
+        <telerik:RadComboBox x:Name="LocationFieldComboBox" Grid.Column="2" DisplayMemberPath="Name" IsEditable="True" EditableTemplate="{StaticResource SL5BugWorkaround}"
+                             SelectedValue="{Binding Value, Mode=TwoWay}">
             <local:BindingUtil.MultiBindings>
                 <local:MultiBindings>
                     <!--Filter Collection by SelectedClient if the current ServiceTemplate is on Service-->
@@ -29,6 +35,9 @@
                     </local:MultiBinding>
                 </local:MultiBindings>
             </local:BindingUtil.MultiBindings>
+            <i:Interaction.Behaviors>
+                <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=Controls:Selector.SelectedValueProperty}"/>
+            </i:Interaction.Behaviors>
         </telerik:RadComboBox>
     </Grid>
 </UserControl>

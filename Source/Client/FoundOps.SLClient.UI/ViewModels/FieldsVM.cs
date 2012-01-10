@@ -18,16 +18,15 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("FieldsVM")]
     public class FieldsVM : CoreEntityCollectionInfiniteAccordionVM<Field>
     {
-        //Public Properties
-        private readonly List<string> _fieldTypes = new List<string> { "Checkbox", "Checklist", "Combobox", "Currency", "Number", "Percentage", "Textbox Small", "Textbox Large", "Time" };
+        # region Public Properties
 
+        private readonly List<string> _fieldTypes = new List<string> { "Checkbox", "Checklist", "Combobox", "Currency", "Number", "Percentage", "Textbox Small", "Textbox Large", "Time" };
         /// <summary>
         /// Gets the field types.
         /// </summary>
-        public List<string> FieldTypes
-        {
-            get { return _fieldTypes; }
-        }
+        public List<string> FieldTypes { get { return _fieldTypes; } }
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldsVM"/> class.
@@ -41,8 +40,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             this.SelectedEntityObservable.Where(se => se != null)
                 .Select(selectedField => !selectedField.Required).Subscribe(CanDeleteSubject);
 
-            //Whenever the CurrentContext changes, try to set the ServiceTemplateContext
-            this.ContextManager.CurrentContextObservable.Subscribe(_ => ServiceTemplateContext = ContextManager.GetContext<ServiceTemplate>());
+            //Whenever the ServiceTemplateContext changes update the Fields DCV
+            this.ContextManager.GetContextObservable<ServiceTemplate>().ObserveOnDispatcher()
+                .Subscribe(serviceTemplateContext =>
+                    DomainCollectionViewObservable.OnNext(serviceTemplateContext != null
+                    ? DomainCollectionViewFactory<Field>.GetDomainCollectionView(serviceTemplateContext.Fields)
+                    : null));
         }
 
         #region Logic
@@ -100,37 +103,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             return fieldToAdd;
         }
-
-        #region Data Loading (Context changed)
-
-        private ServiceTemplate _serviceTemplateContext;
-        private ServiceTemplate ServiceTemplateContext
-        {
-            get { return _serviceTemplateContext; }
-            set
-            {
-                var oldValue = ServiceTemplateContext;
-
-                if (value == oldValue) return;
-
-                _serviceTemplateContext = value;
-                UpdateDomainCollectionView();
-            }
-        }
-
-        private void UpdateDomainCollectionView()
-        {
-            //If the FieldsVM is being used, it will have a ServiceTemplateContext
-            //Use the ServiceTemplate context's fields for the DCV source collection
-
-            DomainCollectionViewObservable.OnNext(ServiceTemplateContext == null
-                                       ? null
-                                       : new DomainCollectionViewFactory<Field>(ServiceTemplateContext.Fields).View);
-
-            //Fields are loaded whenever the service template context changes (so it should already be loaded)
-        }
-
-        #endregion
 
         #endregion
     }

@@ -27,8 +27,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        public static readonly BlocksData BlocksData = new BlocksData();
-
         public static void ClearCreateCoreEntitiesDatabase()
         {
 #if DEBUG
@@ -85,7 +83,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
 
             //Setup roles
-            new RolesDesignData(businessAccountsDesignData, userAccountsDesignData, BlocksData);
+            new RolesDesignData(businessAccountsDesignData, userAccountsDesignData);
 
             //Populate ServiceProvider Design Data
             foreach (var serviceProvider in businessAccountsDesignData.DesignServiceProviders)

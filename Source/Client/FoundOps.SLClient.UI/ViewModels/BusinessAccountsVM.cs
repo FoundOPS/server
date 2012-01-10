@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Reactive.Linq;
 using System.Windows;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.SLClient.Data.Services;
@@ -233,7 +234,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override Party AddNewEntity(object commandParameter)
         {
             var newBusinessAccount = new BusinessAccount();
+
+            RolesDesignData.SetupServiceProviderAdministratorRole(newBusinessAccount);
             ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newBusinessAccount);
+
             return newBusinessAccount;
         }
 

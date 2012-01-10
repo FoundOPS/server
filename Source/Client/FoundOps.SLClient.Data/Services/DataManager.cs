@@ -628,7 +628,7 @@ namespace FoundOps.SLClient.Data.Services
             //Add actions to the action queue
             _saveDiscardCancelActionQueue.Add(                                    //Item1     //Item2    //Item3
                         new Tuple<Action, Action, Action, Action, Action, Action>(beforeSave, afterSave, beforeDiscard,
-                //Item4              //Item5       //Item6
+                                                                                  //Item4              //Item5       //Item6
                                                                                   customDiscardAction, afterDiscard, afterCancel));
 
             //Show a prompt only if it is not visible and was not called within the last 3 seconds
