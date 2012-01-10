@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Models.CoreEntities.DesignData;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
+    public static class ServiceTemplateConstants
+    {
+        public static readonly Guid ServiceDestinationFieldId = new Guid("{DB0301FD-5D74-4AB1-8DC5-53CD33F94BD9}");
+    }
+
     public static class ServiceTemplatesDesignData
     {
         #region Oil and Grease
@@ -41,6 +44,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         public static readonly TextBoxField LockInfo;
         public static readonly TextBoxField Notes;
 
+        ///<summary>
+        /// A harcoded Service Destination field.
+        ///</summary>
         public static readonly LocationField ServiceDestinationField;
 
         #endregion
@@ -81,7 +87,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             ServiceDestinationField = new LocationField
             {
-                Id = new Guid("{DB0301FD-5D74-4AB1-8DC5-53CD33F94BD9}"),
+                Id = ServiceTemplateConstants.ServiceDestinationFieldId,
                 Group = "Location",
                 Name = "Service Destination",
                 Tooltip = "Enter the Service Destination here",
