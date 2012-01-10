@@ -278,8 +278,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 serviceTemplateChild.Id = recurringServiceContext.Id;
                 recurringServiceContext.ServiceTemplate = serviceTemplateChild;
 
-                //TODO: Check if necessary
-                this.Context.ServiceTemplates.Add(serviceTemplateChild);
+                //To raise selectServiceTemplateObservable changed
+                this.LoadedServiceTemplates.Add(serviceTemplateChild);
 
                 return serviceTemplateChild;
             }
@@ -293,8 +293,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
                 serviceTemplateChild.OwnerClient = clientContext;
 
-                //TODO: Check if necessary
-                this.Context.ServiceTemplates.Add(serviceTemplateChild);
+                //To raise selectServiceTemplateObservable changed
+                this.LoadedServiceTemplates.Add(serviceTemplateChild);
 
                 return serviceTemplateChild;
             }
@@ -308,6 +308,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //If FoundOPS: create a FoundOPS defined template
                     var newServiceTemplate = new ServiceTemplate { ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined, Name = name };
                     serviceProvider.ServiceTemplates.Add(newServiceTemplate);
+
+                    //To raise selectServiceTemplateObservable changed
+                    this.LoadedServiceTemplates.Add(newServiceTemplate);
+
                     return newServiceTemplate;
                 }
 
