@@ -189,7 +189,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                 if (value != null)
                     //Subscribe _canDiscardDisposable to the new CanDiscardObservable
-                    _canDiscardDisposable = value.Subscribe(canSave => _canSaveObservable.OnNext(canSave));
+                    _canDiscardDisposable = value.Subscribe(canDiscard => _canDiscardObservable.OnNext(canDiscard));
             }
         }
 

@@ -339,7 +339,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             currentRepeat.StartDate = currentRepeat.StartDate.Date; //Remove time
 
             if (currentRepeat.EndDate != null)
-                currentRepeat.StartDate = currentRepeat.EndDate.Value.Date; //Remove time
+                currentRepeat.EndDate = currentRepeat.EndDate.Value.Date; //Remove time
 
             this.ObjectContext.Repeats.AttachAsModified(currentRepeat);
         }
