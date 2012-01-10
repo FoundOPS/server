@@ -67,7 +67,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
                 return null;
 
-            var businessAccounts = this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates").Include("ContactInfoSet");
+            var businessAccounts = this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates")
+                .Include("ContactInfoSet").Include("OwnedRoles");
 
             //Force load PartyImage
             var t = (from ba in businessAccounts

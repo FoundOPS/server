@@ -124,9 +124,10 @@ namespace FoundOps.Core.Server.Blocks
         /// The AdministrativeConsole blocks' ids.
         /// </summary>
         public static IEnumerable<Guid> AdministrativeConsoleBlockIds = new[] { BusinessAccountsBlockId, ServiceTemplatesBlockId };
-        
+
         #endregion
     }
+
 
     /// <summary>
     /// The static class of Block entity information.
