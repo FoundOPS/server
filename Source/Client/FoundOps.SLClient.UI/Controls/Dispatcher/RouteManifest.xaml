@@ -82,7 +82,7 @@
                 <Rectangle Grid.ColumnSpan="3" Grid.Row="3" Height="2" Fill="Black" Margin="0,5"/>
 
             </StackPanel>
-            <StackPanel  x:Name="SummaryStackPanel" Grid.ColumnSpan="3" Grid.Row="4" 
+            <StackPanel x:Name="SummaryStackPanel" Grid.ColumnSpan="3" Grid.Row="4" 
                          Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, Converter={StaticResource VisibilityConverter}}">
                 <!--Route Summary-->
                 <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel HorizontalAlignment="Center" Width="750" NumberOfColumns="3"
@@ -209,7 +209,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <!--Travel Between Destinations-->
-                        <StackPanel>
+                        <StackPanel x:Name="RouteDestinationStackPanel">
                             <!--<StackPanel x:Name="TransitBetweenDestinationsElement" Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock x:Name="EstimatedDistanceElement" Text="Est. Distance: 30 Miles" Margin="0,0,50,0" />
                                 <TextBlock x:Name="EstimatedTimeElement" Text="Est. Time: 12 Minutes"/>

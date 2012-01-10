@@ -10,13 +10,13 @@ namespace FoundOps.Common.Silverlight.Tools
 {
     public static class DependencyObjectExtensions
     {
-        public static List<T> GetChildObjects<T>(this DependencyObject obj, string name)
+        public static List<T> GetChildObjects<T>(this DependencyObject obj, string name) where T : DependencyObject
         {
             var retVal = new List<T>();
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 object c = VisualTreeHelper.GetChild(obj, i);
-                if (c.GetType().FullName == typeof(T).FullName && (String.IsNullOrEmpty(name) || ((FrameworkElement)c).Name == name))
+                if (c as T != null && (String.IsNullOrEmpty(name) || ((FrameworkElement)c).Name == name))
                 {
                     retVal.Add((T)c);
                 }
@@ -33,7 +33,7 @@ namespace FoundOps.Common.Silverlight.Tools
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 object c = VisualTreeHelper.GetChild(obj, i);
-                if (c.GetType().FullName == typeof(T).FullName && (String.IsNullOrEmpty(name) || ((FrameworkElement)c).Name == name))
+                if (c as T != null && (String.IsNullOrEmpty(name) || ((FrameworkElement)c).Name == name))
                 {
                     return (T)c;
                 }

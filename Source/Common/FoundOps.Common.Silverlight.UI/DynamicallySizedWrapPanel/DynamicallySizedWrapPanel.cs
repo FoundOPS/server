@@ -7,9 +7,11 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using FoundOps.Common.Silverlight.UI.DynamicallySizedWrapPanel;
 
 namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
 {
@@ -280,247 +282,87 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                 hasFixedWidth ? itemWidth : constraint.Width,
                 hasFixedHeight ? itemHeight : constraint.Height);
 
+            var numCols = NumberOfColumns;
+            var children = Children;
+            var numberOfElements = children.Count;
+
             // Measure each of the Children
             foreach (UIElement element in Children)
             {
-                //    // Determine the size of the element
+                // Determine the size of the element
                 element.Measure(itemSize);
             }
 
-            #region Old Method That I dont wanna lose just in case
-            //    var elementSize = new OrientedSize(
-            //        o,
-            //        hasFixedWidth ? itemWidth : element.DesiredSize.Width,
-            //        hasFixedHeight ? itemHeight : element.DesiredSize.Height);
-
-            //    // If this element falls of the edge of the line
-            //    if (NumericExtensions.IsGreaterThan(lineSize.Direct + elementSize.Direct, maximumSize.Direct))
-            //    {
-            //        // Update the total size with the direct and indirect growth
-            //        // for the current line
-            //        totalSize.Direct = Math.Max(lineSize.Direct, totalSize.Direct);
-            //        totalSize.Indirect += lineSize.Indirect;
-
-            //        // Move the element to a new line
-            //        lineSize = elementSize;
-
-            //        // If the current element is larger than the maximum size,
-            //        // place it on a line by itself
-            //        if (NumericExtensions.IsGreaterThan(elementSize.Direct, maximumSize.Direct))
-            //        {
-            //            // Update the total size for the line occupied by this
-            //            // single element
-            //            totalSize.Direct = Math.Max(elementSize.Direct, totalSize.Direct);
-            //            totalSize.Indirect += elementSize.Indirect;
-
-            //            // Move to a new line
-            //            lineSize = new OrientedSize(o);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        // Otherwise just add the element to the end of the line
-            //        lineSize.Direct += elementSize.Direct;
-            //        lineSize.Indirect = Math.Max(lineSize.Indirect, elementSize.Indirect);
-            //    }
-
-
-            //// Update the total size with the elements on the last line
-            //totalSize.Direct = Math.Max(lineSize.Direct, totalSize.Direct);
-            //totalSize.Indirect += lineSize.Indirect;
-
-            #endregion
 
             #region Copied From ArrangeOverride
-            var children = Children;
-            var numberOfElements = children.Count;
-            var thisColHeight = 0;
-            var numCols = NumberOfColumns;
+            var sizeArray = new int[children.Count];
+            var count = 0;
 
+            //Iterates through the children to find the height for each and saves them to an arrays
+            foreach (var child in Children)
+            {
+                sizeArray[count] = (int)child.DesiredSize.Height;
+                count++;
+            }
 
-            //The element index of the first element in the column
-            //startOfColumnElementIndex[0] would be the first element, 0
-            var startOfColumnElementIndex = new int[numCols];
+            //TODO: Figure out mean and standard deviation for the set
+            //Had to specify double for the division that occurs below
+            var totalChildHeight = sizeArray.Sum();
+            var averageChildHeight = sizeArray.Average();
 
-            //The element index of the last element in the column
-            //endOfColumnElementIndex[numCols-1] would be the last element, numberOfElements-1
-            var endOfColumnElementIndex = new int[numCols];
+            #region Standard Deviation Calculator
 
+            var stDev = 0.0;
 
-            //Setup starting point
-            //Sets up each column to have approx the same number of UI elements
-            #region Setup Initial Starting Point
+            double totalVariance = 0;
+            int lengthOfArray = 0;
+
+            lengthOfArray = sizeArray.Length;
+
+            var dataAverage = averageChildHeight;
+
+            totalVariance += sizeArray.Sum(childHeight => Math.Pow(childHeight - dataAverage, 2));
+
+            stDev = lengthOfArray != 0 ? Math.Sqrt(totalVariance / lengthOfArray) : 0;
+
+            #endregion
+
+            //TODO: Put objects in each column until it surpasses any of the requirements
 
             //The average number of items each column should have
-            var averageElementsPerColumn = numberOfElements / numCols;
+            int averageElementsPerColumn = numberOfElements / numCols;
 
-            //Number of columns that require averageItemsPerColumn+1 items 
-            var remainderNumberOfElements = numberOfElements % numCols;
+            //Average height for a column
+            var averageColumnHeight = totalChildHeight / numCols;
 
-            //The current element index
-            var elementIndex = 0;
+            var startOfColumnElementIndex = new int[numCols];
 
-            for (int currentColumn = 0; currentColumn < numCols; currentColumn++)
-            {
-                //Set the index of the first element in the current column
-                startOfColumnElementIndex[currentColumn] = elementIndex;
+            var endOfColumnElementIndex = new int[numCols];
 
-                //Add the average number of items a column should have
-                //Subtract 1 to adjust for 0 based index
-                elementIndex += (averageElementsPerColumn - 1);
-
-                //If there are still columns that require an additional item than the average
-                //add an item to the current columm
-                if (remainderNumberOfElements > 0)
-                {
-                    elementIndex++;
-                    remainderNumberOfElements--;
-                }
-
-                //Set the index of the last element in the current column
-                endOfColumnElementIndex[currentColumn] = elementIndex;
-
-                //Add one to the element index to be ready for the next column
-                elementIndex++;
-            }
-
-            #endregion
-
-            #region Sort items
-
-            var columnWithMaxHeight = 0;
-            var columnWithMinHeight = 0;
-            var maxHeight = int.MinValue;
-
-            while (true)
-            {
-                var firstcheck = 0;
-                var secondCheck = 0;
-                var minHeight = int.MaxValue;
-                for (var i = 0; i < numCols; i++)
-                {
-                    //Calculate height of column
-                    for (int j = startOfColumnElementIndex[i]; j <= endOfColumnElementIndex[i]; j++)
-                    {
-                        int height = (int)children[j].DesiredSize.Height;
-                        thisColHeight += height;
-                    }
-
-                    if (thisColHeight > maxHeight)
-                    {
-                        maxHeight = thisColHeight;
-                        columnWithMaxHeight = i;
-                    }
-
-                    if (thisColHeight < minHeight)
-                    {
-                        minHeight = thisColHeight;
-                        columnWithMinHeight = i;
-                    }
-
-                    thisColHeight = 0;
-                }
-
-                if (columnWithMaxHeight < columnWithMinHeight)
-                {
-                    firstcheck = columnWithMaxHeight + 1;
-                    endOfColumnElementIndex[columnWithMaxHeight]--;
-                    startOfColumnElementIndex[firstcheck]--;
-                }
-                if (columnWithMaxHeight > columnWithMinHeight)
-                {
-                    firstcheck = columnWithMaxHeight - 1;
-                    startOfColumnElementIndex[columnWithMaxHeight]++;
-                    endOfColumnElementIndex[firstcheck]++;
-                }
-
-                var firstMinHeight = minHeight;
-                var firstMaxCol = columnWithMaxHeight;
-                var testCount = 0;
-
-                for (var i = 0; i < numCols; i++)
-                {
-                    //Calculate height of column
-                    for (var j = startOfColumnElementIndex[i]; j <= endOfColumnElementIndex[i]; j++)
-                    {
-                        var height = (int)children[j].DesiredSize.Height;
-                        thisColHeight += height;
-                    }
-
-                    if (thisColHeight > maxHeight)
-                    {
-                        maxHeight = thisColHeight;
-                        columnWithMaxHeight = i;
-                    }
-
-                    if (thisColHeight < minHeight)
-                    {
-                        minHeight = thisColHeight;
-                        columnWithMinHeight = i;
-                    }
-
-                    thisColHeight = 0;
-                }
-
-                if (columnWithMaxHeight < columnWithMinHeight)
-                {
-                    secondCheck = columnWithMaxHeight + 1;
-                }
-                if (columnWithMaxHeight > columnWithMinHeight)
-                {
-                    secondCheck = columnWithMaxHeight - 1;
-                }
-
-                if (columnWithMinHeight == columnWithMaxHeight)
-                    break;
-
-                if (((firstcheck - secondCheck) == 0) && ((firstMaxCol != columnWithMaxHeight) || testCount < numberOfElements))
-                    break;
-                if (firstMaxCol == columnWithMaxHeight)
-                    testCount++;
-                if (((firstcheck - secondCheck) == 0) && ((firstMaxCol != columnWithMaxHeight) || testCount < numberOfElements) && (firstMinHeight == minHeight))
-                {
-                    if (columnWithMaxHeight < columnWithMinHeight)
-                    {
-                        firstcheck = columnWithMaxHeight + 1;
-                        endOfColumnElementIndex[columnWithMaxHeight]--;
-                        startOfColumnElementIndex[firstcheck]--;
-                    }
-                    if (columnWithMaxHeight > columnWithMinHeight)
-                    {
-                        firstcheck = columnWithMaxHeight - 1;
-                        startOfColumnElementIndex[columnWithMaxHeight]++;
-                        endOfColumnElementIndex[firstcheck]++;
-                    }
-                    break;
-                }
-            }
-
-            #endregion
-
-            #region Calculate New Max Height
-
-            maxHeight = int.MinValue;
+            startOfColumnElementIndex[0] = 0;
+            //Set to negative 1 so that when the loop exits, the tracker will still be in the right position
+            var positionTracker = -1;
+            var maxHeight = 0;
 
             for (int i = 0; i < numCols; i++)
             {
-                //Calculate height of column
-                for (int j = startOfColumnElementIndex[i]; j <= endOfColumnElementIndex[i]; j++)
+                var thisColHeight = 0;
+
+                startOfColumnElementIndex[i] = (positionTracker + 1);
+
+                var maxHeightForColumn = (averageColumnHeight + (.5 * stDev));
+
+                while (thisColHeight < maxHeightForColumn && positionTracker < (children.Count - 1))
                 {
-                    int height = (int)children[j].DesiredSize.Height;
-                    thisColHeight += height;
+                    positionTracker++;
+                    thisColHeight += sizeArray[positionTracker];
                 }
+
+                endOfColumnElementIndex[i] = positionTracker;
 
                 if (thisColHeight > maxHeight)
-                {
                     maxHeight = thisColHeight;
-                }
-
-                thisColHeight = 0;
             }
-
-            #endregion
-
             #endregion
 
             // Return the total size required as an un-oriented quantity
@@ -543,21 +385,23 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
         /// </returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
+            #region Initialize Variables
+
             // Variables tracking the size of the current line, and the maximum
             // size available to fill.  Note that the line might represent a row
             // or a column depending on the orientation.
-            Orientation o = Orientation;
-            OrientedSize lineSize = new OrientedSize(o);
-            OrientedSize maximumSize = new OrientedSize(o, finalSize.Width, finalSize.Height);
+            var o = Orientation;
+            var lineSize = new OrientedSize(o);
+            var maximumSize = new OrientedSize(o, finalSize.Width, finalSize.Height);
             var numCols = NumberOfColumns;
 
             // Determine the constraints for individual items
-            double itemWidth = ItemWidth;
-            double itemHeight = ItemHeight;
-            bool hasFixedWidth = !itemWidth.IsNaN();
-            bool hasFixedHeight = !itemHeight.IsNaN();
-            double indirectOffset = 0;
-            double? directDelta = (o == Orientation.Horizontal) ?
+            var itemWidth = ItemWidth;
+            var itemHeight = ItemHeight;
+            var hasFixedWidth = !itemWidth.IsNaN();
+            var hasFixedHeight = !itemHeight.IsNaN();
+            var indirectOffset = 0.0;
+            var directDelta = (o == Orientation.Horizontal) ?
                 (hasFixedWidth ? (double?)itemWidth : null) :
                 (hasFixedHeight ? (double?)itemHeight : null);
 
@@ -568,261 +412,96 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
             // we've completed an entire line of elements before arranging them.
             // The lineStart and lineEnd variables track the size of the
             // currently arranged line.
-            UIElementCollection children = Children;
-            int numberOfElements = children.Count;
-            int thisColHeight = 0;
+            var children = Children;
+            var numberOfElements = children.Count;
 
+            #endregion
 
-            //The element index of the first element in the column
-            //startOfColumnElementIndex[0] would be the first element, 0
-            var startOfColumnElementIndex = new int[numCols];
+            //TODO: Measure all of the children and save those numbers into an array
 
-            //The element index of the last element in the column
-            //endOfColumnElementIndex[numCols-1] would be the last element, numberOfElements-1
-            var endOfColumnElementIndex = new int[numCols];
+            var sizeArray = new int[(children.Where(c => c.DesiredSize.Height > 0)).Count()];
+            var count = 0;
 
+            //Iterates through the children to find the height for each and saves them to an arrays
+            foreach (var child in Children)
+            {
+                if ((int)child.DesiredSize.Height != 0)
+                {
+                    sizeArray[count] = (int)child.DesiredSize.Height;
+                    count++;
+                }
+            }
 
-            //Setup starting point
-            //Sets up each column to have approx the same number of UI elements
-            #region Setup Initial Starting Point
+            //TODO: Figure out mean and standard deviation for the set
+            //Had to specify double for the division that occurs below
+            var totalChildHeight = sizeArray.Sum();
+            double averageChildHeight = 0;
+            if (sizeArray.Length > 0)
+                averageChildHeight = sizeArray.Average();
+
+            #region Standard Deviation Calculator
+
+            var stDev = 0.0;
+
+            double totalVariance = 0;
+            int lengthOfArray = 0;
+
+            lengthOfArray = sizeArray.Length;
+
+            var dataAverage = averageChildHeight;
+
+            totalVariance += sizeArray.Sum(childHeight => Math.Pow(childHeight - dataAverage, 2));
+
+            stDev = lengthOfArray != 0 ? Math.Sqrt(totalVariance / lengthOfArray) : 0;
+
+            #endregion
+
+            //TODO: Put objects in each column until it surpasses any of the requirements
 
             //The average number of items each column should have
             int averageElementsPerColumn = numberOfElements / numCols;
 
-            //Number of columns that require averageItemsPerColumn+1 items 
-            int remainderNumberOfElements = numberOfElements % numCols;
+            //Average height for a column
+            var averageColumnHeight = totalChildHeight / numCols;
 
-            //The current element index
-            int elementIndex = 0;
+            var startOfColumnElementIndex = new int[numCols];
 
-            for (int currentColumn = 0; currentColumn < numCols; currentColumn++)
-            {
-                //Set the index of the first element in the current column
-                startOfColumnElementIndex[currentColumn] = elementIndex;
+            var endOfColumnElementIndex = new int[numCols];
 
-                //Add the average number of items a column should have
-                //Subtract 1 to adjust for 0 based index
-                elementIndex += (averageElementsPerColumn - 1);
-
-                //If there are still columns that require an additional item than the average
-                //add an item to the current columm
-                if (remainderNumberOfElements > 0)
-                {
-                    elementIndex++;
-                    remainderNumberOfElements--;
-                }
-
-                //Set the index of the last element in the current column
-                endOfColumnElementIndex[currentColumn] = elementIndex;
-
-                //Add one to the element index to be ready for the next column
-                elementIndex++;
-            }
-
-            #endregion
-
-            #region Sort items
-
-            int columnWithMaxHeight = 0;
-            int columnWithMinHeight = 0;
-            int maxHeight = int.MinValue;
-
-            while (true)
-            {
-                int firstcheck = 0;
-                int secondCheck = 0;
-                int minHeight = int.MaxValue;
-                for (int i = 0; i < numCols; i++)
-                {
-                    //Calculate height of column
-                    for (int j = startOfColumnElementIndex[i]; j <= endOfColumnElementIndex[i]; j++)
-                    {
-                        int height = (int)children[j].DesiredSize.Height;
-                        thisColHeight += height;
-                    }
-
-                    if (thisColHeight > maxHeight)
-                    {
-                        maxHeight = thisColHeight;
-                        columnWithMaxHeight = i;
-                    }
-
-                    if (thisColHeight < minHeight)
-                    {
-                        minHeight = thisColHeight;
-                        columnWithMinHeight = i;
-                    }
-
-                    thisColHeight = 0;
-                }
-
-                if (columnWithMaxHeight < columnWithMinHeight)
-                {
-                    firstcheck = columnWithMaxHeight + 1;
-                    endOfColumnElementIndex[columnWithMaxHeight]--;
-                    startOfColumnElementIndex[firstcheck]--;
-                }
-                if (columnWithMaxHeight > columnWithMinHeight)
-                {
-                    firstcheck = columnWithMaxHeight - 1;
-                    startOfColumnElementIndex[columnWithMaxHeight]++;
-                    endOfColumnElementIndex[firstcheck]++;
-                }
-
-                var firstMinHeight = minHeight;
-                var firstMaxCol = columnWithMaxHeight;
-                var testCount = 0;
-
-                for (int i = 0; i < numCols; i++)
-                {
-                    //Calculate height of column
-                    for (int j = startOfColumnElementIndex[i]; j <= endOfColumnElementIndex[i]; j++)
-                    {
-                        int height = (int)children[j].DesiredSize.Height;
-                        thisColHeight += height;
-                    }
-
-                    if (thisColHeight > maxHeight)
-                    {
-                        maxHeight = thisColHeight;
-                        columnWithMaxHeight = i;
-                    }
-
-                    if (thisColHeight < minHeight)
-                    {
-                        minHeight = thisColHeight;
-                        columnWithMinHeight = i;
-                    }
-
-                    thisColHeight = 0;
-                }
-
-                if (columnWithMaxHeight < columnWithMinHeight)
-                {
-                    secondCheck = columnWithMaxHeight + 1;
-                }
-                if (columnWithMaxHeight > columnWithMinHeight)
-                {
-                    secondCheck = columnWithMaxHeight - 1;
-                }
-
-                if (columnWithMinHeight == columnWithMaxHeight)
-                    break;
-
-                if (((firstcheck - secondCheck) == 0) && ((firstMaxCol != columnWithMaxHeight) || testCount < numberOfElements))
-                    break;
-                if (firstMaxCol == columnWithMaxHeight)
-                    testCount++;
-                if (((firstcheck - secondCheck) == 0) && ((firstMaxCol != columnWithMaxHeight) || testCount < numberOfElements) && (firstMinHeight == minHeight))
-                {
-                    if (columnWithMaxHeight < columnWithMinHeight)
-                    {
-                        firstcheck = columnWithMaxHeight + 1;
-                        endOfColumnElementIndex[columnWithMaxHeight]--;
-                        startOfColumnElementIndex[firstcheck]--;
-                    }
-                    if (columnWithMaxHeight > columnWithMinHeight)
-                    {
-                        firstcheck = columnWithMaxHeight - 1;
-                        startOfColumnElementIndex[columnWithMaxHeight]++;
-                        endOfColumnElementIndex[firstcheck]++;
-                    }
-                    break;
-                }
-            }
-
-            #endregion
-
-            #region Calculate New Max Height
-
-            maxHeight = int.MinValue;
+            startOfColumnElementIndex[0] = 0;
+            //Set to negative 1 so that when the loop exits, the tracker will still be in the right position
+            var positionTracker = -1;
+            var maxHeight = 0;
 
             for (int i = 0; i < numCols; i++)
             {
-                //Calculate height of column
-                for (int j = startOfColumnElementIndex[i]; j <= endOfColumnElementIndex[i]; j++)
+                var thisColHeight = 0;
+
+                startOfColumnElementIndex[i] = (positionTracker + 1);
+
+                var minHeightForColumn = (averageColumnHeight - (.5 * stDev));
+
+                while (thisColHeight < minHeightForColumn && positionTracker < (children.Count(c => c.DesiredSize.Height > 0) - 1))
                 {
-                    int height = (int)children[j].DesiredSize.Height;
-                    thisColHeight += height;
+                    positionTracker++;
+                    thisColHeight += sizeArray[positionTracker];
                 }
+
+                //if (thisColHeight > maxHeightForColumn || startOfColumnElementIndex[i] == positionTracker)
+                //    positionTracker--;
+
+                endOfColumnElementIndex[i] = positionTracker;
 
                 if (thisColHeight > maxHeight)
-                {
                     maxHeight = thisColHeight;
-                }
-
-                thisColHeight = 0;
             }
-
-            #endregion
-
-
-            //checks for new number of columns
-            for (int i = (numCols - 1); i > 0; i--)
-            {
-                if (startOfColumnElementIndex[i] >= numberOfElements)
-                    numCols--;
-            }
-
-            #region left Justify the solution
-            //Start at left side of solution and move one from second column to first
-            //check is column height is higher than the max, if yes then move it back
-            if (children.Count > numCols)
-            {
-                for (int twice = 0; twice < 2; twice++)
-                {
-                    for (int i = 0; i < (numCols - 1); i++)
-                    {
-                        for (int j = startOfColumnElementIndex[i]; j <= endOfColumnElementIndex[i]; j++)
-                        {
-                            if (j < children.Count)
-                            {
-                                int height = (int)children[j].DesiredSize.Height;
-                                thisColHeight += height;
-                            }
-                        }
-                        while (thisColHeight <= maxHeight)
-                        {
-
-                            endOfColumnElementIndex[i]++;
-                            startOfColumnElementIndex[i + 1]++;
-                            if (endOfColumnElementIndex[i] >= numberOfElements)
-                            {
-                                endOfColumnElementIndex[i]--;
-                                startOfColumnElementIndex[i + 1]--;
-                                break;
-                            }
-                            thisColHeight += (int)children[endOfColumnElementIndex[i]].DesiredSize.Height;
-                            if (thisColHeight > maxHeight)
-                            {
-                                endOfColumnElementIndex[i]--;
-                                startOfColumnElementIndex[i + 1]--;
-                                break;
-                            }
-                        }
-                        if (startOfColumnElementIndex[i] > endOfColumnElementIndex[i])
-                            endOfColumnElementIndex[i] = startOfColumnElementIndex[i];
-                        thisColHeight = 0;
-                    }
-                }
-            }
-            #endregion
-
-            //checks for new number of columns
-            for (int i = (numCols - 1); i > 0; i--)
-            {
-                if (startOfColumnElementIndex[i] >= numberOfElements)
-                    numCols--;
-            }
-
-            var colWidth = finalSize.Width / NumberOfColumns;
+            //TODO: Print to the screen
+            var colWidth = finalSize.Width / numCols;
 
             #region Print Elements to the screen
 
             int lineStart = 0;
-            double maxWidth = 0;
             int colCount = 0;
-            int initialNumberOfColumns = NumberOfColumns;
 
             bool firstCol = true;
             //Iterate through each column
@@ -839,8 +518,6 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                         hasFixedWidth ? itemWidth : element.DesiredSize.Width,
                         hasFixedHeight ? itemHeight : element.DesiredSize.Height);
 
-                    if (elementSize.Indirect > maxWidth)
-                        maxWidth = elementSize.Indirect;
 
                     // If this element falls of the edge of the line
                     if (elementIndexToPrint == endOfColumnElementIndex[colIndex])
@@ -850,16 +527,7 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                         // Then we just completed a line and we should arrange it
                         ArrangeLine(lineStart, ++elementIndexToPrint, directDelta, colWidth, colCount);
                         colCount++;
-                        //// If the current element is larger than the maximum size
-                        //if (startOfColumnElementIndex[colIndex] == endOfColumnElementIndex[colIndex])
-                        //{
-                        //    // Arrange the element as a single line
-                        //    ArrangeLine(elementIndexToPrint, ++elementIndexToPrint, directDelta, indirectOffset, maxWidth);
 
-                        //    // Move to a new line
-                        //    indirectOffset += lineSize.Indirect;
-                        //    lineSize = new OrientedSize(o);
-                        //}
                         // Advance the start index to a new line after arranging
                         lineStart = elementIndexToPrint;
 
@@ -877,7 +545,6 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                         #endregion
 
                         lineSize.Indirect = 0;
-                        maxWidth = 0;
                         continue;
                     }
 
@@ -886,28 +553,10 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                     lineSize.Indirect = Math.Max(lineSize.Indirect, elementSize.Indirect);
                 }
             }
-            for (int i = numCols + 1; i < initialNumberOfColumns; i++)
-            {
-                var offset = colCount * colWidth;
-                var rectangle = new Rectangle();
-                var rect = new Rect(offset, 0, colWidth, 0);
-                rectangle.Arrange(rect);
-            }
-            //Not sure if this is used
-            #region use this to print the last column
-
-            //// Arrange any elements on the last line
-            //if (lineStart < numberOfElements)
-            //{
-            //    startOfColumnElementIndex[startOfColumnElementIndex.Count() - 1] = lineStart;
-
-            //    ArrangeLine(startOfColumnElementIndex[startOfColumnElementIndex.Count() - 1], numberOfElements, directDelta, indirectOffset, lineSize.Indirect);
-            //}
-            #endregion
 
             #endregion
 
-            return new Size(finalSize.Width, maxHeight); ;
+            return new Size(finalSize.Width, maxHeight);
         }
 
         /// <summary>
