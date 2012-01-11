@@ -1,13 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Subjects;
 using System.Windows;
 using System.Reactive.Linq;
+using System.ComponentModel;
 using FoundOps.Common.Tools;
 using System.Windows.Printing;
 using System.Windows.Controls;
-using System.Collections.Generic;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Models;
@@ -21,13 +19,18 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
     /// </summary>
     public class RouteManifest : INotifyPropertyChanged, IPagedPrinter
     {
-        #region Public Properties and Variables
+        #region Public Events, Properties and Variables
 
         // Implementation of INotifyPropertyChanged
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Occurs when the [route manifest updated].
+        /// </summary>
+        public event EventHandler RouteManifestUpdated;
 
         #region Implementation of IPagedPrinter
 
@@ -143,14 +146,15 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         /// <summary>
         /// Forces an update.
         /// </summary>
-        /// <param name="onComplete">An action to perform after updating the Manifest.</param>
-        public void ForceUpdate(Action onComplete)
+        /// <param name="onComplete">An (optional) action to perform after updating the Manifest.</param>
+        public void ForceUpdate(Action onComplete = null)
         {
             //Make sure this happens on the Dispatcher to prevent interfering with other UpdateControl calls
             Application.Current.RootVisual.Dispatcher.BeginInvoke(() =>
             {
                 UpdateControl();
-                onComplete();
+                if (onComplete != null)
+                    onComplete();
             });
         }
 
@@ -224,7 +228,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 currentRouteDestinationIndex--;
 
                 //update the layout on the page, now that the items are final before moving onto the next
-                currentPage.UpdateLayout();
+                currentPage.Measure(new Size(this.PrintedWidth, this.PrintedHeight));
+                //currentPage.UpdateLayout();
 
                 //Set the createNewPage flag to true (to move to the next page)
                 createNewPage = true;
@@ -244,11 +249,15 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 currentPageIndex++;
                 currentPage = new StackPanel();
                 currentPage.Children.Add(manifestFooter);
-                currentPage.UpdateLayout();
+                currentPage.Measure(new Size(this.PrintedWidth, this.PrintedHeight));
+                //currentPage.UpdateLayout();
                 Pages.Add(currentPage);
             }
 
             PageCount = currentPageIndex + 1;
+
+            if (RouteManifestUpdated != null)
+                RouteManifestUpdated(this, null);
         }
 
         #endregion

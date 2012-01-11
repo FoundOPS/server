@@ -233,6 +233,9 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Docking.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.FixedDocumentViewers">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.FixedDocumentViewers.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.GridView">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.GridView.dll</HintPath>
       <Private>False</Private>
@@ -253,10 +256,19 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Telerik.Windows.Documents">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.Pdf">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.FormatProviders.Pdf.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
+      <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dispatcher\Manifest\RouteManifest.cs" />
     <Compile Include="Controls\Dispatcher\Manifest\ManifestBody.xaml.cs">
@@ -632,6 +644,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

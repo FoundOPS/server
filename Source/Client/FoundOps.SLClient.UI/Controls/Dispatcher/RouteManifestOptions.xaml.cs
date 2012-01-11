@@ -1,20 +1,15 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-
-namespace FoundOps.Framework.Views
+﻿namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
+    /// <summary>
+    /// Displays the RouteManifestOptions
+    /// </summary>
 	public partial class RouteManifestOptions
 	{
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RouteManifestOptions"/> class.
+        /// </summary>
 		public RouteManifestOptions()
 		{
-			// Required to initialize variables
 			InitializeComponent();
 		}
 	}

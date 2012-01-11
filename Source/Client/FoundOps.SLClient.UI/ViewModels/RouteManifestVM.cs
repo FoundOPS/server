@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
-using GalaSoft.MvvmLight.Command;
 using FoundOps.SLClient.Data.Models;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Common.Silverlight.UI.Controls.Printing;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -18,43 +16,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Public
 
         /// <summary>
-        /// The printer.
-        /// </summary>
-        public IPagedPrinter Printer { get; set; }
-
-        /// <summary>
-        /// The manifest viewer.
-        /// </summary>
-        public IPagedViewer Viewer { get; set; }
-
-        /// <summary>
         /// Gets the route manifest settings.
         /// </summary>
         public RouteManifestSettings RouteManifestSettings { get; private set; }
-
-        #region Commands
-
-        /// <summary>
-        /// Go forward one page in the manifest.
-        /// </summary>
-        public RelayCommand ForwardOnePage { get; private set; }
-
-        /// <summary>
-        /// Go back one page in the manifest.
-        /// </summary>
-        public RelayCommand BackOnePage { get; private set; }
-
-        /// <summary>
-        /// Go to the first page in the manifest.
-        /// </summary>
-        public RelayCommand GoToFirstPage { get; private set; }
-
-        /// <summary>
-        /// Go to the last page in the manifest.
-        /// </summary>
-        public RelayCommand GoToLastPage { get; private set; }
-
-        #endregion
 
         #endregion
 
@@ -87,27 +51,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                     DataManager.EnqueueSubmitOperation();
                 }
             });
-
-            #region Register Commands
-
-            ForwardOnePage = new RelayCommand(() =>
-            {
-                if (!Viewer.IsLastPage)
-                    Viewer.PageIndex++;
-            });
-            BackOnePage = new RelayCommand(() =>
-            {
-                if (!Viewer.IsFirstPage)
-                    Viewer.PageIndex--;
-            });
-
-            GoToFirstPage = new RelayCommand(() => Viewer.PageIndex = 0);
-            GoToLastPage = new RelayCommand(() =>
-            {
-                Viewer.PageIndex= Printer.PageCount - 1;
-            });
-
-            #endregion
         }
 
         #region RouteManifestVM's Logic

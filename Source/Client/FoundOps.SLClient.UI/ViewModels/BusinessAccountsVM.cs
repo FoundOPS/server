@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Windows;
-using FoundOps.Core.Models.CoreEntities.DesignData;
-using FoundOps.Core.Server.Blocks;
+using System.Collections;
+using System.Reactive.Linq;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
+using FoundOps.Core.Server.Blocks;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
