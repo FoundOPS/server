@@ -1,13 +1,7 @@
-﻿using System.Windows;
-
-namespace FoundOps.Common.Silverlight.Tools.Printing
+﻿namespace FoundOps.Common.Silverlight.UI.Controls.Printing
 {
     public interface IPagedPrinter
     {
-        int PageCount { get; }
-        int CurrentPageIndex { get; set; }
-        bool IsLastPage { get; }
-        bool IsFirstPage { get; }
         void Print();
     }
 }

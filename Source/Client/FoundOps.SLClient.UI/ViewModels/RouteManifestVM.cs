@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Reactive.Linq;
+using FoundOps.Common.Silverlight.UI.Controls.Printing;
 using FoundOps.Common.Tools;
 using GalaSoft.MvvmLight.Command;
 using FoundOps.SLClient.Data.Models;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Common.Silverlight.Tools.Printing;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -18,11 +18,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Public
 
         /// <summary>
-        /// Gets or sets the printer.
-        /// </summary>
-        /// <value>
         /// The printer.
-        /// </value>
+        /// </summary>
         public IPagedPrinter Printer { get; set; }
 
         /// <summary>
@@ -91,18 +88,18 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             ForwardOnePage = new RelayCommand(() =>
             {
-                if (!Printer.IsLastPage)
-                    Printer.CurrentPageIndex++;
+                //if (!Printer.IsLastPage)
+                //    Printer.CurrentPageIndex++;
             });
             BackOnePage = new RelayCommand(() =>
             {
-                if (!Printer.IsFirstPage)
-                    Printer.CurrentPageIndex--;
+                //if (!Printer.IsFirstPage)
+                //    Printer.CurrentPageIndex--;
             });
-            GoToFirstPage = new RelayCommand(() => Printer.CurrentPageIndex = 0);
+            //GoToFirstPage = new RelayCommand(() => Printer.CurrentPageIndex = 0);
             GoToLastPage = new RelayCommand(() =>
             {
-                Printer.CurrentPageIndex = Printer.PageCount - 1;
+                //Printer.CurrentPageIndex = Printer.PageCount - 1;
             });
 
             #endregion

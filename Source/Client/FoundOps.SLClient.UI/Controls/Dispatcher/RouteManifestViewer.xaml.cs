@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
-using System.Reactive.Linq;
 using FoundOps.SLClient.UI.ViewModels;
-using FoundOps.Common.Silverlight.UI.Tools;
+using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
@@ -11,16 +10,43 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
     /// </summary>
     public partial class RouteManifestViewer
     {
+        private int _pageIndex;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int PageIndex
+        {
+            get { return _pageIndex; }
+            set
+            {
+                if (_routeManifest.Pages.Count <= _pageIndex + 1) return;
+
+                _pageIndex = value;
+                this.CurrentManifestPageViewbox.Child = _routeManifest.Pages[PageIndex];
+            }
+        }
+
+        private readonly RouteManifest _routeManifest;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteManifestViewer"/> class.
         /// </summary>
         public RouteManifestViewer()
         {
+            this.Loaded += (s, e) =>
+            {
+                _routeManifest.UpdateControl();
+                this.PageIndex = 0;
+            };
+
+            _routeManifest = new RouteManifest {PrintedHeight = 1056, PrintedWidth = 816};
+
             InitializeComponent();
 
-            //There is a problem when binding to Maximum
-            Observable2.FromPropertyChangedPattern(this.RouteManifest, x => x.PageCount).SubscribeOnDispatcher()
-                .Subscribe(pageCount => PageUpDown.Maximum = pageCount);
+            ////There is a problem when binding to Maximum
+            //Observable2.FromPropertyChangedPattern(this.RouteManifest, x => x.PageCount).SubscribeOnDispatcher()
+            //    .Subscribe(pageCount => PageUpDown.Maximum = pageCount);
         }
 
         private RouteManifestVM RouteManifestVM
@@ -33,7 +59,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             RouteManifestVM.Printer.Print();
 
             #region Analytics
-            
+
             //get current time
             var currentTimeOfDay = DateTime.Now.ToShortTimeString();
 
