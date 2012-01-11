@@ -1,13 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Windows;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
 using System.Windows.Printing;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Models;
+using System.Collections.ObjectModel;
 using FoundOps.Common.Silverlight.UI.Controls.Printing;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
@@ -15,8 +19,40 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
     /// <summary>
     /// Displays a Manifest
     /// </summary>
-    public class RouteManifest : IPagedPrinter
+    public class RouteManifest : INotifyPropertyChanged, IPagedPrinter
     {
+        #region Public Properties and Variables
+
+        // Implementation of INotifyPropertyChanged
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #region Implementation of IPagedPrinter
+
+        private int _pageCount;
+        /// <summary>
+        /// The number of pages.
+        /// </summary>
+        public int PageCount
+        {
+            get { return _pageCount; }
+            set
+            {
+                _pageCount = value;
+                this.RaisePropertyChanged("PageCount");
+            }
+        }
+
+        private readonly ObservableCollection<FrameworkElement> _pages = new ObservableCollection<FrameworkElement>();
+        /// <summary>
+        /// The manifest pages.
+        /// </summary>
+        public ObservableCollection<FrameworkElement> Pages { get { return _pages; } }
+
+        #endregion
+
         /// <summary>
         /// The height to print.
         /// </summary>
@@ -27,78 +63,195 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         /// </summary>
         public double PrintedWidth { get; set; }
 
-        /// <summary>
-        /// The manifest pages.
-        /// </summary>
-        public List<FrameworkElement> Pages = new List<FrameworkElement>();
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Manifest"/> class.
         /// </summary>
         public RouteManifest()
         {
-            //Set the RouteManifestVM's Printer
-            VM.Routes.RouteManifestVM.Printer = this;
+            //Update the Manifest when
+            //a) the SelectedEntity changes
+            //b) RouteManifestSettings changes
 
-            //Update the Manifest when the RouteManifestVM or RouteManifestSettings changes
-            VM.Routes.RouteManifestVM.RouteManifestSettings.FromAnyPropertyChanged()
-            .Where(p => RouteManifestSettings.DestinationsProperties.Contains(p.PropertyName)).AsGeneric()
+            //a) the SelectedEntity changes
+            VM.Routes.SelectedEntityObservable.AsGeneric().Merge(
+                //b) RouteManifestVM or RouteManifestSettings changes
+            VM.RouteManifest.RouteManifestSettings.FromAnyPropertyChanged()
+            .Where(p => RouteManifestSettings.DestinationsProperties.Contains(p.PropertyName)).AsGeneric())
             .Throttle(TimeSpan.FromMilliseconds(200)).ObserveOnDispatcher()
             .Subscribe(a => UpdateControl());
+        }
+
+        #region Logic
+
+        #region Implementation of IPagedPrinter
+
+        /// <summary>
+        /// Prints the manifest.
+        /// </summary>
+        public void Print()
+        {
+            if (this.PageCount < 1)
+                return;
+
+            var printDocument = new PrintDocument();
+
+            var pageToPrint = 0;
+
+            //Go through each page, render it, then move forward
+            printDocument.PrintPage += (sender, e) =>
+            {
+                var currentPage = this.Pages[pageToPrint];
+                var parent = currentPage.Parent;
+                if (parent as Panel != null)
+                    ((Panel)parent).Children.Remove(currentPage);
+
+                //Add the page to a canvas to get around SL5 printing issues
+                var canvas = new Canvas { Width = this.PrintedWidth, Height = this.PrintedHeight };
+                canvas.Children.Add(currentPage);
+
+                e.PageVisual = canvas;
+
+                //Increase page to print
+                pageToPrint++;
+
+                //Continue printing this page if not past the last page
+                e.HasMorePages = pageToPrint < this.PageCount - 1;
+            };
+
+            //SL5 Release with Vector Printing
+            //var settings = new PrinterFallbackSettings { ForceVector = true };
+            printDocument.Print("Route Manifest");//, settings);
+        }
+
+        #endregion
+
+        #region Implementation of INotifyPropertyChanged
+
+        protected virtual void RaisePropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Forces an update.
+        /// </summary>
+        /// <param name="onComplete">An action to perform after updating the Manifest.</param>
+        public void ForceUpdate(Action onComplete)
+        {
+            //Make sure this happens on the Dispatcher to prevent interfering with other UpdateControl calls
+            Application.Current.RootVisual.Dispatcher.BeginInvoke(() =>
+            {
+                UpdateControl();
+                onComplete();
+            });
         }
 
         /// <summary>
         /// Updates the control.
         /// </summary>
-        public void UpdateControl()
+        private void UpdateControl()
         {
+            //Clear the pages
+            this.Pages.Clear();
+
             var selectedRoute = VM.Routes.SelectedEntity;
             if (selectedRoute == null) return;
 
-            var currentPageIndex = 0;
-            var currentPage = new StackPanel();
-            var currentItemIndex = 0;
-
+            //Go through each route destination
+            //Generate the pages by finding how many fit on a page
             var routeDestinations = selectedRoute.RouteDestinationsListWrapper;
 
-            var newPage = true;
+            StackPanel currentPage = null;
+            ObservableCollection<RouteDestination> currentPageRouteDesinations = null;
 
-            var currentItems = new List<object>();
+            var currentPageIndex = -1;
+            var currentRouteDestinationIndex = -1;
 
+            //Keeps track if a new page needs to be added
+            var createNewPage = true;
 
-            while (currentItemIndex < routeDestinations.Count)
+            while (currentRouteDestinationIndex < routeDestinations.Count)
             {
-                ManifestBody currentBody = null;
-
-                if (newPage)
+                if (createNewPage)
                 {
+                    //Update the currentPageIndex before creating a new page
+                    currentPageIndex++;
+
+                    //Create a new page
+                    currentPage = new StackPanel();
+
+                    //If this is the first page, add the ManifestHeader
                     if (currentPageIndex == 0)
                         currentPage.Children.Add(new ManifestHeader());
 
-                    currentBody = new ManifestBody {RouteDestinationsItemsControl = {ItemsSource = currentItems}};
+                    //Setup a new collection of route destinations
+                    currentPageRouteDesinations = new ObservableCollection<RouteDestination>();
 
+                    //Add a ManifestBody to the currentPage
+                    var currentBody = new ManifestBody { RouteDestinationsItemsControl = { ItemsSource = currentPageRouteDesinations } };
                     currentPage.Children.Add(currentBody);
 
+                    //Add the new page to this PagedPrinter's collection of Pages
                     this.Pages.Add(currentPage);
 
-                    newPage = false;
+                    //Set the createNewPage flag to false
+                    createNewPage = false;
                 }
 
-                currentItems.Add(routeDestinations.ElementAt(currentItemIndex));
+                //Update the currentRouteDestinationIndex before adding the route destination
+                currentRouteDestinationIndex++;
 
-                currentItemIndex++;
+                //Add the route destination if there is one at this index
+                if (routeDestinations.ElementAtOrDefault(currentRouteDestinationIndex) == null)
+                    continue;
+                currentPageRouteDesinations.Add(routeDestinations.ElementAt(currentRouteDestinationIndex));
 
-                currentBody.RouteDestinationsItemsControl.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                currentPage.Measure(new Size(this.PrintedWidth, this.PrintedHeight));
 
-                if (currentPage.Height < this.PrintedHeight)
+                if (currentPage.DesiredSize.Height < this.PrintedHeight)
                     continue;
 
-                newPage = true;
-                currentPageIndex++;
+                //remove the last route destination (that made it overflow)
+                currentPageRouteDesinations.Remove(routeDestinations.ElementAt(currentRouteDestinationIndex));
+                currentRouteDestinationIndex--;
+
+                //update the layout on the page, now that the items are final before moving onto the next
+                currentPage.UpdateLayout();
+
+                //Set the createNewPage flag to true (to move to the next page)
+                createNewPage = true;
             }
 
-            currentPage.Children.Add(new ManifestFooter());
+            var manifestFooter = new ManifestFooter();
+            currentPage.Children.Add(manifestFooter);
+            currentPage.Measure(new Size(this.PrintedWidth, this.PrintedHeight));
+
+            if (currentPage.DesiredSize.Height >= this.PrintedHeight)
+            {
+                //The ManifestFooter is past the page, so remove it from the page
+                currentPage.Children.Remove(manifestFooter);
+                currentPage.UpdateLayout();
+
+                //Add another page with the footer
+                currentPageIndex++;
+                currentPage = new StackPanel();
+                currentPage.Children.Add(manifestFooter);
+                currentPage.UpdateLayout();
+                Pages.Add(currentPage);
+            }
+
+            PageCount = currentPageIndex + 1;
         }
+
+        #endregion
 
         //private void UpdateControl()
         //{
@@ -160,39 +313,5 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         //    //Debug.WriteLine("Time to force bindings: " + DateTime.Now.Subtract(startTime));
         //}
-
-        #region Implementation of IPagedPrinter
-
-        /// <summary>
-        /// Prints the manifest.
-        /// </summary>
-        public void Print()
-        {
-            var printDocument = new PrintDocument();
-
-            //Start on first page
-            var pageToPrint = 0;
-
-            //Go through each page, render it, then move forward
-            printDocument.PrintPage += (sender, e) =>
-            {
-                e.PageVisual = this.Pages[pageToPrint];
-
-                //Continue printing if not past the last page
-                e.HasMorePages = pageToPrint < this.Pages.Count - 1;
-
-                //Increase page to print
-                pageToPrint++;
-            };
-
-            //Move back to the first page at the end of printing
-            //printDocument.EndPrint += (s, e) => CurrentPageIndex = 0;
-
-            //SL5 Release with Vector Printing
-            var settings = new PrinterFallbackSettings { ForceVector = true };
-            printDocument.Print("Route Manifest", settings);
-        }
-
-        #endregion
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Windows;
-using FoundOps.SLClient.UI.ViewModels;
+using System.ComponentModel;
+using FoundOps.Common.Silverlight.UI.Controls.Printing;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
@@ -8,55 +11,104 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
     /// <summary>
     /// Displays RouteManifest
     /// </summary>
-    public partial class RouteManifestViewer
+    public partial class RouteManifestViewer : INotifyPropertyChanged, IPagedViewer
     {
-        private int _pageIndex;
+        #region Public Events and Properties
 
+        // Implementation of INotifyPropertyChanged
         /// <summary>
-        /// 
+        /// Occurs when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #region Implementation of IPagedViewer
+
+        public bool IsFirstPage { get { return PageIndex == 0; } }
+
+        public bool IsLastPage { get { return PageIndex == this.RouteManifest.PageCount - 1; } }
+
+        private int _pageIndex;
+        /// <summary>
+        /// The current Manifest page.
         /// </summary>
         public int PageIndex
         {
             get { return _pageIndex; }
             set
             {
-                if (_routeManifest.Pages.Count <= _pageIndex + 1) return;
+                //If there are not enough pages, return
+                if (RouteManifest.PageCount < value + 1) return;
 
                 _pageIndex = value;
-                this.CurrentManifestPageViewbox.Child = _routeManifest.Pages[PageIndex];
+                this.CurrentManifestPageViewboxGrid.Children.Add(RouteManifest.Pages[PageIndex]);
+
+                this.CurrentManifestPageViewbox.UpdateLayout();
+
+                RaisePropertyChanged("PageIndex");
+                RaisePropertyChanged("IsFirstPage");
+                RaisePropertyChanged("IsLastPage");
             }
         }
 
-        private readonly RouteManifest _routeManifest;
+        #endregion
+
+        /// <summary>
+        /// The route manifest.
+        /// </summary>
+        public RouteManifest RouteManifest { get; private set; }
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteManifestViewer"/> class.
         /// </summary>
         public RouteManifestViewer()
         {
-            this.Loaded += (s, e) =>
-            {
-                _routeManifest.UpdateControl();
-                this.PageIndex = 0;
-            };
+            RouteManifest = new RouteManifest { PrintedHeight = 1056, PrintedWidth = 816 };
 
-            _routeManifest = new RouteManifest {PrintedHeight = 1056, PrintedWidth = 816};
+            //Update the control every time the manifest viewer is loaded because the routes might have changed
+            //Then set this paged viewer to the first page
+            this.Loaded += (s, e) => RouteManifest.ForceUpdate(() => this.PageIndex = 0);
 
             InitializeComponent();
 
             ////There is a problem when binding to Maximum
-            //Observable2.FromPropertyChangedPattern(this.RouteManifest, x => x.PageCount).SubscribeOnDispatcher()
-            //    .Subscribe(pageCount => PageUpDown.Maximum = pageCount);
+            Observable2.FromPropertyChangedPattern(this.RouteManifest, x => x.PageCount).SubscribeOnDispatcher()
+                .Subscribe(pageCount => PageUpDown.Maximum = pageCount);
+
+            //Set the RouteManifestVM's Printer
+            VM.RouteManifest.Printer = RouteManifest;
+            VM.RouteManifest.Viewer = this;
         }
 
-        private RouteManifestVM RouteManifestVM
+        #region Logic
+
+        #region Implementation of INotifyPropertyChanged
+
+        protected virtual void RaisePropertyChanged(string propertyName)
         {
-            get { return ((RoutesVM)this.DataContext).RouteManifestVM; }
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        private void MyRouteManifestViewerClosed(object sender, System.EventArgs e)
+        {
+            //Dispose of Printer
+            VM.RouteManifest.Printer = null;
+            VM.RouteManifest.Viewer = null;
+
+            //On closing the manifest: update and save the route manifest settings
+            VM.RouteManifest.UpdateSaveRouteManifestSettings();
         }
 
         private void PrintManifest(object sender, RoutedEventArgs routedEventArgs)
         {
-            RouteManifestVM.Printer.Print();
+            VM.RouteManifest.Printer.Print();
 
             #region Analytics
 
@@ -64,55 +116,55 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             var currentTimeOfDay = DateTime.Now.ToShortTimeString();
 
             //check for route manifest options
-            if (RouteManifestVM.RouteManifestSettings.IsHeaderVisible)
+            if (VM.RouteManifest.RouteManifestSettings.IsHeaderVisible)
             {
                 Data.Services.Analytics.Header();
-                if (RouteManifestVM.RouteManifestSettings.IsRouteNameVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsRouteNameVisible)
                     Data.Services.Analytics.RouteName();
-                if (RouteManifestVM.RouteManifestSettings.IsRouteDateVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsRouteDateVisible)
                     Data.Services.Analytics.RouteDate();
-                if (RouteManifestVM.RouteManifestSettings.IsAssignedVehiclesVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsAssignedVehiclesVisible)
                     Data.Services.Analytics.AssignedVehicles();
             }
 
-            if (RouteManifestVM.RouteManifestSettings.IsSummaryVisible)
+            if (VM.RouteManifest.RouteManifestSettings.IsSummaryVisible)
             {
                 Data.Services.Analytics.Summary();
-                if (RouteManifestVM.RouteManifestSettings.IsRouteSummaryVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsRouteSummaryVisible)
                     Data.Services.Analytics.RouteSummary();
-                if (RouteManifestVM.RouteManifestSettings.IsScheduledStartTimeVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsScheduledStartTimeVisible)
                     Data.Services.Analytics.StartTime();
-                if (RouteManifestVM.RouteManifestSettings.IsScheduledEndTimeVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsScheduledEndTimeVisible)
                     Data.Services.Analytics.EndTime();
-                if (RouteManifestVM.RouteManifestSettings.IsDestinationsSummaryVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsDestinationsSummaryVisible)
                     Data.Services.Analytics.DestinationsSummary();
-                if (RouteManifestVM.RouteManifestSettings.IsNumberofDestinationsVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsNumberofDestinationsVisible)
                     Data.Services.Analytics.NumberofDestinations();
-                if (RouteManifestVM.RouteManifestSettings.IsTaskSummaryVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsTaskSummaryVisible)
                     Data.Services.Analytics.TaskSummary();
-                if (RouteManifestVM.RouteManifestSettings.IsNumberOfTasksVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsNumberOfTasksVisible)
                     Data.Services.Analytics.NumberOfTasks();
             }
 
-            if (RouteManifestVM.RouteManifestSettings.IsDestinationsVisible)
+            if (VM.RouteManifest.RouteManifestSettings.IsDestinationsVisible)
             {
                 Data.Services.Analytics.Destinations();
-                if (RouteManifestVM.RouteManifestSettings.IsAddressVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsAddressVisible)
                     Data.Services.Analytics.Address();
-                if (RouteManifestVM.RouteManifestSettings.IsContactInfoVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsContactInfoVisible)
                     Data.Services.Analytics.ContactInfo();
-                if (RouteManifestVM.RouteManifestSettings.IsRouteTasksVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsRouteTasksVisible)
                     Data.Services.Analytics.RouteTasks();
-                if (RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible)
+                if (VM.RouteManifest.RouteManifestSettings.Is2DBarcodeVisible)
                     Data.Services.Analytics.Barcode();
             }
 
-            if (RouteManifestVM.RouteManifestSettings.IsFooterVisible)
+            if (VM.RouteManifest.RouteManifestSettings.IsFooterVisible)
             {
                 Data.Services.Analytics.Footer();
-                if (RouteManifestVM.RouteManifestSettings.IsPageNumbersVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsPageNumbersVisible)
                     Data.Services.Analytics.PageNumbers();
-                if (RouteManifestVM.RouteManifestSettings.IsCustomMessageVisible)
+                if (VM.RouteManifest.RouteManifestSettings.IsCustomMessageVisible)
                     Data.Services.Analytics.CustomMessage();
             }
 
@@ -122,13 +174,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             #endregion
         }
 
-        private void MyRouteManifestViewerClosed(object sender, System.EventArgs e)
-        {
-            //Dispose of Printer
-            RouteManifestVM.Printer = null;
-
-            //On closing the manifest: update and save the route manifest settings
-            RouteManifestVM.UpdateSaveRouteManifestSettings();
-        }
+        #endregion
     }
 }

@@ -457,9 +457,6 @@
     <Compile Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml.cs">
       <DependentUpon>UserAccountsLink.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PriceSets\PriceSetRules.xaml.cs">
-      <DependentUpon>PriceSetRules.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Regions\RegionLinkSmall.xaml.cs">
       <DependentUpon>RegionLinkSmall.xaml</DependentUpon>
     </Compile>
@@ -899,10 +896,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PriceSets\PriceSetRules.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

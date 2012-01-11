@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Reactive.Linq;
-using FoundOps.Common.Silverlight.UI.Controls.Printing;
 using FoundOps.Common.Tools;
 using GalaSoft.MvvmLight.Command;
 using FoundOps.SLClient.Data.Models;
 using FoundOps.SLClient.Data.Services;
-using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Common.Silverlight.UI.Controls.Printing;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -21,6 +21,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// The printer.
         /// </summary>
         public IPagedPrinter Printer { get; set; }
+
+        /// <summary>
+        /// The manifest viewer.
+        /// </summary>
+        public IPagedViewer Viewer { get; set; }
 
         /// <summary>
         /// Gets the route manifest settings.
@@ -57,8 +62,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="RouteManifestVM"/> class.
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
-        public RouteManifestVM(DataManager dataManager)
-            : base(dataManager)
+        public RouteManifestVM(DataManager dataManager) : base(dataManager)
         {
             //Setup the RouteManifestSettings based on the OwnerAccount
             ContextManager.OwnerAccountObservable.Select(oa => oa as BusinessAccount).Where(ba => ba != null)
@@ -88,18 +92,19 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             ForwardOnePage = new RelayCommand(() =>
             {
-                //if (!Printer.IsLastPage)
-                //    Printer.CurrentPageIndex++;
+                if (!Viewer.IsLastPage)
+                    Viewer.PageIndex++;
             });
             BackOnePage = new RelayCommand(() =>
             {
-                //if (!Printer.IsFirstPage)
-                //    Printer.CurrentPageIndex--;
+                if (!Viewer.IsFirstPage)
+                    Viewer.PageIndex--;
             });
-            //GoToFirstPage = new RelayCommand(() => Printer.CurrentPageIndex = 0);
+
+            GoToFirstPage = new RelayCommand(() => Viewer.PageIndex = 0);
             GoToLastPage = new RelayCommand(() =>
             {
-                //Printer.CurrentPageIndex = Printer.PageCount - 1;
+                Viewer.PageIndex= Printer.PageCount - 1;
             });
 
             #endregion

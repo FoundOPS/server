@@ -265,7 +265,7 @@
       <DependentUpon>ThirdsListDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Printing\IPagedPrinter.cs" />
-    <Compile Include="Controls\Printing\PagedPrinter.cs" />
+    <Compile Include="Controls\Printing\IPagedViewer.cs" />
     <Compile Include="Controls\RemoveDeleteCancel.xaml.cs">
       <DependentUpon>RemoveDeleteCancel.xaml</DependentUpon>
     </Compile>

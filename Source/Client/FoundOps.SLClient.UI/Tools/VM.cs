@@ -74,7 +74,7 @@ namespace FoundOps.SLClient.UI.Tools
         {
             get
             {
-                return (LocationsVM) ViewModelRepository.Instance.Resolver.GetViewModelByContract("LocationsVM", null, CreationPolicy.Shared).Value;
+                return (LocationsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("LocationsVM", null, CreationPolicy.Shared).Value;
             }
         }
 
@@ -110,6 +110,11 @@ namespace FoundOps.SLClient.UI.Tools
                 return (RoutesDragDropVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesDragDropVM", null, CreationPolicy.Shared).Value;
             }
         }
+
+        /// <summary>
+        /// Gets the RouteManifestVM.
+        /// </summary>
+        public static RouteManifestVM RouteManifest { get { return Routes.RouteManifestVM; } }
 
         /// <summary>
         /// Gets the ServiceTemplatesVM.
