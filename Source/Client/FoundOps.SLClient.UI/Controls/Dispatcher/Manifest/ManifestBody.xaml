@@ -88,6 +88,13 @@
                                     <StackPanel x:Name="ContactInfoElement" Width="245" Margin="4,2">
                                         <TextBlock Text="Contact Information" FontWeight="Bold"/>
                                         <ItemsControl Margin="4,2" ItemsSource="{Binding Client.OwnedParty.ContactInfoSet}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <!--Use stackpanel instead of default virtualizingstackpanel
+                                                    so whenever this is in the visual tree it will generate items.-->
+                                                    <StackPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
                                             <!--Bind itemsource to route stop's contact Info-->
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
@@ -109,6 +116,13 @@
                                     <StackPanel x:Name="RouteTasksElement" Margin="4,2" Width="245">
                                         <TextBlock Text="Tasks" FontWeight="Bold"/>
                                         <ItemsControl x:Name="Element" ItemsSource="{Binding RouteTasks}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <!--Use stackpanel instead of default virtualizingstackpanel
+                                                    so whenever this is in the visual tree it will generate items.-->
+                                                    <StackPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel>
@@ -155,8 +169,15 @@
                                             <StackPanel x:Name="SubLocationsElement" Margin="4,2" Width="245">
                                                 <TextBlock Text="SubLocations" FontWeight="Bold"/>
                                                 <ItemsControl x:Name="Element2" ItemsSource="{Binding Location.SubLocations, Converter={StaticResource OrderByParameterConverter}, ConverterParameter=Number}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        Use stackpanel instead of default virtualizingstackpanel
+                                                        so whenever this is in the visual tree it will generate items.
+                                                        <StackPanel/>
+                                                    </ItemsPanelTemplate>
+                                                 </ItemsControl.ItemsPanel>
+                                                 <ItemsControl.ItemTemplate>
+                                                       <DataTemplate>
                                                             <StackPanel>
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <Icons:PinPointIcon Fill="{Binding Number, Converter={StaticResource NumberColorConverter}}" Text="{Binding Number}"/>

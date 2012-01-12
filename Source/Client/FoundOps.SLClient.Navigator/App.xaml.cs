@@ -35,10 +35,6 @@ namespace FoundOps.SLClient.Navigator
             //Required for EntityFramework Validation
             MEFValidationRules.RegisterAssembly(typeof(LocationField).Assembly);
 
-            //Required for RadRichTextBox
-            //http://www.telerik.com/community/forums/silverlight/richtextbox/error-on-printpreview.aspx
-            DocumentFormatProvidersManager.RegisterFormatProvider(new HtmlFormatProvider());
-
             #region Add IP Info to Resources
 
             var ipAddressLocationQuery = String.Format("http://api.ipinfodb.com/v3/ip-city/?key={0}", "50191ba897c5677bc6a49f46f5da10787c7898f34b8a11d8e1c01546b8a08470");

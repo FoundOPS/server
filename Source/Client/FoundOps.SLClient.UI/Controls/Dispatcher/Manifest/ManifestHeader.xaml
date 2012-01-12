@@ -41,8 +41,7 @@
             </ItemsControl>
             <!--ItemSource Bound to Assigned vehicles-->
 
-            <ItemsControl VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="2" Grid.Row="1" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedTechniciansVisible, Converter={StaticResource VisibilityConverter}}"
-                                      >
+            <ItemsControl VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="2" Grid.Row="1" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedTechniciansVisible, Converter={StaticResource VisibilityConverter}}">
                 <!--ItemsSource="{Binding DataContext.SelectedEntity.Technicians, ElementName=myRouteManifest}"-->
                 <!--<ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -141,7 +140,7 @@
                     <TextBlock Text="Tasks Summary" FontWeight="Bold"/>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsNumberOfTasksVisible, Converter={StaticResource VisibilityConverter}}">
                         <TextBlock Text="Number of Tasks: "/>
-                        <TextBlock x:Name="NumberOfTasks" Text="{Binding SelectedEntity}"/>
+                        <TextBlock x:Name="NumberOfTasks" Text="{Binding SelectedEntity.NumberOfRouteDestinations}"/>
                         <!--Bind to total number of tasks-->
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAverageTaskDurationVisible, Converter={StaticResource VisibilityConverter}}">
