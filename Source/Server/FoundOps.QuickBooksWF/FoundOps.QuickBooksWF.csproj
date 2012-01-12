@@ -68,6 +68,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RemoveBooleanValue.cs" />
     <Compile Include="GetListOfObjectsFromTables.cs" />
     <Compile Include="SetReadyToInvoice.cs" />
     <Compile Include="UpdateInvoiceQuickBooks.cs" />

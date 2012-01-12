@@ -3,7 +3,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:meffed="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
     xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.RibbonBar" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
     xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:interactions="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions"
-    xmlns:Controls1="clr-namespace:FoundOps.SLClient.Navigator.Controls" xmlns:Analytics="clr-namespace:FoundOps.SLClient.Data.Services.Analytics;assembly=FoundOps.SLClient.Data" mc:Ignorable="d" meffed:ViewModelLocator.SharedViewModel="NavigationBarVM">
+    xmlns:Controls1="clr-namespace:FoundOps.SLClient.Navigator.Controls"
+             mc:Ignorable="d" meffed:ViewModelLocator.SharedViewModel="NavigationBarVM">
     <UserControl.Resources>
         <Converters:NotVisibilityConverter x:Key="NotVisibilityConverter"/>
     </UserControl.Resources>

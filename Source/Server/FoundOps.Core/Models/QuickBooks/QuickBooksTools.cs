@@ -119,35 +119,27 @@ namespace FoundOps.Core.Models.QuickBooks
             //Creates the OAuth Session
             var clientSession = CreateOAuthSession();
 
+            var token = (TokenBase)clientSession.GetRequestToken();
+
             //The AccessToken is attained by exchanging the request token and the OAuthVerifier that we attained earlier
-            IToken accessToken = clientSession.ExchangeRequestTokenForAccessToken(quickBooksSession.Token, quickBooksSession.OAuthVerifier);
+            IToken accessToken = clientSession.ExchangeRequestTokenForAccessToken(token, quickBooksSession.OAuthVerifier);
 
             //Saving the Token to private storage
             currentBusinessAccount.QuickBooksAccessToken = accessToken.Token;
             currentBusinessAccount.QuickBooksAccessTokenSecret = accessToken.TokenSecret;
-
-            coreEntitiesContainer.SaveChanges();
         }
 
         /// <summary>
         /// Creates the authorization URL for QuickBooks based on the OAuth session
         /// </summary>
         /// <param name="callbackUrl">The callback URL.</param>
-        /// <param name="roleId">The role id.</param>
-        /// <param name="currentBusinessAccount">The current bunsiness account.</param>
         /// <returns> returns the authorization URL. </returns>
-        public static string GetAuthorizationUrl(string callbackUrl, string roleId, BusinessAccount currentBusinessAccount)
+        public static string GetAuthorizationUrl(string callbackUrl)
         {
             var session = CreateOAuthSession();
 
-            //Creates a new instance of the QuickBooksSession class to be later serialized into the Database
-            var quickBooksSession = new QuickBooksSession { Token = (TokenBase)session.GetRequestToken() };
-
-            //Serializing the QuickBooks Session class into the Database
-            currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
-
             //Creates the Authorized URL for QuickBooks that is based on the OAuth session created above
-            var authUrl = OauthConstants.AuthorizeUrl + "?oauth_token=" + quickBooksSession.Token.Token + "&oauth_callback=" + UriUtility.UrlEncode(callbackUrl);
+            var authUrl = OauthConstants.AuthorizeUrl + "?oauth_token=" + session.GetRequestToken().Token + "&oauth_callback=" + UriUtility.UrlEncode(callbackUrl);
 
             return authUrl;
         }
@@ -161,17 +153,16 @@ namespace FoundOps.Core.Models.QuickBooks
         /// Finds the BaseURL for the current QuickBooks user
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
-        /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <returns>
         /// The BaseUrl for a check in WF. Null means that something is wrong with their QuickBooks Settings.
         /// A good BaseUrl means that it worked and that the workflow can continue.
         /// </returns>
-        public static string GetBaseUrl(BusinessAccount currentBusinessAccount, CoreEntitiesContainer coreEntitiesContainer)
+        public static string GetBaseUrl(BusinessAccount currentBusinessAccount)
         {
             var quickBooksSession = new QuickBooksSession();
 
             // Checks to be sure that both QuickBooks is enabled on the current account and that the account has a pre-established QuickBooksSession
-            if (currentBusinessAccount.QuickBooksSessionXml != null || currentBusinessAccount.QuickBooksEnabled == false)
+            if (currentBusinessAccount.QuickBooksSessionXml != null && currentBusinessAccount.QuickBooksEnabled == false)
                 quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
             else
             {
@@ -179,7 +170,6 @@ namespace FoundOps.Core.Models.QuickBooks
 
                 //Ensures that the BaseURL is saved for later use
                 currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
-                coreEntitiesContainer.SaveChanges();
 
                 //Used in WF
                 return "";
@@ -214,7 +204,6 @@ namespace FoundOps.Core.Models.QuickBooks
 
             //Ensures that the BaseURL is saved for later use
             currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
-            coreEntitiesContainer.SaveChanges();
 
             //Used for a check in WF
             return quickBooksSession.BaseUrl;

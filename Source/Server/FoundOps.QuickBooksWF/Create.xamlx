@@ -1,56 +1,57 @@
-﻿<WorkflowService mc:Ignorable="sap" ConfigurationName="Create" sap:VirtualizedContainerService.HintSize="789,1614" Name="Create" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/servicemodel" xmlns:fcce="clr-namespace:FoundOps.Common.Composite.Entities;assembly=FoundOps.Core" xmlns:fcmc="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.Core" xmlns:fq="clr-namespace:FoundOps.QuickBooksWF;assembly=FoundOps.QuickBooksWF" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mv="clr-namespace:Microsoft.VisualBasic;assembly=System" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:s1="clr-namespace:System;assembly=System" xmlns:s2="clr-namespace:System;assembly=System.Xml" xmlns:s3="clr-namespace:System;assembly=System.Core" xmlns:s4="clr-namespace:System;assembly=System.ServiceModel" xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities" xmlns:sad="clr-namespace:System.Activities.Debugger;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System.ServiceModel" xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System.Core" xmlns:scg3="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:sdod="clr-namespace:System.Data.Objects.DataClasses;assembly=System.Data.Entity" xmlns:sl="clr-namespace:System.Linq;assembly=System.Core" xmlns:src="clr-namespace:System.Runtime.CompilerServices;assembly=mscorlib" xmlns:src1="clr-namespace:System.Runtime.CompilerServices;assembly=System.Core" xmlns:ssa="clr-namespace:System.ServiceModel.Activities;assembly=System.ServiceModel.Activities" xmlns:st="clr-namespace:System.Text;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<WorkflowService mc:Ignorable="sap" ConfigurationName="Create" sap:VirtualizedContainerService.HintSize="361,813" Name="Create" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/servicemodel" xmlns:fcce="clr-namespace:FoundOps.Common.Composite.Entities;assembly=FoundOps.Core" xmlns:fcmc="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.Core" xmlns:fq="clr-namespace:FoundOps.QuickBooksWF;assembly=FoundOps.QuickBooksWF" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mv="clr-namespace:Microsoft.VisualBasic;assembly=System" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:s1="clr-namespace:System;assembly=System" xmlns:s2="clr-namespace:System;assembly=System.Xml" xmlns:s3="clr-namespace:System;assembly=System.Core" xmlns:s4="clr-namespace:System;assembly=System.ServiceModel" xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities" xmlns:sad="clr-namespace:System.Activities.Debugger;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System.ServiceModel" xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System.Core" xmlns:scg3="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:sdod="clr-namespace:System.Data.Objects.DataClasses;assembly=System.Data.Entity" xmlns:sl="clr-namespace:System.Linq;assembly=System.Core" xmlns:src="clr-namespace:System.Runtime.CompilerServices;assembly=mscorlib" xmlns:src1="clr-namespace:System.Runtime.CompilerServices;assembly=System.Core" xmlns:ssa="clr-namespace:System.ServiceModel.Activities;assembly=System.ServiceModel.Activities" xmlns:st="clr-namespace:System.Text;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <sap:WorkflowViewStateService.ViewState>
     <scg3:Dictionary x:TypeArguments="x:String, x:Object">
-      <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
-      <x:Boolean x:Key="ShouldCollapseAll">True</x:Boolean>
+      <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
+      <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
     </scg3:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <p:Sequence DisplayName="Sequential Service" sad:XamlDebuggerXmlReader.FileName="C:\FoundOps\GitHub\Source\Server\FoundOps.QuickBooksWF\Create.xamlx" sap:VirtualizedContainerService.HintSize="560,1075" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
+  <p:Sequence DisplayName="Sequential Service" sad:XamlDebuggerXmlReader.FileName="C:\FoundOps\GitHub\Source\Server\FoundOps.QuickBooksWF\Create.xamlx" sap:VirtualizedContainerService.HintSize="331,783" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
     <p:Sequence.Variables>
       <p:Variable x:TypeArguments="CorrelationHandle" Name="handle" />
       <p:Variable x:TypeArguments="x:Int32" Name="data" />
       <p:Variable x:TypeArguments="scg3:IEnumerable(fcmc:BusinessAccount)" Name="businessAccounts" />
       <p:Variable x:TypeArguments="scg3:IEnumerable(fcmc:RouteTask)" Name="routeTasks" />
       <p:Variable x:TypeArguments="fcmc:Invoice" Name="newInvoice" />
+      <p:Variable x:TypeArguments="x:Boolean" Name="booleanHolder" />
     </p:Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg3:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg3:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Receive CanCreateInstance="True" sap:VirtualizedContainerService.HintSize="538,90" OperationName="Start">
+    <Receive CanCreateInstance="True" sap:VirtualizedContainerService.HintSize="309,90" OperationName="Start">
       <ReceiveParametersContent />
     </Receive>
-    <p:Sequence sap:VirtualizedContainerService.HintSize="538,821">
+    <p:Sequence sap:VirtualizedContainerService.HintSize="309,529">
       <sap:WorkflowViewStateService.ViewState>
         <scg3:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg3:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <fq:GetListOfBusinessAccounts sap:VirtualizedContainerService.HintSize="516,22" ListOfBusinessAccounts="[businessAccounts]" />
+      <fq:GetListOfBusinessAccounts sap:VirtualizedContainerService.HintSize="287,22" ListOfBusinessAccounts="[businessAccounts]" />
       <p:ParallelForEach x:TypeArguments="fcmc:BusinessAccount" DisplayName="ParallelForEach&lt;BusinessAccount&gt;" sap:VirtualizedContainerService.HintSize="287,343" Values="[businessAccounts]">
         <sap:WorkflowViewStateService.ViewState>
           <scg3:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsPinned">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg3:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <p:ActivityAction x:TypeArguments="fcmc:BusinessAccount">
           <p:ActivityAction.Argument>
             <p:DelegateInArgument x:TypeArguments="fcmc:BusinessAccount" Name="businessAccount" />
           </p:ActivityAction.Argument>
-          <p:Sequence DisplayName="Middle Sequence" sap:VirtualizedContainerService.HintSize="222,237">
+          <p:Sequence DisplayName="Middle Sequence" sap:VirtualizedContainerService.HintSize="257,237">
             <p:Sequence.Variables>
               <p:Variable x:TypeArguments="x:String" Name="baseUrl" />
             </p:Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg3:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                <x:Boolean x:Key="IsPinned">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg3:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <fq:GetBaseUrlActivity BaseUrl="[baseUrl]" CurrentBusinessAccount="[businessAccount]" sap:VirtualizedContainerService.HintSize="200,22" />
-            <p:If Condition="[baseUrl &lt;&gt; &quot;&quot;]" DisplayName="BaseUrlValid" sap:VirtualizedContainerService.HintSize="200,51">
+            <p:If Condition="[baseUrl &lt;&gt; &quot;&quot;]" DisplayName="BaseUrlValid" sap:VirtualizedContainerService.HintSize="464,343">
               <sap:WorkflowViewStateService.ViewState>
                 <scg3:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
@@ -62,11 +63,11 @@
                   <sap:WorkflowViewStateService.ViewState>
                     <scg3:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
                     </scg3:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <fq:GetListOfRouteTasks CurrentBusinessAccount="[businessAccount]" sap:VirtualizedContainerService.HintSize="200,22" ListOfRouteTasks="[routeTasks]" />
-                  <p:ParallelForEach x:TypeArguments="fcmc:RouteTask" DisplayName="ParallelForEach&lt;RouteTask&gt;" sap:VirtualizedContainerService.HintSize="200,51" Values="[routeTasks]">
+                  <p:ParallelForEach x:TypeArguments="fcmc:RouteTask" DisplayName="ParallelForEach&lt;RouteTask&gt;" sap:VirtualizedContainerService.HintSize="287,405" Values="[routeTasks]">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg3:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsPinned">False</x:Boolean>
@@ -81,10 +82,10 @@
                         <sap:WorkflowViewStateService.ViewState>
                           <scg3:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                            <x:Boolean x:Key="IsPinned">True</x:Boolean>
+                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
                           </scg3:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <p:If Condition="[routetask.ReadyToInvoice = False]" DisplayName="Route Task ReadyToInvoice" sap:VirtualizedContainerService.HintSize="200,51">
+                        <p:If Condition="[routetask.ReadyToInvoice.HasValue]" DisplayName="Route Task ReadyToInvoice" sap:VirtualizedContainerService.HintSize="711,498">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg3:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsPinned">False</x:Boolean>
@@ -92,8 +93,23 @@
                             </scg3:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                           <p:If.Then>
-                            <fq:SetReadyToInvoice CurrentRouteTask="[routetask]" sap:VirtualizedContainerService.HintSize="269,100" />
+                            <p:Sequence sap:VirtualizedContainerService.HintSize="486,392">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg3:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg3:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <fq:RemoveBooleanValue BooleanHolder="[booleanHolder]" CurrentRouteTask="[routetask]" sap:VirtualizedContainerService.HintSize="464,22" />
+                              <p:If Condition="[booleanHolder = False]" sap:VirtualizedContainerService.HintSize="464,206">
+                                <p:If.Then>
+                                  <fq:SetReadyToInvoice CurrentRouteTask="[routetask]" sap:VirtualizedContainerService.HintSize="269,100" />
+                                </p:If.Then>
+                              </p:If>
+                            </p:Sequence>
                           </p:If.Then>
+                          <p:If.Else>
+                            <fq:SetReadyToInvoice CurrentRouteTask="[routetask]" sap:VirtualizedContainerService.HintSize="200,392" />
+                          </p:If.Else>
                         </p:If>
                         <fq:GetInvoiceFromRouteTask CurrentRouteTask="[routetask]" sap:VirtualizedContainerService.HintSize="200,22" Invoice="[newInvoice]" />
                         <fq:CreateInvoiceQuickBooks CurrentBusinessAccount="[businessAccount]" CurrentInvoice="[newInvoice]" sap:VirtualizedContainerService.HintSize="200,22" />

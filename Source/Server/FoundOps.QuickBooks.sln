@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Common.NET", "..\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.QuickBooksWF", "FoundOps.QuickBooksWF\FoundOps.QuickBooksWF.csproj", "{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.SLClient.Navigator", "..\Client\FoundOps.SLClient.Navigator\FoundOps.SLClient.Navigator.csproj", "{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 6
@@ -102,6 +104,16 @@ Global
 		{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E77B2732-6E8E-4FEA-8776-89BBC98D4BFC}.Release|x86.ActiveCfg = Release|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

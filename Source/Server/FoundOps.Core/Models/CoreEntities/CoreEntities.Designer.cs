@@ -8621,9 +8621,8 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="businessAccountId">Initial value of the BusinessAccountId property.</param>
         /// <param name="estimatedDuration">Initial value of the EstimatedDuration property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="readyToInvoice">Initial value of the ReadyToInvoice property.</param>
         /// <param name="date">Initial value of the Date property.</param>
-        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Boolean readOnly, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.Boolean readyToInvoice, global::System.DateTime date)
+        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Boolean readOnly, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.DateTime date)
         {
             RouteTask routeTask = new RouteTask();
             routeTask.Id = id;
@@ -8631,7 +8630,6 @@ namespace FoundOps.Core.Models.CoreEntities
             routeTask.BusinessAccountId = businessAccountId;
             routeTask.EstimatedDuration = estimatedDuration;
             routeTask.Name = name;
-            routeTask.ReadyToInvoice = readyToInvoice;
             routeTask.Date = date;
             return routeTask;
         }
@@ -8861,9 +8859,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Boolean ReadyToInvoice
+        public Nullable<global::System.Boolean> ReadyToInvoice
         {
             get
             {
@@ -8878,8 +8876,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnReadyToInvoiceChanged();
             }
         }
-        private global::System.Boolean _ReadyToInvoice;
-        partial void OnReadyToInvoiceChanging(global::System.Boolean value);
+        private Nullable<global::System.Boolean> _ReadyToInvoice;
+        partial void OnReadyToInvoiceChanging(Nullable<global::System.Boolean> value);
         partial void OnReadyToInvoiceChanged();
     
         /// <summary>

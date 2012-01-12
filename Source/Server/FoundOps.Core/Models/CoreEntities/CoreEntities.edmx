@@ -725,7 +725,7 @@
     <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
     <Property Name="EstimatedDuration" Type="time" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ReadyToInvoice" Type="bit" Nullable="false" />
+    <Property Name="ReadyToInvoice" Type="bit" Nullable="true" />
     <Property Name="Date" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Parties_Business">
@@ -2403,7 +2403,7 @@
           <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
           <Property Type="Time" Name="EstimatedDuration" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" />
-          <Property Type="Boolean" Name="ReadyToInvoice" Nullable="false" />
+          <Property Type="Boolean" Name="ReadyToInvoice" Nullable="true" />
           <Property Type="DateTime" Name="Date" Nullable="false" />
         </EntityType>
         <Association Name="RouteTaskLocation">

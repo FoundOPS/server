@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Windows.Browser;
 using ReactiveUI;
 using System.Linq;
 using System.Windows;
@@ -143,24 +145,24 @@ namespace FoundOps.SLClient.Navigator.ViewModels
 
                 #region QuickBooks Stuff
 
-                //var isAuthorizedUri = string.Concat("http://localhost:31820/Quickbooks/NeedsAuthorization", "?roleId=", SelectedRole.Id.ToString());
+                var isAuthorizedUri = string.Concat("http://localhost:31820/Quickbooks/NeedsAuthorization", "?roleId=", SelectedRole.Id.ToString());
 
-                //var client = new WebClient();
-                ////Check if the current BusinessAccount needs QuickBooks authorization
-                //client.DownloadStringCompleted += (sender, e) =>
-                //{
-                //    //If it needs QuickBooks authorization, get it in a new window
-                //    if (e.Result.ToLower() == "true")
-                //    {
-                //        //creates the uri for the popup mentioned above
-                //        var uriString = string.Concat("http://localhost:31820/Quickbooks/GetAuthorization", "?roleId=", SelectedRole.Id.ToString());
+                var client = new WebClient();
+                //Check if the current BusinessAccount needs QuickBooks authorization
+                client.DownloadStringCompleted += (sender, e) =>
+                {
+                    //If it needs QuickBooks authorization, get it in a new window
+                    if (e.Result.ToLower() == "true")
+                    {
+                        //creates the uri for the popup mentioned above
+                        var uriString = string.Concat("http://localhost:31820/Quickbooks/GetAuthorization", "?roleId=", SelectedRole.Id.ToString());
 
-                //        //generates the Html popup using the uri and options
-                //        HtmlPage.Window.Navigate(new Uri(uriString), "new");
-                //    }
-                //};
+                        //generates the Html popup using the uri and options
+                        HtmlPage.Window.Navigate(new Uri(uriString), "new");
+                    }
+                };
 
-                //client.DownloadStringAsync(new Uri(isAuthorizedUri));
+                client.DownloadStringAsync(new Uri(isAuthorizedUri));
 
                 #endregion
 

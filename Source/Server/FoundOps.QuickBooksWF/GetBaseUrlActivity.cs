@@ -24,7 +24,10 @@ namespace FoundOps.QuickBooksWF
             var currentBusinessAccount = CurrentBusinessAccount.Get<BusinessAccount>(context);
 
             //Gets the BaseUrl
-            var baseUrl = QuickBooksTools.GetBaseUrl(currentBusinessAccount, CoreEntitiesContainer);
+            var baseUrl = QuickBooksTools.GetBaseUrl(currentBusinessAccount);
+
+            //Save the BaseUrl for future use
+            CoreEntitiesContainer.SaveChanges();
 
             BaseUrl.Set(context, baseUrl);
         }
