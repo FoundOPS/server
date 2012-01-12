@@ -1,11 +1,10 @@
-﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.Manifest.ManifestFooter" 
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.Manifest.ManifestFooter" x:Name="myManifestFooter"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400">
-    <UserControl.Resources>
-        <Converters:ZeroToOneIndexedConverter x:Key="ZeroToOneIndexedConverter"/>
-    </UserControl.Resources>
+             xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
+             xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" 
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" DataContext="{Tools1:GetVM Type=CoreEntities:RoutesVM}">
+    <!--Do not remove CoreEntities, it is used by GetVM-->
     <Grid x:Name="LayoutRoot" Grid.Row="2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsFooterVisible, Converter={StaticResource VisibilityConverter}}" VerticalAlignment="Bottom">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -24,10 +23,10 @@
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="2" Grid.Row="1"
                                     Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsPageNumbersVisible, Converter={StaticResource VisibilityConverter}}">
             <TextBlock Text="Page "/>
-            <TextBlock x:Name="CurrentPageBox" Text="{Binding CurrentPageIndex, ElementName=myRouteManifest, Converter={StaticResource ZeroToOneIndexedConverter}}"/>
+            <TextBlock x:Name="CurrentPageBlock" Loaded="CurrentPageBlockLoaded"/>
             <!--Bind to Current Page Number-->
             <TextBlock Text="/"/>
-            <TextBlock x:Name="PageCountBox" Text="{Binding PageCount, ElementName=myRouteManifest}"/>
+            <TextBlock x:Name="PageCountBlock" Loaded="PageCountBlockLoaded"/>
             <!--Bind to Total Number of Pages in Route Manifest-->
         </StackPanel>
     </Grid>

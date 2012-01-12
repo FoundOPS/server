@@ -436,6 +436,7 @@
     <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" Condition="$(IsDesktopBuild) == true" />
     <None Include="ClientBin\System.ServiceModel.Web.Extensions.zip" Condition="$(IsDesktopBuild) != true" />
     <Content Include="Content\Web.sitemap" />
+    <Content Include="ClientBin\Telerik.Windows.Documents.FormatProviders.Html.zip" />
     <None Include="Services\M2M4RiaLinqToEntitiesDomainService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>M2M4RiaLinqToEntitiesDomainService.g.cs</LastGenOutput>

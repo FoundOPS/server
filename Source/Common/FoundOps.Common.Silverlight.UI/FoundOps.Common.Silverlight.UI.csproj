@@ -173,6 +173,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Browser" />
+    <Reference Include="Telerik.Windows.Documents">
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\AddEditDelete\AddDelete.xaml.cs">
@@ -328,6 +331,7 @@
     <Compile Include="Selectors\EntityTemplateSelector.cs" />
     <Compile Include="Tools\BindingTools.cs" />
     <Compile Include="Tools\CollectionExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\DocumentExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\ColorExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\FrameworkElementExtensions.cs" />
     <Compile Include="Tools\FileTools.cs" />

@@ -259,6 +259,9 @@
     <Reference Include="Telerik.Windows.Documents">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.Html">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.FormatProviders.Html.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Documents.FormatProviders.Pdf">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.FormatProviders.Pdf.dll</HintPath>
     </Reference>
@@ -270,7 +273,6 @@
     <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
       <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dispatcher\Manifest\RouteManifest.cs" />
     <Compile Include="Controls\Dispatcher\Manifest\ManifestBody.xaml.cs">
       <DependentUpon>ManifestBody.xaml</DependentUpon>
     </Compile>
@@ -1085,6 +1087,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,13 +1,14 @@
-﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.Manifest.ManifestHeader" 
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.Manifest.ManifestHeader" x:Name="myManifestHeader"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:DynamicallySizedWrapPanel="clr-namespace:FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="816">
+             xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="816">
+    <!--Do not remove CoreEntities, it is used by GetVM-->
     <UserControl.Resources>
         <Converters:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter"/>
     </UserControl.Resources>
-    <Grid x:Name="LayoutRoot" Background="White">
+    <Grid x:Name="LayoutRoot" Background="White" DataContext="{Tools1:GetVM Type=CoreEntities:RoutesVM}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>

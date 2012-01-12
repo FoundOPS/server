@@ -2,14 +2,68 @@
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                      xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher" mc:Ignorable="d" Closed="MyRouteManifestViewerClosed">
-    <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for GetVM-->
+                      xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools" mc:Ignorable="d" 
+                      xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" 
+                      Closed="MyRouteManifestViewerClosed">
+    <!--IMPORTANT: DO NOT REMOVE "xmlns:CoreEntities". It is needed for GetVM-->
     <Grid x:Name="LayoutRoot">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <telerik:RadPdfViewer x:Name="PDFViewer" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <telerik:RadToolBar Height="24" Grid.ColumnSpan="2" GripVisibility="Collapsed" OverflowButtonVisibility="Collapsed"
+                            DataContext="{Tools:GetVM Type=CoreEntities:RoutesVM}">
+            <telerik:RadComboBox Width="150" EmptyText="Select a Route"
+                ItemsSource="{Binding DomainCollectionView}" DisplayMemberPath="Name"
+                SelectedItem="{Binding SelectedEntity, Mode=TwoWay}"/>
+            <!--Bind item source to a list of day's route names, selected route should be displayed below-->
+
+            <telerik:RadToolBarSeparator/>
+
+            <!--Page-->
+            <telerik:RadButton x:Name="GoToFirstPageButton" Padding="0" Click="GoToFirstPageButtonClick">
+                <!--Go to Page #1, grey out if on 1-->
+                <Image Source="/FoundOps.Common.Silverlight;component/Resources/GoFirst.png"/>
+            </telerik:RadButton>
+            <telerik:RadButton x:Name="BackOnePageButton" Padding="0" Click="BackOnePageButtonClick">
+                <!--Go to previous page, grey out if on 1-->
+                <Image Source="/FoundOps.Common.Silverlight;component/Resources/LeftArrow.png"/>
+            </telerik:RadButton>
+            <telerik:RadNumericUpDown x:Name="PageUpDown" ValueFormat="Numeric" ShowButtons="False" Minimum="1" Value="{Binding PageIndex, ElementName=myRouteManifestViewer, Mode=TwoWay}" 
+                                  IsInteger="True"/>
+            <!--Bind value to current page-->
+            <TextBlock Text=" of"/>
+            <TextBlock x:Name="PageCountTextBox" Text="{Binding RouteManifest.PageCount, ElementName=myRouteManifestViewer}" />
+            <!--Bind to total page numbers-->
+            <telerik:RadButton x:Name="ForwardOnePageButton" Padding="0" Command="{Binding RouteManifestVM.ForwardOnePage}" Click="ForwardOnePageButtonClick">
+                <!--Go to next page, grey out if on last-->
+                <Image Source="/FoundOps.Common.Silverlight;component/Resources/RightArrow.png"/>
+            </telerik:RadButton>
+            <telerik:RadButton x:Name="GoToLastPageButton" Padding="0" Command="{Binding RouteManifestVM.GoToLastPage}" Click="GoToLastPageButtonClick">
+                <!--go to last page, grey out if on last-->
+                <Image Source="/FoundOps.Common.Silverlight;component/Resources/GoLast.png"/>
+            </telerik:RadButton>
+
+            <telerik:RadToolBarSeparator/>
+
+            <Button x:Name="PrintButton" Click="PrintButtonClick">
+                <StackPanel Orientation="Horizontal">
+                    <Image Stretch="Fill" Source="/FoundOps.Common.Silverlight;component/Resources/Print.png"/>
+                    <TextBlock Text="Print Current Manifest" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <telerik:RadToolBarSeparator/>
+
+            <telerik:RadToggleButton Content="Manifest Options" Visibility="Collapsed"/>
+            <!--Bind to visibility of options panel below-->
+        </telerik:RadToolBar>
+        <telerik:RadRichTextBox x:Name="ManifestRichTextBox" Grid.Row="1" IsReadOnly="True" />
         <Dispatcher:RouteManifestOptions Grid.Column="1" Grid.Row="1"/>
     </Grid>
 </Controls:ChildWindow>
