@@ -18,7 +18,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
     /// </summary>
     public partial class RouteManifestViewer
     {
-        private bool _updatingDocument;
+        //Used to update the Pdf
+        private readonly Subject<bool> _updatePdfObservable = new Subject<bool>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteManifestViewer"/> class.
@@ -27,32 +28,25 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         {
             InitializeComponent();
 
-            //Update the Manifest when the SelectedEntity changes and now
+            //Update the Manifest when
+            //a) the SelectedEntity changes & now
+            //b) the RouteManifestSettings properties change
             VM.Routes.SelectedEntityObservable.AsGeneric().AndNow()
+                .Merge(VM.RouteManifest.RouteManifestSettings.FromAnyPropertyChanged().AsGeneric().Throttle(TimeSpan.FromSeconds(.75)))
               .Throttle(TimeSpan.FromMilliseconds(200)).ObserveOnDispatcher()
                 //Update the Manifest
               .Subscribe(a => UpdateDocument());
 
-            //Whenever the RouteManifestSettings properties change, update the Pdf
-            VM.RouteManifest.RouteManifestSettings.FromAnyPropertyChanged().AsGeneric().Throttle(TimeSpan.FromSeconds(.5))
-                .ObserveOnDispatcher().Subscribe(_ =>
-                {
-                    if (!_updatingDocument) UpdatePdf();
-                });
+            _updatePdfObservable.Throttle(TimeSpan.FromSeconds(.25)).ObserveOnDispatcher().Subscribe(_ => UpdatePdf());
         }
 
         #region Logic
 
         private void UpdateDocument()
         {
-            _updatingDocument = true;
-
             var doc = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
 
-            //Update the Pdf once all the images are loaded
-            var updatePdfObservable = new Subject<bool>();
-            updatePdfObservable.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
-                .Subscribe(_ => UpdatePdf());
+
 
             //Keep track of the images loaded
             var routeDestinationImagesCompleted = new BehaviorSubject<int>(0);
@@ -68,7 +62,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             {
                 //Update the Pdf when all the images are loaded
                 routeDestinationImagesCompleted.Where(imageLoaded => imageLoaded == VM.Routes.SelectedEntity.RouteDestinations.Count)
-                    .Subscribe(_ => updatePdfObservable.OnNext(true));
+                    .Subscribe(_ => _updatePdfObservable.OnNext(true));
 
                 //Add the header
                 var header = new ManifestHeader();
@@ -102,8 +96,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                     paragraph.Inlines.Add(container);
                 }
-
-                _updatingDocument = false;
             }
 
             ////Add the footers
@@ -131,7 +123,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
             //Update the Pdf right away if there is not a selected Route);
             if (VM.Routes.SelectedEntity == null)
-                updatePdfObservable.OnNext(true);
+                _updatePdfObservable.OnNext(true);
         }
 
         /// <summary>
@@ -139,18 +131,19 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// </summary>
         private void UpdatePdf()
         {
-            //Update the layout to ensure all is remeasured
-            ManifestRichTextBox.Document.UpdateLayout();
-
             //Scroll to bottom to force all itemscontrols to generate
             ManifestRichTextBox.Document.CaretPosition.MoveToLastPositionInDocument();
 
-            var outputStream = new MemoryStream();
-            var pdfFormatProvider = new PdfFormatProvider();
-            pdfFormatProvider.Export(ManifestRichTextBox.Document, outputStream);
+            //Give it time to draw the controls
+            Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
+            {
+                var outputStream = new MemoryStream();
+                var pdfFormatProvider = new PdfFormatProvider();
+                pdfFormatProvider.Export(ManifestRichTextBox.Document, outputStream);
 
-            ManifestPdfViewer.DocumentSource = new PdfDocumentSource(outputStream);
-            ManifestPdfViewer.DocumentSource.Loaded += (s, e) => outputStream.Close();
+                ManifestPdfViewer.DocumentSource = new PdfDocumentSource(outputStream);
+                ManifestPdfViewer.DocumentSource.Loaded += (s, e) => outputStream.Close();
+            });
         }
 
         private void MyRouteManifestViewerClosed(object sender, System.EventArgs e)
