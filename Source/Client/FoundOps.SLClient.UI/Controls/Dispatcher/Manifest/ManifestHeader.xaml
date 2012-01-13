@@ -3,8 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:DynamicallySizedWrapPanel="clr-namespace:FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="816">
-    <!--Do not remove CoreEntities, it is used by GetVM-->
+             xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" 
+             mc:Ignorable="d"> <!--Do not remove CoreEntities, it is used by GetVM-->
     <UserControl.Resources>
         <Converters:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter"/>
     </UserControl.Resources>

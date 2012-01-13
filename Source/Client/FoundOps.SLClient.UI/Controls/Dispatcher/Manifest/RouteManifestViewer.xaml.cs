@@ -2,14 +2,18 @@
 using System.IO;
 using System.Windows;
 using System.Reactive.Linq;
+using System.Windows.Controls;
+using System.Windows.Media;
 using FoundOps.Common.Tools;
 using System.Reactive.Subjects;
 using FoundOps.SLClient.UI.Tools;
+using Telerik.Windows.Documents;
 using Telerik.Windows.Documents.Model;
 using Telerik.Windows.Documents.Fixed;
 using Telerik.Windows.Documents.Layout;
 using Telerik.Windows.Documents.FormatProviders.Pdf;
 using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
+using Telerik.Windows.Documents.UI;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
@@ -29,10 +33,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             InitializeComponent();
 
             //Update the Manifest when
-            //a) the SelectedEntity changes & now
+            //a) the SelectedEntity changes and now
             //b) the RouteManifestSettings properties change
             VM.Routes.SelectedEntityObservable.AsGeneric().AndNow()
                 .Merge(VM.RouteManifest.RouteManifestSettings.FromAnyPropertyChanged().AsGeneric().Throttle(TimeSpan.FromSeconds(.75)))
+
               .Throttle(TimeSpan.FromMilliseconds(200)).ObserveOnDispatcher()
                 //Update the Manifest
               .Subscribe(a => UpdateDocument());
@@ -44,36 +49,35 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
         private void UpdateDocument()
         {
-            var doc = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
-
-
-
-            //Keep track of the images loaded
-            var routeDestinationImagesCompleted = new BehaviorSubject<int>(0);
-
-            var section = new Section { FooterBottomMargin = 0, HeaderTopMargin = 0, ActualPageMargin = new Padding(0) };
-            doc.Sections.Add(section);
-
-            var paragraph = new Paragraph { LeftIndent = 0, RightIndent = 0 };
-            section.Blocks.Add(paragraph);
+            var bodyParagraph = new Paragraph();
 
             //If there is a selected route setup the manifest
             if (VM.Routes.SelectedEntity != null)
             {
-                //Update the Pdf when all the images are loaded
+                //Keep track of the images loaded
+                var routeDestinationImagesCompleted = new BehaviorSubject<int>(0);
+
+                //Update the Pdf when all the required images are loaded 
+                //routeDestinationManifests that do not have images will fire ImageLoaded imediately
                 routeDestinationImagesCompleted.Where(imageLoaded => imageLoaded == VM.Routes.SelectedEntity.RouteDestinations.Count)
                     .Subscribe(_ => _updatePdfObservable.OnNext(true));
 
-                //Add the header
-                var header = new ManifestHeader();
-                header.Measure(new Size(double.MaxValue, double.MaxValue));
+                #region Add the Header
 
-                paragraph.Inlines.Add(new InlineUIContainer
+                //We only want the header to show up once, so just add it first to the body paragraph.
+                var manifestHeader = new ManifestHeader();
+                manifestHeader.Measure(new Size(double.MaxValue, double.MaxValue));
+
+                bodyParagraph.Inlines.Add(new InlineUIContainer
                 {
-                    Height = header.DesiredSize.Height,
-                    Width = header.DesiredSize.Width,
-                    UiElement = header
+                    Height = manifestHeader.DesiredSize.Height,
+                    Width = manifestHeader.DesiredSize.Width,
+                    UiElement = manifestHeader
                 });
+
+                #endregion
+
+                #region Add the RouteDestinations
 
                 foreach (var routeDestination in VM.Routes.SelectedEntity.RouteDestinationsListWrapper)
                 {
@@ -94,34 +98,23 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                         UiElement = manifestRouteDestination
                     };
 
-                    paragraph.Inlines.Add(container);
+                    bodyParagraph.Inlines.Add(container);
                 }
+
+                #endregion
             }
 
-            ////Add the footers
-            //foreach (var sectionToAddFooterTo in doc.Sections)
-            //{
-            //    var manifestFooter = new ManifestFooter();
-            //    manifestFooter.Measure(new Size(double.MaxValue, double.MaxValue));
+            ////Setup the main section
+            var mainSection = new Section { FooterBottomMargin = 0, HeaderTopMargin = 0, ActualPageMargin = new Padding(0) };
+            mainSection.Blocks.Add(bodyParagraph);
 
-            //    var footerParagraph = new Paragraph();
-            //    footerParagraph.Inlines.Add(new InlineUIContainer
-            //    {
-            //        Height = manifestFooter.DesiredSize.Height,
-            //        Width = manifestFooter.DesiredSize.Width,
-            //        UiElement = manifestFooter
-            //    });
+            //Setup the Document
+            var document = new RadDocument() { LayoutMode = DocumentLayoutMode.Paged };
+            document.Sections.Add(mainSection);
 
-            //    sectionToAddFooterTo.Children.Add(footerParagraph);
-            //    var footerDocument = new RadDocument();
+            ManifestRichTextBox.Document = document;
 
-            //    var footer = new Footer { Body = footerDocument };
-            //    sectionToAddFooterTo.Footers.Default = footer;
-            //}
-
-            ManifestRichTextBox.Document = doc;
-
-            //Update the Pdf right away if there is not a selected Route);
+            //Update the Pdf right away if there is not a selected Route
             if (VM.Routes.SelectedEntity == null)
                 _updatePdfObservable.OnNext(true);
         }
@@ -150,6 +143,34 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         {
             //On closing the manifest: update and save the route manifest settings
             VM.RouteManifest.UpdateSaveRouteManifestSettings();
+        }
+
+        private void CurrentPageBlockLoaded(object sender, RoutedEventArgs e)
+        {
+            DependencyObject parent = this;
+            while (parent != null && !(parent is DocumentPagePresenter))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            if (parent == null) return;
+            var presenter = (DocumentPagePresenter)parent;
+            int pageNumber = presenter.SectionBoxIndex + 1;
+            ((TextBlock)sender).Text = pageNumber.ToString();
+        }
+
+        private void PageCountBlockLoaded(object sender, RoutedEventArgs e)
+        {
+            DependencyObject parent = this;
+            while (parent != null && !(parent is DocumentPagePresenter))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            if (parent == null) return;
+            var presenter = (DocumentPagePresenter)parent;
+            var position = new DocumentPosition(presenter.Owner.Document);
+            position.MoveToLastPositionInDocument();
+
+            ((TextBlock)sender).Text = (position.GetCurrentSectionBox().ChildIndex + 1).ToString();
         }
 
         //#region Analytics

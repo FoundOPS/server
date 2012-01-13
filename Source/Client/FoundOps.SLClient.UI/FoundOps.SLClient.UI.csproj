@@ -270,9 +270,6 @@
     <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
       <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dispatcher\Manifest\ManifestBody.xaml.cs">
-      <DependentUpon>ManifestBody.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml.cs">
       <DependentUpon>ManifestFooter.xaml</DependentUpon>
     </Compile>
@@ -375,10 +372,10 @@
     <Compile Include="Controls\Dispatcher\RouteDetails.xaml.cs">
       <DependentUpon>RouteDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dispatcher\RouteManifestOptions.xaml.cs">
+    <Compile Include="Controls\Dispatcher\Manifest\RouteManifestOptions.xaml.cs">
       <DependentUpon>RouteManifestOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dispatcher\RouteManifestViewer.xaml.cs">
+    <Compile Include="Controls\Dispatcher\Manifest\RouteManifestViewer.xaml.cs">
       <DependentUpon>RouteManifestViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dispatcher\RoutesLogGrid.xaml.cs">
@@ -634,10 +631,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Dispatcher\Manifest\ManifestBody.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -778,11 +771,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Dispatcher\RouteManifestOptions.xaml">
+    <Page Include="Controls\Dispatcher\Manifest\RouteManifestOptions.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Dispatcher\RouteManifestViewer.xaml">
+    <Page Include="Controls\Dispatcher\Manifest\RouteManifestViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

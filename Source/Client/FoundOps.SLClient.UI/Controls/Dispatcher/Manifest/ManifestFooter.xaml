@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" 
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" DataContext="{Tools1:GetVM Type=CoreEntities:RoutesVM}">
+             mc:Ignorable="d" d:DesignHeight="25" d:DesignWidth="400" DataContext="{Tools1:GetVM Type=CoreEntities:RoutesVM}">
     <!--Do not remove CoreEntities, it is used by GetVM-->
     <Grid x:Name="LayoutRoot" Grid.Row="2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsFooterVisible, Converter={StaticResource VisibilityConverter}}" VerticalAlignment="Bottom">
         <Grid.ColumnDefinitions>
@@ -23,10 +23,10 @@
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="2" Grid.Row="1"
                                     Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsPageNumbersVisible, Converter={StaticResource VisibilityConverter}}">
             <TextBlock Text="Page "/>
-            <TextBlock x:Name="CurrentPageBlock" Loaded="CurrentPageBlockLoaded"/>
+            <TextBlock x:Name="CurrentPageBlock" />
             <!--Bind to Current Page Number-->
             <TextBlock Text="/"/>
-            <TextBlock x:Name="PageCountBlock" Loaded="PageCountBlockLoaded"/>
+            <TextBlock x:Name="PageCountBlock" />
             <!--Bind to Total Number of Pages in Route Manifest-->
         </StackPanel>
     </Grid>
