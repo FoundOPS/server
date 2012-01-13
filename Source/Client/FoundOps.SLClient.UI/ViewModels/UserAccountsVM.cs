@@ -82,10 +82,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //a) the loaded UserAccounts changes
             loadedUserAccounts.AsGeneric().Merge(
-                ContextManager.GetContextObservable<BusinessAccount>().Where(ba => ba != null)
-                .SelectMany(ba =>//c) the BusinessAccount context OwnedRoles changes
+                ContextManager.GetContextObservable<BusinessAccount>().WhereNotNull()
+                .SelectLatest(ba =>//c) the BusinessAccount context OwnedRoles changes
                                 ba.OwnedRoles.FromCollectionChangedAndNow()
-                                .SelectMany(_ => //d) the BusinessAccount context OwnedRoles' MemberParties changes
+                                .SelectLatest(_ => //d) the BusinessAccount context OwnedRoles' MemberParties changes
                                                 ba.OwnedRoles.Select(or => or.MemberParties.FromCollectionChangedGenericAndNow()).Merge()))
                 //b) whenever the BusinessAccount context changes
                  .AndNow())

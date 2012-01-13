@@ -335,7 +335,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //b) a RouteTasks destination changes
             var loadedRouteTasksB =
                 _loadedRouteTasks.FromCollectionChangedOrSet() //whenever the collection is changed or set
-                .SelectMany(rts => rts.Select(rt => //select all of the RouteDestination property changes
+                .SelectLatest(rts => rts.Select(rt => //select all of the RouteDestination property changes
                         Observable2.FromPropertyChangedPattern(rt, t => t.RouteDestination)).Merge().Select(rt => rts));
 
             //Create an ObservableCollection of the unroutedRouteTasks whenever a or b
@@ -367,7 +367,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //c) the SelectedRegions changes
                 .Merge(SelectedRegions.FromCollectionChangedGeneric())
                 //d) a route's RouteType is changed
-                .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectMany(rts => rts.Select(rt => Observable2.FromPropertyChangedPattern(rt, x => x.RouteType))).AsGeneric());
+                .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectLatest(rts => 
+                    rts.Select(rt => Observable2.FromPropertyChangedPattern(rt, x => x.RouteType)).Merge())
+                    .AsGeneric());
 
             #endregion
 
@@ -422,12 +424,12 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //merge with b) whenever a Task is added to a route
                 .Merge(
                 //whenever loadedRoutes is changed or set
-                loadedRoutesChanged.FromCollectionChangedOrSet().SelectMany(lrs =>
+                loadedRoutesChanged.FromCollectionChangedOrSet().SelectLatest(lrs =>
                     //whenever loadedRoutes.RouteDestinations is changed (and now)
                   lrs.Select(lr => lr.RouteDestinations.FromCollectionChangedAndNow()
                       //whenever the loadedRoutes.RouteDestinations.RouteTasks is changed (and now)
                       .Select(ea=> (EntityCollection<RouteDestination>)ea.Sender)
-                      .SelectMany(routeDestinations =>
+                      .SelectLatest(routeDestinations =>
                           routeDestinations.Select(rd => rd.RouteTasks.FromCollectionChangedAndNow())
                           .Merge()) //Merge loadedRoutes.RouteDestinations.RouteTasks collection changed events
                         ).Merge() //Merge loadedRoutes.RouteDestinations collection changed events

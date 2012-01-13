@@ -148,25 +148,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             .Merge(recurringServiceContextObservable.AsGeneric())
             .SubscribeOnDispatcher().Subscribe(_ => ContextChanged = true);
 
-            //Regenerate the Services when:
-            //a) the RecurringServiceContext.Repeat changes
-            //b) any ClientContext.RecurringServices' Repeats change
-            var caseA = recurringServiceContextObservable.Where(rs => rs != null).SelectMany(rs => rs.RepeatChangedObservable());
-
-            //Any time the clientContext changes
-            var caseB = clientContextSubject.Where(c => c != null).SelectMany(clientContext =>
-                //Select the clientContext.RecurringServices changes
-                          clientContext.RecurringServices.Select(rs => rs.RepeatChangedObservable()).Merge()
-                              //whenever the clientContext.RecurringServices Collection changes
-                      .Merge(clientContext.RecurringServices.FromCollectionChanged()
-                              //Delay to allow Repeat association to be set
-                      .Delay(new TimeSpan(0, 0, 0, 0, 250))
-                              //Also choose the clientContext.RecurringServices changes from
-                      .Select(ea => (EntityCollection<RecurringService>)ea.Sender).Where(rss => rss != null)
-                      .SelectMany(rss => rss.Select(rs => rs.RepeatChangedObservable()).Merge())));
-
-            //Regenerate the Services
-            caseA.Merge(caseB).SubscribeOnDispatcher().Subscribe(_ => ContextChanged = true);
+            //Regenerate the Services when the current RecurringServiceContext.Repeat changes
+            recurringServiceContextObservable.WhereNotNull().SelectLatest(rs => rs.RepeatChangedObservable())
+                .Subscribe(_ => ContextChanged = true);
         }
 
         #endregion

@@ -184,8 +184,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup ServiceTemplatesForClient property (whenever selectServiceTemplateObservable or the Client's ServiceTemplates changes)
 
             var serviceTemplatesForClient =
-                selectServiceTemplateObservable.Merge(ContextManager.GetContextObservable<Client>().Where(c => c != null)
-                .SelectMany(c => c.ServiceTemplates.FromCollectionChanged()).Select(_ => LoadedServiceTemplates)).Throttle(new TimeSpan(0, 0, 0, 0, 250))
+                selectServiceTemplateObservable.Merge(ContextManager.GetContextObservable<Client>().WhereNotNull()
+                .SelectLatest(c => c.ServiceTemplates.FromCollectionChanged()).Select(_ => LoadedServiceTemplates)).Throttle(new TimeSpan(0, 0, 0, 0, 250))
                 .Select(lsts =>
                 {
                     var clientContext = ContextManager.GetContext<Client>();

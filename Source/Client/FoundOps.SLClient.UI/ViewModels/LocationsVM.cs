@@ -182,7 +182,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Whenever loadedLocations changes, select the IObservable<IList<Location>> of Locations without a Client
             var locationsWithoutClient = _loadedLocations.FromCollectionChangedOrSet()
-                .SelectMany(loadedLocs => loadedLocs.Select(loadedLoc =>
+                .SelectLatest(loadedLocs => loadedLocs.Select(loadedLoc =>
                     //Whenever the Location.Party.ClientOwner == null
                     loadedLoc.WhenAny(x => x.Party, x => x.Party.ClientOwner, (party, clientOwner) => party.Value == null || clientOwner.Value == null)
                         //Select the Location if there is noClientOwner

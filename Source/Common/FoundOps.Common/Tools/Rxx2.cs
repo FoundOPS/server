@@ -72,7 +72,7 @@ namespace FoundOps.Common.Tools
 
             //An observable of when the collection is changed
             var collectionChanged =
-                observableCollectionObservable.SelectMany(collection => collection.FromCollectionChanged().Select(cc => collection));
+                observableCollectionObservable.SelectLatest(collection => collection.FromCollectionChanged().Select(cc => collection));
 
             //Merge the two
             return initiallySet.Merge(collectionChanged);
@@ -164,7 +164,7 @@ namespace FoundOps.Common.Tools
 
             var fetchRequestStream = Observable.FromAsyncPattern<Stream>(request.BeginGetRequestStream, request.EndGetRequestStream);
             var fetchResponse = Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse);
-            return fetchRequestStream().SelectMany(stream =>
+            return fetchRequestStream().SelectLatest(stream =>
                                         {
                                             using (var binWriter = new BinaryWriter(stream))
                                                 binWriter.Write(postData);

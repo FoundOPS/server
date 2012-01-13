@@ -31,13 +31,12 @@ namespace FoundOps.SLClient.UI.Controls.Locations
                 .Where(_ => GeocoderResultsListBox.Items.Count > 1).AsGeneric();
 
             // Zoom to BestView when Geocoding is completed (i.e. When Search completes)
-            LocationsVM.SelectedLocationVMObservable.Where(lvm => lvm != null).SelectMany(lvm => lvm.GeocodeCompletion).AsGeneric()
+            LocationsVM.SelectedLocationVMObservable.WhereNotNull().SelectLatest(lvm => lvm.GeocodeCompletion).AsGeneric()
                 .Merge(georesultselectionchanged).Throttle(new TimeSpan(0, 0, 0, 1))
                 .ObserveOnDispatcher().Subscribe(_ => InformationLayer.SetBestView());
 
             // Subscribe to changes of latitude/longitude by changing visual state according to validity.
-            LocationsVM.SelectedLocationVMObservable.Where(lvm => lvm != null)
-                .SelectMany(lvm => lvm.ValidLatitudeLongitudeState)
+            LocationsVM.SelectedLocationVMObservable.WhereNotNull().SelectLatest(lvm => lvm.ValidLatitudeLongitudeState)
                 .Throttle(new TimeSpan(0, 0, 0, 0, 500))
                 .ObserveOnDispatcher().Subscribe(validstate =>
             {

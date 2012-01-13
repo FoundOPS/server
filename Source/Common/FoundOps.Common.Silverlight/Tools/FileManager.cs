@@ -25,8 +25,8 @@ namespace FoundOps.Common.Silverlight.Tools
             var getAccessKey = Rxx2.HttpGetAsString(String.Format(@"{0}/GetBlobUrl?ownerPartyId={1}&fileGuid={2}", FileControllerUrl, ownerPartyId, fileId));
 
             //When the access key returns, get the file at the url + key (as a byte array)
-            //It is a SelectMany because both GetResponse methods return an Observables
-            return getAccessKey.SelectMany(accessKey => Rxx2.HttpGetAsByteArray(AzureTools.BuildFileUrl(ownerPartyId, fileId, accessKey)));
+            //It is a SelectLatest because both GetResponse methods return an Observables
+            return getAccessKey.SelectLatest(accessKey => Rxx2.HttpGetAsByteArray(AzureTools.BuildFileUrl(ownerPartyId, fileId, accessKey)));
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace FoundOps.Common.Silverlight.Tools
 
             //When the access key returns, post the file at the insert access Url
 
-            //It is a SelectMany because both GetResponse methods return an Observables
-            return insertAccessKey.SelectMany(accessKey => Rxx2.HttpPut(AzureTools.BuildFileUrl(ownerPartyId, fileId, accessKey), data));
+            //It is a SelectLatest because both GetResponse methods return an Observables
+            return insertAccessKey.SelectLatest(accessKey => Rxx2.HttpPut(AzureTools.BuildFileUrl(ownerPartyId, fileId, accessKey), data));
         }
 
         /// <summary>
