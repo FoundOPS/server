@@ -3,10 +3,12 @@ using System.IO;
 using System.Net;
 using System.Net.Browser;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Reactive.Subjects;
 
 namespace FoundOps.Common.Tools
 {
@@ -200,6 +202,44 @@ namespace FoundOps.Common.Tools
         public static IObservable<bool> AsGeneric<T>(this IObservable<T> observable)
         {
             return observable.Select(_ => true);
+        }
+
+        /// <summary>
+        /// Similar to SelectMany except it only subscribes to the last TSource from source.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns></returns>
+        /// 
+        public static System.IObservable<TResult> SelectLatest<TSource, TResult>(this System.IObservable<TSource> source, System.Func<TSource, IObservable<TResult>> selector)
+        {
+            var selectLatestSubject = new Subject<TResult>();
+
+            var serialDisposable = new SerialDisposable();
+
+            //Subscribe latestSelect to latest (the latest pushed TSource object)
+            source.Subscribe(latest =>
+            {
+                //Call selectLatestSubject.OnNext whenever the returned IObservable<TResult> from selector(latest) pushes a new TResult
+                var latestSubscription = selector(latest).Subscribe(selectLatestSubject.OnNext);
+
+                //Dispose the subscription whenever latestSubscription changes
+                serialDisposable.Disposable = latestSubscription;
+            });
+
+            return selectLatestSubject;
+        }
+
+        /// <summary>
+        /// Returns the Observable where the pushed object is not null.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <param name="source">The source.</param>
+        public static System.IObservable<TSource> WhereNotNull<TSource>(this System.IObservable<TSource> source) where TSource : class
+        {
+            return source.Where(obj => obj != null);
         }
     }
 }

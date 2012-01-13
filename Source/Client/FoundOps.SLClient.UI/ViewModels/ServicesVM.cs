@@ -263,6 +263,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             DataManager.DetachEntities(entitiesToDetach);
         }
 
+        //Keeps track of the last service generation
+        private DateTime _lastServiceGeneration = DateTime.Now;
+
         private void UpdateVisibleServices()
         {
             //Check if the current context should show services
@@ -339,6 +342,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Clear the context change after generating services
             ContextChanged = false;
 
+            _lastServiceGeneration = DateTime.Now;
+
             //Clear the switches
             _pushBackwardSwitch = false;
             _pushForwardSwitch = false;
@@ -352,7 +357,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         private bool _pushBackwardSwitch;
         internal bool PushBackGeneratedServices()
         {
-            if (!_canMoveBackward)
+            //If this cannot move backwards, or if the last service generation was within 2 seconds return false
+            //This is to give ServicesGrid some time to move the selection to the middle
+            if (!_canMoveBackward || (DateTime.Now - _lastServiceGeneration) < TimeSpan.FromSeconds(2))
                 return false;
 
             _canMoveBackward = false; //Prevent double tripping
@@ -370,7 +377,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         private bool _pushForwardSwitch;
         internal bool PushForwardGeneratedServices()
         {
-            if (!_canMoveForward)
+            //If this cannot move forwards, or if the last service generation was within 2 seconds return false
+            //This is to give ServicesGrid some time to move the selection to the middle
+            if (!_canMoveForward || (DateTime.Now - _lastServiceGeneration) < TimeSpan.FromSeconds(2))
                 return false;
 
             _canMoveForward = false; //Prevent double tripping
