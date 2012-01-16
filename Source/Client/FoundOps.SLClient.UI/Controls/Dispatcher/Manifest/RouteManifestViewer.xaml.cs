@@ -12,10 +12,9 @@ using Telerik.Windows.Documents.Model;
 using Telerik.Windows.Documents.Fixed;
 using Telerik.Windows.Documents.Layout;
 using Telerik.Windows.Documents.FormatProviders.Pdf;
-using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 using Telerik.Windows.Documents.UI;
 
-namespace FoundOps.SLClient.UI.Controls.Dispatcher
+namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 {
     /// <summary>
     /// Displays RouteManifest
@@ -25,6 +24,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         //Used to update the Pdf
         private readonly Subject<bool> _updatePdfObservable = new Subject<bool>();
 
+        private bool _isOpen = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteManifestViewer"/> class.
         /// </summary>
@@ -33,14 +34,21 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             InitializeComponent();
 
             //Update the Manifest when
-            //a) the SelectedEntity changes and now
+            //a) the SelectedEntity changes
             //b) the RouteManifestSettings properties change
-            VM.Routes.SelectedEntityObservable.AsGeneric().AndNow()
+            VM.Routes.SelectedEntityObservable.AsGeneric()
                 .Merge(VM.RouteManifest.RouteManifestSettings.FromAnyPropertyChanged().AsGeneric().Throttle(TimeSpan.FromSeconds(.75)))
-
               .Throttle(TimeSpan.FromMilliseconds(200)).ObserveOnDispatcher()
                 //Update the Manifest
               .Subscribe(a => UpdateDocument());
+
+            //Update the manifest when this is opened
+            this.Loaded += (s, e) =>
+                               {
+                                   this._isOpen = true;
+                                   UpdateDocument();
+                               };
+            this.Closed += (s, e) => _isOpen = false;
 
             _updatePdfObservable.Throttle(TimeSpan.FromSeconds(.25)).ObserveOnDispatcher().Subscribe(_ => UpdatePdf());
         }
@@ -49,6 +57,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
         private void UpdateDocument()
         {
+            //Only load the manifest when the current viewer is open
+            if (!_isOpen) return;
+
             var bodyParagraph = new Paragraph();
 
             //If there is a selected route setup the manifest
@@ -124,6 +135,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// </summary>
         private void UpdatePdf()
         {
+            //Only load the manifest when the current viewer is open
+            if (!_isOpen) return;
+
             //Scroll to bottom to force all itemscontrols to generate
             ManifestRichTextBox.Document.CaretPosition.MoveToLastPositionInDocument();
 

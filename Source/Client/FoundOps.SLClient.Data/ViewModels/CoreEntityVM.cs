@@ -97,7 +97,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             #region Register Commands
 
             //Can save when: context has changes and is not submitting. Check every .25 second
-            var canSaveCommand = Observable.Interval(new TimeSpan(0, 0, 0, 0, 250))
+            var canSaveCommand = Observable.Interval(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher()
                 .Select(_ => this.Context.HasChanges && !this.Context.IsSubmitting)
                 //Combine with the CanSaveObservable
                 .CombineLatest(CanSaveObservable, (canSave, canSaveTwo) => canSave && canSaveTwo).DistinctUntilChanged();
@@ -111,7 +111,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             });
 
             //Can discard when: context has changes and is not submitting. Check every .25 second
-            var canDiscardCommand = Observable.Interval(new TimeSpan(0, 0, 0, 0, 250))
+            var canDiscardCommand = Observable.Interval(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher()
                 .Select(_ => this.Context.HasChanges && !this.Context.IsSubmitting)
                 //Combine with the CanDiscardObservable
                 .CombineLatest(CanDiscardObservable, (canDiscard, canDiscardTwo) => canDiscard && canDiscardTwo).DistinctUntilChanged();

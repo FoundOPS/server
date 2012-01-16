@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
@@ -482,6 +483,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
+        //The only route manifest viewer
+        private RouteManifestViewer _routeManifestViewer;
         /// <summary>
         /// Used in the constructor to setup the commands
         /// </summary>
@@ -490,7 +493,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Create an observable for when at least 1 route exists
             var routesExist = DataManager.GetEntityListObservable<Route>(Query.RoutesForServiceProviderOnDay) //select the routes EntityList observable
                 .FromCollectionChangedOrSet() //on collection changed or set
-                .Select(routeEntityList => routeEntityList.Count() > 0);  // select routes > 0
+                .Select(routeEntityList => routeEntityList.Any());  // select routes > 0
 
             AutoCalculateRoutes = new ReactiveCommand(routesExist);
 
@@ -502,8 +505,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
             {
-                var routeManifestViewer = new RouteManifestViewer();
-                routeManifestViewer.Show();
+                //Setup the route manifest viewer if there is not one yet
+                if(_routeManifestViewer == null)
+                    _routeManifestViewer = new RouteManifestViewer();
+
+                _routeManifestViewer.Show();
 
                 //Whenever the manifests are opened save the Routes
                 if (this.SaveCommand.CanExecute(null))
