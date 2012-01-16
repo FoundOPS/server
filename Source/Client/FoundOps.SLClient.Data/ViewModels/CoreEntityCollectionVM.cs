@@ -228,7 +228,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             DeleteCommand = new ReactiveCommand(canDeleteCommand);
 
-            DeleteCommand.Subscribe(x =>
+            DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).Subscribe(x =>
             {
                 if (MessageBox.Show("Are you sure you want to delete?", "Delete?", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
                     return;
