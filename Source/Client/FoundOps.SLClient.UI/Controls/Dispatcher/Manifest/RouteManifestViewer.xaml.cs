@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Reactive.Linq;
@@ -19,12 +20,53 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
     /// <summary>
     /// Displays RouteManifest
     /// </summary>
-    public partial class RouteManifestViewer
+    public partial class RouteManifestViewer : INotifyPropertyChanged
     {
+        #region Public Properties and Variables
+
+        #region Implementation of INotifyPropertyChanged
+
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void RaisePropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        private bool _isLoading;
+        /// <summary>
+        /// A bool that is true when the manifest is being calculated.
+        /// </summary>
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            private set
+            {
+                _isLoading = value;
+                this.RaisePropertyChanged("IsLoading");
+            }
+        }
+
+        #endregion
+
+        #region Locals
+
         //Used to update the Pdf
         private readonly Subject<bool> _updatePdfObservable = new Subject<bool>();
 
-        private bool _isOpen = false;
+        //Keeps track if the current window is open
+        private bool _isOpen;
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteManifestViewer"/> class.
@@ -44,10 +86,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
             //Update the manifest when this is opened
             this.Loaded += (s, e) =>
-                               {
-                                   this._isOpen = true;
-                                   UpdateDocument();
-                               };
+            {
+                this._isOpen = true;
+                UpdateDocument();
+            };
             this.Closed += (s, e) => _isOpen = false;
 
             _updatePdfObservable.Throttle(TimeSpan.FromSeconds(.25)).ObserveOnDispatcher().Subscribe(_ => UpdatePdf());
@@ -59,6 +101,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         {
             //Only load the manifest when the current viewer is open
             if (!_isOpen) return;
+            IsLoading = true;
 
             var bodyParagraph = new Paragraph();
 
@@ -149,7 +192,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 pdfFormatProvider.Export(ManifestRichTextBox.Document, outputStream);
 
                 ManifestPdfViewer.DocumentSource = new PdfDocumentSource(outputStream);
-                ManifestPdfViewer.DocumentSource.Loaded += (s, e) => outputStream.Close();
+                ManifestPdfViewer.DocumentSource.Loaded += (s, e) =>
+                {
+                    outputStream.Close();
+                    IsLoading = false;
+                };
             });
         }
 
@@ -251,5 +298,19 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         //#endregion
 
         #endregion
+
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (IsLoading) return;
+
+            //Open a SaveFileDialog to let the user save the document as a PDF
+            var saveDialog = new SaveFileDialog {DefaultExt = ".pdf", Filter = "PDF|*.pdf"};
+
+            var dialogResult = saveDialog.ShowDialog();
+            if (dialogResult != true) return;
+            var provider = new PdfFormatProvider();
+            using (var output = saveDialog.OpenFile())
+                provider.Export(this.ManifestRichTextBox.Document, output);
+        }
     }
 }
