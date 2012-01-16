@@ -454,12 +454,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Load whenever: the RoleId changes, SelectedDate changes, the Dispatcher is entered, or Discard was called 
             var loadData =
                 this.WhenAny(x => x.ContextManager.RoleId, x => x.SelectedDate, (roleId, selectedDate) => roleId.Value != Guid.Empty)
-                .Merge(enteredDispatcher).Merge(DiscardObservable).Where(ld => ld).Select(ld => this.ContextManager.RoleId);
+                .Merge(enteredDispatcher).Merge(DiscardObservable).Where(ld => ld).Select(ld => this.ContextManager.RoleId).Throttle(TimeSpan.FromMilliseconds(250));
 
             #region Load Routes
 
             //Add RoutesForServiceProviderOnDay query. It should load routes whenever loadData changes
-            this.DataManager.AddQuery(Query.RoutesForServiceProviderOnDay, roleId => this.Context.GetRoutesForServiceProviderOnDayQuery(roleId, SelectedDate), Context.Routes, loadData);
+            this.DataManager.AddQuery(Query.RoutesForServiceProviderOnDay,
+                                      roleId => this.Context.GetRoutesForServiceProviderOnDayQuery(roleId, SelectedDate),
+                                      Context.Routes, loadData);
 
             //Setup the MainQuery
             this.SetupMainQuery(Query.RoutesForServiceProviderOnDay, routes => RouteScheduleVM = new RouteScheduleVM(DomainCollectionView, DataManager), null, false);

@@ -4,7 +4,7 @@
     xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"  
     xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" 
     xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" 
-    xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields" xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d">
+    xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:ComboBoxSelectedItemConverter x:Key="ComboBoxSelectedItemConverter"/>
@@ -80,7 +80,7 @@
         </DataTemplate>
         <DataTemplate x:Key="LocationTemplate">
             <Grid>
-                <Edit:LocationFieldEdit LocationField="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}" IsEnabled="{Binding IsGeneratedService, RelativeSource={RelativeSource AncestorType=CustomFields:FieldsEditGrid}, Converter={StaticResource NotExistsBoolConverter}}"/>
+                <Edit:LocationFieldEdit LocationField="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}" IsEnabled="{Binding IsGeneratedService, RelativeSource={RelativeSource AncestorType=Edit:FieldsEditGrid}, Converter={StaticResource NotExistsBoolConverter}}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="NumberPercentageTemplate">
@@ -154,6 +154,4 @@
     <Grid>
         <Controls:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" ItemsSource="{Binding ServiceTemplate.Fields, ElementName=myFieldsEditGrid}" />
     </Grid>
-    <!--Design Data: DomainCollectionView-->
-    <!--Runtime: ServiceTemplate.Fields, ElementName=myFieldsEditGrid-->
 </UserControl>

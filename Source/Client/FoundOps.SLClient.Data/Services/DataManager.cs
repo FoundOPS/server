@@ -130,6 +130,11 @@ namespace FoundOps.SLClient.Data.Services
         private readonly Dictionary<object, BehaviorSubject<bool>> _queriesIsLoadingSubjects = new Dictionary<object, BehaviorSubject<bool>>();
 
         /// <summary>
+        /// Stores each query's current load operation (until it is loaded).
+        /// </summary>
+        private readonly Dictionary<object, object> _queriesLoadOperations = new Dictionary<object, object>();
+
+        /// <summary>
         /// Stores each query's entityList subject. NOTE: object is a BehaviorSubject'EntityList' (could not figure a way to make it covariant)
         /// It is a BehaviorSubject so that it remembers the last loaded entities
         /// </summary>
@@ -335,25 +340,47 @@ namespace FoundOps.SLClient.Data.Services
 
             executeObservable
                 .ObserveOnDispatcher().Subscribe(roleId =>
-                    ExecuteQuery(entityQuery(roleId),
-                        /*On the response, update the EntityListObservable */
-                    loadedEntities => ((IObserver<EntityList<T>>)GetEntityListObservable<T>(queryKey)).OnNext(new EntityList<T>(entitySet, loadedEntities)),
-                    _queriesIsLoadingSubjects[queryKey]));
+                {
+                    //Cancel the last query if possible
+                    if (_queriesLoadOperations.ContainsKey(queryKey))
+                    {
+                        var lastQuery = (LoadOperation<T>) _queriesLoadOperations[queryKey];
+                        if (lastQuery.CanCancel) lastQuery.Cancel();
+                    }
+
+                    LoadOperation<T> thisLoadOperation = null;
+
+                    //On the response, update the EntityListObservable
+                    Action<IEnumerable<T>> responseAction =
+                        loadedEntities =>
+                        {
+                            //Only perform the action if the current load operation is the same as the load operation which originated this response
+                            if (thisLoadOperation != _queriesLoadOperations[queryKey]) return;
+
+                            ((IObserver<EntityList<T>>)GetEntityListObservable<T>(queryKey)).OnNext(new EntityList<T>(entitySet, loadedEntities));
+
+                            _queriesLoadOperations.Remove(queryKey);
+                        };
+
+                    //Execute the query, keep track of the load operation
+                    thisLoadOperation = ExecuteQuery(queryKey, entityQuery(roleId), responseAction, _queriesIsLoadingSubjects[queryKey]);
+                });
         }
 
         /// <summary>
         /// Executes the query on the common CoreDomainContext.
         /// </summary>
         /// <typeparam name="T">The entity Type</typeparam>
+        /// <param name="queryKey">The query key.</param>
         /// <param name="query">The EntityQuery.</param>
         /// <param name="response">The response.</param>
         /// <param name="isLoadingObserver">The is loading observer.</param>
-        private void ExecuteQuery<T>(EntityQuery<T> query, Action<IEnumerable<T>> response, IObserver<bool> isLoadingObserver) where T : Entity
+        private LoadOperation<T> ExecuteQuery<T>(object queryKey, EntityQuery<T> query, Action<IEnumerable<T>> response, IObserver<bool> isLoadingObserver) where T : Entity
         {
             //Let the isLoadingObserver know this query started loading
             isLoadingObserver.OnNext(true);
 
-            _coreDomainContext.Load(query, (callback) =>
+            var loadOperation = _coreDomainContext.Load(query, (callback) =>
             {
                 //Call the response action and pass the Entities as an IEnumerable
                 response(callback.Entities);
@@ -361,6 +388,11 @@ namespace FoundOps.SLClient.Data.Services
                 //Let the isLoadingObserver know this query stopped loading
                 isLoadingObserver.OnNext(false);
             }, null);
+
+            //Add the load operation to the dictionary (so it can be cancelled if needed)
+            _queriesLoadOperations.Add(queryKey, loadOperation);
+
+            return loadOperation;
         }
 
         /// <summary>
@@ -635,7 +667,7 @@ namespace FoundOps.SLClient.Data.Services
             //Add actions to the action queue
             _saveDiscardCancelActionQueue.Add(                                    //Item1     //Item2    //Item3
                         new Tuple<Action, Action, Action, Action, Action, Action>(beforeSave, afterSave, beforeDiscard,
-                                                                                  //Item4              //Item5       //Item6
+                //Item4              //Item5       //Item6
                                                                                   customDiscardAction, afterDiscard, afterCancel));
 
             //Show a prompt only if it is not visible and was not called within the last 3 seconds
@@ -644,7 +676,7 @@ namespace FoundOps.SLClient.Data.Services
 
             //If there are no changes, call Cancelled
             var changes = this.Context.EntityContainer.GetChanges();
-            if (changes.Count() == 0)
+            if (!changes.Any())
             {
                 //Dequeue Actions
                 var dequeuedActions = _saveDiscardCancelActionQueue.ToArray();
