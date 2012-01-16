@@ -104,7 +104,10 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         #region CoreEntityCollectionInfiniteAccordionVM's Logic
 
-        private void NavigateToThis()
+        /// <summary>
+        /// Navigates to this ViewModel.
+        /// </summary>
+        public void NavigateToThis()
         {
             //Check if its possible to navigate from the CurrentContextProvider 
             ((IPreventNavigationFrom)ContextManager.CurrentContextProvider).CanNavigateFrom(() =>

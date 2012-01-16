@@ -134,16 +134,18 @@ namespace FoundOps.SLClient.UI.ViewModels
                         LocationFieldType = LocationFieldType.Destination,
                         Required = true
                     };
+                    //Remove DestinationField from field options
+                    FieldTypes = StandardFieldTypes;
                     break;
                 default:
                     throw new NotImplementedException("Field Type not Recognized");
             }
 
-            fieldToAdd.Group = "Details";
+            if (!(fieldToAdd is LocationField))
+                fieldToAdd.Group = "Details";
 
             //Setup the ServiceTemplate Context
-            fieldToAdd.OwnerServiceTemplate = serviceTemplateContext;
-
+            serviceTemplateContext.Fields.Add(fieldToAdd);
             this.Context.Fields.Add(fieldToAdd);
 
             return fieldToAdd;

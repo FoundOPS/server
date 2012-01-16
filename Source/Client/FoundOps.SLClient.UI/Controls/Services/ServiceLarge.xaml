@@ -4,7 +4,7 @@
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields"
              xmlns:my3="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM"
+             xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM"
              Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White">
@@ -44,7 +44,7 @@
                             <TextBlock Text="Date:" Grid.Row="1" Foreground="Black" HorizontalAlignment="Right" Margin="0,2,0,0"/>
                             <telerik:RadDatePicker Grid.Row="1" Grid.Column="2" InputMode="DatePicker" SelectedValue="{Binding SelectedEntity.ServiceDate, Mode=TwoWay}" IsEnabled="{Binding SelectedEntity.RecurringServiceParent, Converter={StaticResource NotExistsBoolConverter}}"/>
                         </Grid>
-                        <CustomFields:FieldsEditGrid ServiceTemplate="{Binding DataContext.SelectedEntity.ServiceTemplate, ElementName=myServiceLarge}" IsGeneratedService="{Binding DataContext.SelectedEntity.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"/>
+                        <Edit:FieldsEditGrid ServiceTemplate="{Binding DataContext.SelectedEntity.ServiceTemplate, ElementName=myServiceLarge}" IsGeneratedService="{Binding DataContext.SelectedEntity.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"/>
                     </StackPanel>
                 </toolkit:Expander>
                 <my3:ClientLinkLarge SelectedClient="{Binding DataContext.SelectedEntity.Client, ElementName=myServiceLarge, Mode=TwoWay}" IsReadOnly="{Binding DataContext.SelectedEntity.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"/>

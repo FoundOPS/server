@@ -248,7 +248,13 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             MemberPath = "Name";
 
-            CreateNewItem = name => CreateNewServiceTemplate(null, name);
+            CreateNewItem = name =>
+            {
+                var newServiceTemplate = CreateNewServiceTemplate(null, name);
+                SelectedEntity = newServiceTemplate;
+                NavigateToThis();
+                return newServiceTemplate;
+            };
 
             CustomComparer = new ServiceTemplateIsAncestorOrDescendent();
 
@@ -268,6 +274,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         //TODO: If a parent existed before, then was deleted, now being added again: Figure out if you can reconnect children to parent ServiceTemplate 
         private ServiceTemplate CreateNewServiceTemplate(ServiceTemplate parentServiceTemplate, string name = "New Service")
         {
+            if (string.IsNullOrEmpty(name))
+                name = "New Service";
+
             //Find if there is a recurring service context
             var recurringServiceContext = ContextManager.GetContext<RecurringService>();
 
