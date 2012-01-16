@@ -9,7 +9,7 @@ namespace FoundOps.Server.Tools
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            //#if DEBUG
+            #if DEBUG
             if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan"))
             {
                 FormsAuthentication.SignOut();
@@ -22,7 +22,7 @@ namespace FoundOps.Server.Tools
                 FormsAuthentication.SetAuthCookie("david@gotgrease.net", false);
                 return true;
             }
-            //#endif
+            #endif
             return base.AuthorizeCore(httpContext);
         }
     }
