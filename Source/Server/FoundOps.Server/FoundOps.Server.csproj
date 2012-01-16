@@ -267,6 +267,7 @@
     <Content Include="clientaccesspolicy.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ClientBin\FoundOps.SLClient.Navigator.xap" />
     <Content Include="Content\Banner1.png" />
     <Content Include="Content\banner2.png" />
     <Content Include="Content\Banner3.png" />
@@ -381,62 +382,31 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientBin\FoundOps.SLClient.Navigator.xap" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\FoundOps.SLClient.Navigator.xap" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Microsoft.Windows.Data.DomainServices.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Microsoft.Windows.Data.DomainServices.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\SLaB.Printing.Controls.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\SLaB.Printing.Controls.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\SLaB.Utilities.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\SLaB.Utilities.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\SLaB.Utilities.Xaml.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\SLaB.Utilities.Xaml.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.ComponentModel.Composition.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.ComponentModel.Composition.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.ComponentModel.Composition.Initialization.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.ComponentModel.Composition.Initialization.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.ComponentModel.DataAnnotations.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.ComponentModel.DataAnnotations.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.ServiceModel.DomainServices.Client.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.Web.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.ServiceModel.DomainServices.Client.Web.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.Windows.Controls.Data.Input.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.Windows.Controls.Data.Input.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.Windows.Controls.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.Windows.Controls.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.Windows.Controls.Navigation.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.Windows.Controls.Navigation.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.Windows.Data.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.Windows.Data.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.Xml.Linq.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.Xml.Linq.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Controls.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.Docking.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Controls.Docking.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.GridView.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Controls.GridView.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.Input.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Controls.Input.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.Navigation.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Controls.Navigation.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.RibbonBar.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Controls.RibbonBar.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.Scheduler.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Controls.Scheduler.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.ScheduleView.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Controls.ScheduleView.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Telerik.Windows.Data.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Telerik.Windows.Data.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\Microsoft.CSharp.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\Microsoft.CSharp.zip" Condition="$(IsDesktopBuild) != true" />
-    <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" Condition="$(IsDesktopBuild) == true" />
-    <None Include="ClientBin\System.ServiceModel.Web.Extensions.zip" Condition="$(IsDesktopBuild) != true" />
     <Content Include="Content\Web.sitemap" />
-    <Content Include="ClientBin\Telerik.Windows.Documents.FormatProviders.Html.zip" />
+    <Content Include="ClientBin\Microsoft.Windows.Data.DomainServices.zip" />
+    <Content Include="ClientBin\SLaB.Printing.Controls.zip" />
+    <Content Include="ClientBin\SLaB.Utilities.zip" />
+    <Content Include="ClientBin\SLaB.Utilities.Xaml.zip" />
+    <Content Include="ClientBin\System.ComponentModel.Composition.zip" />
+    <Content Include="ClientBin\System.ComponentModel.Composition.Initialization.zip" />
+    <Content Include="ClientBin\System.ComponentModel.DataAnnotations.zip" />
+    <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.zip" />
+    <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.Web.zip" />
+    <Content Include="ClientBin\System.Windows.Controls.Data.Input.zip" />
+    <Content Include="ClientBin\System.Windows.Controls.zip" />
+    <Content Include="ClientBin\System.Windows.Controls.Navigation.zip" />
+    <Content Include="ClientBin\System.Windows.Data.zip" />
+    <Content Include="ClientBin\System.Xml.Linq.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.Docking.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.GridView.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.Input.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.Navigation.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.RibbonBar.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Data.zip" />
+    <Content Include="ClientBin\Microsoft.CSharp.zip" />
+    <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
     <None Include="Services\M2M4RiaLinqToEntitiesDomainService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>M2M4RiaLinqToEntitiesDomainService.g.cs</LastGenOutput>

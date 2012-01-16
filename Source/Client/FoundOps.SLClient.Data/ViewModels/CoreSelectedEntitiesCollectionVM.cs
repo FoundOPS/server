@@ -93,7 +93,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             DeleteCommand = new ReactiveCommand(canDelete);
 
-            DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).Subscribe(param =>
+            DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(param =>
             {
                 var entityToRemove = SelectedEntity;
 

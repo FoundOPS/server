@@ -65,7 +65,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             DeleteCommand = new ReactiveCommand();
-            DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).Subscribe(param =>
+            DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(param =>
             {
                 OptionsField.OptionsWrapper.Remove(SelectedOption);
                 SelectedOption = null;
