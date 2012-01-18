@@ -44,10 +44,10 @@
             }
             $(document).ready(function () {
 
-                if (!getRedirectedOnce() && "<%= Model !=null? Model.RedirectUrl: "" %>" != "") {
+                if (!getRedirectedOnce() && "<%= Model !=null? Model.RedirectUrl: '' %>" != "") {
                 //If there is a model, then redirect this parent to it. The model will be a url
                     setRedirectedOnce(true);
-                    window.top.location.href = "<%= Model !=null? Model.RedirectUrl: "" %>";
+                    window.top.location.href = "<%= Model !=null? Model.RedirectUrl: '' %>";
                 }
                 else if(getRedirectedOnce()) //Reset redirectedOnce
                     setRedirectedOnce(false);
