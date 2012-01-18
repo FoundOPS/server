@@ -25,7 +25,7 @@ namespace FoundOps.QuickBooksWF
 
             //Checks for an Error Code in the response XML
             //If it does not exist in the response XML, signals that a problem occurred and we do not remove it from the table
-            if ((response.Contains("<errcode>0</errcode>")))
+            if (response != "")
             {
                 //At this point all has gone to plan, remove it from the Azure Table
                 QuickBooksTools.RemoveFromTable(currentInvoice);

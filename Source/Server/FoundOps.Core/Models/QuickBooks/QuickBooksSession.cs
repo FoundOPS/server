@@ -1,6 +1,4 @@
-﻿using DevDefined.OAuth.Framework;
-
-namespace FoundOps.Core.Models.QuickBooks
+﻿namespace FoundOps.Core.Models.QuickBooks
 {
     public class QuickBooksSession
     {
@@ -11,7 +9,14 @@ namespace FoundOps.Core.Models.QuickBooks
         public string OAuthVerifier { get; set; }
 
         //Temp token given to us to exchange for the QuickBooks Tokens
-        public TokenBase OAuthVerifierToken { get; set; }
+        //public TokenBase OAuthVerifierToken { get; set; }
+
+        //Replacing TokenBase, problems with serialization?
+        public string OAuthConsumerKey { get; set; }
+        public string OAuthRealm { get; set; }
+        public string OAuthSessionHandle { get; set; }
+        public string OAuthToken { get; set; }
+        public string OAuthTokenSecret { get; set; }
 
         //Token used by OAuth and QuickBooks to verify login
         public string QBToken { get; set; }

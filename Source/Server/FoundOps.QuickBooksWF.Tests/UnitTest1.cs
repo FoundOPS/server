@@ -1,15 +1,13 @@
 ﻿using System;
-using System.IO;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.Xaml;
+using System.Threading;
+using System.ServiceModel;
 using System.Activities.Tracking;
 using System.ServiceModel.Activities;
 using System.ServiceModel.Description;
-using System.ServiceModel.Activities.Description;
-using Microsoft.Activities.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FoundOps.QuickBooksWF.Tests.Create;
+using System.ServiceModel.Activities.Description;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FoundOps.QuickBooksWF.Tests
 {
@@ -19,42 +17,27 @@ namespace FoundOps.QuickBooksWF.Tests
         /// <summary>
         ///   The endpoint address to be used by the test host
         /// </summary>
-        private readonly EndpointAddress _serviceAddress = new EndpointAddress("net.pipe://localhost/Create.xamlx");
-
+        
         [TestMethod]
         public void TestMethod1()
         {
             #region Test
 
-            CallWorkflow();
+            CallWorkflow("Create");
 
-            //var workflowRuntime = new System.Workflow.Runtime.WorkflowRuntime();
-            //create the workflow instance and start it
+            var syncEvent = new AutoResetEvent(false);
+            
+            //Need to set the syncEvent value after WF is complete
+            syncEvent.WaitOne();
 
-            //WorkflowInstance instance = workflowRuntime.CreateWorkflow(typeof (FoundOps.QuickBooksWF.GetData));
-
-            //var proxy = new ServiceReference1.GetHereClient();
-            //proxy.Open();
-            //proxy.GetHere();
-
-            //proxy.Close();
-
-            //Works, but only to call individual CodeActivities
-            //var objects = WorkflowInvoker.Invoke(new CreateInvoice());
-
-            //serviceClient.Open();
-
-            //var gdr= new GetDataRequest();
-
-            //proxy.Close();
             #endregion
         }
 
-        private void CallWorkflow()
+        private void CallWorkflow(string type)
         {
             const string baseAddress = "http://localhost:37070/";
 
-            var serviceImplementation = XamlServices.Load(@"C:\FoundOps\GitHub\Source\Server\FoundOps.QuickBooksWF\Create.xamlx") as WorkflowService;
+            var serviceImplementation = XamlServices.Load(@"C:\FoundOps\GitHub\Source\Server\FoundOps.QuickBooksWF\" + type + ".xamlx") as WorkflowService;
 
             if (serviceImplementation == null)
             {
@@ -65,33 +48,33 @@ namespace FoundOps.QuickBooksWF.Tests
             {
                 host.Description.Behaviors.Add(new ServiceMetadataBehavior() { HttpGetEnabled = true });
 
-                host.AddServiceEndpoint("Create", new BasicHttpBinding(), baseAddress);
+                host.AddServiceEndpoint(type, new BasicHttpBinding(), baseAddress);
 
-                var fileTrackingProfile = new TrackingProfile();
-                fileTrackingProfile.Queries.Add(new WorkflowInstanceQuery
-                                                    {
-                                                        States = { "*" }
-                                                    });
-                fileTrackingProfile.Queries.Add(new ActivityStateQuery()
-                                                    {
-                                                        ActivityName = "*",
-                                                        States = { "*" },
-                                                        // You can use the following to specify specific stages:
-                                                        // States = {
-                                                        // ActivityStates.Executing,
-                                                        // ActivityStates.Closed
-                                                        //},
-                                                        Variables =
-                                                            {
-                                                                {"*"}
-                                                            } // or you can enter specific variable names instead of “*”
+                //var fileTrackingProfile = new TrackingProfile();
+                //fileTrackingProfile.Queries.Add(new WorkflowInstanceQuery
+                //                                    {
+                //                                        States = { "*" }
+                //                                    });
+                //fileTrackingProfile.Queries.Add(new ActivityStateQuery()
+                //                                    {
+                //                                        ActivityName = "*",
+                //                                        States = { "*" },
+                //                                        // You can use the following to specify specific stages:
+                //                                        // States = {
+                //                                        // ActivityStates.Executing,
+                //                                        // ActivityStates.Closed
+                //                                        //},
+                //                                        Variables =
+                //                                            {
+                //                                                {"*"}
+                //                                            } // or you can enter specific variable names instead of “*”
 
-                                                    });
-                fileTrackingProfile.Queries.Add(new CustomTrackingQuery()
-                                                    {
-                                                        ActivityName = "*",
-                                                        Name = "*"
-                                                    });
+                //                                    });
+                //fileTrackingProfile.Queries.Add(new CustomTrackingQuery()
+                //                                    {
+                //                                        ActivityName = "*",
+                //                                        Name = "*"
+                //                                    });
 
 
                 host.Description.Behaviors.Add(new WorkflowIdleBehavior()

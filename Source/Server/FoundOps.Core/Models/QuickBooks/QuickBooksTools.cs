@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
@@ -109,39 +110,41 @@ namespace FoundOps.Core.Models.QuickBooks
                                             OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlAccessToken);
         }
 
-        /// <summary>
-        /// Exchanges the request token attained earlier for the access token needed to make calls to QuickBooks
-        /// </summary>
-        /// <param name="quickBooksSession"> </param>
-        public static IToken GetAccessToken(QuickBooksSession quickBooksSession)
-        {
-            //Creates the OAuth Session
-            var clientSession = CreateOAuthSession();
+        #region Moved into the QuickBooksController
+        ///// <summary>
+        ///// Exchanges the request token attained earlier for the access token needed to make calls to QuickBooks
+        ///// </summary>
+        ///// <param name="quickBooksSession"> </param>
+        //public static IToken GetAccessToken(QuickBooksSession quickBooksSession)
+        //{
+        //    //Creates the OAuth Session
+        //    var clientSession = CreateOAuthSession();
 
-            //The AccessToken is attained by exchanging the request token and the OAuthVerifier that we attained earlier
-            IToken accessToken = clientSession.ExchangeRequestTokenForAccessToken(quickBooksSession.OAuthVerifierToken, quickBooksSession.OAuthVerifier);
+        //    //The AccessToken is attained by exchanging the request token and the OAuthVerifier that we attained earlier
+        //    IToken accessToken = clientSession.ExchangeRequestTokenForAccessToken(quickBooksSession.OAuthVerifierToken, quickBooksSession.OAuthVerifier);
 
-            return accessToken;
-        }
+        //    return accessToken;
+        //}
 
-        /// <summary>
-        /// Creates the authorization URL for QuickBooks based on the OAuth session
-        /// </summary>
-        /// <param name="callbackUrl">The callback URL.</param>
-        /// <param name="quickBooksSession"> The current QuickBooksSession </param>
-        /// <returns> returns the authorization URL. </returns>
-        public static string GetAuthorizationUrl(string callbackUrl, QuickBooksSession quickBooksSession)
-        {
-            var session = CreateOAuthSession();
+        ///// <summary>
+        ///// Creates the authorization URL for QuickBooks based on the OAuth session
+        ///// </summary>
+        ///// <param name="callbackUrl">The callback URL.</param>
+        ///// <param name="quickBooksSession"> The current QuickBooksSession </param>
+        ///// <returns> returns the authorization URL. </returns>
+        //public static string GetAuthorizationUrl(string callbackUrl, QuickBooksSession quickBooksSession)
+        //{
+        //    var session = CreateOAuthSession();
 
-            //Save verification token for later use
-            quickBooksSession.OAuthVerifierToken = (TokenBase)session.GetRequestToken();
+        //    //Save verification token for later use
+        //    quickBooksSession.OAuthVerifierToken = (TokenBase)session.GetRequestToken();
 
-            //Creates the Authorized URL for QuickBooks that is based on the OAuth session created above
-            var authUrl = OauthConstants.AuthorizeUrl + "?oauth_token=" + quickBooksSession.OAuthVerifierToken.Token + "&oauth_callback=" + UriUtility.UrlEncode(callbackUrl);
+        //    //Creates the Authorized URL for QuickBooks that is based on the OAuth session created above
+        //    var authUrl = OauthConstants.AuthorizeUrl + "?oauth_token=" + quickBooksSession.OAuthVerifierToken.Token + "&oauth_callback=" + UriUtility.UrlEncode(callbackUrl);
 
-            return authUrl;
-        }
+        //    return authUrl;
+        //}
+        #endregion
 
         #endregion
 
@@ -392,8 +395,18 @@ namespace FoundOps.Core.Models.QuickBooks
             //Sends the request with the body attached
             consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes(body));
 
+            var response = "";
+
+            try
+            {
+                response = consumerRequest.ReadBody();
+            }
+            catch
+            {
+            }
+
             //Reads the response XML
-            return consumerRequest.ReadBody();
+            return response;
         }
 
         /// <summary>
@@ -927,23 +940,27 @@ namespace FoundOps.Core.Models.QuickBooks
         public static void RemoveFromTable(Invoice currentInvoice)
         {
             //Check that this DataConnectionString is right
-            var storageAccount =
-                CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("DataConnectionString"));
+            var storageAccount = CloudStorageAccount.Parse(OauthConstants.StorageConnectionString);
 
             var serviceContext = new InvoiceTableDataServiceContext(storageAccount.TableEndpoint.ToString(),
                                                                     storageAccount.Credentials);
 
             var newItem = new InvoiceTableDataModel (currentInvoice.Id);
 
+            //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
+            var tableName = "t" + currentInvoice.BusinessAccount.Id.ToString().Replace("-", "");
+
             //Query that checks to see if and object with the same InvoiceId exists in the Table specified
-            var existsQuery = serviceContext.CreateQuery<InvoiceTableDataModel>(currentInvoice.BusinessAccount.Name).Where(
-                e => e.InvoiceId == newItem.InvoiceId);
+            var existsQuery = serviceContext.CreateQuery<InvoiceTableDataModel>(tableName).Where(
+                e => e.PartitionKey == newItem.InvoiceId.ToString());
 
             //Gets the first and hopefully only item in the Table that matches
             var existingObject = existsQuery.FirstOrDefault();
 
             if (existingObject != null)
                 serviceContext.DeleteObject(existingObject);
+
+            serviceContext.SaveChangesWithRetries();
         }
 
         /// <summary>
@@ -951,17 +968,19 @@ namespace FoundOps.Core.Models.QuickBooks
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <returns></returns>
-        public static IQueryable<InvoiceTableDataModel> GetListFromTables(BusinessAccount currentBusinessAccount)
+        public static IEnumerable<InvoiceTableDataModel> GetListFromTables(BusinessAccount currentBusinessAccount)
         {
             //Check that this DataConnectionString is right
-            var storageAccount =
-                CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("DataConnectionString"));
+            var storageAccount = CloudStorageAccount.Parse(OauthConstants.StorageConnectionString);
 
             var serviceContext = new InvoiceTableDataServiceContext(storageAccount.TableEndpoint.ToString(),
                                                                     storageAccount.Credentials);
 
+            //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
+            var tableName = "t" + currentBusinessAccount.Id.ToString().Replace("-", "");
+
             //Gets all objects from the Azure table specified and returns the result
-            return serviceContext.CreateQuery<InvoiceTableDataModel>(currentBusinessAccount.Name);
+            return serviceContext.CreateQuery<InvoiceTableDataModel>(tableName);
         }
 
         #endregion
