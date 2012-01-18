@@ -40,10 +40,11 @@ namespace FoundOps.QuickBooksWF
                 newInvoice.LineItems.Add(lineItem);
             }
 
+            //Save the new Invoice
+            Invoice.Set(context, newInvoice);
+
             //Adds the create notification to the Azure Table
             QuickBooksTools.AddUpdateDeleteToTable(newInvoice, Operation.Create);
-
-            Invoice.Set(context, newInvoice);
         }
     }
 }

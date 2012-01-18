@@ -40,22 +40,22 @@ namespace FoundOps.QuickBooksWF
 
                 //If the delete operation was specified, delete the invoice from QBO
                 //If the update operation was specified, update the invoice in QBO
-                //switch (invoiceObject.ChangeType)
-                //{
-                //    #region Delete - Currently Not Supported
-                //    //case Operation.Delete:
-                //    //    QuickBooksTools.DeleteInvoice(currentBusinessAccount, invoice);
-                //    //    break;
-                //    #endregion
-                //    case Operation.Update:
-                //        QuickBooksTools.UpdateInvoice(currentBusinessAccount, invoice, coreEntitiesContainer, baseUrl);
-                //        break;
-                //}
+                switch (invoiceObject.ChangeType)
+                {
+                    #region Delete - Currently Not Supported
+                    //case Operation.Delete:
+                    //    QuickBooksTools.DeleteInvoice(currentBusinessAccount, invoice);
+                    //    break;
+                    #endregion
+                    case "Update":
+                        QuickBooksTools.UpdateInvoice(currentBusinessAccount, invoice, coreEntitiesContainer, baseUrl);
+                        break;
+                }
 
-                ////If for some reason a create has been added. Leave it there and it will be handled at night with the rest of the create \
-                ////Else, remove the invoice from the table
-                //if (invoiceObject.ChangeType != Operation.Create)
-                //    QuickBooksTools.RemoveFromTable(invoice);
+                //If for some reason a create has been added. Leave it there and it will be handled at night with the rest of the create \
+                //Else, remove the invoice from the table
+                if (invoiceObject.ChangeType != "Create")
+                    QuickBooksTools.RemoveFromTable(invoice);
             }
         }
     }
