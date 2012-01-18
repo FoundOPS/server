@@ -139,13 +139,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 var newRouteDestination = new RouteDestination
                 {
                     Id = Guid.NewGuid(),
-                    Client = draggedItems.OfType<RouteTask>().FirstOrDefault().Client,
+                    Client = draggedItems.OfType<RouteTask>().First().Client,
+                    Location = draggedItems.OfType<RouteTask>().First().Location
                 };
-
-                if (draggedItems.OfType<RouteTask>().FirstOrDefault().Location != null)
-                    newRouteDestination.Location = draggedItems.OfType<RouteTask>().FirstOrDefault().Location;
-                else
-                    newRouteDestination.Location = null;
 
                 foreach (var task in draggedItems.OfType<RouteTask>())
                 {
@@ -153,13 +149,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
                     if (RoutesVM.AutoAssignButtonHasBeenClicked)
-                    {
                         Analytics.AddToRouteDestinationFromTaskBoardAfterAutoDispatch(task.ToString());
-                    }
                     else
-                    {
                         Analytics.AddToRouteDestinationFromTaskBoard(task.ToString());
-                    }
                 }
 
                 (((RouteDestination)destination).Route).RouteDestinationsListWrapper.Insert(((RouteDestination)destination).OrderInRoute, newRouteDestination);
@@ -175,13 +167,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                     //Analytics - Drag and Drop. When dragging a task from the task board to a route task
                     if (RoutesVM.AutoAssignButtonHasBeenClicked)
-                    {
                         Analytics.AddToRouteTaskFromTaskBoardAfterAutoDispatch(task.ToString());
-                    }
                     else
-                    {
                         Analytics.AddToRouteTaskFromTaskBoard(task.ToString());
-                    }
                 }
             }
 

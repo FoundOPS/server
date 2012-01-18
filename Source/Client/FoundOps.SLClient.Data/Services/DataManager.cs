@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Diagnostics;
 using System.Reactive.Linq;
@@ -16,6 +17,7 @@ using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Server.Services.CoreDomainService;
+using ReactiveUI;
 
 namespace FoundOps.SLClient.Data.Services
 {
@@ -23,7 +25,7 @@ namespace FoundOps.SLClient.Data.Services
     /// Subscribes to ContextManager to load the proper data
     /// </summary>
     [Export]
-    public class DataManager
+    public class DataManager : INotifyPropertyChanged
     {
         /// <summary>
         /// Each query of the DataManager.
@@ -99,6 +101,21 @@ namespace FoundOps.SLClient.Data.Services
 
         #region Public
 
+        #region Implementation of INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void RaisePropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// The ContextManager
         /// </summary>
@@ -111,6 +128,42 @@ namespace FoundOps.SLClient.Data.Services
         public CoreDomainContext Context
         {
             get { return _coreDomainContext; }
+        }
+
+        public IObservable<bool> DomainContextHasChangesObservable = new Subject<bool>();
+        private bool _domainContextHasChanges;
+        /// <summary>
+        /// Gets or sets a value indicating whether the domain context has changes.
+        /// Updated every .25 seconds.
+        /// </summary>
+        public bool DomainContextHasChanges
+        {
+            get { return _domainContextHasChanges; }
+            set
+            {
+                if (value == _domainContextHasChanges) return;
+                _domainContextHasChanges = value;
+                ((Subject<bool>)DomainContextHasChangesObservable).OnNext(value);
+                this.RaisePropertyChanged("DomainContextHasChanges");
+            }
+        }
+
+        public IObservable<bool> DomainContextIsSubmittingObservable = new Subject<bool>();
+        private bool _domainContextIsSubmitting;
+        /// <summary>
+        /// Gets or sets a value indicating whether the domain context is submitting.
+        /// Updated every .25 seconds.
+        /// </summary>
+        public bool DomainContextIsSubmitting
+        {
+            get { return _domainContextIsSubmitting; }
+            set
+            {
+                if (value == _domainContextIsSubmitting) return;
+                _domainContextIsSubmitting = value;
+                ((Subject<bool>)DomainContextIsSubmittingObservable).OnNext(value);
+                this.RaisePropertyChanged("DomainContextIsSubmitting");
+            }
         }
 
         #endregion
@@ -154,6 +207,13 @@ namespace FoundOps.SLClient.Data.Services
         {
             ContextManager = contextManager;
             _coreDomainContext = coreDomainContext;
+
+            //Keep track of domain context changes and domain context is submitting every quarter second (and update this public properties)
+            Observable.Interval(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
+            {
+                DomainContextHasChanges = this.Context.HasChanges;
+                DomainContextIsSubmitting = this.Context.IsSubmitting;
+            });
 
             #region Setup Queries
 
@@ -344,7 +404,7 @@ namespace FoundOps.SLClient.Data.Services
                     //Cancel the last query if possible
                     if (_queriesLoadOperations.ContainsKey(queryKey))
                     {
-                        var lastQuery = (LoadOperation<T>) _queriesLoadOperations[queryKey];
+                        var lastQuery = (LoadOperation<T>)_queriesLoadOperations[queryKey];
                         if (lastQuery.CanCancel) lastQuery.Cancel();
                     }
 
@@ -627,8 +687,11 @@ namespace FoundOps.SLClient.Data.Services
             var dequeuedObservables = _nextSubmitOperationsQueue.ToArray();
             _nextSubmitOperationsQueue.Clear();
 
-            //For debugging
             var changes = this.Context.EntityContainer.GetChanges();
+
+            //Cancel changes on generated route tasks
+            foreach (var generatedRouteTask in changes.OfType<RouteTask>().Where(rt => rt.GeneratedOnServer))
+                generatedRouteTask.Reject();
 
             //Perform a submit operation for the dequeued submit operation observables
             _currentSubmitOperation = this.Context.SubmitChanges(

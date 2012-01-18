@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 using ReactiveUI;
 using System.Linq;
@@ -12,7 +13,6 @@ using Telerik.Windows.Controls;
 using MEFedMVVM.ViewModelLocator;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
-using FoundOps.Core.Context.Tools;
 using System.Collections.ObjectModel;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Core.Models.CoreEntities;
@@ -503,7 +503,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             this.DataManager.AddQuery(Query.UnroutedRouteTasks, roleId => this.Context.GetUnroutedRouteTasksQuery(roleId, SelectedDate), Context.RouteTasks, loadData);
 
             //Subscribe to UnroutedRouteTasks (and setup TasksLoading property)
-            _tasksLoading = this.DataManager.Subscribe<RouteTask>(Query.UnroutedRouteTasks, ObservationState, OnRouteTasksLoaded).ToProperty(this, x => x.TasksLoading);
+            _tasksLoading = this.DataManager.Subscribe<RouteTask>(Query.UnroutedRouteTasks, ObservationState, 
+                //Copy it to another observablecollection so removes are not tracked as deletes
+                loadedRouteTasks => _loadedRouteTasks.OnNext(loadedRouteTasks.ToObservableCollection()))
+                .ToProperty(this, x => x.TasksLoading);
 
             #endregion
         }
@@ -520,10 +523,20 @@ namespace FoundOps.SLClient.UI.ViewModels
                 .FromCollectionChangedOrSet() //on collection changed or set
                 .Select(routeEntityList => routeEntityList.Any());  // select routes > 0
 
-            AutoCalculateRoutes = new ReactiveCommand(routesExist);
+            //Can calculate routes when there are routes, and when the context is not submitting
+            var canCalculateRoutes = DataManager.DomainContextIsSubmittingObservable.CombineLatest(routesExist, (isSubmitting, areRoutes) => !isSubmitting && areRoutes);
+            AutoCalculateRoutes = new ReactiveCommand(canCalculateRoutes);
 
             //Populate routes with the UnroutedTasks and refresh the filter counts
-            AutoCalculateRoutes.Subscribe(_ => SimpleRouteCalculator.PopulateRoutes(this.UnroutedTasks, DomainCollectionView));
+            AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
+            {
+                //Populate the routes with the unrouted tasks
+                var routedTasks = SimpleRouteCalculator.PopulateRoutes(this.UnroutedTasks, DomainCollectionView);
+
+                //Remove the routedTasks from the task board
+                foreach (var routeTaskToRemove in routedTasks.ToArray())
+                    LoadedRouteTasks.Remove(routeTaskToRemove);
+            });
 
             //Allow the user to open the route manifests whenever there is more than one route visible
             OpenRouteManifests = new ReactiveCommand(_updateFilter.ObserveOnDispatcher().Throttle(new TimeSpan(0, 0, 0, 0, 250)).Select(_ => this.DomainCollectionView.Count() > 0));
@@ -557,8 +570,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //DeleteRouteTask can delete whenever the SelectedTask != null
             DeleteRouteTask = new ReactiveCommand(this.WhenAny(x => x.SelectedTask, st => st.Value != null));
-            //DeleteRouteTasks can delete whenever SelectedTaskBoardTasks != null
-            DeleteRouteTasks = new ReactiveCommand(this.WhenAny(x => x.SelectedTaskBoardTasks, sts => sts.Value != null));
+            //DeleteRouteTasks can delete whenever SelectedTaskBoardTasks has at least 1 route task
+            DeleteRouteTasks = new ReactiveCommand(this.WhenAny(x => x.SelectedTaskBoardTasks, sts => sts.Value != null && sts.Value.Count() > 0));
 
             //Setup AddRouteTask command
             AddRouteTask.SubscribeOnDispatcher().Subscribe(_ =>
@@ -581,6 +594,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup DeleteRouteTask command
             DeleteRouteTask.SubscribeOnDispatcher().Subscribe(_ =>
             {
+                //Generated services are not tracked
+                if (SelectedTask.GeneratedOnServer) return;
+
                 this.LoadedRouteTasks.Remove(SelectedTask);
 
                 if (this.Context.RouteTasks.Contains(SelectedTask))
@@ -590,10 +606,13 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup DeleteRouteTasks command
             DeleteRouteTasks.SubscribeOnDispatcher().Subscribe(_ =>
             {
-                foreach (var routeTask in this.SelectedTaskBoardTasks)
+                //Generated services are not tracked
+                var tasksToDelete = this.SelectedTaskBoardTasks.Where(rt => !rt.GeneratedOnServer);
+
+                foreach (var routeTask in tasksToDelete)
                     this.LoadedRouteTasks.Remove(routeTask);
 
-                foreach (var routeTask in this.SelectedTaskBoardTasks)
+                foreach (var routeTask in tasksToDelete)
                     if (this.Context.RouteTasks.Contains(routeTask))
                         this.Context.RouteTasks.Remove(routeTask);
             });
@@ -635,46 +654,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             SelectedRegions.AddRange(distinctRegions);
         }
 
-        /// <summary>
-        /// Called when [route tasks loaded]. Removes Generated RouteTasks and replaces them with clones
-        /// </summary>
-        /// <param name="routeTasks">The route tasks.</param>
-        private void OnRouteTasksLoaded(EntityList<RouteTask> routeTasks)
-        {
-            var routeTasksToKeep = new ObservableCollection<RouteTask>();
-
-            //Many route tasks are generated on the server and not actually part of the database
-            //This is done because RouteTasks get generated from variables that change day to day (ex. RecurringServices).
-            //Therefore we want to save the RouteTasks as late as possible, when they are part of Routes
-
-            //Keep the non-generated RouteTasks (to track changes)
-            foreach (var nongeneratedRouteTask in routeTasks.Where(rt => !rt.GeneratedOnServer).ToArray())
-                routeTasksToKeep.Add(nongeneratedRouteTask);
-
-            //TODO: Change this to happen when hooked up to routes
-
-            //Add the generated route tasks (and their generated services/service templates) to the database
-            //Do this by cloning them using RIA Services Contrib's Entity Graph
-
-            var generatedTasksToClone = routeTasks.Where(rt => rt.GeneratedOnServer).ToArray();
-
-            foreach (var generatedRouteTask in generatedTasksToClone)
-            {
-                var clonedRouteTask =
-                    //Clone the service/service template if the Service is generated
-                    generatedRouteTask.Clone(generatedRouteTask.Service != null && generatedRouteTask.Service.Generated);
-
-                //Add the clonedRouteTask to the database
-                routeTasksToKeep.Add(clonedRouteTask);
-            }
-
-            //Detach all related entities to RouteTasks that are not part of a route (do not have a RouteDestination) except the ones to keep
-            //You must exclude the ones to keep (because existing entities will become new ones if you detach and add them)
-            DataManager.DetachEntities(Context.RouteTasks.Where(rt => rt.RouteDestination == null).Except(routeTasksToKeep).SelectMany(rt => new EntityGraph<Entity>(rt, rt.EntityGraphWithServiceShape)));
-
-            _loadedRouteTasks.OnNext(routeTasksToKeep);
-        }
-
         #endregion
 
         #region Logic
@@ -706,11 +685,22 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Remove the routeTasks from the deletedRoute (and keep them)
             var routeTasksToKeep =
-                  deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks).ToArray();
+                deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks)
+                .Where(rt => !rt.GeneratedOnServer).ToList();
+
+            var generatedRouteTasks = deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks)
+                .Where(rt => rt.GeneratedOnServer).ToArray();
+
+            //Add the generated route task parents back to the task board
+            routeTasksToKeep.AddRange(generatedRouteTasks.Select(rt => rt.GeneratedRouteTaskParent));
+
+            //Delete the generatedRouteTasks
+            DataManager.RemoveEntities(generatedRouteTasks.SelectMany(rt => new EntityGraph<Entity>(rt, rt.EntityGraphWithServiceShape)));
 
             //Delete the routeDestinations
             DataManager.RemoveEntities(deletedRoute.RouteDestinations);
 
+            //Add the route tasks to keep back to the task board
             foreach (var routeTask in routeTasksToKeep)
             {
                 //Clear RouteDestination reference
@@ -720,10 +710,12 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (!this.LoadedRouteTasks.Contains(routeTask))
                     LoadedRouteTasks.Add(routeTask);
 
-                //Add the routeTask back to the EntitySet
-                if (!this.Context.RouteTasks.Contains(routeTask))
+                //TODO: Check if this is needed
+                //Add the routeTask back to the EntitySet (if it is not generated)
+                if (!routeTask.GeneratedOnServer && !this.Context.RouteTasks.Contains(routeTask))
                     this.Context.RouteTasks.Add(routeTask);
             }
+
         }
 
         #endregion
