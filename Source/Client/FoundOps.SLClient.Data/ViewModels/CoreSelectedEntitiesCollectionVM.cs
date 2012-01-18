@@ -72,7 +72,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             _notSelectedEntities = _notSelectedEntitiesObservable.ToProperty(this, x => x.NotSelectedEntities);
 
             //NotSelectedEntities are the loaded entities without the SelectedEntities
-            loadedEntities.FromCollectionChangedOrSet().Merge(SelectedEntities.FromCollectionChangedEvent().Select(a => LoadedEntities)) //Whenever loadedEntities or SelectedEntities changes
+            loadedEntities.FromCollectionChangedOrSet().Merge(SelectedEntities.FromCollectionChanged().Select(a => LoadedEntities)) //Whenever loadedEntities or SelectedEntities changes
                .Select(loadEnts => loadEnts.Except(SelectedEntities))  //Select the loadedEntities except the SelectedEntities
                .Subscribe(_notSelectedEntitiesObservable);
 
@@ -93,7 +93,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             DeleteCommand = new ReactiveCommand(canDelete);
 
-            DeleteCommand.Subscribe(param =>
+            DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(param =>
             {
                 var entityToRemove = SelectedEntity;
 

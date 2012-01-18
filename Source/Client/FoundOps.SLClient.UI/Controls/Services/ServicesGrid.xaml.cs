@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Windows;
-using FoundOps.SLClient.UI.Tools;
-using FoundOps.SLClient.UI.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Tools;
+using FoundOps.Common.Tools;
 using Telerik.Windows;
 using System.Windows.Media;
+using System.Reactive.Linq;
 using System.ComponentModel;
 using System.Windows.Controls;
 using Telerik.Windows.Controls;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
-using Telerik.Windows.Controls.GridView;
 using FoundOps.Core.Models.CoreEntities;
+using Telerik.Windows.Controls.GridView;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using ItemsControlExtensions = FoundOps.Common.Silverlight.Tools.ItemsControlExtensions;
 
 namespace FoundOps.SLClient.UI.Controls.Services
 {
+    /// <summary>
+    /// The UI for displaying a list of Services.
+    /// </summary>
     public partial class ServicesGrid
     {
         private bool _isMainGrid;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is main grid.
+        /// </summary>
         public bool IsMainGrid
         {
             get { return _isMainGrid; }
@@ -35,43 +39,54 @@ namespace FoundOps.SLClient.UI.Controls.Services
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServicesGrid"/> class.
+        /// </summary>
         public ServicesGrid()
         {
             InitializeComponent();
 
-            this.DependentWhenVisible(ServicesVM);
-            this.DependentWhenVisible(ServiceTemplatesVM);
-            
+            this.DependentWhenVisible(VM.Services);
+            this.DependentWhenVisible(VM.ServiceTemplates);
+
             //Double click moves infinite accordion through to context
             ServicesRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent,
                                            new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
 
+            //Order the grid by the date.
             ServicesRadGridView.SortDescriptors.Add(new ColumnSortDescriptor { Column = ServicesRadGridView.Columns["DateColumn"], SortDirection = ListSortDirection.Ascending });
 
             ServicesRadGridView.RowLoaded += (s, e) =>
-                                                  {
-                                                      //Make sure the SelectedEntity is in the middle
-                                                      if (_lastItemScrolledTo != ServicesVM.SelectedEntity)
-                                                          ScrollToMiddle(ServicesVM.SelectedEntity);
-                                                  };
+            {
+                //Make sure the SelectedEntity is in the middle
+                if (_lastItemScrolledTo != VM.Services.SelectedEntity) ScrollToMiddle(VM.Services.SelectedEntity);
+            };
+
+            //Whenever the selected service changes, scroll it to the middle.
+            VM.Services.SelectedEntityObservable.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
+                .Subscribe(ScrollToMiddle);
+
+            //Listen to the latest selected service's service date changes
+            VM.Services.SelectedEntityObservable.WhereNotNull().SelectLatest(service => Observable2.FromPropertyChangedPattern(service, x => x.ServiceDate))
+                //Wait until the RadGridView SelectedItem updates
+                .Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher()
+                .Subscribe(e =>
+                {
+                    //resort the grid and put the service in the middle
+                    ServicesRadGridView.SortDescriptors.Clear();
+                    ServicesRadGridView.SortDescriptors.Add(new ColumnSortDescriptor { Column = ServicesRadGridView.Columns["DateColumn"], SortDirection = ListSortDirection.Ascending });
+                    ScrollToMiddle(VM.Services.SelectedEntity);
+                });
         }
-
-        public ServicesVM ServicesVM { get { return (ServicesVM)this.DataContext; } }
-
-        /// <summary>
-        /// Gets the ServiceTemplatesVM.
-        /// </summary>
-        public ServiceTemplatesVM ServiceTemplatesVM { get { return VM.ServiceTemplates; } }
 
         private GridViewScrollViewer _servicesRadGridViewScrollViewer;
         private GridViewScrollViewer ServicesRadGridViewScrollViewer
         {
             get
             {
-                if (_servicesRadGridViewScrollViewer == null)
-                    _servicesRadGridViewScrollViewer = ServicesRadGridView.ChildrenOfType<GridViewScrollViewer>().FirstOrDefault();
-
-                return _servicesRadGridViewScrollViewer;
+                return _servicesRadGridViewScrollViewer ??
+                       (_servicesRadGridViewScrollViewer =
+                       ServicesRadGridView.ChildrenOfType<GridViewScrollViewer>().FirstOrDefault());
             }
         }
 
@@ -82,31 +97,27 @@ namespace FoundOps.SLClient.UI.Controls.Services
             {
                 //Only allow push forward or back after the current service has been scrolled to
                 //Also do not push backward when the VerticalOffset==0 (to prevent looping backward when the data reloads)
-                if (_lastItemScrolledTo != ServicesVM.SelectedEntity)
+                if (_lastItemScrolledTo != VM.Services.SelectedEntity)
                     return;
 
                 if (args.VerticalChange < 0 && ServicesRadGridViewScrollViewer.VerticalOffset == 0)
-                //If the scroll viewer is still at the top in 2 seconds, PushBackGeneratedServices
+                //If the scroll viewer is still at the top in 1 second, PushBackGeneratedServices
                 {
-                    new Timer(
-                        (cb) => Dispatcher.BeginInvoke(() =>
-                                {
-                                    if (ServicesRadGridViewScrollViewer.VerticalOffset == 0)
-                                        ServicesVM.PushBackGeneratedServices();
-                                })
-                                , null, 1000, Timeout.Infinite);
+                    Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
+                    {
+                        if (ServicesRadGridViewScrollViewer.VerticalOffset == 0)
+                            VM.Services.PushBackGeneratedServices();
+                    });
                 }
 
                 if (args.VerticalChange > 0 && ServicesRadGridViewScrollViewer.VerticalOffset == ServicesRadGridViewScrollViewer.ScrollableHeight)
-                //If the scroll viewer is still at the bottom in 2 seconds, PushForwardGeneratedServices
+                //If the scroll viewer is still at the bottom in 1 second, PushForwardGeneratedServices
                 {
-                    new Timer(
-                        (cb) => Dispatcher.BeginInvoke(() =>
-                        {
-                            if (ServicesRadGridViewScrollViewer.VerticalOffset == ServicesRadGridViewScrollViewer.ScrollableHeight)
-                                ServicesVM.PushForwardGeneratedServices();
-                        })
-                                , null, 1000, Timeout.Infinite);
+                    Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
+                    {
+                        if (ServicesRadGridViewScrollViewer.VerticalOffset == ServicesRadGridViewScrollViewer.ScrollableHeight)
+                            VM.Services.PushForwardGeneratedServices();
+                    });
                 }
             };
         }
@@ -115,38 +126,6 @@ namespace FoundOps.SLClient.UI.Controls.Services
         {
             if (!IsMainGrid)
                 ((IProvideContext)this.DataContext).MoveToDetailsView.Execute(null);
-        }
-
-        private void ServicesRadGridViewSelectionChanged(object sender, SelectionChangeEventArgs e)
-        {
-            //Listen to the selected service's property changes, to check if the date changes
-
-            //Clear listening to the last selected service
-            var deselectedService = e.RemovedItems.OfType<Service>().FirstOrDefault();
-            if (deselectedService != null)
-                deselectedService.PropertyChanged -= SelectedServicePropertyChanged;
-
-            var selectedService = e.AddedItems.OfType<Service>().FirstOrDefault();
-
-            //Listen to selectedServiceTuple property change
-            if (selectedService == null)
-                return;
-
-            selectedService.PropertyChanged += SelectedServicePropertyChanged;
-
-            //Put the selection in the middle
-            ScrollToMiddle(selectedService);
-        }
-
-        void SelectedServicePropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            //If the date changes: resort the grid, put the item in the middle
-            if (e.PropertyName == "ServiceDate")
-            {
-                ServicesRadGridView.SortDescriptors.Clear();
-                ServicesRadGridView.SortDescriptors.Add(new ColumnSortDescriptor { Column = ServicesRadGridView.Columns["DateColumn"], SortDirection = ListSortDirection.Ascending });
-                ScrollToMiddle(ServicesRadGridView.SelectedItem);
-            }
         }
 
         private object _lastItemScrolledTo;
@@ -177,6 +156,9 @@ namespace FoundOps.SLClient.UI.Controls.Services
         }
     }
 
+    /// <summary>
+    /// Changes the Foreground depending on the date of the service.
+    /// </summary>
     public class ServiceStyleSelector : StyleSelector
     {
         public override Style SelectStyle(object item, DependencyObject container)
@@ -186,10 +168,13 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 return style;
             var serviceDate = ((Service)item).ServiceDate;
 
+            //If the service is in the past it should be grey.
             if (serviceDate < DateTime.Now.Date)
                 style.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(Colors.Gray)));
+            //If the service is today it should be green.
             else if (serviceDate == DateTime.Now.Date)
                 style.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(Colors.Green)));
+            //If the service is in the future it should be blue.
             else
                 style.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(Colors.Blue)));
             return style;

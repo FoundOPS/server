@@ -203,7 +203,8 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             AddCommand = new ReactiveCommand(canAddCommand);
 
-            AddCommand.Subscribe(x =>
+            AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher()
+                .Subscribe(x =>
             {
                 _disableSelectedEntity = true;
                 var newEntity = AddNewEntity(x);
@@ -227,7 +228,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             DeleteCommand = new ReactiveCommand(canDeleteCommand);
 
-            DeleteCommand.Subscribe(x =>
+            DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(x =>
             {
                 if (MessageBox.Show("Are you sure you want to delete?", "Delete?", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
                     return;

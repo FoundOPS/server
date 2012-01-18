@@ -2,8 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
         xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" 
-             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI" xmlns:Behaviors="clr-namespace:FoundOps.Common.Silverlight.UI.Interactivity.Behaviors;assembly=FoundOps.Common.Silverlight.UI" 
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
+             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI" xmlns:Behaviors="clr-namespace:FoundOps.Common.Silverlight.UI.Interactivity.Behaviors;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
     <Grid x:Name="LayoutRoot">
         <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource LocationBrush}" BorderBrush="{StaticResource LocationBrush}">
             <toolkit:Expander.Header>
@@ -11,7 +11,9 @@
             </toolkit:Expander.Header>
             <Controls:RadComboBox x:Name="LocationsRadComboBox" Margin="5,3,5,3" Foreground="Black" MinWidth="100" IsEditable="True" IsFilteringEnabled="True" TextSearchMode="Contains" 
                                   DisplayMemberPath="OwnedParty.DisplayName" ItemsSource="{Binding DomainCollectionView}" SelectedValue="{Binding Entity, Mode=TwoWay, ElementName=myLocationLinkLarge}">
-                <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=Controls1:Selector.SelectedValueProperty}"/>
+                <i:Interaction.Behaviors>
+                    <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=Controls1:Selector.SelectedValueProperty}"/>
+                </i:Interaction.Behaviors>
             </Controls:RadComboBox>
         </toolkit:Expander>
     </Grid>

@@ -28,9 +28,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="EmployeesVM"/> class.
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
-        /// <param name="partyDataService">The party data service.</param>
         [ImportingConstructor]
-        public EmployeesVM(DataManager dataManager, IPartyDataService partyDataService)
+        public EmployeesVM(DataManager dataManager)
             : base(dataManager)
         {
             //Setup the selected Employee's OwnedPerson PartyVM whenever the selected employee changes

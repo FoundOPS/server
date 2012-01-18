@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.Windows.Documents.Fixed</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider">
+            <summary>
+            Provides functionality for importing PDF documents.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider"/> class.
+            </summary>
+            <param name="pdfStream">The stream containing PDF document.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider.Import">
+            <summary>
+            Creates a <see cref="T:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument"/> instance.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument">
+            <summary>
+            Hosts a fixed-format document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument.Pages">
+            <summary>
+            Gets or sets the collection of the document pages.
+            </summary>
+            <value>
+            The pages collection.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument.Resources">
+            <summary>
+            Gets or sets the resource dictionary.
+            </summary>
+            <value>
+            The resource dictionary.
+            </value>
+        </member>
+    </members>
+</doc>

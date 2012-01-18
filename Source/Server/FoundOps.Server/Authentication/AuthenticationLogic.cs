@@ -14,8 +14,10 @@ namespace FoundOps.Server.Authentication
     {
         public static string CurrentUserAccountsEmailAddress()
         {
+#if DEBUG
             if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan"))
                 return "jperl@foundops.com";
+#endif
 
             return HttpContext.Current.User.Identity.Name;
         }

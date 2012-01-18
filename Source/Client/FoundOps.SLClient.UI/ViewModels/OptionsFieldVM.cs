@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using ReactiveUI.Xaml;
 using FoundOps.Common.Silverlight.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
@@ -56,7 +57,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void RegisterCommands()
         {
             AddCommand = new ReactiveCommand();
-            AddCommand.Subscribe(param =>
+            AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).Subscribe(param =>
             {
                 var newOption = new Option();
                 OptionsField.OptionsWrapper.Add(newOption);
@@ -64,7 +65,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             DeleteCommand = new ReactiveCommand();
-            DeleteCommand.Subscribe(param =>
+            DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(param =>
             {
                 OptionsField.OptionsWrapper.Remove(SelectedOption);
                 SelectedOption = null;

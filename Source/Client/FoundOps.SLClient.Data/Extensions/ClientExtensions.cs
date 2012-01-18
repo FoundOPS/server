@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.ServiceModel.DomainServices.Client;
 using RiaServicesContrib;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
@@ -66,7 +67,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets the entity graph of Client to remove.
         /// </summary>
-        public EntityGraph<Client> EntityGraphToRemove
+        public EntityGraph<Entity> EntityGraphToRemove
         {
             get
             {
@@ -75,7 +76,7 @@ namespace FoundOps.Core.Models.CoreEntities
                     .Edge<Client, ServiceTemplate>(client => client.ServiceTemplates).Edge<ServiceTemplate, Field>(st => st.Fields)
                     .Edge<OptionsField, Option>(of => of.Options);
 
-                return new EntityGraph<Client>(this, graphShape);
+                return new EntityGraph<Entity>(this, graphShape);
             }
         }
 

@@ -36,9 +36,7 @@
                                     <TextBlock Text="Task Board" />
                                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                                         <telerik:RadButton Content="Add" Command="{Binding DataContext.AddRouteTask, ElementName=myDispatcherMainPage}" Click="AddNewRouteTaskButtonClick"/>
-                                        <!--Add Button Adds A New Route Stop to the Job Board-->
-                                        <telerik:RadButton Content="Delete" Command="{Binding DataContext.DeleteRouteTask, ElementName=myDispatcherMainPage}" Click="DeleteRouteTaskButtonClick"/>
-                                        <!--Add Button Adds A New Route Stop to the Job Board-->
+                                        <telerik:RadButton Content="Delete" Command="{Binding DataContext.DeleteRouteTasks, ElementName=myDispatcherMainPage}" Click="DeleteRouteTaskButtonClick"/>
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>

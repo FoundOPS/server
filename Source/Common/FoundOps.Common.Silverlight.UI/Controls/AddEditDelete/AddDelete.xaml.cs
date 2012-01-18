@@ -16,6 +16,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         AddDelete, //For adding and deleting only
         AddNewExistingDelete, //For adding and deleting new or existing items
         AddCustomTemplate, //For adding new or existing items. Requires using AddMenuItemTemplate and setting CreateNewItem action and the AddedCurrentItem action
+        AddCustomTemplateDelete, //When the Add button is clicked the AddMenuItemCustomTemplate is used. The Delete button operates normally.
         AddDeleteCustomTemplate, //For adding new or existing and deleting items. Requires using AddMenuItemTemplate and setting CreateNewItem action, the RemoveCurrentItem action, and the AddedCurrentItem action
         AddNewItemDeleteCustomTemplate, //For adding and deleting new items. Requires using AddMenuItemTemplate and setting CreateNewItem action, the RemoveCurrentItem action, and the AddedCurrentItem action
         AddItemDelete //For adding and deleting existing items. Requires using ItemsSource and ItemTemplate
@@ -23,45 +24,25 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
     public partial class AddDelete
     {
-        private bool _currentItemAdded;
+        #region Public Properties and Variables
 
-        public AddDelete()
-        {
-            InitializeComponent();
-            RadContextMenu.DataContext = this;
+        #region Events
 
-            AddButton.Click += (s, args) =>
-            {
-                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) || RadContextMenu.IsOpen)
-                    return;
+        public delegate void AddDeleteEventArgs(AddDelete sender, object item);
 
-                //When the AddButton is clicked open the RadContextMenu and
-                RadContextMenu.IsOpen = true;
+        /// <summary>
+        /// Occurs when [add] should be executed.
+        /// </summary>
+        public event AddDeleteEventArgs Add;
 
-                //create the default item
-                CustomAddMenuItem.Content = CreateNewItem.Invoke();
-            };
+        /// <summary>
+        /// Occurs when [delete] should be executed.
+        /// </summary>
+        public event AddDeleteEventArgs Delete;
 
-            RadContextMenu.Closed += (s, args) =>
-            {
-                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate)) return;
+        #endregion
 
-                var item = CustomAddMenuItem.Content;
-
-                //When the RadContextMenu is closed
-
-                //if the currentItem was not added, remove it
-                if (!_currentItemAdded)
-                {
-                    RemoveCurrentItem.Invoke(item);
-                    return;
-                }
-
-                //if the currentItem was added, call AddCommand.Execute
-                _currentItemAdded = false;
-                AddCommand.Execute(item);
-            };
-        }
+        #region Dependency Properties
 
         #region AddDeleteMode
 
@@ -129,6 +110,10 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
                     c.CustomAddMenuItem.Visibility = Visibility.Visible;
                     c.DeleteButton.IsEnabled = false;
                     break;
+                case AddDeleteMode.AddCustomTemplateDelete:
+                    c.CustomAddMenuItem.Visibility = Visibility.Visible;
+                    c.DeleteButton.IsEnabled = true;
+                    break;
                 case AddDeleteMode.AddDeleteCustomTemplate:
                     c.CustomAddMenuItem.Visibility = Visibility.Visible;
                     c.DeleteButton.IsEnabled = true;
@@ -138,32 +123,52 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        public Func<object> CreateNewItem { get; set; }
-        public Action<object> RemoveCurrentItem { get; set; }
+        #region AddIsEnabled Dependency Property
 
         /// <summary>
-        /// Call this for the AddDeleteMode.AddNewItemDeleteCustomTemplate or AddDeleteCustomTemplate when you have added the item.
-        /// This will call AddCommand.Execute and close the RadContextMenu.
+        /// AddIsEnabled
         /// </summary>
-        public void AddedCurrentItem()
+        public bool AddIsEnabled
         {
-            if (AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate && AddDeleteMode != AddDeleteMode.AddCustomTemplate && AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) return;
-
-            _currentItemAdded = true;
-            this.RadContextMenu.IsOpen = false;
+            get { return (bool) GetValue(AddIsEnabledProperty); }
+            set { SetValue(AddIsEnabledProperty, value); }
         }
 
         /// <summary>
-        /// Call this for the AddDeleteMode.AddNewItemDeleteCustomTemplate or AddDeleteCustomTemplate when you want to close the context menu.
-        /// This will call RemoveCurrentItem and close the RadContextMenu.
+        /// AddIsEnabled Dependency Property.
         /// </summary>
-        public void CloseContextMenu()
-        {
-            if (AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate && AddDeleteMode != AddDeleteMode.AddCustomTemplate && AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) return;
+        public static readonly DependencyProperty AddIsEnabledProperty =
+            DependencyProperty.Register(
+                "AddIsEnabled",
+                typeof (bool),
+                typeof (AddDelete),
+                new PropertyMetadata(true));
 
-            _currentItemAdded = true;
-            this.RadContextMenu.IsOpen = false;
+        #endregion
+        #region DeleteIsEnabled Dependency Property
+
+        /// <summary>
+        /// DeleteIsEnabled
+        /// </summary>
+        public bool DeleteIsEnabled
+        {
+            get { return (bool) GetValue(DeleteIsEnabledProperty); }
+            set { SetValue(DeleteIsEnabledProperty, value); }
         }
+
+        /// <summary>
+        /// DeleteIsEnabled Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty DeleteIsEnabledProperty =
+            DependencyProperty.Register(
+                "DeleteIsEnabled",
+                typeof (bool),
+                typeof (AddDelete),
+                new PropertyMetadata(true));
+
+        #endregion
+
+        #region Commands
 
         #region AddCommand Dependency Property
 
@@ -188,23 +193,23 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        #region DeleteCommand Dependency Property
+        #region AddItemCommand Dependency Property
 
         /// <summary>
-        /// DeleteCommand
+        /// AddExistingCommand
         /// </summary>
-        public ICommand DeleteCommand
+        public ICommand AddItemCommand
         {
-            get { return (ICommand)GetValue(DeleteCommandProperty); }
-            set { SetValue(DeleteCommandProperty, value); }
+            get { return (ICommand)GetValue(AddItemCommandProperty); }
+            set { SetValue(AddItemCommandProperty, value); }
         }
 
         /// <summary>
-        /// DeleteCommand Dependency Property.
+        /// AddExistingCommand Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty DeleteCommandProperty =
+        public static readonly DependencyProperty AddItemCommandProperty =
             DependencyProperty.Register(
-                "DeleteCommand",
+                "AddItemCommand",
                 typeof(ICommand),
                 typeof(AddDelete),
                 new PropertyMetadata(null));
@@ -234,52 +239,55 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        #region AddItemCommand Dependency Property
+        #region DeleteCommand Dependency Property
 
         /// <summary>
-        /// AddExistingCommand
+        /// DeleteCommand
         /// </summary>
-        public ICommand AddItemCommand
+        public ICommand DeleteCommand
         {
-            get { return (ICommand)GetValue(AddItemCommandProperty); }
-            set { SetValue(AddItemCommandProperty, value); }
+            get { return (ICommand)GetValue(DeleteCommandProperty); }
+            set { SetValue(DeleteCommandProperty, value); }
         }
 
         /// <summary>
-        /// AddExistingCommand Dependency Property.
+        /// DeleteCommand Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty AddItemCommandProperty =
+        public static readonly DependencyProperty DeleteCommandProperty =
             DependencyProperty.Register(
-                "AddItemCommand",
+                "DeleteCommand",
                 typeof(ICommand),
                 typeof(AddDelete),
                 new PropertyMetadata(null));
 
         #endregion
 
-        #region ItemsSource Dependency Property
+        #endregion
+
+        #region Templates
+
+        #region AddMenuItemCustomTemplate Dependency Property
 
         /// <summary>
-        /// ExistingItemsSource
+        /// AddMenuItemCustomTemplate
         /// </summary>
-        public IEnumerable ItemsSource
+        public DataTemplate AddMenuItemCustomTemplate
         {
-            get { return (IEnumerable)GetValue(ItemsSourceProperty); }
-            set { SetValue(ItemsSourceProperty, value); }
+            get { return (DataTemplate)GetValue(AddMenuItemCustomTemplateProperty); }
+            set { SetValue(AddMenuItemCustomTemplateProperty, value); }
         }
 
         /// <summary>
-        /// ExistingItemsSource Dependency Property.
+        /// AddMenuItemCustomTemplate Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty ItemsSourceProperty =
+        public static readonly DependencyProperty AddMenuItemCustomTemplateProperty =
             DependencyProperty.Register(
-                "ItemsSource",
-                typeof(IEnumerable),
+                "AddMenuItemCustomTemplate",
+                typeof(DataTemplate),
                 typeof(AddDelete),
                 new PropertyMetadata(null));
 
         #endregion
-
         #region ItemTemplate Dependency Property
 
         /// <summary>
@@ -316,33 +324,146 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        #region AddMenuItemCustomTemplate Dependency Property
+        #endregion
+
+        #region ItemsSource Dependency Property
 
         /// <summary>
-        /// AddMenuItemCustomTemplate
+        /// ExistingItemsSource
         /// </summary>
-        public DataTemplate AddMenuItemCustomTemplate
+        public IEnumerable ItemsSource
         {
-            get { return (DataTemplate)GetValue(AddMenuItemCustomTemplateProperty); }
-            set { SetValue(AddMenuItemCustomTemplateProperty, value); }
+            get { return (IEnumerable)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
         }
 
         /// <summary>
-        /// AddMenuItemCustomTemplate Dependency Property.
+        /// ExistingItemsSource Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty AddMenuItemCustomTemplateProperty =
+        public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register(
-                "AddMenuItemCustomTemplate",
-                typeof(DataTemplate),
+                "ItemsSource",
+                typeof(IEnumerable),
                 typeof(AddDelete),
                 new PropertyMetadata(null));
 
         #endregion
 
+        #endregion
+
+        #endregion
+
+        public AddDelete()
+        {
+            InitializeComponent();
+            RadContextMenu.DataContext = this;
+
+            AddButton.Click += (s, args) =>
+            {
+                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplateDelete) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) || RadContextMenu.IsOpen)
+                    return;
+
+                //When the AddButton is clicked open the RadContextMenu and
+                RadContextMenu.IsOpen = true;
+
+                //create the default item
+                if (CreateNewItem != null)
+                    CustomAddMenuItem.Content = CreateNewItem.Invoke();
+            };
+
+            RadContextMenu.Closed += (s, args) =>
+            {
+                if ((AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplate) && (AddDeleteMode != AddDeleteMode.AddCustomTemplateDelete) && (AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate)) return;
+
+                var item = CustomAddMenuItem.Content;
+
+                //When the RadContextMenu is closed
+
+                //if the currentItem was not added, remove it
+                if (!_currentItemAdded)
+                {
+                    if (RemoveCurrentItem != null)
+                    {
+                        RemoveCurrentItem.Invoke(item);
+                        return;
+                    }
+                }
+
+                //if the currentItem was added, call Add && AddCommand.Execute
+                _currentItemAdded = false;
+
+                //Call AddHelper
+                AddHelper();
+            };
+        }
+
+        #region TODO: Remove below two function, DEPRECATED. Use AddToDeleteFrom
+
+        private bool _currentItemAdded;
+
+        public Func<object> CreateNewItem { get; set; }
+        public Action<object> RemoveCurrentItem { get; set; }
+
+        /// <summary>
+        /// Call this for the AddDeleteMode.AddNewItemDeleteCustomTemplate or AddDeleteCustomTemplate when you have added the item.
+        /// This will call AddCommand.Execute and close the RadContextMenu.
+        /// </summary>
+        public void AddedCurrentItem()
+        {
+            if (AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate && AddDeleteMode != AddDeleteMode.AddCustomTemplate && AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) return;
+
+            _currentItemAdded = true;
+            this.RadContextMenu.IsOpen = false;
+        }
+
+        /// <summary>
+        /// Call this for the AddDeleteMode.AddNewItemDeleteCustomTemplate or AddDeleteCustomTemplate when you want to close the context menu.
+        /// This will call RemoveCurrentItem and close the RadContextMenu.
+        /// </summary>
+        public void CloseContextMenu()
+        {
+            if (AddDeleteMode != AddDeleteMode.AddNewItemDeleteCustomTemplate && AddDeleteMode != AddDeleteMode.AddCustomTemplate && AddDeleteMode != AddDeleteMode.AddDeleteCustomTemplate) return;
+
+            _currentItemAdded = true;
+            this.RadContextMenu.IsOpen = false;
+        }
+
+        #endregion
+
+        #region Logic
+
+        /// <summary>
+        /// Executes the AddCommand and calls the Add event
+        /// </summary>
+        private void AddHelper()
+        {
+            if (AddCommand != null)
+                AddCommand.Execute(null);
+
+            if (Add != null)
+                Add(this, null);
+        }
+
         private void AddButtonClick(object sender, RoutedEventArgs e)
         {
             if (AddDeleteMode == AddDeleteMode.AddItemDelete || AddDeleteMode == AddDeleteMode.AddNewExistingDelete)
                 RadContextMenu.IsOpen = true;
+
+            //Call AddHelper if the proper mode
+            if (AddDeleteMode == AddDeleteMode.AddNewItemDeleteCustomTemplate || AddDeleteMode == AddDeleteMode.AddCustomTemplate || AddDeleteMode == AddDeleteMode.AddDeleteCustomTemplate) return;
+            AddHelper();
         }
+
+        /// Executes the DeleteCommand and calls the Delete event
+        private void DeleteButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (DeleteCommand != null)
+                DeleteCommand.Execute(null);
+
+            if (Delete != null)
+                Delete(this, null);
+        }
+
+        #endregion
     }
 }

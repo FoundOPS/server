@@ -88,20 +88,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         //Manually handle TaskBoardRadGridViewSelectionChanged for RouteTask to choose the last task for details
         private void TaskBoardRadGridViewSelectionChanged(object sender, SelectionChangeEventArgs e)
         {
-            if (e.RemovedItems != null)
-            {
-                //If the currently SelectedTask was unselected. Clear the SelectedTask
-                if (e.RemovedItems.Any(removedItem => this.RoutesVM.SelectedTask == removedItem))
-                    this.RoutesVM.SelectedTask = null;
-            }
-
-            if (e.AddedItems != null)
-            {
-                var lastSelectedRouteTask = e.AddedItems.LastOrDefault() as RouteTask;
-                //Set the SelectedTask to the last selected RouteTask
-                if (lastSelectedRouteTask != null)
-                    this.RoutesVM.SelectedTask = lastSelectedRouteTask;
-            }
+            VM.Routes.SelectedTaskBoardTasks = TaskBoardRadGridView.SelectedItems.Cast<RouteTask>();
         }
     }
 }

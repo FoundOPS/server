@@ -7,10 +7,10 @@
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files" xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM" d:DesignWidth="400">
+             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM" 
+             d:DesignWidth="400" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--Use grid to allow scrollviewer to work-->
-    <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}" 
-          Visibility="{Binding DataContext.SelectedEntity, ElementName=myEmployeeLarge, Converter={StaticResource VisibilityConverter}}">
+    <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

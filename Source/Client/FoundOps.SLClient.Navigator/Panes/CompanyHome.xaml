@@ -12,31 +12,13 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (12/08/2011)
+                (1/16/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            * Ability to add an image to clients and employees.<LineBreak/>
-            * Added the day of the week to service occurences.<LineBreak/>
-            * Employees can now be linked with user accounts.<LineBreak/>
-            * Updated the locations grid in clients to be more dynamic.<LineBreak/>
-            * Bug fixes.<LineBreak/>
-            <LineBreak/>
-            (11/10/2011)<LineBreak/>
-            * Added Latest Updates screen.<LineBreak/>
-            * Increased stability.<LineBreak/>
-            * Ability to filter routes by service with service counts.<LineBreak/>
-            * Added street map view to locations.<LineBreak/>
-            * Locations and Regions start alphabetically organized.<LineBreak/>
-            * Added route destination details to dispatcher.<LineBreak/>
-            * Added schedule descriptions.<LineBreak/>
-            * Added vehicles and employees to route log.<LineBreak/>
-            * The dispatcher and manifests remember your last settings.<LineBreak/>
-            * Ability to reset the dispatcher layout back to the default.<LineBreak/>            
-            * Reduced save/discard/cancel prompts.<LineBreak/>
-            * Business and user settings.<LineBreak/>
-            * Adding locations to clients is now a little easier.<LineBreak/>
-            * Many bug fixes.<LineBreak/>
+            * Setup manifest printing and saving. Can save manifests as a PDF.<LineBreak/>
+            * Fixed the loaded routes and tasks in dispatcher when switching dates.<LineBreak/>
+            * Started system optimization.<LineBreak/>
         </TextBlock>
     </Grid>
 </sdk:Page>

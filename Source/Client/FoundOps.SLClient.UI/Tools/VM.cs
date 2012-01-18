@@ -13,13 +13,68 @@ namespace FoundOps.SLClient.UI.Tools
     public static class VM
     {
         /// <summary>
+        /// Gets the BusinessAccountsVM.
+        /// </summary>
+        public static BusinessAccountsVM BusinessAccounts
+        {
+            get
+            {
+                return (BusinessAccountsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("BusinessAccountsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ClientsVM.
+        /// </summary>
+        public static ClientsVM Clients
+        {
+            get
+            {
+                return (ClientsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ClientTitlesVM.
+        /// </summary>
+        public static ClientTitlesVM ClientTitles
+        {
+            get
+            {
+                return (ClientTitlesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientTitlesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the EmployeesVM.
+        /// </summary>
+        public static EmployeesVM Employees
+        {
+            get
+            {
+                return (EmployeesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("EmployeesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the FieldsVM.
+        /// </summary>
+        public static FieldsVM Fields
+        {
+            get
+            {
+                return (FieldsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("FieldsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
         /// Gets the LocationsVM.
         /// </summary>
         public static LocationsVM Locations
         {
             get
             {
-                return (LocationsVM) ViewModelRepository.Instance.Resolver.GetViewModelByContract("LocationsVM", null, CreationPolicy.Shared).Value;
+                return (LocationsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("LocationsVM", null, CreationPolicy.Shared).Value;
             }
         }
 
@@ -57,15 +112,9 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
-        /// Gets the FieldsVM.
+        /// Gets the RouteManifestVM.
         /// </summary>
-        public static FieldsVM Fields
-        {
-            get
-            {
-                return (FieldsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("FieldsVM", null, CreationPolicy.Shared).Value;
-            }
-        }
+        public static RouteManifestVM RouteManifest { get { return Routes.RouteManifestVM; } }
 
         /// <summary>
         /// Gets the ServiceTemplatesVM.
@@ -79,35 +128,24 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
-        /// Gets the EmployeesVM.
+        /// Gets the ServicesVM.
         /// </summary>
-        public static EmployeesVM Employees
+        public static ServicesVM Services
         {
             get
             {
-                return (EmployeesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("EmployeesVM", null, CreationPolicy.Shared).Value;
+                return (ServicesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ServicesVM", null, CreationPolicy.Shared).Value;
             }
         }
 
         /// <summary>
-        /// Gets the ClientsVM.
+        /// Gets the UserAccountsVM.
         /// </summary>
-        public static ClientsVM Clients
+        public static UserAccountsVM UserAccounts
         {
             get
             {
-                return (ClientsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientsVM", null, CreationPolicy.Shared).Value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the ClientTitlesVM.
-        /// </summary>
-        public static ClientTitlesVM ClientTitles
-        {
-            get
-            {
-                return (ClientTitlesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientTitlesVM", null, CreationPolicy.Shared).Value;
+                return (UserAccountsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("UserAccountsVM", null, CreationPolicy.Shared).Value;
             }
         }
     }

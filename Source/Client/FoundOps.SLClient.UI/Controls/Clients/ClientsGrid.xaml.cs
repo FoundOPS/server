@@ -5,24 +5,23 @@ using System.ComponentModel;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using Telerik.Windows.Controls.GridView;
-using PropertyMetadata = System.Windows.PropertyMetadata;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 
 namespace FoundOps.SLClient.UI.Controls.Clients
 {
-    public partial class ClientsGrid : INotifyPropertyChanged
+    /// <summary>
+    /// UI to display a list of the current context's clients.
+    /// </summary>
+    public partial class ClientsGrid
     {
-        private bool _isMainGrid;
-        public bool IsMainGrid
-        {
-            get { return _isMainGrid; }
-            set
-            {
-                _isMainGrid = value;
-                ClientsRadGridView.Columns["DeleteSelectedClientFromParentContextVMColumn"].IsVisible = !IsMainGrid;
-            }
-        }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is main grid.
+        /// </summary>
+        public bool IsMainGrid { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientsGrid"/> class.
+        /// </summary>
         public ClientsGrid()
         {
             InitializeComponent();
@@ -50,39 +49,5 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             if (!IsMainGrid)
                 ((IProvideContext)this.DataContext).MoveToDetailsView.Execute(null);
         }
-
-        #region ParentContextVM Dependency Property
-
-        /// <summary>
-        /// ParentContextVM
-        /// </summary>
-        public IAddDeleteSelectedClient ParentContextVM
-        {
-            get { return (IAddDeleteSelectedClient)GetValue(ParentContextVMProperty); }
-            set { SetValue(ParentContextVMProperty, value); }
-        }
-
-        /// <summary>
-        /// ParentContextVM Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty ParentContextVMProperty =
-            DependencyProperty.Register(
-                "ParentContextVM",
-                typeof(IAddDeleteSelectedClient),
-                typeof(ClientsGrid),
-                new PropertyMetadata(null));
-
-        #endregion
-
-        #region Implementation of INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }

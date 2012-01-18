@@ -92,7 +92,7 @@
     <Reference Include="Croll.Silverlight.Controls">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Croll.Silverlight.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" >
+    <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="Kent.Boogaart.HelperTrinity">
@@ -219,49 +219,67 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Data.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Data.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Docking">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Docking.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Docking.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.FixedDocumentViewers">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.FixedDocumentViewers.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.GridView">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.GridView.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Input">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Input.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Input.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Navigation">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Navigation.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Navigation.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.ScheduleView">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.Pdf">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.FormatProviders.Pdf.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Account\Business\BusinessDetailsView.xaml.cs">
+    <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
+      <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml.cs">
+      <DependentUpon>ManifestFooter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml.cs">
+      <DependentUpon>ManifestHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml.cs">
       <DependentUpon>BusinessDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Account\Person\PersonDetailsEdit.xaml.cs">
+    <Compile Include="Controls\Parties\Person\PersonDetailsEdit.xaml.cs">
       <DependentUpon>PersonDetailsEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Clients\ClientLarge.xaml.cs">
@@ -354,13 +372,10 @@
     <Compile Include="Controls\Dispatcher\RouteDetails.xaml.cs">
       <DependentUpon>RouteDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dispatcher\RouteManifest.xaml.cs">
-      <DependentUpon>RouteManifest.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Dispatcher\RouteManifestOptions.xaml.cs">
+    <Compile Include="Controls\Dispatcher\Manifest\RouteManifestOptions.xaml.cs">
       <DependentUpon>RouteManifestOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dispatcher\RouteManifestViewer.xaml.cs">
+    <Compile Include="Controls\Dispatcher\Manifest\RouteManifestViewer.xaml.cs">
       <DependentUpon>RouteManifestViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dispatcher\RoutesLogGrid.xaml.cs">
@@ -449,9 +464,6 @@
     </Compile>
     <Compile Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml.cs">
       <DependentUpon>UserAccountsLink.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PriceSets\PriceSetRules.xaml.cs">
-      <DependentUpon>PriceSetRules.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Regions\RegionLinkSmall.xaml.cs">
       <DependentUpon>RegionLinkSmall.xaml</DependentUpon>
@@ -619,11 +631,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Account\Business\BusinessDetailsView.xaml">
+    <Page Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Account\Person\PersonDetailsEdit.xaml">
+    <Page Include="Controls\Parties\Person\PersonDetailsEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -747,15 +771,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Dispatcher\RouteManifest.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Dispatcher\RouteManifestOptions.xaml">
+    <Page Include="Controls\Dispatcher\Manifest\RouteManifestOptions.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Dispatcher\RouteManifestViewer.xaml">
+    <Page Include="Controls\Dispatcher\Manifest\RouteManifestViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -884,10 +904,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PriceSets\PriceSetRules.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1049,7 +1065,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\Parties\AdmininistrativeConsole\" />
-    <Folder Include="Tools\MarkupExtensions\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -1062,6 +1077,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

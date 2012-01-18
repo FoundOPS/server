@@ -236,16 +236,15 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationBarVM"/> class.
         /// </summary>
-        /// <param name="navigatorDataService">The navigator data service.</param>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public NavigationBarVM(INavigatorDataService navigatorDataService, DataManager dataManager)
+        public NavigationBarVM(DataManager dataManager)
         {
             _dataManager = dataManager;
 
             DataManager.ContextManager.UserAccountObservable.Subscribe(ua => CurrentUserAccount = ua);
 
-            navigatorDataService.GetPublicBlocks(blocks =>
+            dataManager.GetPublicBlocks(blocks =>
             {
                 PublicBlocks = blocks;
                 OnDataLoaded();

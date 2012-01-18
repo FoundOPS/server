@@ -91,6 +91,9 @@
     <Reference Include="ReactiveUI_SL5">
       <HintPath>Lib\ReactiveUI_SL5.dll</HintPath>
     </Reference>
+    <Reference Include="Rxx">
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\Rxx.dll</HintPath>
+    </Reference>
     <Reference Include="SLMultiBinding">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\SLMultiBinding.dll</HintPath>
     </Reference>
@@ -132,33 +135,36 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.GridView">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.GridView.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Input">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Input.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Input.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Navigation">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Navigation.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Navigation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.RibbonBar">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.RibbonBar.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.RibbonBar.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.RibbonView">
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.RibbonView.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.ScheduleView">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Data">
-      <HintPath>..\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows" />
@@ -167,10 +173,16 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Browser" />
+    <Reference Include="Telerik.Windows.Documents">
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\AddEditDelete\AddDelete.xaml.cs">
       <DependentUpon>AddDelete.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AddEditDelete\AddToDeleteFrom.xaml.cs">
+      <DependentUpon>AddToDeleteFrom.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AddEditDelete\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
@@ -256,7 +268,6 @@
       <DependentUpon>ThirdsListDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Printing\IPagedPrinter.cs" />
-    <Compile Include="Controls\Printing\PagedPrinter.cs" />
     <Compile Include="Controls\RemoveDeleteCancel.xaml.cs">
       <DependentUpon>RemoveDeleteCancel.xaml</DependentUpon>
     </Compile>
@@ -297,6 +308,7 @@
     <Compile Include="Converters\UriConverter.cs" />
     <Compile Include="Converters\VisibilityConverters.cs" />
     <Compile Include="DynamicallySizedWrapPanel\DynamicallySizedWrapPanel.cs" />
+    <Compile Include="DynamicallySizedWrapPanel\DynamicWrapPanelTools.cs" />
     <Compile Include="DynamicallySizedWrapPanel\LengthConverter.cs" />
     <Compile Include="DynamicallySizedWrapPanel\NumericExtensions.cs" />
     <Compile Include="DynamicallySizedWrapPanel\OrientedSize.cs" />
@@ -319,17 +331,23 @@
     <Compile Include="Selectors\EntityTemplateSelector.cs" />
     <Compile Include="Tools\BindingTools.cs" />
     <Compile Include="Tools\CollectionExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\DocumentExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\ColorExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\FrameworkElementExtensions.cs" />
     <Compile Include="Tools\FileTools.cs" />
     <Compile Include="Tools\MarkupExtensions\AppendNumberToStringMarkupExtension.cs" />
     <Compile Include="Tools\MarkupExtensions\AreEqual.cs" />
     <Compile Include="Tools\MarkupExtensions\DataContextEquals.cs" />
+    <Compile Include="Tools\MarkupExtensions\Except.cs" />
     <Compile Include="Tools\MarkupExtensions\ItemExistsInCollection.cs" />
+    <Compile Include="Tools\MarkupExtensions\MarkupExtensionHelpers.cs" />
+    <Compile Include="Tools\MarkupExtensions\Resolver.cs" />
     <Compile Include="Tools\MarkupExtensions\StaticMarkupExtensions.cs" />
     <Compile Include="Tools\MarkupExtensions\UpdatableMarkupExtensions.cs" />
     <Compile Include="Controls\EditRadioButtonColumn.cs" />
+    <Compile Include="Tools\MarkupExtensions\VisualTreeMarkupExtensions.cs" />
     <Compile Include="Tools\TrackEventAction.cs" />
+    <Compile Include="Tools\ExtensionMethods\VisualTreeExtensions.cs" />
     <Compile Include="ViewModels\IAddDeleteCommands.cs" />
     <Compile Include="ViewModels\ISaveDiscardChangesCommands.cs" />
     <Compile Include="ViewModels\ThreadableVM.cs" />
@@ -353,6 +371,10 @@
     <Page Include="Controls\AddEditDelete\AddDelete.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\AddEditDelete\AddToDeleteFrom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\AddEditDelete\EditButton.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -492,6 +514,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FoundOps.Common.Silverlight\FoundOps.Common.Silverlight.csproj">
+      <Project>{14ADDE30-D51B-4A1C-A855-D556431FDA0A}</Project>
+      <Name>FoundOps.Common.Silverlight</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FoundOps.Common\FoundOps.Common.csproj">
       <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
       <Name>FoundOps.Common</Name>

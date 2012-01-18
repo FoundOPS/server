@@ -1,2 +1,2 @@
-cd "C:\Program Files (x86)\Streams"
+cd Tools
 streams -s -d C:\FoundOps\GitHub

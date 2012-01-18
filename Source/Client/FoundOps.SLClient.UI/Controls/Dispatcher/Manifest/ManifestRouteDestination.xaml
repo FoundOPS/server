@@ -1,0 +1,145 @@
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.Manifest.ManifestRouteDestination" x:Name="myManifestRouteDestination"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:DynamicallySizedWrapPanel="clr-namespace:FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Converters1="clr-namespace:FoundOps.Core.Views.Converters" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI" 
+             xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="800" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsDestinationsVisible, Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
+    <!--Do not remove ViewModels, it is used by GetVM-->
+    <UserControl.Resources>
+        <Converters1:TypeToImageConverter x:Key="TypeToImageConverter" />
+    </UserControl.Resources>
+    <!--<StackPanel x:Name="TransitBetweenDestinationsElement" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock x:Name="EstimatedDistanceElement" Text="Est. Distance: 30 Miles" Margin="0,0,50,0" />
+                                <TextBlock x:Name="EstimatedTimeElement" Text="Est. Time: 12 Minutes"/>
+                            </StackPanel>-->
+    <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10" Margin="5" >
+        <StackPanel>
+            <Border CornerRadius="9" Background="white" DataContext="{Binding RouteDestination, Source={MarkupExtensions:RootElement}}">
+                <!--In color mode: Bind background to region color, In B&W mode: Background is black-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="1" Fill="Black"/>
+                    <!--Same binding as border right above-->
+                    <StackPanel Margin="8,4" Orientation="Horizontal">
+                        <TextBlock Text="{Binding OrderInRoute}" Foreground="Black" FontWeight="Bold"/>
+                        <!--Bind to RouteStop Number in Route-->
+                        <TextBlock Text=". " Foreground="Black" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Name}" Foreground="Black" FontWeight="Bold"/>
+                        <!--Bind to Client Name-->
+                        <TextBlock Text=" - " Foreground="Black" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Location.Name}" Foreground="Black" FontWeight="Bold"/>
+                        <!--Bind to Location Name-->
+                    </StackPanel>
+                    <!--<TextBlock HorizontalAlignment="Right" Grid.Column="1" Text="9:25 AM" Foreground="Black" FontWeight="Bold" Margin="8,4" Visibility="Collapsed"/>-->
+                    <!--Visbility is Collapsed until we get algorithims working. Bind to Estimated Time-->
+                </Grid>
+            </Border>
+            <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel HorizontalAlignment="Center" Width="750" NumberOfColumns="3" DataContext="{Binding RouteDestination, Source={MarkupExtensions:RootElement}}">
+                <StackPanel x:Name="AddressElement" Width="245" Margin="4,2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAddressVisible, Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
+                    <TextBlock Text="Address" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding Location.AddressLineOne}"/>
+                    <!--Address Line 1-->
+                    <TextBlock Text="{Binding Location.AddressLineTwo}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Location.City}"/>
+                        <TextBlock Text=", "/>
+                        <TextBlock Text="{Binding Location.State}"/>
+                        <TextBlock Text=" "/>
+                        <TextBlock Text="{Binding Location.ZipCode}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel x:Name="ContactInfoElement" Width="245" Margin="4,2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsContactInfoVisible, Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
+                    <TextBlock Text="Contact Information" FontWeight="Bold"/>
+                    <ItemsControl x:Name="ContactInfoItemsControl" Margin="4,2" ItemsSource="{Binding Client.OwnedParty.ContactInfoSet}">
+                        <!--Bind itemsource to route stop's contact Info-->
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!--Bind to image based on the type of contact info-->
+                                    <Image Stretch="Uniform" Source="{Binding Type, Converter={StaticResource TypeToImageConverter}}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding Label}"/>
+                                    <!--Bind to Contact info label-->
+                                    <TextBlock Text=" - "/>
+                                    <TextBlock Text="{Binding Data}"/>
+                                    <!--Bind to Contact info-->
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <StackPanel x:Name="RouteTasksElement" Margin="4,2" Width="245"  Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteTasksVisible, Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
+                    <TextBlock Text="Tasks" FontWeight="Bold"/>
+                    <ItemsControl x:Name="RouteTasksItemsControl" ItemsSource="{Binding RouteTasks}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <!--Bind to Task Name-->
+                                    <!--<TextBlock Text=" ("/>-->
+                                    <!--Bind to Estimated Time-->
+                                    <!--Visibility="{Binding DataContext.RouteManifestVM.RouteManifestSettings.IsAverageTaskDurationVisible, ElementName=myRouteManifest, Converter={StaticResource VisibilityConverter}}">-->
+                                    <!--<TextBlock Text=")"/>-->
+                                </StackPanel>
+                                <!--Insert Fields View Control to Show route task info-->
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!--<StackPanel x:Name="MapElement">
+                                            <StackPanel Width="245" Margin="4,2">
+                                                <Controls1:RadMap x:Name="Map" Margin="5" Width="200" Height="200" NavigationVisibility="Collapsed" CommandBarVisibility="Collapsed" MouseLocationIndicatorVisibility="Collapsed" 
+                                                ScaleVisibility="Visible" ZoomBarVisibility="Visible" MouseClickMode="None" MinZoomLevel="2" MaxZoomLevel="17">
+                                                    <Controls1:RadMap.Provider>
+                                                        <Telerik:YahooMapsProvider />
+                                                    </Controls1:RadMap.Provider>
+                                                    <Map:InformationLayer>
+                                                        <Icons:ThickPinPointIcon x:Name="MapPinPointLocation" HorizontalAlignment="Center" VerticalAlignment="Top" Map:MapLayer.Location="{Binding Location.TelerikLocation}" Text="*" Fill="Red">
+                                                            <ToolTipService.ToolTip>
+                                                                <ToolTip>
+                                                                    <StackPanel Background="White">
+                                                                        <TextBlock Text="{Binding Location.Name}" />
+                                                                        <TextBlock Text="{Binding Location.AddressLineOne}" />
+                                                                    </StackPanel>
+                                                                </ToolTip>
+                                                            </ToolTipService.ToolTip>
+                                                        </Icons:ThickPinPointIcon>
+                                                    </Map:InformationLayer>
+
+                                                    <Map:InformationLayer Name="SubLocationsInformationLayer" ItemTemplate="{StaticResource SubLocationPinPointTemplate}" ItemsSource="{Binding Location.SubLocations}" Loaded="InformationLayerLoaded" />
+                                                </Controls1:RadMap>
+                                            </StackPanel>
+
+                                            <StackPanel x:Name="SubLocationsElement" Margin="4,2" Width="245">
+                                                <TextBlock Text="SubLocations" FontWeight="Bold"/>
+                                                <ItemsControl x:Name="Element2" ItemsSource="{Binding Location.SubLocations, Converter={StaticResource OrderByParameterConverter}, ConverterParameter=Number}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Icons:PinPointIcon Fill="{Binding Number, Converter={StaticResource NumberColorConverter}}" Text="{Binding Number}"/>
+                                                                    <TextBlock Text="{Binding Name}"/>
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </StackPanel>-->
+
+                <Image x:Name="BarcodeImage" Margin="4,2" Height="120" Width="120" Stretch="UniformToFill" Visibility="{Binding RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible, Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}"/>
+
+                <!--<StackPanel x:Name="UserUploadedImageElement" Width="245" Margin="4,2">
+                                            <Image Margin="4,2" Height="110" Width="120" Source="/FoundOps.Common.Silverlight;component/Resources/ImageToBeBound.png"/>
+                                        </StackPanel>-->
+            </DynamicallySizedWrapPanel:DynamicallySizedWrapPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

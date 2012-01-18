@@ -10,7 +10,7 @@
     <Grid>
         <telerik:RadGridView x:Name="ServicesRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False"
             RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}" RowStyleSelector="{StaticResource ServiceStyleSelector}" 
-                            IsFilteringAllowed="False" EnableRowVirtualization="True" SelectionMode="Single" SelectionUnit="FullRow" SelectionChanged="ServicesRadGridViewSelectionChanged">
+                            IsFilteringAllowed="False" EnableRowVirtualization="True" SelectionMode="Single" SelectionUnit="FullRow">
             <telerik:RadGridView.Columns>
                 <!--For Design mode you must remove the DataMemberBindings and uncomment the CellTemplates-->
                 <telerik:GridViewDataColumn Header="Service Type" DataMemberBinding="{Binding ServiceType}">

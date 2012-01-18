@@ -86,7 +86,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL" >
+    <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\DataValidationFramework.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" />
@@ -161,26 +161,18 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
     <Reference Include="Telerik.Windows.Controls">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.Data.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Data.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.DomainServices">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.DomainServices.dll</HintPath>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.ScheduleView">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
-    </Reference>
-    <Reference Include="Telerik.Windows.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Telerik.Windows.Data.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -253,7 +245,7 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\VehiclesDesignData.cs">
       <Link>DesignData\VehiclesDesignData.cs</Link>
     </Compile>
-    <Compile Include="Converters\ClientToOwnedParty.cs" />
+    <Compile Include="Converters\OwnerPartyToClientConverter.cs" />
     <Compile Include="Converters\LocationConverters.cs" />
     <Compile Include="Converters\ServiceTemplatesConverters.cs" />
     <Compile Include="ExportContext.cs" />
@@ -287,8 +279,7 @@
     <Compile Include="Models\RouteManifestSettings.cs" />
     <Compile Include="Services\ContextManager.cs" />
     <Compile Include="Services\DataManager.cs" />
-    <Compile Include="Services\Design\DesignContactInfoDataService.cs" />
-    <Compile Include="Services\Interface\IContactInfoDataService.cs" />
+    <Compile Include="Services\IContactInfoDataService.cs" />
     <Compile Include="Services\Analytics.cs" />
     <Compile Include="Services\Manager.cs" />
     <Compile Include="Tools\DataFedVMExtensions.cs" />
@@ -298,18 +289,6 @@
     <Compile Include="ViewModels\CoreEntityVM.cs" />
     <Compile Include="ViewModels\CoreEntityCollectionInfiniteAccordionVM.cs" />
     <Compile Include="ViewModels\CoreEntityCollectionVM.cs" />
-    <Compile Include="Services\Design\DesignRoutesDataService.cs" />
-    <Compile Include="Services\Design\DesignLocationsDataService.cs" />
-    <Compile Include="Services\Design\DesignPartyDataService.cs" />
-    <Compile Include="Services\Interface\IRouteDataService.cs" />
-    <Compile Include="Services\Interface\IPartyDataService.cs" />
-    <Compile Include="Services\Interface\ILocationsDataService.cs" />
-    <Compile Include="Services\Interface\INavigatorDataService.cs" />
-    <Compile Include="Services\Runtime\PartyDataService.cs" />
-    <Compile Include="Services\Runtime\RoutesDataService.cs" />
-    <Compile Include="Services\Runtime\LocationsDataService.cs" />
-    <Compile Include="Services\Runtime\NavigatorDataService.cs" />
-    <Compile Include="Services\Design\DesignNavigatorDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CoreSelectedEntitiesCollectionVM.cs" />
     <Compile Include="ViewModels\DataFedVM.cs" />

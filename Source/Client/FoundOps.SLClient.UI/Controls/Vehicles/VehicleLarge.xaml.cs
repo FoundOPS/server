@@ -1,4 +1,5 @@
-﻿using FoundOps.SLClient.UI.ViewModels;
+﻿using System.Globalization;
+using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.UI.Controls.Vehicles
 {
@@ -8,7 +9,7 @@ namespace FoundOps.SLClient.UI.Controls.Vehicles
         {
             InitializeComponent();
             //Remove the comma that seperates numbers (this is a year)
-            YearNumericUpDown.NumberFormatInfo.NumberGroupSeparator = "";
+            YearNumericUpDown.NumberFormatInfo = new NumberFormatInfo { NumberGroupSeparator = "" };
         }
 
         public VehiclesVM VehiclesVM

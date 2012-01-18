@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Diagnostics;
 using System.Reactive.Linq;
+using FoundOps.Common.NET;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Models;
 using System.Reactive.Subjects;
@@ -11,9 +13,11 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using FoundOps.Common.Silverlight.Controls;
+using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Server.Services.CoreDomainService;
+using ReactiveUI;
 
 namespace FoundOps.SLClient.Data.Services
 {
@@ -21,7 +25,7 @@ namespace FoundOps.SLClient.Data.Services
     /// Subscribes to ContextManager to load the proper data
     /// </summary>
     [Export]
-    public class DataManager
+    public class DataManager : INotifyPropertyChanged
     {
         /// <summary>
         /// Each query of the DataManager.
@@ -29,6 +33,10 @@ namespace FoundOps.SLClient.Data.Services
         /// </summary>
         public enum Query
         {
+            /// <summary>
+            /// Loads all of the Blocks
+            /// </summary>
+            Blocks,
             ///<summary>
             /// Loads all of the BusinessAccounts related to the current RoleId
             ///</summary>
@@ -38,13 +46,13 @@ namespace FoundOps.SLClient.Data.Services
             ///</summary>
             Clients,
             ///<summary>
-            /// Loads all of the Contacts related to the current RoleId
-            ///</summary>
-            Contacts,
-            ///<summary>
             /// Loads all of the Contacts's ClientTitles related to the current RoleId
             ///</summary>
             ClientTitles,
+            ///<summary>
+            /// Loads all of the Contacts related to the current RoleId
+            ///</summary>
+            Contacts,
             ///<summary>
             /// Loads all of the Employee's related to the current RoleId
             ///</summary>
@@ -93,6 +101,21 @@ namespace FoundOps.SLClient.Data.Services
 
         #region Public
 
+        #region Implementation of INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void RaisePropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// The ContextManager
         /// </summary>
@@ -105,6 +128,42 @@ namespace FoundOps.SLClient.Data.Services
         public CoreDomainContext Context
         {
             get { return _coreDomainContext; }
+        }
+
+        public IObservable<bool> DomainContextHasChangesObservable = new Subject<bool>();
+        private bool _domainContextHasChanges;
+        /// <summary>
+        /// Gets or sets a value indicating whether the domain context has changes.
+        /// Updated every .25 seconds.
+        /// </summary>
+        public bool DomainContextHasChanges
+        {
+            get { return _domainContextHasChanges; }
+            set
+            {
+                if (value == _domainContextHasChanges) return;
+                _domainContextHasChanges = value;
+                ((Subject<bool>)DomainContextHasChangesObservable).OnNext(value);
+                this.RaisePropertyChanged("DomainContextHasChanges");
+            }
+        }
+
+        public IObservable<bool> DomainContextIsSubmittingObservable = new Subject<bool>();
+        private bool _domainContextIsSubmitting;
+        /// <summary>
+        /// Gets or sets a value indicating whether the domain context is submitting.
+        /// Updated every .25 seconds.
+        /// </summary>
+        public bool DomainContextIsSubmitting
+        {
+            get { return _domainContextIsSubmitting; }
+            set
+            {
+                if (value == _domainContextIsSubmitting) return;
+                _domainContextIsSubmitting = value;
+                ((Subject<bool>)DomainContextIsSubmittingObservable).OnNext(value);
+                this.RaisePropertyChanged("DomainContextIsSubmitting");
+            }
         }
 
         #endregion
@@ -122,6 +181,11 @@ namespace FoundOps.SLClient.Data.Services
         /// Stores each query's loading status observable.
         /// </summary>
         private readonly Dictionary<object, BehaviorSubject<bool>> _queriesIsLoadingSubjects = new Dictionary<object, BehaviorSubject<bool>>();
+
+        /// <summary>
+        /// Stores each query's current load operation (until it is loaded).
+        /// </summary>
+        private readonly Dictionary<object, object> _queriesLoadOperations = new Dictionary<object, object>();
 
         /// <summary>
         /// Stores each query's entityList subject. NOTE: object is a BehaviorSubject'EntityList' (could not figure a way to make it covariant)
@@ -144,7 +208,17 @@ namespace FoundOps.SLClient.Data.Services
             ContextManager = contextManager;
             _coreDomainContext = coreDomainContext;
 
+            //Keep track of domain context changes and domain context is submitting every quarter second (and update this public properties)
+            Observable.Interval(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
+            {
+                DomainContextHasChanges = this.Context.HasChanges;
+                DomainContextIsSubmitting = this.Context.IsSubmitting;
+            });
+
             #region Setup Queries
+
+            //Setup Blocks query
+            SetupQuery(Query.Blocks, roleId => _coreDomainContext.GetBlocksQuery(), _coreDomainContext.Blocks);
 
             //Setup BusinessAccounts query
             SetupQuery(Query.BusinessAccounts, roleId => _coreDomainContext.GetBusinessAccountsForRoleQuery(roleId), _coreDomainContext.Parties);
@@ -196,7 +270,7 @@ namespace FoundOps.SLClient.Data.Services
             //Tracks if a PerformNextSave is hookup up to the currentSubmitOperation.Completed event
             var performNextSaveHooked = false;
             //Whenever a SubmitOperation is enqueued: try to Submit as soon as possible
-            this._nextSubmitOperationsQueue.FromCollectionChangedEvent().Where(e => e.Action == NotifyCollectionChangedAction.Add)
+            this._nextSubmitOperationsQueue.FromCollectionChanged().Where(e => e.EventArgs != null && e.EventArgs.Action == NotifyCollectionChangedAction.Add)
                 //Wait until after CollectionChangedEvent. Otherwise you will not be able to clear the collection in PerformNextSave().
                 .Throttle(new TimeSpan(0, 0, 0, 0, 100)).SubscribeOnDispatcher().ObserveOnDispatcher()
                 .Subscribe(_ =>
@@ -326,25 +400,47 @@ namespace FoundOps.SLClient.Data.Services
 
             executeObservable
                 .ObserveOnDispatcher().Subscribe(roleId =>
-                    ExecuteQuery(entityQuery(roleId),
-                        /*On the response, update the EntityListObservable */
-                    loadedEntities => ((IObserver<EntityList<T>>)GetEntityListObservable<T>(queryKey)).OnNext(new EntityList<T>(entitySet, loadedEntities)),
-                    _queriesIsLoadingSubjects[queryKey]));
+                {
+                    //Cancel the last query if possible
+                    if (_queriesLoadOperations.ContainsKey(queryKey))
+                    {
+                        var lastQuery = (LoadOperation<T>)_queriesLoadOperations[queryKey];
+                        if (lastQuery.CanCancel) lastQuery.Cancel();
+                    }
+
+                    LoadOperation<T> thisLoadOperation = null;
+
+                    //On the response, update the EntityListObservable
+                    Action<IEnumerable<T>> responseAction =
+                        loadedEntities =>
+                        {
+                            //Only perform the action if the current load operation is the same as the load operation which originated this response
+                            if (thisLoadOperation != _queriesLoadOperations[queryKey]) return;
+
+                            ((IObserver<EntityList<T>>)GetEntityListObservable<T>(queryKey)).OnNext(new EntityList<T>(entitySet, loadedEntities));
+
+                            _queriesLoadOperations.Remove(queryKey);
+                        };
+
+                    //Execute the query, keep track of the load operation
+                    thisLoadOperation = ExecuteQuery(queryKey, entityQuery(roleId), responseAction, _queriesIsLoadingSubjects[queryKey]);
+                });
         }
 
         /// <summary>
         /// Executes the query on the common CoreDomainContext.
         /// </summary>
         /// <typeparam name="T">The entity Type</typeparam>
+        /// <param name="queryKey">The query key.</param>
         /// <param name="query">The EntityQuery.</param>
         /// <param name="response">The response.</param>
         /// <param name="isLoadingObserver">The is loading observer.</param>
-        private void ExecuteQuery<T>(EntityQuery<T> query, Action<IEnumerable<T>> response, IObserver<bool> isLoadingObserver) where T : Entity
+        private LoadOperation<T> ExecuteQuery<T>(object queryKey, EntityQuery<T> query, Action<IEnumerable<T>> response, IObserver<bool> isLoadingObserver) where T : Entity
         {
             //Let the isLoadingObserver know this query started loading
             isLoadingObserver.OnNext(true);
 
-            _coreDomainContext.Load(query, (callback) =>
+            var loadOperation = _coreDomainContext.Load(query, (callback) =>
             {
                 //Call the response action and pass the Entities as an IEnumerable
                 response(callback.Entities);
@@ -352,6 +448,11 @@ namespace FoundOps.SLClient.Data.Services
                 //Let the isLoadingObserver know this query stopped loading
                 isLoadingObserver.OnNext(false);
             }, null);
+
+            //Add the load operation to the dictionary (so it can be cancelled if needed)
+            _queriesLoadOperations.Add(queryKey, loadOperation);
+
+            return loadOperation;
         }
 
         /// <summary>
@@ -426,6 +527,36 @@ namespace FoundOps.SLClient.Data.Services
             return executeQuery;
         }
 
+        /// <summary>
+        /// Loads a single entity.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="query">The query.</param>
+        /// <param name="callback">The callback.</param>
+        public void LoadSingle<TEntity>(EntityQuery<TEntity> query, Action<TEntity> callback) where TEntity : Entity
+        {
+            Context.Load(query, loadOperation =>
+            {
+                if (loadOperation.HasError) return; //TODO Setup error callback
+                callback(loadOperation.Entities.FirstOrDefault());
+            }, null);
+        }
+
+        /// <summary>
+        /// Loads a collection.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="query">The query.</param>
+        /// <param name="callback">The callback.</param>
+        public void LoadCollection<TEntity>(EntityQuery<TEntity> query, Action<IEnumerable<TEntity>> callback) where TEntity : Entity
+        {
+            Context.Load(query, loadOperation =>
+            {
+                if (loadOperation.HasError) return; //TODO Setup error callback
+                callback(loadOperation.Entities);
+            }, null);
+        }
+
         #endregion
 
         #region Entity Methods
@@ -458,6 +589,56 @@ namespace FoundOps.SLClient.Data.Services
                 if (entitySetContainsEntity)
                     entitySet.Detach(entity);
             }
+        }
+
+        #endregion
+
+        #region Query Methods
+
+        /// <summary>
+        /// Gets the current party.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="getCurrentPartyCallback">The get current party callback.</param>
+        public void GetCurrentParty(Guid roleId, Action<Party> getCurrentPartyCallback)
+        {
+            LoadSingle(Context.PartyForRoleQuery(roleId), getCurrentPartyCallback);
+        }
+
+        /// <summary>
+        /// Gets the current user account.
+        /// </summary>
+        /// <param name="getCurrentUserAccountCallback">The get current user account callback.</param>
+        public void GetCurrentUserAccount(Action<UserAccount> getCurrentUserAccountCallback)
+        {
+            LoadSingle(Context.CurrentUserAccountQuery(), getCurrentUserAccountCallback);
+        }
+
+        /// <summary>
+        /// Tries to geocode search text.
+        /// </summary>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="geocoderResultsCallback">The geocoder results callback.</param>
+        public void TryGeocode(string searchText, Action<IEnumerable<GeocoderResult>> geocoderResultsCallback)
+        {
+            Context.TryGeocode(searchText, callback => geocoderResultsCallback(callback.Value), null);
+        }
+
+        /// <summary>
+        /// Gets the public blocks.
+        /// </summary>
+        /// <param name="getPublicBlocksCallback">The get public blocks callback.</param>
+        public void GetPublicBlocks(Action<ObservableCollection<Block>> getPublicBlocksCallback)
+        {
+            var query = Context.GetPublicBlocksQuery();
+            Context.Load(query, loadOperation =>
+            {
+                if (!loadOperation.HasError)
+                {
+                    getPublicBlocksCallback(new ObservableCollection<Block>(loadOperation.Entities));
+                }
+            }
+                , null);
         }
 
         #endregion
@@ -506,8 +687,11 @@ namespace FoundOps.SLClient.Data.Services
             var dequeuedObservables = _nextSubmitOperationsQueue.ToArray();
             _nextSubmitOperationsQueue.Clear();
 
-            //For debugging
             var changes = this.Context.EntityContainer.GetChanges();
+
+            //Cancel changes on generated route tasks
+            foreach (var generatedRouteTask in changes.OfType<RouteTask>().Where(rt => rt.GeneratedOnServer))
+                generatedRouteTask.Reject();
 
             //Perform a submit operation for the dequeued submit operation observables
             _currentSubmitOperation = this.Context.SubmitChanges(
@@ -555,7 +739,7 @@ namespace FoundOps.SLClient.Data.Services
 
             //If there are no changes, call Cancelled
             var changes = this.Context.EntityContainer.GetChanges();
-            if(changes.Count()==0)
+            if (!changes.Any())
             {
                 //Dequeue Actions
                 var dequeuedActions = _saveDiscardCancelActionQueue.ToArray();
@@ -564,7 +748,7 @@ namespace FoundOps.SLClient.Data.Services
                 //call each afterCancel action
                 foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item6 != null))
                     actionTuple.Item6();
-                
+
                 return;
             }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using ReactiveUI;
@@ -147,24 +148,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             .Merge(recurringServiceContextObservable.AsGeneric())
             .SubscribeOnDispatcher().Subscribe(_ => ContextChanged = true);
 
-            //Regenerate the Services when:
-            //a) the RecurringServiceContext.Repeat changes
-            //b) any ClientContext.RecurringServices' Repeats change
-            var caseA = recurringServiceContextObservable.Where(rs => rs != null).SelectMany(rs => rs.RepeatChangedObservable());
-
-            //Any time the clientContext changes
-            var caseB = clientContextSubject.Where(c => c != null).SelectMany(clientContext =>
-                //Select the clientContext.RecurringServices changes
-                          clientContext.RecurringServices.Select(rs => rs.RepeatChangedObservable()).Merge()
-                              //whenever the clientContext.RecurringServices Collection changes
-                      .Merge(clientContext.RecurringServices.FromCollectionChanged()
-                              //Delay to allow Repeat association to be set
-                      .Delay(new TimeSpan(0, 0, 0, 0, 250))
-                              //Also choose the clientContext.RecurringServices changes from
-                      .SelectMany(rss => rss.Select(rs => rs.RepeatChangedObservable()).Merge())));
-
-            //Regenerate the Services
-            caseA.Merge(caseB).SubscribeOnDispatcher().Subscribe(_ => ContextChanged = true);
+            //Regenerate the Services when the current RecurringServiceContext.Repeat changes
+            recurringServiceContextObservable.WhereNotNull().SelectLatest(rs => rs.RepeatChangedObservable())
+                .Subscribe(_ => ContextChanged = true);
         }
 
         #endregion
@@ -261,6 +247,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             DataManager.DetachEntities(entitiesToDetach);
         }
 
+        //Keeps track of the last service generation
+        private DateTime _lastServiceGeneration = DateTime.Now;
+
         private void UpdateVisibleServices()
         {
             //Check if the current context should show services
@@ -337,6 +326,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Clear the context change after generating services
             ContextChanged = false;
 
+            _lastServiceGeneration = DateTime.Now;
+
             //Clear the switches
             _pushBackwardSwitch = false;
             _pushForwardSwitch = false;
@@ -350,7 +341,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         private bool _pushBackwardSwitch;
         internal bool PushBackGeneratedServices()
         {
-            if (!_canMoveBackward)
+            //If this cannot move backwards, or if the last service generation was within 2 seconds return false
+            //This is to give ServicesGrid some time to move the selection to the middle
+            if (!_canMoveBackward || (DateTime.Now - _lastServiceGeneration) < TimeSpan.FromSeconds(2))
                 return false;
 
             _canMoveBackward = false; //Prevent double tripping
@@ -368,7 +361,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         private bool _pushForwardSwitch;
         internal bool PushForwardGeneratedServices()
         {
-            if (!_canMoveForward)
+            //If this cannot move forwards, or if the last service generation was within 2 seconds return false
+            //This is to give ServicesGrid some time to move the selection to the middle
+            if (!_canMoveForward || (DateTime.Now - _lastServiceGeneration) < TimeSpan.FromSeconds(2))
                 return false;
 
             _canMoveForward = false; //Prevent double tripping

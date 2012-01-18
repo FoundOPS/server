@@ -1,10 +1,16 @@
 ﻿using System.Windows;
 using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Framework.Views.Controls.CustomFields
+namespace FoundOps.SLClient.UI.Controls.CustomFields.Edit
 {
+    /// <summary>
+    /// UI for editing the values of fields.
+    /// </summary>
     public partial class FieldsEditGrid
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FieldsEditGrid"/> class.
+        /// </summary>
         public FieldsEditGrid()
         {
             InitializeComponent();

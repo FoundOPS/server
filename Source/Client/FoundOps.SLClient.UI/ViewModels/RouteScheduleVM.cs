@@ -87,52 +87,52 @@ namespace FoundOps.SLClient.UI.ViewModels
         public RouteScheduleVM(DomainCollectionView<Route> domainCollectionView, DataManager dataManager)
             : base(false, dataManager)
         {
-            DomainCollectionViewObservable.OnNext(domainCollectionView);
+            //DomainCollectionViewObservable.OnNext(domainCollectionView);
 
-            var routes = this.DomainCollectionView.SourceCollection as ObservableCollection<Route>;
+            //var routes = this.DomainCollectionView.SourceCollection as ObservableCollection<Route>;
 
-            //Create a stream of the earliest Route.StartTime
+            ////Create a stream of the earliest Route.StartTime
 
-            //For each collection change
-            routes.FromCollectionChangedEvent().SelectMany(
-                //Select the earliest route's StartTime
-            new BehaviorSubject<DateTime>(routes.Select(rt => rt.StartTime).OrderBy(st => st).FirstOrDefault()).Merge(
-                //Merge with the StartTime property change's earliest StartTime
-            routes.Select(route => Observable2.FromPropertyChangedPattern(route, rt => route.StartTime)).Merge()))
-                //Select the EarliestStartTime
-            .ObserveOnDispatcher().Select(est => this.EarliestStartTime).DistinctUntilChanged()
-                //Whenever the earliest Route.StartTime changes, update EarliestStartTime
-            .SubscribeOnDispatcher().Subscribe(rtst => this.RaisePropertyChanged("EarliestStartTime"));
+            ////For each collection change
+            //routes.FromCollectionChanged().SelectMany(
+            //    //Select the earliest route's StartTime
+            //new BehaviorSubject<DateTime>(routes.Select(rt => rt.StartTime).OrderBy(st => st).FirstOrDefault()).Merge(
+            //    //Merge with the StartTime property change's earliest StartTime
+            //routes.Select(route => Observable2.FromPropertyChangedPattern(route, rt => route.StartTime)).Merge()))
+            //    //Select the EarliestStartTime
+            //.ObserveOnDispatcher().Select(est => this.EarliestStartTime).DistinctUntilChanged()
+            //    //Whenever the earliest Route.StartTime changes, update EarliestStartTime
+            //.SubscribeOnDispatcher().Subscribe(rtst => this.RaisePropertyChanged("EarliestStartTime"));
 
-            //Create a stream of the latest Route.EndTime
+            ////Create a stream of the latest Route.EndTime
 
-            //For each collection change
-            routes.FromCollectionChangedEvent().SelectMany(
-                //Select the latest route's EndTime
-            new BehaviorSubject<DateTime>(routes.Select(rt => rt.EndTime).OrderByDescending(st => st).FirstOrDefault()).Merge(
-                //Merge with the EndTime property change's latest EndTime
-            routes.Select(route => Observable2.FromPropertyChangedPattern(route, rt => route.EndTime)).Merge()))
-                //Select the LatestEndTime
-            .ObserveOnDispatcher().Select(est => this.LatestEndTime).DistinctUntilChanged()
-                //Whenever the earliest Route.EndTime changes, update LatestEndTime
-            .SubscribeOnDispatcher().Subscribe(rtet => this.RaisePropertyChanged("LatestEndTime"));
+            ////For each collection change
+            //routes.FromCollectionChanged().SelectMany(
+            //    //Select the latest route's EndTime
+            //new BehaviorSubject<DateTime>(routes.Select(rt => rt.EndTime).OrderByDescending(st => st).FirstOrDefault()).Merge(
+            //    //Merge with the EndTime property change's latest EndTime
+            //routes.Select(route => Observable2.FromPropertyChangedPattern(route, rt => route.EndTime)).Merge()))
+            //    //Select the LatestEndTime
+            //.ObserveOnDispatcher().Select(est => this.LatestEndTime).DistinctUntilChanged()
+            //    //Whenever the earliest Route.EndTime changes, update LatestEndTime
+            //.SubscribeOnDispatcher().Subscribe(rtet => this.RaisePropertyChanged("LatestEndTime"));
 
-            ResourceTypesCollection = new ObservableCollection<ResourceType>();
-            AppointmentCollection = new ObservableCollection<ScheduleViewAppointment>();
+            //ResourceTypesCollection = new ObservableCollection<ResourceType>();
+            //AppointmentCollection = new ObservableCollection<ScheduleViewAppointment>();
 
-            routes.FromCollectionChangedEvent().SubscribeOnDispatcher().Subscribe(routesCollectionChanged =>
-            {
-                //Update the ResourceTypesCollection
-                var routeResourceType = new ResourceType("Route");
-                foreach (var route in DomainCollectionView)
-                    routeResourceType.Resources.Add(new Resource(route.Name));
+            //routes.FromCollectionChanged().SubscribeOnDispatcher().Subscribe(routesCollectionChanged =>
+            //{
+            //    //Update the ResourceTypesCollection
+            //    var routeResourceType = new ResourceType("Route");
+            //    foreach (var route in DomainCollectionView)
+            //        routeResourceType.Resources.Add(new Resource(route.Name));
 
-                ResourceTypesCollection = new ObservableCollection<ResourceType> { routeResourceType };
+            //    ResourceTypesCollection = new ObservableCollection<ResourceType> { routeResourceType };
 
-                //Update the AppointmentCollection
-                AppointmentCollection = new ObservableCollection<ScheduleViewAppointment>(
-                    DomainCollectionView.SelectMany(route => route.RouteDestinations.Select(rd => rd.ScheduleViewAppointment)));
-            });
+            //    //Update the AppointmentCollection
+            //    AppointmentCollection = new ObservableCollection<ScheduleViewAppointment>(
+            //        DomainCollectionView.SelectMany(route => route.RouteDestinations.Select(rd => rd.ScheduleViewAppointment)));
+            //});
         }
     }
 }

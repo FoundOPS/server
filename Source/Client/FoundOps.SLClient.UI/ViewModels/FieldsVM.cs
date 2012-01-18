@@ -1,7 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Linq;
+using System.Windows;
 using FoundOps.Common.Silverlight.Services;
+using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.SLClient.Data.Services;
 using System.Collections.Generic;
 using FoundOps.Core.Context.Services;
@@ -18,16 +22,25 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("FieldsVM")]
     public class FieldsVM : CoreEntityCollectionInfiniteAccordionVM<Field>
     {
-        //Public Properties
-        private readonly List<string> _fieldTypes = new List<string> { "Checkbox", "Checklist", "Combobox", "Currency", "Number", "Percentage", "Textbox Small", "Textbox Large", "Time" };
+        # region Public Properties
 
+        private static readonly IEnumerable<string> StandardFieldTypes = new List<string> { "Checkbox", "Checklist", "Combobox", "Currency", "Number", "Percentage", "Textbox Small", "Textbox Large", "Time" };
+
+        private IEnumerable<string> _fieldTypes = StandardFieldTypes;
         /// <summary>
         /// Gets the field types.
         /// </summary>
-        public List<string> FieldTypes
+        public IEnumerable<string> FieldTypes
         {
             get { return _fieldTypes; }
+            private set
+            {
+                _fieldTypes = value;
+                this.RaisePropertyChanged("FieldTypes");
+            }
         }
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldsVM"/> class.
@@ -41,14 +54,37 @@ namespace FoundOps.SLClient.UI.ViewModels
             this.SelectedEntityObservable.Where(se => se != null)
                 .Select(selectedField => !selectedField.Required).Subscribe(CanDeleteSubject);
 
-            //Whenever the CurrentContext changes, try to set the ServiceTemplateContext
-            this.ContextManager.CurrentContextObservable.Subscribe(_ => ServiceTemplateContext = ContextManager.GetContext<ServiceTemplate>());
+            //Whenever the ServiceTemplateContext changes
+            //a) update the Fields DCV
+            //b) Enable the Destination field option 
+            //   if the current ServiceTemplate is a FoundOPS level or ServiceProvider level service template
+            //   and does not have a destination field
+            this.ContextManager.GetContextObservable<ServiceTemplate>().ObserveOnDispatcher()
+                .Subscribe(serviceTemplateContext =>
+                {
+                    //a) update the Fields DCV
+                    DomainCollectionViewObservable.OnNext(serviceTemplateContext != null ?
+                        DomainCollectionViewFactory<Field>.GetDomainCollectionView(serviceTemplateContext.Fields) : null);
+                    //b) Enable the Destination field option 
+                    //   if the current ServiceTemplate is a FoundOPS level or ServiceProvider level service template
+                    //   and does not have a destination field
+                    if (serviceTemplateContext != null &&
+                        (serviceTemplateContext.ServiceTemplateLevel == ServiceTemplateLevel.FoundOpsDefined || serviceTemplateContext.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                        && serviceTemplateContext.Fields.OfType<LocationField>().FirstOrDefault(lf => lf.LocationFieldType == LocationFieldType.Destination) == null)
+                        FieldTypes = StandardFieldTypes.Union(new[] { "Destination" });
+                    else
+                        FieldTypes = StandardFieldTypes;
+                });
         }
 
         #region Logic
 
         protected override Field AddNewEntity(object commandParameter)
         {
+            var serviceTemplateContext = ContextManager.GetContext<ServiceTemplate>();
+            if (serviceTemplateContext == null)
+                throw new NotSupportedException("FieldsVM is setup to work only when there is a ServiceTemplate Context");
+
             var param = (string)commandParameter;
             Field fieldToAdd;
             switch (param)
@@ -82,55 +118,38 @@ namespace FoundOps.SLClient.UI.ViewModels
                     fieldToAdd = new DateTimeField { DateTimeType = DateTimeType.TimeOnly };
                     //CurrentServiceTemplateContext.Values.Add(new DateTimeValue { Data = DateTime.Now }); //Setup a Default Value
                     break;
+                //NOTE: For now this is only available on FoundOPS & ServiceProvider level service templates that do not have a destination field
+                case "Destination":
+                    if (serviceTemplateContext.Fields.OfType<LocationField>().FirstOrDefault(lf => lf.LocationFieldType == LocationFieldType.Destination) != null)
+                    {
+                        MessageBox.Show("There is already a destination field");
+                        return null;
+                    }
+                    fieldToAdd = new LocationField
+                    {
+                        ParentFieldId = ServiceTemplateConstants.ServiceDestinationFieldId,
+                        Group = "Location",
+                        Name = "Service Destination",
+                        Tooltip = "Enter the Service Destination here",
+                        LocationFieldType = LocationFieldType.Destination,
+                        Required = true
+                    };
+                    //Remove DestinationField from field options
+                    FieldTypes = StandardFieldTypes;
+                    break;
                 default:
                     throw new NotImplementedException("Field Type not Recognized");
             }
 
-            fieldToAdd.Group = "Details";
+            if (!(fieldToAdd is LocationField))
+                fieldToAdd.Group = "Details";
 
             //Setup the ServiceTemplate Context
-
-            var serviceTemplateContext = ContextManager.GetContext<ServiceTemplate>();
-            if (serviceTemplateContext == null)
-                throw new NotSupportedException("FieldsVM is setup to work only when there is a ServiceTemplate Context");
-
-            fieldToAdd.OwnerServiceTemplate = serviceTemplateContext;
-
+            serviceTemplateContext.Fields.Add(fieldToAdd);
             this.Context.Fields.Add(fieldToAdd);
 
             return fieldToAdd;
         }
-
-        #region Data Loading (Context changed)
-
-        private ServiceTemplate _serviceTemplateContext;
-        private ServiceTemplate ServiceTemplateContext
-        {
-            get { return _serviceTemplateContext; }
-            set
-            {
-                var oldValue = ServiceTemplateContext;
-
-                if (value == oldValue) return;
-
-                _serviceTemplateContext = value;
-                UpdateDomainCollectionView();
-            }
-        }
-
-        private void UpdateDomainCollectionView()
-        {
-            //If the FieldsVM is being used, it will have a ServiceTemplateContext
-            //Use the ServiceTemplate context's fields for the DCV source collection
-
-            DomainCollectionViewObservable.OnNext(ServiceTemplateContext == null
-                                       ? null
-                                       : new DomainCollectionViewFactory<Field>(ServiceTemplateContext.Fields).View);
-
-            //Fields are loaded whenever the service template context changes (so it should already be loaded)
-        }
-
-        #endregion
 
         #endregion
     }

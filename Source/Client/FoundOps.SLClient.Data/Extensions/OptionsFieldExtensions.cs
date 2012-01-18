@@ -53,13 +53,14 @@ namespace FoundOps.Core.Models.CoreEntities
                 this.RaisePropertyChanged("OptionsWrapper");
 
                 //Whenever an option changes, notify that ThisField changed
-                OptionsWrapper.FromCollectionChangedEvent().Where(e=>e.NewItems!=null).SelectMany(e =>
-                {
-                    var newItems = new object[e.NewItems.Count]; e.NewItems.CopyTo(newItems, 0);
-                    return newItems.Select(ni => ni as INotifyPropertyChanged).Where(ni => ni != null)
-                        .Select(ni => ni.FromAnyPropertyChanged()).Merge();
-                }).Throttle(new TimeSpan(0, 0, 0, 0, 250)).ObserveOnDispatcher()
-               .Subscribe(_ => this.CompositeRaiseEntityPropertyChanged("ThisField"));
+
+                //Everytime the OptionsWrapper collection changes, select all the options' property changed events
+                OptionsWrapper.FromCollectionChanged()
+                    .SelectLatest(e => 
+                        ((OrderedEntityCollection<Option>) e.Sender).Where(o=>o!=null)
+                        .Select(option=> option.FromAnyPropertyChanged()).Merge().Throttle(TimeSpan.FromMilliseconds(250)))
+                        //Notify that ThisField changed
+                        .ObserveOnDispatcher().Subscribe(_ => this.CompositeRaiseEntityPropertyChanged("ThisField"));
             }
         }
 

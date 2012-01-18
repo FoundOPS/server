@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.ServiceModel.DomainServices.Client;
 using RiaServicesContrib;
 using FoundOps.Common.Silverlight.Interfaces;
 
@@ -48,7 +49,7 @@ namespace FoundOps.Core.Models.CoreEntities
             this.RejectChanges();
         }
 
-        public EntityGraph<Service> EntityGraph
+        public EntityGraph<Entity> EntityGraph
         {
             get
             {
@@ -56,7 +57,7 @@ namespace FoundOps.Core.Models.CoreEntities
                     new EntityGraphShape().Edge<Service, ServiceTemplate>(service => service.ServiceTemplate).Edge
                         <ServiceTemplate, Field>(st => st.Fields).Edge<OptionsField, Option>(of => of.Options);
 
-                return new EntityGraph<Service>(this, graphShape);
+                return new EntityGraph<Entity>(this, graphShape);
             }
         }
 
