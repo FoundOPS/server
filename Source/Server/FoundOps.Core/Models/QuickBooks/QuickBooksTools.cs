@@ -37,6 +37,8 @@ namespace FoundOps.Core.Models.QuickBooks
             public const string ConsumerSecret = "nxKtqCZGm0kpwWiVG85Ur6HGHUDvTW45NLmdGUWL"; //ConfigurationManager.AppSettings["consumerSecret"];
 
             public const string OauthCallbackUrl = "http://localhost:31820/QuickBooks/OAuthGrantHandler";
+
+            public const string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=fstorequickbooks;AccountKey=fyZ0dsbFfQZET9RFdIlSeVepYgmtO0aBQYVArhazF0KO2X80BUZ2drEJLmRYjDbzelf7PAKzTrePzMJpt3vGaA==";
         }
 
         #endregion
@@ -62,6 +64,8 @@ namespace FoundOps.Core.Models.QuickBooks
                 ConsumerSecret = OauthConstants.ConsumerSecret
             };
 
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
+
             //Generates the OAuth session based on the constants for our IntuitAnywhere App and the ConsumerContext created above 
             var oSession = new OAuthSession(consumerContext,
                                                      OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlRequestToken,
@@ -69,10 +73,9 @@ namespace FoundOps.Core.Models.QuickBooks
                                                      OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlAccessToken);
             oSession.AccessToken = new TokenBase
                                        {
-                                           Token = currentBusinessAccount.QuickBooksAccessToken,
+                                           Token = quickBooksSession.QBToken,
                                            ConsumerKey = OauthConstants.ConsumerKey,
-                                           TokenSecret =
-                                               currentBusinessAccount.QuickBooksAccessTokenSecret
+                                           TokenSecret = quickBooksSession.QBTokenSecret
                                        };
             oSession.ConsumerContext.UseHeaderForOAuthParameters = true;
 
@@ -109,37 +112,33 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <summary>
         /// Exchanges the request token attained earlier for the access token needed to make calls to QuickBooks
         /// </summary>
-        /// <param name="currentBusinessAccount">The current business account.</param>
-        /// <param name="coreEntitiesContainer">The current CoreEntitiesContainer</param>
-        public static void GetAccessToken(BusinessAccount currentBusinessAccount, CoreEntitiesContainer coreEntitiesContainer)
+        /// <param name="quickBooksSession"> </param>
+        public static IToken GetAccessToken(QuickBooksSession quickBooksSession)
         {
-            //Deserializes QuicBooksSessionXml from the Database to a quickBooksSession Class
-            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
-
             //Creates the OAuth Session
             var clientSession = CreateOAuthSession();
 
-            var token = (TokenBase)clientSession.GetRequestToken();
-
             //The AccessToken is attained by exchanging the request token and the OAuthVerifier that we attained earlier
-            IToken accessToken = clientSession.ExchangeRequestTokenForAccessToken(token, quickBooksSession.OAuthVerifier);
+            IToken accessToken = clientSession.ExchangeRequestTokenForAccessToken(quickBooksSession.OAuthVerifierToken, quickBooksSession.OAuthVerifier);
 
-            //Saving the Token to private storage
-            currentBusinessAccount.QuickBooksAccessToken = accessToken.Token;
-            currentBusinessAccount.QuickBooksAccessTokenSecret = accessToken.TokenSecret;
+            return accessToken;
         }
 
         /// <summary>
         /// Creates the authorization URL for QuickBooks based on the OAuth session
         /// </summary>
         /// <param name="callbackUrl">The callback URL.</param>
+        /// <param name="quickBooksSession"> The current QuickBooksSession </param>
         /// <returns> returns the authorization URL. </returns>
-        public static string GetAuthorizationUrl(string callbackUrl)
+        public static string GetAuthorizationUrl(string callbackUrl, QuickBooksSession quickBooksSession)
         {
             var session = CreateOAuthSession();
 
+            //Save verification token for later use
+            quickBooksSession.OAuthVerifierToken = (TokenBase)session.GetRequestToken();
+
             //Creates the Authorized URL for QuickBooks that is based on the OAuth session created above
-            var authUrl = OauthConstants.AuthorizeUrl + "?oauth_token=" + session.GetRequestToken().Token + "&oauth_callback=" + UriUtility.UrlEncode(callbackUrl);
+            var authUrl = OauthConstants.AuthorizeUrl + "?oauth_token=" + quickBooksSession.OAuthVerifierToken.Token + "&oauth_callback=" + UriUtility.UrlEncode(callbackUrl);
 
             return authUrl;
         }
@@ -159,19 +158,14 @@ namespace FoundOps.Core.Models.QuickBooks
         /// </returns>
         public static string GetBaseUrl(BusinessAccount currentBusinessAccount)
         {
-            var quickBooksSession = new QuickBooksSession();
+            QuickBooksSession quickBooksSession;
 
             // Checks to be sure that both QuickBooks is enabled on the current account and that the account has a pre-established QuickBooksSession
-            if (currentBusinessAccount.QuickBooksSessionXml != null && currentBusinessAccount.QuickBooksEnabled == false)
+            if (currentBusinessAccount.QuickBooksEnabled && currentBusinessAccount.QuickBooksSessionXml != null)
                 quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
             else
             {
-                quickBooksSession.BaseUrl = null;
-
-                //Ensures that the BaseURL is saved for later use
-                currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
-
-                //Used in WF
+                //Used in WF - empty string causes the conditional to fail and ends the WF for that BusinessAccount
                 return "";
             }
             //URL for the QuickBooks Data Service for getting the BaseURL
@@ -197,16 +191,13 @@ namespace FoundOps.Core.Models.QuickBooks
                 if (s.Contains("qbo:BaseURI>"))
                 {
                     responseArray = s.Split('>');
-                    quickBooksSession.BaseUrl = responseArray[1];
-                    break;
+                    return responseArray[1];
                 }
             }
 
-            //Ensures that the BaseURL is saved for later use
-            currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
-
-            //Used for a check in WF
-            return quickBooksSession.BaseUrl;
+            //Will only reach here if there is an error getting the baseUrl
+            //Used in WF - empty string causes the conditional to fail and ends the WF for that BusinessAccount
+            return "";
         }
 
         /// <summary>
@@ -265,15 +256,16 @@ namespace FoundOps.Core.Models.QuickBooks
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="entityType">The type of QuickBooks Entity you want to get a list of</param>
+        /// <param name="baseUrl">The baseUrl </param>
         /// <param name="filter">Specifies the filter if one is provided</param>
-        public static string GetEntityList(BusinessAccount currentBusinessAccount, string entityType, string filter = null)
+        public static string GetEntityList(BusinessAccount currentBusinessAccount, string entityType, string baseUrl, string filter = null)
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
             //URL for the QuickBooks DataService for getting the List of Invoices
             //In this case we are only looking for the first 25 of them
             //Here we are accessing QuickBooks Online data
-            var serviceEndPoint = String.Format(quickBooksSession.BaseUrl + @"/resource/" + entityType + "/v2/" + quickBooksSession.RealmId);
+            var serviceEndPoint = String.Format(baseUrl + @"/resource/" + entityType + "/v2/" + quickBooksSession.RealmId);
 
             var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
 
@@ -311,13 +303,14 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="entityType">The entity type for this call to the function</param>
         /// <param name="id">The specified Filter</param>
+        /// <param name="baseUrl"> </param>
         /// <returns></returns>
-        public static string GetEntityById(BusinessAccount currentBusinessAccount, string entityType, string id = null)
+        public static string GetEntityById(BusinessAccount currentBusinessAccount, string entityType, string baseUrl, string id = null)
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
             //URL for the QuickBooks Data Service for getting the BaseURL
-            var serviceEndPoint = String.Format(quickBooksSession.BaseUrl + "/resource/" + entityType + "/v2" + quickBooksSession.RealmId + id);
+            var serviceEndPoint = String.Format(baseUrl + "/resource/" + entityType + "/v2" + quickBooksSession.RealmId + id);
 
             var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
 
@@ -335,18 +328,20 @@ namespace FoundOps.Core.Models.QuickBooks
 
         #region Create, Update and Delete
 
+        #region Invoice CrUD
+
         /// <summary>
         /// Makes a call to the QuickBooks Online Data Services to create the Invoice that is specifed
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="currentInvoice">The current invoice.</param>
-        public static string CreateNewInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice)
+        public static string CreateNewInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice, string baseUrl)
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
             //URL for the QuickBooks DataService for getting the creating an Invoice
             //Here we are accessing QuickBooks Online data
-            var serviceEndPoint = String.Format(quickBooksSession.BaseUrl + @"/resource/invoice/v2/" + quickBooksSession.RealmId);
+            var serviceEndPoint = String.Format(baseUrl + @"/resource/invoice/v2/" + quickBooksSession.RealmId);
 
             var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
 
@@ -355,23 +350,25 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest = consumerRequest.ForMethod("POST");
             consumerRequest = consumerRequest.ForUri(new Uri(serviceEndPoint));
 
+            var customerNameForFilter = currentInvoice.Client.DisplayName;
+
             #region Generates the XML body of the Post call
 
             #region Gets the ClientId
 
-            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.DisplayName;
+            var filter = "Filter=NAME" + " :EQUALS: " + customerNameForFilter;
 
-            var clientXML = GetEntityList(currentBusinessAccount, "customers", filter);
+            var clientXML = GetEntityList(currentBusinessAccount, "customers", baseUrl, filter);
 
             var clientId = "";
 
-            //Splits the response XML into by line
+            //Splits the response XML by line
             string[] responseArray = clientXML.Split('<');
 
             //Checks each line for the one containing the BaseURL
             foreach (string s in responseArray)
             {
-                if (s.Contains(":Id>"))
+                if (s.Contains("Id idDomain"))
                 {
                     responseArray = s.Split('>');
                     clientId = responseArray[1];
@@ -380,6 +377,10 @@ namespace FoundOps.Core.Models.QuickBooks
             }
 
             #endregion
+
+            //If the name on the Invoice doesnt match one of the Customer Names in QBO, Create a new Customer in QBO and use that one
+            if (clientId == "")
+                clientId = CreateCustomer(currentBusinessAccount, baseUrl, customerNameForFilter);
 
             var body = QuickBooksXml.InvoiceXml(currentInvoice, clientId, Operation.Create);
 
@@ -401,15 +402,15 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="currentInvoice">The current invoice.</param>
         /// <param name="coreEntitiesContainer">The CoreEntitesContainer</param>
-        public static void UpdateInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice, CoreEntitiesContainer coreEntitiesContainer)
+        public static void UpdateInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice, CoreEntitiesContainer coreEntitiesContainer, string baseUrl)
         {
-            currentInvoice = MergeChangesWithQuickBooks(currentBusinessAccount, currentInvoice, coreEntitiesContainer);
+            currentInvoice = MergeChangesWithQuickBooks(currentBusinessAccount, currentInvoice, coreEntitiesContainer, baseUrl);
 
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
             //URL for the QuickBooks DataService for getting the updating an Invoice
             //Here we are accessing QuickBooks Online data
-            var serviceEndPoint = String.Format(quickBooksSession.BaseUrl + @"/resource/invoice/v2/" + quickBooksSession.RealmId + "/" + currentInvoice.CustomerId);
+            var serviceEndPoint = String.Format(baseUrl + @"/resource/invoice/v2/" + quickBooksSession.RealmId + "/" + currentInvoice.CustomerId);
 
             var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
 
@@ -422,7 +423,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
             var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.DisplayName;
 
-            var clientXML = GetEntityList(currentBusinessAccount, "customers", filter);
+            var clientXML = GetEntityList(currentBusinessAccount, "customers", baseUrl, filter);
 
             var clientId = "";
 
@@ -430,14 +431,11 @@ namespace FoundOps.Core.Models.QuickBooks
             string[] responseArray = clientXML.Split('<');
 
             //Checks each line for the one containing the BaseURL
-            foreach (string s in responseArray)
+            foreach (string s in responseArray.Where(s => s.Contains(":Id>")))
             {
-                if (s.Contains(":Id>"))
-                {
-                    responseArray = s.Split('>');
-                    clientId = responseArray[1];
-                    break;
-                }
+                responseArray = s.Split('>');
+                clientId = responseArray[1];
+                break;
             }
 
             var body = QuickBooksXml.InvoiceXml(currentInvoice, clientId, Operation.Update);
@@ -518,6 +516,55 @@ namespace FoundOps.Core.Models.QuickBooks
 
         #endregion
 
+        /// <summary>
+        /// Creates the customer.
+        /// </summary>
+        /// <param name="currentBusinessAccount">The current business account.</param>
+        /// <param name="baseUrl">The base URL.</param>
+        /// <param name="displayName">The display name.</param>
+        /// <returns></returns>
+        private static string CreateCustomer(BusinessAccount currentBusinessAccount, string baseUrl, string displayName)
+        {
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
+
+            //URL for the QuickBooks DataService for getting the creating an Invoice
+            //Here we are accessing QuickBooks Online data
+            var serviceEndPoint = String.Format(baseUrl + @"/resource/customer/v2/" + quickBooksSession.RealmId);
+
+            var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
+
+            //Sets up the Post Request bus does not actually send it out
+            IConsumerRequest consumerRequest = oSession.Request();
+            consumerRequest = consumerRequest.ForMethod("POST");
+            consumerRequest = consumerRequest.ForUri(new Uri(serviceEndPoint));
+
+            //Just creates a simple customer in their system as a place holder
+            var body = QuickBooksXml.CustomerXml(displayName);
+
+            //Signs the request
+            consumerRequest = consumerRequest.SignWithToken();
+
+            //Sends the request with the body attached
+            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes(body));
+
+            //Reads the response XML
+            var responseString = consumerRequest.ReadBody();
+
+            //Splits the response XML into by line
+            string[] responseArray = responseString.Split('<');
+
+            //Checks each line for the one containing the BaseURL
+            foreach (string s in responseArray.Where(s => s.Contains(":Id>")))
+            {
+                responseArray = s.Split('>');
+                return responseArray[1];
+            }
+
+            return "";
+        }
+
+        #endregion
+
         #region Functions Used to Sync With QBO
 
         /// <summary>
@@ -526,13 +573,14 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="currentInvoice">The current invoice.</param>
         /// <param name="coreEntitiesContainer">The CoreEntitiesContainer</param>
+        /// <param name="baseUrl"> </param>
         /// <returns></returns>
-        private static Invoice MergeChangesWithQuickBooks(BusinessAccount currentBusinessAccount, Invoice currentInvoice, CoreEntitiesContainer coreEntitiesContainer)
+        private static Invoice MergeChangesWithQuickBooks(BusinessAccount currentBusinessAccount, Invoice currentInvoice, CoreEntitiesContainer coreEntitiesContainer, string baseUrl)
         {
-            var response = GetEntityById(currentBusinessAccount, "invoice", currentInvoice.QuickBooksId);
+            var response = GetEntityById(currentBusinessAccount, "invoice", baseUrl, currentInvoice.QuickBooksId);
 
             //Creates an Invoice to compare with instead of comparing to XML repeatedly
-            var quickbooksInvoice = CreateInvoiceFromQuickbooksResponse(coreEntitiesContainer, response, currentBusinessAccount);
+            var quickbooksInvoice = CreateInvoiceFromQuickbooksResponse(coreEntitiesContainer, response, currentBusinessAccount, baseUrl);
 
             #region Invoice
 
@@ -587,8 +635,9 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <param name="response">The response.</param>
         /// <param name="currentBusinessAccount">The current business account.</param>
+        /// <param name="baseUrl">The BaseUrl </param>
         /// <returns></returns>
-        private static Invoice CreateInvoiceFromQuickbooksResponse(CoreEntitiesContainer coreEntitiesContainer, string response, BusinessAccount currentBusinessAccount)
+        private static Invoice CreateInvoiceFromQuickbooksResponse(CoreEntitiesContainer coreEntitiesContainer, string response, BusinessAccount currentBusinessAccount, string baseUrl)
         {
             var splitResponse = response.Split('<');
 
@@ -621,7 +670,7 @@ namespace FoundOps.Core.Models.QuickBooks
                 if (item.Contains("qbo:SalesTermId"))
                 {
                     var split = item.Split('>');
-                    var exists = coreEntitiesContainer.SalesTerms.Where(st => st.QuickBooksId == split[1]).FirstOrDefault();
+                    var exists = coreEntitiesContainer.SalesTerms.FirstOrDefault(st => st.QuickBooksId == split[1]);
 
                     //If it exists in our system, set the SalesTerm appropriately
                     if (exists != null)
@@ -631,7 +680,7 @@ namespace FoundOps.Core.Models.QuickBooks
                     {
                         //If a SalesTerm with that Id doesnt exist, make it
                         //Get the SalesTerm with the matching Id from QBO
-                        var salesTermsResponse = GetEntityById(currentBusinessAccount, "sales-term", split[1]);
+                        var salesTermsResponse = GetEntityById(currentBusinessAccount, "sales-term", baseUrl, split[1]);
                         var salesTermSplit = salesTermsResponse.Split('<');
 
                         var newSalesTerm = new SalesTerm();
@@ -824,20 +873,28 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <param name="changeType">The Type of Change required</param>
         public static void AddUpdateDeleteToTable(Invoice currentInvoice, Operation changeType)
         {
-            var newItem = new InvoiceTableDataModel { InvoiceId = currentInvoice.Id, ChangeType = changeType };
+            var newItem = new InvoiceTableDataModel(currentInvoice.Id, changeType.ToString());
 
-            //Check that this DataConnectionString is right
-            var storageAccount =
-                CloudStorageAccount.Parse(RoleEnvironment.GetConfigurationSettingValue("DataConnectionString"));
+            //TODO: Check that this DataConnectionString is right
+            var storageAccount = CloudStorageAccount.Parse(OauthConstants.StorageConnectionString);
 
             var serviceContext = new InvoiceTableDataServiceContext(storageAccount.TableEndpoint.ToString(),
                                                                     storageAccount.Credentials);
 
             // Create the table if there is not already a table with the name of the Business Account
-            storageAccount.CreateCloudTableClient().CreateTableIfNotExist(currentInvoice.BusinessAccount.Name);
+            var tableClient = storageAccount.CreateCloudTableClient();
+
+            //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
+            var tableName = "t" + currentInvoice.BusinessAccount.Id.ToString().Replace("-", "");
+
+            try
+            {
+                tableClient.CreateTableIfNotExist(tableName);
+            }
+            catch { }
 
             //Query that checks to see if and object with the same InvoiceId exists in the Table specified
-            var existsQuery = serviceContext.CreateQuery<InvoiceTableDataModel>(currentInvoice.BusinessAccount.Name).Where(
+            var existsQuery = serviceContext.CreateQuery<InvoiceTableDataModel>(tableName).Where(
                 e => e.InvoiceId == newItem.InvoiceId);
 
             //Gets the first and hopefully only item in the Table that matches
@@ -847,20 +904,20 @@ namespace FoundOps.Core.Models.QuickBooks
             if (existingObject == null)
             {
                 //Adds the new object to the Table
-                serviceContext.AddObject(currentInvoice.BusinessAccount.Name, newItem);
+                serviceContext.AddObject(tableName, newItem);
             }
             //If an item exists already, update the item and save the changes
             else
             {
                 //No need to update the InvoiceId becuase it should be the same
-                //Update the change type becuase it could change from Update to Delete or vicea versa
+                //Update the change type because it could change from Update to Delete or vicea versa
                 existingObject.ChangeType = newItem.ChangeType;
 
                 serviceContext.UpdateObject(existingObject);
             }
 
             //Saves the Tables
-            serviceContext.SaveChanges();
+            serviceContext.SaveChangesWithRetries();
         }
 
         /// <summary>
@@ -876,7 +933,7 @@ namespace FoundOps.Core.Models.QuickBooks
             var serviceContext = new InvoiceTableDataServiceContext(storageAccount.TableEndpoint.ToString(),
                                                                     storageAccount.Credentials);
 
-            var newItem = new InvoiceTableDataModel { InvoiceId = currentInvoice.Id };
+            var newItem = new InvoiceTableDataModel (currentInvoice.Id);
 
             //Query that checks to see if and object with the same InvoiceId exists in the Table specified
             var existsQuery = serviceContext.CreateQuery<InvoiceTableDataModel>(currentInvoice.BusinessAccount.Name).Where(

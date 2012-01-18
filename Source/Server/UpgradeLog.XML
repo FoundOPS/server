@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="FoundOps.QuickBooks">
+</Property><Property Name="Solution File" Value="C:\FoundOps\GitHub\Source\Server\FoundOps.QuickBooks.sln">
+</Property><Property Name="Date" Value="Tuesday, January 17, 2012">
+</Property><Property Name="Time" Value="17:30:51 PM">
+</Property></Properties><Event ErrorLevel="0" Project="C:\FoundOps\GitHub\Source\Server\FoundOps.Azure\FoundOps.Azure.ccproj" Source="FoundOps.Azure\FoundOps.Azure.ccproj" Description="Project file successfully backed up as C:\FoundOps\GitHub\Source\Server\Backup\FoundOps.Azure.ccproj">
+</Event><Event ErrorLevel="0" Project="C:\FoundOps\GitHub\Source\Server\FoundOps.Azure\FoundOps.Azure.ccproj" Source="FoundOps.Azure\FoundOps.Azure.ccproj.user" Description="Project user file successfully backed up as C:\FoundOps\GitHub\Source\Server\Backup\FoundOps.Azure.ccproj.user">
+</Event><Event ErrorLevel="0" Project="C:\FoundOps\GitHub\Source\Server\FoundOps.Azure\FoundOps.Azure.ccproj" Source="FoundOps.Azure\ServiceDefinition.csdef" Description="File successfully backed up as C:\FoundOps\GitHub\Source\Server\Backup\ServiceDefinition.csdef">
+</Event><Event ErrorLevel="0" Project="C:\FoundOps\GitHub\Source\Server\FoundOps.Azure\FoundOps.Azure.ccproj" Source="FoundOps.Azure\ServiceConfiguration.cscfg" Description="File successfully backed up as C:\FoundOps\GitHub\Source\Server\Backup\ServiceConfiguration.cscfg">
+</Event><Event ErrorLevel="0" Project="C:\FoundOps\GitHub\Source\Server\FoundOps.Azure\FoundOps.Azure.ccproj" Source="FoundOps.Azure\FoundOps.Azure.ccproj" Description="Upgraded ProductVersion value to 1.6.">
+</Event><Event ErrorLevel="3" Project="C:\FoundOps\GitHub\Source\Server\FoundOps.Azure\FoundOps.Azure.ccproj" Source="FoundOps.Azure\FoundOps.Azure.ccproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="C:\FoundOps\GitHub\Source\Server\FoundOps.Azure\FoundOps.Azure.ccproj" Source="FoundOps.Azure\FoundOps.Azure.ccproj" Description="Upgrade CloudExtensionsDir value to $(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\1.6\.">
+</Event></UpgradeLog>

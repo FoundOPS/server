@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Composite.Entities;
+﻿using System;
+using FoundOps.Common.Composite.Entities;
 
 namespace FoundOps.Core.Models.CoreEntities
 {
@@ -61,13 +62,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         public void OnCreate()
         {
-            DueDate = this.DueDate;
-            FixedScheduleOptionInt = this.FixedScheduleOptionInt;
-            Memo = this.Memo;
-            RelativeScheduleDays = this.RelativeScheduleDays;
-            ScheduleModeInt = this.ScheduleModeInt;
-            BillToLocation = this.BillToLocation;
-            SalesTerm = this.SalesTerm;
+            Id = Guid.NewGuid();
             IsBillToLocationChanged = false;
             IsDueDateChanged = false;
             IsMemoChanged = false;

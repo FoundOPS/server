@@ -21,10 +21,23 @@ namespace FoundOps.QuickBooksWF
 
             var newInvoice = currentRouteTask.Service.ServiceTemplate.Invoice;
 
-            if(newInvoice == null)
+            if (newInvoice == null)
             {
-                //create new invoice
-                var test = "";
+                newInvoice = new Invoice
+                                 {
+                                     BillToLocation = currentRouteTask.Client.DefaultBillingLocation,
+                                     BusinessAccount = currentRouteTask.OwnerBusinessAccount,
+                                     Client = currentRouteTask.Service.Client,
+                                     Memo = "test"
+                                 };
+
+                var lineItem = new LineItem { Amount = "100", Description = "TESTING" };
+
+                newInvoice.LineItems.Add(lineItem);
+
+                lineItem = new LineItem { Amount = "256", Description = "1234567890" };
+
+                newInvoice.LineItems.Add(lineItem);
             }
 
             //Adds the create notification to the Azure Table

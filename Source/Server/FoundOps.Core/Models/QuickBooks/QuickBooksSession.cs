@@ -1,12 +1,22 @@
-﻿namespace FoundOps.Core.Models.QuickBooks
+﻿using DevDefined.OAuth.Framework;
+
+namespace FoundOps.Core.Models.QuickBooks
 {
     public class QuickBooksSession
     {
-        public string BaseUrl { get; set; }
-
+        //The Id of the QuickBooks Account that is being accessed
         public string RealmId { get; set; }
 
+        //Kind of a password given to us at the time we are accessing QuickBooks, used when we exchange the VerificationToken for the other Tokens
         public string OAuthVerifier { get; set; }
 
+        //Temp token given to us to exchange for the QuickBooks Tokens
+        public TokenBase OAuthVerifierToken { get; set; }
+
+        //Token used by OAuth and QuickBooks to verify login
+        public string QBToken { get; set; }
+
+        //Used along side the OAuthVerifier to check for a verified login
+        public string QBTokenSecret { get; set; }
     }
 }

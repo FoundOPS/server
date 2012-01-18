@@ -25,8 +25,10 @@ namespace FoundOps.QuickBooksWF
             //Gets a list of RouteTasks from the given BusinessAccount where the RouteTasks date is yesterday's date
             //Also, it filters out the RouteTasks that were not generated off of a ServiceTemplate
             //Only RouteTasks that have a ServiceTemplate will have the information necessary to create an invoice
-            ListOfRouteTasks.Set(context, currentBusinessAccount.RouteTasks.Where(
-                rt => rt.Date == DateTime.Now.AddDays(-1).Date && rt.Service != null).ToArray());
+            var routeTasks = currentBusinessAccount.RouteTasks.Where(
+                rt => rt.Date == DateTime.Now.AddDays(-1).Date && rt.Service != null).ToArray();
+
+            ListOfRouteTasks.Set(context, routeTasks);
         }
     }
 }

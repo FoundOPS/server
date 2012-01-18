@@ -1251,54 +1251,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String QuickBooksAccessToken
-        {
-            get
-            {
-                return _QuickBooksAccessToken;
-            }
-            set
-            {
-                OnQuickBooksAccessTokenChanging(value);
-                ReportPropertyChanging("QuickBooksAccessToken");
-                _QuickBooksAccessToken = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("QuickBooksAccessToken");
-                OnQuickBooksAccessTokenChanged();
-            }
-        }
-        private global::System.String _QuickBooksAccessToken;
-        partial void OnQuickBooksAccessTokenChanging(global::System.String value);
-        partial void OnQuickBooksAccessTokenChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String QuickBooksAccessTokenSecret
-        {
-            get
-            {
-                return _QuickBooksAccessTokenSecret;
-            }
-            set
-            {
-                OnQuickBooksAccessTokenSecretChanging(value);
-                ReportPropertyChanging("QuickBooksAccessTokenSecret");
-                _QuickBooksAccessTokenSecret = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("QuickBooksAccessTokenSecret");
-                OnQuickBooksAccessTokenSecretChanged();
-            }
-        }
-        private global::System.String _QuickBooksAccessTokenSecret;
-        partial void OnQuickBooksAccessTokenSecretChanging(global::System.String value);
-        partial void OnQuickBooksAccessTokenSecretChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public global::System.String RouteManifestSettings
         {
             get

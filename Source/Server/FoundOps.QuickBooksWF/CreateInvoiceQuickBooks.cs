@@ -10,6 +10,8 @@ namespace FoundOps.QuickBooksWF
         // Define an activity input argument of type string
         public InArgument<BusinessAccount> CurrentBusinessAccount { get; set; }
         public InArgument<Invoice> CurrentInvoice { get; set; }
+        public InArgument<string> BaseUrl { get; set; }
+
 
         // If your activity returns a value, derive from CodeActivity<TResult>
         // and return the value from the Execute method.
@@ -17,8 +19,9 @@ namespace FoundOps.QuickBooksWF
         {
             var currentBusinessAccount = CurrentBusinessAccount.Get<BusinessAccount>(context);
             var currentInvoice = CurrentInvoice.Get<Invoice>(context);
+            var baseUrl = BaseUrl.Get<string>(context);
 
-            var response = QuickBooksTools.CreateNewInvoice(currentBusinessAccount, currentInvoice);
+            var response = QuickBooksTools.CreateNewInvoice(currentBusinessAccount, currentInvoice, baseUrl);
 
             //Checks for an Error Code in the response XML
             //If it does not exist in the response XML, signals that a problem occurred and we do not remove it from the table

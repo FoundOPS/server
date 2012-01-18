@@ -117,6 +117,11 @@ namespace FoundOps.Core.Models.QuickBooks
             });
         }
 
+        public static string CustomerXml(string displayName)
+        {
+            return QuickBooksElementXml("Customer", (writer, builder) => writer.CreateElement("Name", displayName));
+        }
+
         /// <summary>
         /// Writes an element and it's body.
         /// </summary>

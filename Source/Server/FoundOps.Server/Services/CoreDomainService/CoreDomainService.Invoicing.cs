@@ -59,13 +59,15 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessAccountForRole = ObjectContext.BusinessAccountForRole(roleId);
 
-            var salesTermsXml = QuickBooksTools.GetEntityList(businessAccountForRole, "sales-terms");
+            var baseUrl = QuickBooksTools.GetBaseUrl(businessAccountForRole);
+
+            var salesTermsXml = QuickBooksTools.GetEntityList(businessAccountForRole, "sales-terms", baseUrl);
 
             var quickBooksSalesTerms = QuickBooksTools.CreateSalesTermsFromQuickBooksResponse(salesTermsXml);
 
             foreach (var salesTerm in quickBooksSalesTerms)
             {
-                var exists = businessAccountForRole.SalesTerms.Where(st => st.QuickBooksId == salesTerm.QuickBooksId).FirstOrDefault();
+                var exists = businessAccountForRole.SalesTerms.FirstOrDefault(st => st.QuickBooksId == salesTerm.QuickBooksId);
                 
                 if (exists != null)
                 {

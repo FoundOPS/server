@@ -1,22 +1,20 @@
 ﻿using System;
-using FoundOps.Core.Models.QuickBooks;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace FoundOps.Core.Models.Azure
 {
     public class InvoiceTableDataModel : TableServiceEntity
     {
-        public InvoiceTableDataModel(string partitionKey, string rowKey)
-            : base(partitionKey, rowKey)
-        {
-        }
+        public InvoiceTableDataModel(Guid id, string changeType)
+            : base(id.ToString(), changeType) { }
+
+        public InvoiceTableDataModel(Guid id)
+            : this(id, String.Empty) { }
 
         public InvoiceTableDataModel()
-            : this(Guid.NewGuid().ToString(), String.Empty)
-        {
-        }
+            : this(Guid.NewGuid(), String.Empty) { }
 
-        public Guid InvoiceId { get; set; }
-        public Operation ChangeType { get; set; }
+        public Guid InvoiceId { get { return new Guid(PartitionKey); } }
+        public string ChangeType { get { return RowKey; } set { RowKey = value; } }
     }
 }

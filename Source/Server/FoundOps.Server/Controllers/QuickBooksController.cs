@@ -28,8 +28,15 @@ namespace FoundOps.Server.Controllers
             //If QuickBooks is disabled on the account
             if (currentBusinessAccount == null || currentBusinessAccount.QuickBooksEnabled == false)
                 return false;
+
+            //Required check for an existant QuickBooksXML. If it does not exist, then we know that there is no chance that there is a valid Token
+            if (currentBusinessAccount.QuickBooksSessionXml == null)
+                return true;
+
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
+
             //Checks for null tokens on a BusinessAccount that has QuickBooks enabled
-            if (currentBusinessAccount.QuickBooksAccessToken == null || currentBusinessAccount.QuickBooksAccessTokenSecret == null)
+            if (quickBooksSession.QBToken == null || quickBooksSession.QBTokenSecret == null)
                 return true;
 
             //Check validity of tokens
@@ -62,16 +69,26 @@ namespace FoundOps.Server.Controllers
         /// </returns>
         public ActionResult OAuthGrantLogin(string roleId)
         {
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountForRole(new Guid(roleId));
+
             //Creates the initial call to QuickBooks with our callback URL
             var oauthCallbackUrl = String.Format("{0}?roleId={1}", QuickBooksTools.OauthConstants.OauthCallbackUrl, roleId);
 
-            var authUrl = QuickBooksTools.GetAuthorizationUrl(oauthCallbackUrl);
+            var quickBooksSession = new QuickBooksSession();
+
+            //Gets the authorization URL as well as saves the Verification token for later use
+            var authUrl = QuickBooksTools.GetAuthorizationUrl(oauthCallbackUrl, quickBooksSession);
+
+            //Serializes the QuickBooksSession class back to the database
+            currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
+
+            _coreEntitiesContainer.SaveChanges();
 
             return Redirect(authUrl);
         }
 
         /// <summary>
-        /// Saves the realmId and the OAuthVerifier to the database.
+        /// Saves the authentication information (OauthToken, OAuthVerifier) to the database.
         /// Uses the BusinessAccount to get the AccessToken and the Base Url for the current QuickBooks user
         /// </summary>
         /// <param name="roleId">The role id.</param>
@@ -86,22 +103,24 @@ namespace FoundOps.Server.Controllers
 
             var oauthVerifyer = Request.QueryString["oauth_verifier"];
             var realmid = Request.QueryString["realmId"];
+            
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
-            //Creates the QuickBooksSession class based on the information in QuickBooksXml
-            var quickBooksSession = new QuickBooksSession {RealmId = realmid, OAuthVerifier = oauthVerifyer};
+            //Saves the Verifier provided by OAuth for use when we exchange the Request token for the Access token
+            quickBooksSession.OAuthVerifier = oauthVerifyer;
 
-            //The Id of the QuickBooks Account that is being accessed. Saved for use by API's 
+            //The Id of the QuickBooks Account that is being accessed. Saved for use by API's             
+            quickBooksSession.RealmId = realmid;
 
-            //Code used alon side the tokens to ensure that they are not being guessed
+            //Exchanges the RequestToken 
+            var accessTokenaAndSecret = QuickBooksTools.GetAccessToken(quickBooksSession);
+
+            //Saving the Token to private storage
+            quickBooksSession.QBToken = accessTokenaAndSecret.Token;
+            quickBooksSession.QBTokenSecret = accessTokenaAndSecret.TokenSecret;
 
             //Serializes the QuickBooksSession class back to the database
             currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
-
-            //Exchanges the RequestToken 
-            QuickBooksTools.GetAccessToken(currentBusinessAccount, _coreEntitiesContainer);
-
-            //Saves the base url needed for QuickBooks APIs for this user
-            QuickBooksTools.GetBaseUrl(currentBusinessAccount);
 
             _coreEntitiesContainer.SaveChanges();
 

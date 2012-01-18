@@ -10,7 +10,8 @@ namespace FoundOps.QuickBooksWF
         // Define an activity input argument of type BunsinessAccount
         public InArgument<BusinessAccount> CurrentBusinessAccount { get; set; }
 
-        public CoreEntitiesContainer CoreEntitiesContainer;
+        // Define an activity input argument of type BunsinessAccount
+        public InArgument<string> BaseUrl { get; set; }
 
         // If your activity returns a value, derive from CodeActivity<TResult>
         // and return the value from the Execute method.
@@ -20,6 +21,9 @@ namespace FoundOps.QuickBooksWF
 
             //Gets the current BusinessAccount from the Workflow
             var currentBusinessAccount = CurrentBusinessAccount.Get<BusinessAccount>(context);
+
+            //Gets the BaseUrl from the workflow
+            var baseUrl = BaseUrl.Get<string>(context);
 
             //Calls the method that will return the list of objects
             var listOfObjects = QuickBooksTools.GetListFromTables(currentBusinessAccount);
@@ -36,22 +40,22 @@ namespace FoundOps.QuickBooksWF
 
                 //If the delete operation was specified, delete the invoice from QBO
                 //If the update operation was specified, update the invoice in QBO
-                switch (invoiceObject.ChangeType)
-                {
-                    #region Delete - Currently Not Supported
-                    //case Operation.Delete:
-                    //    QuickBooksTools.DeleteInvoice(currentBusinessAccount, invoice);
-                    //    break;
-                    #endregion
-                    case Operation.Update:
-                        QuickBooksTools.UpdateInvoice(currentBusinessAccount, invoice, coreEntitiesContainer);
-                        break;
-                }
+                //switch (invoiceObject.ChangeType)
+                //{
+                //    #region Delete - Currently Not Supported
+                //    //case Operation.Delete:
+                //    //    QuickBooksTools.DeleteInvoice(currentBusinessAccount, invoice);
+                //    //    break;
+                //    #endregion
+                //    case Operation.Update:
+                //        QuickBooksTools.UpdateInvoice(currentBusinessAccount, invoice, coreEntitiesContainer, baseUrl);
+                //        break;
+                //}
 
-                //If for some reason a create has been added. Leave it there and it will be handled at night with the rest of the create \
-                //Else, remove the invoice from the table
-                if (invoiceObject.ChangeType != Operation.Create)
-                    QuickBooksTools.RemoveFromTable(invoice);
+                ////If for some reason a create has been added. Leave it there and it will be handled at night with the rest of the create \
+                ////Else, remove the invoice from the table
+                //if (invoiceObject.ChangeType != Operation.Create)
+                //    QuickBooksTools.RemoveFromTable(invoice);
             }
         }
     }

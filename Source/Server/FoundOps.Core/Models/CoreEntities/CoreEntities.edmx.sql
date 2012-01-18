@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 01/12/2012 14:13:48
+-- Date Created: 01/17/2012 12:53:20
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -772,8 +772,6 @@ GO
 -- Creating table 'Parties_BusinessAccount'
 CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [QuickBooksEnabled] bit  NOT NULL,
-    [QuickBooksAccessToken] nvarchar(max)  NULL,
-    [QuickBooksAccessTokenSecret] nvarchar(max)  NULL,
     [RouteManifestSettings] nvarchar(max)  NULL,
     [QuickBooksSessionXml] nvarchar(max)  NULL,
     [Id] uniqueidentifier  NOT NULL

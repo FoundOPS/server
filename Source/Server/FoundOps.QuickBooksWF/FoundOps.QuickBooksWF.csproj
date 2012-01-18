@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="RemoveBooleanValue.cs" />
     <Compile Include="GetListOfObjectsFromTables.cs" />
+    <Compile Include="SetBaseUrl.cs" />
     <Compile Include="SetReadyToInvoice.cs" />
     <Compile Include="UpdateInvoiceQuickBooks.cs" />
     <Content Include="Web.config">
@@ -77,7 +78,6 @@
     </Content>
     <Compile Include="CreateInvoiceQuickBooks.cs" />
     <Compile Include="GetInvoiceFromRouteTask.cs" />
-    <Compile Include="GetBaseUrlActivity.cs" />
     <Compile Include="GetListOfBusinessAccounts.cs" />
     <Compile Include="GetListOfRouteTasks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
