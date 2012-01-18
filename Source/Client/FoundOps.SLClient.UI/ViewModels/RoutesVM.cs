@@ -73,6 +73,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public IReactiveCommand DeleteRouteTask { get; private set; }
 
+        /// <summary>
+        /// A command to delete a set of route tasks.
+        /// </summary>
+        public IReactiveCommand DeleteRouteTasks { get; private set; }
+
         #endregion
 
         #region Date Modifiers
@@ -211,9 +216,27 @@ namespace FoundOps.SLClient.UI.ViewModels
         private readonly Subject<RouteTask> _selectedTaskSubject = new Subject<RouteTask>();
         private readonly ObservableAsPropertyHelper<RouteTask> _selectedTask;
         /// <summary>
-        /// The first selected Task in route tree view
+        /// The first selected task in the list of selected items. 
+        /// The list is either from the task board or route tree view, depending on what was selected last.
         /// </summary>
         public RouteTask SelectedTask { get { return _selectedTask.Value; } set { _selectedTaskSubject.OnNext(value); } }
+
+        private IEnumerable<RouteTask> _selectedTaskBoardTasks;
+
+        ///<summary>
+        /// The selected route tasks in the task board.
+        ///</summary>
+        public IEnumerable<RouteTask> SelectedTaskBoardTasks
+        {
+            get { return _selectedTaskBoardTasks; }
+            set
+            {
+                _selectedTaskBoardTasks = value;
+                this.RaisePropertyChanged("SelectedTaskBoardTasks");
+
+                SelectedTask = SelectedTaskBoardTasks == null ? null : SelectedTaskBoardTasks.FirstOrDefault();
+            }
+        }
 
         #endregion
 
@@ -368,7 +391,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //c) the SelectedRegions changes
                 .Merge(SelectedRegions.FromCollectionChangedGeneric())
                 //d) a route's RouteType is changed
-                .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectLatest(rts => 
+                .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectLatest(rts =>
                     rts.Select(rt => Observable2.FromPropertyChangedPattern(rt, x => x.RouteType)).Merge())
                     .AsGeneric());
 
@@ -429,7 +452,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //whenever loadedRoutes.RouteDestinations is changed (and now)
                   lrs.Select(lr => lr.RouteDestinations.FromCollectionChangedAndNow()
                       //whenever the loadedRoutes.RouteDestinations.RouteTasks is changed (and now)
-                      .Select(ea=> (EntityCollection<RouteDestination>)ea.Sender)
+                      .Select(ea => (EntityCollection<RouteDestination>)ea.Sender)
                       .SelectLatest(routeDestinations =>
                           routeDestinations.Select(rd => rd.RouteTasks.FromCollectionChangedAndNow())
                           .Merge()) //Merge loadedRoutes.RouteDestinations.RouteTasks collection changed events
@@ -508,7 +531,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
             {
                 //Setup the route manifest viewer if there is not one yet
-                if(_routeManifestViewer == null)
+                if (_routeManifestViewer == null)
                     _routeManifestViewer = new RouteManifestViewer();
 
                 _routeManifestViewer.Show();
@@ -534,6 +557,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //DeleteRouteTask can delete whenever the SelectedTask != null
             DeleteRouteTask = new ReactiveCommand(this.WhenAny(x => x.SelectedTask, st => st.Value != null));
+            //DeleteRouteTasks can delete whenever SelectedTaskBoardTasks != null
+            DeleteRouteTasks = new ReactiveCommand(this.WhenAny(x => x.SelectedTaskBoardTasks, sts => sts.Value != null));
 
             //Setup AddRouteTask command
             AddRouteTask.SubscribeOnDispatcher().Subscribe(_ =>
@@ -560,6 +585,17 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 if (this.Context.RouteTasks.Contains(SelectedTask))
                     this.Context.RouteTasks.Remove(SelectedTask);
+            });
+
+            //Setup DeleteRouteTasks command
+            DeleteRouteTasks.SubscribeOnDispatcher().Subscribe(_ =>
+            {
+                foreach (var routeTask in this.SelectedTaskBoardTasks)
+                    this.LoadedRouteTasks.Remove(routeTask);
+
+                foreach (var routeTask in this.SelectedTaskBoardTasks)
+                    if (this.Context.RouteTasks.Contains(routeTask))
+                        this.Context.RouteTasks.Remove(routeTask);
             });
 
             #endregion
