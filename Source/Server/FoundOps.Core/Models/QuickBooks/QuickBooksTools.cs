@@ -595,6 +595,23 @@ namespace FoundOps.Core.Models.QuickBooks
             //Creates an Invoice to compare with instead of comparing to XML repeatedly
             var quickbooksInvoice = CreateInvoiceFromQuickbooksResponse(coreEntitiesContainer, response, currentBusinessAccount, baseUrl);
 
+            currentInvoice = MergeInvoices(currentInvoice, quickbooksInvoice);
+
+            //Save all changes made
+            coreEntitiesContainer.SaveChanges();
+
+            //This Invoice has been merged and is ready to be updated
+            return currentInvoice;
+        }
+
+        /// <summary>
+        /// Merges the invoices.
+        /// </summary>
+        /// <param name="currentInvoice">The current invoice.</param>
+        /// <param name="quickbooksInvoice">The quickbooks invoice.</param>
+        /// <returns></returns>
+        private static Invoice MergeInvoices(Invoice currentInvoice, Invoice quickbooksInvoice)
+        {
             #region Invoice
 
             //This means that a property on the Invoice itself has changed
@@ -630,15 +647,11 @@ namespace FoundOps.Core.Models.QuickBooks
 
             var items = currentInvoice.LineItems.Where(li => li.IsAmountChanged || li.IsDescriptionChanged);
 
-            if (items.Count() == 0)
+            if (!items.Any())
                 currentInvoice.LineItems = quickbooksInvoice.LineItems;
 
             #endregion
 
-            //Save all changes made
-            coreEntitiesContainer.SaveChanges();
-
-            //This Invoice has been merged and is ready to be updated
             return currentInvoice;
         }
 
@@ -806,7 +819,7 @@ namespace FoundOps.Core.Models.QuickBooks
         /// </summary>
         /// <param name="quickBooksSalesTermXml">The quick books sales term XML.</param>
         /// <returns></returns>
-        public static ObservableCollection<SalesTerm> CreateSalesTermsFromQuickBooksResponse(string quickBooksSalesTermXml)
+        public static IEnumerable<SalesTerm> CreateSalesTermsFromQuickBooksResponse(string quickBooksSalesTermXml)
         {
             var listOfSalesTerms = new ObservableCollection<SalesTerm>();
 
@@ -872,6 +885,50 @@ namespace FoundOps.Core.Models.QuickBooks
             }
 
             return listOfSalesTerms;
+        }
+
+
+        /// <summary>
+        /// Creates the invoices from quick books response.
+        /// </summary>
+        /// <param name="currentBusinessAccount">The current business account.</param>
+        /// <param name="baseUrl">The base URL.</param>
+        /// <param name="quickBooksInvoiceXml">The quick books invoice XML.</param>
+        public static void CreateInvoicesFromQuickBooksResponse(BusinessAccount currentBusinessAccount, string baseUrl, string quickBooksInvoiceXml)
+        {
+            var splitByInvoices = Regex.Split(quickBooksInvoiceXml, "<Invoice>");
+
+            var coreEntitiesContainer = new CoreEntitiesContainer();
+
+            foreach (var invoice in splitByInvoices)
+            {
+                //Filters out the heading of the XML from being added as an Invoice
+                if (invoice.Contains("intuit.com"))
+                    continue;
+                
+                //Creates a new Invoice based on the XML sent to it
+                var newInvoice = CreateInvoiceFromQuickbooksResponse(coreEntitiesContainer, invoice, currentBusinessAccount, baseUrl);
+                
+                //The QuickBooksId of the invoice in question
+                var idToCheck = newInvoice.QuickBooksId;
+
+                //Check to see if an invoice with that Id already exists in our system
+                var existantInvoice = coreEntitiesContainer.Invoices.FirstOrDefault(i => i.QuickBooksId == idToCheck);
+
+                //If the invoice does exists, merge it. Otherwise, add it to the list of InvoicesToAdd.
+                if (existantInvoice != null)
+                {
+                    //Merge Here
+                    MergeInvoices(existantInvoice, newInvoice);
+                }
+                else
+                {
+                    //Add invoice to the database
+                    coreEntitiesContainer.Invoices.AddObject(newInvoice);                
+                }
+            }
+
+            coreEntitiesContainer.SaveChanges();
         }
 
         #endregion
