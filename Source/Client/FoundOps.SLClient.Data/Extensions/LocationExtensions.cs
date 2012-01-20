@@ -20,14 +20,10 @@ namespace FoundOps.Core.Models.CoreEntities
 
         MakeObjectReactiveHelper _reactiveHelper;
 
-        public IObservable<IObservedChange<object, object>> Changed
-        {
-            get { return _reactiveHelper.Changed; }
-        }
-        public IObservable<IObservedChange<object, object>> Changing
-        {
-            get { return _reactiveHelper.Changing; }
-        }
+        public IObservable<IObservedChange<object, object>> Changed { get { return _reactiveHelper.Changed; } }
+
+        public IObservable<IObservedChange<object, object>> Changing { get { return _reactiveHelper.Changing; } }
+
         public IDisposable SuppressChangeNotifications()
         {
             return _reactiveHelper.SuppressChangeNotifications();
@@ -37,23 +33,26 @@ namespace FoundOps.Core.Models.CoreEntities
 
         partial void OnCreation()
         {
+            //Setup IReactiveNotifyPropertyChanged
+            _reactiveHelper = new MakeObjectReactiveHelper(this);
+
             InitializeHelper();
         }
 
         protected override void OnLoaded(bool isInitialLoad)
         {
+            //Setup IReactiveNotifyPropertyChanged
+            _reactiveHelper = new MakeObjectReactiveHelper(this);
+
             if (isInitialLoad)
                 //Wait for associations to set (after the load) before setting up automatic numbering
-                Observable.Interval(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(_ => InitializeHelper());
+                Observable.Interval(TimeSpan.FromMilliseconds(600)).ObserveOnDispatcher().Subscribe(_ => InitializeHelper());
 
             base.OnLoaded(isInitialLoad);
         }
 
         private void InitializeHelper()
         {
-            //Setup IReactiveNotifyPropertyChanged
-            _reactiveHelper = new MakeObjectReactiveHelper(this);
-
             //Setup SubLocation automatic numbering operations
             this.SubLocations.EntityAdded += (s, e) => e.Entity.Number = SubLocations.Count;
             this.SubLocations.EntityRemoved += (s, e) =>

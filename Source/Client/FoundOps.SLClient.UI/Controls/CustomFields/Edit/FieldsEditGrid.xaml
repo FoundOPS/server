@@ -9,6 +9,7 @@
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:ComboBoxSelectedItemConverter x:Key="ComboBoxSelectedItemConverter"/>
         <Converters1:NumericFieldToValueFormatConverter x:Key="NumericFieldToValueFormatConverter"/>
+        <Converters1:OrderByNameConverter x:Key="OrderByNameConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
@@ -152,6 +153,6 @@
                       TextSmTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
     </UserControl.Resources>
     <Grid>
-        <Controls:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" ItemsSource="{Binding ServiceTemplate.Fields, ElementName=myFieldsEditGrid}" />
+        <Controls:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" ItemsSource="{Binding ServiceTemplate.Fields, ElementName=myFieldsEditGrid, Converter={StaticResource OrderByNameConverter}}" />
     </Grid>
 </UserControl>
