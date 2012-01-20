@@ -383,12 +383,19 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        private readonly Subject<ContactInfoVM> _selectedRouteDestinationContactInfoVMSubject = new Subject<ContactInfoVM>();
-        private readonly ObservableAsPropertyHelper<ContactInfoVM> _selectedRouteDestinationContactInfoVM;
+        private readonly Subject<ContactInfoVM> _selectedRouteDestinationClientContactInfoVMSubject = new Subject<ContactInfoVM>();
+        private readonly ObservableAsPropertyHelper<ContactInfoVM> _selectedRouteDestinationClientContactInfoVM;
         /// <summary>
-        /// Gets the ContactInfoVM for the selected route destination.
+        /// Gets the ContactInfoVM for the selected route destination's client.
         /// </summary>
-        public ContactInfoVM SelectedRouteDestinationContactInfoVM { get { return _selectedRouteDestinationContactInfoVM.Value; } }
+        public ContactInfoVM SelectedRouteDestinationClientContactInfoVM { get { return _selectedRouteDestinationClientContactInfoVM.Value; } }
+
+        private readonly Subject<ContactInfoVM> _selectedRouteDestinationLocationContactInfoVMSubject = new Subject<ContactInfoVM>();
+        private readonly ObservableAsPropertyHelper<ContactInfoVM> _selectedRouteDestinationLocationContactInfoVM;
+        /// <summary>
+        /// Gets the ContactInfoVM for the selected route destination's location.
+        /// </summary>
+        public ContactInfoVM SelectedRouteDestinationLocationContactInfoVM { get { return _selectedRouteDestinationLocationContactInfoVM.Value; } }
 
         #endregion
 
@@ -525,12 +532,18 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup the RouteManifestVM
             RouteManifestVM = new RouteManifestVM(dataManager);
 
-            //Setup the ContactInfoVM, SelectedEmployeesVM, and SelectedVehiclesVM properties
-            _selectedRouteDestinationContactInfoVM = _selectedRouteDestinationContactInfoVMSubject.ToProperty(this, x => x.SelectedRouteDestinationContactInfoVM);
+            //Setup the ContactInfoVM properties
+            _selectedRouteDestinationClientContactInfoVM = _selectedRouteDestinationClientContactInfoVMSubject.ToProperty(this, x => x.SelectedRouteDestinationClientContactInfoVM);
+            _selectedRouteDestinationLocationContactInfoVM = _selectedRouteDestinationLocationContactInfoVMSubject.ToProperty(this, x => x.SelectedRouteDestinationLocationContactInfoVM);
 
-            //Whenever the Selected Route Destination changes: update the _selectedRouteDestinationContactInfoVM
+            //Whenever the Selected Route Destination changes: update the _selectedRouteDestinationClientContactInfoVM
+            _selectedRouteDestinationSubject.Where(srd => srd != null && srd.Client != null && srd.Client.OwnedParty!=null).Subscribe(selectedRouteDestination =>
+                _selectedRouteDestinationClientContactInfoVMSubject.OnNext(
+                new ContactInfoVM(DataManager, ContactInfoType.OwnedParties, selectedRouteDestination.Client.OwnedParty.ContactInfoSet)));
+
+            //Whenever the Selected Route Destination changes: update the _selectedRouteDestinationLocationContactInfoVM
             _selectedRouteDestinationSubject.Where(srd => srd != null && srd.Location != null).Subscribe(selectedRouteDestination =>
-                _selectedRouteDestinationContactInfoVMSubject.OnNext(
+                _selectedRouteDestinationLocationContactInfoVMSubject.OnNext(
                 new ContactInfoVM(DataManager, ContactInfoType.Locations, selectedRouteDestination.Location.ContactInfoSet)));
 
             #endregion
