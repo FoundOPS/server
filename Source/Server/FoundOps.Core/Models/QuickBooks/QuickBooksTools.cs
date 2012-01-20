@@ -34,11 +34,13 @@ namespace FoundOps.Core.Models.QuickBooks
 
             public const string GrantUrl = "http://localhost:31820/QuickBooks/OAuthGrantLogin";
 
-            public const string ConsumerKey = "qyprdFc7q3QeH04htbj4pPtXdlmX0f"; //ConfigurationManager.AppSettings["consumerKey"];
-            public const string ConsumerSecret = "nxKtqCZGm0kpwWiVG85Ur6HGHUDvTW45NLmdGUWL"; //ConfigurationManager.AppSettings["consumerSecret"];
+            //Consumer Key/Secret for our IntuitAnywhere App
+            public const string ConsumerKey = "qyprdFc7q3QeH04htbj4pPtXdlmX0f"; 
+            public const string ConsumerSecret = "nxKtqCZGm0kpwWiVG85Ur6HGHUDvTW45NLmdGUWL";
 
             public const string OauthCallbackUrl = "http://localhost:31820/QuickBooks/OAuthGrantHandler";
 
+            //Connection String for Azure Tables
             public const string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=fstorequickbooks;AccountKey=fyZ0dsbFfQZET9RFdIlSeVepYgmtO0aBQYVArhazF0KO2X80BUZ2drEJLmRYjDbzelf7PAKzTrePzMJpt3vGaA==";
         }
 
@@ -887,9 +889,8 @@ namespace FoundOps.Core.Models.QuickBooks
             return listOfSalesTerms;
         }
 
-
         /// <summary>
-        /// Creates the invoices from quick books response.
+        /// Creates the invoices from quick books response after GetEntityList("invoices").
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="baseUrl">The base URL.</param>

@@ -17,18 +17,13 @@ namespace FoundOps.QuickBooksWF.Tests
         /// <summary>
         ///   The endpoint address to be used by the test host
         /// </summary>
-        
+
         [TestMethod]
         public void TestMethod1()
         {
             #region Test
 
             CallWorkflow("Create");
-
-            var syncEvent = new AutoResetEvent(false);
-            
-            //Need to set the syncEvent value after WF is complete
-            syncEvent.WaitOne();
 
             #endregion
         }
@@ -50,36 +45,36 @@ namespace FoundOps.QuickBooksWF.Tests
 
                 host.AddServiceEndpoint(type, new BasicHttpBinding(), baseAddress);
 
-                //var fileTrackingProfile = new TrackingProfile();
-                //fileTrackingProfile.Queries.Add(new WorkflowInstanceQuery
-                //                                    {
-                //                                        States = { "*" }
-                //                                    });
-                //fileTrackingProfile.Queries.Add(new ActivityStateQuery()
-                //                                    {
-                //                                        ActivityName = "*",
-                //                                        States = { "*" },
-                //                                        // You can use the following to specify specific stages:
-                //                                        // States = {
-                //                                        // ActivityStates.Executing,
-                //                                        // ActivityStates.Closed
-                //                                        //},
-                //                                        Variables =
-                //                                            {
-                //                                                {"*"}
-                //                                            } // or you can enter specific variable names instead of “*”
+                var fileTrackingProfile = new TrackingProfile();
+                fileTrackingProfile.Queries.Add(new WorkflowInstanceQuery
+                                                    {
+                                                        States = { "*" }
+                                                    });
+                fileTrackingProfile.Queries.Add(new ActivityStateQuery()
+                                                    {
+                                                        ActivityName = "*",
+                                                        States = { "*" },
+                                                        // You can use the following to specify specific stages:
+                                                        // States = {
+                                                        // ActivityStates.Executing,
+                                                        // ActivityStates.Closed
+                                                        //},
+                                                        Variables =
+                                                            {
+                                                                {"*"}
+                                                            } // or you can enter specific variable names instead of “*”
 
-                //                                    });
-                //fileTrackingProfile.Queries.Add(new CustomTrackingQuery()
-                //                                    {
-                //                                        ActivityName = "*",
-                //                                        Name = "*"
-                //                                    });
+                                                    });
+                fileTrackingProfile.Queries.Add(new CustomTrackingQuery()
+                                                    {
+                                                        ActivityName = "*",
+                                                        Name = "*"
+                                                    });
 
 
                 host.Description.Behaviors.Add(new WorkflowIdleBehavior()
                                                    {
-                                                       TimeToPersist = TimeSpan.FromSeconds(5),
+                                                       TimeToPersist = TimeSpan.FromSeconds(30),
                                                        TimeToUnload = TimeSpan.FromSeconds(20)
                                                    });
 
@@ -88,7 +83,24 @@ namespace FoundOps.QuickBooksWF.Tests
 
                 var proxy = new CreateClient(new BasicHttpBinding(), new EndpointAddress(baseAddress));
 
-                proxy.Start();
+                try
+                {
+                    proxy.Start();
+                }
+                catch (Exception e)
+                {
+                }
+
+                //var syncEvent = new AutoResetEvent(false);
+
+
+                //var state = proxy.State;
+
+                //while (state != CommunicationState.Closed)
+                //    state = proxy.State;
+
+                //Need to set the syncEvent value after WF is complete
+                //syncEvent.WaitOne();
 
                 host.Close();
             }

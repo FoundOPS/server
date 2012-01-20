@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DownloadMergeInvoices.cs" />
+    <Compile Include="GetListOfClientsWithServices.cs" />
     <Compile Include="RemoveBooleanValue.cs" />
     <Compile Include="GetListOfObjectsFromTables.cs" />
     <Compile Include="SetBaseUrl.cs" />
@@ -77,10 +78,10 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Compile Include="CreateInvoiceQuickBooks.cs" />
-    <Compile Include="GetInvoiceFromRouteTask.cs" />
+    <Compile Include="SendInvoicesToQuickBooks.cs" />
+    <Compile Include="CreateInvoicesFromServices.cs" />
     <Compile Include="GetListOfBusinessAccounts.cs" />
-    <Compile Include="GetListOfRouteTasks.cs" />
+    <Compile Include="GetListOfServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

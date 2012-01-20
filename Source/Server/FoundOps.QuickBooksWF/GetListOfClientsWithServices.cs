@@ -8,13 +8,13 @@ using FoundOps.Core.Models.CoreEntities;
 namespace FoundOps.QuickBooksWF
 {
 
-    public sealed class GetListOfRouteTasks : CodeActivity
+    public sealed class GetListOfClientsWithServices : CodeActivity
     {
         // Define an activity input argument of type BunsinessAccount
         public InArgument<BusinessAccount> CurrentBusinessAccount { get; set; }
 
         // Define an activity output argument of a list of RouteTasks
-        public OutArgument<IEnumerable<RouteTask>> ListOfRouteTasks { get; set; }
+        public OutArgument<IEnumerable<Client>> ListOfClientsWithTasks { get; set; }
 
         // If your activity returns a value, derive from CodeActivity<TResult>
         // and return the value from the Execute method.
@@ -22,13 +22,10 @@ namespace FoundOps.QuickBooksWF
         {
             var currentBusinessAccount = CurrentBusinessAccount.Get<BusinessAccount>(context);
 
-            //Gets a list of RouteTasks from the given BusinessAccount where the RouteTasks date is yesterday's date
-            //Also, it filters out the RouteTasks that were not generated off of a ServiceTemplate
-            //Only RouteTasks that have a ServiceTemplate will have the information necessary to create an invoice
-            var routeTasks = currentBusinessAccount.RouteTasks.Where(
-                rt => rt.Date == DateTime.Now.AddDays(-1).Date && rt.Service != null).ToArray();
+            //Returns a list of clients that have a scheduled RouteTasks from one day prior to today
+            var clientsWithTasks = currentBusinessAccount.Clients.Where(c => c.ServicesToRecieve.FirstOrDefault(s => s.ServiceDate == DateTime.Now.AddDays(-1).Date) != null);
 
-            ListOfRouteTasks.Set(context, routeTasks);
+            ListOfClientsWithTasks.Set(context, clientsWithTasks);
         }
     }
 }
