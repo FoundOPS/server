@@ -282,6 +282,11 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     //Checks to be sure the 
                     if (((RouteTask)draggedItem).Service != null && String.CompareOrdinal(((RouteTask)draggedItem).Service.ServiceTemplate.Name, payloadCheck.Service.ServiceTemplate.Name) != 0)
                     {
+                        //If the dragged item is a manually created task, it will not matter what type of route you try and drag it into
+                        //Also, it can be dragged with any type of service
+                        if (((RouteTask)draggedItem).Service == null)
+                            continue;
+
                         const string errorString = "Items Selected Have Different Services";
                         e.Options.DragCue = CreateDragCue(errorString, cue);
                         break;
@@ -390,7 +395,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             {
                 //Gets hit if you try and drop a task onto the Taskboard
                 //Checks to be sure you are trying to drop into one of the Routes
-                if (!(e.Options.Destination is RadTreeView)) return;
+                if (!(e.Options.Destination is RadTreeView))
+                {
+                    if (!(e.Options.Destination.DataContext is RouteDestination || e.Options.Destination.DataContext is RouteTask)) return;
+                }
 
                 var source = this.TaskBoard.PublicTaskBoardRadGridView.ItemsSource as IList;
 
