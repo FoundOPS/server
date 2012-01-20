@@ -82,19 +82,21 @@ namespace FoundOps.Core.Models.QuickBooks
 
                     writer.CreateElement("CustomerId", clientId, "idDomain", "QBO");
 
-                    writer.WriteElement("BillAddr", () =>
+                    if (invoice.BillToLocation != null)
                     {
-                        writer.CreateElement("Line1", invoice.BillToLocation.AddressLineOne);
+                        writer.WriteElement("BillAddr", () =>
+                        {
+                            writer.CreateElement("Line1", invoice.BillToLocation.AddressLineOne);
 
-                        writer.CreateElement("Line2", invoice.BillToLocation.AddressLineTwo);
+                            writer.CreateElement("Line2", invoice.BillToLocation.AddressLineTwo);
 
-                        writer.CreateElement("City", invoice.BillToLocation.City);
+                            writer.CreateElement("City", invoice.BillToLocation.City);
 
-                        writer.CreateElement("CountrySubDivisionCode", invoice.BillToLocation.State);
+                            writer.CreateElement("CountrySubDivisionCode", invoice.BillToLocation.State);
 
-                        writer.CreateElement("ZipCode", invoice.BillToLocation.ZipCode);
-                    });
-
+                            writer.CreateElement("ZipCode", invoice.BillToLocation.ZipCode);
+                        });
+                    }
                     //writer.CreateElement("SalesTermId", invoiceToCreate.BillToLocation.City);
                     //writer.CreateElement("DueDate", invoiceToCreate.DueDate.ToString());
                 });
