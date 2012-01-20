@@ -39,6 +39,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 //Add Locations to the Client. Must do this before setting up the RecurringServices (they require locations)
                 //This adds 2 locations per client. NOTE: If there are more than 3 clients, this or LocationsDesignData must be updated to have enough locations
                 new LocationsDesignData(serviceProvider, client, regionsDesignData.DesignRegions, clientIndex * 2, 2);
+                
+                //Set the default billing location
+                client.DefaultBillingLocation = client.OwnedParty.Locations.First();
 
                 //Add RecurringServices
                 new RecurringServicesDesignData(client);

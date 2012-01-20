@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.ServiceModel.DomainServices.Client;
 using ReactiveUI;
 using RiaServicesContrib;
@@ -42,7 +43,8 @@ namespace FoundOps.Core.Models.CoreEntities
         protected override void OnLoaded(bool isInitialLoad)
         {
             if (isInitialLoad)
-                InitializeHelper();
+                //Wait for associations to set (after the load) before setting up automatic numbering
+                Observable.Interval(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(_ => InitializeHelper());
 
             base.OnLoaded(isInitialLoad);
         }
