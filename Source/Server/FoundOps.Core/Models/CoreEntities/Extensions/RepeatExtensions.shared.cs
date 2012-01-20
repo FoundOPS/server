@@ -55,7 +55,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-
         partial void OnStartDateChanging(DateTime value)
         {
             if (StartDateChanging != null)
