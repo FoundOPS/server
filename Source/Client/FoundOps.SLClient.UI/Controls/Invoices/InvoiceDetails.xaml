@@ -39,11 +39,16 @@
             <!--Bind to list of locations-->
             <Controls:RadComboBox x:Name="LocationsComboBox" Grid.Column="2" DisplayMemberPath="Name" SelectedValue="{Binding BillToLocation, Mode=TwoWay}" 
                                   ItemsSource="{Binding DomainCollectionView, Source={Tools1:GetVM Type=CoreEntities:LocationsVM}}">
-                <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=Controls1:Selector.SelectedValueProperty}"/>
+                <i:Interaction.Behaviors>
+                    <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=Controls1:Selector.SelectedValueProperty}"/>
+                </i:Interaction.Behaviors>
             </Controls:RadComboBox>
             <TextBlock Text="Invoice Schedule:" Grid.Row="2" TextAlignment="Right"/>
             <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="2">
-                <RadioButton x:Name="fixedButton" IsChecked="{Binding ScheduleMode, Converter={StaticResource ScheduleModeConverter}, ConverterParameter=FixedDate, Mode=TwoWay}"  Content="Fixed Date" Margin="0,0,10,0">
+                <!--<RadioButton x:Name="fixedButton" IsChecked="{Binding ScheduleMode, Converter={StaticResource ScheduleModeConverter}, ConverterParameter=FixedDate, Mode=TwoWay}"  Content="Fixed Date" Margin="0,0,10,0">
+                    <i:Interaction.Behaviors>
+                        <Behaviors:ConditionalBinding RequiredDependencyPropertyName="DataContext" ConditionalDependencyProperty="{MarkupExtensions:Static Member=RadioButton.IsCheckedProperty}"/>
+                    </i:Interaction.Behaviors>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Checked">
                             <ei:ChangePropertyAction x:Name="HideRelative" TargetName="relativePanel" PropertyName="Visibility">
@@ -58,6 +63,9 @@
                     </i:Interaction.Triggers>
                 </RadioButton>
                 <RadioButton x:Name="relativeButton" IsChecked="{Binding ScheduleMode, Converter={StaticResource ScheduleModeConverter}, ConverterParameter=Relative, Mode=TwoWay}" Content="Relative to Service">
+                    <i:Interaction.Behaviors>
+                        <Behaviors:ConditionalBinding RequiredDependencyPropertyName="DataContext" ConditionalDependencyProperty="{MarkupExtensions:Static Member=RadioButton.IsCheckedProperty}"/>
+                    </i:Interaction.Behaviors>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <ei:ChangePropertyAction x:Name="HideFixed" TargetName="fixedPanel" PropertyName="Visibility">
@@ -68,7 +76,7 @@
                             <ei:ChangePropertyAction x:Name="ShowRelative" TargetName="relativePanel" PropertyName="Visibility"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                </RadioButton>
+                </RadioButton>-->
             </StackPanel>
             <StackPanel x:Name="fixedPanel" Orientation="Horizontal" Grid.Row="4" Grid.Column="2">
                 <Controls:RadComboBox x:Name="radComboBox" SelectedIndex="{Binding FixedScheduleOptionInt, Mode=TwoWay}" MinWidth="60" Margin="0,0,10,0">

@@ -14,7 +14,6 @@ using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.Services;
 using Microsoft.Windows.Data.DomainServices;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -26,9 +25,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class UserAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, //Base class is Party because DomainCollectionView does not work well with inheritance
         IAddToDeleteFromSource<Party> //Base class is Party because loadedUserAccounts is EntityList<Party>
     {
-        #region Properties and Variables
-
-        #region Public
+        #region Public Properties and Variables
 
         #region Implementation of IAddToDeleteFromSource
 
@@ -57,8 +54,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        #endregion
-
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAccountsVM"/> class.
         /// </summary>
@@ -80,15 +75,18 @@ namespace FoundOps.SLClient.UI.ViewModels
             //c) the BusinessAccount context OwnedRoles changes
             //d) the BusinessAccount context OwnedRoles' MemberParties changes
 
-            //a) the loaded UserAccounts changes
             loadedUserAccounts.AsGeneric().Merge(
-                ContextManager.GetContextObservable<BusinessAccount>().Where(ba => ba != null)
-                .SelectMany(ba =>//c) the BusinessAccount context OwnedRoles changes
+                ContextManager.GetContextObservable<BusinessAccount>().WhereNotNull()
+                .SelectLatest(ba =>
                                 ba.OwnedRoles.FromCollectionChangedAndNow()
-                                .SelectMany(_ => //d) the BusinessAccount context OwnedRoles' MemberParties changes
-                                                ba.OwnedRoles.Select(or => or.MemberParties.FromCollectionChangedGenericAndNow()).Merge()))
-                //b) whenever the BusinessAccount context changes
-                 .AndNow())
+                                .SelectLatest(_ => //d) the BusinessAccount context OwnedRoles' MemberParties changes
+                                                ba.OwnedRoles.Select(or => or.MemberParties.FromCollectionChangedGeneric()).Merge()
+                                                //c) the BusinessAccount context's OwnedRoles changes
+                                                .AndNow())
+                                                //b) the BusinessAccount context changes
+                                                .AndNow()))
+                                                //a) the loaded UserAccounts changes
+                                                .AndNow()
                 .Throttle(TimeSpan.FromMilliseconds(200))
                 .ObserveOnDispatcher().Subscribe(_ =>
                 {
@@ -124,20 +122,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             CreateNewItem = name =>
             {
-                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword() };
-
-                //Try to guess the name
-                if (!String.IsNullOrEmpty(name))
-                {
-                    var firstLastName = name.Split(' ');
-                    if (firstLastName.Count() == 2)
-                    {
-                        newUserAccount.FirstName = firstLastName.First();
-                        newUserAccount.LastName = firstLastName.Last();
-                    }
-                    else
-                        newUserAccount.FirstName = name;
-                }
+                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
 
                 //Add the new entity to the EntityList so it gets tracked/saved
                 ((EntityList<Party>)ExistingItemsSource).Add(newUserAccount);

@@ -233,6 +233,9 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Docking.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.FixedDocumentViewers">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.FixedDocumentViewers.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.GridView">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.GridView.dll</HintPath>
       <Private>False</Private>
@@ -253,10 +256,25 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Telerik.Windows.Documents">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.Pdf">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.FormatProviders.Pdf.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
+      <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml.cs">
+      <DependentUpon>ManifestFooter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml.cs">
+      <DependentUpon>ManifestHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml.cs">
       <DependentUpon>BusinessDetailsView.xaml</DependentUpon>
@@ -281,9 +299,6 @@
     </Compile>
     <Compile Include="Controls\Clients\ClientLocationsGrid.xaml.cs">
       <DependentUpon>ClientLocationsGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Common\SelectedEntitiesLarge.xaml.cs">
-      <DependentUpon>SelectedEntitiesLarge.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ContactInfo\ContactInfoEdit.xaml.cs">
       <DependentUpon>ContactInfoEdit.xaml</DependentUpon>
@@ -354,13 +369,10 @@
     <Compile Include="Controls\Dispatcher\RouteDetails.xaml.cs">
       <DependentUpon>RouteDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dispatcher\RouteManifest.xaml.cs">
-      <DependentUpon>RouteManifest.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Dispatcher\RouteManifestOptions.xaml.cs">
+    <Compile Include="Controls\Dispatcher\Manifest\RouteManifestOptions.xaml.cs">
       <DependentUpon>RouteManifestOptions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dispatcher\RouteManifestViewer.xaml.cs">
+    <Compile Include="Controls\Dispatcher\Manifest\RouteManifestViewer.xaml.cs">
       <DependentUpon>RouteManifestViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dispatcher\RoutesLogGrid.xaml.cs">
@@ -386,9 +398,6 @@
     </Compile>
     <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryGrid.xaml.cs">
       <DependentUpon>EmployeeHistoryGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Employees\SelectedEmployees.xaml.cs">
-      <DependentUpon>SelectedEmployees.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLarge.xaml.cs">
       <DependentUpon>EmployeeHistoryLarge.xaml</DependentUpon>
@@ -449,9 +458,6 @@
     </Compile>
     <Compile Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml.cs">
       <DependentUpon>UserAccountsLink.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PriceSets\PriceSetRules.xaml.cs">
-      <DependentUpon>PriceSetRules.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Regions\RegionLinkSmall.xaml.cs">
       <DependentUpon>RegionLinkSmall.xaml</DependentUpon>
@@ -561,9 +567,6 @@
     <Compile Include="Controls\Vehicles\VehiclesGrid.xaml.cs">
       <DependentUpon>VehiclesGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Vehicles\SelectedVehicles.xaml.cs">
-      <DependentUpon>SelectedVehicles.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Converters\ContactInfoConverters.cs" />
     <Compile Include="Converters\ContactInfoDataTemplateSelector.cs" />
     <Compile Include="Converters\AddButtonTextConverters.cs" />
@@ -594,7 +597,6 @@
     <Compile Include="ViewModels\UserAccountSettingsVM.cs" />
     <Compile Include="ViewModels\UserAccountsVM.cs" />
     <Compile Include="ViewModels\RegionsVM.cs" />
-    <Compile Include="ViewModels\SelectedEmployeesVM.cs" />
     <Compile Include="ViewModels\EmployeeHistoryVM.cs" />
     <Compile Include="ViewModels\OptionsFieldVM.cs" />
     <Compile Include="ViewModels\ClientsVM.cs" />
@@ -605,7 +607,6 @@
     <Compile Include="ViewModels\ImportDataVM.cs" />
     <Compile Include="ViewModels\EmployeesVM.cs" />
     <Compile Include="ViewModels\RouteManifestVM.cs" />
-    <Compile Include="ViewModels\SelectedVehiclesVM.cs" />
     <Compile Include="ViewModels\VehicleMaintenanceVM.cs" />
     <Compile Include="ViewModels\VehiclesVM.cs" />
     <Compile Include="ViewModels\RoutesVM.cs" />
@@ -618,6 +619,18 @@
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -648,10 +661,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Clients\ClientLocationsGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Common\SelectedEntitiesLarge.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -747,15 +756,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Dispatcher\RouteManifest.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Dispatcher\RouteManifestOptions.xaml">
+    <Page Include="Controls\Dispatcher\Manifest\RouteManifestOptions.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Dispatcher\RouteManifestViewer.xaml">
+    <Page Include="Controls\Dispatcher\Manifest\RouteManifestViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -790,10 +795,6 @@
     <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistoryGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Employees\SelectedEmployees.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLarge.xaml">
       <SubType>Designer</SubType>
@@ -884,10 +885,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PriceSets\PriceSetRules.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1019,10 +1016,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Vehicles\SelectedVehicles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -1060,6 +1053,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,45 +7,45 @@ namespace FoundOps.Common.Silverlight.UI.Controls
     {
         #region Properties and Variables
 
-        #region EntityToRemoveString Dependency Property
+        #region ItemToRemoveString Dependency Property
 
         /// <summary>
         /// EntityToRemoveString
         /// </summary>
-        public string EntityToRemoveString
+        public string ItemToRemoveString
         {
-            get { return (string)GetValue(EntityToRemoveStringProperty); }
-            set { SetValue(EntityToRemoveStringProperty, value); }
+            get { return (string)GetValue(ItemToRemoveStringProperty); }
+            set { SetValue(ItemToRemoveStringProperty, value); }
         }
 
         /// <summary>
         /// AddIsEnabled Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty EntityToRemoveStringProperty =
+        public static readonly DependencyProperty ItemToRemoveStringProperty =
             DependencyProperty.Register(
-                "EntityToRemoveString",
+                "ItemToRemoveString",
                 typeof(string),
                 typeof(RemoveDeleteCancel),
                 new PropertyMetadata(null));
 
         #endregion
-        #region EntityToRemoveFromString Dependency Property
+        #region ItemToRemoveFromString Dependency Property
 
         /// <summary>
         /// EntityToRemoveFromString
         /// </summary>
-        public string EntityToRemoveFromString
+        public string ItemToRemoveFromString
         {
-            get { return (string)GetValue(EntityToRemoveFromStringProperty); }
-            set { SetValue(EntityToRemoveFromStringProperty, value); }
+            get { return (string)GetValue(ItemToRemoveFromStringProperty); }
+            set { SetValue(ItemToRemoveFromStringProperty, value); }
         }
 
         /// <summary>
         /// AddIsEnabled Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty EntityToRemoveFromStringProperty =
+        public static readonly DependencyProperty ItemToRemoveFromStringProperty =
             DependencyProperty.Register(
-                "EntityToRemoveFromString",
+                "ItemToRemoveFromString",
                 typeof(string),
                 typeof(RemoveDeleteCancel),
                 new PropertyMetadata(null));

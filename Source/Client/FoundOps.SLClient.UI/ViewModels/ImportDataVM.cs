@@ -2,21 +2,19 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
-using FoundOps.SLClient.Data.ViewModels;
 using Kent.Boogaart.KBCsv;
-using System.ComponentModel;
 using System.Collections.Generic;
 using GalaSoft.MvvmLight.Command;
-using FoundOps.Core.Context.Services;
+using MEFedMVVM.ViewModelLocator;
 using FoundOps.Framework.Views.Models;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Framework.Views.Models.Import;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Models.Import;
 using FoundOps.Common.Silverlight.Models.DataTable;
-using MEFedMVVM.ViewModelLocator;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -26,7 +24,6 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("ImportDataVM")]
     public class ImportDataVM : DataFedVM
     {
-
         #region Public Properties
 
         public IEnumerable<Client> Clients { get; private set; }

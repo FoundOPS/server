@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Linq;
 using System.Windows;
 using System.Collections;
 using System.ComponentModel;
+using System.Collections.Generic;
+using FoundOps.Common.Composite.Tools;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 {
@@ -218,45 +217,45 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        #region EntityToRemoveString Dependency Property
+        #region ItemToRemoveDisplayMember Dependency Property
 
         /// <summary>
-        /// The potential EntityToRemove description string
+        /// A title of the current item that is being added to or removed.
         /// </summary>
-        public string EntityToRemoveString
+        public string ItemToRemoveDisplayMember
         {
-            get { return (string)GetValue(EntityToRemoveStringProperty); }
-            set { SetValue(EntityToRemoveStringProperty, value); }
+            get { return (string) GetValue(ItemToRemoveDisplayMemberProperty); }
+            set { SetValue(ItemToRemoveDisplayMemberProperty, value); }
         }
 
         /// <summary>
-        /// EntityToRemoveString Dependency Property.
+        /// ItemToRemoveDisplayMember Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty EntityToRemoveStringProperty =
+        public static readonly DependencyProperty ItemToRemoveDisplayMemberProperty =
             DependencyProperty.Register(
-                "EntityToRemoveString",
-                typeof(string),
-                typeof(AddToDeleteFrom),
+                "ItemToRemoveDisplayMember",
+                typeof (string),
+                typeof (AddToDeleteFrom),
                 new PropertyMetadata(null));
 
         #endregion
-        #region EntityToRemoveFromString Dependency Property
+        #region ItemToRemoveFromDisplayMember Dependency Property
 
         /// <summary>
-        /// The potentital EntityToRemove from description string
+        /// A title of the current item that is being added to or removed from.
         /// </summary>
-        public string EntityToRemoveFromString
+        public string ItemToRemoveFromDisplayMember
         {
-            get { return (string)GetValue(EntityToRemoveFromStringProperty); }
-            set { SetValue(EntityToRemoveFromStringProperty, value); }
+            get { return (string)GetValue(ItemToRemoveFromDisplayMemberProperty); }
+            set { SetValue(ItemToRemoveFromDisplayMemberProperty, value); }
         }
 
         /// <summary>
         /// EntityToRemoveFromString Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty EntityToRemoveFromStringProperty =
+        public static readonly DependencyProperty ItemToRemoveFromDisplayMemberProperty =
             DependencyProperty.Register(
-                "EntityToRemoveFromString",
+                "ItemToRemoveFromDisplayMember",
                 typeof(string),
                 typeof(AddToDeleteFrom),
                 new PropertyMetadata(null));
@@ -321,7 +320,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
             var c = d as AddToDeleteFrom;
             if (c == null) return;
 
-            if (e.NewValue == null || c.Source == null) return;
+            if (e.NewValue == null || c.SourceType == null) return;
             ((IAddToDeleteFromDestination<object>)e.NewValue).LinkToAddToDeleteFromEvents(c, c.SourceType);
         }
 
@@ -380,7 +379,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public object SelectedExistingItem
         {
-            get { return (object)GetValue(SelectedExistingItemProperty); }
+            get { return GetValue(SelectedExistingItemProperty); }
             set { SetValue(SelectedExistingItemProperty, value); }
         }
 
@@ -559,7 +558,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
             if (DeleteMode == DeleteMode.DeletePrompt)
             {
-                if (MessageBox.Show(String.Format("Are you sure you want to delete {0}?", EntityToRemoveString), String.Format("Delete {0}?", EntityToRemoveString), MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+                if (MessageBox.Show(String.Format("Are you sure you want to delete {0}?", ItemToRemoveDisplayMember), String.Format("Delete {0}?", ItemToRemoveDisplayMember), MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
                     return;
 
                 //Since the user clicked OK, delete the item
@@ -571,8 +570,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
                 //Setup the RemoveDeleteCancel prompt
                 var removeDeleteCancel = new RemoveDeleteCancel
                 {
-                    EntityToRemoveString = EntityToRemoveString,
-                    EntityToRemoveFromString = EntityToRemoveFromString
+                    ItemToRemoveString = ItemToRemoveDisplayMember,
+                    ItemToRemoveFromString = ItemToRemoveFromDisplayMember
                 };
 
                 removeDeleteCancel.RemoveButton.Click += (s, e) =>
@@ -616,6 +615,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         private void AddNewItemHelper()
         {
             if (AddNewItem != null)
+                //Pass the combobox text
                 AddNewItem(this, ExistingItemsComboBoxText);
         }
 
@@ -623,6 +623,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         private void AddExistingItemHelper()
         {
             if (AddExistingItem != null)
+                //Pass the selected entity (from the combobox)
                 AddExistingItem(this, SelectedExistingItem);
         }
 

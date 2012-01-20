@@ -52,6 +52,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             return ObjectContext.Blocks.Where(block => block.LoginNotRequired);
         }
 
+        public IEnumerable<Block> GetBlocks()
+        {
+            return ObjectContext.Blocks;
+        }
+
         #region Businesses
 
         public IQueryable<Party> GetBusinessAccountsForRole(Guid roleId)
@@ -62,7 +67,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
                 return null;
 
-            var businessAccounts = this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates").Include("ContactInfoSet");
+            var businessAccounts = this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates")
+                .Include("ContactInfoSet").Include("OwnedRoles");
 
             //Force load PartyImage
             var t = (from ba in businessAccounts
@@ -333,7 +339,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             currentRepeat.StartDate = currentRepeat.StartDate.Date; //Remove time
 
             if (currentRepeat.EndDate != null)
-                currentRepeat.StartDate = currentRepeat.EndDate.Value.Date; //Remove time
+                currentRepeat.EndDate = currentRepeat.EndDate.Value.Date; //Remove time
 
             this.ObjectContext.Repeats.AttachAsModified(currentRepeat);
         }
@@ -355,6 +361,18 @@ namespace FoundOps.Server.Services.CoreDomainService
             var availableRoles = this.ObjectContext.RolesCurrentUserHasAccessTo();
 
             return availableRoles;
+        }
+
+        public void InsertRole(Role role)
+        {
+            if ((role.EntityState != EntityState.Detached))
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(role, EntityState.Added);
+            }
+            else
+            {
+                this.ObjectContext.Roles.AddObject(role);
+            }
         }
 
         private void DeleteRole(Role ownedRole)
@@ -406,7 +424,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                 //Setup the Default UserAccount role
                 var userAccountBlocks =
-                    this.ObjectContext.Blocks.Where(block => BlocksData.DefaultUserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
+                    this.ObjectContext.Blocks.Where(block => BlockConstants.UserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
+
                 RolesDesignData.SetupDefaultUserAccountRole(userAccount, userAccountBlocks);
 
                 this.ObjectContext.Parties.AddObject(userAccount);

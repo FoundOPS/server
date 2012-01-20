@@ -114,7 +114,6 @@
     <Compile Include="Tools\ExtensionMethods\UriExtensions.cs" />
     <Compile Include="Tools\OrthodromicDistanceCalculator.cs" />
     <Compile Include="Tools\PasswordTools.cs" />
-    <Compile Include="Tools\Rxx2.cs" />
     <Compile Include="Tools\SerializationTools.cs" />
     <Compile Include="Tools\StreamHelpers.cs" />
   </ItemGroup>

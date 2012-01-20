@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
+//This is a partial class, must be in the same namespace so disable warning
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public enum Gender
     {
@@ -15,6 +17,26 @@ namespace FoundOps.Core.Models.CoreEntities
         public override string DisplayName
         {
             get { return String.Format("{0} {1}", this.FirstName, this.LastName); }
+            set
+            {
+                //Try to guess the first name and last name
+                if (!String.IsNullOrEmpty(value))
+                {
+                    var firstLastName = value.Split(' ');
+                    if (firstLastName.Count() == 2)
+                    {
+                        this.FirstName = firstLastName.First();
+                        this.LastName = firstLastName.Last();
+                    }
+                    else
+                        this.FirstName = value;
+                }
+                else
+                {
+                    FirstName = "";
+                    LastName = "";
+                }
+            }
         }
 
         public Gender Gender

@@ -102,9 +102,6 @@
     <Compile Include="..\FoundOps.Common\Tools\PasswordTools.cs">
       <Link>Silverlight\Tools\PasswordTools.cs</Link>
     </Compile>
-    <Compile Include="..\FoundOps.Common\Tools\Rxx2.cs">
-      <Link>Silverlight\Tools\Rxx2.cs</Link>
-    </Compile>
     <Compile Include="..\FoundOps.Common\Tools\SerializationTools.cs">
       <Link>Silverlight\Tools\SerializationTools.cs</Link>
     </Compile>

@@ -5,7 +5,7 @@
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields" 
              xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="RecurringServicesVM" >
+             xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="RecurringServicesVM" >
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -45,7 +45,7 @@
                         </Grid>
                     </toolkit:Expander.Header>
                     <StackPanel>
-                        <CustomFields:FieldsEditGrid ServiceTemplate="{Binding DataContext.ServiceTemplate, ElementName=LayoutRoot}" Margin="0,5,0,0"/>
+                        <Edit:FieldsEditGrid ServiceTemplate="{Binding DataContext.ServiceTemplate, ElementName=LayoutRoot}" Margin="0,5,0,0"/>
                         <Grid>
                             <Grid.ColumnDefinitions >
                                 <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>

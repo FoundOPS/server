@@ -190,7 +190,7 @@ namespace FoundOps.SLClient.Data.Services
                 //b) the CurrentContextProvider changes
                 .Merge(CurrentContextProviderObservable.AsGeneric())
                 //c) the CurrentContextProvider's SelectedContext changes
-                .Merge(CurrentContextProviderObservable.SelectMany(ccp =>
+                .Merge(CurrentContextProviderObservable.SelectLatest(ccp =>
                     ccp == null ? new[] { true }.ToObservable() : //If the CurrentContextProvider is empty, update once
                     ccp.SelectedContextObservable.AsGeneric())); //Select the SelectedContextObservable changes
 

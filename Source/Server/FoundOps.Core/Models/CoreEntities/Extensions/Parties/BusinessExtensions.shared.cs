@@ -1,7 +1,9 @@
-﻿using System;
-using FoundOps.Common.Composite.Entities;
+﻿using FoundOps.Common.Composite.Entities;
 
+//This is a partial class, must be in the same namespace so disable warning
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class Business : ICompositeRaiseEntityPropertyChanged
     {
@@ -27,10 +29,8 @@ namespace FoundOps.Core.Models.CoreEntities
 
         public override string DisplayName
         {
-            get
-            {
-                return Name;
-            }
+            get { return Name; }
+            set { Name = value; }
         }
     }
 }

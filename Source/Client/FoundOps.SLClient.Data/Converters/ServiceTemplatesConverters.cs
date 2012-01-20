@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Globalization;
 using System.Windows.Data;
-using FoundOps.Common.Silverlight.Models;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using System.Globalization;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.Data.Converters
 {

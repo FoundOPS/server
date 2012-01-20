@@ -7,7 +7,7 @@
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI" 
              xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools" 
-             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" 
+             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
              mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400" 
              Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <UserControl.Resources>

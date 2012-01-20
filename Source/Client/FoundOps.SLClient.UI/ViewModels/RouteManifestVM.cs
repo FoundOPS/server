@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
-using GalaSoft.MvvmLight.Command;
 using FoundOps.SLClient.Data.Models;
 using FoundOps.SLClient.Data.Services;
-using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Common.Silverlight.Tools.Printing;
+using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -18,41 +16,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Public
 
         /// <summary>
-        /// Gets or sets the printer.
-        /// </summary>
-        /// <value>
-        /// The printer.
-        /// </value>
-        public IPagedPrinter Printer { get; set; }
-
-        /// <summary>
         /// Gets the route manifest settings.
         /// </summary>
         public RouteManifestSettings RouteManifestSettings { get; private set; }
-
-        #region Commands
-
-        /// <summary>
-        /// Go forward one page in the manifest.
-        /// </summary>
-        public RelayCommand ForwardOnePage { get; private set; }
-
-        /// <summary>
-        /// Go back one page in the manifest.
-        /// </summary>
-        public RelayCommand BackOnePage { get; private set; }
-
-        /// <summary>
-        /// Go to the first page in the manifest.
-        /// </summary>
-        public RelayCommand GoToFirstPage { get; private set; }
-
-        /// <summary>
-        /// Go to the last page in the manifest.
-        /// </summary>
-        public RelayCommand GoToLastPage { get; private set; }
-
-        #endregion
 
         #endregion
 
@@ -60,8 +26,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="RouteManifestVM"/> class.
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
-        public RouteManifestVM(DataManager dataManager)
-            : base(dataManager)
+        public RouteManifestVM(DataManager dataManager) : base(dataManager)
         {
             //Setup the RouteManifestSettings based on the OwnerAccount
             ContextManager.OwnerAccountObservable.Select(oa => oa as BusinessAccount).Where(ba => ba != null)
@@ -86,26 +51,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                     DataManager.EnqueueSubmitOperation();
                 }
             });
-
-            #region Register Commands
-
-            ForwardOnePage = new RelayCommand(() =>
-            {
-                if (!Printer.IsLastPage)
-                    Printer.CurrentPageIndex++;
-            });
-            BackOnePage = new RelayCommand(() =>
-            {
-                if (!Printer.IsFirstPage)
-                    Printer.CurrentPageIndex--;
-            });
-            GoToFirstPage = new RelayCommand(() => Printer.CurrentPageIndex = 0);
-            GoToLastPage = new RelayCommand(() =>
-            {
-                Printer.CurrentPageIndex = Printer.PageCount - 1;
-            });
-
-            #endregion
         }
 
         #region RouteManifestVM's Logic

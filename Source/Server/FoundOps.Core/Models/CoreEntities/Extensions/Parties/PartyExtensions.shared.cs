@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using FoundOps.Common.Composite.Entities;
 
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class Party : IEntityDefaultCreation
     {
@@ -37,6 +39,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 return "";
             }
+            set { }
         }
 
         public IEnumerable<Role> AccessibleRoles

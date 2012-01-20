@@ -96,9 +96,9 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             #region Register Commands
 
-            //Can save when: context has changes and is not submitting. Check every .25 second
-            var canSaveCommand = Observable.Interval(new TimeSpan(0, 0, 0, 0, 250))
-                .Select(_ => this.Context.HasChanges && !this.Context.IsSubmitting)
+            //Can save when: context has changes and is not submitting
+            var canSaveCommand = 
+                DataManager.DomainContextHasChangesObservable.CombineLatest(DataManager.DomainContextIsSubmittingObservable, (hasChanges, isSubmitting)=> hasChanges && !isSubmitting)
                 //Combine with the CanSaveObservable
                 .CombineLatest(CanSaveObservable, (canSave, canSaveTwo) => canSave && canSaveTwo).DistinctUntilChanged();
 
@@ -111,8 +111,8 @@ namespace FoundOps.SLClient.Data.ViewModels
             });
 
             //Can discard when: context has changes and is not submitting. Check every .25 second
-            var canDiscardCommand = Observable.Interval(new TimeSpan(0, 0, 0, 0, 250))
-                .Select(_ => this.Context.HasChanges && !this.Context.IsSubmitting)
+            var canDiscardCommand = 
+                DataManager.DomainContextHasChangesObservable.CombineLatest(DataManager.DomainContextIsSubmittingObservable, (hasChanges, isSubmitting)=> hasChanges && !isSubmitting)
                 //Combine with the CanDiscardObservable
                 .CombineLatest(CanDiscardObservable, (canDiscard, canDiscardTwo) => canDiscard && canDiscardTwo).DistinctUntilChanged();
 
@@ -189,7 +189,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                 if (value != null)
                     //Subscribe _canDiscardDisposable to the new CanDiscardObservable
-                    _canDiscardDisposable = value.Subscribe(canSave => _canSaveObservable.OnNext(canSave));
+                    _canDiscardDisposable = value.Subscribe(canDiscard => _canDiscardObservable.OnNext(canDiscard));
             }
         }
 

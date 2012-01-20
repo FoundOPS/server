@@ -74,7 +74,7 @@ namespace FoundOps.SLClient.UI.Tools
         {
             get
             {
-                return (LocationsVM) ViewModelRepository.Instance.Resolver.GetViewModelByContract("LocationsVM", null, CreationPolicy.Shared).Value;
+                return (LocationsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("LocationsVM", null, CreationPolicy.Shared).Value;
             }
         }
 
@@ -112,6 +112,11 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
+        /// Gets the RouteManifestVM.
+        /// </summary>
+        public static RouteManifestVM RouteManifest { get { return Routes.RouteManifestVM; } }
+
+        /// <summary>
         /// Gets the ServiceTemplatesVM.
         /// </summary>
         public static ServiceTemplatesVM ServiceTemplates
@@ -123,6 +128,17 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
+        /// Gets the ServicesVM.
+        /// </summary>
+        public static ServicesVM Services
+        {
+            get
+            {
+                return (ServicesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ServicesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
         /// Gets the UserAccountsVM.
         /// </summary>
         public static UserAccountsVM UserAccounts
@@ -130,6 +146,18 @@ namespace FoundOps.SLClient.UI.Tools
             get
             {
                 return (UserAccountsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("UserAccountsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the UserAccountsVM.
+        /// </summary>
+        public static VehiclesVM Vehicles
+        {
+            get
+            {
+                return (VehiclesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("VehiclesVM", null, CreationPolicy.Shared).Value;
             }
         }
     }

@@ -1,7 +1,4 @@
 ﻿using System.Windows;
-using FoundOps.Core.Models.CoreEntities;
-using Telerik.Windows.Data;
-using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 
 // Needs to be in the same namespace, because it is a partial class
@@ -9,14 +6,21 @@ using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 namespace FoundOps.Framework.Views.Controls.CustomFields
 // ReSharper restore CheckNamespace
 {
+    /// <summary>
+    /// UI to define/edit the definition of fields.
+    /// </summary>
     public partial class FieldsDefineGrid
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FieldsDefineGrid"/> class.
+        /// </summary>
         public FieldsDefineGrid()
         {
             InitializeComponent();
 
-            //Hide LocationField (for now) from being definable
-            FieldDefineTreeListView.FilterDescriptors.Add(new FilterDescriptor<Field>() { FilteringExpression = (f) => !(f is LocationField) });
+            //TODO: Decide on this?
+            ////Hide LocationField (for now) from being definable
+            //FieldDefineTreeListView.FilterDescriptors.Add(new FilterDescriptor<Field> { FilteringExpression = f => !(f is LocationField) });
         }
 
         #region ServiceTemplate Dependency Property

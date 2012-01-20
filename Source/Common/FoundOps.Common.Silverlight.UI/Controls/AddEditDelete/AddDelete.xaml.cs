@@ -392,8 +392,11 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
                 //if the currentItem was added, call Add && AddCommand.Execute
                 _currentItemAdded = false;
 
-                //Call AddHelper
-                AddHelper();
+                if (AddCommand != null)
+                    AddCommand.Execute(null);
+
+                if (Add != null)
+                    Add(this, null);
             };
         }
 
@@ -432,34 +435,21 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #region Logic
 
-        /// <summary>
-        /// Executes the AddCommand and calls the Add event
-        /// </summary>
-        private void AddHelper()
-        {
-            if (AddCommand != null)
-                AddCommand.Execute(null);
-
-            if (Add != null)
-                Add(this, null);
-        }
-
         private void AddButtonClick(object sender, RoutedEventArgs e)
         {
             if (AddDeleteMode == AddDeleteMode.AddItemDelete || AddDeleteMode == AddDeleteMode.AddNewExistingDelete)
                 RadContextMenu.IsOpen = true;
 
-            //Call AddHelper if the proper mode
+            //Call Add if the proper mode
             if (AddDeleteMode == AddDeleteMode.AddNewItemDeleteCustomTemplate || AddDeleteMode == AddDeleteMode.AddCustomTemplate || AddDeleteMode == AddDeleteMode.AddDeleteCustomTemplate) return;
-            AddHelper();
+
+            if (Add != null)
+                Add(this, null);
         }
 
-        /// Executes the DeleteCommand and calls the Delete event
+        ///Executes calls the Delete event
         private void DeleteButtonClick(object sender, RoutedEventArgs e)
         {
-            if (DeleteCommand != null)
-                DeleteCommand.Execute(null);
-
             if (Delete != null)
                 Delete(this, null);
         }
