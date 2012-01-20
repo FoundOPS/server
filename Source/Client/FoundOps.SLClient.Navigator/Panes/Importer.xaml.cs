@@ -8,9 +8,15 @@ using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.Navigator.Panes
 {
+    /// <summary>
+    /// UI for importing data into the system.
+    /// </summary>
     [ExportPage("ImportData")]
     public partial class MainPage
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainPage"/> class.
+        /// </summary>
         public MainPage()
         {
             InitializeComponent();
@@ -18,13 +24,10 @@ namespace FoundOps.SLClient.Navigator.Panes
 
         private void SelectFileButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "CSV Files|*.csv";
-            var userClickedOK = openFileDialog.ShowDialog();
-            if (userClickedOK == true)
-            {
+            var openFileDialog = new OpenFileDialog {Filter = "CSV Files|*.csv"};
+            var userClickedOk = openFileDialog.ShowDialog();
+            if (userClickedOk == true)
                 ((ImportDataVM) this.DataContext).SelectFileCommand.Execute(openFileDialog.File);
-            }
         }
     }
 

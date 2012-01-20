@@ -101,6 +101,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             _dataManager.Subscribe<Location>(DataManager.Query.Locations, ObservationState, locations => Locations = locations);
 
+            RegisterCommands();
             //var graphShape =
             //  new EntityGraphShape().Edge<Service, Value>(
             //      service => service.Values);
