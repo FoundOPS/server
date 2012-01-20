@@ -10,7 +10,6 @@ using System.Windows.Controls;
 using Telerik.Windows.Controls;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using Telerik.Windows.Controls.GridView;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;

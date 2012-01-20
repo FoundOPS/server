@@ -98,18 +98,16 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Load recurring services
             var recurringServicesLoading = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, entities => _recurringServices = entities);
 
-            var loadingData = servicesLoading.CombineLatest(recurringServicesLoading).Select(loadingTuple => loadingTuple.Item1 || loadingTuple.Item2);
-
-            //If not everything is loaded, set IsLoading to true
-            if (_existingServices == null || _recurringServices == null)
-                IsLoadingSubject.OnNext(true);
+            //This is loading whenever services is loading or recurring services is loading
+            var loadingData = servicesLoading.CombineLatest(recurringServicesLoading).Select(loadingTuple => loadingTuple.Item1 || loadingTuple.Item2)
+                //Only choose the true statements (it does not stop loading until the services are generated)
+                .Where(isLoading => isLoading);
 
             //Whenever loadingData publishes update IsLoadingSubject
             loadingData.Subscribe(IsLoadingSubject);
 
             //When everything is loaded update the visible services
-            loadingData.Where(isLoading => !isLoading)
-                .Throttle(new TimeSpan(0, 0, 0, 0, 300)) //Throttle to allow associations to settle
+            loadingData.Where(isLoading => !isLoading).Throttle(TimeSpan.FromMilliseconds(300)) //Throttle to allow associations to settle
                 .ObserveOnDispatcher().Subscribe(isLoading =>
                 {
                     if (_existingServices != null && _recurringServices != null)
@@ -127,12 +125,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void TrackContext()
         {
-            //Whenever this becomes DetailsView: update the generated services (so there are enough)
-            //and track the SelectedEntity
+            //Whenever this becomes DetailsView: update the generated services (so there are enough) and track the SelectedEntity
             this.ContextManager.CurrentContextProviderObservable
-                .Where(contextProvider => contextProvider == this) //This is the DetailsView
+                .Where(contextProvider => contextProvider == this) //When this is in details view
                 .SubscribeOnDispatcher().Subscribe(_ =>
             {
+                var selectedEntity = this.SelectedEntity;
                 //update the generated services
                 ContextChanged = true;
                 TrackSelectedEntity();
@@ -219,7 +217,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         protected override bool BeforeSaveCommand()
         {
-            foreach (Service service in
+            foreach (var service in
                 this.Context.EntityContainer.GetChanges().OfType<Service>().Where(service => service.ServiceHasChanges))
             {
                 //After saving an entity is no longer new, generated, nor has changes. So change these properties, then save
