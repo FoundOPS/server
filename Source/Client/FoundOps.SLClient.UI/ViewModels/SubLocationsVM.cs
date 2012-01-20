@@ -127,7 +127,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             if (_selectedLocation != null)
             {
-                DomainCollectionViewObservable.OnNext(new DomainCollectionViewFactory<SubLocation>(_selectedLocation.SubLocations).View);
+                DomainCollectionViewObservable.OnNext(new DomainCollectionViewFactory<SubLocation>(_selectedLocation.SubLocationsListWrapper).View);
                 DomainCollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
             }
 
@@ -145,6 +145,21 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #region Logic
+
+        //Override adding a new sublocation to use SubLocationsListWrapper
+        protected override SubLocation AddNewEntity(object commandParameter)
+        {
+            var newSubLocation = new SubLocation();
+            this._selectedLocation.SubLocationsListWrapper.Add(newSubLocation);
+            return newSubLocation;
+        }
+
+        //Override deleting a new sublocation to use SubLocationsListWrapper
+        public override void DeleteEntity(SubLocation entityToDelete)
+        {
+            this._selectedLocation.SubLocationsListWrapper.Remove(entityToDelete);
+            this.Context.SubLocations.Remove(entityToDelete);
+        }
 
         protected override void OnAddEntity(SubLocation newSubLocation)
         {

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Reactive.Linq;
-using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Silverlight.Tools;
 using ReactiveUI;
 using RiaServicesContrib;
 using System.ComponentModel;
 using FoundOps.Common.Silverlight.Interfaces;
+using System.ServiceModel.DomainServices.Client;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
@@ -36,7 +35,7 @@ namespace FoundOps.Core.Models.CoreEntities
             //Setup IReactiveNotifyPropertyChanged
             _reactiveHelper = new MakeObjectReactiveHelper(this);
 
-            InitializeHelper();
+            SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
         }
 
         protected override void OnLoaded(bool isInitialLoad)
@@ -44,22 +43,34 @@ namespace FoundOps.Core.Models.CoreEntities
             //Setup IReactiveNotifyPropertyChanged
             _reactiveHelper = new MakeObjectReactiveHelper(this);
 
-            if (isInitialLoad)
-                //Wait for associations to set (after the load) before setting up automatic numbering
-                Observable.Interval(TimeSpan.FromMilliseconds(600)).ObserveOnDispatcher().Subscribe(_ => InitializeHelper());
-
             base.OnLoaded(isInitialLoad);
+
+            if (isInitialLoad)
+            {
+                SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
+            }
         }
 
-        private void InitializeHelper()
+        //private void InitializeHelper()
+        //{
+            ////Setup SubLocation automatic numbering operations
+            //this.SubLocations.EntityAdded += (s, e) => e.Entity.Number = SubLocations.Count;
+            //this.SubLocations.EntityRemoved += (s, e) =>
+            //{
+            //    foreach (var subLocation in this.SubLocations.Where(subLocation => subLocation.Number > e.Entity.Number))
+            //        subLocation.Number = subLocation.Number - 1;
+            //};
+        //}
+
+        private OrderedEntityCollection<SubLocation> _subLocationsListWrapper;
+        public OrderedEntityCollection<SubLocation> SubLocationsListWrapper
         {
-            //Setup SubLocation automatic numbering operations
-            this.SubLocations.EntityAdded += (s, e) => e.Entity.Number = SubLocations.Count;
-            this.SubLocations.EntityRemoved += (s, e) =>
+            get { return _subLocationsListWrapper; }
+            private set
             {
-                foreach (var subLocation in this.SubLocations.Where(subLocation => subLocation.Number > e.Entity.Number))
-                    subLocation.Number = subLocation.Number - 1;
-            };
+                _subLocationsListWrapper = value;
+                this.RaisePropertyChanged("SubLocationsListWrapper");
+            }
         }
 
         /// <summary>

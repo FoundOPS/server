@@ -254,9 +254,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Force load OwnedPerson.PartyImage
             var t = (from e in employeesQueryable
-                join pi in this.ObjectContext.Files.OfType<PartyImage>()
-                    on e.OwnedPerson.Id equals pi.Id
-                select pi).ToArray();
+                     join pi in this.ObjectContext.Files.OfType<PartyImage>()
+                         on e.OwnedPerson.Id equals pi.Id
+                     select pi).ToArray();
             var count = t.Count();
 
             return employeesQueryable;
@@ -526,15 +526,14 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteSubLocation(SubLocation subLocation)
         {
-            if ((subLocation.EntityState != EntityState.Detached))
-            {
-                this.ObjectContext.ObjectStateManager.ChangeObjectState(subLocation, EntityState.Deleted);
-            }
-            else
-            {
+            var loadedSubLocation  = this.ObjectContext.SubLocations.FirstOrDefault(sl => sl.Id == subLocation.Id);
+
+            if (loadedSubLocation != null)
+                this.ObjectContext.Detach(loadedSubLocation);
+
+            if (subLocation.EntityState == EntityState.Detached)
                 this.ObjectContext.SubLocations.Attach(subLocation);
-                this.ObjectContext.SubLocations.DeleteObject(subLocation);
-            }
+            this.ObjectContext.SubLocations.DeleteObject(subLocation);
         }
 
         #endregion

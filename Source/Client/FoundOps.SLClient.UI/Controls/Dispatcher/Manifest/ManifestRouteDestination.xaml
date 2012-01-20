@@ -113,13 +113,13 @@
                                                         </Icons:ThickPinPointIcon>
                                                     </Map:InformationLayer>
 
-                                                    <Map:InformationLayer Name="SubLocationsInformationLayer" ItemTemplate="{StaticResource SubLocationPinPointTemplate}" ItemsSource="{Binding Location.SubLocations}" Loaded="InformationLayerLoaded" />
+                                                    <Map:InformationLayer Name="SubLocationsInformationLayer" ItemTemplate="{StaticResource SubLocationPinPointTemplate}" ItemsSource="{Binding Location.SubLocationsListWrapper}" Loaded="InformationLayerLoaded" />
                                                 </Controls1:RadMap>
                                             </StackPanel>
 
                                             <StackPanel x:Name="SubLocationsElement" Margin="4,2" Width="245">
                                                 <TextBlock Text="SubLocations" FontWeight="Bold"/>
-                                                <ItemsControl x:Name="Element2" ItemsSource="{Binding Location.SubLocations, Converter={StaticResource OrderByParameterConverter}, ConverterParameter=Number}">
+                                                <ItemsControl x:Name="Element2" ItemsSource="{Binding Location.SubLocationsListWrapper, Converter={StaticResource OrderByParameterConverter}, ConverterParameter=Number}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <StackPanel>

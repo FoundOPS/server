@@ -1,9 +1,10 @@
 ﻿using System;
 using FoundOps.Common.Composite.Entities;
 
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
-    //NOTE: Not shared because it is not editable on the client side yet
     public partial class SubLocation : IEntityDefaultCreation
     {
         #region Implementation of IEntityDefaultCreation

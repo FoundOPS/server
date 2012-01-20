@@ -486,6 +486,17 @@ namespace FoundOps.Core.Models.CoreEntities
         }
     }
 
+    [MetadataTypeAttribute(typeof(SubLocationMetadata))]
+    public partial class SubLocation
+    {
+        internal class SubLocationMetadata
+        {
+            protected SubLocationMetadata()
+            {
+            }
+        }
+    }
+
     [MetadataTypeAttribute(typeof(TrackPoint.TrackPointMetadata))]
     public partial class TrackPoint
     {
