@@ -1,28 +1,29 @@
 ﻿using System;
-using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
+using System.Diagnostics;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
+using System.Collections;
 using RiaServicesContrib;
-using FoundOps.Common.Tools;
 using System.Reactive.Linq;
-using System.Windows.Controls;
+using FoundOps.Common.Tools;
 using System.Reactive.Subjects;
 using Telerik.Windows.Controls;
 using MEFedMVVM.ViewModelLocator;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
+using FoundOps.SLClient.UI.Tools;
+using FoundOps.SLClient.Data.Tools;
 using System.Collections.ObjectModel;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
-using Microsoft.Windows.Data.DomainServices;
-using FoundOps.SLClient.UI.Controls.Dispatcher;
-using FoundOps.Server.Services.CoreDomainService;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using System.ServiceModel.DomainServices.Client;
+using FoundOps.Server.Services.CoreDomainService;
+using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -30,7 +31,9 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying and dispatching Routes.
     /// </summary>
     [ExportViewModel("RoutesVM")]
-    public class RoutesVM : CoreEntityCollectionVM<Route>
+    public class RoutesVM : CoreEntityCollectionVM<Route>,
+        IAddToDeleteFromDestination<Employee>, IAddNewExisting<Employee>, IRemoveDelete<Employee>,
+        IAddToDeleteFromDestination<Vehicle>, IAddNewExisting<Vehicle>, IRemoveDelete<Vehicle>
     {
         /// <summary>
         /// The custom queries the RoutesVM uses
@@ -48,6 +51,108 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #region Public
+
+        #region Implementation of IAddToDeleteFromDestination
+
+        /// <summary>
+        /// Links to the LinkToAddToDeleteFromControl events.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="sourceType">Type of the source.</param>
+        public void LinkToAddToDeleteFromEvents(AddToDeleteFrom control, Type sourceType)
+        {
+            if (sourceType == typeof(Employee))
+            {
+                control.AddExistingItem += (s, existingItem) => this.AddExistingItemEmployee((Employee)existingItem);
+                control.AddNewItem += (s, newItemText) => this.AddNewItemEmployee(newItemText);
+                control.RemoveItem += (s, e) => this.RemoveItemEmployee();
+                control.DeleteItem += (s, e) => this.DeleteItemEmployee();
+            }
+
+            if (sourceType == typeof(Vehicle))
+            {
+                control.AddExistingItem += (s, existingItem) => this.AddExistingItemVehicle((Vehicle)existingItem);
+                control.AddNewItem += (s, newItemText) => this.AddNewItemVehicle(newItemText);
+                control.RemoveItem += (s, e) => this.RemoveItemVehicle();
+                control.DeleteItem += (s, e) => this.DeleteItemVehicle();
+            }
+        }
+
+        /// <summary>
+        /// Gets the user account destination items source.
+        /// ToArray creates a new IEnumerable, part of a workaround for the RadGridView displaying incorrect items when an item is removed.
+        /// </summary>
+        public IEnumerable EmployeesDestinationItemsSource { get { return SelectedEntity == null ? null : SelectedEntity.Technicians.ToArray(); } }
+
+        /// <summary>
+        /// Gets the service templates destination items source.
+        /// ToArray creates a new IEnumerable, part of a workaround for the RadGridView displaying incorrect items when an item is removed.
+        /// </summary>
+        public IEnumerable VehiclesDestinationItemsSource { get { return SelectedEntity == null ? null : SelectedEntity.Vehicles.ToArray(); } }
+
+        #endregion
+
+        #region Implementation of IAddNewExisting<Employee> & IRemoveDelete<Employee>
+
+        /// <summary>
+        /// An action to add a new Employee to the current Employee.
+        /// </summary>
+        public Func<string, Employee> AddNewItemEmployee { get; private set; }
+        Func<string, Employee> IAddNew<Employee>.AddNewItem { get { return AddNewItemEmployee; } }
+
+        /// <summary>
+        /// An action to add an existing Employee to the current Employee.
+        /// </summary>
+        public Action<Employee> AddExistingItemEmployee { get; private set; }
+        Action<Employee> IAddNewExisting<Employee>.AddExistingItem { get { return AddExistingItemEmployee; } }
+
+        /// <summary>
+        /// An action to remove a Employee from the current Employee.
+        /// </summary>
+        public Func<Employee> RemoveItemEmployee { get; private set; }
+        Func<Employee> IRemove<Employee>.RemoveItem { get { return RemoveItemEmployee; } }
+
+        /// <summary>
+        /// An action to remove a Employee from the current Employee and delete it.
+        /// </summary>
+        public Func<Employee> DeleteItemEmployee { get; private set; }
+        Func<Employee> IRemoveDelete<Employee>.DeleteItem { get { return DeleteItemEmployee; } }
+
+        #endregion
+        #region Implementation of IAddNewExisting<Vehicle> & IRemoveDelete<Vehicle>
+
+        /// <summary>
+        /// An action to add a new Vehicle to the current Route.
+        /// </summary>
+        public Func<string, Vehicle> AddNewItemVehicle { get; private set; }
+        Func<string, Vehicle> IAddNew<Vehicle>.AddNewItem { get { return AddNewItemVehicle; } }
+
+        /// <summary>
+        /// Gets the add existing item user account.
+        /// </summary>
+        public Action<Vehicle> AddExistingItemVehicle { get; private set; }
+        Action<Vehicle> IAddNewExisting<Vehicle>.AddExistingItem { get { return AddExistingItemVehicle; } }
+
+        /// <summary>
+        /// An action to remove a Vehicle from the current Route.
+        /// </summary>
+        public Func<Vehicle> RemoveItemVehicle { get; private set; }
+        Func<Vehicle> IRemove<Vehicle>.RemoveItem { get { return RemoveItemVehicle; } }
+
+        /// <summary>
+        /// An action to remove a Vehicle from the current Route and delete it.
+        /// </summary>
+        public Func<Vehicle> DeleteItemVehicle { get; private set; }
+        Func<Vehicle> IRemoveDelete<Vehicle>.DeleteItem { get { return DeleteItemVehicle; } }
+
+        #endregion
+
+        #region Analytics
+        /// <summary>
+        /// Tracks if the auto assign button has been clicked (for analytics)
+        /// </summary>
+        public bool AutoAssignButtonHasBeenClicked { get; set; }
+        #endregion
 
         #region Commands
 
@@ -160,23 +265,43 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region SelectedItems
 
+        #region Selected Route detail items
+
+        private Employee _selectedRouteSelectedEmployee;
         /// <summary>
-        /// True if AutoAssignButton has been clicked
+        /// Gets or sets the selected route's selected employee.
         /// </summary>
-        public bool AutoAssignButtonHasBeenClicked;
-        /// <summary>
-        /// Tracks if the auto assign button has been clicked (for analytics)
-        /// </summary>
-        public Button AutoAsignButtonClickedOn
+        /// <value>
+        /// The selected route's selected employee.
+        /// </value>
+        public Employee SelectedRouteSelectedEmployee
         {
+            get { return _selectedRouteSelectedEmployee; }
             set
             {
-                if (AutoAssignButtonHasBeenClicked)
-                    return;
-
-                AutoAssignButtonHasBeenClicked = true;
+                _selectedRouteSelectedEmployee = value;
+                this.RaisePropertyChanged("SelectedRouteSelectedEmployee");
             }
         }
+
+        private Vehicle _selectedRouteSelectedVehicle;
+        /// <summary>
+        /// Gets or sets the selected route's selected vehicle.
+        /// </summary>
+        /// <value>
+        /// The selected route's selected vehicle.
+        /// </value>
+        public Vehicle SelectedRouteSelectedVehicle
+        {
+            get { return _selectedRouteSelectedVehicle; }
+            set
+            {
+                _selectedRouteSelectedVehicle = value;
+                this.RaisePropertyChanged("SelectedRouteSelectedVehicle");
+            }
+        }
+
+        #endregion
 
         private DateTime _selectedDate = DateTime.Now;
         /// <summary>
@@ -265,20 +390,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public ContactInfoVM SelectedRouteDestinationContactInfoVM { get { return _selectedRouteDestinationContactInfoVM.Value; } }
 
-        private readonly Subject<SelectedEmployeesVM> _selectedRouteSelectedEmployeesVMSubject = new Subject<SelectedEmployeesVM>();
-        private readonly ObservableAsPropertyHelper<SelectedEmployeesVM> _selectedRouteSelectedEmployeesVM;
-        /// <summary>
-        /// Gets the SelectedEmployeesVM for the selected route.
-        /// </summary>
-        public SelectedEmployeesVM SelectedRouteSelectedEmployeesVM { get { return _selectedRouteSelectedEmployeesVM.Value; } }
-
-        private readonly Subject<SelectedVehiclesVM> _selectedRouteSelectedVehiclesVMSubject = new Subject<SelectedVehiclesVM>();
-        private readonly ObservableAsPropertyHelper<SelectedVehiclesVM> _selectedRouteSelectedVehiclesVM;
-        /// <summary>
-        /// Gets the SelectedVehiclesVM for the selected route.
-        /// </summary>
-        public SelectedVehiclesVM SelectedRouteSelectedVehiclesVM { get { return _selectedRouteSelectedVehiclesVM.Value; } }
-
         #endregion
 
         private readonly ObservableAsPropertyHelper<ObservableCollection<RouteTask>> _unroutedTasks;
@@ -317,6 +428,91 @@ namespace FoundOps.SLClient.UI.ViewModels
         public RoutesVM(DataManager dataManager)
             : base(false, dataManager)
         {
+            #region Implementation of IAddToDeleteFromDestination<Employee> and IAddToDeleteFromDestination<Vehicle>
+
+            //Notify the DestinationItemsSources changed
+
+            //a) Whenever the current route's technicians or employees changes notify the itemssource updated. 
+            //  Part of a workaround for the RadGridView displaying incorrect items when an item is removed.
+            var techniciansOrEmployeesChanged =
+                this.SelectedEntityObservable.WhereNotNull().SelectLatest(
+                    r => r.Technicians.FromCollectionChangedGeneric().Merge(r.Vehicles.FromCollectionChangedGeneric()));
+
+            //b) Whenever the SelectedEntity changes
+            this.SelectedEntityObservable.AsGeneric().Merge(techniciansOrEmployeesChanged)
+                .Throttle(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
+            {
+                //Notify the DestinationItemsSources changed
+                this.RaisePropertyChanged("EmployeesDestinationItemsSource");
+                this.RaisePropertyChanged("VehiclesDestinationItemsSource");
+            });
+
+            #endregion
+
+            #region Implementation of IAddNewExisting<Employee> & IRemoveDelete<Employee>
+
+            AddNewItemEmployee = name =>
+            {
+                var newEmployee = VM.Employees.CreateNewItem(name);
+                SelectedEntity.Technicians.Add(newEmployee);
+                return newEmployee;
+            };
+
+            AddExistingItemEmployee = existingItem => SelectedEntity.Technicians.Add(existingItem);
+
+            RemoveItemEmployee = () =>
+            {
+                var employeeToRemove = SelectedRouteSelectedEmployee;
+
+                foreach (Employee t in EmployeesDestinationItemsSource)
+                    Debug.WriteLine("B " + t.DisplayName);
+
+                this.SelectedEntity.Technicians.Remove(employeeToRemove);
+
+                foreach (Employee t in EmployeesDestinationItemsSource)
+                    Debug.WriteLine("A " + t.DisplayName);
+
+                return employeeToRemove;
+            };
+
+            DeleteItemEmployee = () =>
+            {
+                var employeeToDelete = SelectedRouteSelectedEmployee;
+                this.SelectedEntity.Technicians.Remove(employeeToDelete);
+                VM.Employees.DeleteEntity(employeeToDelete);
+                return employeeToDelete;
+            };
+
+            #endregion
+
+            #region Implementation of IAddNewExisting<Vehicle> & IRemoveDelete<Vehicle>
+
+            AddNewItemVehicle = name =>
+            {
+                var newVehicle = VM.Vehicles.CreateNewItem(name);
+                this.SelectedEntity.Vehicles.Add(newVehicle);
+                return newVehicle;
+            };
+
+            AddExistingItemVehicle = existingItem => SelectedEntity.Vehicles.Add(existingItem);
+
+            RemoveItemVehicle = () =>
+            {
+                var vehicleToRemove = SelectedRouteSelectedVehicle;
+                this.SelectedEntity.Vehicles.Remove(vehicleToRemove);
+                return vehicleToRemove;
+            };
+
+            DeleteItemVehicle = () =>
+            {
+                var selectedVehicle = RemoveItemVehicle();
+                this.SelectedEntity.Vehicles.Remove(selectedVehicle);
+                VM.Vehicles.DeleteEntity(selectedVehicle);
+                return selectedVehicle;
+            };
+
+            #endregion
+
             #region Setup SelectedItems properties
 
             _selectedRouteDestination = _selectedRouteDestinationSubject.ToProperty(this, x => x.SelectedRouteDestination);
@@ -331,15 +527,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Setup the ContactInfoVM, SelectedEmployeesVM, and SelectedVehiclesVM properties
             _selectedRouteDestinationContactInfoVM = _selectedRouteDestinationContactInfoVMSubject.ToProperty(this, x => x.SelectedRouteDestinationContactInfoVM);
-            _selectedRouteSelectedEmployeesVM = _selectedRouteSelectedEmployeesVMSubject.ToProperty(this, x => x.SelectedRouteSelectedEmployeesVM);
-            _selectedRouteSelectedVehiclesVM = _selectedRouteSelectedVehiclesVMSubject.ToProperty(this, x => x.SelectedRouteSelectedVehiclesVM);
-
-            //Whenever the Selected route changes: update the SelectedEmployeesVM and SelectedVehiclesVM
-            SelectedEntityObservable.Where(sr => sr != null).Subscribe(selectedRoute =>
-            {
-                _selectedRouteSelectedEmployeesVMSubject.OnNext(new SelectedEmployeesVM(DataManager, selectedRoute.Technicians));
-                _selectedRouteSelectedVehiclesVMSubject.OnNext(new SelectedVehiclesVM(DataManager, selectedRoute.Vehicles));
-            });
 
             //Whenever the Selected Route Destination changes: update the _selectedRouteDestinationContactInfoVM
             _selectedRouteDestinationSubject.Where(srd => srd != null && srd.Location != null).Subscribe(selectedRouteDestination =>
@@ -374,7 +561,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
 
-            LoadData();
+            SetupDataLoading();
 
             #region Setup UpdateFilter observable
 
@@ -469,7 +656,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Used in the constructor to setup the data loading process.
         /// </summary>
-        private void LoadData()
+        private void SetupDataLoading()
         {
             //Setup an observable for whenever the Dispatcher is entered/reentered
             var enteredDispatcher = NavigateToObservable.Where(navigateTo => navigateTo.Contains("Dispatcher")).Select(nt => true);
@@ -503,7 +690,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             this.DataManager.AddQuery(Query.UnroutedRouteTasks, roleId => this.Context.GetUnroutedRouteTasksQuery(roleId, SelectedDate), Context.RouteTasks, loadData);
 
             //Subscribe to UnroutedRouteTasks (and setup TasksLoading property)
-            _tasksLoading = this.DataManager.Subscribe<RouteTask>(Query.UnroutedRouteTasks, ObservationState, 
+            _tasksLoading = this.DataManager.Subscribe<RouteTask>(Query.UnroutedRouteTasks, ObservationState,
                 //Copy it to another observablecollection so removes are not tracked as deletes
                 loadedRouteTasks => _loadedRouteTasks.OnNext(loadedRouteTasks.ToObservableCollection()))
                 .ToProperty(this, x => x.TasksLoading);

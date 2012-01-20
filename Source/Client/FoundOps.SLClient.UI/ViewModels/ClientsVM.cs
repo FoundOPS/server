@@ -122,8 +122,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Set up the pop up text box to have the client and locations name
                 var removeDeleteCancel = new RemoveDeleteCancel
                 {
-                    EntityToRemoveString = location.Name,
-                    EntityToRemoveFromString = location.Party.DisplayName
+                    ItemToRemoveString = location.Name,
+                    ItemToRemoveFromString = location.Party.DisplayName
                 };
 
                 removeDeleteCancel.RemoveButton.Click += (sender, e) =>

@@ -10,8 +10,7 @@
              xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
              xmlns:BusinessAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts"
-             mc:Ignorable="d" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="BusinessAccountsVM"
-             Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+             mc:Ignorable="d" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="BusinessAccountsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!-- Note: You cannot remove CoreEntities, it is used by GetVM-->
     <UserControl.Resources>
         <BusinessAccounts:ServiceTemplateAddModeConverter x:Name="ServiceTemplateAddModeConverter" />
@@ -63,7 +62,7 @@
                 <ContactInfo:ContactInfoEdit HorizontalAlignment="Stretch" ContactInfoVM="{Binding DataContext.SelectedEntityContactInfoVM, ElementName=myBusinessAccountLarge}" />
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">
                     <toolkit:Expander.Header>
-                        <Grid>
+                        <Grid DataContext="{Tools:GetVM Type=CoreEntities:BusinessAccountsVM}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
@@ -71,16 +70,17 @@
                             <TextBlock TextWrapping="Wrap" Text="User Accounts" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource PermissionBrush}" />
                             <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="User Accounts"
                                                            SourceType="{MarkupExtensions:Static MemberType=CoreEntities1:UserAccount}"
+                                                           ItemToRemoveDisplayMember="{Binding SelectedEntity.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name, Source={Tools:GetVM Type=CoreEntities:UserAccountsVM}}"
                                                            DeleteIsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:UserAccountsVM}}"
-                                                           Source="{Tools:GetVM Type=CoreEntities:UserAccountsVM}" Destination="{Tools:GetVM Type=CoreEntities:BusinessAccountsVM}"
-                                                           DestinationItemsSource="{Binding UserAccountsDestinationItemsSource, Source={Tools:GetVM Type=CoreEntities:BusinessAccountsVM}}" />
+                                                           Source="{Tools:GetVM Type=CoreEntities:UserAccountsVM}" Destination="{Binding}"
+                                                           DestinationItemsSource="{Binding UserAccountsDestinationItemsSource}" />
                         </Grid>
                     </toolkit:Expander.Header>
                     <UserAccounts:UserAccountsGrid IsMainGrid="False" MaxHeight="150" />
                 </toolkit:Expander>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ServiceBrush}">
                     <toolkit:Expander.Header>
-                        <Grid>
+                        <Grid DataContext="{Tools:GetVM Type=CoreEntities:BusinessAccountsVM}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
@@ -88,11 +88,11 @@
                             <TextBlock TextWrapping="Wrap" Text="Service Templates" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
                             <AddEditDelete:AddToDeleteFrom Grid.Column="1" DeleteMode="DeletePrompt" Label="Service Templates" 
                                                            SourceType="{MarkupExtensions:Static MemberType=CoreEntities1:ServiceTemplate}"
+                                                           ItemToRemoveDisplayMember="{Binding SelectedEntity.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name, Source={Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
                                                            AddMode="{Tools1:GetContextObservableValue Converter={StaticResource ServiceTemplateAddModeConverter}, ContextType=CoreEntities1:BusinessAccount}" 
                                                            DeleteIsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
-                                                           Source="{Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}" Destination="{Tools:GetVM Type=CoreEntities:BusinessAccountsVM}"
-                                                           DestinationItemsSource="{Binding ServiceTemplatesDestinationItemsSource, Source={Tools:GetVM Type=CoreEntities:BusinessAccountsVM}}" />
-
+                                                           Source="{Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}" Destination="{Binding}"
+                                                           DestinationItemsSource="{Binding ServiceTemplatesDestinationItemsSource}" />
                         </Grid>
                     </toolkit:Expander.Header>
                     <ServiceTemplate1:ServiceTemplatesGrid/>

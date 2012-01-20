@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
@@ -32,7 +33,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         private void AutoCalcRoutesButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
             //Analytics - Set AutoAsignButtonClickedOn to true
-            ((RoutesVM)DataContext).AutoAsignButtonClickedOn = (Button)sender;
+            VM.Routes.AutoAssignButtonHasBeenClicked = true;
 
             //Analytics - Track when a AutoAsignJobs button is clicked
             Analytics.AutoAsignJobs();

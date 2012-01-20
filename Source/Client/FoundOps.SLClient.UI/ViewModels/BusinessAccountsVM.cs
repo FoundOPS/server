@@ -168,9 +168,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             SetupMainQuery(DataManager.Query.BusinessAccounts);
 
-            #region Implementation of IAddToDeleteFromProvider<BusinessAccount>
+            #region Implementation of IAddToDeleteFromDestination<UserAccount> and Implementation of IAddToDeleteFromDestination<ServiceTemplate>
 
-            //Whenever the SelectedEntity changes, notify the DestinationItemsSources changed)))
+            //Whenever the SelectedEntity changes, notify the DestinationItemsSources changed
             this.SelectedEntityObservable.ObserveOnDispatcher().Subscribe(_ =>
             {
                 this.RaisePropertyChanged("UserAccountsDestinationItemsSource");
@@ -187,6 +187,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 var serviceTemplateChild = existingItem.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
                 ((BusinessAccount)SelectedEntity).ServiceTemplates.Add(serviceTemplateChild);
+            };
+
+            RemoveItemServiceTemplate = () =>
+            {
+                MessageBox.Show("You cannot remove FoundOPS ServiceTemplates manually yet.");
+                return null;
             };
 
             DeleteItemServiceTemplate = () =>
@@ -240,8 +246,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             var role = new Role { Id = Guid.NewGuid(), Name = "Administrator", OwnerParty = newBusinessAccount, RoleType = RoleType.Administrator };
 
             //Add the manager and business administrator blocks to the role
-            foreach(var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds))
-                role.RoleBlockToBlockSet.Add(new RoleBlock {BlockId = blockId});
+            foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds))
+                role.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
             ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newBusinessAccount);
 

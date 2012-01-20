@@ -130,7 +130,12 @@ namespace FoundOps.SLClient.Data.Services
             get { return _coreDomainContext; }
         }
 
-        public IObservable<bool> DomainContextHasChangesObservable = new Subject<bool>();
+        private readonly BehaviorSubject<bool> _domainContextHasChangesSubject = new BehaviorSubject<bool>(false);
+        /// <summary>
+        /// An Observable which notifies whenever the DomainContext has changes or does not have changes.
+        /// </summary>
+        public IObservable<bool> DomainContextHasChangesObservable { get { return _domainContextHasChangesSubject; } }
+
         private bool _domainContextHasChanges;
         /// <summary>
         /// Gets or sets a value indicating whether the domain context has changes.
@@ -141,14 +146,21 @@ namespace FoundOps.SLClient.Data.Services
             get { return _domainContextHasChanges; }
             set
             {
-                if (value == _domainContextHasChanges) return;
+                if (value == _domainContextHasChanges)
+                    return;
+
                 _domainContextHasChanges = value;
-                ((Subject<bool>)DomainContextHasChangesObservable).OnNext(value);
+                _domainContextHasChangesSubject.OnNext(value);
                 this.RaisePropertyChanged("DomainContextHasChanges");
             }
         }
 
-        public IObservable<bool> DomainContextIsSubmittingObservable = new Subject<bool>();
+        private readonly BehaviorSubject<bool> _domainContextIsSubmittingSubject = new BehaviorSubject<bool>(false);
+        /// <summary>
+        /// An Observable which pushes whenever the DomainContext is submitting, or stops submitting.
+        /// </summary>
+        public IObservable<bool> DomainContextIsSubmittingObservable { get { return _domainContextIsSubmittingSubject; } }
+
         private bool _domainContextIsSubmitting;
         /// <summary>
         /// Gets or sets a value indicating whether the domain context is submitting.
@@ -159,9 +171,11 @@ namespace FoundOps.SLClient.Data.Services
             get { return _domainContextIsSubmitting; }
             set
             {
-                if (value == _domainContextIsSubmitting) return;
+                if (value == _domainContextIsSubmitting)
+                    return;
+
                 _domainContextIsSubmitting = value;
-                ((Subject<bool>)DomainContextIsSubmittingObservable).OnNext(value);
+                _domainContextIsSubmittingSubject.OnNext(value);
                 this.RaisePropertyChanged("DomainContextIsSubmitting");
             }
         }

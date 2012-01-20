@@ -148,6 +148,18 @@ namespace FoundOps.SLClient.UI.Tools
                 return (UserAccountsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("UserAccountsVM", null, CreationPolicy.Shared).Value;
             }
         }
+
+
+        /// <summary>
+        /// Gets the UserAccountsVM.
+        /// </summary>
+        public static VehiclesVM Vehicles
+        {
+            get
+            {
+                return (VehiclesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("VehiclesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
     }
 
     /// <summary>
