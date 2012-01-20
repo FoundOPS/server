@@ -30,6 +30,20 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
+        private OrderedEntityCollection<SubLocation> _subLocationsListWrapper;
+        /// <summary>
+        /// Gets the sub locations list wrapper. It orders and numbers the SubLocations automatically when items are added and removed.
+        /// </summary>
+        public OrderedEntityCollection<SubLocation> SubLocationsListWrapper
+        {
+            get { return _subLocationsListWrapper; }
+            private set
+            {
+                _subLocationsListWrapper = value;
+                this.RaisePropertyChanged("SubLocationsListWrapper");
+            }
+        }
+
         partial void OnCreation()
         {
             //Setup IReactiveNotifyPropertyChanged
@@ -43,34 +57,8 @@ namespace FoundOps.Core.Models.CoreEntities
             //Setup IReactiveNotifyPropertyChanged
             _reactiveHelper = new MakeObjectReactiveHelper(this);
 
-            base.OnLoaded(isInitialLoad);
-
             if (isInitialLoad)
-            {
                 SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
-            }
-        }
-
-        //private void InitializeHelper()
-        //{
-            ////Setup SubLocation automatic numbering operations
-            //this.SubLocations.EntityAdded += (s, e) => e.Entity.Number = SubLocations.Count;
-            //this.SubLocations.EntityRemoved += (s, e) =>
-            //{
-            //    foreach (var subLocation in this.SubLocations.Where(subLocation => subLocation.Number > e.Entity.Number))
-            //        subLocation.Number = subLocation.Number - 1;
-            //};
-        //}
-
-        private OrderedEntityCollection<SubLocation> _subLocationsListWrapper;
-        public OrderedEntityCollection<SubLocation> SubLocationsListWrapper
-        {
-            get { return _subLocationsListWrapper; }
-            private set
-            {
-                _subLocationsListWrapper = value;
-                this.RaisePropertyChanged("SubLocationsListWrapper");
-            }
         }
 
         /// <summary>

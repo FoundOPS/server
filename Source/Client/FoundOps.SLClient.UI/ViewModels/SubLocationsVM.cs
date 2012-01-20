@@ -154,10 +154,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             return newSubLocation;
         }
 
-        //Override deleting a new sublocation to use SubLocationsListWrapper
+        //Override deleting a new sublocation so it is actually deleted 
+        //instead of just being removed from the _selectedLocation.SubLocationsListWrapper
         public override void DeleteEntity(SubLocation entityToDelete)
         {
-            this._selectedLocation.SubLocationsListWrapper.Remove(entityToDelete);
             this.Context.SubLocations.Remove(entityToDelete);
         }
 
