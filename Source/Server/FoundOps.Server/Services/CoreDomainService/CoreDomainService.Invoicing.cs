@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Data;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.EntityFramework;
@@ -59,24 +60,30 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessAccountForRole = ObjectContext.BusinessAccountForRole(roleId);
 
-            var baseUrl = QuickBooksTools.GetBaseUrl(businessAccountForRole);
-
-            var salesTermsXml = QuickBooksTools.GetEntityList(businessAccountForRole, "sales-terms", baseUrl);
-
-            var quickBooksSalesTerms = QuickBooksTools.CreateSalesTermsFromQuickBooksResponse(salesTermsXml);
-
-            foreach (var salesTerm in quickBooksSalesTerms)
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(businessAccountForRole.QuickBooksSessionXml);
+            
+            //Have to check whether the BusinessAccount has QuickBooks enabled and whether there is a token and token secret
+            if (businessAccountForRole.QuickBooksEnabled && quickBooksSession.QBToken != null && quickBooksSession.QBTokenSecret != null)
             {
-                var exists = businessAccountForRole.SalesTerms.FirstOrDefault(st => st.QuickBooksId == salesTerm.QuickBooksId);
-                
-                if (exists != null)
-                {
-                    businessAccountForRole.SalesTerms.Remove(exists);
-                }
-                //Always add the new sales term because it either never existed or the old one was removed from the business account above.
-                businessAccountForRole.SalesTerms.Add(salesTerm);
-            }
+                var baseUrl = QuickBooksTools.GetBaseUrl(businessAccountForRole);
 
+                var salesTermsXml = QuickBooksTools.GetEntityList(businessAccountForRole, "sales-terms", baseUrl);
+
+                var quickBooksSalesTerms = QuickBooksTools.CreateSalesTermsFromQuickBooksResponse(salesTermsXml);
+
+                foreach (var salesTerm in quickBooksSalesTerms)
+                {
+                    var exists =
+                        businessAccountForRole.SalesTerms.FirstOrDefault(st => st.QuickBooksId == salesTerm.QuickBooksId);
+
+                    if (exists != null)
+                    {
+                        businessAccountForRole.SalesTerms.Remove(exists);
+                    }
+                    //Always add the new sales term because it either never existed or the old one was removed from the business account above.
+                    businessAccountForRole.SalesTerms.Add(salesTerm);
+                }
+            }
             this.ObjectContext.SaveChanges();
 
             var salesTerms =  this.ObjectContext.SalesTerms.Where(st => st.BusinessAccountId == businessAccountForRole.Id);

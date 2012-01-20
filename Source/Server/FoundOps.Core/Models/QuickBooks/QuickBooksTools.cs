@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using DevDefined.OAuth.Consumer;
-using DevDefined.OAuth.Framework;
 using FoundOps.Common.Tools;
-using FoundOps.Core.Models.Azure;
-using FoundOps.Core.Models.CoreEntities;
 using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.ServiceRuntime;
+using DevDefined.OAuth.Consumer;
+using FoundOps.Core.Models.Azure;
+using DevDefined.OAuth.Framework;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
+using FoundOps.Core.Models.CoreEntities;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace FoundOps.Core.Models.QuickBooks
@@ -46,7 +44,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
         #endregion
 
-        #region OAuth Session, AuthorizationUrl and Access Token
+        #region OAuth Session, Token Validity Check, AuthorizationUrl and Access Token
 
         /// <summary>
         /// Creates the new OAuth session as well as getting the AccessToken for that Session.
@@ -112,46 +110,50 @@ namespace FoundOps.Core.Models.QuickBooks
                                             OauthConstants.IdFedOAuthBaseUrl + OauthConstants.UrlAccessToken);
         }
 
-        #region Moved into the QuickBooksController
-        ///// <summary>
-        ///// Exchanges the request token attained earlier for the access token needed to make calls to QuickBooks
-        ///// </summary>
-        ///// <param name="quickBooksSession"> </param>
-        //public static IToken GetAccessToken(QuickBooksSession quickBooksSession)
-        //{
-        //    //Creates the OAuth Session
-        //    var clientSession = CreateOAuthSession();
+        /// <summary>
+        /// Checks the validity of token. Returns true if the token is valid, otherwise it returns false
+        /// </summary>
+        /// <param name="currentBusinessAccount">The current business account.</param>
+        /// <returns>True if the token is valid and false if the token has expired</returns>
+        public static bool CheckValidityOfToken(BusinessAccount currentBusinessAccount)
+        {
+            var coreEntitiesContainer = new CoreEntitiesContainer();
 
-        //    //The AccessToken is attained by exchanging the request token and the OAuthVerifier that we attained earlier
-        //    IToken accessToken = clientSession.ExchangeRequestTokenForAccessToken(quickBooksSession.OAuthVerifierToken, quickBooksSession.OAuthVerifier);
+            //Required check for an existant QuickBooksXML. If it does not exist, then we know that there is no chance that there is a valid Token
+            if (currentBusinessAccount.QuickBooksEnabled == false && currentBusinessAccount.QuickBooksSessionXml == null)
+                return false;
 
-        //    return accessToken;
-        //}
+            //Deserializes the QuickBooksSession class
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
-        ///// <summary>
-        ///// Creates the authorization URL for QuickBooks based on the OAuth session
-        ///// </summary>
-        ///// <param name="callbackUrl">The callback URL.</param>
-        ///// <param name="quickBooksSession"> The current QuickBooksSession </param>
-        ///// <returns> returns the authorization URL. </returns>
-        //public static string GetAuthorizationUrl(string callbackUrl, QuickBooksSession quickBooksSession)
-        //{
-        //    var session = CreateOAuthSession();
+            //Checks for null tokens on a BusinessAccount that has QuickBooks enabled
+            if (quickBooksSession.QBToken == null || quickBooksSession.QBTokenSecret == null)
+                return false;
 
-        //    //Save verification token for later use
-        //    quickBooksSession.OAuthVerifierToken = (TokenBase)session.GetRequestToken();
+            //Check validity of tokens
+            //If the tokens are invalid return false, else return true
+            var inverseOfValidity = GetUserInfo(currentBusinessAccount);
 
-        //    //Creates the Authorized URL for QuickBooks that is based on the OAuth session created above
-        //    var authUrl = OauthConstants.AuthorizeUrl + "?oauth_token=" + quickBooksSession.OAuthVerifierToken.Token + "&oauth_callback=" + UriUtility.UrlEncode(callbackUrl);
+            if(inverseOfValidity)
+            {
+                //Set the token values to null so we know that even though the BusinessAccount has enabled QuickBooks, they no longer have a valid token and need to be re-prompted
+                quickBooksSession.QBToken = null;
+                quickBooksSession.QBTokenSecret = null;
 
-        //    return authUrl;
-        //}
-        #endregion
+                //Re-Serialize the QuickBooksSession class into XML
+                currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
+
+                //save the changes that were just made to the BusinessAccount
+                coreEntitiesContainer.SaveChanges();
+            }
+
+            //Required to do inverse because the GetUserInfo method is set up to return false if authorization is not needed
+            return !inverseOfValidity;
+        }
 
         #endregion
 
         #region Base Url, User Info and Entity List
-
 
         /// <summary>
         /// Finds the BaseURL for the current QuickBooks user
