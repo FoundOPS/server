@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Windows.Data;
 using System.Globalization;
 using System.Windows.Controls;
-using System.Windows.Data;
-using FoundOps.Common.Silverlight.Blocks;
-using FoundOps.Framework.Views.Models;
 using FoundOps.SLClient.UI.ViewModels;
+using FoundOps.Common.Silverlight.Blocks;
+using FoundOps.Common.Silverlight.Models.Import;
 
 namespace FoundOps.SLClient.Navigator.Panes
 {

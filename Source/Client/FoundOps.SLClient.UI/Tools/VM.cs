@@ -68,6 +68,17 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
+        /// Gets the ImportDataVM.
+        /// </summary>
+        public static ImportDataVM ImportData
+        {
+            get
+            {
+                return (ImportDataVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ImportDataVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
         /// Gets the LocationsVM.
         /// </summary>
         public static LocationsVM Locations

@@ -3,13 +3,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Globalization;
+using System.Reactive.Linq;
 using System.Windows.Media;
 using System.ComponentModel;
 using System.Windows.Controls;
-using FoundOps.SLClient.UI.ViewModels;
+using FoundOps.Common.Tools;
+using FoundOps.SLClient.UI.Tools;
 using Telerik.Windows.Controls;
-using FoundOps.Framework.Views.Models;
-using FoundOps.Framework.Views.Models.Import;
 using FoundOps.Common.Silverlight.Models.Import;
 using FoundOps.Common.Silverlight.Models.DataTable;
 using ItemsControl = System.Windows.Controls.ItemsControl;
@@ -17,31 +17,30 @@ using ItemsControl = System.Windows.Controls.ItemsControl;
 namespace FoundOps.SLClient.UI.Controls.ImportData
 {
     //TODO Setup multiplicity
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class ImportDataGrid : INotifyPropertyChanged
     {
         //For creating unique names on extra columns
         private int _customColumnIndex;
         private readonly DataRowColumnToValueConverter<ValueWithOptionalAssociation> _dataRowColumnToValueConverter = new DataRowColumnToValueConverter<ValueWithOptionalAssociation>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImportDataGrid"/> class.
+        /// </summary>
         public ImportDataGrid()
         {
             InitializeComponent();
             if (DesignerProperties.IsInDesignTool) return;
-            ((ImportDataGridCellTemplateConverter)this.Resources["ImportDataGridCellTemplateConverter"]).ImportDataVM = ImportDataVM;
-            ImportDataVM.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "DataTable")
-                    UpdateColumnsOnDataTableChange();
-            };
-        }
 
-        private void UpdateColumnsOnDataTableChange()
-        {
-            this.ImportRadGridView.Columns.Clear();
-            foreach (var column in ImportDataVM.DataTable.Columns.OfType<ImportColumn>()) //All are ImportColumns
+            Observable2.FromPropertyChangedPattern(VM.ImportData, x => x.DataTable).WhereNotNull().ObserveOnDispatcher().Subscribe(_ =>
             {
-                this.ImportRadGridView.Columns.Add(CreateColumn(column, column.ColumnName));
-            }
+                //Update the columns whenever the DataTable changes
+                this.ImportRadGridView.Columns.Clear();
+                foreach (var column in VM.ImportData.DataTable.Columns.OfType<ImportColumn>()) //All are ImportColumns
+                    this.ImportRadGridView.Columns.Add(CreateColumn(column, column.ColumnName));
+            });
         }
 
         private GridViewDataColumn CreateColumn(ImportColumn importColumn, string columnDisplayName)
@@ -55,7 +54,7 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
             ////Setup ComboBox's ItemTemplate to work with Multiplicity
             //importColumnTypeComboBox.ItemTemplate = (DataTemplate)this.Resources["ImportDestinationComboBoxTemplate"];
 
-            importColumnTypeComboBox.SetBinding(ItemsControl.ItemsSourceProperty, new Binding("DestinationColumnTypes") { Source = ImportDataVM });
+            importColumnTypeComboBox.SetBinding(ItemsControl.ItemsSourceProperty, new Binding("DestinationColumnTypes") { Source = VM.ImportData });
             //Bind the ImportColumnType to the DataTable's ImportColumn
             importColumnTypeComboBox.SetBinding(Selector.SelectedItemProperty, new Binding("ImportColumnType") { Mode = BindingMode.TwoWay, Source = importColumn });
 
@@ -110,7 +109,7 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
                 if (allAreSelected)
                 {
                     var newColumnUniqueName = String.Format("CustomColumn{0}", _customColumnIndex);
-                    var newColumn = ImportDataVM.AddColumn(newColumnUniqueName);
+                    var newColumn = VM.ImportData.AddColumn(newColumnUniqueName);
                     ImportRadGridView.Columns.Add(CreateColumn(newColumn, ""));
                     _customColumnIndex++;
                 }
@@ -123,11 +122,6 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
                };
 
             return gridViewColumn;
-        }
-
-        public ImportDataVM ImportDataVM //Do not access before InitializeComponent
-        {
-            get { return (ImportDataVM)this.DataContext; }
         }
 
         #region INotifyPropertyChanged
@@ -182,15 +176,13 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
 
         #endregion
 
-        public ImportDataVM ImportDataVM { get; set; }
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var importColumnType = (ImportColumnType)value;
             if (importColumnType == null)
                 return DefaultTemplate;
 
-            var importDestination = ImportDataVM.ImportDestination;
+            var importDestination = VM.ImportData.ImportDestination;
 
             if (importColumnType.Type == ImportColumnEnum.ClientName)
             {

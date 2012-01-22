@@ -6,14 +6,12 @@ using Kent.Boogaart.KBCsv;
 using System.Collections.Generic;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
-using FoundOps.Framework.Views.Models;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Framework.Views.Models.Import;
-using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Models.Import;
+using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Models.DataTable;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -26,21 +24,33 @@ namespace FoundOps.SLClient.UI.ViewModels
     {
         #region Public Properties
 
-        public IEnumerable<Client> Clients { get; private set; }
-        public IEnumerable<Location> Locations { get; private set; }
+        /// <summary>
+        /// Gets the loaded clients.
+        /// </summary>
+        public IEnumerable<Client> Clients { get { return Manager.Data.Context.Clients; } }
+        /// <summary>
+        /// Gets the loaded locations.
+        /// </summary>
+        public IEnumerable<Location> Locations { get { return Manager.Data.Context.Locations; } }
 
-        private string _fileName;
-        public string FileName
+        private bool _isBusy;
+        /// <summary>
+        /// Indicates the current viewmodel is importing data.
+        /// </summary>
+        public bool IsBusy
         {
-            get { return _fileName; }
+            get { return _isBusy; }
             set
             {
-                _fileName = value;
-                this.RaisePropertyChanged("FileName");
+                _isBusy = value;
+                this.RaisePropertyChanged("IsBusy");
             }
         }
 
         private ImportDestination _importDestination;
+        /// <summary>
+        /// The type of entities to.
+        /// </summary>
         public ImportDestination ImportDestination
         {
             get { return _importDestination; }
@@ -52,6 +62,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the import destination column types.
+        /// </summary>
         public IEnumerable<ImportColumnType> DestinationColumnTypes
         {
             get
@@ -81,32 +94,42 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// A command to choose a csv file to import.
+        /// </summary>
         public RelayCommand<FileInfo> SelectFileCommand { get; private set; }
+        /// <summary>
+        /// A command to import the current data.
+        /// </summary>
         public RelayCommand ImportDataCommand { get; private set; }
 
         #endregion
 
-        protected Guid RoleId;
-        private readonly DataManager _dataManager;
         /// <summary>
         /// Initializes a new instance of the <see cref="ImportDataVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ImportDataVM(DataManager dataManager)
+        public ImportDataVM()
         {
-            _dataManager = dataManager;
+            Manager.Data.Subscribe<Client>(DataManager.Query.Clients, ObservationState, null);
+            Manager.Data.Subscribe<Location>(DataManager.Query.Locations, ObservationState, null);
 
-            _dataManager.Subscribe<Client>(DataManager.Query.Clients, ObservationState, clients => Clients = clients);
+            #region Setup Commands
 
-            _dataManager.Subscribe<Location>(DataManager.Query.Locations, ObservationState, locations => Locations = locations);
+            //When the SelectFileCommand is executed read the CSV data
+            SelectFileCommand = new RelayCommand<FileInfo>(fileInfo =>
+            {
+                IsBusy = true;
+                //use the CSVReader to read in the data);
+                using (var csv = new CsvReader(fileInfo.OpenRead()))
+                    DataTable = ReadInCSVData(csv);
+                IsBusy = false;
+            });
 
-            RegisterCommands();
-            //var graphShape =
-            //  new EntityGraphShape().Edge<Service, Value>(
-            //      service => service.Values);
+            //When the ImportDataCommand is executed save the datatable to the database
+            ImportDataCommand = new RelayCommand(SaveDataTableToDatabase);
 
-            //Service.ServiceGraphShapeForCloning.
+            #endregion
         }
 
         #region Logic
@@ -116,9 +139,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newColumn = new ImportColumn { ColumnName = newColumnUniqueName };
             DataTable.Columns.Add(newColumn);
             foreach (var row in DataTable.Rows)
-            {
                 row[newColumnUniqueName] = new ValueWithOptionalAssociation { Value = "" };
-            }
             return newColumn;
         }
 
@@ -158,24 +179,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             return dataTable;
         }
 
-        protected void RegisterCommands()
-        {
-            SelectFileCommand = new RelayCommand<FileInfo>((fileInfo) =>
-            {
-                FileName = fileInfo.ToString();
-
-                //use the CSVReader to read in the data);
-                using (var csv = new CsvReader(fileInfo.OpenRead()))
-                {
-                    DataTable = ReadInCSVData(csv);
-                }
-            });
-
-            ImportDataCommand = new RelayCommand(SaveDataTableToDatabase);
-        }
-
         private void SaveDataTableToDatabase()
         {
+            IsBusy = true;
+
             var locationsToAdd = new List<Location>();
             var clientsToAdd = new List<Client>();
 
@@ -217,7 +224,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 {
                     #region Columns with possible associations
 
-
                     if (column.ImportColumnType.Type == ImportColumnEnum.ClientName)
                     {
                         var valueWithOptionalAssociation = row[column.ColumnName];
@@ -236,7 +242,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                         if (valueWithOptionalAssociation.OptionalAssociation != null)
                             selectedLocation = (Location)valueWithOptionalAssociation.OptionalAssociation;
                         else
+                        {
                             locationName = (string)valueWithOptionalAssociation.Value;
+                            selectedLocation = Locations.FirstOrDefault(location => location.Name == locationName);
+                        }
                     }
 
                     #endregion
@@ -353,22 +362,20 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (ImportDestination == ImportDestination.Locations)
                 {
                     var location = new Location
-                                       {
-                                           OwnerParty = _dataManager.ContextManager.OwnerAccount,
-                                           Name = locationName,
-                                           Latitude = locationLatitude,
-                                           Longitude = locationLongitude,
-                                           AddressLineOne = locationAddressLineOne,
-                                           AddressLineTwo = locationAddressLineTwo,
-                                           City = locationCity,
-                                           State = locationState,
-                                           ZipCode = locationZipCode
-                                       };
+                    {
+                        OwnerParty = Manager.Context.OwnerAccount,
+                        Name = locationName,
+                        Latitude = locationLatitude,
+                        Longitude = locationLongitude,
+                        AddressLineOne = locationAddressLineOne,
+                        AddressLineTwo = locationAddressLineTwo,
+                        City = locationCity,
+                        State = locationState,
+                        ZipCode = locationZipCode
+                    };
 
                     if (selectedClient != null)
-                    {
                         location.Party = selectedClient.OwnedParty;
-                    }
 
                     newEntity = location;
                 }
@@ -377,7 +384,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 {
                     var client = new Client
                     {
-                        Vendor = (BusinessAccount) _dataManager.ContextManager.OwnerAccount,
+                        Vendor = (BusinessAccount)Manager.Context.OwnerAccount,
                         OwnedParty = new Business { Name = clientName }
                     };
 
@@ -425,17 +432,22 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
 
             foreach (var location in locationsToAdd)
-                _dataManager.Context.Locations.Add(location);
+                Manager.Data.Context.Locations.Add(location);
 
             foreach (var client in clientsToAdd)
-                _dataManager.Context.Clients.Add(client);
+                Manager.Data.Context.Clients.Add(client);
 
-            _dataManager.EnqueueSubmitOperation(onSaveCallback =>
+            Manager.Data.EnqueueSubmitOperation(onSaveCallback =>
             {
                 if (!onSaveCallback.HasError)
                     MessageBox.Show("Data Imported");
+                else
+                {
+                    MessageBox.Show("There was a problem with the last import, please try again.");
+                    Manager.Data.Context.RejectChanges();
+                }
 
-                _dataManager.Context.RejectChanges();
+                IsBusy = false;
             });
         }
 

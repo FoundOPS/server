@@ -1,9 +1,8 @@
 ﻿using System;
-using System.ComponentModel.Composition;
-using System.ServiceModel.DomainServices.Client;
 using System.Windows.Browser;
-using FoundOps.Common.Composite.Tools;
+using System.ComponentModel.Composition;
 using FoundOps.Common.Tools.ExtensionMethods;
+using System.ServiceModel.DomainServices.Client;
 using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.Data

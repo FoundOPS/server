@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel;
-using FoundOps.Common.Silverlight.Models.Import;
 using FoundOps.Common.Silverlight.Models.DataTable;
 
-namespace FoundOps.Framework.Views.Models.Import
+namespace FoundOps.Common.Silverlight.Models.Import
 {
     public class ImportColumn : DataColumn<ValueWithOptionalAssociation>, INotifyPropertyChanged
     {

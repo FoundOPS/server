@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace FoundOps.Framework.Views.Models
+namespace FoundOps.Common.Silverlight.Models.Import
 {
     public enum ImportColumnEnum
     {
@@ -48,6 +47,9 @@ namespace FoundOps.Framework.Views.Models
         }
     }
 
+    /// <summary>
+    /// The type of entity being imported.
+    /// </summary>
     public enum ImportDestination
     {
         Clients,
