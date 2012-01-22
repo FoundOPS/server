@@ -1,18 +1,19 @@
 using System;
-using System.Reactive.Disposables;
-using FoundOps.Common.Silverlight.UI.Controls;
+using System.Collections;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.SLClient.UI.Tools;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
 using System.Reactive.Linq;
 using MEFedMVVM.ViewModelLocator;
-using FoundOps.Core.Context.Services;
+using System.Reactive.Disposables;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Common.Silverlight.Controls;
 using Microsoft.Windows.Data.DomainServices;
+using FoundOps.Common.Silverlight.UI.Controls;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 
@@ -22,25 +23,72 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Clients
     ///</summary>
     [ExportViewModel("ClientsVM")]
-    public class ClientsVM : CoreEntityCollectionInfiniteAccordionVM<Client>
+    public class ClientsVM : CoreEntityCollectionInfiniteAccordionVM<Client>,
+        IAddToDeleteFromDestination<Location>, IAddNewExisting<Location>, IRemoveDelete<Location>
     {
         #region Public
-
-        /// <summary>
-        /// A command to add a location.
-        /// </summary>
-        public IReactiveCommand AddLocationCommand { get; private set; }
-
-        /// <summary>
-        /// A command to remove a location.
-        /// </summary>
-        public IReactiveCommand DeleteLocationCommand { get; private set; }
 
         private readonly ObservableAsPropertyHelper<PartyVM> _selectedClientOwnedBusinessVM;
         /// <summary>
         /// Gets the selected Client's OwnedParty's PartyVM. (The OwnedPary is a Business)
         /// </summary>
         public PartyVM SelectedClientOwnedBusinessVM { get { return _selectedClientOwnedBusinessVM.Value; } }
+
+        #region Implementation of IAddToDeleteFromDestination
+
+        /// <summary>
+        /// Links to the LinkToAddToDeleteFromControl events.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="sourceType">Type of the source.</param>
+        public void LinkToAddToDeleteFromEvents(AddToDeleteFrom control, Type sourceType)
+        {
+            if (sourceType == typeof(Location))
+            {
+                control.AddExistingItem += (s, existingItem) => this.AddExistingItemLocation((Location)existingItem);
+                control.AddNewItem += (s, newItemText) => this.AddNewItemLocation(newItemText);
+                control.RemoveItem += (s, e) => this.RemoveItemLocation();
+                control.DeleteItem += (s, e) => this.DeleteItemLocation();
+            }
+        }
+
+        /// <summary>
+        /// Gets the locations destination items source.
+        /// </summary>
+        public IEnumerable LocationsDestinationItemsSource
+        {
+            get { return SelectedEntity == null || SelectedEntity.OwnedParty == null ? null : SelectedEntity.OwnedParty.Locations; }
+        }
+
+        #endregion
+
+        #region Implementation of IAddNewExisting<Location> & IRemoveDelete<Location>
+
+        /// <summary>
+        /// An action to add a new Location to the current BusinessAccount.
+        /// </summary>
+        public Func<string, Location> AddNewItemLocation { get; private set; }
+        Func<string, Location> IAddNew<Location>.AddNewItem { get { return AddNewItemLocation; } }
+
+        /// <summary>
+        /// An action to add an existing Location to the current BusinessAccount.
+        /// </summary>
+        public Action<Location> AddExistingItemLocation { get; private set; }
+        Action<Location> IAddNewExisting<Location>.AddExistingItem { get { return AddExistingItemLocation; } }
+
+        /// <summary>
+        /// An action to remove a Location from the current BusinessAccount.
+        /// </summary>
+        public Func<Location> RemoveItemLocation { get; private set; }
+        Func<Location> IRemove<Location>.RemoveItem { get { return RemoveItemLocation; } }
+
+        /// <summary>
+        /// An action to remove a Location from the current BusinessAccount and delete it.
+        /// </summary>
+        public Func<Location> DeleteItemLocation { get; private set; }
+        Func<Location> IRemoveDelete<Location>.DeleteItem { get { return DeleteItemLocation; } }
+
+        #endregion
 
         #endregion
 
@@ -70,87 +118,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty, this.DataManager))
                 .ToProperty(this, x => x.SelectedClientOwnedBusinessVM);
 
-            #region Register Commands
-
-            AddLocationCommand = new ReactiveCommand(this.WhenAny(x => x.SelectedEntity, client => client.Value != null));
-
-            AddLocationCommand.Subscribe(param =>
-            {
-                var locationsVM = param as LocationsVM;
-                if (locationsVM == null) return;
-
-                //The location is either the LocationInCreation or an existing location
-
-                var locationToAdd = locationsVM.LocationInCreation;
-
-                //If the selected location.Name == the LocationInCreation.Name, add the existing location
-                if (locationsVM.SelectedEntity != null && locationsVM.SelectedEntity.Name == locationsVM.LocationInCreation.Name)
-                {
-                    locationToAdd = locationsVM.SelectedEntity;
-                    locationsVM.DeleteLocationInCreation();
-                }
-
-                //add the location to the current Account
-                ContextManager.OwnerAccount.OwnedLocations.Add(locationToAdd);
-
-                //add the Location to the selected client
-                SelectedEntity.OwnedParty.Locations.Add(locationToAdd);
-
-                //Must Commit and EndEdit to prevent error on Save or DiscardChanges
-                this.Commit();
-                DataManager.EnqueueSubmitOperation();
-
-                //Move to Locations context only if a new location was added
-                if (locationToAdd.EntityState == EntityState.New)
-                    MessageBus.Current.SendMessage(new MoveToDetailsViewMessage(typeof(Location), MoveStrategy.AddContextToExisting));
-
-                //Update LocationsVM filter
-                locationsVM.UpdateFilter();
-
-                //Set the selected entity to the added location
-                locationsVM.SelectedEntity = locationToAdd;
-            });
-
-            DeleteLocationCommand = new ReactiveCommand(this.WhenAny(x => x.SelectedEntity, client => client.Value != null));
-
-            DeleteLocationCommand.Subscribe(param =>
-            {
-                var locationsVM = param as LocationsVM;
-                if (locationsVM == null || locationsVM.SelectedEntity == null) return;
-
-                var location = locationsVM.SelectedEntity;
-                //Set up the pop up text box to have the client and locations name
-                var removeDeleteCancel = new RemoveDeleteCancel
-                {
-                    ItemToRemoveString = location.Name,
-                    ItemToRemoveFromString = location.Party.DisplayName
-                };
-
-                removeDeleteCancel.RemoveButton.Click += (sender, e) =>
-                {
-                    //Removes the location from the Client
-                    this.SelectedEntity.OwnedParty.Locations.Remove(location);
-                    DataManager.EnqueueSubmitOperation();
-                    removeDeleteCancel.Close();
-                };
-                removeDeleteCancel.DeleteButton.Click += (sender, e) =>
-                {
-                    //Delete the location entirely
-                    locationsVM.DeleteEntity(location);
-                    DataManager.EnqueueSubmitOperation();
-                    removeDeleteCancel.Close();
-                };
-                removeDeleteCancel.CancelButton.Click += (sender, e) =>
-                {
-                    //Do nothing and close the window
-                    removeDeleteCancel.Close();
-                };
-
-                removeDeleteCancel.Show();
-            });
-
-            #endregion
-
             var serialDisposable = new SerialDisposable();
 
             //Whenever the client name changes update the default location name
@@ -168,6 +135,49 @@ namespace FoundOps.SLClient.UI.ViewModels
                         defaultLocation.Name = displayName;
                     });
             });
+
+            #region Implementation of IAddToDeleteFromDestination<Location>
+
+            //Whenever the SelectedEntity changes, notify the DestinationItemsSource changed
+            this.SelectedEntityObservable.ObserveOnDispatcher().Subscribe(_ => this.RaisePropertyChanged("LocationsDestinationItemsSource"));
+
+            #endregion
+
+            #region Implementation of IAddNewExisting<Location> & IRemoveDelete<Location>
+
+            AddNewItemLocation = name =>
+            {
+                var newLocation = VM.Locations.CreateNewItem(name);
+                this.SelectedEntity.OwnedParty.Locations.Add(newLocation);
+                VM.Locations.MoveToDetailsView.Execute(null);
+                return newLocation;
+            };
+
+            AddExistingItemLocation = existingItem =>
+            {
+                SelectedEntity.OwnedParty.Locations.Add(existingItem);
+                VM.Locations.MoveToDetailsView.Execute(null);
+            };
+
+            RemoveItemLocation = () =>
+            {
+                var selectedLocation = VM.Locations.SelectedEntity;
+                if (selectedLocation != null)
+                    this.SelectedEntity.OwnedParty.Locations.Remove(selectedLocation);
+
+                return selectedLocation;
+            };
+
+            DeleteItemLocation = () =>
+            {
+                var selectedLocation = RemoveItemLocation();
+                if (selectedLocation != null)
+                    VM.Locations.DeleteEntity(selectedLocation);
+
+                return selectedLocation;
+            };
+
+            #endregion
         }
 
         #region Logic

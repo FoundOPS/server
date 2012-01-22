@@ -3,7 +3,6 @@ using System.Windows;
 using System.Collections;
 using System.ComponentModel;
 using System.Collections.Generic;
-using FoundOps.Common.Composite.Tools;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 {
@@ -172,50 +171,36 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #region Add, Remove and Delete properties
 
-        #region AddIsEnabled Dependency Property
+        #region IsDeleteEnabled Dependency Property
 
         /// <summary>
-        /// AddIsEnabled
+        /// IsDeleteEnabled
         /// </summary>
-        public bool AddIsEnabled
+        public bool IsDeleteEnabled
         {
-            get { return (bool)GetValue(AddIsEnabledProperty); }
-            set { SetValue(AddIsEnabledProperty, value); }
+            get { return (bool) GetValue(IsDeleteEnabledProperty); }
+            set { SetValue(IsDeleteEnabledProperty, value); }
         }
 
         /// <summary>
-        /// AddIsEnabled Dependency Property.
+        /// IsDeleteEnabled Dependency Property.
         /// </summary>
-        public static readonly DependencyProperty AddIsEnabledProperty =
+        public static readonly DependencyProperty IsDeleteEnabledProperty =
             DependencyProperty.Register(
-                "AddIsEnabled",
-                typeof(bool),
-                typeof(AddToDeleteFrom),
-                new PropertyMetadata(null));
+                "IsDeleteEnabled",
+                typeof (bool),
+                typeof (AddToDeleteFrom),
+                new PropertyMetadata(new PropertyChangedCallback(IsDeleteEnabledChanged)));
 
-        #endregion
-        #region DeleteIsEnabled Dependency Property
-
-        /// <summary>
-        /// DeleteIsEnabled
-        /// </summary>
-        public bool DeleteIsEnabled
+        private static void IsDeleteEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            get { return (bool)GetValue(DeleteIsEnabledProperty); }
-            set { SetValue(DeleteIsEnabledProperty, value); }
+            var c = d as AddToDeleteFrom;
+            if (c != null)
+                c.AddDelete.DeleteIsEnabled = (bool)e.NewValue;
         }
 
-        /// <summary>
-        /// DeleteIsEnabled Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty DeleteIsEnabledProperty =
-            DependencyProperty.Register(
-                "DeleteIsEnabled",
-                typeof(bool),
-                typeof(AddToDeleteFrom),
-                new PropertyMetadata(null));
-
         #endregion
+
 
         #region ItemToRemoveDisplayMember Dependency Property
 

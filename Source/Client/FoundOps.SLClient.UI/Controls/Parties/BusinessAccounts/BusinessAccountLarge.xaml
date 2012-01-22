@@ -71,7 +71,7 @@
                             <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="User Accounts"
                                                            SourceType="{MarkupExtensions:Static MemberType=CoreEntities1:UserAccount}"
                                                            ItemToRemoveDisplayMember="{Binding SelectedEntity.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name, Source={Tools:GetVM Type=CoreEntities:UserAccountsVM}}"
-                                                           DeleteIsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:UserAccountsVM}}"
+                                                           IsDeleteEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:UserAccountsVM}}"
                                                            Source="{Tools:GetVM Type=CoreEntities:UserAccountsVM}" Destination="{Binding}"
                                                            DestinationItemsSource="{Binding UserAccountsDestinationItemsSource}" />
                         </Grid>
@@ -90,7 +90,7 @@
                                                            SourceType="{MarkupExtensions:Static MemberType=CoreEntities1:ServiceTemplate}"
                                                            ItemToRemoveDisplayMember="{Binding SelectedEntity.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name, Source={Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
                                                            AddMode="{Tools1:GetContextObservableValue Converter={StaticResource ServiceTemplateAddModeConverter}, ContextType=CoreEntities1:BusinessAccount}" 
-                                                           DeleteIsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
+                                                           IsDeleteEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
                                                            Source="{Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}" Destination="{Binding}"
                                                            DestinationItemsSource="{Binding ServiceTemplatesDestinationItemsSource}" />
                         </Grid>

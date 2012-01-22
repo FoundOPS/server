@@ -134,6 +134,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Logic
 
+        /// <summary>
+        /// Adds a column to the DataTable.
+        /// </summary>
+        /// <param name="newColumnUniqueName">New name of the column unique.</param>
+        /// <returns></returns>
         public ImportColumn AddColumn(string newColumnUniqueName)
         {
             var newColumn = new ImportColumn { ColumnName = newColumnUniqueName };

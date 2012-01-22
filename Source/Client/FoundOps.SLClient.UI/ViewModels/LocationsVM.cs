@@ -1,24 +1,23 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Controls;
-using Kent.Boogaart.KBCsv;
 using ReactiveUI;
 using System.Linq;
+using System.Collections;
+using Kent.Boogaart.KBCsv;
 using System.Reactive.Linq;
 using System.ComponentModel;
 using FoundOps.Common.Tools;
+using System.Windows.Controls;
 using System.Reactive.Subjects;
 using System.Collections.Generic;
 using MEFedMVVM.ViewModelLocator;
-using GalaSoft.MvvmLight.Command;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.Services;
 using Microsoft.Windows.Data.DomainServices;
-using FoundOps.Core.Context.Services.Interface;
-using ReactiveUI.Xaml;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -26,7 +25,8 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Locations
     /// </summary>
     [ExportViewModel("LocationsVM")]
-    public class LocationsVM : CoreEntityCollectionInfiniteAccordionVM<Location>
+    public class LocationsVM : CoreEntityCollectionInfiniteAccordionVM<Location>,
+          IAddToDeleteFromSource<Location>
     {
         #region Public Properties
 
@@ -83,40 +83,20 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
+        #region Implementation of IAddToDeleteFromSource<Location>
+
+        public Func<string, Location> CreateNewItem { get; private set; }
+
+        //There is none required
+        public IEqualityComparer<object> CustomComparer { get; set; }
+
+        public IEnumerable ExistingItemsSource { get { return _locationsWithoutClient.Value; } }
+
+        public string MemberPath { get; private set; }
+
         #endregion
 
-        //Local Properties
-        public Location _locationInCreation;
-        public Location LocationInCreation
-        {
-            get { return _locationInCreation; }
-            set
-            {
-                if (LocationInCreation != null)
-                    LocationInCreation.PropertyChanged -= LocationInCreationPropertyChanged;
-
-                _locationInCreation = value;
-
-                if (LocationInCreation != null)
-                    LocationInCreation.PropertyChanged += LocationInCreationPropertyChanged;
-
-                this.RaisePropertyChanged("LocationInCreation");
-            }
-        }
-
-        void LocationInCreationPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "HasValidationErrors")
-            {
-                //Whenever the LocationInCreation's HasValidationErrors property changes update the AddCommand's CanExecute
-                ((RelayCommand<object>)this.AddCommand).RaiseCanExecuteChanged();
-            }
-            else if (e.PropertyName == "Location")
-            {
-                //Whenever the LocationInCreation's ClientId or Title changed update its validation errors
-                LocationInCreation.RaiseValidationErrors();
-            }
-        }
+        #endregion
 
         #region Locals
 
@@ -138,13 +118,61 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Subscribe to the locations query
             IsLoadingObservable = DataManager.Subscribe<Location>(DataManager.Query.Locations, this.ObservationState, null);
 
-            IsLoadingObservable.Subscribe(l =>
-                                              {
-
-                                              });
-
             _loadedLocations = DataManager.GetEntityListObservable<Location>(DataManager.Query.Locations);
             _loadedLocationsProperty = _loadedLocations.ToProperty(this, x => x.LoadedLocations);
+
+            #region LocationsWithoutClient
+
+            //Whenever loadedLocations changes, select the IObservable<IList<Location>> of Locations without a Client
+            var locationsWithoutClient = _loadedLocations.FromCollectionChangedOrSet()
+                .SelectLatest(loadedLocs => loadedLocs.Select(loadedLoc =>
+                    //Whenever the Location.Party.ClientOwner == null
+                    loadedLoc.WhenAny(x => x.Party, x => x.Party.ClientOwner, (party, clientOwner) => party.Value == null || clientOwner.Value == null)
+                        //Select the Location if there is noClientOwner
+                    .Select(noClientOwner => noClientOwner ? loadedLoc : null))
+                    //Combine the latest of the Location Observables into a list
+                    .CombineLatest())
+                //Remove the locations that are null
+                    .Select(locations => locations.Where(l => l != null));
+
+            //Setup the LocationsWithoutClient property
+            _locationsWithoutClient = locationsWithoutClient.ToProperty(this, x => x.LocationsWithoutClient);
+
+            #endregion
+
+            #region IAddToDeleteFromSource<Location> Implementation
+
+            //Whenever the _locationsWithoutClient changes notify ExistingItemsSource changed
+            _locationsWithoutClient.ToProperty(this, x => x.ExistingItemsSource);
+
+            MemberPath = "Name";
+
+            CreateNewItem = name =>
+            {
+                //Set the OwnerParty to the current OwnerAccount
+                var newLocation = new Location {OwnerParty = ContextManager.OwnerAccount};
+
+                var client = ContextManager.GetContext<Client>();
+
+                //If the client context != null add this to the current Client's Locations
+                if (client != null)
+                    client.OwnedParty.Locations.Add(newLocation);
+
+                var region = ContextManager.GetContext<Region>();
+
+                //If the region context != null add this to the current Regions's Locations
+                if (region != null)
+                    region.Locations.Add(newLocation);
+
+                newLocation.RaiseValidationErrors();
+
+                //Add the new entity to the loaded locations EntityList
+                LoadedLocations.Add(newLocation);
+
+                return newLocation;
+            };
+
+            #endregion
 
             #region DomainCollectionView
 
@@ -175,25 +203,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
                 this.SelectedEntity = this.DomainCollectionView.FirstOrDefault();
             });
-
-            #endregion
-
-            #region LocationsWithoutClient
-
-            //Whenever loadedLocations changes, select the IObservable<IList<Location>> of Locations without a Client
-            var locationsWithoutClient = _loadedLocations.FromCollectionChangedOrSet()
-                .SelectLatest(loadedLocs => loadedLocs.Select(loadedLoc =>
-                    //Whenever the Location.Party.ClientOwner == null
-                    loadedLoc.WhenAny(x => x.Party, x => x.Party.ClientOwner, (party, clientOwner) => party.Value == null || clientOwner.Value == null)
-                        //Select the Location if there is noClientOwner
-                    .Select(noClientOwner => noClientOwner ? loadedLoc : null))
-                    //Combine the latest of the Location Observables into a list
-                    .CombineLatest())
-                //Remove the locations that are null
-                    .Select(locations => locations.Where(l => l != null));
-
-            //Setup the LocationsWithoutClient property
-            _locationsWithoutClient = locationsWithoutClient.ToProperty(this, x => x.LocationsWithoutClient);
 
             #endregion
 
@@ -272,55 +281,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        #region Location in creation (for adding a Location to an entity)
-
-        /// <summary>
-        /// Deletes the location in creation.
-        /// </summary>
-        public void DeleteLocationInCreation()
+        protected override Location AddNewEntity(object commandParameter)
         {
-            //Remove the Location from the Locations EntitySet
-            this.Context.Locations.Remove(LocationInCreation);
-
-            //Clear LocationInCreation
-            LocationInCreation = null;
-        }
-
-        /// <summary>
-        /// Starts the creation of a location.
-        /// </summary>
-        /// <returns></returns>
-        public Location StartCreationOfLocation()
-        {
-            //Create a new Location
-            LocationInCreation = new Location();
-
-            //Do default add location logic
-            OnAddEntity(LocationInCreation);
-
-            return LocationInCreation;
-        }
-
-        #endregion
-
-        protected override void OnAddEntity(Location newLocation)
-        {
-            //Set the OwnerParty to the current OwnerAccount
-            newLocation.OwnerParty = ContextManager.OwnerAccount;
-
-            var client = ContextManager.GetContext<Client>();
-
-            //If the client context != null add this to the current Client's Locations
-            if (client != null)
-                client.OwnedParty.Locations.Add(newLocation);
-
-            var region = ContextManager.GetContext<Region>();
-
-            //If the region context != null add this to the current Regions's Locations
-            if (region != null)
-                region.Locations.Add(newLocation);
-
-            newLocation.RaiseValidationErrors();
+            //Reuse the CreateNewItem method
+            return CreateNewItem("");
         }
 
         public override void DeleteEntity(Location locationToDelete)

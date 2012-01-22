@@ -266,6 +266,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Do not use default filter. This filters by context (ServiceTemplateLevel)
         public override void UpdateFilter() { }
 
+        //Use CreateNewServiceTemplate logic
         protected override ServiceTemplate AddNewEntity(object commandParameter)
         {
             return CreateNewServiceTemplate((ServiceTemplate)commandParameter);
