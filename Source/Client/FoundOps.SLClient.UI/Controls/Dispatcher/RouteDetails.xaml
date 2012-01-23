@@ -5,9 +5,8 @@
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
-             xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
-             xmlns:Controls2="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView"
+             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             xmlns:Controls2="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
              ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM" d:DesignWidth="230" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters:DateTimeOfTodayToTimeSpanConverter x:Key="DateTimeOfTodayToTimeSpanConverter"/>
