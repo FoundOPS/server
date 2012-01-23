@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using Kent.Boogaart.KBCsv;
 using System.Collections.Generic;
@@ -120,7 +121,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             SelectFileCommand = new RelayCommand<FileInfo>(fileInfo =>
             {
                 IsBusy = true;
-                //use the CSVReader to read in the data);
+                //use the CSVReader to read in the data
                 using (var csv = new CsvReader(fileInfo.OpenRead()))
                     DataTable = ReadInCSVData(csv);
                 IsBusy = false;
@@ -168,7 +169,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                     var headerIndex = 0;
                     foreach (var headerKey in record.HeaderRecord.Values)
                     {
-                        newRow[headerKey] = new ValueWithOptionalAssociation { Value = record.Values[headerIndex] };
+                        var cleanedString = record.Values[headerIndex].Replace('�', ' ');
+                        newRow[headerKey] = new ValueWithOptionalAssociation { Value = cleanedString };
                         headerIndex++;
                     }
 
