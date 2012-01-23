@@ -3,12 +3,17 @@ using System.Collections.Generic;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
+    public static class BusinessAccountsConstants
+    {
+        public static Guid FoundOpsId = new Guid("5606A728-B99F-4AA1-B0CD-0AB38A649000");
+    }
+
     /// <summary>
     /// Setup Business Accounts (and ServiceTemplates)
     /// </summary>
     public class BusinessAccountsDesignData
     {
-        public static readonly BusinessAccount FoundOps = new BusinessAccount { Id = new Guid("5606A728-B99F-4AA1-B0CD-0AB38A649000"), Name = "FoundOPS" };
+        public static readonly BusinessAccount FoundOps = new BusinessAccount { Id = BusinessAccountsConstants.FoundOpsId, Name = "FoundOPS" };
 
         public BusinessAccount GotGrease { get; private set; }
         public BusinessAccount ABCouriers { get; private set; }

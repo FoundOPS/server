@@ -168,6 +168,10 @@ namespace FoundOps.Server.Services.CoreDomainService
             return serviceTemplatesForServiceProvider;
         }
 
+        /// <summary>
+        /// Deletes the service template and its invoice, fields, and children service templates
+        /// </summary>
+        /// <param name="serviceTemplate"></param>
         public void DeleteServiceTemplate(ServiceTemplate serviceTemplate)
         {
             var loadedServiceTemplate = this.ObjectContext.ServiceTemplates.FirstOrDefault(st => st.Id == serviceTemplate.Id);

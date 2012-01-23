@@ -96,6 +96,58 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #endregion
 
+        #region BusinessAccount
+
+        private void DeleteBusinessAccount(BusinessAccount businessAccountToDelete)
+        {
+            if (businessAccountToDelete.Id == BusinessAccountsConstants.FoundOpsId)
+                throw new InvalidOperationException("You are trying to delete the FoundOPS account?!");
+
+            //Make sure current account is a FoundOPS account
+            if (!this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
+                throw new AuthenticationException("Invalid attempted access logged for investigation.");
+
+            businessAccountToDelete.Employees.Load();
+            foreach (var employee in businessAccountToDelete.Employees.ToList())
+                this.DeleteEmployee(employee);
+
+            businessAccountToDelete.Regions.Load();
+            foreach (var region in businessAccountToDelete.Regions.ToList())
+                this.DeleteRegion(region);
+
+            businessAccountToDelete.RouteTasks.Load();
+            foreach (var routeTask in businessAccountToDelete.RouteTasks.ToList())
+                this.DeleteRouteTask(routeTask);
+
+            businessAccountToDelete.Routes.Load();
+            foreach (var route in businessAccountToDelete.Routes.ToList())
+                this.DeleteRoute(route);
+
+            businessAccountToDelete.ServicesToProvide.Load();
+            foreach (var service in businessAccountToDelete.ServicesToProvide.ToList())
+                this.DeleteService(service);
+
+            businessAccountToDelete.Clients.Load();
+            foreach (var client in businessAccountToDelete.Clients.ToList())
+                this.DeleteClient(client);
+
+            //This must be after Services
+            //Delete all ServiceTemplates that do not have delete ChangeSetEntries.ServiceTemplates.Load();
+            var serviceTemplatesToDelete = businessAccountToDelete.ServiceTemplates.Where(st =>
+                        !ChangeSet.ChangeSetEntries.Any(cse => cse.Operation == DomainOperation.Delete &&
+                        cse.Entity is ServiceTemplate && ((ServiceTemplate)cse.Entity).Id == st.Id))
+                        .ToArray();
+
+            foreach (var serviceTemplate in serviceTemplatesToDelete)
+                this.DeleteServiceTemplate(serviceTemplate);
+
+            businessAccountToDelete.Invoices.Load();
+            foreach (var invoice in businessAccountToDelete.Invoices.ToList())
+                this.DeleteInvoice(invoice);
+        }
+
+        #endregion
+
         #region ContactInfo
 
         public IEnumerable<string> ContactInfoLabelsForParty(Guid currentPartyId)
@@ -265,11 +317,14 @@ namespace FoundOps.Server.Services.CoreDomainService
             if ((party.EntityState == EntityState.Detached))
                 this.ObjectContext.Parties.Attach(party);
 
+            party.Locations.Load();
             party.OwnedLocations.Load();
             party.OfClients.Load();
+            party.Contacts.Load();
             party.ContactInfoSet.Load();
             party.PartyImageReference.Load();
             party.OwnedRoles.Load();
+            party.Vehicles.Load();
 
             party.RoleMembership.Load();
             party.RoleMembership.Clear();
@@ -277,25 +332,37 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (party.PartyImage != null)
                 this.DeleteFile(party.PartyImage);
 
-            var partyLocations = party.Locations.ToList();
+            var partyLocations = party.Locations.ToArray();
             foreach (var location in partyLocations)
                 this.DeleteLocation(location);
 
-            var accountLocations = party.OwnedLocations.ToList();
+            var accountLocations = party.OwnedLocations.ToArray();
             foreach (var location in accountLocations)
                 this.DeleteLocation(location);
 
-            var ofClients = party.OfClients.ToList();
+            var ofClients = party.OfClients.ToArray();
             foreach (var ofClient in ofClients)
                 this.DeleteClient(ofClient);
 
-            var contactInfoSetToRemove = party.ContactInfoSet.ToList();
+            var contacts = party.Contacts.ToArray();
+            foreach (var contact in contacts)
+                this.DeleteContact(contact);
+
+            var contactInfoSetToRemove = party.ContactInfoSet.ToArray();
             foreach (var contactInfo in contactInfoSetToRemove)
                 this.DeleteContactInfo(contactInfo);
 
             var ownedRolesToDelete = party.OwnedRoles.ToArray();
             foreach (var ownedRole in ownedRolesToDelete)
                 this.DeleteRole(ownedRole);
+
+            var vehicles = party.Vehicles.ToArray();
+            foreach (var vehicle in vehicles)
+                this.DeleteVehicle(vehicle);
+
+            var businessAccountToDelete = party as BusinessAccount;
+            if (businessAccountToDelete != null)
+                DeleteBusinessAccount(businessAccountToDelete);
 
             if ((party.EntityState != EntityState.Detached))
             {
@@ -379,6 +446,16 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             if ((ownedRole.EntityState == EntityState.Detached))
                 this.ObjectContext.Roles.Attach(ownedRole);
+
+            //Load and remove the blocks
+            ownedRole.Blocks.Load();
+            foreach (var block in ownedRole.Blocks.ToArray())
+                ownedRole.Blocks.Remove(block);
+
+            //Load and remove the member parties
+            ownedRole.MemberParties.Load();
+            foreach (var member in ownedRole.MemberParties.ToArray())
+                ownedRole.MemberParties.Remove(member);
 
             this.ObjectContext.Roles.DeleteObject(ownedRole);
         }

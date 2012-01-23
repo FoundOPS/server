@@ -7,6 +7,7 @@ using System.Text;
 using System.Linq;
 using FoundOps.Common.Server;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 
 namespace FoundOps.Server.Authentication
 {
@@ -54,7 +55,7 @@ namespace FoundOps.Server.Authentication
 
         public static UserAccount GetUserAccount(CoreEntitiesContainer container, Guid userId)
         {
-            return container.Parties.OfType<UserAccount>().Where(userParty => userParty.Id == userId).FirstOrDefault();
+            return container.Parties.OfType<UserAccount>().FirstOrDefault(userParty => userParty.Id == userId);
         }
 
         /// <summary>
@@ -97,11 +98,16 @@ namespace FoundOps.Server.Authentication
             return AdministratorRoles(rolesCurrentUserHasAccessTo).Select(r => r.OwnerParty);
         }
 
+        public static bool CurrentUserHasFoundOPSAdminAccess(this CoreEntitiesContainer coreEntitiesContainer)
+        {
+            return coreEntitiesContainer.CurrentUserCanAdministerThisParty(BusinessAccountsConstants.FoundOpsId);
+        }
+
         public static bool CurrentUserCanAdministerThisParty(this CoreEntitiesContainer coreEntitiesContainer, Guid partyId)
         {
-            var partiesCurrenUserCanAdminister = PartiesCurrentUserCanAdminister(coreEntitiesContainer).ToArray();
+            var partiesCurrentUserCanAdminister = PartiesCurrentUserCanAdminister(coreEntitiesContainer).ToArray();
 
-            return partiesCurrenUserCanAdminister.Any(p => p.Id == partyId);
+            return partiesCurrentUserCanAdminister.Any(p => p.Id == partyId);
         }
 
         public static Party PartyForRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)

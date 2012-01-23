@@ -140,11 +140,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     DataManager.EnqueueSubmitOperation();
                     removeDeleteCancel.Close();
                 };
-                removeDeleteCancel.CancelButton.Click += (sender, e) =>
-                {
-                    //Do nothing and close the window
-                    removeDeleteCancel.Close();
-                };
+                removeDeleteCancel.CancelButton.Click += (sender, e) => removeDeleteCancel.Close();
 
                 removeDeleteCancel.Show();
             });

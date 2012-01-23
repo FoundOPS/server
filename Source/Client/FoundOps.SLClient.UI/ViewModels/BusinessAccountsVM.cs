@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.DomainServices.Client;
 using System.Windows;
 using System.Collections;
 using System.Reactive.Linq;
+using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using FoundOps.Core.Server.Blocks;
@@ -156,6 +159,26 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// String to be verified
+        /// </summary>
+        private String _verificationString;
+        /// <summary>
+        /// Gets or sets the verification string used to prevent accidental deletion of a business account.
+        /// </summary>
+        /// <value>
+        /// The string to be verified.
+        /// </value>
+        public string VerificationString
+        {
+            get { return _verificationString; }
+            set
+            {
+                _verificationString = value;
+                this.RaisePropertyChanged("VerificationString");
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -254,9 +277,24 @@ namespace FoundOps.SLClient.UI.ViewModels
             return newBusinessAccount;
         }
 
+        protected override void CheckDelete(Action<bool> checkCompleted)
+        {
+            var stringVerifier = new StringVerifier();
+            
+            stringVerifier.Succeeded += (sender, args) => checkCompleted(true);
+
+            stringVerifier.Cancelled += (sender, args) => checkCompleted(false);
+
+            stringVerifier.Show();
+        }
+
         public override void DeleteEntity(Party entityToDelete)
         {
-            MessageBox.Show("Cannot manually delete Service Providers.");
+            var entityCollection = new List<BusinessAccount> { (BusinessAccount)entityToDelete };
+
+            //MessageBox.Show("Cannot manually delete Service Providers.");
+
+            DataManager.RemoveEntities(entityCollection);
         }
 
         /// <summary>

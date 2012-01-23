@@ -229,22 +229,21 @@ namespace FoundOps.SLClient.Data.ViewModels
             DeleteCommand = new ReactiveCommand(canDeleteCommand);
 
             DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(x =>
-            {
-                if (MessageBox.Show("Are you sure you want to delete?", "Delete?", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
-                    return;
+                CheckDelete(canDelete =>
+                {
+                    if (!canDelete) return;
 
-                //Disable SaveDiscardCancel until saved
-                DisableSaveDiscardCancel = true;
+                    //Disable SaveDiscardCancel until saved
+                    DisableSaveDiscardCancel = true;
 
-                var selectedEntity = this.SelectedEntity;
-                this.SelectedEntity = null;
+                    var selectedEntity = this.SelectedEntity;
+                    this.SelectedEntity = null;
 
-                this.DeleteEntity(selectedEntity);
+                    DeleteEntity(selectedEntity);
+                    OnDeleteEntity(selectedEntity);
 
-                OnDeleteEntity(selectedEntity);
-
-                SaveCommand.Execute(null);
-            });
+                    SaveCommand.Execute(null);
+                }));
 
             #endregion
         }
@@ -334,8 +333,18 @@ namespace FoundOps.SLClient.Data.ViewModels
             return (TEntity)this.DomainCollectionView.AddNew();
         }
 
+
         /// <summary>
-        /// The logic to delete an entity
+        /// Checks if you can delete.
+        /// </summary>
+        /// <param name="checkCompleted">Call this action with the result when the check is completed.</param>
+        protected virtual void CheckDelete(Action<bool> checkCompleted)
+        {
+            checkCompleted(MessageBox.Show("Are you sure you want to delete?", "Delete?", MessageBoxButton.OKCancel) == MessageBoxResult.OK);
+        }
+
+        /// <summary>
+        /// The logic to delete an entity. Returns true if it can delete.
         /// </summary>
         public virtual void DeleteEntity(TEntity entityToDelete)
         {
