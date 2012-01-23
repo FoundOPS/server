@@ -3,7 +3,7 @@ using System.Windows.Data;
 using System.Globalization;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
-namespace FoundOps.Common.Silverlight.Converters
+namespace FoundOps.Common.Silverlight.UI.Converters
 {
     public class AddButtonTooltipConverter : IValueConverter
     {

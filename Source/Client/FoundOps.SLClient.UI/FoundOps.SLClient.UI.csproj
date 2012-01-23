@@ -569,7 +569,6 @@
     </Compile>
     <Compile Include="Converters\ContactInfoConverters.cs" />
     <Compile Include="Converters\ContactInfoDataTemplateSelector.cs" />
-    <Compile Include="Converters\AddButtonTextConverters.cs" />
     <Compile Include="Converters\RouteDestinationsOpacityConverters.cs" />
     <Compile Include="Converters\FilterConverters.cs" />
     <Compile Include="Converters\RouteLogConverters.cs" />

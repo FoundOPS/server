@@ -237,7 +237,7 @@ namespace FoundOps.Common.Tools
         /// </summary>
         /// <typeparam name="TSource">The type of the source.</typeparam>
         /// <param name="source">The source.</param>
-        public static System.IObservable<TSource> WhereNotNull<TSource>(this System.IObservable<TSource> source) where TSource : class
+        public static IObservable<TSource> WhereNotNull<TSource>(this IObservable<TSource> source) where TSource : class
         {
             return source.Where(obj => obj != null);
         }

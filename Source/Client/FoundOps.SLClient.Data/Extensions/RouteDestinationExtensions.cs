@@ -38,7 +38,10 @@ namespace FoundOps.Core.Models.CoreEntities
                 return apt;
             }
         }
-        //Needs to be observable collection to allow ordering in TreeView
+
+        /// <summary>
+        /// Needs to be observable collection to allow ordering in TreeView
+        /// </summary>
         public ObservableCollection<RouteTask> Tasks
         {
             get

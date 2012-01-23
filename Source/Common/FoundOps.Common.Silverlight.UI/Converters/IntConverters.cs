@@ -1,9 +1,32 @@
 ﻿using System;
-using System.Globalization;
+using System.Collections;
+using System.Linq;
 using System.Windows.Data;
+using System.Globalization;
 
-namespace FoundOps.Common.Silverlight.Converters
+namespace FoundOps.Common.Silverlight.UI.Converters
 {
+    /// <summary>
+    /// Return true if the int is > than the converter parameter 
+    /// </summary>
+    public class GreaterThan : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var isGreater = System.Convert.ToInt32(value) > System.Convert.ToInt32(parameter);
+            return isGreater;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
     public class ZeroToOneIndexedConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -19,7 +42,7 @@ namespace FoundOps.Common.Silverlight.Converters
 
             if (value is double)
                 return (int)((double)value) - 1;
-         
+
             return (int)value - 1;
         }
     }

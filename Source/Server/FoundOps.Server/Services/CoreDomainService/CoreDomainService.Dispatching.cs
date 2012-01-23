@@ -203,7 +203,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                  on st.Id equals i.Id
              select i).ToArray();
 
-            IEnumerable<RecurringService> recurringServicesForDate = RecurringServicesForDate(serviceDate, businessAccount);
+            var recurringServicesForDate = RecurringServicesForDate(serviceDate, businessAccount);
 
             //Generate services for the day from RecurringServices (that do not have generated services)
             var generatedServices = recurringServicesForDate.Where(rs => !existingServices.Any(s => s.RecurringServiceId == rs.Id)).Select(rs =>
@@ -220,7 +220,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return individualGeneratedService;
             }).ToList();
 
-            var unroutedExistingServices = existingServices.Where(s => !s.RouteTasks.Any(rt => rt.RouteDestinationId != null));
+            var unroutedExistingServices = existingServices.Where(s => s.RouteTasks.All(rt => rt.RouteDestinationId == null));
 
             var unroutedServices = unroutedExistingServices.Union(generatedServices);
 

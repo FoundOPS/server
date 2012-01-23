@@ -6,36 +6,20 @@
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices" 
              xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo"
              xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Contacts="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
-             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
+             xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
              xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools"
-             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" mc:Ignorable="d" 
-             d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" 
+             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.UI.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" 
+             Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
             <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
+            <!--IMPORTANT: DO NOT REMOVE "xmls:ViewModels". It is needed for GetVM-->
     <UserControl.Resources>
         <Converters:ClientTitleConverter x:Key="ClientTitleConverter" />
         <Converters:LocationTitleConverter x:Key="LocationTitleConverter" />
-        <Converters1:AddButtonTextConverter x:Key="AddButtonTextConverter"/>
         <Converters2:NotEqualsVisibilityConverter x:Key="NotEqualsVisibilityConverter"/>
         <Converters2:EqualsVisibilityConverter x:Key="EqualsVisibilityConverter"/>
-        <Converters2:AddDeleteModeConverter x:Key="AddDeleteModeConverter"/>
-        <DataTemplate x:Key="AddMenuTemplate">
-            <Grid DataContext="{Tools1:GetVM Type=ViewModels:LocationsVM}">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <TextBlock Text="Location" />
-                <telerik:RadComboBox x:Name="LocationsComboBox" Grid.Row="1" MinWidth="120" StaysOpenOnEdit="True" IsEditable="True" 
-                                     EditableTemplate="{StaticResource SL5BugWorkaround}"
-                                     ItemsSource="{Binding LocationsWithoutClient}" Text="{Binding LocationInCreation.Name, Mode=TwoWay}"
-                                     DisplayMemberPath="Name" SelectedValue="{Binding SelectedEntity, Mode=TwoWay}" TextSearchMode="StartsWithCaseSensitive" />
-                <Button Grid.Row="2" Content="{Binding SelectedValue, ElementName=LocationsComboBox, Converter={StaticResource AddButtonTextConverter}}"
-                        Margin="5,2,0,0" Click="AddLocationButtonClicked"/>
-            </Grid>
-        </DataTemplate>
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Visibility="{Binding SelectedClientOwnedBusinessVM.Entity, Converter={StaticResource VisibilityConverter}}">
@@ -104,10 +88,11 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock TextWrapping="Wrap" Text="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource LocationTitleConverter}}" 
                                        Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
-                            <AddEditDelete:AddDelete x:Name="AddDeleteLocation" Grid.Column="1" AddMenuItemCustomTemplate="{StaticResource AddMenuTemplate}"
-                                AddCommand="{Binding AddLocationCommand}" DeleteCommand="{Binding DeleteLocationCommand}"
-                                CommandParameter="{Tools1:GetVM Type=ViewModels:LocationsVM}" 
-                                AddDeleteMode="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource AddDeleteModeConverter}}"/>
+                            <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Locations"
+                                                           SourceType="{MarkupExtensions:Static MemberType=CoreEntities:Location}"
+                                                           ItemToRemoveDisplayMember="{Binding SelectedEntity.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name, Source={Tools1:GetVM Type=ViewModels:LocationsVM}}"
+                                                           Source="{Tools1:GetVM Type=ViewModels:LocationsVM}" Destination="{Binding}"
+                                                           DestinationItemsSource="{Binding LocationsDestinationItemsSource}" />
                         </Grid>
                     </toolkit:Expander.Header>
                     <Grid>

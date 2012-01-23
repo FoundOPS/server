@@ -61,22 +61,7 @@ namespace FoundOps.SLClient.UI.Controls.Clients
 #endif
             this.DependentWhenVisible(VM.Locations);
 
-            //Hookup the AddDeleteLocation logic
-            AddDeleteLocation.CreateNewItem = () => VM.Locations.StartCreationOfLocation();
-            AddDeleteLocation.RemoveCurrentItem = (item) => VM.Locations.DeleteLocationInCreation();
-
             LocationsGrid.LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
-        }
-
-        /// <summary>
-        /// Called whenever the Add Existing or Add New location button is clicked.
-        /// </summary>
-        private void AddLocationButtonClicked(object sender, RoutedEventArgs e)
-        {
-            //Call this to trigger the AddLocationCommand, and to close the contextmenu after adding an item
-            AddDeleteLocation.AddedCurrentItem();
-            //Must do this manually because the AddLocationCommand takes a LocationsVM instead of the entity as a parameter
-            ClientsVM.AddLocationCommand.Execute(VM.Locations);
         }
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs e)

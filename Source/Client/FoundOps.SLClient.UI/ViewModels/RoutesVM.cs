@@ -806,7 +806,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup DeleteRouteTasks command
             DeleteRouteTasks.SubscribeOnDispatcher().Subscribe(_ =>
             {
-                //Generated services are not tracked
+                //Generated services should not be deleted
                 var tasksToDelete = this.SelectedTaskBoardTasks.Where(rt => !rt.GeneratedOnServer);
 
                 foreach (var routeTask in tasksToDelete)

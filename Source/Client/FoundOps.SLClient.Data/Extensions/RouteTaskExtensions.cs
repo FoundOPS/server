@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 using FoundOps.Common.Silverlight.Interfaces;
+using FoundOps.Common.Tools;
 using RiaServicesContrib;
 using RiaServicesContrib.DomainServices.Client;
 
@@ -39,18 +40,17 @@ namespace FoundOps.Core.Models.CoreEntities
              * Generated services passed over the wire, even though they are not added to the DB,
              * show up as unmodified/not new entities. */
 
-            Observable2.FromPropertyChangedPattern(this, x => x.RouteDestination).SubscribeOnDispatcher()
-            .Subscribe(routeDestination =>
-            {
-                if (!this.GeneratedOnServer || routeDestination == null) return;
+            if (this.GeneratedOnServer)
+                Observable2.FromPropertyChangedPattern(this, x => x.RouteDestination).WhereNotNull().SubscribeOnDispatcher()
+                .Subscribe(routeDestination =>
+                {
+                    //Cancel adding this to a route
+                    routeDestination.RouteTasks.Remove(this);
 
-                //Cancel adding this to a route
-                this.RouteDestination = null;
-
-                //Clone this
-                var routeTaskClone = this.Clone(this.Service != null);
-                routeDestination.Tasks.Add(routeTaskClone);
-            });
+                    //Clone this
+                    var routeTaskClone = this.Clone(this.Service != null);
+                    routeDestination.RouteTasks.Add(routeTaskClone);
+                });
         }
 
         ///<summary>
@@ -59,9 +59,12 @@ namespace FoundOps.Core.Models.CoreEntities
         public void RemoveRouteDestination()
         {
             if (this.RouteDestination != null)
-                this.RouteDestination.Tasks.Remove(this);
+                this.RouteDestination.RouteTasks.Remove(this);
         }
 
+        /// <summary>
+        /// Gets the entity graph with service shape.
+        /// </summary>
         public EntityGraphShape EntityGraphWithServiceShape
         {
             get

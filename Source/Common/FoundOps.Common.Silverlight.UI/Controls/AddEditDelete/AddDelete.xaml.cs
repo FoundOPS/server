@@ -4,6 +4,7 @@ using System.Collections;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Controls;
+using FoundOps.Common.Silverlight.UI.Converters;
 using Telerik.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using FoundOps.Common.Silverlight.Converters;
