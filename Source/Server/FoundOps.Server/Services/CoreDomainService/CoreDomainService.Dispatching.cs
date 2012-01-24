@@ -3,6 +3,7 @@ using System.Linq;
 using System.Data;
 using System.Data.Objects;
 using System.Collections.Generic;
+using System.ServiceModel.DomainServices.Server;
 using FoundOps.Common.Composite;
 using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
@@ -185,28 +186,24 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessAccount = ObjectContext.BusinessAccountForRole(roleId);
 
             //Get all the existing services for the day => later to be unioned with generatedServices
-            IEnumerable<Service> existingServices = ((ObjectQuery<Service>)this.ObjectContext.Services.Where(service => service.ServiceDate == serviceDate && service.ServiceProviderId == businessAccount.Id)).
-                Include("ServiceTemplate").Include("RouteTasks").ToList();
+            var existingServicesQuery = ((ObjectQuery<Service>)this.ObjectContext.Services.Where(service => service.ServiceDate == serviceDate && service.ServiceProviderId == businessAccount.Id))
+                .Include("ServiceTemplate").Include("ServiceTemplate.Fields").Include("RouteTasks").ToList();
 
-            //Force Load ServiceTemplates.Fields and LocationsFields (for Destination), and Invoices
-            (from es in existingServices
+            //Force load existingServices' LocationsFields's value (for Destination)
+            (from es in existingServicesQuery
              join st in this.ObjectContext.ServiceTemplates
                  on es.Id equals st.Id
              from f in st.Fields
              from lf in st.Fields.OfType<LocationField>()
-             select new { st, f, lf.Value, st.Invoice })
+             select new { st, f , lf.Value })
             .ToArray();
 
-            //Force load invoices
-            (from st in existingServices.Select(es => es.ServiceTemplate)
-             join i in this.ObjectContext.Invoices
-                 on st.Id equals i.Id
-             select i).ToArray();
+            IEnumerable<Service> existingServices = existingServicesQuery.ToList();
 
             var recurringServicesForDate = RecurringServicesForDate(serviceDate, businessAccount);
 
-            //Generate services for the day from RecurringServices (that do not have generated services)
-            var generatedServices = recurringServicesForDate.Where(rs => !existingServices.Any(s => s.RecurringServiceId == rs.Id)).Select(rs =>
+            //Generate services for the day from RecurringServices for all recurring services without existing services
+            var generatedServices = recurringServicesForDate.Where(rs => existingServices.All(s => s.RecurringServiceId != rs.Id)).Select(rs =>
             {
                 var individualGeneratedService = new Service
                 {
