@@ -778,7 +778,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 var current = this.NextRepeatDateOnOrAfterDate(currentDateToObserve.Value);
 
-                if (!current.HasValue)
+                if (!current.HasValue || current.Value == DateTime.MinValue)
                     break;
 
                 currentDateToObserve = current.Value.AddDays(1);
