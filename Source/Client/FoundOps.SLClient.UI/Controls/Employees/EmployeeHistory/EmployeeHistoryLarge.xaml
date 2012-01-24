@@ -47,7 +47,7 @@
                         <TextBlock Text="Date:" TextAlignment="Right" />
                         <Telerik:RadDatePicker Grid.Column="2" HorizontalAlignment="Left" SelectedDate="{Binding Date, Mode=TwoWay}"/>
                         <TextBlock Text="Entry Type:" Grid.Row="2" TextAlignment="Right" />
-                        <Telerik:RadComboBox Grid.Row="2" Grid.Column="2" IsEditable="True" Text="{Binding Type, Mode=TwoWay}">
+                        <Telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" Grid.Row="2" Grid.Column="2" IsEditable="True" Text="{Binding Type, Mode=TwoWay}">
                             <!--Bind to Entry type with the following types pre-entered and the ability to add additional user-entered types (just like contact info labels)-->
                             <Telerik:RadComboBoxItem Content="Employment Application"/>
                             <Telerik:RadComboBoxItem Content="Performance Review"/>

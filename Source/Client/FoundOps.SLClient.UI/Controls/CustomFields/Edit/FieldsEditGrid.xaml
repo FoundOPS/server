@@ -60,7 +60,7 @@
                     <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
                     <TextBlock Text=":" />
                 </StackPanel>
-                <telerik:RadComboBox Grid.Column="2" SelectedValue="{Binding Path=ThisField, Mode=TwoWay, Converter={StaticResource ComboBoxSelectedItemConverter}}" ItemsSource="{Binding OptionsWrapper}" DisplayMemberPath="Name" IsReadOnly="True"/>
+                <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" Grid.Column="2" SelectedValue="{Binding Path=ThisField, Mode=TwoWay, Converter={StaticResource ComboBoxSelectedItemConverter}}" ItemsSource="{Binding OptionsWrapper}" DisplayMemberPath="Name" IsReadOnly="True"/>
                 <!--bind item source to possible items-->
             </Grid>
         </DataTemplate>
