@@ -128,106 +128,228 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
         #region DragAndDrop
 
-        /// <summary>
-        /// Adds draggedItems to route.
-        /// </summary>
-        private void AddToRoute(DragDropEventArgs e, IEnumerable draggedItems)
+        private void OnDropInfo(object sender, DragDropEventArgs e)
         {
-            var destination = e.Options.Destination.DataContext;
-            if (destination is RouteDestination)
+            if(CheckSourceForHeaderCell(e.Options.Source))
+                return;
+
+
+            var draggedItems = e.Options.Source.DataContext as IEnumerable<object>;
+
+            // Get the drag cue that the TreeView or we have created
+            var cue = e.Options.DragCue as TreeViewDragCue ?? new TreeViewDragCue {IsDropPossible = false};
+
+            if (cue.IsDropPossible)
             {
-                var newRouteDestination = new RouteDestination
-                {
-                    Id = Guid.NewGuid(),
-                    Client = draggedItems.OfType<RouteTask>().First().Client,
-                    Location = draggedItems.OfType<RouteTask>().First().Location
-                };
+                // Set a suitable text:
 
-                foreach (var task in draggedItems.OfType<RouteTask>())
-                {
-                    newRouteDestination.RouteTasks.Add(task);
-
-                    //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
-                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
-                        Analytics.AddToRouteDestinationFromTaskBoardAfterAutoDispatch(task.ToString());
-                    else
-                        Analytics.AddToRouteDestinationFromTaskBoard(task.ToString());
-                }
-
-                (((RouteDestination)destination).Route).RouteDestinationsListWrapper.Insert(((RouteDestination)destination).OrderInRoute, newRouteDestination);
+            }
+            else if (!cue.IsDropPossible)
+            {
+                cue.DragActionContent = null;
+                cue.IsDropPossible = false;
             }
 
-            if (destination is RouteTask)
+            e.Options.DragCue = cue;
+
+            if (e.Options.Status != DragStatus.DropPossible)
             {
-                var newRouteDestination = ((RouteTask)destination).RouteDestination;
-
-                foreach (var task in draggedItems.OfType<RouteTask>())
-                {
-                    newRouteDestination.RouteTasks.Add(task);
-
-                    //Analytics - Drag and Drop. When dragging a task from the task board to a route task
-                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
-                        Analytics.AddToRouteTaskFromTaskBoardAfterAutoDispatch(task.ToString());
-                    else
-                        Analytics.AddToRouteTaskFromTaskBoard(task.ToString());
-                }
             }
 
-            if (destination is Route)
+            if (e.Options.Status == DragStatus.DragComplete)
             {
-                var routeDestinations =
-                    (ObservableCollection<RouteDestination>)((RadTreeView)e.Options.Destination).ItemsSource;
+            }
+            e.Handled = true;
+        }
 
-                var newOrderInRoute = routeDestinations.Count;
-                //For new RouteDestinations
-                foreach (var task in draggedItems.OfType<RouteTask>())
-                {
-                    var newRouteDestination = new RouteDestination
-                    {
-                        Id = Guid.NewGuid(),
-                        OrderInRoute = newOrderInRoute
-                    };
+        private void OnDragInfo(object sender, DragDropEventArgs e)
+        {
+            if (CheckSourceForHeaderCell(e.Options.Source))
+                return;
 
-                    if (task.Client != null)
-                        newRouteDestination.Client = task.Client;
+            var draggedItems = e.Options.Payload as IEnumerable<object>;
 
-                    if (task.Location != null)
-                        newRouteDestination.Location = task.Location;
+            var cue = e.Options.DragCue as TreeViewDragCue;
 
-                    newRouteDestination.RouteTasks.Add(task);
+            DragCueSetter(draggedItems, e);
 
-                    newOrderInRoute++;
+            e.Options.DragCue = cue;
 
-                    //Set to 0 initially because you might be dropping into an empty route
-                    var lastDestinationOrderInRoute = 0;
+            if (e.Options.Status == DragStatus.DragInProgress)
+            {
+                //////Set up a drag cue:
 
-                    //Checks to see if the route is empty. If not its sets lastDestinationOrderInRoute appropriately 
-                    if (((Route)destination).RouteDestinationsListWrapper.Count != 0)
-                    {
-                        var lastOrDefault = ((Route)destination).RouteDestinationsListWrapper.LastOrDefault();
-                        if (lastOrDefault != null)
-                            lastDestinationOrderInRoute = lastOrDefault.OrderInRoute;
-                    }
+            }
+            else if (e.Options.Status == DragStatus.DragComplete)
+            {
 
-                    ((Route)destination).RouteDestinationsListWrapper.Insert(lastDestinationOrderInRoute, newRouteDestination);
-
-                    //Analytics - Drag and Drop. When dragging a task from the task board to a route
-                    if (RoutesVM.AutoAssignButtonHasBeenClicked)
-                    {
-                        Analytics.AddToRouteFromTaskBoardAfterAutoDispatch(task.ToString());
-                    }
-                    else
-                    {
-                        Analytics.AddToRouteFromTaskBoard(task.ToString());
-                    }
-
-                }
             }
         }
 
-        #region Dragging
+        #region Methods Used By Drag/Drop Info
 
-        private static object CreateDragCue(string errorString, TreeViewDragCue cue)
+
+
+        #region Methods used in Drag/Drop Info
+
+        private void DragCueSetter(IEnumerable draggedItems, DragDropEventArgs e)
+        {
+            var draggedRouteTasks = (IEnumerable<RouteTask>)draggedItems;
+
+            if (!draggedRouteTasks.Any()) return;
+
+            var destination = e.Options.Destination.DataContext;
+
+            //Here we need to choose a template for the items:
+            var cue = new TreeViewDragCue
+            {
+                ItemTemplate = this.Resources["DragCueTemplate"] as DataTemplate,
+                ItemsSource = draggedRouteTasks,
+                IsDropPossible = true
+            };
+
+            var payloadCheck = (draggedRouteTasks.FirstOrDefault());
+
+            #region Setting Drag Cue off Different Conditions
+
+            #region Check For Multiple Tasks Being Dragged
+
+            if (draggedRouteTasks.Count() > 1)
+            {
+                //FirstOrDefault might be null but the second might have a service 
+                #region Check All Items Dragged for A Service
+                //Need to find out if the fist item dragged has a null 
+                int count = 0;
+                foreach (var serviceObject in draggedRouteTasks.Cast<object>().TakeWhile(serviceObject => ((RouteTask)serviceObject).Service == null))
+                {
+                    payloadCheck = (draggedRouteTasks.ElementAt(count));
+                    count++;
+                }
+                #endregion
+
+                if (draggedRouteTasks.Where(draggedItem => (draggedItem).Service != null &&
+                    String.CompareOrdinal((draggedItem).Service.ServiceTemplate.Name, payloadCheck.Service.ServiceTemplate.Name) != 0)
+                    .Any(draggedItem => (draggedItem).Service != null))
+                {
+                    const string errorString = "Items Selected Have Different Services";
+                    e.Options.DragCue = CreateDragCue(errorString, cue);
+                }
+            }
+
+            #endregion
+
+            #region Drag Destination is RouteTask
+
+            if (destination != null && destination is RouteTask)
+            {
+                if (payloadCheck.Service != null)
+                {
+                    #region Check For Route Type
+
+                    var routeType = ((RouteTask)destination).RouteDestination.Route.RouteType;
+
+                    bool shouldReturn = CheckRouteType(routeType, payloadCheck, e, cue);
+
+                    if (shouldReturn) return;
+
+                    #endregion
+                }
+
+                //Trying to drop a Task into a Destination with a different Location
+                if (((payloadCheck.Location != ((RouteTask)destination).Location)))
+                {
+                    if (payloadCheck.Service != null || ((RouteTask)destination).Service != null)
+                    {
+                        const string errorString = "Invalid Location";
+                        e.Options.DragCue = CreateDragCue(errorString, cue);
+                    }
+                }
+            }
+
+            #endregion
+
+            #region Drag Destination is RouteDestination
+
+            else if (destination != null && destination is RouteDestination)
+            {
+                if (payloadCheck.Service != null)
+                {
+                    #region Check For Route Type
+
+                    var routeType = ((RouteDestination)destination).Route.RouteType;
+
+                    bool shouldReturn = CheckRouteType(routeType, payloadCheck, e, cue);
+
+                    if (shouldReturn) return;
+
+                    #endregion
+                }
+
+                #region Set isDropIn
+
+                var dragActionString = ((String)((TreeViewDragCue)e.Options.DragCue).DragActionContent);
+
+                var isDropIn = false;
+
+                if (dragActionString != null)
+                {
+                    isDropIn = dragActionString.Contains("in");
+                }
+
+                #endregion
+
+                //Checks to see if the dragged locations match the destinations location. Also makes sure that you are trying to drop in the destination before throwing an error.
+                if (((payloadCheck.Location != ((RouteDestination)destination).Location)) && isDropIn)
+                {
+                    const string errorString = "Invalid Location";
+                    e.Options.DragCue = CreateDragCue(errorString, cue);
+                }
+            }
+
+            #endregion
+
+            #region Drag Destination is Route
+
+            else if (destination != null && destination is Route)
+            {
+                if (payloadCheck.Service != null)
+                {
+                    #region Check For Route Type
+
+                    var routeType = ((Route)destination).RouteType;
+
+                    bool shouldReturn = CheckRouteType(routeType, payloadCheck, e, cue);
+
+                    if (shouldReturn) return;
+
+
+                    #endregion
+                }
+            }
+
+            #endregion
+
+            #endregion
+
+            if (e.Options.DragCue == null)
+                e.Options.DragCue = cue;
+        }
+
+        private bool CheckRouteType(string routeType, RouteTask payloadCheck, DragDropEventArgs e, TreeViewDragCue cue)
+        {
+            var draggedItemsType = payloadCheck.Service.ServiceTemplate.Name;
+
+            if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
+            {
+                const string errorString = "Route Lacks Service Capability";
+                e.Options.DragCue = CreateDragCue(errorString, cue);
+                return true;
+            }
+
+            return false;
+        }
+
+        private TreeViewDragCue CreateDragCue(string errorString, TreeViewDragCue cue)
         {
             cue.DragTooltipContent = null;
             cue.DragActionContent = String.Format(errorString);
@@ -237,194 +359,37 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         }
 
         /// <summary>
-        /// Sets the DragCue for the specified item being dragged and its current potential drop location.
-        /// Doesnt change the DragCue if drop location is valid
+        /// Checks the source for header cell.
         /// </summary>
-        private void DragCueSetter(IEnumerable draggedItems, DragDropEventArgs e)
+        /// <param name="source">The source.</param>
+        /// <returns>True if the source is a GridViewHeaderCell and false if not</returns>
+        private bool CheckSourceForHeaderCell(FrameworkElement source)
         {
-            var payloadCollection = (IEnumerable<object>)e.Options.Payload;
-            var destination = e.Options.Destination;
-
-            var draggedRouteTasks = draggedItems.OfType<RouteTask>();
-
-            if (draggedRouteTasks.Count() <= 0) return;
-
-            //Here we need to choose a template for the items:
-            var cue = new TreeViewDragCue();
-            cue.ItemTemplate = this.Resources["DragCueTemplate"] as DataTemplate;
-            cue.ItemsSource = draggedItems.OfType<RouteTask>();
-            cue.DragTooltipContent = (draggedItems.OfType<RouteTask>()).FirstOrDefault().Name;
-            cue.IsDropPossible = true;
-
-            var isDropIn = String.Compare(((String)cue.DragActionContent), "Drop In");
-            var isDropAfter = String.Compare(((String)cue.DragActionContent), "Drop after");
-            var payloadCheck = ((RouteTask)payloadCollection.FirstOrDefault());
-
-            #region Setting Drag Cue off Different Conditions
-            if (payloadCollection.Count() > 1)
+            if (source is GridViewHeaderCell)
             {
-                //FirstOrDefault might be null but the second might have a service 
-                #region Check All Items Dragged for A Service
-                //Need to find out if the fist item dragged has a null 
-                int count = 0;
-                foreach (object serviceObject in payloadCollection)
-                {
-                    //No Service means no location as well
-                    if (((RouteTask)serviceObject).Service != null)
-                        break;
-                    payloadCheck = ((RouteTask)payloadCollection.ElementAt(count));
-                    count++;
-                }
-                #endregion
-
-                foreach (object draggedItem in payloadCollection)
-                {
-                    //Checks to be sure the 
-                    if (((RouteTask)draggedItem).Service != null && String.CompareOrdinal(((RouteTask)draggedItem).Service.ServiceTemplate.Name, payloadCheck.Service.ServiceTemplate.Name) != 0)
-                    {
-                        //If the dragged item is a manually created task, it will not matter what type of route you try and drag it into
-                        //Also, it can be dragged with any type of service
-                        if (((RouteTask)draggedItem).Service == null)
-                            continue;
-
-                        const string errorString = "Items Selected Have Different Services";
-                        e.Options.DragCue = CreateDragCue(errorString, cue);
-                        break;
-                    }
-                }
+                return true;
             }
-
-            if (destination != null && destination.DataContext is RouteTask)
-            {
-                if (payloadCheck.Service != null)
-                {
-                    #region Check For Route Type
-
-                    var routeType = ((RouteTask)destination.DataContext).RouteDestination.Route.RouteType;
-                    var draggedItemsType = payloadCheck.Service.ServiceTemplate.Name;
-
-                    if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
-                    {
-                        const string errorString = "Route Lacks Service Capability";
-                        e.Options.DragCue = CreateDragCue(errorString, cue);
-                    }
-
-                    #endregion
-                }
-
-                //Trying to drop a Task into a Destination with a different Location
-                if (((payloadCheck.Location != ((RouteTask)destination.DataContext).Location)))
-                {
-                    if (payloadCheck.Service != null || ((RouteTask)destination.DataContext).Service != null)
-                    {
-                        const string errorString = "Invalid Location";
-                        e.Options.DragCue = CreateDragCue(errorString, cue);
-                    }
-                }
-            }
-            else if (destination != null && destination.DataContext is RouteDestination)
-            {
-                if (payloadCheck.Service != null)
-                {
-                    #region Check For Route Type
-
-                    var routeType = ((RouteDestination)destination.DataContext).Route.RouteType;
-                    var draggedItemsType = payloadCheck.Service.ServiceTemplate.Name;
-
-                    if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
-                    {
-                        const string errorString = "Route Lacks Service Capability";
-                        e.Options.DragCue = CreateDragCue(errorString, cue);
-                    }
-
-                    #endregion
-                }
-
-                if (((payloadCheck.Location != ((RouteDestination)destination.DataContext).Location)
-                    && (payloadCheck.Location != null)) && (isDropAfter != 1 || isDropIn == 1))
-                {
-                    const string errorString = "Invalid Location";
-                    e.Options.DragCue = CreateDragCue(errorString, cue);
-                }
-            }
-
-            else if (destination != null && destination.DataContext is Route)
-            {
-                if (payloadCheck.Service != null)
-                {
-                    #region Check For Route Type
-
-                    var routeType = ((Route)destination.DataContext).RouteType;
-                    var draggedItemsType = payloadCheck.Service.ServiceTemplate.Name;
-
-                    if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
-                    {
-                        const string errorString = "Route Lacks Service Capability";
-                        //e.Options.DragCue = CreateDragCue(errorString, cue);
-                        ((TreeViewDragCue)e.Options.DragCue).DragTooltipContent = null;
-                        ((TreeViewDragCue)e.Options.DragCue).DragActionContent = String.Format(errorString);
-                        ((TreeViewDragCue)e.Options.DragCue).IsDropPossible = false;
-                    }
-
-                    #endregion
-                }
-            }
-
-            #endregion
-            if (e.Options.DragCue == null)
-                e.Options.DragCue = cue;
+            return false;
         }
 
-        private void OnDragInfo(object sender, DragDropEventArgs e)
+        #endregion
+
+        //These two methods are needed to make Drag and Drop work, but they simply tell the DragDropManager that a drag and drop are possible
+        #region Drag/Drop Query
+
+        private void OnDropQuery(object sender, DragDropQueryEventArgs e)
         {
-            if (e.Options.Source is GridViewHeaderCell)
-            {
+            if (CheckSourceForHeaderCell(e.Options.Source))
                 return;
-            }
 
-            RoutesDragDropVM.OriginalDragSource = DragSource.UnroutedTaskBoard;
-
-            var draggedItems = e.Options.Payload as IEnumerable;
-            var cue = e.Options.DragCue;
-
-            DragCueSetter(draggedItems, e);
-
-            cue = e.Options.DragCue;
-
-            if (e.Options.Status == DragStatus.DragComplete && ((TreeViewDragCue)cue).IsDropPossible)
-            {
-                //Gets hit if you try and drop a task onto the Taskboard
-                //Checks to be sure you are trying to drop into one of the Routes
-                if (!(e.Options.Destination is RadTreeView))
-                {
-                    if (!(e.Options.Destination.DataContext is RouteDestination || e.Options.Destination.DataContext is RouteTask)) return;
-                }
-
-                var source = this.TaskBoard.PublicTaskBoardRadGridView.ItemsSource as IList;
-
-                RemoveFromTaskBoard(source, draggedItems);
-
-                AddToRoute(e, draggedItems);
-            }
+            e.QueryResult = true;
+            e.Handled = true;
         }
 
         private void OnDragQuery(object sender, DragDropQueryEventArgs e)
         {
-            if (e.Options.Source is GridViewHeaderCell)
-            {
+            if (CheckSourceForHeaderCell(e.Options.Source))
                 return;
-            }
-
-            if (this.TaskBoard.PublicTaskBoardRadGridView != null)
-            {
-                IList selectedItems = this.TaskBoard.PublicTaskBoardRadGridView.SelectedItems.ToList();
-                e.QueryResult = selectedItems.Count > 0;
-                e.Options.Payload = selectedItems;
-            }
-
-            var draggedItems = e.Options.Payload as IEnumerable;
-
-            DragCueSetter(draggedItems, e);
 
             e.QueryResult = true;
             e.Handled = true;
@@ -432,72 +397,376 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
         #endregion
 
-        #region Dropping
+        ///// <summary>
+        ///// Adds draggedItems to route.
+        ///// </summary>
+        //private void AddToRoute(DragDropEventArgs e, IEnumerable draggedItems)
+        //{
+        //    var destination = e.Options.Destination.DataContext;
+        //    if (destination is RouteDestination)
+        //    {
+        //        var newRouteDestination = new RouteDestination
+        //        {
+        //            Id = Guid.NewGuid(),
+        //            Client = draggedItems.OfType<RouteTask>().First().Client,
+        //            Location = draggedItems.OfType<RouteTask>().First().Location
+        //        };
 
-        /// <summary>
-        /// Sets up the initial DragCue
-        /// DragCue potentially gets changed in OnDragInfo if drop location is invalid
-        /// </summary>
-        private void OnDropInfo(object sender, DragDropEventArgs e)
-        {
-            if (e.Options.Source is GridViewHeaderCell)
-            {
-                return;
-            }
+        //        foreach (var task in draggedItems.OfType<RouteTask>())
+        //        {
+        //            newRouteDestination.RouteTasks.Add(task);
 
-            var draggedItems = e.Options.Payload as ICollection;
+        //            //Analytics - Drag and Drop. When dragging a task from the task board to a route destination
+        //            if (RoutesVM.AutoAssignButtonHasBeenClicked)
+        //                Analytics.AddToRouteDestinationFromTaskBoardAfterAutoDispatch(task.ToString());
+        //            else
+        //                Analytics.AddToRouteDestinationFromTaskBoard(task.ToString());
+        //        }
 
-            // Get the drag cue that the TreeView or we have created
-            var cue = e.Options.DragCue as TreeViewDragCue;
+        //        (((RouteDestination)destination).Route).RouteDestinationsListWrapper.Insert(((RouteDestination)destination).OrderInRoute, newRouteDestination);
+        //    }
 
-            if (cue == null)
-                cue = new TreeViewDragCue();
+        //    if (destination is RouteTask)
+        //    {
+        //        var newRouteDestination = ((RouteTask)destination).RouteDestination;
 
-            if (e.Options.Status == DragStatus.DropPossible)
-            {
-                // Set a suitable text:
-                cue.DragActionContent = String.Format("Add item to Task Board");
-                cue.IsDropPossible = true;
-                e.Options.DragCue = cue;
-            }
-            else if (e.Options.Status == DragStatus.DropImpossible)
-            {
-                cue.DragActionContent = null;
-                cue.IsDropPossible = false;
-            }
+        //        foreach (var task in draggedItems.OfType<RouteTask>())
+        //        {
+        //            newRouteDestination.RouteTasks.Add(task);
 
-            if (e.Options.Status != DragStatus.DropPossible)
-            {
-                this.TaskBoard.PublicTaskBoardRadGridView.Background = new SolidColorBrush(Colors.White);
-            }
-        }
+        //            //Analytics - Drag and Drop. When dragging a task from the task board to a route task
+        //            if (RoutesVM.AutoAssignButtonHasBeenClicked)
+        //                Analytics.AddToRouteTaskFromTaskBoardAfterAutoDispatch(task.ToString());
+        //            else
+        //                Analytics.AddToRouteTaskFromTaskBoard(task.ToString());
+        //        }
+        //    }
 
-        private static void OnDropQuery(object sender, DragDropQueryEventArgs e)
-        {
-            if (e.Options.Source is GridViewHeaderCell)
-            {
-                return;
-            }
+        //    if (destination is Route)
+        //    {
+        //        var routeDestinations =
+        //            (ObservableCollection<RouteDestination>)((RadTreeView)e.Options.Destination).ItemsSource;
 
-            e.QueryResult = true;
-            e.Handled = true;
-        }
+        //        var newOrderInRoute = routeDestinations.Count;
+        //        //For new RouteDestinations
+        //        foreach (var task in draggedItems.OfType<RouteTask>())
+        //        {
+        //            var newRouteDestination = new RouteDestination
+        //            {
+        //                Id = Guid.NewGuid(),
+        //                OrderInRoute = newOrderInRoute
+        //            };
 
-        #endregion
+        //            if (task.Client != null)
+        //                newRouteDestination.Client = task.Client;
 
-        /// <summary>
-        /// Removes DraggedItems from the TaskBoard.
-        /// </summary>
-        private static void RemoveFromTaskBoard(IList source, IEnumerable draggedItems)
-        {
-            foreach (RouteTask draggedItem in draggedItems.OfType<RouteTask>())
-            {
-                if (source != null)
-                {
-                    source.Remove(draggedItem);
-                }
-            }
-        }
+        //            if (task.Location != null)
+        //                newRouteDestination.Location = task.Location;
+
+        //            newRouteDestination.RouteTasks.Add(task);
+
+        //            newOrderInRoute++;
+
+        //            //Set to 0 initially because you might be dropping into an empty route
+        //            var lastDestinationOrderInRoute = 0;
+
+        //            //Checks to see if the route is empty. If not its sets lastDestinationOrderInRoute appropriately 
+        //            if (((Route)destination).RouteDestinationsListWrapper.Count != 0)
+        //            {
+        //                var lastOrDefault = ((Route)destination).RouteDestinationsListWrapper.LastOrDefault();
+        //                if (lastOrDefault != null)
+        //                    lastDestinationOrderInRoute = lastOrDefault.OrderInRoute;
+        //            }
+
+        //            ((Route)destination).RouteDestinationsListWrapper.Insert(lastDestinationOrderInRoute, newRouteDestination);
+
+        //            //Analytics - Drag and Drop. When dragging a task from the task board to a route
+        //            if (RoutesVM.AutoAssignButtonHasBeenClicked)
+        //            {
+        //                Analytics.AddToRouteFromTaskBoardAfterAutoDispatch(task.ToString());
+        //            }
+        //            else
+        //            {
+        //                Analytics.AddToRouteFromTaskBoard(task.ToString());
+        //            }
+
+        //        }
+        //    }
+        //}
+
+        //#region Dragging
+
+        //private static object CreateDragCue(string errorString, TreeViewDragCue cue)
+        //{
+        //    cue.DragTooltipContent = null;
+        //    cue.DragActionContent = String.Format(errorString);
+        //    cue.IsDropPossible = false;
+
+        //    return cue;
+        //}
+
+        ///// <summary>
+        ///// Sets the DragCue for the specified item being dragged and its current potential drop location.
+        ///// Doesnt change the DragCue if drop location is valid
+        ///// </summary>
+        //private void DragCueSetter(IEnumerable draggedItems, DragDropEventArgs e)
+        //{
+        //    var payloadCollection = (IEnumerable<object>)e.Options.Payload;
+        //    var destination = e.Options.Destination;
+
+        //    var draggedRouteTasks = draggedItems.OfType<RouteTask>();
+
+        //    if (draggedRouteTasks.Count() <= 0) return;
+
+        //    //Here we need to choose a template for the items:
+        //    var cue = new TreeViewDragCue();
+        //    cue.ItemTemplate = this.Resources["DragCueTemplate"] as DataTemplate;
+        //    cue.ItemsSource = draggedItems.OfType<RouteTask>();
+        //    cue.DragTooltipContent = (draggedItems.OfType<RouteTask>()).FirstOrDefault().Name;
+        //    cue.IsDropPossible = true;
+
+        //    var isDropIn = String.Compare(((String)cue.DragActionContent), "Drop In");
+        //    var isDropAfter = String.Compare(((String)cue.DragActionContent), "Drop after");
+        //    var payloadCheck = ((RouteTask)payloadCollection.FirstOrDefault());
+
+        //    #region Setting Drag Cue off Different Conditions
+        //    if (payloadCollection.Count() > 1)
+        //    {
+        //        //FirstOrDefault might be null but the second might have a service 
+        //        #region Check All Items Dragged for A Service
+        //        //Need to find out if the fist item dragged has a null 
+        //        int count = 0;
+        //        foreach (object serviceObject in payloadCollection)
+        //        {
+        //            //No Service means no location as well
+        //            if (((RouteTask)serviceObject).Service != null)
+        //                break;
+        //            payloadCheck = ((RouteTask)payloadCollection.ElementAt(count));
+        //            count++;
+        //        }
+        //        #endregion
+
+        //        foreach (object draggedItem in payloadCollection)
+        //        {
+        //            //Checks to be sure the 
+        //            if (((RouteTask)draggedItem).Service != null && String.CompareOrdinal(((RouteTask)draggedItem).Service.ServiceTemplate.Name, payloadCheck.Service.ServiceTemplate.Name) != 0)
+        //            {
+        //                //If the dragged item is a manually created task, it will not matter what type of route you try and drag it into
+        //                //Also, it can be dragged with any type of service
+        //                if (((RouteTask)draggedItem).Service == null)
+        //                    continue;
+
+        //                const string errorString = "Items Selected Have Different Services";
+        //                e.Options.DragCue = CreateDragCue(errorString, cue);
+        //                break;
+        //            }
+        //        }
+        //    }
+
+        //    if (destination != null && destination.DataContext is RouteTask)
+        //    {
+        //        if (payloadCheck.Service != null)
+        //        {
+        //            #region Check For Route Type
+
+        //            var routeType = ((RouteTask)destination.DataContext).RouteDestination.Route.RouteType;
+        //            var draggedItemsType = payloadCheck.Service.ServiceTemplate.Name;
+
+        //            if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
+        //            {
+        //                const string errorString = "Route Lacks Service Capability";
+        //                e.Options.DragCue = CreateDragCue(errorString, cue);
+        //            }
+
+        //            #endregion
+        //        }
+
+        //        //Trying to drop a Task into a Destination with a different Location
+        //        if (((payloadCheck.Location != ((RouteTask)destination.DataContext).Location)))
+        //        {
+        //            if (payloadCheck.Service != null || ((RouteTask)destination.DataContext).Service != null)
+        //            {
+        //                const string errorString = "Invalid Location";
+        //                e.Options.DragCue = CreateDragCue(errorString, cue);
+        //            }
+        //        }
+        //    }
+        //    else if (destination != null && destination.DataContext is RouteDestination)
+        //    {
+        //        if (payloadCheck.Service != null)
+        //        {
+        //            #region Check For Route Type
+
+        //            var routeType = ((RouteDestination)destination.DataContext).Route.RouteType;
+        //            var draggedItemsType = payloadCheck.Service.ServiceTemplate.Name;
+
+        //            if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
+        //            {
+        //                const string errorString = "Route Lacks Service Capability";
+        //                e.Options.DragCue = CreateDragCue(errorString, cue);
+        //            }
+
+        //            #endregion
+        //        }
+
+        //        if (((payloadCheck.Location != ((RouteDestination)destination.DataContext).Location)
+        //            && (payloadCheck.Location != null)) && (isDropAfter != 1 || isDropIn == 1))
+        //        {
+        //            const string errorString = "Invalid Location";
+        //            e.Options.DragCue = CreateDragCue(errorString, cue);
+        //        }
+        //    }
+
+        //    else if (destination != null && destination.DataContext is Route)
+        //    {
+        //        if (payloadCheck.Service != null)
+        //        {
+        //            #region Check For Route Type
+
+        //            var routeType = ((Route)destination.DataContext).RouteType;
+        //            var draggedItemsType = payloadCheck.Service.ServiceTemplate.Name;
+
+        //            if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
+        //            {
+        //                const string errorString = "Route Lacks Service Capability";
+        //                //e.Options.DragCue = CreateDragCue(errorString, cue);
+        //                ((TreeViewDragCue)e.Options.DragCue).DragTooltipContent = null;
+        //                ((TreeViewDragCue)e.Options.DragCue).DragActionContent = String.Format(errorString);
+        //                ((TreeViewDragCue)e.Options.DragCue).IsDropPossible = false;
+        //            }
+
+        //            #endregion
+        //        }
+        //    }
+
+        //    #endregion
+        //    if (e.Options.DragCue == null)
+        //        e.Options.DragCue = cue;
+        //}
+
+        //private void OnDragInfo(object sender, DragDropEventArgs e)
+        //{
+        //    if (e.Options.Source is GridViewHeaderCell)
+        //    {
+        //        return;
+        //    }
+
+        //    RoutesDragDropVM.OriginalDragSource = DragSource.UnroutedTaskBoard;
+
+        //    var draggedItems = e.Options.Payload as IEnumerable;
+        //    var cue = e.Options.DragCue;
+
+        //    DragCueSetter(draggedItems, e);
+
+        //    cue = e.Options.DragCue;
+
+        //    if (e.Options.Status == DragStatus.DragComplete && ((TreeViewDragCue)cue).IsDropPossible)
+        //    {
+        //        //Gets hit if you try and drop a task onto the Taskboard
+        //        //Checks to be sure you are trying to drop into one of the Routes
+        //        if (!(e.Options.Destination is RadTreeView))
+        //        {
+        //            if (!(e.Options.Destination.DataContext is RouteDestination || e.Options.Destination.DataContext is RouteTask)) return;
+        //        }
+
+        //        var source = this.TaskBoard.PublicTaskBoardRadGridView.ItemsSource as IList;
+
+        //        RemoveFromTaskBoard(source, draggedItems);
+
+        //        AddToRoute(e, draggedItems);
+        //    }
+        //}
+
+        //private void OnDragQuery(object sender, DragDropQueryEventArgs e)
+        //{
+        //    if (e.Options.Source is GridViewHeaderCell)
+        //    {
+        //        return;
+        //    }
+
+        //    if (this.TaskBoard.PublicTaskBoardRadGridView != null)
+        //    {
+        //        IList selectedItems = this.TaskBoard.PublicTaskBoardRadGridView.SelectedItems.ToList();
+        //        e.QueryResult = selectedItems.Count > 0;
+        //        e.Options.Payload = selectedItems;
+        //    }
+
+        //    var draggedItems = e.Options.Payload as IEnumerable;
+
+        //    DragCueSetter(draggedItems, e);
+
+        //    e.QueryResult = true;
+        //    e.Handled = true;
+        //}
+
+        //#endregion
+
+        //#region Dropping
+
+        ///// <summary>
+        ///// Sets up the initial DragCue
+        ///// DragCue potentially gets changed in OnDragInfo if drop location is invalid
+        ///// </summary>
+        //private void OnDropInfo(object sender, DragDropEventArgs e)
+        //{
+        //    if (e.Options.Source is GridViewHeaderCell)
+        //    {
+        //        return;
+        //    }
+
+        //    var draggedItems = e.Options.Payload as ICollection;
+
+        //    // Get the drag cue that the TreeView or we have created
+        //    var cue = e.Options.DragCue as TreeViewDragCue;
+
+        //    if (cue == null)
+        //        cue = new TreeViewDragCue();
+
+        //    if (e.Options.Status == DragStatus.DropPossible)
+        //    {
+        //        // Set a suitable text:
+        //        cue.DragActionContent = String.Format("Add item to Task Board");
+        //        cue.IsDropPossible = true;
+        //        e.Options.DragCue = cue;
+        //    }
+        //    else if (e.Options.Status == DragStatus.DropImpossible)
+        //    {
+        //        cue.DragActionContent = null;
+        //        cue.IsDropPossible = false;
+        //    }
+
+        //    if (e.Options.Status != DragStatus.DropPossible)
+        //    {
+        //        this.TaskBoard.PublicTaskBoardRadGridView.Background = new SolidColorBrush(Colors.White);
+        //    }
+        //}
+
+        //private static void OnDropQuery(object sender, DragDropQueryEventArgs e)
+        //{
+        //    if (e.Options.Source is GridViewHeaderCell)
+        //    {
+        //        return;
+        //    }
+
+        //    e.QueryResult = true;
+        //    e.Handled = true;
+        //}
+
+        //#endregion
+
+        ///// <summary>
+        ///// Removes DraggedItems from the TaskBoard.
+        ///// </summary>
+        //private static void RemoveFromTaskBoard(IList source, IEnumerable draggedItems)
+        //{
+        //    foreach (RouteTask draggedItem in draggedItems.OfType<RouteTask>())
+        //    {
+        //        if (source != null)
+        //        {
+        //            source.Remove(draggedItem);
+        //        }
+        //    }
+        //}
 
         #endregion
 

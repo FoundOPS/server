@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Collections.Generic;
+using System.ComponentModel;
 using FoundOps.Common.Composite.Entities;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class RouteDestination : IEntityDefaultCreation, ICompositeRaiseEntityPropertyChanged
     {
@@ -29,7 +30,6 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnInitialization()
         {
             this.RouteTasks.EntityAdded += RouteTasksEntityAdded;
-            this.RouteTasks.EntityRemoved += (sender, e) => this.RaisePropertyChanged("Tasks");
 
             this.PropertyChanged += (sender, e) =>
             {
@@ -52,29 +52,25 @@ namespace FoundOps.Core.Models.CoreEntities
         void RouteTasksAssociationChanged(object sender, System.ComponentModel.CollectionChangeEventArgs e)
         {
             if (e.Action == CollectionChangeAction.Add)
-            {
                 RouteTasksEntityAddedComposite((RouteTask)e.Element);
-            }
         }
 #endif
 
         public void RouteTasksEntityAddedComposite(RouteTask routeTask)
         {
-            //If the RouteDestination does not already have a Location
-            //Update it with the task's location
+            //If this RouteDestination does not already have a Location update it with the task's location
             if (this.Location == null)
             {
                 if (routeTask.Location != null)
                     this.Location = routeTask.Location;
             }
 
+            //If this RouteDestination does not already have a Client update it with the task's client
             if (this.Client == null)
             {
                 if (routeTask.Client != null)
                     this.Client = routeTask.Client;
             }
-
-            this.CompositeRaiseEntityPropertyChanged("Tasks");
         }
 
         partial void OnInitialization(); //For Extensions on Silverlight Side
@@ -135,11 +131,7 @@ namespace FoundOps.Core.Models.CoreEntities
             get
             {
                 var endTime = this.StartTime;
-                foreach (var routeTask in this.RouteTasks)
-                {
-                    endTime += routeTask.EstimatedDuration;
-                }
-                return endTime;
+                return this.RouteTasks.Aggregate(endTime, (current, routeTask) => current + routeTask.EstimatedDuration);
             }
         }
     }

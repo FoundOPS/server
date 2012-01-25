@@ -18,6 +18,8 @@ using Microsoft.Windows.Data.DomainServices;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Server.Services.CoreDomainService;
 using ReactiveUI;
+using RiaServicesContrib;
+using RiaServicesContrib.DomainServices.Client;
 
 namespace FoundOps.SLClient.Data.Services
 {
@@ -705,7 +707,20 @@ namespace FoundOps.SLClient.Data.Services
 
             //Cancel changes on generated route tasks
             foreach (var generatedRouteTask in changes.OfType<RouteTask>().Where(rt => rt.GeneratedOnServer))
+            {
+                //Save the destination so we can re-add the cloned task to it later
+                var destinationToSave = generatedRouteTask.RouteDestination;
+
+                //Cancel adding this to a route
+                generatedRouteTask.RouteDestination = null;
+
+                //Clone this
+                var clone = generatedRouteTask.Clone(generatedRouteTask.Service != null);
+
+                //Add the clone to the route destination
+                destinationToSave.RouteTasks.Add(clone);
                 generatedRouteTask.Reject();
+            }
 
             //Perform a submit operation for the dequeued submit operation observables
             _currentSubmitOperation = this.Context.SubmitChanges(
@@ -722,6 +737,7 @@ namespace FoundOps.SLClient.Data.Services
                     _currentSubmitOperation = null;
                 }, null);
         }
+
 
         #endregion
 

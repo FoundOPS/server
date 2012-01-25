@@ -124,28 +124,21 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteRouteDestination(RouteDestination routeDestination)
         {
+            var loadedRouteDestination = this.ObjectContext.RouteDestinations.FirstOrDefault(rd => rd.Id == routeDestination.Id);
+            if (loadedRouteDestination != null)
+                this.ObjectContext.Detach(loadedRouteDestination);
+
             if (routeDestination.EntityState == EntityState.Detached)
-            {
-                var loadedRouteDestination =
-                     this.ObjectContext.RouteDestinations.FirstOrDefault(rd => rd.Id == routeDestination.Id);
-
-                if (loadedRouteDestination != null)
-                    this.ObjectContext.Detach(loadedRouteDestination);
-
                 this.ObjectContext.RouteDestinations.Attach(routeDestination);
-            }
 
             routeDestination.RouteReference.Load();
-            if (routeDestination.Route != null)
-                routeDestination.Route.RouteDestinations.Remove(routeDestination);
+            routeDestination.Route = null;
 
             routeDestination.ClientReference.Load();
-            if (routeDestination.Client != null)
-                routeDestination.Client.RouteDestinations.Remove(routeDestination);
+            routeDestination.Client = null;
 
             routeDestination.LocationReference.Load();
-            if (routeDestination.Location != null)
-                routeDestination.Location.RouteDestinations.Remove(routeDestination);
+            routeDestination.Location = null;
 
             //Do not delete RouteTasks, just clear the reference
             routeDestination.RouteTasks.Load();
@@ -253,9 +246,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             }
         }
 
-        public void UpdateRouteTask(RouteTask currentRouteTask)
+        public void UpdateRouteTask(RouteTask routeTask)
         {
-            this.ObjectContext.RouteTasks.AttachAsModified(currentRouteTask);
+            this.ObjectContext.RouteTasks.AttachAsModified(routeTask);
         }
 
         public void DeleteRouteTask(RouteTask routeTask)

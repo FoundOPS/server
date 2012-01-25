@@ -53,7 +53,7 @@ namespace FoundOps.SLClient.UI.Converters
                             return routesRegions.Any(rr => selectedRegions.Any(sr => sr == rr));
                         });
 
-            int count = filteredRoutes.SelectMany(route => route.RouteDestinations).Sum(destination => destination.Tasks.Count(task => task.Name == serviceType));
+            int count = filteredRoutes.SelectMany(route => route.RouteDestinations).Sum(destination => destination.RouteTasks.Count(task => task.Name == serviceType));
 
             //Return "Oil (3)"
             return String.Format("{0} ({1})", serviceType, count);

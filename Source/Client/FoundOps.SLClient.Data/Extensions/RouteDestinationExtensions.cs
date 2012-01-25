@@ -39,25 +39,9 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
-        /// <summary>
-        /// Needs to be observable collection to allow ordering in TreeView
-        /// </summary>
-        public ObservableCollection<RouteTask> Tasks
-        {
-            get
-            {
-                return new ObservableCollection<RouteTask>(RouteTasks);
-            }
-        }
-
         public void Reject()
         {
             this.RejectChanges();
-        }
-
-        public void ForceTasksRefresh()
-        {
-            this.RaisePropertyChanged("Tasks");
         }
     }
 }
