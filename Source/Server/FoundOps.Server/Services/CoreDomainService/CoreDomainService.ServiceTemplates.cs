@@ -72,7 +72,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             foreach (var option in optionsToDelete)
                 this.DeleteOption(option);
 
-            this.ObjectContext.Fields.Attach(optionsField);
+            this.ObjectContext.Fields.DeleteObject(optionsField);
         }
 
         public void DeleteField(Field field)

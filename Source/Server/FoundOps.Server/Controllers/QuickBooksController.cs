@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using FoundOps.Common.Tools;
-using DevDefined.OAuth.Consumer;
-using DevDefined.OAuth.Framework;
-using System.Collections.Generic;
 using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.QuickBooks;
 using FoundOps.Core.Models.CoreEntities;

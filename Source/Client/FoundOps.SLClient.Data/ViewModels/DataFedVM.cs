@@ -105,7 +105,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             .Subscribe(state => ObservationState.OnNext(state));
 
             //Setup IsLoading property
-            _isLoading = IsLoadingObservable.ToProperty(this, x => x.IsLoading);
+            _isLoading = IsLoadingSubject.ToProperty(this, x => x.IsLoading);
         }
 
         #region Public

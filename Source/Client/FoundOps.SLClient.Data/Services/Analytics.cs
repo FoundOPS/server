@@ -12,11 +12,25 @@ namespace FoundOps.SLClient.Data.Services
         /// <summary>
         /// Gets the current user account's name.
         /// </summary>
-        public static string User = Manager.Context.UserAccount.DisplayName;
+        public static string User
+        {
+            get
+            {
+                return Manager.Context.UserAccount.DisplayName;
+            }
+        }
+            
+            
         /// <summary>
         /// Gets the current owner account's name.
         /// </summary>
-        public static string Org = Manager.Context.OwnerAccount != null ? Manager.Context.OwnerAccount.DisplayName : "Unknown";
+        public static string Org
+        {
+            get
+            {
+                return Manager.Context.OwnerAccount != null ? Manager.Context.OwnerAccount.DisplayName : "Unknown";
+            }
+        }
 
         //Block Icons
 

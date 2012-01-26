@@ -485,22 +485,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<SalesLead> SalesLeads
-        {
-            get
-            {
-                if ((_SalesLeads == null))
-                {
-                    _SalesLeads = base.CreateObjectSet<SalesLead>("SalesLeads");
-                }
-                return _SalesLeads;
-            }
-        }
-        private ObjectSet<SalesLead> _SalesLeads;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<EmployeeHistoryEntry> EmployeeHistoryEntries
         {
             get
@@ -803,14 +787,6 @@ namespace FoundOps.Core.Models.CoreEntities
         public void AddToEmployees(Employee employee)
         {
             base.AddObject("Employees", employee);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the SalesLeads EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToSalesLeads(SalesLead salesLead)
-        {
-            base.AddObject("SalesLeads", salesLead);
         }
     
         /// <summary>
@@ -8330,7 +8306,8 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="estimatedDuration">Initial value of the EstimatedDuration property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="date">Initial value of the Date property.</param>
-        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Boolean readOnly, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.DateTime date)
+        /// <param name="orderInRouteDestination">Initial value of the OrderInRouteDestination property.</param>
+        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Boolean readOnly, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.DateTime date, global::System.Int32 orderInRouteDestination)
         {
             RouteTask routeTask = new RouteTask();
             routeTask.Id = id;
@@ -8339,6 +8316,7 @@ namespace FoundOps.Core.Models.CoreEntities
             routeTask.EstimatedDuration = estimatedDuration;
             routeTask.Name = name;
             routeTask.Date = date;
+            routeTask.OrderInRouteDestination = orderInRouteDestination;
             return routeTask;
         }
 
@@ -8611,6 +8589,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.DateTime _Date;
         partial void OnDateChanging(global::System.DateTime value);
         partial void OnDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OrderInRouteDestination
+        {
+            get
+            {
+                return _OrderInRouteDestination;
+            }
+            set
+            {
+                OnOrderInRouteDestinationChanging(value);
+                ReportPropertyChanging("OrderInRouteDestination");
+                _OrderInRouteDestination = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderInRouteDestination");
+                OnOrderInRouteDestinationChanged();
+            }
+        }
+        private global::System.Int32 _OrderInRouteDestination;
+        partial void OnOrderInRouteDestinationChanging(global::System.Int32 value);
+        partial void OnOrderInRouteDestinationChanged();
 
         #endregion
     
@@ -8807,85 +8809,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="SalesLead")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class SalesLead : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new SalesLead object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static SalesLead CreateSalesLead(global::System.Guid id)
-        {
-            SalesLead salesLead = new SalesLead();
-            salesLead.Id = id;
-            return salesLead;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Guid _Id;
-        partial void OnIdChanging(global::System.Guid value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Email
-        {
-            get
-            {
-                return _Email;
-            }
-            set
-            {
-                OnEmailChanging(value);
-                ReportPropertyChanging("Email");
-                _Email = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Email");
-                OnEmailChanged();
-            }
-        }
-        private global::System.String _Email;
-        partial void OnEmailChanging(global::System.String value);
-        partial void OnEmailChanged();
-
-        #endregion
-    
     }
     
     /// <summary>

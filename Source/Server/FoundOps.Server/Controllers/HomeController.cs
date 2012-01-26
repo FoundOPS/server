@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using System.Xml.Linq;
 using FoundOps.Core.Server;
@@ -35,7 +37,18 @@ namespace FoundOps.Server.Controllers
         [AddTestUsersThenAuthorize]
         public ActionResult Silverlight()
         {
-            return View();
+            var request = (HttpWebRequest)WebRequest.Create("http://fstore.blob.core.windows.net/xaps/version.txt");
+
+            // *** Retrieve request info headers
+            var response = (HttpWebResponse)request.GetResponse();
+            var stream = new StreamReader(response.GetResponseStream());
+
+            var version = stream.ReadToEnd();
+            response.Close();
+            stream.Close();
+
+            //Must cast the string as an object so it uses the correct overloaded method
+            return View((object)version);
         }
 
         public ActionResult Team(string id)

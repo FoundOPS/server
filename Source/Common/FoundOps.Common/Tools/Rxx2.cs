@@ -3,12 +3,12 @@ using System.IO;
 using System.Net;
 using System.Net.Browser;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.ComponentModel;
+using System.Reactive.Subjects;
+using System.Reactive.Disposables;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Reactive.Subjects;
 
 namespace FoundOps.Common.Tools
 {
@@ -225,8 +225,11 @@ namespace FoundOps.Common.Tools
                 //Call selectLatestSubject.OnNext whenever the returned IObservable<TResult> from selector(latest) pushes a new TResult
                 var latestSubscription = selector(latest).Subscribe(selectLatestSubject.OnNext);
 
-                //Dispose the subscription whenever latestSubscription changes
-                serialDisposable.Disposable = latestSubscription;
+                try //Prevents random error when Locations is loading. TODO: Figure out why it does not dispose
+                {
+                    //Dispose the subscription whenever latestSubscription changes
+                    serialDisposable.Disposable = latestSubscription;
+                } catch{}
             });
 
             return selectLatestSubject;

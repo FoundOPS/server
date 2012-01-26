@@ -8,10 +8,11 @@
     <Controls1:RadBusyIndicator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BusyContent="Loading Tasks" IsBusy="{Binding TasksLoading}">
         <Grid x:Name="LayoutRoot" Background="White">
             <telerik:RadGridView x:Name="TaskBoardRadGridView" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding UnroutedTasks}"
-                             SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Multiple">
+                             SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Multiple" telerikDragDrop:RadDragAndDropManager.AllowDrag="True">
                 <telerik:RadGridView.RowStyle>
                     <Style TargetType="telerikGridElements:GridViewRow" x:Name="GridDragStyle">
-                        <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrag" Value="True" />
+                        <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrag" Value="True"/>
+                        <Setter Property="telerikDragDrop:RadDragAndDropManager.AutoDrag" Value="True"/>
                     </Style>
                 </telerik:RadGridView.RowStyle>
                 <telerik:RadGridView.Columns>
@@ -37,7 +38,7 @@
                         </telerik:GridViewDataColumn.CellTemplate>
                         <telerik:GridViewDataColumn.CellEditTemplate>
                             <DataTemplate>
-                                <Controls:RadComboBox IsEditable="True" DisplayMemberPath="Name" SelectedItem="{Binding Location, Mode=TwoWay}" 
+                                <Controls:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" IsEditable="True" DisplayMemberPath="Name" SelectedItem="{Binding Location, Mode=TwoWay}" 
                                                       ItemsSource="{Binding LocationsVM.DomainCollectionView, RelativeSource={RelativeSource AncestorType=Dispatcher1:TaskBoard}}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellEditTemplate>
@@ -54,7 +55,7 @@
                         </telerik:GridViewDataColumn.CellTemplate>
                         <telerik:GridViewDataColumn.CellEditTemplate>
                             <DataTemplate>
-                                <Controls:RadComboBox IsEditable="True" DisplayMemberPath="DisplayName" SelectedItem="{Binding Client, Mode=TwoWay}"
+                                <Controls:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" IsEditable="True" DisplayMemberPath="DisplayName" SelectedItem="{Binding Client, Mode=TwoWay}"
                                                       ItemsSource="{Binding ClientsVM.DomainCollectionView, RelativeSource={RelativeSource AncestorType=Dispatcher1:TaskBoard}}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellEditTemplate>

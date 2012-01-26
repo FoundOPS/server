@@ -79,7 +79,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             _updateVisibleServicesTimer = new Timer(cbk =>
             {
                 //If this is still loading data wait to update
-                if (_existingServices == null || _recurringServices == null)
+                if (_servicesOrRecurringServicesLoading)
                     _updateVisibleServicesTimer.Change(1000, Timeout.Infinite);
                 else
                     CurrentDispatcher.BeginInvoke(UpdateVisibleServices);
@@ -90,8 +90,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             TrackContext();
         }
 
+        //Keeps track if services or recurring services is loading
+        private bool _servicesOrRecurringServicesLoading = true;
+
         private void SetupDataLoading()
         {
+            //This will always start as loading (until services are generated)
+            IsLoadingSubject.OnNext(true);
+
             //Load services
             var servicesLoading = DataManager.Subscribe<Service>(DataManager.Query.Services, ObservationState, entities => _existingServices = entities);
 
@@ -99,12 +105,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             var recurringServicesLoading = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, entities => _recurringServices = entities);
 
             //This is loading whenever services is loading or recurring services is loading
-            var loadingData = servicesLoading.CombineLatest(recurringServicesLoading).Select(loadingTuple => loadingTuple.Item1 || loadingTuple.Item2)
-                //Only choose the true statements (it does not stop loading until the services are generated)
-                .Where(isLoading => isLoading);
+            var loadingData = servicesLoading.CombineLatest(recurringServicesLoading).Select(loadingTuple => loadingTuple.Item1 || loadingTuple.Item2);
+
+            //The first load on any entitylist is empty
+            loadingData.Skip(2).SubscribeOnDispatcher().Subscribe(l => _servicesOrRecurringServicesLoading = l);
 
             //Whenever loadingData publishes update IsLoadingSubject
-            loadingData.Subscribe(IsLoadingSubject);
+            //Only choose the true statements (it does not stop loading until the services are generated)
+            loadingData.Skip(2).Where(isLoading => isLoading).Subscribe(IsLoadingSubject);
 
             //When everything is loaded update the visible services
             loadingData.Where(isLoading => !isLoading).Throttle(TimeSpan.FromMilliseconds(300)) //Throttle to allow associations to settle
@@ -113,7 +121,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                     if (_existingServices != null && _recurringServices != null)
                         UpdateVisibleServices();
                 });
-
 
             var canSaveDiscard = this.WhenAny(x => x.SelectedEntity, x => x.SelectedEntity.ServiceIsNew,
                                                x => x.SelectedEntity.ServiceHasChanges,
@@ -271,7 +278,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Condition C: There are services and we need to generate services in the future (from the last generated service)
 
             //Condition A: There are no services or the context has changed and we need to regenerate all the services (around today)
-            if (_visibleServices.Count() <= 0 || ContextChanged) { } //Keep selectedEntity null
+            if (!_visibleServices.Any() || ContextChanged) { } //Keep selectedEntity null
             //Condition B: There are services and we need to generate services in the past (from the first generated service)
             else if (_pushBackwardSwitch)
                 selectedEntity = DomainCollectionView.First();
@@ -331,7 +338,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             _pushForwardSwitch = false;
 
             //This is no longer loading, if everything is loaded and this just finished generating
-            if (_recurringServices != null && _existingServices != null)
+            if (!_servicesOrRecurringServicesLoading)
                 IsLoadingSubject.OnNext(false);
         }
 
