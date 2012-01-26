@@ -36,7 +36,7 @@ namespace FoundOps.Common.Silverlight.Tools
             int index = zeroIndexed ? 0 : 1;
 
             //Add all of the items to this in order of the _indexPropertyName
-            foreach (var element in entityCollection.OrderBy(e => e.GetProperty<int>(_indexPropertyName)))
+            foreach (var element in entityCollection.OrderBy(e => e.GetProperty<int>(_indexPropertyName)).ToArray())
             {
                 this.Add(element);
 
@@ -88,7 +88,7 @@ namespace FoundOps.Common.Silverlight.Tools
             base.Remove(entityToRemove);
 
             //Go through each entity that was after this element and update it's index to one less than before
-            var entitiesToUpdate = this.Where(el => el.GetProperty<int>(_indexPropertyName) > entityToRemove.GetProperty<int>(_indexPropertyName));
+            var entitiesToUpdate = this.Where(el => el.GetProperty<int>(_indexPropertyName) > entityToRemove.GetProperty<int>(_indexPropertyName)).ToArray();
 
             foreach (var entityToUpdate in entitiesToUpdate)
                 entityToUpdate.SetProperty(_indexPropertyName, entityToUpdate.GetProperty<int>(_indexPropertyName) - 1);
@@ -100,7 +100,7 @@ namespace FoundOps.Common.Silverlight.Tools
             itemToInsert.SetProperty(_indexPropertyName, _zeroIndexed ? index : index + 1);
 
             //Go through each entity that was on or after the index and update it's index to one more than before
-            var entitiesToUpdate = this.Where(entity => entity.GetProperty<int>(_indexPropertyName) >= itemToInsert.GetProperty<int>(_indexPropertyName));
+            var entitiesToUpdate = this.Where(entity => entity.GetProperty<int>(_indexPropertyName) >= itemToInsert.GetProperty<int>(_indexPropertyName)).ToArray();
 
             foreach (var entityToUpdate in entitiesToUpdate)
                 entityToUpdate.SetProperty(_indexPropertyName, entityToUpdate.GetProperty<int>(_indexPropertyName) + 1);
@@ -136,7 +136,7 @@ namespace FoundOps.Common.Silverlight.Tools
                 return false;
 
             //Go through each entity that was on or after the removed entity's index and update it's index to one less than before
-            var entitiesToUpdate = this.Where(entity => entity.GetProperty<int>(_indexPropertyName) > item.GetProperty<int>(_indexPropertyName));
+            var entitiesToUpdate = this.Where(entity => entity.GetProperty<int>(_indexPropertyName) > item.GetProperty<int>(_indexPropertyName)).ToArray();
 
             foreach (var entityToUpdate in entitiesToUpdate)
                 entityToUpdate.SetProperty(_indexPropertyName, entityToUpdate.GetProperty<int>(_indexPropertyName) - 1);

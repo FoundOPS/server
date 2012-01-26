@@ -711,15 +711,20 @@ namespace FoundOps.SLClient.Data.Services
                 //Save the destination so we can re-add the cloned task to it later
                 var destinationToSave = generatedRouteTask.RouteDestination;
 
-                //Cancel adding this to a route
-                generatedRouteTask.RouteDestination = null;
+                //If the task was added to a destination then clone it and save it to the database
+                if (destinationToSave != null)
+                {
+                    //Clone this
+                    var clone = generatedRouteTask.Clone(generatedRouteTask.Service != null);
 
-                //Clone this
-                var clone = generatedRouteTask.Clone(generatedRouteTask.Service != null);
+                    //Add the clone to the route destination (if there is one)
+                    destinationToSave.RouteTasks.Add(clone);
 
-                //Add the clone to the route destination
-                destinationToSave.RouteTasks.Add(clone);
-                generatedRouteTask.Reject();
+                    //Remove this from the context (and remove its changes)
+                    this.DetachEntities(new[] { generatedRouteTask });
+                }
+                else //Cancel changes on the generatedRouteTask
+                    generatedRouteTask.Reject();
             }
 
             //Perform a submit operation for the dequeued submit operation observables
