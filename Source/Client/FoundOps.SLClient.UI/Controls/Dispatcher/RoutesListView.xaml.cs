@@ -90,6 +90,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             // Get the drag cue that the TreeView or we have created
             var cue = e.Options.DragCue as TreeViewDragCue;
 
+            //Setup DragCue here
+
             switch (e.Options.Status)
             {
                 //Sets the Drag cue if a drop is possible
@@ -113,9 +115,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     break;
                 case DragStatus.DragComplete:
                     {
-                        //Here we will be adding the dragged items to somewhere, but to date we have no idea where
-                        #region Adding draggedItems to Route or TaskBoard
-
                         //The text that would show up on a Drag to tell you whether you are going
                         //to drop something before, in or after the item you are hovering over
                         var dragActionString = ((String)((TreeViewDragCue)e.Options.DragCue).DragActionContent);
@@ -145,10 +144,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                         {
                             routeDraggedTo = (Route)e.Options.Destination.DataContext;
 
-                            var lastOrDefault = routeDraggedTo.RouteDestinationsListWrapper.LastOrDefault();
-                            if (lastOrDefault != null)
-                                //This will ensure that the new RouteDestination is palced at the end of the Route
-                                placeInRoute = lastOrDefault.OrderInRoute;
+                            placeInRoute = routeDraggedTo.RouteDestinationsListWrapper.Count;
 
                             //Telerik does not allow you to drop above the root node in RadTreeView
                             //We also know that the only time you could possibly drop into a Route and meet the condition below will be
@@ -186,113 +182,23 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                         #endregion
 
-                        //Iterate through the collection backwards. This keeps the order correct while dragging
                         foreach (var draggedItem in draggedItems.Reverse())
                         {
-                            #region Adding to the TaskBoard happens here
+                            //Used in Remove methods
+                            var routeDestination = draggedItem as RouteDestination;
+                            var routeTask = draggedItem as RouteTask;
 
-                            //Check if you are dropping into the TaskBoard
                             if (e.Options.Destination is TaskBoard)
                             {
-
-                                if (draggedItem is RouteDestination)
-                                {
-                                    foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
-                                        VM.Routes.UnroutedTasks.Add(task);
-
-                                    //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely
-                                    VM.Routes.DeleteRouteDestination((RouteDestination)draggedItem);
-                                }
-                                if (draggedItem is RouteTask)
-                                    VM.Routes.UnroutedTasks.Add(draggedItem as RouteTask);
-
-                                continue;
+                                AddToTaskBoard(draggedItem);
+                                RemoveFromRoute(draggedItem);
                             }
-
-                            #endregion
-
-                            #region If the current draggedItem is a RouteDestination -> Add it to the Route in the correct position
-
-                            var routeDestination = draggedItem as RouteDestination;
-                            if (routeDestination != null)
-                                routeDraggedTo.RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
-
-
-                            #endregion
-
-                            #region If the current draggedItem is a RouteTask -> Either add it to the RouteDestination, or create a new RouteDestination
-
-                            var routeTask = draggedItem as RouteTask;
-                            if (routeTask != null)
+                            else
                             {
-                                //Check if the destination is a RouteDestination and the DragActionString is 'Drop in'
-                                if (isDropIn && e.Options.Destination.DataContext is RouteDestination)
-                                    ((RouteDestination)e.Options.Destination.DataContext).RouteTasksListWrapper.Add(routeTask);
-                                else
-                                {
-                                    var task = destination as RouteTask;
-                                    if (task != null)
-                                    {
-                                        #region Add the RouteTask to the RouteDestination that it was dragged to
-
-                                        //Gets the OrderInRouteDestination for the destination
-                                        var placeInDestination = task.OrderInRouteDestination;
-
-                                        //Makes adjustments to the placeInDestination based on where routeTask is being dropped
-                                        if (isDropAfter)
-                                            placeInDestination++;
-
-                                        if (isDropBefore && placeInDestination > 0)
-                                            placeInDestination--;
-
-                                        //Get the Tasks, RouteDestination
-                                        var routeTasksDestination = task.RouteDestination;
-
-                                        //Add the RouteTask to the RouteDestination found above
-                                        routeTasksDestination.RouteTasksListWrapper.Insert(placeInDestination, routeTask);
-
-                                        //No need to do any of the other logic below, skip to the next iteration of the loop
-                                        continue;
-
-                                        #endregion
-                                    }
-
-                                    //Does this if you drag a task anywhere other than inside a current RouteDestination
-                                    #region Create new RouteDestination and add it to the Route
-
-                                    //Create new RouteDestination
-                                    var newDestination = new RouteDestination
-                                                             {
-                                                                 Id = Guid.NewGuid(),
-                                                                 Location = routeTask.Location,
-                                                                 Client = routeTask.Client
-                                                             };
-
-                                    newDestination.RouteTasks.Add(routeTask);
-
-                                    if (destination is Route)
-                                    {
-                                        //Add the new destination to the Route
-                                        ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
-
-                                    }
-                                    if (destination is RouteDestination)
-                                    {
-                                        //Get the Destinations, Route
-                                        var route = ((RouteDestination)destination).Route;
-
-                                        //Add the new destination to the Route
-                                        route.RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
-                                    }
-
-                                    #endregion
-                                }
+                                AddToRoute(e, draggedItem, destination, routeDraggedTo, placeInRoute, isDropIn, isDropAfter, isDropBefore);
+                                //RemoveFromRoute(routeTask, routeDestination, e);
                             }
-
-                            #endregion
                         }
-
-                        #endregion
                     }
                     break;
             }
@@ -302,88 +208,164 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             e.Handled = true;
         }
 
-        // OnDragInfo event handler
-        private void OnDragInfo(object sender, DragDropEventArgs e)
+        #region Methods used in OnDropInfo
+
+        /// <summary>
+        /// Adds tasks to the TaskBoard.
+        /// </summary>
+        /// <param name="draggedItem">The dragged item.</param>
+        private void AddToTaskBoard(object draggedItem)
         {
-            var draggedItems = e.Options.Payload as IEnumerable<object>;
+            //If the draggedItem is a RouteDestination, add all its RouteTasks to the TaskBoard
+            if (draggedItem is RouteDestination)
+                foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
+                    VM.Routes.UnroutedTasks.Add(task);
 
-            //Here we need to setup DragCues
+            //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
+            if (draggedItem is RouteTask)
+                VM.Routes.UnroutedTasks.Add((RouteTask)draggedItem);
+        }
 
-            if (e.Options.Status == DragStatus.DragComplete)
+        /// <summary>
+        /// Removes from task board.
+        /// </summary>
+        /// <param name="draggedItem">The dragged item.</param>
+        private void RemoveFromRoute(object draggedItem)
+        {
+            //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely
+            if (draggedItem is RouteDestination)
+                VM.Routes.DeleteRouteDestination((RouteDestination)draggedItem);
+
+            if (draggedItem is RouteTask)
+                ((RouteTask)draggedItem).RemoveRouteDestination();
+        }
+
+        /// <summary>
+        /// Adds to route.
+        /// </summary>
+        /// <param name="e">The <see cref="Telerik.Windows.Controls.DragDrop.DragDropEventArgs"/> instance containing the event data.</param>
+        /// <param name="draggedItem">The dragged item.</param>
+        /// <param name="destination">The destination.</param>
+        /// <param name="routeDraggedTo">The route dragged to.</param>
+        /// <param name="placeInRoute">The place in route.</param>
+        /// <param name="isDropIn">if set to <c>true</c> [is drop in].</param>
+        /// <param name="isDropAfter">if set to <c>true</c> [is drop after].</param>
+        /// <param name="isDropBefore">if set to <c>true</c> [is drop before].</param>
+        private void AddToRoute(DragDropEventArgs e, object draggedItem, object destination, Route routeDraggedTo, int placeInRoute, bool isDropIn, bool isDropAfter, bool isDropBefore)
+        {
+            //If the current draggedItem is a RouteDestination -> Add it to the Route in the correct position
+            var routeDestination = draggedItem as RouteDestination;
+            if (routeDestination != null)
+                routeDraggedTo.RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
+
+
+            #region If the current draggedItem is a RouteTask -> Either add it to the RouteDestination, or create a new RouteDestination
+
+            var routeTask = draggedItem as RouteTask;
+            if (routeTask != null)
             {
-                //Get the Route that the items were dragged from
-                var routeDraggedFrom = SetRouteDraggedFrom(draggedItems, e);
-
-                if (routeDraggedFrom == null)
-                    return;
-
-                var routesVM = this.RoutesVM;
-
-                //Iterates through and removes the draggedItems from their Source
-                foreach (var draggedItem in draggedItems)
+                //Check if the destination is a RouteDestination and the DragActionString is 'Drop in'
+                if (isDropIn && e.Options.Destination.DataContext is RouteDestination)
+                    ((RouteDestination)e.Options.Destination.DataContext).RouteTasksListWrapper.Add(routeTask);
+                else
                 {
-                    #region draggedItem is a RouteDestination
-
-                    var routeDestination = draggedItem as RouteDestination;
-
-                    //This is now handeled in OnDropInfo
-                    if (e.Options.Destination is TaskBoard)
-                        return;
-                    
-                    //Remove the RouteDestination from its Route
-                    if (routeDestination != null)
-                        routeDestination.Route.RouteDestinationsListWrapper.Remove(routeDestination);
-
-
-                    #endregion
-
-                    #region draggedItem is a RouteTask
-
-                    var routeTask = draggedItem as RouteTask;
-                    if (routeTask != null)
+                    var task = destination as RouteTask;
+                    if (task != null)
                     {
-                        var tasksDestination = routeTask.RouteDestination;
+                        #region Add the RouteTask to the RouteDestination that it was dragged to
 
-                        //Remove the task from the current destination
-                        routeTask.RemoveRouteDestination();
+                        //Gets the OrderInRouteDestination for the destination
+                        var placeInDestination = task.OrderInRouteDestination;
 
-                        //If there are no RouteTasks remaining on the destination, delete it
-                        if (tasksDestination.RouteTasks.Count == 0)
-                            routesVM.DeleteRouteDestination(tasksDestination);
+                        //Makes adjustments to the placeInDestination based on where routeTask is being dropped
+                        if (isDropAfter)
+                            placeInDestination++;
+
+                        if (isDropBefore && placeInDestination > 0)
+                            placeInDestination--;
+
+                        //Get the Tasks, RouteDestination
+                        var routeTasksDestination = task.RouteDestination;
+
+                        //Add the RouteTask to the RouteDestination found above
+                        routeTasksDestination.RouteTasksListWrapper.Insert(placeInDestination, routeTask);
+
+                        //No need to do any of the other logic below, skip to the next iteration of the loop
+                        return;
+
+                        #endregion
+                    }
+
+                    //Does this if you drag a task anywhere other than inside a current RouteDestination
+                    #region Create new RouteDestination and add it to the Route
+
+                    //Create new RouteDestination
+                    var newDestination = new RouteDestination
+                    {
+                        Id = Guid.NewGuid(),
+                        Location = routeTask.Location,
+                        Client = routeTask.Client
+                    };
+
+                    newDestination.RouteTasks.Add(routeTask);
+
+                    if (destination is Route)
+                    {
+                        //Add the new destination to the Route
+                        ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
+
+                    }
+                    if (destination is RouteDestination)
+                    {
+                        //Get the Destinations, Route
+                        var route = ((RouteDestination)destination).Route;
+
+                        //Add the new destination to the Route
+                        route.RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
                     }
 
                     #endregion
-
                 }
             }
+
+            #endregion
         }
 
+        ///// <summary>
+        ///// Removes from route.
+        ///// </summary>
+        ///// <param name="draggedItem">The dragged item.</param>
+        ///// <param name="e">The <see cref="Telerik.Windows.Controls.DragDrop.DragDropEventArgs"/> instance containing the event data.</param>
+        //private void RemoveFromRoute(RouteTask routeTask, RouteDestination routeDestination, DragDropEventArgs e)
+        //{
+        //    //If the draggedItem was a RouteDestination
+        //    //Remove the RouteDestination from its Route
+        //    if (routeDestination != null)
+        //        VM.Routes.DeleteRouteDestination(routeDestination);
 
-        #region Methods used in OnDragInfo
+        //    //If the draggedItem was a RouteTask
+        //    //Remove the RouteTask from its RouteDestination and check if there are any more RouteTasks in it,
+        //    //If not, remove the RouteDestination
+        //    if (routeTask != null)
+        //    {
+        //        var tasksDestination = routeTask.RouteDestination;
 
-        /// <summary>
-        /// Sets the route dragged from.
-        /// </summary>
-        private static Route SetRouteDraggedFrom(IEnumerable<object> payloadCollection, DragDropEventArgs e)
-        {
-            var firstOrDefault = payloadCollection.FirstOrDefault();
+        //        //Remove the task from the current destination
+        //        routeTask.RemoveRouteDestination();
 
-            if (firstOrDefault is RouteDestination)
-                return ((RouteDestination)firstOrDefault).Route;
-
-            //We know that this is going to be a RouteTask because you can only drag a RouteDestination or a RouteTask
-            var routeTask = ((RouteTask)firstOrDefault);
-
-            //Would be crazy if this happened
-            if (routeTask == null || routeTask.RouteDestination == null)
-                return null;
-
-            var route = routeTask.RouteDestination.Route;
-
-            return route;
-        }
+        //        //If there are no RouteTasks remaining on the destination, delete it
+        //        if (tasksDestination.RouteTasks.Count == 0)
+        //            VM.Routes.DeleteRouteDestination(tasksDestination);
+        //    }
+        //}
 
         #endregion
+
+        // OnDragInfo event handler
+        //Nothing needs to be done here in this case, everything is handled in OnDragInfo
+        private void OnDragInfo(object sender, DragDropEventArgs e)
+        {
+        }
 
         private void RouteTreeView_PreviewDragEnded(object sender, RadTreeViewDragEndedEventArgs e)
         {

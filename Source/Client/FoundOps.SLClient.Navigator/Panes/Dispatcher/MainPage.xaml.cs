@@ -152,9 +152,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
         #region DragAndDrop
 
+        //Nothing needs to be done here in this case, everything is handled in OnDragInfo
         private void OnDropInfo(object sender, DragDropEventArgs e)
         {
-            //Nothing needs to be done here in this case, everything is handled in OnDragInfo
         }
 
         private void OnDragInfo(object sender, DragDropEventArgs e)
@@ -192,9 +192,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             //Drag has completed and has been placed at a valid location
             if (e.Options.Status == DragStatus.DragComplete && ((TreeViewDragCue)e.Options.DragCue).IsDropPossible)
             {
-                RemoveFromTaskBoard(draggedItems);
-
                 AddToTreeView(e, draggedItems);
+
+                RemoveFromTaskBoard(draggedItems);
             }
             e.Handled = true;
         }
@@ -371,10 +371,13 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             {
                 routeDraggedTo = (Route)e.Options.Destination.DataContext;
 
-                var lastOrDefault = routeDraggedTo.RouteDestinationsListWrapper.LastOrDefault();
-                if (lastOrDefault != null)
-                    //This will ensure that the new RouteDestination is palced at the end of the Route
-                    placeInRoute = lastOrDefault.OrderInRoute;
+                if (isDropAfter)
+                {
+                    var lastOrDefault = routeDraggedTo.RouteDestinationsListWrapper.LastOrDefault();
+                    if (lastOrDefault != null)
+                        //This will ensure that the new RouteDestination is palced at the end of the Route
+                        placeInRoute = lastOrDefault.OrderInRoute - 1;
+                }
 
                 //Telerik does not allow you to drop above the root node in RadTreeView
                 //We also know that the only time you could possibly drop into a Route and meet the condition below will be
@@ -383,34 +386,25 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 if (!isDropAfter && !isDropBefore)
                     placeInRoute = 0;
             }
-            if (e.Options.Destination.DataContext is RouteDestination)
+
+            if (e.Options.Destination.DataContext is RouteDestination || e.Options.Destination.DataContext is RouteTask)
             {
-                routeDraggedTo = ((RouteDestination)(e.Options.Destination.DataContext)).Route;
+                placeInRoute =
+                    e.Options.Destination.DataContext is RouteDestination
+                    //Choose the RouteDestination's OrderInRoute
+                        ? ((RouteDestination)e.Options.Destination.DataContext).OrderInRoute
+                    //Choose the RouteTasks parent RouteDestination's OrderInRoute
+                        : ((RouteTask)e.Options.Destination.DataContext).RouteDestination.OrderInRoute;
 
-                placeInRoute = ((RouteDestination)e.Options.Destination.DataContext).OrderInRoute;
-            }
-
-            if (e.Options.Destination.DataContext is RouteTask)
-            {
-                routeDraggedTo = ((RouteTask)(e.Options.Destination.DataContext)).RouteDestination.Route;
-
-                placeInRoute = ((RouteTask)e.Options.Destination.DataContext).RouteDestination.OrderInRoute;
+                if (isDropBefore)
+                    placeInRoute--;
             }
 
             #endregion
 
-            #region Modify placeInRoute depending on where the task was dropped
-
-            if (placeInRoute > 0)
-                placeInRoute--;
-
-            if (isDropAfter)
-                placeInRoute++;
-
-            if (isDropBefore && placeInRoute > 0)
-                placeInRoute--;
-
-            #endregion
+            //In case we somehow messed up. Set the place to the first position
+            if (placeInRoute < 0)
+                placeInRoute = 0;
 
             var destination = e.Options.Destination.DataContext;
 
@@ -462,7 +456,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     Id = Guid.NewGuid(),
                     Location = routeTask.Location,
                     Client = routeTask.Client,
-                    
+
                 };
 
                 newDestination.RouteTasks.Add(routeTask);
