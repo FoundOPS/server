@@ -170,7 +170,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             DeleteItemLocation = () =>
             {
-                var selectedLocation = RemoveItemLocation();
+                var selectedLocation = VM.Locations.SelectedEntity;
                 if (selectedLocation != null)
                     VM.Locations.DeleteEntity(selectedLocation);
 

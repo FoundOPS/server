@@ -403,15 +403,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="location">The location.</param>
         public void DeleteLocation(Location location)
         {
-            var loadedLocation = this.ObjectContext.Locations.FirstOrDefault(l => l.Id == location.Id);
-
-            if (loadedLocation != null)
-                this.ObjectContext.Detach(loadedLocation);
-
-            if (location.EntityState == EntityState.Detached)
-                this.ObjectContext.Locations.Attach(location);
-
-            var es = location.EntityState;
+            this.ObjectContext.DetachExistingAndAttach(location);
 
             location.RouteTasks.Load();
             location.RouteTasks.Clear();
