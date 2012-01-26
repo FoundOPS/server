@@ -97,10 +97,13 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     cue.DragTooltipVisibility = Visibility.Collapsed;
                     cue.IsDropPossible = true;
 
-                    if (e.Options.Destination is GridViewRow)
+                    if (e.Options.Destination is TaskBoard)
                     {
                         cue.IsDropPossible = true;
-                        cue.DragActionContent = String.Format("Add item to Task Board");
+
+                        //Adds an 's' to "item" in DragActionContent if more than one item is being dragged
+                        cue.DragActionContent = String.Format(draggedItems.Count() > 1 ? "Add items to Task Board" : "Add item to Task Board");
+
                         cue.DragTooltipVisibility = Visibility.Visible;
                     }
                     break;
@@ -111,7 +114,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 case DragStatus.DragComplete:
                     {
                         //Here we will be adding the dragged items to somewhere, but to date we have no idea where
-                        #region Adding to route
+                        #region Adding to Route or TaskBoard
 
                         var routeDraggedTo = new Route();
 
@@ -121,7 +124,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                         if (e.Options.Destination.DataContext is Route)
                         {
-                            routeDraggedTo = (Route) e.Options.Destination.DataContext;
+                            routeDraggedTo = (Route)e.Options.Destination.DataContext;
 
                             var lastOrDefault = routeDraggedTo.RouteDestinationsListWrapper.LastOrDefault();
                             if (lastOrDefault != null)
@@ -136,10 +139,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                         if (e.Options.Destination.DataContext is RouteTask)
                         {
-                            if (e.Options.Destination is GridViewRow)
-                            {
-                                return;
-                            }
                             routeDraggedTo = ((RouteTask)(e.Options.Destination.DataContext)).RouteDestination.Route;
 
                             placeInRoute = ((RouteTask)e.Options.Destination.DataContext).RouteDestination.OrderInRoute;
@@ -165,6 +164,25 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                         //Iterate through the collection backwards. This keeps the order correct while dragging
                         foreach (var draggedItem in draggedItems.Reverse())
                         {
+                            var routesVM = this.RoutesVM;
+
+                            //Check if you are dropping into the TaskBoard
+                            if (e.Options.Destination is TaskBoard)
+                            {
+
+                                if (draggedItem is RouteDestination)
+                                {
+                                    foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
+                                    {
+                                        routesVM.UnroutedTasks.Add(task);
+                                    }
+                                }
+
+                                if (draggedItem is RouteTask)
+                                    routesVM.UnroutedTasks.Add(draggedItem as RouteTask);
+
+                                continue;
+                            }
                             //Used to reset the placeInRoute to the original drop position
                             placeInRoute = placeHolderReseter;
 
@@ -268,26 +286,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 if (routeDraggedFrom == null)
                     return;
 
-                var routesVM = this.RoutesVM;
-
+                var routesVM = this.RoutesVM; 
+                
                 foreach (var draggedItem in draggedItems)
                 {
-                    //Check if you are dropping into the TaskBoard
-                    if (e.Options.Destination is GridViewRow)
-                    {
-
-                        if (draggedItem is RouteDestination)
-                        {
-                            foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
-                            {
-                                routesVM.UnroutedTasks.Add(task);
-                            }
-                        }
-
-                        if (draggedItem is RouteTask)
-                            routesVM.UnroutedTasks.Add(draggedItem as RouteTask);
-
-                    }
                     var routeDestination = draggedItem as RouteDestination;
                     if (routeDestination != null)
                     {
@@ -302,8 +304,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                             var destination = routeTask.RouteDestination;
 
                             routeTask.RemoveRouteDestination();
-
-                            var route = destination.Route;
 
                             destination.Route.RouteDestinationsListWrapper.Remove(destination);
 
@@ -341,6 +341,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             return route;
         }
 
+        #endregion
 
         private void RouteTreeView_PreviewDragEnded(object sender, RadTreeViewDragEndedEventArgs e)
         {
@@ -349,8 +350,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             //http://www.telerik.com/community/forums/silverlight/drag-and-drop/draganddrop-with-radtreeview-and-entitycollection.aspx
             e.Handled = true;
         }
-
-        #endregion
 
         //Manually handle RouteTreeViewSelected for RouteTask because multibindings will not work inside a RouteTreeView's Hierarchy
         private void RouteTreeViewSelected(object sender, Telerik.Windows.RadRoutedEventArgs e)

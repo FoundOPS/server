@@ -8,11 +8,11 @@
     <Controls1:RadBusyIndicator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BusyContent="Loading Tasks" IsBusy="{Binding TasksLoading}">
         <Grid x:Name="LayoutRoot" Background="White">
             <telerik:RadGridView x:Name="TaskBoardRadGridView" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding UnroutedTasks}"
-                             SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Multiple" telerikDragDrop:RadDragAndDropManager.AllowDrag ="True" telerikDragDrop:RadDragAndDropManager.AllowDrop ="True">
+                             SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Multiple" telerikDragDrop:RadDragAndDropManager.AllowDrag="True">
                 <telerik:RadGridView.RowStyle>
                     <Style TargetType="telerikGridElements:GridViewRow" x:Name="GridDragStyle">
-                        <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrag" Value="True" />
-                        <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrop" Value="True" />
+                        <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrag" Value="True"/>
+                        <Setter Property="telerikDragDrop:RadDragAndDropManager.AutoDrag" Value="True"/>
                     </Style>
                 </telerik:RadGridView.RowStyle>
                 <telerik:RadGridView.Columns>

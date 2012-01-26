@@ -10,6 +10,24 @@ namespace FoundOps.Core.Models.CoreEntities
 {
     public partial class RouteDestination : IReject
     {
+        partial void OnInitializedSilverlight()
+        {
+            this.RouteTasks.EntityAdded += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
+            this.RouteTasks.EntityRemoved += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
+        }
+
+        /// <summary>
+        /// NOTE: Do not add to the RouteTasksListWrapper. Add to RouteTasks.
+        /// Wraps the RouteTasks for drag and drop to work http://www.telerik.com/community/forums/silverlight/drag-and-drop/draganddrop-with-radtreeview-and-entitycollection.aspx
+        /// </summary>
+        public ObservableCollection<RouteTask> RouteTasksListWrapper
+        {
+            get
+            {
+                return new ObservableCollection<RouteTask>(this.RouteTasks);
+            }
+        }
+
         //NOTE: The notify property changed handling happens on the Server Extensions
         public string Name
         {
@@ -20,7 +38,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             get
             {
-                var apt = new ScheduleViewAppointment { Subject = this.Name, Location = this.Location.Name};
+                var apt = new ScheduleViewAppointment { Subject = this.Name, Location = this.Location.Name };
                 var newResource = new Resource();
                 newResource.ResourceName = this.Route.Name;
                 newResource.ResourceType = "Route";
