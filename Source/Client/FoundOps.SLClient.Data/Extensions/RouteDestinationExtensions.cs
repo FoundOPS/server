@@ -1,4 +1,5 @@
-﻿using Telerik.Windows.Controls;
+﻿using FoundOps.Common.Silverlight.Tools;
+using Telerik.Windows.Controls;
 using System.Collections.ObjectModel;
 using FoundOps.Core.Context.Extensions;
 using FoundOps.Common.Silverlight.Interfaces;
@@ -12,19 +13,22 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         partial void OnInitializedSilverlight()
         {
+            RouteTasksListWrapper = new OrderedEntityCollection<RouteTask>(this.RouteTasks, "OrderInRouteDestination", false);
             this.RouteTasks.EntityAdded += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
             this.RouteTasks.EntityRemoved += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
         }
 
+        private OrderedEntityCollection<RouteTask> _routeTasksListWrapper;
         /// <summary>
-        /// NOTE: Do not add to the RouteTasksListWrapper. Add to RouteTasks.
         /// Wraps the RouteTasks for drag and drop to work http://www.telerik.com/community/forums/silverlight/drag-and-drop/draganddrop-with-radtreeview-and-entitycollection.aspx
         /// </summary>
-        public ObservableCollection<RouteTask> RouteTasksListWrapper
+        public OrderedEntityCollection<RouteTask> RouteTasksListWrapper
         {
-            get
+            get { return _routeTasksListWrapper; }
+            private set
             {
-                return new ObservableCollection<RouteTask>(this.RouteTasks);
+                _routeTasksListWrapper = value;
+                this.RaisePropertyChanged("RouteTasksListWrapper");
             }
         }
 

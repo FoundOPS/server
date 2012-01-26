@@ -86,6 +86,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignRouteTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(0),
                 Client = _clientsDesignData.DesignClient,
@@ -96,6 +97,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignRouteTaskTwo = new RouteTask
             {
+                OrderInRouteDestination = 2,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(0),
                 Client = _clientsDesignData.DesignClientTwo,
@@ -118,6 +120,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignRouteTaskThree = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClientTwo.OwnedParty.Locations.ElementAt(0),
                 Client = _clientsDesignData.DesignClientTwo,
@@ -140,6 +143,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             var routeTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClientThree.OwnedParty.Locations.ElementAt(0),
                 Client = _clientsDesignData.DesignClientThree,
@@ -161,6 +165,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             routeTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(1),
                 Client = _clientsDesignData.DesignClient,
@@ -182,6 +187,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             routeTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClientTwo.OwnedParty.Locations.ElementAt(1),
                 Client = _clientsDesignData.DesignClientTwo,
@@ -203,6 +209,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             routeTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClientThree.OwnedParty.Locations.ElementAt(1),
                 Client = _clientsDesignData.DesignClientThree,

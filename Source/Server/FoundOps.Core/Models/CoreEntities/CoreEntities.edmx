@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
@@ -703,6 +703,7 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ReadyToInvoice" Type="bit" Nullable="true" />
     <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="OrderInRouteDestination" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Parties_Business">
     <Key>
@@ -2349,6 +2350,7 @@
           <Property Type="String" Name="Name" Nullable="false" />
           <Property Type="Boolean" Name="ReadyToInvoice" Nullable="true" />
           <Property Type="DateTime" Name="Date" Nullable="false" />
+          <Property Type="Int32" Name="OrderInRouteDestination" Nullable="false" />
         </EntityType>
         <Association Name="RouteTaskLocation">
           <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
@@ -3738,6 +3740,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ReadyToInvoice" ColumnName="ReadyToInvoice" />
           <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="OrderInRouteDestination" ColumnName="OrderInRouteDestination" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

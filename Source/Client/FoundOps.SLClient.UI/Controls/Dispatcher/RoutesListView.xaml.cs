@@ -166,6 +166,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                         {
                             var routesVM = this.RoutesVM;
 
+                            #region Adding to the TaskBoard happens here
+
                             //Check if you are dropping into the TaskBoard
                             if (e.Options.Destination is TaskBoard)
                             {
@@ -183,6 +185,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                                 continue;
                             }
+
+                            #endregion
+
                             //Used to reset the placeInRoute to the original drop position
                             placeInRoute = placeHolderReseter;
 
@@ -209,6 +214,18 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                                     ((RouteTask)e.Options.Destination.DataContext).RouteDestination.RouteTasks.Add(routeTask);
                                 else
                                 {
+                                    if (destination is RouteTask)
+                                    {
+                                        //Get the Tasks, RouteDestination
+                                        var routeTasksDestination = ((RouteTask)destination).RouteDestination;
+
+                                        //Add the RouteTask to the RouteDestination found above
+                                        routeTasksDestination.RouteTasks.Add(routeTask);
+
+                                        //No need to do any of the other logic below, skip to the next iteration of the loop
+                                        continue;
+                                    }
+
                                     //Create new RouteDestination
                                     var newDestination = new RouteDestination
                                                              {
@@ -242,18 +259,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                                         //Add the new destination to the Route
                                         route.RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
                                     }
-                                    if (destination is RouteTask)
-                                    {
-                                        //Get the Tasks, Destination
-                                        var routeTasksDestination = ((RouteTask)destination).RouteDestination;
-
-                                        //Get the Destinations, Route
-                                        var route = routeTasksDestination.Route;
-
-                                        //Add the new destination to the Route
-                                        route.RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
-                                    }
-
                                 }
                             }
                         }
@@ -273,12 +278,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         {
             var draggedItems = e.Options.Payload as IEnumerable<object>;
 
-
-            if (e.Options.Status == DragStatus.DragInProgress)
-            {
-                ////Set up a drag cue:
-            }
-            else if (e.Options.Status == DragStatus.DragComplete)
+            if (e.Options.Status == DragStatus.DragComplete)
             {
                 //Get the Route that the items were dragged from
                 var routeDraggedFrom = SetRouteDraggedFrom(draggedItems, e);
@@ -286,8 +286,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 if (routeDraggedFrom == null)
                     return;
 
-                var routesVM = this.RoutesVM; 
-                
+                var routesVM = this.RoutesVM;
+
                 foreach (var draggedItem in draggedItems)
                 {
                     var routeDestination = draggedItem as RouteDestination;

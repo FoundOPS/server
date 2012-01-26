@@ -8330,7 +8330,8 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="estimatedDuration">Initial value of the EstimatedDuration property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="date">Initial value of the Date property.</param>
-        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Boolean readOnly, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.DateTime date)
+        /// <param name="orderInRouteDestination">Initial value of the OrderInRouteDestination property.</param>
+        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Boolean readOnly, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.DateTime date, global::System.Int32 orderInRouteDestination)
         {
             RouteTask routeTask = new RouteTask();
             routeTask.Id = id;
@@ -8339,6 +8340,7 @@ namespace FoundOps.Core.Models.CoreEntities
             routeTask.EstimatedDuration = estimatedDuration;
             routeTask.Name = name;
             routeTask.Date = date;
+            routeTask.OrderInRouteDestination = orderInRouteDestination;
             return routeTask;
         }
 
@@ -8611,6 +8613,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.DateTime _Date;
         partial void OnDateChanging(global::System.DateTime value);
         partial void OnDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OrderInRouteDestination
+        {
+            get
+            {
+                return _OrderInRouteDestination;
+            }
+            set
+            {
+                OnOrderInRouteDestinationChanging(value);
+                ReportPropertyChanging("OrderInRouteDestination");
+                _OrderInRouteDestination = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderInRouteDestination");
+                OnOrderInRouteDestinationChanged();
+            }
+        }
+        private global::System.Int32 _OrderInRouteDestination;
+        partial void OnOrderInRouteDestinationChanging(global::System.Int32 value);
+        partial void OnOrderInRouteDestinationChanged();
 
         #endregion
     
