@@ -124,7 +124,6 @@ namespace FoundOps.SLClient.Data.Tools
                     //Create a new route destination and add the task to it
                     var newRouteDestination = new RouteDestination
                     {
-                        Id = Guid.NewGuid(),
                         OrderInRoute = route.RouteDestinations.Count + 1,
                         Client = routeTask.Client,
                         Location = routeTask.Location

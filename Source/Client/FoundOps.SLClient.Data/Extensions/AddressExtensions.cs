@@ -1,4 +1,5 @@
-﻿// ReSharper disable CheckNamespace
+﻿//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Common.NET
 // ReSharper restore CheckNamespace
 {

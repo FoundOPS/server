@@ -1,4 +1,5 @@
-﻿using Telerik.Windows.Controls;
+﻿using FoundOps.Common.Silverlight.Tools;
+using Telerik.Windows.Controls;
 using System.Collections.ObjectModel;
 using FoundOps.Core.Context.Extensions;
 using FoundOps.Common.Silverlight.Interfaces;
@@ -10,6 +11,27 @@ namespace FoundOps.Core.Models.CoreEntities
 {
     public partial class RouteDestination : IReject
     {
+        partial void OnInitializedSilverlight()
+        {
+            RouteTasksListWrapper = new OrderedEntityCollection<RouteTask>(this.RouteTasks, "OrderInRouteDestination", false);
+            this.RouteTasks.EntityAdded += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
+            this.RouteTasks.EntityRemoved += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
+        }
+
+        private OrderedEntityCollection<RouteTask> _routeTasksListWrapper;
+        /// <summary>
+        /// Wraps the RouteTasks for drag and drop to work http://www.telerik.com/community/forums/silverlight/drag-and-drop/draganddrop-with-radtreeview-and-entitycollection.aspx
+        /// </summary>
+        public OrderedEntityCollection<RouteTask> RouteTasksListWrapper
+        {
+            get { return _routeTasksListWrapper; }
+            private set
+            {
+                _routeTasksListWrapper = value;
+                this.RaisePropertyChanged("RouteTasksListWrapper");
+            }
+        }
+
         //NOTE: The notify property changed handling happens on the Server Extensions
         public string Name
         {
@@ -20,7 +42,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             get
             {
-                var apt = new ScheduleViewAppointment { Subject = this.Name, Location = this.Location.Name};
+                var apt = new ScheduleViewAppointment { Subject = this.Name, Location = this.Location.Name };
                 var newResource = new Resource();
                 newResource.ResourceName = this.Route.Name;
                 newResource.ResourceType = "Route";
@@ -39,25 +61,9 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
-        /// <summary>
-        /// Needs to be observable collection to allow ordering in TreeView
-        /// </summary>
-        public ObservableCollection<RouteTask> Tasks
-        {
-            get
-            {
-                return new ObservableCollection<RouteTask>(RouteTasks);
-            }
-        }
-
         public void Reject()
         {
             this.RejectChanges();
-        }
-
-        public void ForceTasksRefresh()
-        {
-            this.RaisePropertyChanged("Tasks");
         }
     }
 }

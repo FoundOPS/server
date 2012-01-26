@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 12/14/2011 10:27:39
+-- Date Created: 01/25/2012 22:20:10
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -315,9 +315,6 @@ IF OBJECT_ID(N'[dbo].[SubLocations]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Employees]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Employees];
-GO
-IF OBJECT_ID(N'[dbo].[SalesLeads]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[SalesLeads];
 GO
 IF OBJECT_ID(N'[dbo].[EmployeeHistoryEntries]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EmployeeHistoryEntries];
@@ -642,13 +639,6 @@ CREATE TABLE [dbo].[Employees] (
 );
 GO
 
--- Creating table 'SalesLeads'
-CREATE TABLE [dbo].[SalesLeads] (
-    [Id] uniqueidentifier  NOT NULL,
-    [Email] nvarchar(max)  NULL
-);
-GO
-
 -- Creating table 'EmployeeHistoryEntries'
 CREATE TABLE [dbo].[EmployeeHistoryEntries] (
     [Id] uniqueidentifier  NOT NULL,
@@ -736,7 +726,8 @@ CREATE TABLE [dbo].[RouteTasks] (
     [EstimatedDuration] time  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [ReadyToInvoice] bit  NULL,
-    [Date] datetime  NOT NULL
+    [Date] datetime  NOT NULL,
+    [OrderInRouteDestination] int  NOT NULL DEFAULT 1
 );
 GO
 
@@ -997,12 +988,6 @@ GO
 -- Creating primary key on [Id] in table 'Employees'
 ALTER TABLE [dbo].[Employees]
 ADD CONSTRAINT [PK_Employees]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'SalesLeads'
-ALTER TABLE [dbo].[SalesLeads]
-ADD CONSTRAINT [PK_SalesLeads]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1284,7 +1269,7 @@ ADD CONSTRAINT [FK_RouteTaskRouteDestination]
     FOREIGN KEY ([RouteDestinationId])
     REFERENCES [dbo].[RouteDestinations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskRouteDestination'
 CREATE INDEX [IX_FK_RouteTaskRouteDestination]

@@ -1,67 +1,22 @@
 ﻿using System;
-using System.ComponentModel;
-using System.IO;
 using System.Windows;
 using System.Reactive.Linq;
-using System.Windows.Controls;
-using System.Windows.Media;
 using FoundOps.Common.Tools;
-using System.Reactive.Subjects;
+using System.Windows.Controls;
 using FoundOps.SLClient.UI.Tools;
-using Telerik.Windows.Documents;
+using Telerik.Windows.Documents.UI;
 using Telerik.Windows.Documents.Model;
-using Telerik.Windows.Documents.Fixed;
 using Telerik.Windows.Documents.Layout;
 using Telerik.Windows.Documents.FormatProviders.Pdf;
-using Telerik.Windows.Documents.UI;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 {
     /// <summary>
     /// Displays RouteManifest
     /// </summary>
-    public partial class RouteManifestViewer : INotifyPropertyChanged
+    public partial class RouteManifestViewer
     {
-        #region Public Properties and Variables
-
-        #region Implementation of INotifyPropertyChanged
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void RaisePropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
-        private bool _isLoading;
-        /// <summary>
-        /// A bool that is true when the manifest is being calculated.
-        /// </summary>
-        public bool IsLoading
-        {
-            get { return _isLoading; }
-            private set
-            {
-                _isLoading = value;
-                this.RaisePropertyChanged("IsLoading");
-            }
-        }
-
-        #endregion
-
         #region Locals
-
-        //Used to update the Pdf
-        private readonly Subject<bool> _updatePdfObservable = new Subject<bool>();
 
         //Keeps track if the current window is open
         private bool _isOpen;
@@ -92,7 +47,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             };
             this.Closed += (s, e) => _isOpen = false;
 
-            _updatePdfObservable.Throttle(TimeSpan.FromSeconds(.25)).ObserveOnDispatcher().Subscribe(_ => UpdatePdf());
+            //this.ManifestRichTextBox.CurrentVisiblePageChanged+= Update textbox
         }
 
         #region Logic
@@ -101,33 +56,48 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         {
             //Only load the manifest when the current viewer is open
             if (!_isOpen) return;
-            IsLoading = true;
 
             var bodyParagraph = new Paragraph();
 
+            var margin = new Thickness(25, 2, 0, 0);
             //If there is a selected route setup the manifest
             if (VM.Routes.SelectedEntity != null)
             {
                 //Keep track of the images loaded
-                var routeDestinationImagesCompleted = new BehaviorSubject<int>(0);
-
-                //Update the Pdf when all the required images are loaded 
-                //routeDestinationManifests that do not have images will fire ImageLoaded imediately
-                routeDestinationImagesCompleted.Where(imageLoaded => imageLoaded == VM.Routes.SelectedEntity.RouteDestinations.Count)
-                    .Subscribe(_ => _updatePdfObservable.OnNext(true));
 
                 #region Add the Header
 
-                //We only want the header to show up once, so just add it first to the body paragraph.
-                var manifestHeader = new ManifestHeader();
-                manifestHeader.Measure(new Size(double.MaxValue, double.MaxValue));
-
-                bodyParagraph.Inlines.Add(new InlineUIContainer
+                if (VM.RouteManifest.RouteManifestSettings.IsHeaderVisible)
                 {
-                    Height = manifestHeader.DesiredSize.Height,
-                    Width = manifestHeader.DesiredSize.Width,
-                    UiElement = manifestHeader
-                });
+                    //We only want the header to show up once, so just add it first to the body paragraph.
+                    var manifestHeader = new ManifestHeader { Margin = new Thickness(350, 0, 0, 0) };
+                    manifestHeader.Measure(new Size(double.MaxValue, double.MaxValue));
+
+                    bodyParagraph.Inlines.Add(new InlineUIContainer
+                    {
+                        Height = manifestHeader.DesiredSize.Height,
+                        Width = manifestHeader.DesiredSize.Width,
+                        UiElement = manifestHeader
+                    });
+                }
+
+                #endregion
+
+                #region Add the Summary
+
+                if (VM.RouteManifest.RouteManifestSettings.IsSummaryVisible)
+                {
+                    //We only want the summary to show up once, so just add it first to the body paragraph.
+                    var manifestSummary = new ManifestSummary { Margin = margin };
+                    manifestSummary.Measure(new Size(double.MaxValue, double.MaxValue));
+
+                    bodyParagraph.Inlines.Add(new InlineUIContainer
+                    {
+                        Height = manifestSummary.DesiredSize.Height,
+                        Width = manifestSummary.DesiredSize.Width,
+                        UiElement = manifestSummary
+                    });
+                }
 
                 #endregion
 
@@ -135,14 +105,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
                 foreach (var routeDestination in VM.Routes.SelectedEntity.RouteDestinationsListWrapper)
                 {
-                    var manifestRouteDestination = new ManifestRouteDestination();
-
-                    //Whenever the image is loaded increment routeDestinationImagesCompleted
-                    Observable.FromEventPattern<EventArgs>(manifestRouteDestination, "ImageLoaded").AsGeneric()
-                        .Subscribe(_ => routeDestinationImagesCompleted.OnNext(routeDestinationImagesCompleted.First() + 1));
-
-                    manifestRouteDestination.RouteDestination = routeDestination;
-
+                    var manifestRouteDestination = new ManifestRouteDestination { Margin = margin, RouteDestination = routeDestination };
                     manifestRouteDestination.Measure(new Size(double.MaxValue, double.MaxValue));
 
                     var container = new InlineUIContainer
@@ -156,6 +119,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 }
 
                 #endregion
+
+                ////Fixup the layout in half a second
+                //Observable.Interval(TimeSpan.FromMilliseconds(500)).Take(1).SubscribeOnDispatcher().Subscribe(_ => ManifestRichTextBox.UpdateLayout());
             }
 
             ////Setup the main section
@@ -163,75 +129,16 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             mainSection.Blocks.Add(bodyParagraph);
 
             //Setup the Document
-            var document = new RadDocument() { LayoutMode = DocumentLayoutMode.Paged };
+            var document = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
             document.Sections.Add(mainSection);
 
             ManifestRichTextBox.Document = document;
-
-            //Update the Pdf right away if there is not a selected Route
-            if (VM.Routes.SelectedEntity == null)
-                _updatePdfObservable.OnNext(true);
-        }
-
-        /// <summary>
-        /// Updates the PDF.
-        /// </summary>
-        private void UpdatePdf()
-        {
-            //Only load the manifest when the current viewer is open
-            if (!_isOpen) return;
-
-            //Scroll to bottom to force all itemscontrols to generate
-            ManifestRichTextBox.Document.CaretPosition.MoveToLastPositionInDocument();
-
-            //Give it time to draw the controls
-            Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
-            {
-                var outputStream = new MemoryStream();
-                var pdfFormatProvider = new PdfFormatProvider();
-                pdfFormatProvider.Export(ManifestRichTextBox.Document, outputStream);
-
-                ManifestPdfViewer.DocumentSource = new PdfDocumentSource(outputStream);
-                ManifestPdfViewer.DocumentSource.Loaded += (s, e) =>
-                {
-                    outputStream.Close();
-                    IsLoading = false;
-                };
-            });
         }
 
         private void MyRouteManifestViewerClosed(object sender, System.EventArgs e)
         {
             //On closing the manifest: update and save the route manifest settings
             VM.RouteManifest.UpdateSaveRouteManifestSettings();
-        }
-
-        private void CurrentPageBlockLoaded(object sender, RoutedEventArgs e)
-        {
-            DependencyObject parent = this;
-            while (parent != null && !(parent is DocumentPagePresenter))
-            {
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-            if (parent == null) return;
-            var presenter = (DocumentPagePresenter)parent;
-            int pageNumber = presenter.SectionBoxIndex + 1;
-            ((TextBlock)sender).Text = pageNumber.ToString();
-        }
-
-        private void PageCountBlockLoaded(object sender, RoutedEventArgs e)
-        {
-            DependencyObject parent = this;
-            while (parent != null && !(parent is DocumentPagePresenter))
-            {
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-            if (parent == null) return;
-            var presenter = (DocumentPagePresenter)parent;
-            var position = new DocumentPosition(presenter.Owner.Document);
-            position.MoveToLastPositionInDocument();
-
-            ((TextBlock)sender).Text = (position.GetCurrentSectionBox().ChildIndex + 1).ToString();
         }
 
         //#region Analytics
@@ -299,18 +206,29 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         #endregion
 
+        private string GetFileName()
+        {
+            return String.Format("{0} Manifest", VM.Routes.SelectedEntity != null ? VM.Routes.SelectedEntity.Name : "");
+        }
+
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
-            if (IsLoading) return;
+            //TODO: Need to scroll through to force generation of items controls
 
             //Open a SaveFileDialog to let the user save the document as a PDF
-            var saveDialog = new SaveFileDialog {DefaultExt = ".pdf", Filter = "PDF|*.pdf"};
+            var saveDialog = new SaveFileDialog { DefaultExt = ".pdf", Filter = "PDF|*.pdf", DefaultFileName = GetFileName() + ".pdf" };
 
             var dialogResult = saveDialog.ShowDialog();
             if (dialogResult != true) return;
+
             var provider = new PdfFormatProvider();
             using (var output = saveDialog.OpenFile())
                 provider.Export(this.ManifestRichTextBox.Document, output);
+        }
+
+        private void BtnPrint_OnClick(object sender, RoutedEventArgs e)
+        {
+            ManifestRichTextBox.Print(GetFileName(), PrintMode.Native);
         }
     }
 }

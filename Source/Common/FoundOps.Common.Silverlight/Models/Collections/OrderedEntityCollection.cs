@@ -36,7 +36,7 @@ namespace FoundOps.Common.Silverlight.Tools
             int index = zeroIndexed ? 0 : 1;
 
             //Add all of the items to this in order of the _indexPropertyName
-            foreach (var element in entityCollection.OrderBy(e => e.GetProperty<int>(_indexPropertyName)))
+            foreach (var element in entityCollection.OrderBy(e => e.GetProperty<int>(_indexPropertyName)).ToArray())
             {
                 this.Add(element);
 
@@ -65,7 +65,7 @@ namespace FoundOps.Common.Silverlight.Tools
 
             //Reorganize the backing collection
             var ordered = this.OrderBy(o => o.GetProperty<int>(_indexPropertyName)).ToArray();
-            
+
             base.Clear();
 
             foreach (var orderedItem in ordered)
@@ -88,30 +88,50 @@ namespace FoundOps.Common.Silverlight.Tools
             base.Remove(entityToRemove);
 
             //Go through each entity that was after this element and update it's index to one less than before
-            var entitiesToUpdate = this.Where(el => el.GetProperty<int>(_indexPropertyName) > entityToRemove.GetProperty<int>(_indexPropertyName));
+            var entitiesToUpdate = this.Where(el => el.GetProperty<int>(_indexPropertyName) > entityToRemove.GetProperty<int>(_indexPropertyName)).ToArray();
 
             foreach (var entityToUpdate in entitiesToUpdate)
                 entityToUpdate.SetProperty(_indexPropertyName, entityToUpdate.GetProperty<int>(_indexPropertyName) - 1);
         }
 
+        /// <summary>
+        /// Inserts the specified index.
+        /// </summary>
+        /// <param name="index">The index (zero indexed).</param>
+        /// <param name="itemToInsert">The item to insert.</param>
         public new void Insert(int index, TEntity itemToInsert)
         {
-            //Update the inserted entity's index property
-            itemToInsert.SetProperty(_indexPropertyName, _zeroIndexed ? index : index + 1);
+            bool alreadyContainsItem = Contains(itemToInsert);
+            //If this already contains the item. remove it from its position
+            if (alreadyContainsItem)
+            {
+                //Update the index because the item will be pulled
+                if (IndexOf(itemToInsert) < index)
+                    index = index - 1;
 
-            //Go through each entity that was on or after the index and update it's index to one more than before
-            var entitiesToUpdate = this.Where(entity => entity.GetProperty<int>(_indexPropertyName) >= itemToInsert.GetProperty<int>(_indexPropertyName));
+                //Remove the item
+                base.Remove(itemToInsert);
+            }
 
-            foreach (var entityToUpdate in entitiesToUpdate)
-                entityToUpdate.SetProperty(_indexPropertyName, entityToUpdate.GetProperty<int>(_indexPropertyName) + 1);
-
-            //Add the entity to this backing collection
             base.Insert(index, itemToInsert);
-
-            _thisMakingChangesToEntityCollection = true; //Prevent an incorrect operation
+            UpdateNumbering();
 
             //Add the entity to the entity collection
-            _entityCollection.Add(itemToInsert);
+            if (!alreadyContainsItem)
+            {
+                _thisMakingChangesToEntityCollection = true; //Prevent an incorrect operation
+                _entityCollection.Add(itemToInsert);
+            }
+        }
+
+        private void UpdateNumbering()
+        {
+            var i = _zeroIndexed ? 0 : 1;
+            foreach(var item in this)
+            {
+                item.SetProperty(_indexPropertyName, i);
+                i++;
+            }
         }
 
         public new void Add(TEntity item)
@@ -135,13 +155,8 @@ namespace FoundOps.Common.Silverlight.Tools
             if (!Contains(item))
                 return false;
 
-            //Go through each entity that was on or after the removed entity's index and update it's index to one less than before
-            var entitiesToUpdate = this.Where(entity => entity.GetProperty<int>(_indexPropertyName) > item.GetProperty<int>(_indexPropertyName));
-
-            foreach (var entityToUpdate in entitiesToUpdate)
-                entityToUpdate.SetProperty(_indexPropertyName, entityToUpdate.GetProperty<int>(_indexPropertyName) - 1);
-
             base.Remove(item);
+            UpdateNumbering();
 
             _thisMakingChangesToEntityCollection = true; //Prevent an incorrect operation
             _entityCollection.Remove(item);

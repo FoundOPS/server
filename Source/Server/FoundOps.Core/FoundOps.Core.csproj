@@ -162,7 +162,6 @@
     <Compile Include="Models\CoreEntities\Extensions\Parties\PersonExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountLogEntryExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\RepeatExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\SalesLeadExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\RecurringServiceExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.shared.cs" />
@@ -198,6 +197,7 @@
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
     <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
+    <Content Include="Models\CoreEntities\ManualDatabaseChanges.txt" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\CoreEntities\CoreEntities.edmx">
@@ -219,10 +219,6 @@
     <ProjectReference Include="..\..\Common\FoundOps.Common.NET\FoundOps.Common.NET.csproj">
       <Project>{DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB}</Project>
       <Name>FoundOps.Common.NET</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\FoundOps.Common\FoundOps.Common.csproj">
-      <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
-      <Name>FoundOps.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

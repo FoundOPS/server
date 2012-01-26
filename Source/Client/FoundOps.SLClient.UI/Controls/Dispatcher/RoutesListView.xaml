@@ -10,7 +10,6 @@
     <UserControl.Resources>
         <DataTemplate x:Key="DragCueTemplate">
             <Controls1:RadDockPanel Margin="2" MaxWidth="200">
-                <TextBlock Text="{Binding Name}" Controls1:RadDockPanel.Dock="Top" Foreground="Black"/>
             </Controls1:RadDockPanel>
         </DataTemplate>
         <Converters:StringToColorConverter x:Key="StringToColorConverter"/>
@@ -36,12 +35,13 @@
                     <Controls2:RadTreeView x:Name="RouteTreeView" Loaded="RouteTreeViewLoaded" 
                                            Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding RouteDestinationsListWrapper}" 
                                            IsDragDropEnabled="True" Background="Transparent" Selected="RouteTreeViewSelected" Unselected="RouteTreeViewUnselected"
-                                           IsDragPreviewEnabled="True" IsDragTooltipEnabled="True" IsDropPreviewLineEnabled="True" 
-                                           DragStarted="RouteTreeView_DragStarted" PreviewDragEnded="RouteTreeView_PreviewDragEnded" Width="200">
+                                           Width="200" IsDropPreviewLineEnabled="True" IsDragPreviewEnabled="True" PreviewDragEnded="RouteTreeView_PreviewDragEnded">
+                        <!-- IsDragTooltipEnabled="True" IsDropPreviewLineEnabled="True"-->
+                        <!--DragStarted="RouteTreeView_DragStarted" -->
                         <!--SelectionChanged="RouteTreeView_SelectionChanged"-->
-                        <!--IsExpandOnDblClickEnabled="True" IsLoadOnDemandEnabled="False" AllowDrop="True" IsDropPreviewLineEnabled="True" -->
+                        <!--IsExpandOnDblClickEnabled="True" IsLoadOnDemandEnabled="False"  -->
                         <Controls2:RadTreeView.ItemTemplate>
-                            <Controls1:HierarchicalDataTemplate x:Name="RouteDestinationHolder" ItemsSource="{Binding Tasks}">
+                            <Controls1:HierarchicalDataTemplate x:Name="RouteDestinationHolder" ItemsSource="{Binding RouteTasksListWrapper}">
                                 <Controls1:HierarchicalDataTemplate.ItemTemplate>
                                     <Controls1:HierarchicalDataTemplate>
                                         <TextBlock Text="{Binding Name}" Width="150">

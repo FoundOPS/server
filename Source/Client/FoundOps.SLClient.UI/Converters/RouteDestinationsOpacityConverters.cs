@@ -22,7 +22,7 @@ namespace FoundOps.SLClient.UI.Converters
             // a) There is a null destination passed
             // b) The destination has no tasks associated with it
             // c) One of the Tasks has the same type as one of the selected RouteTypes
-            if (currentDestination == null || currentDestination.Tasks.Count == 0 || currentDestination.Tasks.Any(task => selectedRouteTypes.Contains(task.Name)))
+            if (currentDestination == null || currentDestination.RouteTasks.Count == 0 || currentDestination.RouteTasks.Any(task => selectedRouteTypes.Contains(task.Name)))
                 return "1";
 
             // Only gets here if the above condtions fail
@@ -49,7 +49,7 @@ namespace FoundOps.SLClient.UI.Converters
             var routesVM = values[1] as RoutesVM;
             var selectedRouteTypes = routesVM.SelectedRouteTypes;
 
-            if (currentDestination == null || currentDestination.Tasks.Count == 0 || currentDestination.Tasks.Any(task => selectedRouteTypes.Contains(task.Name)))
+            if (currentDestination == null || currentDestination.RouteTasks.Count == 0 || currentDestination.RouteTasks.Any(task => selectedRouteTypes.Contains(task.Name)))
                 return "1";
 
             return ".25";

@@ -8,7 +8,6 @@
     <UserControl.Resources>
         <DataTemplate x:Key="DragCueTemplate">
             <telerik:RadDockPanel Margin="2" MaxWidth="200">
-                <TextBlock Text="{Binding Name}" telerik:RadDockPanel.Dock="Top" Foreground="Black"/>
             </telerik:RadDockPanel>
         </DataTemplate>
         <Style TargetType="ListBoxItem" x:Key="draggableItemStyle">
@@ -41,7 +40,7 @@
                                 </Grid>
                             </DataTemplate>
                         </telerik:RadPane.TitleTemplate>
-                        <Dispatcher2:TaskBoard x:Name="TaskBoard" telerik:RadDragAndDropManager.AllowDrag="True"/>
+                        <Dispatcher2:TaskBoard x:Name="TaskBoard" telerik:RadDragAndDropManager.AutoDrag="True"/>
                     </telerik:RadPane>
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>
@@ -75,7 +74,8 @@
                 <telerik:RadPaneGroup x:Name="mainGroup" TabStripPlacement="Top" SelectionChanged="MainGroupSelectionChanged">
                     <telerik:RadPane Header="Route List" telerik:RadDocking.SerializationTag="RouteList" CanUserClose="False">
                         <telerik:RadBusyIndicator VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BusyContent="Loading Routes" IsBusy="{Binding RoutesLoading}">
-                            <Dispatcher2:RoutesListView x:Name="RoutesListView" telerik:RadDragAndDropManager.AllowDrop="True" AllowDrop="True"/>
+                            <Dispatcher2:RoutesListView x:Name="RoutesListView"/>
+                            <!--telerik:RadDragAndDropManager.AllowDrop="True" AllowDrop="True"-->
                         </telerik:RadBusyIndicator>
                     </telerik:RadPane>
                     <!--<telerik:RadPane Header="Route Schedule" Visibility="Collapsed" telerik:RadDocking.SerializationTag="RouteSchedule" CanUserClose="False">

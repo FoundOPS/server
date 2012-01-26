@@ -414,7 +414,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         private readonly Subject<ObservableCollection<RouteTask>> _loadedRouteTasks = new Subject<ObservableCollection<RouteTask>>();
         private readonly ObservableAsPropertyHelper<ObservableCollection<RouteTask>> _loadedRouteTasksHelper;
         /// <summary>
-        /// The loaded route tasks (disconnected from an EntitySet)
+        /// The loaded route tasks (connected to the RouteTasks EntitySet)
         /// </summary>
         public ObservableCollection<RouteTask> LoadedRouteTasks { get { return _loadedRouteTasksHelper.Value; } }
 
@@ -704,9 +704,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Subscribe to UnroutedRouteTasks (and setup TasksLoading property)
             _tasksLoading = this.DataManager.Subscribe<RouteTask>(Query.UnroutedRouteTasks, ObservationState,
-                //Copy it to another observablecollection so removes are not tracked as deletes
-                loadedRouteTasks => _loadedRouteTasks.OnNext(loadedRouteTasks.ToObservableCollection()))
-                .ToProperty(this, x => x.TasksLoading);
+                loadedRouteTasks => _loadedRouteTasks.OnNext(loadedRouteTasks)).ToProperty(this, x => x.TasksLoading);
 
             #endregion
         }
@@ -735,7 +733,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 //Remove the routedTasks from the task board
                 foreach (var routeTaskToRemove in routedTasks.ToArray())
-                    LoadedRouteTasks.Remove(routeTaskToRemove);
+                    UnroutedTasks.Remove(routeTaskToRemove);
             });
 
             //Allow the user to open the route manifests whenever there is more than one route visible
@@ -865,6 +863,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="routeDestination">The route destination to delete.</param>
         public void DeleteRouteDestination(RouteDestination routeDestination)
         {
+            //Clear references to the RouteDestination
+            foreach(var routeTask in routeDestination.RouteTasks)
+                routeTask.RemoveRouteDestination();
+
             this.Context.RouteDestinations.Remove(routeDestination);
         }
 

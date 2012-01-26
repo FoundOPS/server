@@ -40,17 +40,18 @@ namespace FoundOps.Core.Models.CoreEntities
              * Generated services passed over the wire, even though they are not added to the DB,
              * show up as unmodified/not new entities. */
 
-            if (this.GeneratedOnServer)
-                Observable2.FromPropertyChangedPattern(this, x => x.RouteDestination).WhereNotNull().SubscribeOnDispatcher()
-                .Subscribe(routeDestination =>
-                {
-                    //Cancel adding this to a route
-                    routeDestination.RouteTasks.Remove(this);
+            //Observable2.FromPropertyChangedPattern(this, x => x.RouteDestination).Where(_ => this.GeneratedOnServer).WhereNotNull().SubscribeOnDispatcher()
+            //.Subscribe(routeDestination =>
+            //{
+            //    //Cancel adding this to a route
+            //    this.RouteDestination = null;
 
-                    //Clone this
-                    var routeTaskClone = this.Clone(this.Service != null);
-                    routeDestination.RouteTasks.Add(routeTaskClone);
-                });
+            //    //Clone this
+            //    var clone = this.Clone(this.Service != null);
+
+            //    //Add the clone to the route destination
+            //    routeDestination.RouteTasks.Add(clone);
+            //});
         }
 
         ///<summary>
@@ -58,8 +59,8 @@ namespace FoundOps.Core.Models.CoreEntities
         ///</summary>
         public void RemoveRouteDestination()
         {
-            if (this.RouteDestination != null)
-                this.RouteDestination.RouteTasks.Remove(this);
+            this.RouteDestination = null;
+            this.RouteDestinationId = null;
         }
 
         /// <summary>
