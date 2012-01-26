@@ -114,13 +114,33 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 case DragStatus.DragComplete:
                     {
                         //Here we will be adding the dragged items to somewhere, but to date we have no idea where
-                        #region Adding to Route or TaskBoard
+                        #region Adding draggedItems to Route or TaskBoard
 
                         var routeDraggedTo = new Route();
 
+                        //The text that would show up on a Drag to tell you whether you are going
+                        //to drop something before, in or after the item you are hovering over
+                        var dragActionString = ((String)((TreeViewDragCue)e.Options.DragCue).DragActionContent);
+
+                        //Variables that help to determine the correct placement for the drop
+                        #region Setup and Check "isDropIn" "isDropBefore" and "isDropAfter"
+
+                        var isDropIn = false;
+                        var isDropAfter = false;
+                        var isDropBefore = false;
+
+                        if (dragActionString != null)
+                        {
+                            isDropIn = dragActionString.Contains("in");
+                            isDropAfter = dragActionString.Contains("after");
+                            isDropBefore = dragActionString.Contains("before");
+                        }
+
+                        #endregion
+
                         var placeInRoute = 0;
 
-                        #region Find RouteDraggedTo and the position it was dropped
+                        #region Find routeDraggedTo and the position it was dropped
 
                         if (e.Options.Destination.DataContext is Route)
                         {
@@ -128,7 +148,15 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                             var lastOrDefault = routeDraggedTo.RouteDestinationsListWrapper.LastOrDefault();
                             if (lastOrDefault != null)
+                                //This will ensure that the new RouteDestination is palced at the end of the Route
                                 placeInRoute = lastOrDefault.OrderInRoute;
+
+                            //Telerik does not allow you to drop above the root node in RadTreeView
+                            //We also know that the only time you could possibly drop into a Route and meet the condition below will be
+                            //if you try to drop above the root node. Therfore, if this occurs,
+                            //we reset placeInRoute to '0' so the drop occurs where the user anticipated 
+                            if (!isDropAfter && !isDropBefore)
+                                placeInRoute = 0;
                         }
                         if (e.Options.Destination.DataContext is RouteDestination)
                         {
@@ -146,20 +174,18 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                         #endregion
 
-                        var dragActionString = ((String)((TreeViewDragCue)e.Options.DragCue).DragActionContent);
+                        #region Modify placeInRoute depending on where the task was dropped
 
-                        var isDropIn = false;
-                        var isDropAfter = false;
-                        var isDropBefore = false;
+                        if (placeInRoute > 0)
+                            placeInRoute--;
 
-                        if (dragActionString != null)
-                        {
-                            isDropIn = dragActionString.Contains("in");
-                            isDropAfter = dragActionString.Contains("after");
-                            isDropBefore = dragActionString.Contains("before");
-                        }
+                        if (isDropAfter)
+                            placeInRoute++;
 
-                        var placeHolderReseter = placeInRoute;
+                        if (isDropBefore && placeInRoute > 0)
+                            placeInRoute--;
+
+                        #endregion
 
                         //Iterate through the collection backwards. This keeps the order correct while dragging
                         foreach (var draggedItem in draggedItems.Reverse())
@@ -176,55 +202,66 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                                 {
                                     foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
                                     {
-                                        routesVM.UnroutedTasks.Add(task);
+                                        routesVM.LoadedRouteTasks.Add(task);
                                     }
                                 }
 
                                 if (draggedItem is RouteTask)
-                                    routesVM.UnroutedTasks.Add(draggedItem as RouteTask);
+                                    routesVM.LoadedRouteTasks.Add(draggedItem as RouteTask);
 
                                 continue;
                             }
 
                             #endregion
 
-                            //Used to reset the placeInRoute to the original drop position
-                            placeInRoute = placeHolderReseter;
+                            #region If the current draggedItem is a RouteDestination -> Add it to the Route in the correct position
 
                             var routeDestination = draggedItem as RouteDestination;
                             if (routeDestination != null)
-                            {
-                                if (placeInRoute > 0)
-                                    placeInRoute--;
-
-                                if (isDropAfter)
-                                    placeInRoute++;
-
-                                if (isDropBefore)
-                                    placeInRoute--;
-
                                 routeDraggedTo.RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
-                            }
+
+
+                            #endregion
+
+                            #region If the current draggedItem is a RouteTask -> Either add it to the RouteDestination, or create a new RouteDestination
 
                             var routeTask = draggedItem as RouteTask;
                             if (routeTask != null)
                             {
-                                //Check where you are dropping it...if it is not inside a valid destination one must be created
-                                if (isDropIn)
-                                    ((RouteTask)e.Options.Destination.DataContext).RouteDestination.RouteTasks.Add(routeTask);
+                                //Check if the destination is a RouteDestination and the DragActionString is 'Drop in'
+                                if (isDropIn && e.Options.Destination.DataContext is RouteDestination)
+                                    ((RouteDestination)e.Options.Destination.DataContext).RouteTasksListWrapper.Add(routeTask);
                                 else
                                 {
-                                    if (destination is RouteTask)
+                                    var task = destination as RouteTask;
+                                    if (task != null)
                                     {
+                                        #region Add the RouteTask to the RouteDestination that it was dragged to
+
+                                        //Gets the OrderInRouteDestination for the destination
+                                        var placeInDestination = (task).OrderInRouteDestination;
+
+                                        //Makes adjustments to the placeInDestination based on where routeTask is being dropped
+                                        if (isDropAfter)
+                                            placeInDestination++;
+
+                                        if (isDropBefore && placeInDestination > 0)
+                                            placeInDestination--;
+
                                         //Get the Tasks, RouteDestination
-                                        var routeTasksDestination = ((RouteTask)destination).RouteDestination;
+                                        var routeTasksDestination = (task).RouteDestination;
 
                                         //Add the RouteTask to the RouteDestination found above
-                                        routeTasksDestination.RouteTasks.Add(routeTask);
+                                        routeTasksDestination.RouteTasksListWrapper.Insert(placeInDestination, routeTask);
 
                                         //No need to do any of the other logic below, skip to the next iteration of the loop
                                         continue;
+
+                                        #endregion
                                     }
+
+                                    //Does this if you drag a task anywhere other than inside a current RouteDestination
+                                    #region Create new RouteDestination and add it to the Route
 
                                     //Create new RouteDestination
                                     var newDestination = new RouteDestination
@@ -235,15 +272,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                                                              };
 
                                     newDestination.RouteTasks.Add(routeTask);
-
-                                    if (placeInRoute > 0)
-                                        placeInRoute--;
-
-                                    if (isDropAfter)
-                                        placeInRoute++;
-
-                                    if (isDropBefore)
-                                        placeInRoute--;
 
                                     if (destination is Route)
                                     {
@@ -259,8 +287,12 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                                         //Add the new destination to the Route
                                         route.RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
                                     }
+
+                                    #endregion
                                 }
                             }
+
+                            #endregion
                         }
 
                         #endregion
@@ -278,6 +310,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         {
             var draggedItems = e.Options.Payload as IEnumerable<object>;
 
+            //Here we need to setup DragCues
+
             if (e.Options.Status == DragStatus.DragComplete)
             {
                 //Get the Route that the items were dragged from
@@ -288,11 +322,25 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                 var routesVM = this.RoutesVM;
 
+                //Iterates through and removes the draggedItems from their Source
                 foreach (var draggedItem in draggedItems)
                 {
+                    #region draggedItem is a RouteDestination
+
                     var routeDestination = draggedItem as RouteDestination;
                     if (routeDestination != null)
-                        routeDestination.Route.RouteDestinationsListWrapper.Remove(routeDestination);
+                    {
+                        //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely
+                        //If not, just remove the RouteDestination from its Route
+                        if (e.Options.Destination is TaskBoard)
+                            routesVM.DeleteRouteDestination(routeDestination);
+                        else
+                            routeDestination.Route.RouteDestinationsListWrapper.Remove(routeDestination);
+                    }
+
+                    #endregion
+
+                    #region draggedItem is a RouteTask
 
                     var routeTask = draggedItem as RouteTask;
                     if (routeTask != null)
@@ -306,6 +354,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                         if (tasksDestination.RouteTasks.Count == 0)
                             routesVM.DeleteRouteDestination(tasksDestination);
                     }
+
+                    #endregion
+
                 }
             }
         }
@@ -323,9 +374,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             if (firstOrDefault is RouteDestination)
                 return ((RouteDestination)firstOrDefault).Route;
 
-            var routeTask = ((RouteTask)e.Options.Source.DataContext);
+            //We know that this is going to be a RouteTask because you can only drag a RouteDestination or a RouteTask
+            var routeTask = ((RouteTask)firstOrDefault);
 
-            if (routeTask.RouteDestination == null)
+            //Would be crazy if this happened
+            if (routeTask == null || routeTask.RouteDestination == null)
                 return null;
 
             var route = routeTask.RouteDestination.Route;

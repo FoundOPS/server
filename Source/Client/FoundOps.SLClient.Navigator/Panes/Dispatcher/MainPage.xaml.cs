@@ -154,27 +154,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
         private void OnDropInfo(object sender, DragDropEventArgs e)
         {
-            if (CheckSourceForHeaderCell(e.Options.Source))
-                return;
-
-            var draggedItems = e.Options.Payload as IEnumerable;
-
-            var enumerable = draggedItems;
-
-            //var cue = e.Options.DragCue as TreeViewDragCue;
-
-            if (e.Options.Status == DragStatus.DragInProgress)
-            {
-                //Set up a drag cue
-                //DragCueSetter(draggedItems, e);
-
-                //Save the drag 
-                //e.Options.DragCue = cue;
-            }
-            else if (e.Options.Status == DragStatus.DragComplete)
-            {
-
-            }
+            //Nothing needs to be done here in this case, everything is handled in OnDragInfo
         }
 
         private void OnDragInfo(object sender, DragDropEventArgs e)
@@ -217,13 +197,18 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 RemoveFromTaskBoard(source, draggedItems);
 
                 AddToTreeView(e, draggedItems);
-
             }
             e.Handled = true;
         }
 
         #region Methods used in Drag/Drop Info
 
+        /// <summary>
+        /// Sets the DragCue based on all possible errors.
+        /// </summary>
+        /// <param name="draggedItems">The dragged items.</param>
+        /// <param name="e">The <see cref="Telerik.Windows.Controls.DragDrop.DragDropEventArgs"/> instance containing the event data.</param>
+        /// <returns>Empty string if there is no error. Otherwise, it returns the errorString</returns>
         private string DragCueSetter(IEnumerable draggedItems, DragDropEventArgs e)
         {
             if (!draggedItems.OfType<RouteTask>().Any()) return "";
@@ -352,31 +337,61 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             #endregion
         }
 
+        /// <summary>
+        /// Adds the draggedItems to tree view(Route).
+        /// </summary>
+        /// <param name="e">The <see cref="Telerik.Windows.Controls.DragDrop.DragDropEventArgs"/> instance containing the event data.</param>
+        /// <param name="draggedItems">The dragged items.</param>
         private void AddToTreeView(DragDropEventArgs e, IEnumerable draggedItems)
         {
+            var destination = e.Options.Destination.DataContext;
+
+            draggedItems = draggedItems as IEnumerable<object>;
+
+            foreach (var draggedItem in draggedItems)
+            {
+                //This is done first because we dont need to create a new RouteDestination
+                if (destination is RouteTask)
+                {
+                    var destinationRouteTask = destination as RouteTask;
+                }
+
+                var routetask = draggedItem as RouteTask;
+
+                if (destination is Route)
+                {
+                    
+                }
+                if (destination is RouteDestination)
+                {
+
+                }
+            }
         }
 
+        /// <summary>
+        /// Removes from task board.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="draggedItems">The dragged items.</param>
         private void RemoveFromTaskBoard(IList source, IEnumerable draggedItems)
         {
             foreach (var draggedItem in draggedItems.OfType<RouteTask>().Where(draggedItem => source != null))
                 source.Remove(draggedItem);
         }
 
+        /// <summary>
+        /// Checks the type of the route.
+        /// </summary>
+        /// <param name="routeType">Type of the route.</param>
+        /// <param name="payloadCheck">The payload check.</param>
+        /// <param name="e">The <see cref="Telerik.Windows.Controls.DragDrop.DragDropEventArgs"/> instance containing the event data.</param>
+        /// <returns>True if the Capabilities dont match</returns>
         private bool CheckRouteType(string routeType, RouteTask payloadCheck, DragDropEventArgs e)
         {
             var draggedItemsType = payloadCheck.Service.ServiceTemplate.Name;
 
             return String.CompareOrdinal(routeType, draggedItemsType) != 0;
-        }
-
-        private TreeViewDragCue CreateDragCue(string errorString)
-        {
-            var cue = new TreeViewDragCue();
-            cue.DragTooltipVisibility = Visibility.Visible;
-            cue.DragActionContent = String.Format(errorString);
-            cue.IsDropPossible = false;
-
-            return cue;
         }
 
         /// <summary>
