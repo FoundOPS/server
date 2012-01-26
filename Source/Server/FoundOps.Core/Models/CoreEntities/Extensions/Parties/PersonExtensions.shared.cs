@@ -29,7 +29,10 @@ namespace FoundOps.Core.Models.CoreEntities
                         this.LastName = firstLastName.Last();
                     }
                     else
+                    {
                         this.FirstName = value;
+                        this.LastName = "";
+                    }
                 }
                 else
                 {
