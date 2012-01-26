@@ -167,9 +167,6 @@
     <Reference Include="System.ServiceModel">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.ServiceModel.DomainServices.Client">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.ServiceModel.DomainServices.Client.dll</HintPath>
-    </Reference>
     <Reference Include="System.ServiceModel.DomainServices.EntityFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <Private>True</Private>
     </Reference>
@@ -445,10 +442,6 @@
     <ProjectReference Include="..\..\Common\FoundOps.Common.NET\FoundOps.Common.NET.csproj">
       <Project>{DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB}</Project>
       <Name>FoundOps.Common.NET</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\FoundOps.Common\FoundOps.Common.csproj">
-      <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
-      <Name>FoundOps.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\FoundOps.Core\FoundOps.Core.csproj">
       <Project>{C5170A8A-CAD2-47E2-8552-FEF87C771C03}</Project>

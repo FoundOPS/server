@@ -121,7 +121,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                         if (e.Options.Destination.DataContext is Route)
                         {
-                            routeDraggedTo = (Route) e.Options.Destination.DataContext;
+                            routeDraggedTo = (Route)e.Options.Destination.DataContext;
 
                             var lastOrDefault = routeDraggedTo.RouteDestinationsListWrapper.LastOrDefault();
                             if (lastOrDefault != null)
@@ -193,11 +193,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                                 {
                                     //Create new RouteDestination
                                     var newDestination = new RouteDestination
-                                                             {
-                                                                 Id = Guid.NewGuid(),
-                                                                 Location = routeTask.Location,
-                                                                 Client = routeTask.Client
-                                                             };
+                                    {
+                                        Location = routeTask.Location,
+                                        Client = routeTask.Client
+                                    };
 
                                     newDestination.RouteTasks.Add(routeTask);
 
@@ -290,29 +289,20 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     }
                     var routeDestination = draggedItem as RouteDestination;
                     if (routeDestination != null)
-                    {
+                        //Remove the RouteDestiantion from it's route
                         routeDestination.Route.RouteDestinationsListWrapper.Remove(routeDestination);
-                    }
 
                     var routeTask = draggedItem as RouteTask;
                     if (routeTask != null)
                     {
-                        if (routeTask.RouteDestination.RouteTasks.Count == 1)
-                        {
-                            var destination = routeTask.RouteDestination;
+                        var tasksDestination = routeTask.RouteDestination;
 
-                            routeTask.RemoveRouteDestination();
+                        //Remove the task from the current destination
+                        routeTask.RemoveRouteDestination();
 
-                            var route = destination.Route;
-
-                            destination.Route.RouteDestinationsListWrapper.Remove(destination);
-
-                            routesVM.DeleteRouteDestination(destination);
-
-                            continue;
-                        }
-
-                        routeTask.RouteDestination.RouteTasks.Remove(routeTask);
+                        //If there are no RouteTasks remaining on the destination, delete it
+                        if (tasksDestination.RouteTasks.Count == 0)
+                            routesVM.DeleteRouteDestination(tasksDestination);
                     }
                 }
             }

@@ -59,8 +59,8 @@ namespace FoundOps.Core.Models.CoreEntities
         ///</summary>
         public void RemoveRouteDestination()
         {
-            if (this.RouteDestination != null)
-                this.RouteDestination.RouteTasks.Remove(this);
+            this.RouteDestination = null;
+            this.RouteDestinationId = null;
         }
 
         /// <summary>

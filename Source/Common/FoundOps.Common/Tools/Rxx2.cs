@@ -3,12 +3,12 @@ using System.IO;
 using System.Net;
 using System.Net.Browser;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.ComponentModel;
+using System.Reactive.Subjects;
+using System.Reactive.Disposables;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Reactive.Subjects;
 
 namespace FoundOps.Common.Tools
 {
