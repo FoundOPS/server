@@ -3,12 +3,12 @@ using System.Linq;
 using System.Data;
 using System.Data.Objects;
 using System.Collections.Generic;
-using System.ServiceModel.DomainServices.Server;
+using System.ServiceModel.DomainServices.EntityFramework;
 using FoundOps.Common.Composite;
+using FoundOps.Common.NET;
 using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using Route = FoundOps.Core.Models.CoreEntities.Route;
-using System.ServiceModel.DomainServices.EntityFramework;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using RouteTask = FoundOps.Core.Models.CoreEntities.RouteTask;
 using RouteDestination = FoundOps.Core.Models.CoreEntities.RouteDestination;
@@ -64,32 +64,26 @@ namespace FoundOps.Server.Services.CoreDomainService
             route.EndTime = route.EndTime.SetDate(route.Date); //Set to same date as route.Date
 
             if ((route.EntityState != EntityState.Detached))
-            {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(route, EntityState.Added);
-            }
             else
-            {
                 this.ObjectContext.Routes.AddObject(route);
-            }
         }
 
-        public void UpdateRoute(Route currentRoute)
+        public void UpdateRoute(Route route)
         {
-            this.ObjectContext.Routes.AttachAsModified(currentRoute);
+            this.ObjectContext.Routes.AttachAsModified(route);
         }
 
+        /// <summary>
+        /// Deletes the Route and it's RouteDestinations.
+        /// It does not delete the route destination's tasks.
+        /// </summary>
+        /// <param name="route"></param>
         public void DeleteRoute(Route route)
         {
-            if ((route.EntityState == EntityState.Detached))
-                this.ObjectContext.Routes.Attach(route);
-
-            route.Technicians.Load();
-            route.Technicians.Clear();
-            route.Vehicles.Load();
-            route.Vehicles.Clear();
+            this.ObjectContext.DetachExistingAndAttach(route);
 
             route.RouteDestinations.Load();
-
             foreach (var routeDestination in route.RouteDestinations.ToArray())
                 this.DeleteRouteDestination(routeDestination);
 
@@ -108,13 +102,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         public void InsertRouteDestination(RouteDestination routeDestination)
         {
             if ((routeDestination.EntityState != EntityState.Detached))
-            {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(routeDestination, EntityState.Added);
-            }
             else
-            {
                 this.ObjectContext.RouteDestinations.AddObject(routeDestination);
-            }
         }
 
         public void UpdateRouteDestination(RouteDestination currentRouteDestination)
@@ -122,25 +112,14 @@ namespace FoundOps.Server.Services.CoreDomainService
             this.ObjectContext.RouteDestinations.AttachAsModified(currentRouteDestination);
         }
 
+        /// <summary>
+        /// Deletes the route destination. It does not delete the route tasks.
+        /// </summary>
+        /// <param name="routeDestination">The route destination to delete.</param>
         public void DeleteRouteDestination(RouteDestination routeDestination)
         {
-            var loadedRouteDestination = this.ObjectContext.RouteDestinations.FirstOrDefault(rd => rd.Id == routeDestination.Id);
-            if (loadedRouteDestination != null)
-                this.ObjectContext.Detach(loadedRouteDestination);
+            this.ObjectContext.DetachExistingAndAttach(routeDestination);
 
-            if (routeDestination.EntityState == EntityState.Detached)
-                this.ObjectContext.RouteDestinations.Attach(routeDestination);
-
-            routeDestination.RouteReference.Load();
-            routeDestination.Route = null;
-
-            routeDestination.ClientReference.Load();
-            routeDestination.Client = null;
-
-            routeDestination.LocationReference.Load();
-            routeDestination.Location = null;
-
-            //Do not delete RouteTasks, just clear the reference
             routeDestination.RouteTasks.Load();
             routeDestination.RouteTasks.Clear();
 
@@ -188,7 +167,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                  on es.Id equals st.Id
              from f in st.Fields
              from lf in st.Fields.OfType<LocationField>()
-             select new { st, f , lf.Value })
+             select new { st, f, lf.Value })
             .ToArray();
 
             IEnumerable<Service> existingServices = existingServicesQuery.ToList();
@@ -237,31 +216,20 @@ namespace FoundOps.Server.Services.CoreDomainService
             routeTask.Date = routeTask.Date.Date; //Remove any time
 
             if ((routeTask.EntityState != EntityState.Detached))
-            {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(routeTask, EntityState.Added);
-            }
             else
-            {
                 this.ObjectContext.RouteTasks.AddObject(routeTask);
-            }
         }
 
-        public void UpdateRouteTask(RouteTask routeTask)
+        public void UpdateRouteTask(RouteTask currentRouteTask)
         {
-            this.ObjectContext.RouteTasks.AttachAsModified(routeTask);
+            this.ObjectContext.RouteTasks.AttachAsModified(currentRouteTask);
         }
 
         public void DeleteRouteTask(RouteTask routeTask)
         {
-            if ((routeTask.EntityState != EntityState.Detached))
-            {
-                this.ObjectContext.ObjectStateManager.ChangeObjectState(routeTask, EntityState.Deleted);
-            }
-            else
-            {
-                this.ObjectContext.RouteTasks.Attach(routeTask);
-                this.ObjectContext.RouteTasks.DeleteObject(routeTask);
-            }
+            this.ObjectContext.DetachExistingAndAttach(routeTask);
+            this.ObjectContext.RouteTasks.DeleteObject(routeTask);
         }
 
         #endregion

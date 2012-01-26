@@ -112,12 +112,11 @@
             <param name="windowless" value="true" />
             <param name="minRuntimeVersion" value="5.0.60401.0" />
             <param name="enableHtmlAccess" value="true" />
-            <!-- <%
+            @*   <%
                 string currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
                 Response.Cookies.Add(new HttpCookie("FoundOps-culture", currentCulture));
-                %>-->
-            <param name="uiculture" value="@System.Threading.Thread.CurrentThread.CurrentUICulture" />
-            <param name="culture" value="@System.Threading.Thread.CurrentThread.CurrentCulture" />
+                %>
+               <param name="uiculture" value="@System.Threading.Thread.CurrentThread.CurrentUICulture" />*@
             <param name="autoUpgrade" value="true" />
             <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.60401.0" style="text-decoration: none">
                 <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"

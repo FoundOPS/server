@@ -106,10 +106,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            var routeDestination = new RouteDestination
-              {
-                  OrderInRoute = 1
-              };
+            var routeDestination = new RouteDestination { OrderInRoute = 1 };
             routeDestination.RouteTasks.Add(DesignRouteTask);
             routeDestination.RouteTasks.Add(DesignRouteTaskTwo);
             route.RouteDestinations.Add(routeDestination);
@@ -129,10 +126,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            routeDestination = new RouteDestination
-            {
-                OrderInRoute = 2
-            };
+            routeDestination = new RouteDestination { OrderInRoute = 2 };
 
             routeDestination.RouteTasks.Add(DesignRouteTaskThree);
             route.RouteDestinations.Add(routeDestination);
@@ -152,10 +146,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            routeDestination = new RouteDestination
-            {
-                OrderInRoute = 3
-            };
+            routeDestination = new RouteDestination { OrderInRoute = 3 };
             routeDestination.RouteTasks.Add(routeTask);
             route.RouteDestinations.Add(routeDestination);
 
@@ -196,10 +187,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            routeDestination = new RouteDestination
-            {
-                OrderInRoute = 5
-            };
+            routeDestination = new RouteDestination { OrderInRoute = 5 };
             routeDestination.RouteTasks.Add(routeTask);
             route.RouteDestinations.Add(routeDestination);
 
@@ -218,10 +206,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            routeDestination = new RouteDestination
-            {
-                OrderInRoute = 6
-            };
+            routeDestination = new RouteDestination { OrderInRoute = 6 };
             routeDestination.RouteTasks.Add(routeTask);
             route.RouteDestinations.Add(routeDestination);
 

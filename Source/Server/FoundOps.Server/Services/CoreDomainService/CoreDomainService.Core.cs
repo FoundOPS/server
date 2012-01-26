@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Data;
+using System.Linq;
+using System.Reflection;
 using System.Data.Objects;
 using FoundOps.Common.NET;
 using System.Collections.Generic;
@@ -8,16 +11,12 @@ using System.Security.Authentication;
 using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.Server;
+using System.ServiceModel.DomainServices.Hosting;
 using FoundOps.Core.Models.CoreEntities.DesignData;
+using System.ServiceModel.DomainServices.EntityFramework;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
-    using System;
-    using System.Data;
-    using System.Linq;
-    using System.ServiceModel.DomainServices.EntityFramework;
-    using System.ServiceModel.DomainServices.Hosting;
-
     /// <summary>
     /// Holds the domain service operations for any core entities:
     /// Businesses, ContactInfo, Files,
