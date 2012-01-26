@@ -162,7 +162,6 @@
     <Compile Include="Models\CoreEntities\Extensions\Parties\PersonExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountLogEntryExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\RepeatExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\SalesLeadExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\RecurringServiceExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.shared.cs" />
@@ -198,6 +197,7 @@
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
     <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
+    <Content Include="Models\CoreEntities\ManualDatabaseChanges.txt" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\CoreEntities\CoreEntities.edmx">

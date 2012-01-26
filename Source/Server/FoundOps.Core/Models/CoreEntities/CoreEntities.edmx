@@ -28,7 +28,6 @@
     <EntitySet Name="Files" EntityType="CoreEntities.Store.Files" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="SubLocations" EntityType="CoreEntities.Store.SubLocations" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Employees" EntityType="CoreEntities.Store.Employees" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="SalesLeads" EntityType="CoreEntities.Store.SalesLeads" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.Store.EmployeeHistoryEntries" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Options" EntityType="CoreEntities.Store.Options" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Contacts" EntityType="CoreEntities.Store.Contacts" store:Type="Tables" Schema="dbo" />
@@ -605,13 +604,6 @@
     <Property Name="SSN" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LinkedUserAccountId" Type="uniqueidentifier" Nullable="true" />
     <Property Name="EmployerId" Type="uniqueidentifier" Nullable="false" />
-  </EntityType>
-  <EntityType Name="SalesLeads">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="EmployeeHistoryEntries">
     <Key>
@@ -1936,7 +1928,6 @@
             <End Role="RecurringService" EntitySet="RecurringServices" />
             <End Role="Repeat" EntitySet="Repeats" />
           </AssociationSet>
-          <EntitySet Name="SalesLeads" EntityType="CoreEntities.SalesLead" />
           <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.EmployeeHistoryEntry" />
           <AssociationSet Name="EmployeeHistoryEntryEmployee" Association="CoreEntities.EmployeeHistoryEntryEmployee">
             <End Role="EmployeeHistoryEntry" EntitySet="EmployeeHistoryEntries" />
@@ -2933,13 +2924,6 @@
           <Property Type="Int16" Name="TypeInt" Nullable="false" />
           <Property Type="DateTime" Name="Value" Nullable="true" />
         </EntityType>
-        <EntityType Name="SalesLead">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="String" Name="Email" Nullable="true" />
-        </EntityType>
         <EntityType Name="EmployeeHistoryEntry">
           <Key>
             <PropertyRef Name="Id" />
@@ -3631,14 +3615,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="SalesLeads">
-      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.SalesLead)">
-        <MappingFragment StoreEntitySet="SalesLeads">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="EmployeeHistoryEntries">
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.EmployeeHistoryEntry)">
         <MappingFragment StoreEntitySet="EmployeeHistoryEntries">
@@ -4300,7 +4276,6 @@
           <ConnectorPoint PointX="24.25" PointY="197.125" />
           <ConnectorPoint PointX="24.25" PointY="197.5" />
         </InheritanceConnector>
-        <EntityTypeShape EntityType="CoreEntities.SalesLead" Width="1.5" PointX="4.375" PointY="0.875" Height="1.4033821614583246" />
         <EntityTypeShape EntityType="CoreEntities.EmployeeHistoryEntry" Width="1.5" PointX="5.25" PointY="212.375" Height="2.3648893229166106" />
         <AssociationConnector Association="CoreEntities.EmployeeHistoryEntryEmployee">
           <ConnectorPoint PointX="5.9687474999999832" PointY="212.375" />

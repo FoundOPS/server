@@ -485,22 +485,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<SalesLead> SalesLeads
-        {
-            get
-            {
-                if ((_SalesLeads == null))
-                {
-                    _SalesLeads = base.CreateObjectSet<SalesLead>("SalesLeads");
-                }
-                return _SalesLeads;
-            }
-        }
-        private ObjectSet<SalesLead> _SalesLeads;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<EmployeeHistoryEntry> EmployeeHistoryEntries
         {
             get
@@ -803,14 +787,6 @@ namespace FoundOps.Core.Models.CoreEntities
         public void AddToEmployees(Employee employee)
         {
             base.AddObject("Employees", employee);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the SalesLeads EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToSalesLeads(SalesLead salesLead)
-        {
-            base.AddObject("SalesLeads", salesLead);
         }
     
         /// <summary>
@@ -8833,85 +8809,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="SalesLead")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class SalesLead : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new SalesLead object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static SalesLead CreateSalesLead(global::System.Guid id)
-        {
-            SalesLead salesLead = new SalesLead();
-            salesLead.Id = id;
-            return salesLead;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Guid _Id;
-        partial void OnIdChanging(global::System.Guid value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Email
-        {
-            get
-            {
-                return _Email;
-            }
-            set
-            {
-                OnEmailChanging(value);
-                ReportPropertyChanging("Email");
-                _Email = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Email");
-                OnEmailChanged();
-            }
-        }
-        private global::System.String _Email;
-        partial void OnEmailChanging(global::System.String value);
-        partial void OnEmailChanged();
-
-        #endregion
-    
     }
     
     /// <summary>

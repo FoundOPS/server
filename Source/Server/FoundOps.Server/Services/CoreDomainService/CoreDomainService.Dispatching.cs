@@ -77,15 +77,12 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <summary>
         /// Deletes the Route and it's RouteDestinations.
         /// It does not delete the route destination's tasks.
+        /// Although they are automatically removed through cascading.
         /// </summary>
         /// <param name="route"></param>
         public void DeleteRoute(Route route)
         {
             this.ObjectContext.DetachExistingAndAttach(route);
-
-            route.RouteDestinations.Load();
-            foreach (var routeDestination in route.RouteDestinations.ToArray())
-                this.DeleteRouteDestination(routeDestination);
 
             this.ObjectContext.Routes.DeleteObject(route);
         }
