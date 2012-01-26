@@ -8,7 +8,6 @@
     <UserControl.Resources>
         <DataTemplate x:Key="DragCueTemplate">
             <telerik:RadDockPanel Margin="2" MaxWidth="200">
-                <TextBlock Text="{Binding Name}" telerik:RadDockPanel.Dock="Top" Foreground="Black"/>
             </telerik:RadDockPanel>
         </DataTemplate>
         <Style TargetType="ListBoxItem" x:Key="draggableItemStyle">
@@ -41,7 +40,7 @@
                                 </Grid>
                             </DataTemplate>
                         </telerik:RadPane.TitleTemplate>
-                        <Dispatcher2:TaskBoard x:Name="TaskBoard" telerik:RadDragAndDropManager.AllowDrag="True" telerik:RadDragAndDropManager.AllowDrop="True" />
+                        <Dispatcher2:TaskBoard x:Name="TaskBoard" telerik:RadDragAndDropManager.AutoDrag="True"/>
                     </telerik:RadPane>
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>

@@ -27,6 +27,8 @@ namespace FoundOps.Core.Models.CoreEntities
             ((IEntityDefaultCreation) this).OnCreate();
         }
 
+        partial void OnInitializedSilverlight();
+
         partial void OnInitialization()
         {
             this.RouteTasks.EntityAdded += RouteTasksEntityAdded;
@@ -36,6 +38,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 if (e.PropertyName == "Location")
                     this.RaisePropertyChanged("Name");
             };
+
+            OnInitializedSilverlight();
         }
 
         void RouteTasksEntityAdded(object sender, System.ServiceModel.DomainServices.Client.EntityCollectionChangedEventArgs<RouteTask> e)

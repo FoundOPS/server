@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
 using System.Windows.Controls;
+using FoundOps.SLClient.UI.Controls.Dispatcher;
 using FoundOps.SLClient.UI.Tools;
 using Telerik.Windows.Controls;
 using System.IO.IsolatedStorage;
@@ -49,6 +50,26 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         #endregion
 
         /// <summary>
+        /// Constants for drag cues that require error strings
+        /// </summary>
+        public struct ErrorConstants
+        {
+            /// <summary>
+            /// Error String if you try to drag two things with different ServiceTemplates
+            /// </summary>
+            public const string DifferentService = "Items Selected Have Different Services";
+            /// <summary>
+            /// Error String if you try to drop something on a Route without the correct capability
+            /// </summary>
+            public const string RouteLacksCapabilities = "Route Lacks Service Capabilities";
+            /// <summary>
+            /// Error String if you try to drop something on a destination with a different location
+            /// </summary>
+            public const string InvalidLocation = "Invalid Location";
+
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MainPage"/> class.
         /// </summary>
         public MainPage()
@@ -71,6 +92,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             RadDragAndDropManager.AddDropQueryHandler(this.TaskBoard, OnDropQuery);
             RadDragAndDropManager.AddDragInfoHandler(this.TaskBoard, OnDragInfo);
             RadDragAndDropManager.AddDropInfoHandler(this.TaskBoard, OnDropInfo);
+
+            RadDragAndDropManager.SetAllowDrag(this.TaskBoard, true);
+            RadDragAndDropManager.SetAllowDrop(this.TaskBoard, true);
 
             //Whenever a route, route destination, or task is selected select the appropriate details pane
             this.RoutesVM.FromAnyPropertyChanged()
@@ -130,36 +154,27 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
         private void OnDropInfo(object sender, DragDropEventArgs e)
         {
-            if(CheckSourceForHeaderCell(e.Options.Source))
+            if (CheckSourceForHeaderCell(e.Options.Source))
                 return;
 
+            var draggedItems = e.Options.Payload as IEnumerable;
 
-            var draggedItems = e.Options.Source.DataContext as IEnumerable<object>;
+            var enumerable = draggedItems;
 
-            // Get the drag cue that the TreeView or we have created
-            var cue = e.Options.DragCue as TreeViewDragCue ?? new TreeViewDragCue {IsDropPossible = false};
+            //var cue = e.Options.DragCue as TreeViewDragCue;
 
-            if (cue.IsDropPossible)
+            if (e.Options.Status == DragStatus.DragInProgress)
             {
-                // Set a suitable text:
+                //Set up a drag cue
+                //DragCueSetter(draggedItems, e);
+
+                //Save the drag 
+                //e.Options.DragCue = cue;
+            }
+            else if (e.Options.Status == DragStatus.DragComplete)
+            {
 
             }
-            else if (!cue.IsDropPossible)
-            {
-                cue.DragActionContent = null;
-                cue.IsDropPossible = false;
-            }
-
-            e.Options.DragCue = cue;
-
-            if (e.Options.Status != DragStatus.DropPossible)
-            {
-            }
-
-            if (e.Options.Status == DragStatus.DragComplete)
-            {
-            }
-            e.Handled = true;
         }
 
         private void OnDragInfo(object sender, DragDropEventArgs e)
@@ -167,69 +182,83 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (CheckSourceForHeaderCell(e.Options.Source))
                 return;
 
-            var draggedItems = e.Options.Payload as IEnumerable<object>;
+            var draggedItems = e.Options.Payload as IEnumerable;
 
-            var cue = e.Options.DragCue as TreeViewDragCue;
+            if (draggedItems == null) return;
 
-            DragCueSetter(draggedItems, e);
+            // Get the drag cue that the TreeView or we have created if one previously didnt exist
+            var cue = e.Options.DragCue as TreeViewDragCue ?? new TreeViewDragCue();
 
-            e.Options.DragCue = cue;
+            //Set up a drag cue and save it
+            var errorString = DragCueSetter(draggedItems, e);
 
-            if (e.Options.Status == DragStatus.DragInProgress)
+            if (errorString == "")
             {
-                //////Set up a drag cue:
+                var itemNames = ((IEnumerable<object>)draggedItems).Select(i => ((RouteTask)i).Name);
+                cue.DragPreviewVisibility = Visibility.Visible;
+                cue.DragTooltipVisibility = Visibility.Collapsed;
+                cue.ItemsSource = itemNames;
+                e.Options.DragCue = cue;
+            }
+            else
+            {
+                cue.DragTooltipVisibility = Visibility.Visible;
+                cue.DragTooltipContentTemplate = this.Resources["DragCueTemplate"] as DataTemplate; ;
+                cue.DragActionContent = String.Format(errorString);
+                cue.IsDropPossible = false;
+                e.Options.DragCue = cue;
+            }
+
+            //Drag has completed and has been placed at a valid location
+            if (e.Options.Status == DragStatus.DragComplete && ((TreeViewDragCue)e.Options.DragCue).IsDropPossible)
+            {
+                var source = this.TaskBoard.PublicTaskBoardRadGridView.ItemsSource as IList;
+
+                RemoveFromTaskBoard(source, draggedItems);
+
+                AddToTreeView(e, draggedItems);
 
             }
-            else if (e.Options.Status == DragStatus.DragComplete)
-            {
-
-            }
+            e.Handled = true;
         }
-        
+
         #region Methods used in Drag/Drop Info
 
-        private void DragCueSetter(IEnumerable draggedItems, DragDropEventArgs e)
+        private string DragCueSetter(IEnumerable draggedItems, DragDropEventArgs e)
         {
-            var draggedRouteTasks = (IEnumerable<RouteTask>)draggedItems;
+            if (!draggedItems.OfType<RouteTask>().Any()) return "";
 
-            if (!draggedRouteTasks.Any()) return;
+            //Checks to see if the destination is null
+            var destinationCheck = e.Options.Destination;
+            if (destinationCheck == null) return "";
 
-            var destination = e.Options.Destination.DataContext;
+            //If its not null we set the destination to e.Options.Destination.DataContext
+            var destination = destinationCheck.DataContext;
 
-            //Here we need to choose a template for the items:
-            var cue = new TreeViewDragCue
-            {
-                ItemTemplate = this.Resources["DragCueTemplate"] as DataTemplate,
-                ItemsSource = draggedRouteTasks,
-                IsDropPossible = true
-            };
-
-            var payloadCheck = (draggedRouteTasks.FirstOrDefault());
+            var payloadCheck = (draggedItems.OfType<RouteTask>().FirstOrDefault());
 
             #region Setting Drag Cue off Different Conditions
 
             #region Check For Multiple Tasks Being Dragged
 
-            if (draggedRouteTasks.Count() > 1)
+            if (draggedItems.OfType<RouteTask>().Count() > 1)
             {
                 //FirstOrDefault might be null but the second might have a service 
                 #region Check All Items Dragged for A Service
                 //Need to find out if the fist item dragged has a null 
                 int count = 0;
-                foreach (var serviceObject in draggedRouteTasks.Cast<object>().TakeWhile(serviceObject => ((RouteTask)serviceObject).Service == null))
+                foreach (var serviceObject in draggedItems.Cast<object>().TakeWhile(serviceObject => ((RouteTask)serviceObject).Service == null))
                 {
-                    payloadCheck = (draggedRouteTasks.ElementAt(count));
+                    payloadCheck = draggedItems.OfType<RouteTask>().ElementAt(count);
                     count++;
                 }
                 #endregion
 
-                if (draggedRouteTasks.Where(draggedItem => (draggedItem).Service != null &&
-                    String.CompareOrdinal((draggedItem).Service.ServiceTemplate.Name, payloadCheck.Service.ServiceTemplate.Name) != 0)
-                    .Any(draggedItem => (draggedItem).Service != null))
-                {
-                    const string errorString = "Items Selected Have Different Services";
-                    e.Options.DragCue = CreateDragCue(errorString, cue);
-                }
+                if (draggedItems.OfType<RouteTask>().Where(draggedItem => (draggedItem).Service != null &&
+                            String.CompareOrdinal((draggedItem).Service.ServiceTemplate.Name, payloadCheck.Service.ServiceTemplate.Name) != 0)
+                            .Any(draggedItem => (draggedItem).Service != null))
+                    return ErrorConstants.DifferentService;
+
             }
 
             #endregion
@@ -244,22 +273,17 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                     var routeType = ((RouteTask)destination).RouteDestination.Route.RouteType;
 
-                    bool shouldReturn = CheckRouteType(routeType, payloadCheck, e, cue);
+                    var shouldReturn = CheckRouteType(routeType, payloadCheck, e);
 
-                    if (shouldReturn) return;
+                    if (shouldReturn) return ErrorConstants.RouteLacksCapabilities;
 
                     #endregion
                 }
 
                 //Trying to drop a Task into a Destination with a different Location
                 if (((payloadCheck.Location != ((RouteTask)destination).Location)))
-                {
                     if (payloadCheck.Service != null || ((RouteTask)destination).Service != null)
-                    {
-                        const string errorString = "Invalid Location";
-                        e.Options.DragCue = CreateDragCue(errorString, cue);
-                    }
-                }
+                        return ErrorConstants.InvalidLocation;
             }
 
             #endregion
@@ -274,9 +298,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                     var routeType = ((RouteDestination)destination).Route.RouteType;
 
-                    bool shouldReturn = CheckRouteType(routeType, payloadCheck, e, cue);
+                    bool shouldReturn = CheckRouteType(routeType, payloadCheck, e);
 
-                    if (shouldReturn) return;
+                    if (shouldReturn) return ErrorConstants.RouteLacksCapabilities;
 
                     #endregion
                 }
@@ -296,10 +320,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                 //Checks to see if the dragged locations match the destinations location. Also makes sure that you are trying to drop in the destination before throwing an error.
                 if (((payloadCheck.Location != ((RouteDestination)destination).Location)) && isDropIn)
-                {
-                    const string errorString = "Invalid Location";
-                    e.Options.DragCue = CreateDragCue(errorString, cue);
-                }
+                    return ErrorConstants.InvalidLocation;
+
             }
 
             #endregion
@@ -314,9 +336,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                     var routeType = ((Route)destination).RouteType;
 
-                    bool shouldReturn = CheckRouteType(routeType, payloadCheck, e, cue);
+                    bool shouldReturn = CheckRouteType(routeType, payloadCheck, e);
 
-                    if (shouldReturn) return;
+                    if (shouldReturn) return ErrorConstants.RouteLacksCapabilities;
 
 
                     #endregion
@@ -325,29 +347,32 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             #endregion
 
-            #endregion
+            return "";
 
-            if (e.Options.DragCue == null)
-                e.Options.DragCue = cue;
+            #endregion
         }
 
-        private bool CheckRouteType(string routeType, RouteTask payloadCheck, DragDropEventArgs e, TreeViewDragCue cue)
+        private void AddToTreeView(DragDropEventArgs e, IEnumerable draggedItems)
+        {
+        }
+
+        private void RemoveFromTaskBoard(IList source, IEnumerable draggedItems)
+        {
+            foreach (var draggedItem in draggedItems.OfType<RouteTask>().Where(draggedItem => source != null))
+                source.Remove(draggedItem);
+        }
+
+        private bool CheckRouteType(string routeType, RouteTask payloadCheck, DragDropEventArgs e)
         {
             var draggedItemsType = payloadCheck.Service.ServiceTemplate.Name;
 
-            if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
-            {
-                const string errorString = "Route Lacks Service Capability";
-                e.Options.DragCue = CreateDragCue(errorString, cue);
-                return true;
-            }
-
-            return false;
+            return String.CompareOrdinal(routeType, draggedItemsType) != 0;
         }
 
-        private TreeViewDragCue CreateDragCue(string errorString, TreeViewDragCue cue)
+        private TreeViewDragCue CreateDragCue(string errorString)
         {
-            cue.DragTooltipContent = null;
+            var cue = new TreeViewDragCue();
+            cue.DragTooltipVisibility = Visibility.Visible;
             cue.DragActionContent = String.Format(errorString);
             cue.IsDropPossible = false;
 
@@ -387,7 +412,20 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (CheckSourceForHeaderCell(e.Options.Source))
                 return;
 
-            e.QueryResult = true;
+            e.QueryResult = false;
+
+            var gridView = ((TaskBoard)sender).PublicTaskBoardRadGridView;
+
+            if (gridView != null)
+            {
+                IList selectedItems = gridView.SelectedItems.ToList();
+
+                //Will return true if the number of selected tasks is more than 0
+                e.QueryResult = selectedItems.Count > 0;
+
+                e.Options.Payload = selectedItems;
+            }
+
             e.Handled = true;
         }
 
