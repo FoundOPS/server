@@ -5,7 +5,7 @@
 <head>
     <title></title>
     <link href="@Url.Content("../../Content/Site.css")" rel="stylesheet" type="text/css" />
-    <script src="<%= Url.Content("../../Content/jquery.js")%>" type="text/javascript"></script>
+    <script src="<%= Url.Content('../../Content/jquery.js')%>" type="text/javascript"></script>
 </head>
 <body style="background: none;">
     <div id="mainLoginContent" style="position: absolute; top: 0px; left: 0px;">
@@ -43,7 +43,6 @@
                     form1.elements["redirected"].value = "";
             }
             $(document).ready(function () {
-
                 if (!getRedirectedOnce() && "<%= Model !=null? Model.RedirectUrl: '' %>" != "") {
                 //If there is a model, then redirect this parent to it. The model will be a url
                     setRedirectedOnce(true);
