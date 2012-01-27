@@ -72,8 +72,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\FoundOps.Common\Tools\AzureTools.cs">
+      <Link>Silverlight\AzureTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\DateRange.cs">
+      <Link>Silverlight\DateRange.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\DateTimeTools.cs">
+      <Link>Silverlight\DateTimeTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\ExtensionMethods\GenericExtensions.cs">
+      <Link>Silverlight\ExtensionMethods\GenericExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\ExtensionMethods\LinqExtensions.cs">
+      <Link>Silverlight\ExtensionMethods\LinqExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\ExtensionMethods\ReflectionExtensions.cs">
+      <Link>Silverlight\ExtensionMethods\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\FileTools.cs">
+      <Link>Silverlight\FileTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\OrthodromicDistanceCalculator.cs">
+      <Link>Silverlight\OrthodromicDistanceCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\PasswordTools.cs">
+      <Link>Silverlight\PasswordTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\SerializationTools.cs">
+      <Link>Silverlight\SerializationTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\StreamHelpers.cs">
+      <Link>Silverlight\StreamHelpers.cs</Link>
+    </Compile>
     <Compile Include="EncryptionTools.cs" />
     <Compile Include="EntityCloneTools.cs" />
+    <Compile Include="ObjectContextExtensions.cs" />
     <Compile Include="PlaceFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserSpecificResourcesWrapper.cs" />
@@ -105,12 +139,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FoundOps.Common\FoundOps.Common.csproj">
-      <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
-      <Name>FoundOps.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\DataValidationFramework.EF.dll" />

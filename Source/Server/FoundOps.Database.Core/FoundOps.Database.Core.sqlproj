@@ -132,6 +132,7 @@
     <None Include="Snapshots\FoundOps.Database.Core_20111123_01-17-21.sqlx" />
     <None Include="Snapshots\FoundOps.Database.Core_20111208_12-07-24.sqlx" />
     <None Include="Snapshots\FoundOps.Database.Core_20111220_10-25-05.sqlx" />
+    <None Include="Snapshots\FoundOps.Database.Core_20120126_06-31-06.sqlx" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\RouteEmployee.sql">
@@ -223,10 +224,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\Tables\EmployeeHistoryEntries.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="dbo\Tables\SalesLeads.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>

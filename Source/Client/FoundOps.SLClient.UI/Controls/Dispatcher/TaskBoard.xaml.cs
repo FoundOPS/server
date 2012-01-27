@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.ComponentModel;
@@ -7,6 +8,8 @@ using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
+using Telerik.Windows.Controls.DragDrop;
+using Telerik.Windows.Controls.TreeView;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
@@ -71,7 +74,54 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             ClientsVM.IsLoadingObservable.Where(isLoading => !isLoading)
                 .Merge(LocationsVM.IsLoadingObservable.Where(isLoading => !isLoading))
                 .Subscribe(isLoading => this.TaskBoardRadGridView.Rebind());
+
+            //RadDragAndDropManager.AddDragQueryHandler(TaskBoardRadGridView, OnDragQuery);
+            //RadDragAndDropManager.AddDropQueryHandler(TaskBoardRadGridView, OnDropQuery);
+            //RadDragAndDropManager.AddDragInfoHandler(TaskBoardRadGridView, OnDragInfo);
+            //RadDragAndDropManager.AddDropInfoHandler(TaskBoardRadGridView, OnDropInfo);
         }
+
+        //private void OnDropInfo(object sender, DragDropEventArgs e)
+        //{
+        //    e.Handled = true;
+        //}
+
+        //private void OnDragInfo(object sender, DragDropEventArgs e)
+        //{
+        //    var draggedItems = e.Options.Source.DataContext as IEnumerable<object>;
+
+        //    if (e.Options.Status == DragStatus.DragInProgress)
+        //    {
+        //        //////Set up a drag cue:
+        //        //var cue = e.Options.DragCue as TreeViewDragCue;
+        //        //cue.DragTooltipContent = null;
+        //        //cue.DragActionContent = String.Format("Test");
+        //        //cue.IsDropPossible = false;
+        //        ////Here we need to choose a template for the items:
+        //        //e.Options.DragCue = cue;
+        //    }
+        //    else if (e.Options.Status == DragStatus.DragComplete)
+        //    {
+        //        foreach (var draggedItem in draggedItems)
+        //        {
+        //            var routesVm = e.Options.Destination.DataContext as RoutesVM;
+
+        //            if (routesVm != null) routesVm.UnroutedTasks.Remove(draggedItem as RouteTask);
+        //        }
+        //    }
+        //}
+
+        //private void OnDropQuery(object sender, DragDropQueryEventArgs e)
+        //{
+        //    e.QueryResult = false;
+        //    e.Handled = true;
+        //}
+
+        //private void OnDragQuery(object sender, DragDropQueryEventArgs e)
+        //{
+        //    e.QueryResult = true;
+        //    e.Handled = true;
+        //}
 
         //Logic
 

@@ -86,6 +86,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignRouteTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(0),
                 Client = _clientsDesignData.DesignClient,
@@ -96,6 +97,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignRouteTaskTwo = new RouteTask
             {
+                OrderInRouteDestination = 2,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(0),
                 Client = _clientsDesignData.DesignClientTwo,
@@ -104,10 +106,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            var routeDestination = new RouteDestination
-              {
-                  OrderInRoute = 1
-              };
+            var routeDestination = new RouteDestination { OrderInRoute = 1 };
             routeDestination.RouteTasks.Add(DesignRouteTask);
             routeDestination.RouteTasks.Add(DesignRouteTaskTwo);
             route.RouteDestinations.Add(routeDestination);
@@ -118,6 +117,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignRouteTaskThree = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClientTwo.OwnedParty.Locations.ElementAt(0),
                 Client = _clientsDesignData.DesignClientTwo,
@@ -126,10 +126,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            routeDestination = new RouteDestination
-            {
-                OrderInRoute = 2
-            };
+            routeDestination = new RouteDestination { OrderInRoute = 2 };
 
             routeDestination.RouteTasks.Add(DesignRouteTaskThree);
             route.RouteDestinations.Add(routeDestination);
@@ -140,6 +137,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             var routeTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClientThree.OwnedParty.Locations.ElementAt(0),
                 Client = _clientsDesignData.DesignClientThree,
@@ -148,10 +146,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            routeDestination = new RouteDestination
-            {
-                OrderInRoute = 3
-            };
+            routeDestination = new RouteDestination { OrderInRoute = 3 };
             routeDestination.RouteTasks.Add(routeTask);
             route.RouteDestinations.Add(routeDestination);
 
@@ -161,6 +156,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             routeTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(1),
                 Client = _clientsDesignData.DesignClient,
@@ -182,6 +178,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             routeTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClientTwo.OwnedParty.Locations.ElementAt(1),
                 Client = _clientsDesignData.DesignClientTwo,
@@ -190,10 +187,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            routeDestination = new RouteDestination
-            {
-                OrderInRoute = 5
-            };
+            routeDestination = new RouteDestination { OrderInRoute = 5 };
             routeDestination.RouteTasks.Add(routeTask);
             route.RouteDestinations.Add(routeDestination);
 
@@ -203,6 +197,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             routeTask = new RouteTask
             {
+                OrderInRouteDestination = 1,
                 Date = route.Date,
                 Location = _clientsDesignData.DesignClientThree.OwnedParty.Locations.ElementAt(1),
                 Client = _clientsDesignData.DesignClientThree,
@@ -211,10 +206,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerBusinessAccount = _ownerBusinessAccount
             };
 
-            routeDestination = new RouteDestination
-            {
-                OrderInRoute = 6
-            };
+            routeDestination = new RouteDestination { OrderInRoute = 6 };
             routeDestination.RouteTasks.Add(routeTask);
             route.RouteDestinations.Add(routeDestination);
 

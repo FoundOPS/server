@@ -3,9 +3,8 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
                       xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools"
-                      xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI"
-                      xmlns:Telerik_Windows_Documents_UI="clr-namespace:Telerik.Windows.Documents.UI;assembly=Telerik.Windows.Controls.FixedDocumentViewers"
-                      xmlns:Manifest="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher.Manifest" mc:Ignorable="d" Closed="MyRouteManifestViewerClosed">
+                      xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" 
+                      mc:Ignorable="d" Closed="MyRouteManifestViewerClosed">
     <!--Do not remove ViewModels, it is used by GetVM-->
     <Controls:ChildWindow.Resources>
         <Style x:Key="PanelButtonStyle" TargetType="telerik:RadButton">
@@ -23,136 +22,51 @@
             <Setter Property="Margin" Value="5 3 5 3"/>
             <Setter Property="Stroke" Value="Gray"/>
         </Style>
-        <Style x:Key="PanelToggleButtonStyle" TargetType="telerik:RadToggleButton">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="2"/>
-            <Setter Property="Padding" Value="6 4 6 5"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="CornerRadius" Value="3"/>
-            <Setter Property="IsBackgroundVisible" Value="False"/>
-        </Style>
-        <Style x:Key="NavigationPanelStyle1" TargetType="Telerik_Windows_Documents_UI:NavigationPanel">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Telerik_Windows_Documents_UI:NavigationPanel">
-                        <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Top">
-                            <Border.Background>
-                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                                    <GradientStop Color="White" Offset="0"/>
-                                    <GradientStop Color="LightGray" Offset=".5"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <StackPanel Orientation="Horizontal">
-                                <telerik:RadButton x:Name="PART_btnOpen" Padding="4" Style="{StaticResource PanelButtonStyle}" Visibility="Collapsed">
-                                    <ToolTipService.ToolTip>
-                                        <TextBlock Text="Open"/>
-                                    </ToolTipService.ToolTip>
-                                    <Image Source="/Telerik.Windows.Controls.FixedDocumentViewers;component/Images/open.png" Stretch="None"/>
-                                </telerik:RadButton>
-                                <telerik:RadButton x:Name="PART_btnPrint" Style="{StaticResource PanelButtonStyle}">
-                                    <ToolTipService.ToolTip>
-                                        <TextBlock Text="Print"/>
-                                    </ToolTipService.ToolTip>
-                                    <Image Source="/Telerik.Windows.Controls.FixedDocumentViewers;component/Images/printer.png" Stretch="None"/>
-                                </telerik:RadButton>
-                                <Button x:Name="PART_btnSave" Click="SaveButtonClick" Margin="5,3,-4,-5" Style="{StaticResource SaveButtonStyle}" Height="25" Width="25">
-                                    <ToolTipService.ToolTip>
-                                        <TextBlock Text="Save"/>
-                                    </ToolTipService.ToolTip>
-                                </Button>
-                                <Rectangle Style="{StaticResource Separator}"/>
-                                <telerik:RadButton x:Name="PART_btnUp" Style="{StaticResource PanelButtonStyle}">
-                                    <ToolTipService.ToolTip>
-                                        <TextBlock Text="Previous page"/>
-                                    </ToolTipService.ToolTip>
-                                    <Image Source="/Telerik.Windows.Controls.FixedDocumentViewers;component/Images/previous.png" Stretch="None"/>
-                                </telerik:RadButton>
-                                <telerik:RadButton x:Name="PART_btnDown" Style="{StaticResource PanelButtonStyle}">
-                                    <ToolTipService.ToolTip>
-                                        <TextBlock Text="Next page"/>
-                                    </ToolTipService.ToolTip>
-                                    <Image Source="/Telerik.Windows.Controls.FixedDocumentViewers;component/Images/next.png" Stretch="None"/>
-                                </telerik:RadButton>
-                                <TextBox x:Name="PART_tbCurrentPage" HorizontalContentAlignment="Center" Margin="2" Width="30"/>
-                                <TextBlock Margin="2" Text="/" VerticalAlignment="Center"/>
-                                <TextBlock x:Name="PART_tbPagesCount" Margin="2" VerticalAlignment="Center"/>
-                                <Rectangle Style="{StaticResource Separator}"/>
-                                <telerik:RadButton x:Name="PART_btnZoomIn" Style="{StaticResource PanelButtonStyle}">
-                                    <ToolTipService.ToolTip>
-                                        <TextBlock Text="Zoom in"/>
-                                    </ToolTipService.ToolTip>
-                                    <Image Source="/Telerik.Windows.Controls.FixedDocumentViewers;component/Images/zoom-in.png" Stretch="None"/>
-                                </telerik:RadButton>
-                                <telerik:RadButton x:Name="PART_btnZoomOut" Style="{StaticResource PanelButtonStyle}">
-                                    <ToolTipService.ToolTip>
-                                        <TextBlock Text="Zoom out"/>
-                                    </ToolTipService.ToolTip>
-                                    <Image Source="/Telerik.Windows.Controls.FixedDocumentViewers;component/Images/zoom-out.png" Stretch="None"/>
-                                </telerik:RadButton>
-                                <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" x:Name="PART_cbPercents" DisplayMemberPath="First" Margin="2" SelectedValuePath="Second" Width="70"/>
-                                <Rectangle Style="{StaticResource Separator}"/>
-                                <telerik:RadToggleButton x:Name="PART_btnPan" Style="{StaticResource PanelToggleButtonStyle}">
-                                    <ToolTipService.ToolTip>
-                                        <TextBlock Text="Pan"/>
-                                    </ToolTipService.ToolTip>
-                                    <Image Source="/Telerik.Windows.Controls.FixedDocumentViewers;component/Images/hand-free.png" Stretch="None"/>
-                                </telerik:RadToggleButton>
-                            </StackPanel>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="RadPdfViewerStyle1" TargetType="telerik:RadPdfViewer">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="telerik:RadPdfViewer">
-                        <Grid Background="#3B3B3B">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Telerik_Windows_Documents_UI:NavigationPanel x:Name="PART_NavigationPanel" Style="{StaticResource NavigationPanelStyle1}"/>
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <ContentControl x:Name="PART_ContentPresenter" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch"/>
-                                <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="1" Orientation="Vertical" Visibility="Collapsed"/>
-                                <ScrollBar x:Name="PART_HorizontalScrollBar" Orientation="Horizontal" Grid.Row="1" Visibility="Collapsed"/>
-                            </Grid>
-                            <telerik:RadBusyIndicator x:Name="PART_BusyIndicator" Grid.RowSpan="2" />
-                            <telerik:RadBusyIndicator Grid.RowSpan="2" IsBusy="{Binding IsLoading, RelativeSource={RelativeSource AncestorType=Manifest:RouteManifestViewer}}"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Controls:ChildWindow.Resources>
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <!--Keep RadRichTextBox visibile so it is part of the visual tree, and properly updates-->
-        <telerik:RadRichTextBox x:Name="ManifestRichTextBox" Grid.RowSpan="2" IsReadOnly="True" />
-
-        <!--Hide the RadRichTextBox by overlaying it-->
-        <telerik:RadPdfViewer x:Name="ManifestPdfViewer" Grid.RowSpan="2" Style="{StaticResource RadPdfViewerStyle1}" />
-        <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" x:Name="SelectedRouteComboBox" Grid.Column="1" DisplayMemberPath="Name"
+        <Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Top">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="LightGray" Offset=".5"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" x:Name="SelectedRouteComboBox" Margin="5,0"  DisplayMemberPath="Name"
                              DataContext="{Tools:GetVM Type=ViewModels:RoutesVM}" SelectedValue="{Binding SelectedEntity, Mode=TwoWay}" 
                              ItemsSource="{Binding DomainCollectionView}" Height="25"/>
-        <Dispatcher:RouteManifestOptions Grid.Column="1" Grid.Row="1"/>
+                <telerik:RadButton x:Name="btnPrint" ToolTipService.ToolTip="Print" Content="Print" Style="{StaticResource PanelButtonStyle}" Click="BtnPrint_OnClick" />
+                <Button x:Name="btnSave" Margin="5,3,-4,-5" Height="25" Width="25" ToolTipService.ToolTip="Save" Style="{StaticResource SaveButtonStyle}" Click="SaveButtonClick"/>
+                <!--<Rectangle Style="{StaticResource Separator}"/>
+                <telerik:RadButton x:Name="btnUp" Style="{StaticResource PanelButtonStyle}" Click="BtnUp_OnClick">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Text="Previous page"/>
+                    </ToolTipService.ToolTip>
+                    <Image Source="/Telerik.Windows.Controls.FixedDocumentViewers;component/Images/previous.png" Height="25" Stretch="None"/>
+                </telerik:RadButton>
+                <telerik:RadButton x:Name="btnDown" Style="{StaticResource PanelButtonStyle}" Click="BtnDown_OnClick">
+                    <ToolTipService.ToolTip>
+                        <TextBlock Text="Next page"/>
+                    </ToolTipService.ToolTip>
+                    <Image Source="/Telerik.Windows.Controls.FixedDocumentViewers;component/Images/next.png" Height="25" Stretch="None"/>
+                </telerik:RadButton>
+                <TextBox x:Name="tbCurrentPage" HorizontalContentAlignment="Center" Margin="2" Width="30"/>
+                <TextBlock Margin="2" Text="/" VerticalAlignment="Center"/>
+                <TextBlock x:Name="tbPagesCount" Margin="2" VerticalAlignment="Center"/>-->
+            </StackPanel>
+        </Border>
+
+        <telerik:RadRichTextBox x:Name="ManifestRichTextBox" Grid.Row="1" Grid.RowSpan="2" IsReadOnly="True" />
+
+        <Dispatcher:RouteManifestOptions Grid.Column="1" Grid.RowSpan="2"/>
     </Grid>
 </Controls:ChildWindow>

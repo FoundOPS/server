@@ -12,13 +12,16 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (1/16/2012)
+                (1/26/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            * Setup manifest printing and saving. Can save manifests as a PDF.<LineBreak/>
-            * Fixed the loaded routes and tasks in dispatcher when switching dates.<LineBreak/>
-            * Started system optimization.<LineBreak/>
+            * Setup auto download of FoundOPS application updates.<LineBreak/>
+            * Optimized manifests and dispatching.<LineBreak/>
+            * Setup Add New/Existing Location on Clients.<LineBreak/>
+            * Fixed drag-n-drop in dispatching, service schedule bug. <LineBreak/>
+            * Fixed dispatcher service loading issue.<LineBreak/>
+            * Fixed other minor issues.<LineBreak/>
         </TextBlock>
     </Grid>
 </sdk:Page>
