@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace FoundOps.Common.Silverlight.Tools
+namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {
     public class AppendNumberToStringMarkupExtension : UpdatableMarkupExtension<string>
     {

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Windows;
 using FoundOps.Common.Composite.Tools;
-using FoundOps.Common.Silverlight.Tools;
 
 namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {
@@ -33,13 +29,16 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
                 "PropertyName",
                 typeof(string),
                 typeof(Resolver),
-                new PropertyMetadata(new PropertyChangedCallback(PropertyNameChanged)));
+                new PropertyMetadata(PropertyNameChanged));
 
         private static void PropertyNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var c = d as Resolver;
-            if (c != null)
-                c.ResolverHelper(c.Source, e.NewValue as string);
+            if (c == null) return;
+
+            var value = c.ResolverHelper(c.Source, e.NewValue as string);
+            if (value != null)
+                c.UpdateValue(value);
         }
 
         #endregion
@@ -51,7 +50,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
         /// </summary>
         public object Source
         {
-            get { return (object)GetValue(SourceProperty); }
+            get { return GetValue(SourceProperty); }
             set { SetValue(SourceProperty, value); }
         }
 
@@ -63,13 +62,16 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
                 "Source",
                 typeof(object),
                 typeof(Resolver),
-                new PropertyMetadata(new PropertyChangedCallback(SourceChanged)));
+                new PropertyMetadata(SourceChanged));
 
         private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var c = d as Resolver;
-            if (c != null)
-                c.ResolverHelper(e.NewValue, c.PropertyName);
+            if (c == null) return;
+
+            var value = c.ResolverHelper(e.NewValue, c.PropertyName);
+            if(value!=null)
+                c.UpdateValue(value);
         }
 
         #endregion
@@ -91,7 +93,6 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
                 value = value.GetProperty<object>(propName);
             }
 
-            UpdateValue(value);
             return value;
         }
     }

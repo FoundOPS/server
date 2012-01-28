@@ -1,9 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Diagnostics;
-using System.Reactive.Linq;
 using FoundOps.Common.NET;
+using System.Reactive.Linq;
+using System.ComponentModel;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Models;
 using System.Reactive.Subjects;
@@ -17,9 +17,6 @@ using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Server.Services.CoreDomainService;
-using ReactiveUI;
-using RiaServicesContrib;
-using RiaServicesContrib.DomainServices.Client;
 
 namespace FoundOps.SLClient.Data.Services
 {

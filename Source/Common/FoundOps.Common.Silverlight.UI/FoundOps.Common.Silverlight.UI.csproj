@@ -345,6 +345,7 @@
     <Compile Include="Tools\MarkupExtensions\AreEqual.cs" />
     <Compile Include="Tools\MarkupExtensions\DataContextEquals.cs" />
     <Compile Include="Tools\MarkupExtensions\Except.cs" />
+    <Compile Include="Tools\MarkupExtensions\ExtendedBinding.cs" />
     <Compile Include="Tools\MarkupExtensions\ItemExistsInCollection.cs" />
     <Compile Include="Tools\MarkupExtensions\MarkupExtensionHelpers.cs" />
     <Compile Include="Tools\MarkupExtensions\Resolver.cs" />
