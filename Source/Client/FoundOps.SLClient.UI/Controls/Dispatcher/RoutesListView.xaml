@@ -35,7 +35,7 @@
                     <Controls2:RadTreeView x:Name="RouteTreeView" Loaded="RouteTreeViewLoaded" 
                                            Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding RouteDestinationsListWrapper}" 
                                            IsDragDropEnabled="True" Background="Transparent" Selected="RouteTreeViewSelected" Unselected="RouteTreeViewUnselected"
-                                           Width="200" IsDropPreviewLineEnabled="True" IsDragPreviewEnabled="True" PreviewDragEnded="RouteTreeView_PreviewDragEnded">
+                                           Width="200" IsDropPreviewLineEnabled="True" IsDragPreviewEnabled="True" PreviewDragEnded="RouteTreeViewPreviewDragEnded">
                         <!-- IsDragTooltipEnabled="True" IsDropPreviewLineEnabled="True"-->
                         <!--DragStarted="RouteTreeView_DragStarted" -->
                         <!--SelectionChanged="RouteTreeView_SelectionChanged"-->

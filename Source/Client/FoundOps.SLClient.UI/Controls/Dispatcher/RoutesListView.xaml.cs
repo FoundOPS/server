@@ -78,6 +78,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             RadDragAndDropManager.AddDragInfoHandler(RoutesListBox, OnDropInfo);
         }
 
+        #region Un-Used Methods Required By Drag/Drop
+
         // OnDragQuery event handler
         private void OnDragQuery(object sender, DragDropQueryEventArgs e)
         {
@@ -93,35 +95,12 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         }
 
         // OnDragInfo event handler
-        //Nothing needs to be done here in this case, everything is handled in OnDragInfo
+        //Nothing needs to be done here in this case, everything is handled in OnDropInfo
         private void OnDragInfo(object sender, DragDropEventArgs e)
         {
-            if(e.Options.Payload == null)
-                return;
-
-            // Get the drag cue that the TreeView or we have created
-            var cue = e.Options.DragCue as TreeViewDragCue;
-
-            //Setup DragCue here
-            var errorString = DragCueSetter(e);
-
-            if (errorString == "")
-            {
-                cue.DragTooltipVisibility = Visibility.Collapsed;
-                cue.DragPreviewVisibility = Visibility.Visible;
-                cue.IsDropPossible = true;
-            }
-            else
-            {
-                cue.DragTooltipVisibility = Visibility.Visible;
-                cue.DragPreviewVisibility = Visibility.Collapsed;
-                cue.DragTooltipContentTemplate = this.Resources["DragCueTemplate"] as DataTemplate; ;
-                cue.DragActionContent = String.Format(errorString);
-                cue.IsDropPossible = false;
-            }
-
-            e.Options.DragCue = cue;
         }
+
+        #endregion
 
         // OnDropInfo event handler
         private void OnDropInfo(object sender, DragDropEventArgs e)
@@ -134,144 +113,110 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
             var draggedItems = e.Options.Payload as IEnumerable<object>;
 
-            // Get the drag cue that the TreeView or we have created
-            var cue = e.Options.DragCue as TreeViewDragCue;
+            var cue = SetUpDragCue(e, draggedItems);
 
-            switch (e.Options.Status)
+            e.Options.DragCue = cue;
+
+            //Checks to be sure that the drag has been completed and that the drop would be on a valid location
+            if (e.Options.Status == DragStatus.DragComplete && ((TreeViewDragCue)e.Options.DragCue).IsDropPossible)
             {
-                //Sets the Drag cue if a drop is possible
-                case DragStatus.DropPossible:
-                    cue.DragTooltipVisibility = Visibility.Collapsed;
-                    cue.IsDropPossible = true;
+                //Get the values for the variables below
+                var dropPlacement = DragDropTools.FindDropPlacement(e);
 
-                    //Setup DragCue here
-                    var errorString = DragCueSetter(e);
+                var placeInRoute = DragDropTools.GetDropPlacement(destination, dropPlacement);
 
-                    if (errorString == "")
-                    {
-                        cue.DragTooltipVisibility = Visibility.Collapsed;
-                        cue.DragPreviewVisibility = Visibility.Visible;
-                        cue.IsDropPossible = true;
-                    }
-                    else
-                    {
-                        cue.DragTooltipVisibility = Visibility.Visible;
-                        cue.DragPreviewVisibility = Visibility.Collapsed;
-                        cue.DragTooltipContentTemplate = this.Resources["DragCueTemplate"] as DataTemplate; ;
-                        cue.DragActionContent = String.Format(errorString);
-                        cue.IsDropPossible = false;
-                    }
+                #region Modify placeInRoute
+
+                if (placeInRoute > 0)
+                    placeInRoute--;
+
+                if (dropPlacement == DropPlacement.After)
+                    placeInRoute++;
+
+                #endregion
+
+                foreach (var draggedItem in draggedItems.Reverse())
+                {
 
                     if (e.Options.Destination is TaskBoard)
                     {
-                        cue.IsDropPossible = true;
-                        cue.DragPreviewVisibility = Visibility.Visible;
-                        //Adds an 's' to "item" in DragActionContent if more than one item is being dragged
-                        cue.DragActionContent = String.Format(draggedItems.Count() > 1 ? "Add items to Task Board" : "Add item to Task Board");
-
-                        cue.DragTooltipVisibility = Visibility.Visible;
+                        AddToTaskBoard(draggedItem);
+                        RemoveFromRoute(draggedItem);
                     }
-                    break;
-                //Sets the Drag cue if a drop is not possible
-                case DragStatus.DropImpossible:
-                    cue.IsDropPossible = false;
-                    break;
-                case DragStatus.DragComplete:
+                    else
                     {
-                        //Return if an error string is being displayed 
-                        if (cue.IsDropPossible == false) return;
-
-                        //The text that would show up on a Drag to tell you whether you are going
-                        //to drop something before, in or after the item you are hovering over
-                        var dragActionString = ((String)((TreeViewDragCue)e.Options.DragCue).DragActionContent);
-
-                        //Variables that help to determine the correct placement for the drop
-                        #region Setup and Check "isDropIn" "isDropBefore" and "isDropAfter"
-
-                        var isDropIn = false;
-                        var isDropAfter = false;
-                        var isDropBefore = false;
-
-                        if (dragActionString != null)
-                        {
-                            isDropIn = dragActionString.Contains("in");
-                            isDropAfter = dragActionString.Contains("after");
-                            isDropBefore = dragActionString.Contains("before");
-                        }
-
-                        #endregion
-
-                        #region Find routeDraggedTo and the position it was dropped
-
-                        var routeDraggedTo = new Route();
-                        var placeInRoute = 0;
-
-                        if (e.Options.Destination.DataContext is Route)
-                        {
-                            routeDraggedTo = (Route)e.Options.Destination.DataContext;
-
-                            placeInRoute = routeDraggedTo.RouteDestinationsListWrapper.Count;
-
-                            //Telerik does not allow you to drop above the root node in RadTreeView
-                            //We also know that the only time you could possibly drop into a Route and meet the condition below will be
-                            //if you try to drop above the root node. Therfore, if this occurs,
-                            //we reset placeInRoute to '0' so the drop occurs where the user anticipated 
-                            if (!isDropAfter && !isDropBefore)
-                                placeInRoute = 0;
-                        }
-                        if (e.Options.Destination.DataContext is RouteDestination)
-                        {
-                            routeDraggedTo = ((RouteDestination)(e.Options.Destination.DataContext)).Route;
-
-                            placeInRoute = ((RouteDestination)e.Options.Destination.DataContext).OrderInRoute;
-                        }
-
-                        if (e.Options.Destination.DataContext is RouteTask)
-                        {
-                            routeDraggedTo = ((RouteTask)(e.Options.Destination.DataContext)).RouteDestination.Route;
-
-                            placeInRoute = ((RouteTask)e.Options.Destination.DataContext).RouteDestination.OrderInRoute;
-                        }
-
-                        #endregion
-
-                        #region Modify placeInRoute depending on where the task was dropped
-
-                        if (placeInRoute > 0)
-                            placeInRoute--;
-
-                        if (isDropAfter)
-                            placeInRoute++;
-
-                        if (isDropBefore && placeInRoute > 0)
-                            placeInRoute--;
-
-                        #endregion
-
-                        foreach (var draggedItem in draggedItems.Reverse())
-                        {
-
-                            if (e.Options.Destination is TaskBoard)
-                            {
-                                AddToTaskBoard(draggedItem);
-                                RemoveFromRoute(draggedItem);
-                            }
-                            else
-                            {
-                                AddToRoute(e, draggedItem, destination, routeDraggedTo, placeInRoute, isDropIn, isDropAfter, isDropBefore);
-                            }
-                        }
+                        AddToRoute(draggedItem, destination, placeInRoute, dropPlacement);
                     }
-                    break;
+                }
             }
-
-            e.Options.DragCue = cue;
 
             e.Handled = true;
         }
 
         #region Methods used in OnDropInfo
 
+        /// <summary>
+        /// Sets up drag cue.
+        /// </summary>
+        /// <param name="e">The <see cref="Telerik.Windows.Controls.DragDrop.DragDropEventArgs"/> instance containing the event data.</param>
+        /// <param name="draggedItems">The dragged items.</param>
+        /// <returns></returns>
+        private TreeViewDragCue SetUpDragCue(DragDropEventArgs e, IEnumerable<object> draggedItems)
+        {
+            // Get the drag cue that the TreeView or we have created
+            var cue = e.Options.DragCue as TreeViewDragCue ?? new TreeViewDragCue();
+
+            cue.DragTooltipVisibility = Visibility.Collapsed;
+            cue.DragPreviewVisibility = Visibility.Visible;
+            cue.IsDropPossible = true;
+
+            var status = e.Options.Status;
+
+            if (status == DragStatus.DropImpossible)
+            {
+                //Sets the Drag cue and we assume that a drop is not possible unless notified otherwise
+                cue.DragTooltipVisibility = Visibility.Visible;
+                cue.DragPreviewVisibility = Visibility.Collapsed;
+                cue.DragActionContent = "Cannot drop here";
+                cue.IsDropPossible = false;
+            }
+
+            //Sets the Drag cue if a drop is possible
+            if (status == DragStatus.DropPossible)
+            {
+                cue.DragTooltipVisibility = Visibility.Collapsed;
+                cue.IsDropPossible = true;
+
+                //Setup DragCue here
+                var errorString = DragCueSetter(e);
+
+                //Check errorString, an empty string means that there is not an issue with the current drop location
+                if (errorString != "")
+                {
+                    cue.DragTooltipVisibility = Visibility.Visible;
+                    cue.DragPreviewVisibility = Visibility.Collapsed;
+                    cue.DragTooltipContentTemplate = this.Resources["DragCueTemplate"] as DataTemplate;
+                    cue.DragActionContent = String.Format(errorString);
+                    cue.IsDropPossible = false;
+                }
+
+                if (e.Options.Destination is TaskBoard)
+                {
+                    cue.IsDropPossible = true;
+                    cue.DragPreviewVisibility = Visibility.Visible;
+                    //Adds an 's' to "item" in DragActionContent if more than one item is being dragged
+                    cue.DragActionContent =
+                        String.Format(draggedItems.Count() > 1
+                                          ? "Add items to Task Board"
+                                          : "Add item to Task Board");
+
+                    cue.DragTooltipVisibility = Visibility.Visible;
+                }
+            }
+
+            return cue;
+        }
+        
         /// <summary>
         /// Adds tasks to the TaskBoard.
         /// </summary>
@@ -296,13 +241,13 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         {
             //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely
             if (draggedItem is RouteDestination)
-                VM.Routes.DeleteRouteDestination((RouteDestination) draggedItem);
+                VM.Routes.DeleteRouteDestination((RouteDestination)draggedItem);
 
             if (draggedItem is RouteTask)
             {
-                var oldRouteDestination = ((RouteTask) draggedItem).RouteDestination;
-            
-                ((RouteTask) draggedItem).RemoveRouteDestination();
+                var oldRouteDestination = ((RouteTask)draggedItem).RouteDestination;
+
+                ((RouteTask)draggedItem).RemoveRouteDestination();
 
                 //if the old route destination has 0 tasks, delete it
                 if (oldRouteDestination.RouteTasks.Count == 0)
@@ -314,116 +259,53 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// <summary>
         /// Adds to route.
         /// </summary>
-        /// <param name="e">The <see cref="Telerik.Windows.Controls.DragDrop.DragDropEventArgs"/> instance containing the event data.</param>
         /// <param name="draggedItem">The dragged item.</param>
         /// <param name="destination">The destination.</param>
         /// <param name="routeDraggedTo">The route dragged to.</param>
         /// <param name="placeInRoute">The place in route.</param>
-        /// <param name="isDropIn">if set to <c>true</c> [is drop in].</param>
-        /// <param name="isDropAfter">if set to <c>true</c> [is drop after].</param>
-        /// <param name="isDropBefore">if set to <c>true</c> [is drop before].</param>
-        private void AddToRoute(DragDropEventArgs e, object draggedItem, object destination, Route routeDraggedTo, int placeInRoute, bool isDropIn, bool isDropAfter, bool isDropBefore)
+        /// <param name="dropPlacement">The drag placement.</param>
+        private void AddToRoute(object draggedItem, object destination, int placeInRoute, DropPlacement dropPlacement)
         {
             //If the current draggedItem is a RouteDestination -> Add it to the Route in the correct position
             var routeDestination = draggedItem as RouteDestination;
             if (routeDestination != null)
-                routeDraggedTo.RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
+            {
+                if(destination is RouteDestination)
+                ((RouteDestination) destination).Route.RouteDestinationsListWrapper.Insert(placeInRoute,(RouteDestination)draggedItem);
 
+                if(destination is Route && dropPlacement == DropPlacement.After)
+                    ((Route)destination).RouteDestinationsListWrapper.Add((RouteDestination)draggedItem);
+                else if(destination is Route)
+                    ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
+            }
 
             //If the current draggedItem is a RouteTask -> Either add it to the RouteDestination, or create a new RouteDestination
             var routeTask = draggedItem as RouteTask;
             if (routeTask != null)
             {
-                var oldRouteDestination = routeTask.RouteDestination;
-
                 //if the old route destination only has this one task delete it
-                if (oldRouteDestination.RouteTasks.Count == 1)
-                    VM.Routes.DeleteRouteDestination(oldRouteDestination);
+                if (routeTask.RouteDestination.RouteTasks.Count == 1)
+                    VM.Routes.DeleteRouteDestination(routeTask.RouteDestination);
 
                 //Check if the destination is a RouteDestination and the DragActionString is 'Drop in'
-                if (isDropIn && e.Options.Destination.DataContext is RouteDestination)
+                if (dropPlacement == DropPlacement.In && destination is RouteDestination)
                 {
-                    ((RouteDestination) e.Options.Destination.DataContext).RouteTasksListWrapper.Add(routeTask);
+                    ((RouteDestination)destination).RouteTasksListWrapper.Add(routeTask);
                 }
                 else
                 {
-                    var task = destination as RouteTask;
-                    if (task != null)
+                    var routeTaskDestination = destination as RouteTask;
+                    if (routeTaskDestination != null)
                     {
-                        #region Add the RouteTask to the RouteDestination that it was dragged to
-
-                        //Gets the OrderInRouteDestination for the destination
-                        var placeInDestination = task.OrderInRouteDestination;
-
-                        //Makes adjustments to the placeInDestination based on where routeTask is being dropped
-                        if (isDropAfter)
-                            placeInDestination++;
-
-                        if (isDropBefore && placeInDestination > 0)
-                            placeInDestination--;
-
-                        //Get the Tasks, RouteDestination
-                        var routeTasksDestination = task.RouteDestination;
-
-                        //Add the RouteTask to the RouteDestination found above
-                        routeTasksDestination.RouteTasksListWrapper.Insert(placeInDestination, routeTask);
+                        DragDropTools.AddToRouteTask(routeTaskDestination, routeTask, dropPlacement);
 
                         //No need to do any of the other logic below, skip to the next iteration of the loop
                         return;
-
-                        #endregion
                     }
 
-                    //Does this if you drag a task anywhere other than inside a current RouteDestination
-                    #region Create new RouteDestination and add it to the Route
-
-                    //Create new RouteDestination
-                    var newDestination = new RouteDestination
-                    {
-                        Id = Guid.NewGuid(),
-                        Location = routeTask.Location,
-                        Client = routeTask.Client
-                    };
-
-                    if (destination is Route)
-                    {
-                        //Add the new destination to the Route
-                        ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
-
-                    }
-                    if (destination is RouteDestination)
-                    {
-                        //Get the Destinations, Route
-                        var route = ((RouteDestination)destination).Route;
-
-                        //Add the new destination to the Route
-                        route.RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
-                    }
-
-                    #endregion
+                    DragDropTools.AddToDestinationOrRoute(routeTask, destination, placeInRoute, dropPlacement);
                 }
             }
-        }
-
-        private static string GetRouteType(object payloadCheck)
-        {
-            if (payloadCheck is RouteDestination)
-            {
-                var routeDestination = ((RouteDestination)payloadCheck).RouteTasks.FirstOrDefault();
-                if (routeDestination == null || routeDestination.Service == null || routeDestination.Service.ServiceTemplate == null)
-                    return null;
-
-                return routeDestination.Service.ServiceTemplate.Name;
-            }
-            if (payloadCheck is RouteTask)
-            {
-                if (((RouteTask)payloadCheck).Service == null)
-                    return null;
-
-                return ((RouteTask)payloadCheck).Service.ServiceTemplate.Name;
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -438,23 +320,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
             var payloadCheck = payloadCollection.FirstOrDefault();
 
-            //Variables that help to determine the correct placement for the drop
-            #region Setup and Check "isDropIn" "isDropBefore" and "isDropAfter"
-
-            //The text that would show up on a Drag to tell you whether you are going
-            //to drop something before, in or after the item you are hovering over
-            var dragActionString = ((String)((TreeViewDragCue)e.Options.DragCue).DragActionContent);
-
-            var isDropIn = false;
-            var isDropAfter = false;
-
-            if (dragActionString != null)
-            {
-                isDropIn = dragActionString.Contains("in");
-                isDropAfter = dragActionString.Contains("after");
-            }
-
-            #endregion
+            var dropPlacement = DragDropTools.FindDropPlacement(e);
 
             #region Do all the checks for Mulit-Drag/Drop
             if (payloadCollection.Count() > 1)
@@ -464,22 +330,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     foreach (object draggedItem in payloadCollection)
                     {
                         //FirstOrDefault might be null but the second might have a service 
-                        #region Check All Items Dragged for A Service
-                        //Need to find out if the fist item dragged has a null 
-                        int count = 0;
-                        foreach (object serviceObject in payloadCollection)
-                        {
-                            //No Service means no location as well
-                            if (((RouteTask)serviceObject).Service != null)
-                                break;
-                            payloadCheck = (payloadCollection.ElementAt(count));
-                            count++;
-                        }
-                        #endregion
-
+                        payloadCheck = DragDropTools.CheckItemsForService(payloadCollection);
+                        
                         //Locations of selections dont match
                         if (draggedItem is RouteTask && ((RouteTask)draggedItem).Location != ((RouteTask)payloadCheck).Location && destination != null &&
-                        (destination.DataContext is RouteTask || (destination.DataContext is RouteDestination && (!isDropAfter || isDropIn))))
+                        (destination.DataContext is RouteTask || (destination.DataContext is RouteDestination && dropPlacement != DropPlacement.After)))
                             return ErrorConstants.DifferentLocations;
 
                         //User Selection Contains Both Tasks and Destinations
@@ -495,7 +350,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                         //Locations of selections dont match
                         var routeDestination = (RouteDestination)payloadCheck;
                         if (routeDestination != null && (draggedItem is RouteDestination && ((RouteDestination)draggedItem).Location != routeDestination.Location) && destination != null &&
-                            (destination.DataContext is RouteTask || (destination.DataContext is RouteDestination && (!isDropAfter || isDropIn))))
+                            (destination.DataContext is RouteTask || (destination.DataContext is RouteDestination && dropPlacement != DropPlacement.After)))
                             return ErrorConstants.DifferentLocations;
 
                         //User Selection Contains Both Tasks and Destinations
@@ -514,7 +369,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 #region Check For Route Type
                 var routeType = ((RouteTask)destination.DataContext).RouteDestination.Route.RouteType;
 
-                var draggedItemsType = GetRouteType(payloadCheck);
+                var draggedItemsType = DragDropTools.GetRouteType(payloadCheck);
+
                 if (draggedItemsType == null)
                     return "";
 
@@ -541,7 +397,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 #region Check For Route Type
                 var routeType = ((RouteDestination)destination.DataContext).Route.RouteType;
 
-                var draggedItemsType = GetRouteType(payloadCheck);
+                var draggedItemsType = DragDropTools.GetRouteType(payloadCheck);
 
                 if (draggedItemsType == null)
                     return "";
@@ -551,7 +407,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                 #endregion
 
-                if (payloadCheck is RouteDestination && isDropIn)
+                if (payloadCheck is RouteDestination && dropPlacement == DropPlacement.In)
                     return ErrorConstants.CantMergeDestinations;
 
 
@@ -560,7 +416,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 if (routeTask != null && (payloadCollection.FirstOrDefault() is RouteTask &&
                                                         ((routeTask.Location != ((RouteDestination)destination.DataContext).Location)
                                                          && (routeTask.Location != null)) &&
-                                                        (!isDropAfter || isDropIn)))
+                                                        dropPlacement != DropPlacement.After))
                     return ErrorConstants.InvalidLocation;
 
             }
@@ -569,7 +425,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 #region Check For Route Type
                 var routeType = ((Route)destination.DataContext).RouteType;
 
-                var draggedItemsType = GetRouteType(payloadCheck);
+                var draggedItemsType = DragDropTools.GetRouteType(payloadCheck);
+
                 if (draggedItemsType == null)
                     return "";
 
@@ -583,7 +440,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
         #endregion
 
-        private void RouteTreeView_PreviewDragEnded(object sender, RadTreeViewDragEndedEventArgs e)
+
+        #region Non-Drag/Drop Methods
+
+        private void RouteTreeViewPreviewDragEnded(object sender, RadTreeViewDragEndedEventArgs e)
         {
             //Fixes issue that EntityCollection does not implement IList
             //Cancelling the default drag-drop action for the TreeView is done by handling the PreviewDragEnded event.
@@ -631,7 +491,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     this.RoutesVM.SelectedRouteDestination = null;
             }
         }
+
+        #endregion
     }
+
+
 
     public class TaskHierarchyConverter : IValueConverter
     {
