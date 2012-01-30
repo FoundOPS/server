@@ -102,6 +102,11 @@ namespace FoundOps.Core.Server.Blocks
         public static Guid CompanyHomeBlockId = new Guid("E69BDD63-A73F-4903-9AEC-2B92724A00FE");
 
         /// <summary>
+        /// The Feedback and Support Id
+        /// </summary>
+        public static Guid FeedbackSupportBlockId = new Guid("E2EAA8CB-5C45-42DA-8060-F962C2E2B47F");
+
+        /// <summary>
         /// The Public blocks' ids.
         /// </summary>
         public static IEnumerable<Guid> PublicBlockIds = new[] { CompanyHomeBlockId };
@@ -334,20 +339,20 @@ namespace FoundOps.Core.Server.Blocks
             };
 
             ManagerBlocks = new List<Block>
-                                {
-                                    ClientsBlock,
-                                    ContactsBlock,
-                                    EmployeesBlock,
-                                    ServicesBlock,
-                                    LocationsBlock,
-                                    RegionsBlock,
-                                    DispatcherBlock,
-                                    EmployeesBlock,
-                                    VehiclesBlock,
-                                    VehicleMaintenanceBlock,
-                                    //ImportDataBlock,
-                                    LogoutBlock
-                                };
+            {
+               ClientsBlock,
+               ContactsBlock,
+               EmployeesBlock,
+               ServicesBlock,
+               LocationsBlock,
+               RegionsBlock,
+               DispatcherBlock,
+               EmployeesBlock,
+               VehiclesBlock,
+               VehicleMaintenanceBlock,
+               //ImportDataBlock,
+               LogoutBlock
+            };
         }
 
         #endregion
@@ -358,6 +363,13 @@ namespace FoundOps.Core.Server.Blocks
         /// Gets the company home block.
         /// </summary>
         public static Block CompanyHomeBlock { get; private set; }
+
+
+        /// <summary>
+        /// Gets the uservoice block.
+        /// </summary>
+        public static Block FeebackSupportBlock { get; private set; }
+
         /// <summary>
         /// Gets the public blocks.
         /// </summary>
@@ -373,7 +385,15 @@ namespace FoundOps.Core.Server.Blocks
                 LoginNotRequired = true
             };
 
-            PublicBlocks = new List<Block> { CompanyHomeBlock };
+            FeebackSupportBlock = new Block
+            {
+                Id = BlockConstants.FeedbackSupportBlockId,
+                Name = "Feedback and Support",
+                NavigateUri = "FeedbackSupport",
+                LoginNotRequired = true
+            };
+
+            PublicBlocks = new List<Block> { CompanyHomeBlock, FeebackSupportBlock };
         }
 
         #endregion

@@ -1499,6 +1499,16 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="FeebackSupportButtonStyle" BasedOn="{StaticResource NavigationButtonStyle}" TargetType="telerik:RadRibbonButton">
+        <Setter Property="Background" Value="{StaticResource PermissionBrush}"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Controls:FeebackSupportBlockIcon/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="Account/LogOffButtonStyle" BasedOn="{StaticResource NavigationButtonStyle}" TargetType="telerik:RadRibbonButton">
         <Setter Property="Background" Value="{StaticResource PermissionBrush}"/>
         <Setter Property="ContentTemplate">
