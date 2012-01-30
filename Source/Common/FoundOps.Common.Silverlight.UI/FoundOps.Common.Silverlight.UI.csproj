@@ -190,8 +190,8 @@
     <Compile Include="Controls\AddEditDelete\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Icons\FeebackSupportBlockIcon.xaml.cs">
-      <DependentUpon>FeebackSupportBlockIcon.xaml</DependentUpon>
+    <Compile Include="Controls\Icons\FeedbackSupportBlockIcon.xaml.cs">
+      <DependentUpon>FeedbackSupportBlockIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\StringVerifier.xaml.cs">
       <DependentUpon>StringVerifier.xaml</DependentUpon>
@@ -390,7 +390,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Icons\FeebackSupportBlockIcon.xaml">
+    <Page Include="Controls\Icons\FeedbackSupportBlockIcon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

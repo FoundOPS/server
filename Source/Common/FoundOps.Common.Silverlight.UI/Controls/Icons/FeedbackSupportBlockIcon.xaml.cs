@@ -2,9 +2,9 @@
 
 namespace FoundOps.Common.Silverlight.Controls.Icons
 {
-    public partial class FeebackSupportBlockIcon : UserControl
+    public partial class FeedbackSupportBlockIcon : UserControl
     {
-        public FeebackSupportBlockIcon()
+        public FeedbackSupportBlockIcon()
         {
             InitializeComponent();
         }

@@ -320,6 +320,7 @@
     <Content Include="Scripts\form.js" />
     <Content Include="Scripts\touch.js" />
     <Content Include="Scripts\Silverlight.js" />
+    <Content Include="Scripts\userVoice.js" />
     <Content Include="Silverlight.js" />
     <Content Include="Views\Shared\HomeLinkView.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />

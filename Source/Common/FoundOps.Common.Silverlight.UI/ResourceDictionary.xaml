@@ -1499,12 +1499,12 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="FeebackSupportButtonStyle" BasedOn="{StaticResource NavigationButtonStyle}" TargetType="telerik:RadRibbonButton">
-        <Setter Property="Background" Value="{StaticResource PermissionBrush}"/>
+    <Style x:Key="FeedbackSupportButtonStyle" BasedOn="{StaticResource NavigationButtonStyle}" TargetType="telerik:RadRibbonButton">
+        <Setter Property="Background" Value="{StaticResource OrangeBrush}"/>
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Controls:FeebackSupportBlockIcon/>
+                    <Controls:FeedbackSupportBlockIcon/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
