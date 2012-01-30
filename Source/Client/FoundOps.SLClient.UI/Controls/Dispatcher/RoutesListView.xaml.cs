@@ -180,6 +180,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     {
                         //Return if an error string is being displayed 
                         if (cue.IsDropPossible == false) return;
+
                         //The text that would show up on a Drag to tell you whether you are going
                         //to drop something before, in or after the item you are hovering over
                         var dragActionString = ((String)((TreeViewDragCue)e.Options.DragCue).DragActionContent);
@@ -329,8 +330,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 routeDraggedTo.RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
 
 
-            #region If the current draggedItem is a RouteTask -> Either add it to the RouteDestination, or create a new RouteDestination
-
+            //If the current draggedItem is a RouteTask -> Either add it to the RouteDestination, or create a new RouteDestination
             var routeTask = draggedItem as RouteTask;
             if (routeTask != null)
             {
@@ -385,15 +385,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                         Client = routeTask.Client
                     };
 
-                    //var oldRouteDestination = routeTask.RouteDestination;
-
-                    ////Add the task to the new destination
-                    //newDestination.RouteTasks.Add(routeTask);
-
-                    ////if the old route destination has 0 tasks, delete it
-                    //if (oldRouteDestination.RouteTasks.Count == 0)
-                    //    VM.Routes.DeleteRouteDestination(oldRouteDestination);
-
                     if (destination is Route)
                     {
                         //Add the new destination to the Route
@@ -412,37 +403,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     #endregion
                 }
             }
-
-            #endregion
         }
-
-        ///// <summary>
-        ///// Removes from route.
-        ///// </summary>
-        ///// <param name="draggedItem">The dragged item.</param>
-        ///// <param name="e">The <see cref="Telerik.Windows.Controls.DragDrop.DragDropEventArgs"/> instance containing the event data.</param>
-        //private void RemoveFromRoute(RouteTask routeTask, RouteDestination routeDestination, DragDropEventArgs e)
-        //{
-        //    //If the draggedItem was a RouteDestination
-        //    //Remove the RouteDestination from its Route
-        //    if (routeDestination != null)
-        //        VM.Routes.DeleteRouteDestination(routeDestination);
-
-        //    //If the draggedItem was a RouteTask
-        //    //Remove the RouteTask from its RouteDestination and check if there are any more RouteTasks in it,
-        //    //If not, remove the RouteDestination
-        //    if (routeTask != null)
-        //    {
-        //        var tasksDestination = routeTask.RouteDestination;
-
-        //        //Remove the task from the current destination
-        //        routeTask.RemoveRouteDestination();
-
-        //        //If there are no RouteTasks remaining on the destination, delete it
-        //        if (tasksDestination.RouteTasks.Count == 0)
-        //            VM.Routes.DeleteRouteDestination(tasksDestination);
-        //    }
-        //}
 
         private static string GetRouteType(object payloadCheck)
         {

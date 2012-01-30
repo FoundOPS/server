@@ -20,13 +20,13 @@ namespace FoundOps.Core.Models.CoreEntities
 
         public void OnCreate()
         {
-            //this.Id = Guid.NewGuid();
-            //this.Name = "New Location";
-            ////To prevent random HasChanges
-            //this.AddressLineOne = "";
-            //this.AddressLineTwo = "";
-            //this.City = "";
-            //this.State = "";
+            this.Id = Guid.NewGuid();
+            this.Name = "New Location";
+            //To prevent random HasChanges
+            this.AddressLineOne = "";
+            this.AddressLineTwo = "";
+            this.City = "";
+            this.State = "";
             OnCreation();
         }
 

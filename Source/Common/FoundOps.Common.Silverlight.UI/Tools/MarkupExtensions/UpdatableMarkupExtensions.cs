@@ -4,23 +4,16 @@ using System.Windows;
 using System.Reflection;
 using System.Windows.Data;
 using System.Windows.Markup;
+using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 
-namespace FoundOps.Common.Silverlight.Tools
+namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {
     public abstract class UpdatableMarkupExtension<TE> : FrameworkElement, IMarkupExtension<TE> where TE : class
     {
-        private object _targetObject;
-        private object _targetProperty;
+        public object TargetObject { get; private set; }
 
-        public object TargetObject
-        {
-            get { return _targetObject; }
-        }
-
-        public object TargetProperty
-        {
-            get { return _targetProperty; }
-        }
+        public string TargetPropertyName { get; private set; }
+        public object TargetProperty { get; private set; }
 
         protected void UpdateValue(object value)
         {
@@ -28,28 +21,26 @@ namespace FoundOps.Common.Silverlight.Tools
             if (Converter != null)
                 value = Converter.Convert(value, null, null, null);
 
-            if (_targetObject != null)
+            if (TargetObject == null) return;
+            if (TargetProperty as DependencyProperty != null)
             {
-                if (_targetProperty as DependencyProperty != null)
-                {
-                    var obj = _targetObject as DependencyObject;
-                    var prop = _targetProperty as DependencyProperty;
+                var obj = TargetObject as DependencyObject;
+                var prop = TargetProperty as DependencyProperty;
 
-                    Action updateAction = () => obj.SetValue(prop, value);
+                Action updateAction = () => obj.SetValue(prop, value);
 
-                    // Check whether the target object can be accessed from the
-                    // current thread, and use Dispatcher.Invoke if it can't
+                // Check whether the target object can be accessed from the
+                // current thread, and use Dispatcher.Invoke if it can't
 
-                    if (obj.CheckAccess())
-                        updateAction();
-                    else
-                        updateAction.BeginInvoke(null, null);
-                }
-                else // _targetProperty is PropertyInfo
-                {
-                    var prop = _targetProperty as PropertyInfo;
-                    prop.SetValue(_targetObject, value, null);
-                }
+                if (obj.CheckAccess())
+                    updateAction();
+                else
+                    updateAction.BeginInvoke(null, null);
+            }
+            else // _targetProperty is PropertyInfo
+            {
+                var prop = TargetProperty as PropertyInfo;
+                prop.SetValue(TargetObject, value, null);
             }
         }
 
@@ -62,8 +53,12 @@ namespace FoundOps.Common.Silverlight.Tools
             var target = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
             if (target != null)
             {
-                _targetObject = target.TargetObject;
-                _targetProperty = target.TargetProperty;
+                TargetObject = target.TargetObject;
+                TargetProperty = target.TargetProperty;
+                if (TargetObject != null && TargetProperty != null)
+                    TargetPropertyName = TargetProperty is DependencyProperty
+                                             ? ((DependencyProperty)TargetProperty).GetDependencyPropertyName(target.TargetObject.GetType())
+                                             : ((PropertyInfo)TargetProperty).Name;
             }
 
             var value = ProvideValueInternal(serviceProvider);
@@ -72,7 +67,7 @@ namespace FoundOps.Common.Silverlight.Tools
             if (Converter != null)
                 value = Converter.Convert(value, null, null, null);
 
-            return (TE) value;
+            return (TE)value;
         }
     }
 }

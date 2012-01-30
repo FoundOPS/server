@@ -30,7 +30,6 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteDestinationRoute", "RouteDestination", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteDestination), "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Route), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "VehicleMaintenanceLogEntryLineItem", "VehicleMaintenanceLogEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.VehicleMaintenanceLogEntry), "LineItem", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.VehicleMaintenanceLineItem), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientParty", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Party", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Party), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "ClientParty1", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), "Party", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Party), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteTaskClient", "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceClient", "Service", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Service), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Client), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteDestinationClient", "RouteDestination", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteDestination), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), true)]
@@ -1605,30 +1604,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Guid> LinkedPartyId
-        {
-            get
-            {
-                return _LinkedPartyId;
-            }
-            set
-            {
-                OnLinkedPartyIdChanging(value);
-                ReportPropertyChanging("LinkedPartyId");
-                _LinkedPartyId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LinkedPartyId");
-                OnLinkedPartyIdChanged();
-            }
-        }
-        private Nullable<global::System.Guid> _LinkedPartyId;
-        partial void OnLinkedPartyIdChanging(Nullable<global::System.Guid> value);
-        partial void OnLinkedPartyIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Guid VendorId
@@ -1712,44 +1687,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Party>("CoreEntities.ClientParty", "Party", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "ClientParty1", "Party")]
-        public Party LinkedParty
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Party>("CoreEntities.ClientParty1", "Party").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Party>("CoreEntities.ClientParty1", "Party").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Party> LinkedPartyReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Party>("CoreEntities.ClientParty1", "Party");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Party>("CoreEntities.ClientParty1", "Party", value);
                 }
             }
         }
@@ -6232,31 +6169,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Client>("CoreEntities.ClientParty", "Client", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <LongDescription>
-        /// The linked clients this party is a client of
-        /// </LongDescription>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "ClientParty1", "Client")]
-        public EntityCollection<Client> OfClients
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Client>("CoreEntities.ClientParty1", "Client");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Client>("CoreEntities.ClientParty1", "Client", value);
                 }
             }
         }

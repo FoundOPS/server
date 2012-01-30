@@ -318,7 +318,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             party.Locations.Load();
             party.OwnedLocations.Load();
-            party.OfClients.Load();
+            party.ClientOwnerReference.Load();
             party.Contacts.Load();
             party.ContactInfoSet.Load();
             party.PartyImageReference.Load();
@@ -331,17 +331,13 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (party.PartyImage != null)
                 this.DeleteFile(party.PartyImage);
 
-            var partyLocations = party.Locations.ToArray();
-            foreach (var location in partyLocations)
-                this.DeleteLocation(location);
-
             var accountLocations = party.OwnedLocations.ToArray();
             foreach (var location in accountLocations)
                 this.DeleteLocation(location);
 
-            var ofClients = party.OfClients.ToArray();
-            foreach (var ofClient in ofClients)
-                this.DeleteClient(ofClient);
+            var partyLocations = party.Locations.ToArray();
+            foreach (var location in partyLocations)
+                this.DeleteLocation(location);
 
             var contacts = party.Contacts.ToArray();
             foreach (var contact in contacts)

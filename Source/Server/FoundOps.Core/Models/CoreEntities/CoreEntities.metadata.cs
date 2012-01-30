@@ -62,9 +62,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
             [Include]
             public Party OwnedParty { get; set; }
-
-            [Include]
-            public Party LinkedParty { get; set; }
         }
     }
 

@@ -1,6 +1,10 @@
-﻿ALTER TABLE [dbo].[RouteTasks]
+﻿1. ON DELETE SET NULL ON UPDATE NO ACTION; //This will remove RouteTasks from a destination when it is deleted
+
+ALTER TABLE [dbo].[RouteTasks]
 ADD CONSTRAINT [FK_RouteTaskRouteDestination]
     FOREIGN KEY ([RouteDestinationId])
     REFERENCES [dbo].[RouteDestinations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;  <----- ----->  1. ON DELETE SET NULL ON UPDATE NO ACTION; //This will remove RouteTasks from a destination when it is deleted
+-----> ON DELETE NO ACTION ON UPDATE NO ACTION;  
+
+2. Replace all NONCLUSTERED w CLUSTERED

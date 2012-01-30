@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 01/25/2012 22:20:10
+-- Date Created: 01/27/2012 16:28:48
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -58,9 +58,6 @@ IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryLineItem]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ClientParty]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientParty];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ClientParty1]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientParty1];
 GO
 IF OBJECT_ID(N'[dbo].[FK_RouteTaskClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskClient];
@@ -553,7 +550,6 @@ CREATE TABLE [dbo].[Clients] (
     [Id] uniqueidentifier  NOT NULL,
     [DateAdded] datetime  NOT NULL,
     [Salesperson] nvarchar(max)  NULL,
-    [LinkedPartyId] uniqueidentifier  NULL,
     [VendorId] uniqueidentifier  NOT NULL,
     [DefaultBillingLocationId] uniqueidentifier  NULL
 );
@@ -727,7 +723,7 @@ CREATE TABLE [dbo].[RouteTasks] (
     [Name] nvarchar(max)  NOT NULL,
     [ReadyToInvoice] bit  NULL,
     [Date] datetime  NOT NULL,
-    [OrderInRouteDestination] int  NOT NULL DEFAULT 1
+    [OrderInRouteDestination] int  NOT NULL
 );
 GO
 
@@ -1241,7 +1237,7 @@ ADD CONSTRAINT [FK_RouteTaskLocation]
     FOREIGN KEY ([LocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskLocation'
 CREATE INDEX [IX_FK_RouteTaskLocation]
@@ -1269,7 +1265,7 @@ ADD CONSTRAINT [FK_RouteTaskRouteDestination]
     FOREIGN KEY ([RouteDestinationId])
     REFERENCES [dbo].[RouteDestinations]
         ([Id])
-    ON DELETE SET NULL ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskRouteDestination'
 CREATE INDEX [IX_FK_RouteTaskRouteDestination]
@@ -1312,20 +1308,6 @@ ADD CONSTRAINT [FK_ClientParty]
     REFERENCES [dbo].[Parties]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [LinkedPartyId] in table 'Clients'
-ALTER TABLE [dbo].[Clients]
-ADD CONSTRAINT [FK_ClientParty1]
-    FOREIGN KEY ([LinkedPartyId])
-    REFERENCES [dbo].[Parties]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ClientParty1'
-CREATE INDEX [IX_FK_ClientParty1]
-ON [dbo].[Clients]
-    ([LinkedPartyId]);
 GO
 
 -- Creating foreign key on [ClientId] in table 'RouteTasks'
