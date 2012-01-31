@@ -67,7 +67,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return null;
 
             var businessAccounts = this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates")
-                .Include("ContactInfoSet").Include("OwnedRoles");
+                .Include("ContactInfoSet").Include("OwnedRoles").Include("OwnedRoles.MemberParties");
 
             //Force load PartyImage
             var t = (from ba in businessAccounts
