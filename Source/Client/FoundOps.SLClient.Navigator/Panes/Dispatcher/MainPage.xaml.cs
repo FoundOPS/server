@@ -227,17 +227,18 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             #region Check For Multiple Tasks Being Dragged
 
-            if (draggedItems.OfType<RouteTask>().Count() > 1)
-            {
-                //FirstOrDefault might be null but the second might have a service 
-                payloadCheck = (RouteTask)DragDropTools.CheckItemsForService(payloadCollection);
+            var routeTasks = draggedItems.OfType<RouteTask>();
 
-                if (draggedItems.OfType<RouteTask>().Where(draggedItem => (draggedItem).Service != null &&
-                            String.CompareOrdinal((draggedItem).Service.ServiceTemplate.Name, payloadCheck.Service.ServiceTemplate.Name) != 0)
-                            .Any(draggedItem => (draggedItem).Service != null))
+            if (routeTasks.Count() > 1)
+            {
+                var services = routeTasks.Select(rt => rt.Service).Where(s => s != null).Distinct();
+
+                if (services.Count() > 1)
                     return ErrorConstants.DifferentService;
 
-            }
+                //FirstOrDefault might be null but the second might have a service 
+                payloadCheck = (RouteTask)DragDropTools.CheckItemsForService(payloadCollection);
+                }
 
             #endregion
 
@@ -258,7 +259,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                     if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
                         return RoutesListView.ErrorConstants.RouteLacksCapability;
-                    
+
                     #endregion
                 }
 
@@ -340,21 +341,13 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (errorString == "")
             {
                 var itemNames = ((IEnumerable<object>)draggedItems).Select(i => ((RouteTask)i).Name);
-                cue.DragPreviewVisibility = Visibility.Visible;
-                cue.DragTooltipVisibility = Visibility.Collapsed;
+                cue = DragDropTools.SetPreviewAndToolTipVisabilityAndDropPossible(cue, Visibility.Visible, Visibility.Collapsed, true);
                 cue.ItemsSource = itemNames;
-                e.Options.DragCue = cue;
             }
-            if (errorString != "")
-            {
-                cue.DragTooltipVisibility = Visibility.Visible;
-                cue.DragTooltipContentTemplate = this.Resources["DragCueTemplate"] as DataTemplate; ;
-                cue.DragActionContent = String.Format(errorString);
-                cue.IsDropPossible = false;
-                e.Options.DragCue = cue;
-            }
+            else if (errorString != "")
+                cue = DragDropTools.CreateErrorDragCue(cue, errorString, this.Resources["DragCueTemplate"] as DataTemplate);
 
-            return cue;
+            e.Options.DragCue = cue;
         }
 
         /// <summary>
@@ -369,16 +362,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             //We know they are all RouteTasks becuase they come from the TaskBoard
             var routeTask = draggedItem as RouteTask;
 
-            //This is done first because we dont need to create a new RouteDestination
-            if (destination is RouteTask)
-            {
-                DragDropTools.AddToRouteTask(destination as RouteTask, routeTask, dropPlacement);
-
-                //No need to do any of the other logic below, skip to the next iteration of the loop
-                return;
-            }
-
-            DragDropTools.AddToDestinationOrRoute(routeTask, destination, placeInRoute, dropPlacement);
+            //This will check the destination and call the correct method to add the RouteTask to the appropriate place
+            DragDropTools.AddRouteTaskToRoute(routeTask, destination, placeInRoute, dropPlacement);
 
             //Remove the RouteTask from the TaskBoard
             VM.Routes.UnroutedTasks.Remove((RouteTask)draggedItem);

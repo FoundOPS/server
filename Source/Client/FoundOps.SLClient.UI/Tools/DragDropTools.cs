@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using FoundOps.Core.Models.CoreEntities;
 using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.TreeView;
@@ -77,7 +78,7 @@ namespace FoundOps.SLClient.UI.Tools
         /// <param name="destination">The destination.</param>
         /// <param name="placeInRoute">The place in route.</param>
         /// <param name="dropPlacement"> </param>
-        public static void AddToDestinationOrRoute(RouteTask routeTask, object destination, int placeInRoute, DropPlacement dropPlacement)
+        public static void AddRouteTaskToDestinationOrRoute(RouteTask routeTask, object destination, int placeInRoute, DropPlacement dropPlacement)
         {
             //If the user drops the task on a destination, just add it to the end of its list of RouteTasks
             if ((destination is RouteDestination) && dropPlacement == DropPlacement.In)
@@ -123,12 +124,11 @@ namespace FoundOps.SLClient.UI.Tools
         /// <returns>The index that the object will be dropped at</returns>
         public static int GetDropPlacement(object destination, DropPlacement dropPlacement)
         {
-            var routeDraggedTo = new Route();
             var placeInRoute = 0;
 
             if (destination is Route)
             {
-                placeInRoute = routeDraggedTo.RouteDestinationsListWrapper.Count;
+                placeInRoute = ((Route)destination).RouteDestinationsListWrapper.Count;
 
                 //Telerik does not allow you to drop above the root node in RadTreeView
                 //We also know that the only time you could possibly drop into a Route and meet the condition below will be
@@ -176,6 +176,11 @@ namespace FoundOps.SLClient.UI.Tools
             return null;
         }
 
+        /// <summary>
+        /// Checks the items to be sure that their service s are the same.
+        /// </summary>
+        /// <param name="payloadCollection">The payload collection.</param>
+        /// <returns></returns>
         public static object CheckItemsForService(IEnumerable<object> payloadCollection)
         {
             var payloadCheck = payloadCollection.FirstOrDefault();
@@ -188,6 +193,61 @@ namespace FoundOps.SLClient.UI.Tools
                 count++;
             }
             return payloadCheck;
+        }
+
+        /// <summary>
+        /// Adds the route task to a route in the corect destination.
+        /// </summary>
+        /// <param name="routeTask">The route task.</param>
+        /// <param name="destination">The destination.</param>
+        /// <param name="placeInRoute">The place in route.</param>
+        /// <param name="dropPlacement">The drop placement.</param>
+        public static void AddRouteTaskToRoute(RouteTask routeTask, object destination, int placeInRoute, DropPlacement dropPlacement)
+        {
+            //IF the drag destination is a RouteTask, add the draggedItem to that RouteTask
+            var routeTaskDestination = destination as RouteTask;
+            if (routeTaskDestination != null)
+            {
+                AddToRouteTask(routeTaskDestination, routeTask, dropPlacement);
+
+                //No need to do any of the other logic below, skip to the next iteration of the loop
+                return;
+            }
+
+            AddRouteTaskToDestinationOrRoute(routeTask, destination, placeInRoute, dropPlacement);
+        }
+
+        /// <summary>
+        /// Creates the drag cue when an error message needs to be displayed.
+        /// </summary>
+        /// <param name="cue">The cue.</param>
+        /// <param name="errorString">The error string.</param>
+        /// <param name="dataTemplate">The data template.</param>
+        /// <returns></returns>
+        public static TreeViewDragCue CreateErrorDragCue(TreeViewDragCue cue, string errorString, DataTemplate dataTemplate)
+        {
+            cue = SetPreviewAndToolTipVisabilityAndDropPossible(cue, Visibility.Collapsed, Visibility.Visible, false);
+            cue.DragTooltipContentTemplate = dataTemplate;
+            cue.DragActionContent = String.Format(errorString);
+
+            return cue;
+        }
+
+        /// <summary>
+        /// Sets the preview and tool tip visability.
+        /// </summary>
+        /// <param name="cue">The cue.</param>
+        /// <param name="previewVisibility">The preview visibility.</param>
+        /// <param name="toolTipVisibility">The tool tip visibility.</param>
+        /// <param name="dropPossible">Bool value that tells us if the drop is possible </param>
+        /// <returns></returns>
+        public static TreeViewDragCue SetPreviewAndToolTipVisabilityAndDropPossible(TreeViewDragCue cue, Visibility previewVisibility, Visibility toolTipVisibility, bool dropPossible)
+        {
+            cue.DragPreviewVisibility = previewVisibility;
+            cue.DragTooltipVisibility = toolTipVisibility;
+            cue.IsDropPossible = dropPossible;
+
+            return cue;
         }
     }
 }

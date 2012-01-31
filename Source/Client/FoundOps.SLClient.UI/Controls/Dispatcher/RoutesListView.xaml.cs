@@ -166,25 +166,20 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             // Get the drag cue that the TreeView or we have created
             var cue = e.Options.DragCue as TreeViewDragCue ?? new TreeViewDragCue();
 
-            cue.DragTooltipVisibility = Visibility.Collapsed;
-            cue.DragPreviewVisibility = Visibility.Visible;
-            cue.IsDropPossible = true;
 
             var status = e.Options.Status;
 
             if (status == DragStatus.DropImpossible)
             {
                 //Sets the Drag cue and we assume that a drop is not possible unless notified otherwise
-                cue.DragTooltipVisibility = Visibility.Visible;
-                cue.DragPreviewVisibility = Visibility.Collapsed;
+                cue = DragDropTools.SetPreviewAndToolTipVisabilityAndDropPossible(cue, Visibility.Collapsed, Visibility.Visible, false);
                 cue.DragActionContent = "Cannot drop here";
-                cue.IsDropPossible = false;
             }
 
             //Sets the Drag cue if a drop is possible
             if (status == DragStatus.DropPossible)
             {
-                cue.DragTooltipVisibility = Visibility.Collapsed;
+                cue = DragDropTools.SetPreviewAndToolTipVisabilityAndDropPossible(cue, Visibility.Visible, Visibility.Collapsed, true);
                 cue.IsDropPossible = true;
 
                 //Setup DragCue here
@@ -192,120 +187,25 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                 //Check errorString, an empty string means that there is not an issue with the current drop location
                 if (errorString != "")
-                {
-                    cue.DragTooltipVisibility = Visibility.Visible;
-                    cue.DragPreviewVisibility = Visibility.Collapsed;
-                    cue.DragTooltipContentTemplate = this.Resources["DragCueTemplate"] as DataTemplate;
-                    cue.DragActionContent = String.Format(errorString);
-                    cue.IsDropPossible = false;
-                }
+                    cue = DragDropTools.CreateErrorDragCue(cue, errorString, this.Resources["DragCueTemplate"] as DataTemplate);
+
+                if(errorString == "")
+                    cue = DragDropTools.SetPreviewAndToolTipVisabilityAndDropPossible(cue, Visibility.Visible, Visibility.Collapsed, true);
+
 
                 if (e.Options.Destination is TaskBoard)
                 {
-                    cue.IsDropPossible = true;
-                    cue.DragPreviewVisibility = Visibility.Visible;
+                    cue = DragDropTools.SetPreviewAndToolTipVisabilityAndDropPossible(cue, Visibility.Visible, Visibility.Visible, true);
                     //Adds an 's' to "item" in DragActionContent if more than one item is being dragged
                     cue.DragActionContent =
                         String.Format(draggedItems.Count() > 1
                                           ? "Add items to Task Board"
                                           : "Add item to Task Board");
 
-                    cue.DragTooltipVisibility = Visibility.Visible;
                 }
             }
 
             return cue;
-        }
-        
-        /// <summary>
-        /// Adds tasks to the TaskBoard.
-        /// </summary>
-        /// <param name="draggedItem">The dragged item.</param>
-        private void AddToTaskBoard(object draggedItem)
-        {
-            //If the draggedItem is a RouteDestination, add all its RouteTasks to the TaskBoard
-            if (draggedItem is RouteDestination)
-                foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
-                    VM.Routes.UnroutedTasks.Add(task);
-
-            //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
-            if (draggedItem is RouteTask)
-                VM.Routes.UnroutedTasks.Add((RouteTask)draggedItem);
-        }
-
-        /// <summary>
-        /// Removes from task board.
-        /// </summary>
-        /// <param name="draggedItem">The dragged item.</param>
-        private void RemoveFromRoute(object draggedItem)
-        {
-            //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely
-            if (draggedItem is RouteDestination)
-                VM.Routes.DeleteRouteDestination((RouteDestination)draggedItem);
-
-            if (draggedItem is RouteTask)
-            {
-                var oldRouteDestination = ((RouteTask)draggedItem).RouteDestination;
-
-                ((RouteTask)draggedItem).RemoveRouteDestination();
-
-                //if the old route destination has 0 tasks, delete it
-                if (oldRouteDestination.RouteTasks.Count == 0)
-                    VM.Routes.DeleteRouteDestination(oldRouteDestination);
-
-            }
-        }
-
-        /// <summary>
-        /// Adds to route.
-        /// </summary>
-        /// <param name="draggedItem">The dragged item.</param>
-        /// <param name="destination">The destination.</param>
-        /// <param name="routeDraggedTo">The route dragged to.</param>
-        /// <param name="placeInRoute">The place in route.</param>
-        /// <param name="dropPlacement">The drag placement.</param>
-        private void AddToRoute(object draggedItem, object destination, int placeInRoute, DropPlacement dropPlacement)
-        {
-            //If the current draggedItem is a RouteDestination -> Add it to the Route in the correct position
-            var routeDestination = draggedItem as RouteDestination;
-            if (routeDestination != null)
-            {
-                if(destination is RouteDestination)
-                ((RouteDestination) destination).Route.RouteDestinationsListWrapper.Insert(placeInRoute,(RouteDestination)draggedItem);
-
-                if(destination is Route && dropPlacement == DropPlacement.After)
-                    ((Route)destination).RouteDestinationsListWrapper.Add((RouteDestination)draggedItem);
-                else if(destination is Route)
-                    ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
-            }
-
-            //If the current draggedItem is a RouteTask -> Either add it to the RouteDestination, or create a new RouteDestination
-            var routeTask = draggedItem as RouteTask;
-            if (routeTask != null)
-            {
-                //if the old route destination only has this one task delete it
-                if (routeTask.RouteDestination.RouteTasks.Count == 1)
-                    VM.Routes.DeleteRouteDestination(routeTask.RouteDestination);
-
-                //Check if the destination is a RouteDestination and the DragActionString is 'Drop in'
-                if (dropPlacement == DropPlacement.In && destination is RouteDestination)
-                {
-                    ((RouteDestination)destination).RouteTasksListWrapper.Add(routeTask);
-                }
-                else
-                {
-                    var routeTaskDestination = destination as RouteTask;
-                    if (routeTaskDestination != null)
-                    {
-                        DragDropTools.AddToRouteTask(routeTaskDestination, routeTask, dropPlacement);
-
-                        //No need to do any of the other logic below, skip to the next iteration of the loop
-                        return;
-                    }
-
-                    DragDropTools.AddToDestinationOrRoute(routeTask, destination, placeInRoute, dropPlacement);
-                }
-            }
         }
 
         /// <summary>
@@ -325,41 +225,28 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             #region Do all the checks for Mulit-Drag/Drop
             if (payloadCollection.Count() > 1)
             {
+                var routeTasks = payloadCollection.OfType<RouteTask>();
+                var routeDestinations = payloadCollection.OfType<RouteDestination>();
+
+                var routeTasksExist = routeTasks.Any();
+                var routeDestinationsExist = routeDestinations.Any();
+
+                //User Selection Contains Both Tasks and Destinations
+                if (routeTasksExist && routeDestinationsExist)
+                    return ErrorConstants.InvalidSelection;
+                //Checks whether there draggedItems are tasks and then checks to be sure they all have the same location if they are not being dropped in a route
+                if (routeTasksExist)
+                {
+                    var locations = routeTasks.Select(rt => rt.Location).Distinct();
+
+                    if (locations.Count() > 1 &&
+                        (destination.DataContext is RouteTask || (destination.DataContext is RouteDestination && dropPlacement == DropPlacement.In)))
+                        return ErrorConstants.DifferentLocations;
+                }
+
+                //FirstOrDefault might be null but the second might have a service 
                 if (payloadCheck is RouteTask)
-                {
-                    foreach (object draggedItem in payloadCollection)
-                    {
-                        //FirstOrDefault might be null but the second might have a service 
-                        payloadCheck = DragDropTools.CheckItemsForService(payloadCollection);
-                        
-                        //Locations of selections dont match
-                        if (draggedItem is RouteTask && ((RouteTask)draggedItem).Location != ((RouteTask)payloadCheck).Location && destination != null &&
-                        (destination.DataContext is RouteTask || (destination.DataContext is RouteDestination && dropPlacement != DropPlacement.After)))
-                            return ErrorConstants.DifferentLocations;
-
-                        //User Selection Contains Both Tasks and Destinations
-                        if (draggedItem is RouteDestination)
-                            return ErrorConstants.InvalidSelection;
-
-                    }
-                }
-                else if (payloadCollection.FirstOrDefault() is RouteDestination)
-                {
-                    foreach (object draggedItem in payloadCollection)
-                    {
-                        //Locations of selections dont match
-                        var routeDestination = (RouteDestination)payloadCheck;
-                        if (routeDestination != null && (draggedItem is RouteDestination && ((RouteDestination)draggedItem).Location != routeDestination.Location) && destination != null &&
-                            (destination.DataContext is RouteTask || (destination.DataContext is RouteDestination && dropPlacement != DropPlacement.After)))
-                            return ErrorConstants.DifferentLocations;
-
-                        //User Selection Contains Both Tasks and Destinations
-                        if (draggedItem is RouteTask)
-                            return ErrorConstants.InvalidSelection;
-
-                    }
-                }
-
+                    payloadCheck = DragDropTools.CheckItemsForService(payloadCollection);
             }
             #endregion
 
@@ -436,6 +323,81 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 #endregion
             }
             return "";
+        }
+
+        /// <summary>
+        /// Adds tasks to the TaskBoard.
+        /// </summary>
+        /// <param name="draggedItem">The dragged item.</param>
+        private void AddToTaskBoard(object draggedItem)
+        {
+            //If the draggedItem is a RouteDestination, add all its RouteTasks to the TaskBoard
+            if (draggedItem is RouteDestination)
+                foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
+                    VM.Routes.UnroutedTasks.Add(task);
+
+            //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
+            if (draggedItem is RouteTask)
+                VM.Routes.UnroutedTasks.Add((RouteTask)draggedItem);
+        }
+
+        /// <summary>
+        /// Removes from task board.
+        /// </summary>
+        /// <param name="draggedItem">The dragged item.</param>
+        private void RemoveFromRoute(object draggedItem)
+        {
+            //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely
+            if (draggedItem is RouteDestination)
+                VM.Routes.DeleteRouteDestination((RouteDestination)draggedItem);
+
+            if (draggedItem is RouteTask)
+            {
+                var oldRouteDestination = ((RouteTask)draggedItem).RouteDestination;
+
+                ((RouteTask)draggedItem).RemoveRouteDestination();
+
+                //if the old route destination has 0 tasks, delete it
+                if (oldRouteDestination.RouteTasks.Count == 0)
+                    VM.Routes.DeleteRouteDestination(oldRouteDestination);
+
+            }
+        }
+
+        /// <summary>
+        /// Adds to route.
+        /// </summary>
+        /// <param name="draggedItem">The dragged item.</param>
+        /// <param name="destination">The destination.</param>
+        /// <param name="routeDraggedTo">The route dragged to.</param>
+        /// <param name="placeInRoute">The place in route.</param>
+        /// <param name="dropPlacement">The drag placement.</param>
+        private void AddToRoute(object draggedItem, object destination, int placeInRoute, DropPlacement dropPlacement)
+        {
+            //If the current draggedItem is a RouteDestination -> Add it to the Route in the correct position
+            var routeDestination = draggedItem as RouteDestination;
+            if (routeDestination != null)
+            {
+                if (destination is RouteDestination)
+                    ((RouteDestination)destination).Route.RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
+
+                if (destination is Route && dropPlacement == DropPlacement.After)
+                    ((Route)destination).RouteDestinationsListWrapper.Add((RouteDestination)draggedItem);
+                else if (destination is Route)
+                    ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
+            }
+
+            //If the current draggedItem is a RouteTask -> Either add it to the RouteDestination, or create a new RouteDestination
+            var routeTask = draggedItem as RouteTask;
+            if (routeTask != null)
+            {
+                //if the old route destination only has this one task delete it
+                if (routeTask.RouteDestination.RouteTasks.Count == 1)
+                    VM.Routes.DeleteRouteDestination(routeTask.RouteDestination);
+
+                //This will check the destination and call the correct method to add the RouteTask to the appropriate place
+                DragDropTools.AddRouteTaskToRoute(routeTask, destination, placeInRoute, dropPlacement);
+            }
         }
 
         #endregion
