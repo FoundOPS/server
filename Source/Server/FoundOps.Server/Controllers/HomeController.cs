@@ -190,7 +190,7 @@ namespace FoundOps.Server.Controllers
         public ActionResult PerformServerOperations()
         {
             //TODO Authenticate first
-            ServerManagement.PerformSelectedOperations();
+            ServerManagement.PerformServerOperations();
             return View();
         }
 #endif
