@@ -283,7 +283,6 @@
     <Content Include="Content\MobileSite.css" />
     <Content Include="Content\headerBg.png" />
     <Content Include="Content\infoBg.png" />
-    <Content Include="Content\jquery.js" />
     <Content Include="Content\linkedin.png" />
     <Content Include="Content\navLogo.png" />
     <Content Include="Content\navRibbons.png" />
@@ -291,7 +290,6 @@
     <Content Include="Content\pagingBtnActive.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\SiteLogo.png" />
-    <Content Include="Content\touch.css" />
     <Content Include="Content\TouchIcon.png" />
     <Content Include="Content\twitter.png" />
     <Content Include="Content\wt-rotator.css" />
@@ -322,17 +320,12 @@
     <Content Include="Scripts\form.js" />
     <Content Include="Scripts\touch.js" />
     <Content Include="Scripts\Silverlight.js" />
+    <Content Include="Scripts\userVoice.js" />
     <Content Include="Silverlight.js" />
     <Content Include="Views\Shared\HomeLinkView.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>

@@ -41,7 +41,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Location Properties
 
-        public ObservableAsPropertyHelper<IEnumerable<Location>> _locationsWithoutClient;
+        private readonly ObservableAsPropertyHelper<IEnumerable<Location>> _locationsWithoutClient;
         /// <summary>
         /// Gets the Locations without Clients.
         /// </summary>
@@ -149,8 +149,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             CreateNewItem = name =>
             {
-                //Set the OwnerParty to the current OwnerAccount
-                var newLocation = new Location {OwnerParty = ContextManager.OwnerAccount};
+                //Set the Party to the current OwnerAccount
+                var newLocation = new Location { Party = ContextManager.OwnerAccount };
 
                 var client = ContextManager.GetContext<Client>();
 

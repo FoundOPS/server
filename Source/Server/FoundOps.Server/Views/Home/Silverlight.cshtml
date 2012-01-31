@@ -6,27 +6,22 @@
     <title>FoundOPS</title>
     <link rel="shortcut icon" href="../../Content/favicon.ico" />
     <script type="text/javascript" src="@Url.Content("../../Scripts/jquery-1.6.1.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("../../Scripts/userVoice.js")"></script>
     <style type="text/css">
-        html, body
-        {
-            height: 100%;
-            overflow: hidden;
-        }
-        body
-        {
-            padding: 0;
-            margin: 0;
-        }
-        #silverlightControlHost
-        {
-            height: 100%;
-        }
+        html, body{height: 100%;overflow: hidden;}
+        body{padding: 0;margin: 0;}
+        #silverlightControlHost{height: 100%;}
     </style>
     <script type="text/javascript">
         //Access function for silverlight to get around a security exception for Http Gets that do not have a crossdomainpolicy
         function httpGet(url) {
             var img = new Image();
             img.src = url;
+        }
+
+        function openUserVoice()
+        {
+            UserVoice.showPopupWidget();
         }
 
         function onSilverlightError(sender, args) {

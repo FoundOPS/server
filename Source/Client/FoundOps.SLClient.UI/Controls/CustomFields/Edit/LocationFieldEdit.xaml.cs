@@ -1,7 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.UI.Controls.CustomFields.Edit
@@ -9,21 +9,30 @@ namespace FoundOps.SLClient.UI.Controls.CustomFields.Edit
     /// <summary>
     /// UI for editing and viewing LocationField information.
     /// </summary>
-    public partial class LocationFieldEdit : UserControl
+    public partial class LocationFieldEdit
     {
+        /// <summary>
+        /// A function that checks if the LocationField.Value is valid
+        /// </summary>
+        public Func<object, bool> IsLocationValueValid { get; private set; }
+
+
+        private bool _loaded;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationFieldEdit"/> class.
         /// </summary>
         public LocationFieldEdit()
         {
+            this.Loaded += (s, e) => _loaded = true;
+            this.Unloaded += (s, e) => _loaded = false;
+
+            //Ignore attempts to set the location to null when this is not loaded
+            IsLocationValueValid = location => _loaded || location != null;
+
             InitializeComponent();
 
-            this.DependentWhenVisible(LocationsVM);
-        }
-
-        public LocationsVM LocationsVM
-        {
-            get { return (LocationsVM)this.DataContext; }
+            this.DependentWhenVisible(VM.Locations);
         }
 
         #region LocationField Dependency Property

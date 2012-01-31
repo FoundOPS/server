@@ -6,7 +6,6 @@ using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
 using System.Collections.Generic;
 using FoundOps.Core.Navigator.VMs;
-using FoundOps.Core.Context.Services;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;

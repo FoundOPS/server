@@ -105,6 +105,12 @@ namespace FoundOps.Common.Silverlight.Loader
                         return;
                     }
 
+                    //Harcode User Feedback and Support
+                    if (targetUri.ToString() == @"FeedbackSupport")
+                    {
+                        return;
+                    }
+
                     if (_uriMap.TryGetValue(savedTargetUri, out navigateUri) && navigateUri != null && !_loadedXaps.Contains(navigateUri) && navigateUri.ToString().Count(c => c == '/') > 1)
                     {
                         var navigateUriForCurrentUri = new Uri(String.Format("{0}{1}", HtmlPage.Document.DocumentUri.RootUrl(), navigateUri), UriKind.RelativeOrAbsolute);

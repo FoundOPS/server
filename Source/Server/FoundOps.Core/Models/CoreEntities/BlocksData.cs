@@ -54,6 +54,11 @@ namespace FoundOps.Core.Server.Blocks
         public static Guid EmployeesBlockId = new Guid("5F4424A8-5327-4346-B9C3-884DB399F6D6");
 
         /// <summary>
+        /// The Feedback and Support Id
+        /// </summary>
+        public static Guid FeedbackSupportBlockId = new Guid("E2EAA8CB-5C45-42DA-8060-F962C2E2B47F");
+
+        /// <summary>
         /// The ImportData block Id
         /// </summary>
         public static Guid ImportDataBlockId = new Guid("8886E699-BE2F-4891-B6BB-563F1802050E");
@@ -88,7 +93,7 @@ namespace FoundOps.Core.Server.Blocks
                                                                   ClientBlockId, ContactsBlockId, DispatcherBlockId,
                                                                   EmployeesBlockId, //ImportDataBlockId,
                                                                   LocationsBlockId, RegionsBlockId, ServicesBlockId,
-                                                                  VehiclesBlockId, VehicleMaintenanceBlockId,
+                                                                  VehiclesBlockId, VehicleMaintenanceBlockId, FeedbackSupportBlockId,
                                                                   LogoutBlockId
                                                               };
 
@@ -228,6 +233,11 @@ namespace FoundOps.Core.Server.Blocks
         public static Block EmployeesBlock { get; private set; }
 
         /// <summary>
+        /// Gets the uservoice block.
+        /// </summary>
+        public static Block FeebackSupportBlock { get; private set; }
+
+        /// <summary>
         /// Gets the import data block.
         /// </summary>
         public static Block ImportDataBlock { get; private set; }
@@ -289,6 +299,14 @@ namespace FoundOps.Core.Server.Blocks
                 NavigateUri = "Employees"
             };
 
+            FeebackSupportBlock = new Block
+            {
+                Id = BlockConstants.FeedbackSupportBlockId,
+                Name = "Feedback and Support",
+                NavigateUri = "FeedbackSupport",
+                LoginNotRequired = true
+            };
+
             ImportDataBlock = new Block
             {
                 Id = BlockConstants.ImportDataBlockId,
@@ -334,20 +352,21 @@ namespace FoundOps.Core.Server.Blocks
             };
 
             ManagerBlocks = new List<Block>
-                                {
-                                    ClientsBlock,
-                                    ContactsBlock,
-                                    EmployeesBlock,
-                                    ServicesBlock,
-                                    LocationsBlock,
-                                    RegionsBlock,
-                                    DispatcherBlock,
-                                    EmployeesBlock,
-                                    VehiclesBlock,
-                                    VehicleMaintenanceBlock,
-                                    //ImportDataBlock,
-                                    LogoutBlock
-                                };
+            {
+               ClientsBlock,
+               ContactsBlock,
+               EmployeesBlock,
+               ServicesBlock,
+               LocationsBlock,
+               RegionsBlock,
+               DispatcherBlock,
+               EmployeesBlock,
+               VehiclesBlock,
+               VehicleMaintenanceBlock,
+               //ImportDataBlock, 
+               FeebackSupportBlock,
+               LogoutBlock
+            };
         }
 
         #endregion
@@ -358,6 +377,7 @@ namespace FoundOps.Core.Server.Blocks
         /// Gets the company home block.
         /// </summary>
         public static Block CompanyHomeBlock { get; private set; }
+
         /// <summary>
         /// Gets the public blocks.
         /// </summary>

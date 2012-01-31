@@ -23,12 +23,12 @@ namespace FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods
                                                    PropertyChangedCallback callback)
         {
             //Bind to a dependency property
-            var b = new Binding(dependencyPropertyName) {Source = element};
+            var b = new Binding(dependencyPropertyName) { Source = element };
 
             var prop = DependencyProperty.RegisterAttached(
                 "ListenAttached" + dependencyPropertyName + _uniqueListenerNumber,
-                typeof (object),
-                typeof (UserControl),
+                typeof(object),
+                typeof(UserControl),
                 new PropertyMetadata(callback));
 
             element.SetBinding(prop, b);
@@ -45,7 +45,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods
         /// <returns></returns>
         public static DependencyProperty GetDependencyProperty(this Type type, string name)
         {
-            var fieldInfo = type.GetField(name, BindingFlags.Public | BindingFlags.Static);
+            var fieldInfo = type.GetDependencyProperties().FirstOrDefault(fi => fi.Name == name);
             return (fieldInfo != null) ? (DependencyProperty)fieldInfo.GetValue(null) : null;
         }
 
@@ -61,6 +61,12 @@ namespace FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods
             if (type.BaseType != null)
                 properties = properties.Union(GetDependencyProperties(type.BaseType));
             return properties;
+        }
+
+        public static string GetDependencyPropertyName(this DependencyProperty dependencyProperty, Type type)
+        {
+            var fieldInfo = type.GetDependencyProperties().FirstOrDefault(fi => fi.GetValue(null) == dependencyProperty);
+            return fieldInfo == null ? null : fieldInfo.Name;
         }
     }
 }

@@ -5,7 +5,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
     xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:GridView="clr-namespace:Telerik.Windows.Controls.GridView;assembly=Telerik.Windows.Controls.GridView" xmlns:Tools="clr-namespace:FoundOps.Common.Silverlight.Tools;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:ImportData="clr-namespace:FoundOps.SLClient.UI.Controls.ImportData" mc:Ignorable="d"
+             xmlns:ImportData="clr-namespace:FoundOps.SLClient.UI.Controls.ImportData"
+             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
+             mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="ImportDataVM">
     <UserControl.Resources>
         <DataTemplate x:Key="DefaultCellTemplate">
@@ -29,7 +31,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ImportDestinationComboBoxTemplate">
-            <TextBlock Text="{Tools:AppendNumberToStringMarkupExtension StringValue={Binding DisplayName}, NumberValue={Binding Multiplicity}}"/>
+            <TextBlock Text="{MarkupExtensions:AppendNumberToStringMarkupExtension StringValue={Binding DisplayName}, NumberValue={Binding Multiplicity}}"/>
         </DataTemplate>
         <ImportData:ImportDataGridCellTemplateConverter x:Key="ImportDataGridCellTemplateConverter" DefaultTemplate="{StaticResource DefaultEditTemplate}"  ClientNameAssociationTemplate="{StaticResource ClientNameTemplate}"/>
     </UserControl.Resources>

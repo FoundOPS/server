@@ -1,15 +1,22 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.ComponentModel;
+using System.Windows.Browser;
+using FoundOps.Core.Server.Blocks;
 using Telerik.Windows.Controls;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Common.Silverlight.UI.Tools;
 using FoundOps.SLClient.Navigator.ViewModels;
 
 namespace FoundOps.SLClient.Navigator.Controls
 {
+    /// <summary>
+    /// The UI for navigating different blocks in the application.
+    /// </summary>
     public partial class NavigationSideBar : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NavigationSideBar"/> class.
+        /// </summary>
         public NavigationSideBar()
         {
             InitializeComponent();
@@ -48,8 +55,14 @@ namespace FoundOps.SLClient.Navigator.Controls
 
             ((NavigationBarVM)DataContext).BlockClickedOn = selectedBlock;
 
-            //Analytics - Track when a blobk icon is clicked 
+            //Analytics - Track when a block icon is clicked 
             Data.Services.Analytics.RadRibbonButtonClick(radButton.CommandParameter.ToString());
+
+            //Open the uservoice popup
+            if (selectedBlock.Id == BlockConstants.FeedbackSupportBlockId)
+            {
+                HtmlPage.Window.Invoke("openUserVoice");
+            }
         }
 
         #region Implementation of INotifyPropertyChanged

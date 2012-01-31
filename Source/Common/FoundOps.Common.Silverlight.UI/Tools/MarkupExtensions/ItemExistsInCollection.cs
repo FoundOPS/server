@@ -4,7 +4,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace FoundOps.Common.Silverlight.Tools
+namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {
     public class ItemExistsInCollection : UpdatableMarkupExtension<object>
     {
