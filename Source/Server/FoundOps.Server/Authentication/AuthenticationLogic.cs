@@ -100,11 +100,14 @@ namespace FoundOps.Server.Authentication
 
         public static bool CurrentUserHasFoundOPSAdminAccess(this CoreEntitiesContainer coreEntitiesContainer)
         {
-            return coreEntitiesContainer.CurrentUserCanAdministerThisParty(BusinessAccountsConstants.FoundOpsId);
+            var partiesCurrentUserCanAdminister = PartiesCurrentUserCanAdminister(coreEntitiesContainer).ToArray();
+
+            return partiesCurrentUserCanAdminister.Any(p => p.Id == BusinessAccountsConstants.FoundOpsId);
         }
 
         public static bool CurrentUserCanAdministerThisParty(this CoreEntitiesContainer coreEntitiesContainer, Guid partyId)
         {
+            //If the current user is a FoundOPS admin then they should have access
             if (CurrentUserHasFoundOPSAdminAccess(coreEntitiesContainer))
                 return true;
 
