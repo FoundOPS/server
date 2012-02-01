@@ -47,9 +47,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             RadDragAndDropManager.AddDragInfoHandler(RoutesListBox, OnDropInfo);
         }
 
-        //This gets called:
-        //1) an item is dragged over a potential drop location 
-        //2) again after the mouse button has been released
+        /// <summary>
+        ///This gets called:
+        ///1) an item is dragged over a potential drop location 
+        ///2) again after the mouse button has been released
+        /// </summary>
         private void OnDropInfo(object sender, DragDropEventArgs e)
         {
             //Prevents you from dragging no where
