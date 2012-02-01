@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.UI.Controls.Dispatcher;
 using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.TreeView;
 
@@ -19,16 +20,25 @@ namespace FoundOps.SLClient.UI.Tools
         After
     }
 
+    public struct CommonErrorConstants
+    {
+        public const string Valid = "Valid";
+
+        public const string RouteLacksCapabilities = "Route Lacks Service Capabilities";
+
+        public const string InvalidLocation = "Invalid Location";
+    }
+
     /// <summary>
     /// Tools for Dragging and Dropping
     /// </summary>
     public class DragDropTools
     {
         /// <summary>
-        /// Finds the drop placement.
+        /// Finds the drop placement (before, in or after).
         /// </summary>
         /// <param name="e">The <see cref="Telerik.Windows.Controls.DragDrop.DragDropEventArgs"/> instance containing the event data.</param>
-        /// <returns></returns>
+        /// <returns>The DropPlacement Enum</returns>
         public static DropPlacement FindDropPlacement(DragDropEventArgs e)
         {
             //The text that would show up on a Drag to tell you whether you are going
@@ -117,7 +127,7 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
-        /// Gets the drop placement.
+        /// Finds placeInRoute based on destination of the drop and the dropPlacement found earlier.
         /// </summary>
         /// <param name="destination">The destination.</param>
         /// <param name="dropPlacement">The drop placement.</param>
@@ -154,7 +164,7 @@ namespace FoundOps.SLClient.UI.Tools
         /// Gets the type of the route.
         /// </summary>
         /// <param name="payloadCheck">The payload check.</param>
-        /// <returns></returns>
+        /// <returns> Route type</returns>
         public static string GetRouteType(object payloadCheck)
         {
             if (payloadCheck is RouteDestination)
@@ -196,7 +206,7 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
-        /// Adds the route task to a route in the corect destination.
+        /// Adds the route task to a route in the correct destination. This also redirects to another method which will actually add it to the correct place
         /// </summary>
         /// <param name="routeTask">The route task.</param>
         /// <param name="destination">The destination.</param>
@@ -234,7 +244,7 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
-        /// Sets the preview and tool tip visability.
+        /// Sets the preview and tool tip visability as well as whether a drop is actually possible based on error codes.
         /// </summary>
         /// <param name="cue">The cue.</param>
         /// <param name="previewVisibility">The preview visibility.</param>
@@ -248,6 +258,26 @@ namespace FoundOps.SLClient.UI.Tools
             cue.IsDropPossible = dropPossible;
 
             return cue;
+        }
+
+        /// <summary>
+        /// Checks the type of the route against they type of route required by the dragged items.
+        /// </summary>
+        /// <param name="routeType">Type of the route.</param>
+        /// <param name="payloadCheck">The payload check.</param>
+        /// <returns>Either returns an error string or 'valid' if no error was found</returns>
+        public static string CheckRouteType(string routeType, object payloadCheck)
+        {
+            var draggedItemsType = GetRouteType(payloadCheck);
+
+            if (draggedItemsType == null)
+                return "";
+
+            //If the Route's type and the type required by the draggedItems do not match, return an error
+            if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
+                return CommonErrorConstants.RouteLacksCapabilities;
+
+            return CommonErrorConstants.Valid;
         }
     }
 }

@@ -54,19 +54,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         /// </summary>
         public struct ErrorConstants
         {
-            /// <summary>
-            /// Error String if you try to drag two things with different ServiceTemplates
-            /// </summary>
             public const string DifferentService = "Items Selected Have Different Services";
-            /// <summary>
-            /// Error String if you try to drop something on a Route without the correct capability
-            /// </summary>
-            public const string RouteLacksCapabilities = "Route Lacks Service Capabilities";
-            /// <summary>
-            /// Error String if you try to drop something on a destination with a different location
-            /// </summary>
-            public const string InvalidLocation = "Invalid Location";
-
         }
 
         /// <summary>
@@ -219,8 +207,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             //If its not null we set the destination to e.Options.Destination.DataContext
             var destination = destinationCheck.DataContext;
 
+            //Collection of dragged items
             var payloadCollection = (IEnumerable<object>)e.Options.Payload;
 
+            //The first item, used in various checks to be sure that all dragged items have the same service, location, etc.
             var payloadCheck = (RouteTask)(payloadCollection.FirstOrDefault());
 
             #region Setting Drag Cue off Different Conditions
@@ -238,13 +228,16 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                 //FirstOrDefault might be null but the second might have a service 
                 payloadCheck = (RouteTask)DragDropTools.CheckItemsForService(payloadCollection);
-                }
+            }
 
             #endregion
 
+            if (destination == null)
+                return "";
+
             #region Drag Destination is RouteTask
 
-            if (destination != null && destination is RouteTask)
+            if (destination is RouteTask)
             {
                 if (payloadCheck.Service != null)
                 {
@@ -252,13 +245,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                     var routeType = ((RouteTask)destination).RouteDestination.Route.RouteType;
 
-                    var draggedItemsType = DragDropTools.GetRouteType(payloadCheck);
+                    var returnString = DragDropTools.CheckRouteType(routeType, payloadCheck);
 
-                    if (draggedItemsType == null)
-                        return "";
-
-                    if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
-                        return RoutesListView.ErrorConstants.RouteLacksCapability;
+                    if (returnString != CommonErrorConstants.Valid)
+                        return returnString;
 
                     #endregion
                 }
@@ -266,26 +256,23 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 //Trying to drop a Task into a Destination with a different Location
                 if (((payloadCheck.Location != ((RouteTask)destination).Location)))
                     if (payloadCheck.Service != null || ((RouteTask)destination).Service != null)
-                        return ErrorConstants.InvalidLocation;
+                        return CommonErrorConstants.InvalidLocation;
             }
 
             #endregion
 
             #region Drag Destination is RouteDestination
 
-            else if (destination != null && destination is RouteDestination)
+            else if (destination is RouteDestination)
             {
                 #region Check For Route Type
 
                 var routeType = ((RouteDestination)destination).Route.RouteType;
 
-                var draggedItemsType = DragDropTools.GetRouteType(payloadCheck);
+                var returnString = DragDropTools.CheckRouteType(routeType, payloadCheck);
 
-                if (draggedItemsType == null)
-                    return "";
-
-                if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
-                    return RoutesListView.ErrorConstants.RouteLacksCapability;
+                if (returnString != CommonErrorConstants.Valid)
+                    return returnString;
 
                 #endregion
 
@@ -293,27 +280,23 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                 //Checks to see if the dragged locations match the destinations location. Also makes sure that you are trying to drop in the destination before throwing an error.
                 if (((payloadCheck.Location != ((RouteDestination)destination).Location)) && dragActionString != null && dragActionString.Contains("in"))
-                    return ErrorConstants.InvalidLocation;
-
+                    return CommonErrorConstants.InvalidLocation;
             }
 
             #endregion
 
             #region Drag Destination is Route
 
-            else if (destination != null && destination is Route)
+            else if (destination is Route)
             {
                 #region Check For Route Type
 
                 var routeType = ((Route)destination).RouteType;
 
-                var draggedItemsType = DragDropTools.GetRouteType(payloadCheck);
+                var returnString = DragDropTools.CheckRouteType(routeType, payloadCheck);
 
-                if (draggedItemsType == null)
-                    return "";
-
-                if (String.CompareOrdinal(routeType, draggedItemsType) != 0)
-                    return RoutesListView.ErrorConstants.RouteLacksCapability;
+                if (returnString != CommonErrorConstants.Valid)
+                    return returnString;
 
                 #endregion
             }
