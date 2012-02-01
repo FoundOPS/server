@@ -105,6 +105,9 @@ namespace FoundOps.Server.Authentication
 
         public static bool CurrentUserCanAdministerThisParty(this CoreEntitiesContainer coreEntitiesContainer, Guid partyId)
         {
+            if (CurrentUserHasFoundOPSAdminAccess(coreEntitiesContainer))
+                return true;
+
             var partiesCurrentUserCanAdminister = PartiesCurrentUserCanAdminister(coreEntitiesContainer).ToArray();
 
             return partiesCurrentUserCanAdminister.Any(p => p.Id == partyId);

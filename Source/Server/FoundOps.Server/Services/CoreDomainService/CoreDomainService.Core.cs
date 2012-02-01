@@ -67,7 +67,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return null;
 
             var businessAccounts = this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates")
-                .Include("ContactInfoSet").Include("OwnedRoles");
+                .Include("ContactInfoSet").Include("OwnedRoles").Include("OwnedRoles.MemberParties");
 
             //Force load PartyImage
             var t = (from ba in businessAccounts
@@ -485,23 +485,18 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void InsertUserAccount(UserAccount userAccount)
         {
+            //Set the password to the temporary password
+            userAccount.PasswordHash = EncryptionTools.Hash(userAccount.TemporaryPassword);
+
+            //Setup the Default UserAccount role
+            var userAccountBlocks = this.ObjectContext.Blocks.Where(block => BlockConstants.UserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
+
+            RolesDesignData.SetupDefaultUserAccountRole(userAccount, userAccountBlocks);
+
             if ((userAccount.EntityState != EntityState.Detached))
-            {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(userAccount, EntityState.Added);
-            }
             else
-            {
-                //Set the password to the temporary password
-                userAccount.PasswordHash = EncryptionTools.Hash(userAccount.TemporaryPassword);
-
-                //Setup the Default UserAccount role
-                var userAccountBlocks =
-                    this.ObjectContext.Blocks.Where(block => BlockConstants.UserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
-
-                RolesDesignData.SetupDefaultUserAccountRole(userAccount, userAccountBlocks);
-
                 this.ObjectContext.Parties.AddObject(userAccount);
-            }
         }
 
         [Update]
