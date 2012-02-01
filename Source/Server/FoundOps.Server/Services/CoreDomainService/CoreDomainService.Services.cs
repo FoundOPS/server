@@ -73,7 +73,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if ((service.EntityState == EntityState.Detached))
                 this.ObjectContext.Services.Attach(service);
 
-            if(service.ServiceTemplate!=null)
+            if (service.ServiceTemplate != null)
                 this.DeleteServiceTemplate(service.ServiceTemplate);
 
             if ((service.EntityState != EntityState.Detached))
@@ -94,7 +94,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             return GetRecurringServicesForServiceProvider(roleId, Guid.Empty, Guid.Empty, Guid.Empty);
         }
-      
+
         private IEnumerable<RecurringService> GetRecurringServicesForServiceProvider(Guid roleId, Guid clientIdFilter, Guid locationIdFilter, Guid recurringServiceIdFilter)
         {
             var businessForRole = ObjectContext.BusinessForRole(roleId);
@@ -124,7 +124,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             return recurringServicesToReturn;
         }
-      
+
         private IEnumerable<RecurringService> RecurringServicesForDate(DateTime selectedDate, BusinessAccount businessAccount)
         {
             var recurringServicesForBusinessAccount =
@@ -180,13 +180,14 @@ namespace FoundOps.Server.Services.CoreDomainService
             recurringService.GeneratedServices.Clear(); //Sever link to generated services
 
             recurringService.ServiceTemplateReference.Load();
-            recurringService.RepeatReference.Load();
 
             if (recurringService.ServiceTemplate != null)
                 this.DeleteServiceTemplate(recurringService.ServiceTemplate);
+            
+            var repeat = this.ObjectContext.Repeats.FirstOrDefault(r => r.Id == recurringService.Id);
 
-            if (recurringService.Repeat != null)
-                this.DeleteRepeat(recurringService.Repeat);
+            if (repeat != null)
+                this.DeleteRepeat(repeat);
 
             this.ObjectContext.RecurringServices.DeleteObject(recurringService);
         }
