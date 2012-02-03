@@ -10,14 +10,16 @@
     [Name]                    NVARCHAR (MAX)   NOT NULL,
     [ReadyToInvoice]          BIT              NULL,
     [Date]                    DATETIME         NOT NULL,
-    [OrderInRouteDestination] INT              DEFAULT ((1)) NOT NULL,
+    [OrderInRouteDestination] INT              NOT NULL,
     CONSTRAINT [PK_RouteTasks] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_BusinessAccountRouteTask] FOREIGN KEY ([BusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT [FK_RouteTaskClient] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Clients] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_RouteTaskLocation] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_RouteTaskRouteDestination] FOREIGN KEY ([RouteDestinationId]) REFERENCES [dbo].[RouteDestinations] ([Id]) ON DELETE SET NULL ON UPDATE NO ACTION,
+    CONSTRAINT [FK_RouteTaskLocation] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE SET NULL ON UPDATE NO ACTION,
+    CONSTRAINT [FK_RouteTaskRouteDestination] FOREIGN KEY ([RouteDestinationId]) REFERENCES [dbo].[RouteDestinations] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT [FK_RouteTaskService] FOREIGN KEY ([ServiceId]) REFERENCES [dbo].[Services] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
+
+
 
 
 
