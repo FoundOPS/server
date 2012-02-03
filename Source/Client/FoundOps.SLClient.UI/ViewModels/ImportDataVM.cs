@@ -122,8 +122,17 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 IsBusy = true;
                 //use the CSVReader to read in the data
-                using (var csv = new CsvReader(fileInfo.OpenRead()))
+                try
+                {
+                    using (var csv = new CsvReader(fileInfo.OpenRead()))
                     DataTable = ReadInCSVData(csv);
+                }
+                catch (Exception)
+                {
+                    IsBusy = false;
+                    throw;
+                }
+            
                 IsBusy = false;
             });
 
@@ -149,19 +158,24 @@ namespace FoundOps.SLClient.UI.ViewModels
             return newColumn;
         }
 
-        private static DataTable<ValueWithOptionalAssociation> ReadInCSVData(CsvReader reader)
+        private DataTable<ValueWithOptionalAssociation> ReadInCSVData(CsvReader reader)
         {
             var dataTable = new DataTable<ValueWithOptionalAssociation>();
             var headers = new List<string>();
 
             try
             {
-                var header = reader.ReadHeaderRecord();
-                foreach (var fieldName in header.Values)
+                //Try to read the header record
+                try
                 {
-                    dataTable.Columns.Add(new ImportColumn { ColumnName = fieldName });
-                    headers.Add(fieldName);
+                    var header = reader.ReadHeaderRecord();
+                    foreach (var fieldName in header.Values)
+                    {
+                        dataTable.Columns.Add(new ImportColumn { ColumnName = fieldName });
+                        headers.Add(fieldName);
+                    }
                 }
+                catch { }
 
                 foreach (var record in reader.DataRecords)
                 {
@@ -177,9 +191,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                     dataTable.Rows.Add(newRow);
                 }
             }
-            catch (ArgumentException)
+            catch (Exception)
             {
                 MessageBox.Show("The data needs to be in CSV format.", "Error importing data.", MessageBoxButton.OK);
+                IsBusy = false;
                 return null;
             }
 
