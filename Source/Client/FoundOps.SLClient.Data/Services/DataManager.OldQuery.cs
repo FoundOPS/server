@@ -1,30 +1,23 @@
 ﻿using System;
-using System.Linq;
-using System.Diagnostics;
-using FoundOps.Common.NET;
-using System.Reactive.Linq;
-using System.ComponentModel;
-using FoundOps.Common.Tools;
-using FoundOps.Common.Models;
-using System.Reactive.Subjects;
 using System.Collections.Generic;
-using System.Reactive.Disposables;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel.Composition;
-using FoundOps.Common.Silverlight.Controls;
+using System.Diagnostics;
+using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Models;
+using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
-using System.ServiceModel.DomainServices.Client;
-using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.Data.Services
 {
     /// <summary>
-    /// Subscribes to ContextManager to load the proper data
+    /// The old query system.
     /// </summary>
-    [Export]
-    public class DataManager : INotifyPropertyChanged
+    public partial class DataManager
     {
         /// <summary>
         /// Each query of the DataManager.
@@ -98,92 +91,7 @@ namespace FoundOps.SLClient.Data.Services
             VehicleMaintenance
         }
 
-        #region Public
-
-        #region Implementation of INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void RaisePropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// The ContextManager
-        /// </summary>
-        public ContextManager ContextManager { get; private set; }
-
-        private readonly CoreDomainContext _coreDomainContext;
-        /// <summary>
-        /// The CoreDomainContext
-        /// </summary>
-        public CoreDomainContext Context
-        {
-            get { return _coreDomainContext; }
-        }
-
-        private readonly BehaviorSubject<bool> _domainContextHasChangesSubject = new BehaviorSubject<bool>(false);
-        /// <summary>
-        /// An Observable which notifies whenever the DomainContext has changes or does not have changes.
-        /// </summary>
-        public IObservable<bool> DomainContextHasChangesObservable { get { return _domainContextHasChangesSubject; } }
-
-        private bool _domainContextHasChanges;
-        /// <summary>
-        /// Gets or sets a value indicating whether the domain context has changes.
-        /// Updated every .25 seconds.
-        /// </summary>
-        public bool DomainContextHasChanges
-        {
-            get { return _domainContextHasChanges; }
-            set
-            {
-                if (value == _domainContextHasChanges)
-                    return;
-
-                _domainContextHasChanges = value;
-                _domainContextHasChangesSubject.OnNext(value);
-                this.RaisePropertyChanged("DomainContextHasChanges");
-            }
-        }
-
-        private readonly BehaviorSubject<bool> _domainContextIsSubmittingSubject = new BehaviorSubject<bool>(false);
-        /// <summary>
-        /// An Observable which pushes whenever the DomainContext is submitting, or stops submitting.
-        /// </summary>
-        public IObservable<bool> DomainContextIsSubmittingObservable { get { return _domainContextIsSubmittingSubject; } }
-
-        private bool _domainContextIsSubmitting;
-        /// <summary>
-        /// Gets or sets a value indicating whether the domain context is submitting.
-        /// Updated every .25 seconds.
-        /// </summary>
-        public bool DomainContextIsSubmitting
-        {
-            get { return _domainContextIsSubmitting; }
-            set
-            {
-                if (value == _domainContextIsSubmitting)
-                    return;
-
-                _domainContextIsSubmitting = value;
-                _domainContextIsSubmittingSubject.OnNext(value);
-                this.RaisePropertyChanged("DomainContextIsSubmitting");
-            }
-        }
-
-        #endregion
-
         #region Locals
-
-        #region Query Properties
 
         /// <summary>
         /// Stores each query's CombinedObservationState.
@@ -208,28 +116,8 @@ namespace FoundOps.SLClient.Data.Services
 
         #endregion
 
-        #endregion
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataManager"/> class.
-        /// </summary>
-        /// <param name="contextManager">The context manager.</param>
-        /// <param name="coreDomainContext">The core domain context.</param>
-        [ImportingConstructor]
-        public DataManager(ContextManager contextManager, CoreDomainContext coreDomainContext)
+        private void SetupQueries()
         {
-            ContextManager = contextManager;
-            _coreDomainContext = coreDomainContext;
-
-            //Keep track of domain context changes and domain context is submitting every quarter second (and update this public properties)
-            Observable.Interval(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
-            {
-                DomainContextHasChanges = this.Context.HasChanges;
-                DomainContextIsSubmitting = this.Context.IsSubmitting;
-            });
-
-            #region Setup Queries
-
             //Setup Blocks query
             SetupQuery(Query.Blocks, roleId => _coreDomainContext.GetBlocksQuery(), _coreDomainContext.Blocks);
 
@@ -277,31 +165,6 @@ namespace FoundOps.SLClient.Data.Services
 
             //Setup VehicleMaintenance query
             SetupQuery(Query.VehicleMaintenance, roleId => _coreDomainContext.GetVehicleMaintenanceLogForPartyQuery(roleId), _coreDomainContext.VehicleMaintenanceLogEntries);
-
-            #endregion
-
-            //Tracks if a PerformNextSave is hookup up to the currentSubmitOperation.Completed event
-            var performNextSaveHooked = false;
-            //Whenever a SubmitOperation is enqueued: try to Submit as soon as possible
-            this._nextSubmitOperationsQueue.FromCollectionChanged().Where(e => e.EventArgs != null && e.EventArgs.Action == NotifyCollectionChangedAction.Add)
-                //Wait until after CollectionChangedEvent. Otherwise you will not be able to clear the collection in PerformNextSave().
-                .Throttle(new TimeSpan(0, 0, 0, 0, 100)).SubscribeOnDispatcher().ObserveOnDispatcher()
-                .Subscribe(_ =>
-                {
-                    if (_currentSubmitOperation == null)
-                        PerformNextSubmitOperation();
-                    else if (!performNextSaveHooked) //prevent multiple hooks
-                    {
-                        //Hookup PerformNextSave whenever the _currentSubmitOperation is completed
-                        performNextSaveHooked = true;
-                        _currentSubmitOperation.Completed +=
-                            (__, ___) =>
-                            {
-                                PerformNextSubmitOperation();
-                                performNextSaveHooked = false;
-                            };
-                    }
-                });
         }
 
         #region Subscription Methods
@@ -411,33 +274,32 @@ namespace FoundOps.SLClient.Data.Services
             //The executeObservable triggers whenever the query should be loaded
             var executeObservable = SetupExecuteObservable(queryKey, loadQuery);
 
-            executeObservable
-                .ObserveOnDispatcher().Subscribe(roleId =>
+            executeObservable.ObserveOnDispatcher().Subscribe(roleId =>
+            {
+                //Cancel the last query if possible
+                if (_queriesLoadOperations.ContainsKey(queryKey))
                 {
-                    //Cancel the last query if possible
-                    if (_queriesLoadOperations.ContainsKey(queryKey))
+                    var lastQuery = (LoadOperation<T>)_queriesLoadOperations[queryKey];
+                    if (lastQuery.CanCancel) lastQuery.Cancel();
+                }
+
+                LoadOperation<T> thisLoadOperation = null;
+
+                //On the response, update the EntityListObservable
+                Action<IEnumerable<T>> responseAction =
+                    loadedEntities =>
                     {
-                        var lastQuery = (LoadOperation<T>)_queriesLoadOperations[queryKey];
-                        if (lastQuery.CanCancel) lastQuery.Cancel();
-                    }
+                        //Only perform the action if the current load operation is the same as the load operation which originated this response
+                        if (thisLoadOperation != _queriesLoadOperations[queryKey]) return;
 
-                    LoadOperation<T> thisLoadOperation = null;
+                        ((IObserver<EntityList<T>>)GetEntityListObservable<T>(queryKey)).OnNext(new EntityList<T>(entitySet, loadedEntities));
 
-                    //On the response, update the EntityListObservable
-                    Action<IEnumerable<T>> responseAction =
-                        loadedEntities =>
-                        {
-                            //Only perform the action if the current load operation is the same as the load operation which originated this response
-                            if (thisLoadOperation != _queriesLoadOperations[queryKey]) return;
+                        _queriesLoadOperations.Remove(queryKey);
+                    };
 
-                            ((IObserver<EntityList<T>>)GetEntityListObservable<T>(queryKey)).OnNext(new EntityList<T>(entitySet, loadedEntities));
-
-                            _queriesLoadOperations.Remove(queryKey);
-                        };
-
-                    //Execute the query, keep track of the load operation
-                    thisLoadOperation = ExecuteQuery(queryKey, entityQuery(roleId), responseAction, _queriesIsLoadingSubjects[queryKey]);
-                });
+                //Execute the query, keep track of the load operation
+                thisLoadOperation = ExecuteQuery(queryKey, entityQuery(roleId), responseAction, _queriesIsLoadingSubjects[queryKey]);
+            });
         }
 
         /// <summary>
@@ -452,6 +314,8 @@ namespace FoundOps.SLClient.Data.Services
         {
             //Let the isLoadingObserver know this query started loading
             isLoadingObserver.OnNext(true);
+
+            query = query.Take(100);
 
             var loadOperation = _coreDomainContext.Load(query, (callback) =>
             {
@@ -572,40 +436,6 @@ namespace FoundOps.SLClient.Data.Services
 
         #endregion
 
-        #region Entity Methods
-
-        /// <summary>
-        /// Removes the entities from the Context.
-        /// </summary>
-        /// <param name="entitiesToRemove">The entities to remove.</param>
-        public void RemoveEntities(IEnumerable<Entity> entitiesToRemove)
-        {
-            foreach (var entity in entitiesToRemove.ToArray())
-            {
-                var entitySet = Context.EntityContainer.GetEntitySet(entity.GetType());
-                var entitySetContainsEntity = entitySet.Cast<object>().Any(e => e == entity);
-                if (entitySetContainsEntity)
-                    entitySet.Remove(entity);
-            }
-        }
-
-        /// <summary>
-        /// Detaches the entities from the Context.
-        /// </summary>
-        /// <param name="entitiesToDetach">The entities to detach.</param>
-        public void DetachEntities(IEnumerable<Entity> entitiesToDetach)
-        {
-            foreach (var entity in entitiesToDetach.ToArray())
-            {
-                var entitySet = Context.EntityContainer.GetEntitySet(entity.GetType());
-                var entitySetContainsEntity = entitySet.Cast<object>().Any(e => e == entity);
-                if (entitySetContainsEntity)
-                    entitySet.Detach(entity);
-            }
-        }
-
-        #endregion
-
         #region Query Methods
 
         /// <summary>
@@ -652,211 +482,6 @@ namespace FoundOps.SLClient.Data.Services
                 }
             }
                 , null);
-        }
-
-        #endregion
-
-        #region SubmitOperation and SaveDiscardCancel Methods
-
-        #region SubmitOperation
-
-        //The current Submit Operation (null if there is none)
-        private SubmitOperation _currentSubmitOperation;
-
-        //ObservableCollection of SubmitOperations waiting for a response from the next (not the current) submitOperation
-        private readonly ObservableCollection<Subject<SubmitOperation>> _nextSubmitOperationsQueue
-            = new ObservableCollection<Subject<SubmitOperation>>();
-
-        /// <summary>
-        /// Queues a SubmitOperation. Returns an observable which publishes the submitOperationCallback.
-        /// </summary>
-        /// <param name="action">An action to perform on completed.</param>
-        public IObservable<SubmitOperation> EnqueueSubmitOperation(Action<SubmitOperation> action)
-        {
-            var submitOperationObservable = EnqueueSubmitOperation();
-            submitOperationObservable.SubscribeOnDispatcher().Subscribe(action);
-            return submitOperationObservable;
-        }
-
-        /// <summary>
-        /// Queues a SubmitOperation. Returns an observable which publishes the submitOperationCallback.
-        /// </summary>
-        public IObservable<SubmitOperation> EnqueueSubmitOperation()
-        {
-            var submitOperation = new Subject<SubmitOperation>();
-            _nextSubmitOperationsQueue.Add(submitOperation);
-            return submitOperation;
-        }
-
-        //NOTE: There is no dequeue because that is managed automatically (in the constructor)
-
-        /// <summary>
-        /// It dequeues the _nextSubmitOperationsQueue observables and performs a single SubmitOperation.
-        /// When the SubmitOperation is completed it publishes the submitOperationCallback on the dequeued observables.
-        /// </summary>
-        private void PerformNextSubmitOperation()
-        {
-            //Dequeue the SubmitOperations
-            var dequeuedObservables = _nextSubmitOperationsQueue.ToArray();
-            _nextSubmitOperationsQueue.Clear();
-
-            var changes = this.Context.EntityContainer.GetChanges();
-
-            //Cancel changes on generated route tasks
-            foreach (var generatedRouteTask in changes.OfType<RouteTask>().Where(rt => rt.GeneratedOnServer))
-            {
-                //Save the destination so we can re-add the cloned task to it later
-                var destinationToSave = generatedRouteTask.RouteDestination;
-
-                //If the task was added to a destination then clone it and save it to the database
-                if (destinationToSave != null)
-                {
-                    //Clone this
-                    var clone = generatedRouteTask.Clone(generatedRouteTask.Service != null);
-
-                    //Add the clone to the route destination (if there is one)
-                    destinationToSave.RouteTasks.Add(clone);
-
-                    //Remove this from the context (and remove its changes)
-                    this.DetachEntities(new[] { generatedRouteTask });
-                }
-                else //Cancel changes on the generatedRouteTask
-                    generatedRouteTask.Reject();
-            }
-
-            //Perform a submit operation for the dequeued submit operation observables
-            _currentSubmitOperation = this.Context.SubmitChanges(
-                submitOperationCallback =>
-                {
-                    //When the submit operation is completed, inform the dequeuedObservables
-                    foreach (var submitOperationQueued in dequeuedObservables)
-                    {
-                        submitOperationQueued.OnNext(submitOperationCallback);
-                        submitOperationQueued.OnCompleted();
-                    }
-
-                    //Clear the _currentSubmitOperation
-                    _currentSubmitOperation = null;
-                }, null);
-        }
-
-
-        #endregion
-
-        //Keeps track of the current SaveDiscardCancel. It will be null if there is no promptopened.
-        private SaveDiscardCancel _currentSaveDiscardCancel;
-        private DateTime _lastSaveDiscardCancelPrompt = new DateTime();
-        private readonly List<Tuple<Action, Action, Action, Action, Action, Action>> _saveDiscardCancelActionQueue = new List<Tuple<Action, Action, Action, Action, Action, Action>>();
-
-        /// <summary>
-        /// Open a Save Discard Cancel prompt (only one at a time).
-        /// </summary>
-        /// <param name="beforeSave">The action to perform after the user selects save.</param>
-        /// <param name="afterSave">The action to perform after saving.</param>
-        /// <param name="beforeDiscard">The action to perform after the user selects discard.</param>
-        /// <param name="customDiscardAction">A replacement action for discarding.</param>
-        /// <param name="afterDiscard">The action to perform after discarding.</param>
-        /// <param name="afterCancel">The action to perform after canceling.</param>
-        public void SaveDiscardCancelPrompt(Action beforeSave = null, Action afterSave = null, Action beforeDiscard = null, Action customDiscardAction = null, Action afterDiscard = null, Action afterCancel = null)
-        {
-            //Add actions to the action queue
-            _saveDiscardCancelActionQueue.Add(                                    //Item1     //Item2    //Item3
-                        new Tuple<Action, Action, Action, Action, Action, Action>(beforeSave, afterSave, beforeDiscard,
-                //Item4              //Item5       //Item6
-                                                                                  customDiscardAction, afterDiscard, afterCancel));
-
-            //Show a prompt only if it is not visible and was not called within the last 3 seconds
-            if (_currentSaveDiscardCancel != null || DateTime.Now.Subtract(_lastSaveDiscardCancelPrompt) < new TimeSpan(0, 0, 0, 3))
-                return;
-
-            //If there are no changes, call Cancelled
-            var changes = this.Context.EntityContainer.GetChanges();
-            if (!changes.Any())
-            {
-                //Dequeue Actions
-                var dequeuedActions = _saveDiscardCancelActionQueue.ToArray();
-                _saveDiscardCancelActionQueue.Clear();
-
-                //call each afterCancel action
-                foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item6 != null))
-                    actionTuple.Item6();
-
-                return;
-            }
-
-            //Ask the user to: Save or Discard their changes before moving on, or Cancel
-            _currentSaveDiscardCancel = new SaveDiscardCancel();
-
-            //Save Selected
-            _currentSaveDiscardCancel.SaveButton.Click += (sender, e) =>
-            {
-                //Dequeue Actions
-                var dequeuedActions = _saveDiscardCancelActionQueue.ToArray();
-                _saveDiscardCancelActionQueue.Clear();
-
-                //call each beforeSave action
-                foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item1 != null))
-                    actionTuple.Item1();
-
-                EnqueueSubmitOperation(callback =>
-                {
-                    //call each afterSave action
-                    foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item2 != null))
-                        actionTuple.Item2();
-                });
-
-                //Close and clear _currentSaveDiscardCancel
-                _currentSaveDiscardCancel.Close();
-                _currentSaveDiscardCancel = null;
-            };
-
-            //Discard selected
-            _currentSaveDiscardCancel.DiscardButton.Click += (sender, e) =>
-            {
-                //Dequeue Actions
-                var dequeuedActions = _saveDiscardCancelActionQueue.ToArray();
-                _saveDiscardCancelActionQueue.Clear();
-
-                //call each beforeDiscard action
-                foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item3 != null))
-                    actionTuple.Item3();
-
-                //call each customDiscardAction action
-                foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item4 != null))
-                    actionTuple.Item4();
-
-                //call RejectChanges if any dequeuedAction does not have a customDiscardAction
-                if (dequeuedActions.Any(a => a.Item4 == null))
-                    Context.RejectChanges();
-
-                //call each afterDiscard action
-                foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item5 != null))
-                    actionTuple.Item5();
-
-                //Close and clear _currentSaveDiscardCancel
-                _currentSaveDiscardCancel.Close();
-                _currentSaveDiscardCancel = null;
-            };
-
-            //Cancel selected
-            _currentSaveDiscardCancel.CancelButton.Click += (sender, e) =>
-            {
-                //Dequeue Actions
-                var dequeuedActions = _saveDiscardCancelActionQueue.ToArray();
-                _saveDiscardCancelActionQueue.Clear();
-
-                //call each afterCancel action
-                foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item6 != null))
-                    actionTuple.Item6();
-
-                //Close and clear _currentSaveDiscardCancel
-                _currentSaveDiscardCancel.Close();
-                _currentSaveDiscardCancel = null;
-            };
-
-            //Show the Prompt
-            _currentSaveDiscardCancel.Show();
-            _lastSaveDiscardCancelPrompt = DateTime.Now;
         }
 
         #endregion
