@@ -77,6 +77,13 @@ namespace FoundOps.SLClient.UI.ViewModels
                 MoveToDetailsView.Execute(null);
         }
 
+        public override void DeleteEntity(RecurringService entityToDelete)
+        {
+            //Make sure the recurring service is removed from the Context
+            //Instead of it being removed from the Client (the backing DCV)
+            Context.RecurringServices.Remove(entityToDelete);
+        }
+
         #endregion
 
         protected override bool BeforeSaveCommand()
