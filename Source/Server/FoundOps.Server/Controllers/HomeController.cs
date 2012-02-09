@@ -11,6 +11,7 @@ using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Server.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         public ActionResult Index()

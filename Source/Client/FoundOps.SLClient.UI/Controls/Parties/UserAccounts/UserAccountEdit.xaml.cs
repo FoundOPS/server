@@ -73,7 +73,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         private void HyperlinkButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
 #if DEBUG
-            HtmlPage.Window.Navigate(new Uri("http://localhost:31820/Account/ChangePassword"));
+            HtmlPage.Window.Navigate(new Uri("https://localhost:44300/Account/ChangePassword"));
 #else
             HtmlPage.Window.Navigate(new Uri("http://www.foundops.com/Account/ChangePassword"));
 #endif

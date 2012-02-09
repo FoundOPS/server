@@ -30,12 +30,12 @@ namespace FoundOps.Core.Models.QuickBooks
             //AKA oauthLink
             public const string AuthorizeUrl = "https://workplace.intuit.com/Connect/Begin";
 
-            public static readonly string GrantUrl = "http://localhost:31820/QuickBooks/OAuthGrantLogin";
+            public static readonly string GrantUrl = "https://localhost:44300/QuickBooks/OAuthGrantLogin";
 
             public static readonly string ConsumerKey = ConfigurationManager.AppSettings["consumerKey"];
             public static readonly string ConsumerSecret = ConfigurationManager.AppSettings["consumerSecret"];
 
-            public static readonly string OauthCallbackUrl = "http://localhost:31820/QuickBooks/OAuthGrantHandler";
+            public static readonly string OauthCallbackUrl = "https://localhost:44300/QuickBooks/OAuthGrantHandler";
         }
 
         #endregion

@@ -23,7 +23,7 @@ namespace FoundOps.Server.Services.CoreDomainService
     /// Parties, Repeats, Roles, User Accounts
     /// </summary>
     //TODO: Secure
-    [EnableClientAccess]
+    [EnableClientAccess(RequiresSecureEndpoint = true)]
     public partial class CoreDomainService : LinqToEntitiesDomainService<CoreEntitiesContainer>
     {
         protected override bool PersistChangeSet()

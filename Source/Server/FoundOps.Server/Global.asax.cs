@@ -53,7 +53,7 @@ namespace FoundOps.Core.Server
         {
 #if DEBUG
             IsDebugMode = true;
-            RootUrl = "http://localhost:31820";
+            RootUrl = "https://localhost:44300";
             RootBlogUrl = "http://localhost:55206";
 #else
             RootUrl = "http://www.foundops.com";
