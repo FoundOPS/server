@@ -120,7 +120,7 @@ namespace FoundOps.Server.Authentication
         {
             var role = RolesCurrentUserHasAccessTo(coreEntitiesContainer).FirstOrDefault(r => r.Id == roleId);
 
-            if (role == null || role.OwnerPartyId == null)
+            if (role == null || role.OwnerPartyId == null) 
                 return null;
 
             var ownerParty = role.OwnerParty;

@@ -1,4 +1,7 @@
 using System;
+using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Silverlight.Services;
+using FoundOps.Common.Tools;
 using ReactiveUI;
 using System.Linq;
 using System.Reactive.Linq;
@@ -101,7 +104,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             : base(dataManager)
         {
             //Setup the MainQuery to load Clients
-            SetupMainQuery(DataManager.Query.Clients, null, "DisplayName");
+            //SetupMainQuery(DataManager.Query.Clients, null, "DisplayName");
+            SetupMainQuery();
 
             //ClientsVM requires ServiceTemplate
             DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, entities => _loadedServiceTemplates = entities);
@@ -174,6 +178,33 @@ namespace FoundOps.SLClient.UI.ViewModels
             };
 
             #endregion
+        }
+
+        private void SetupMainQuery()
+        {
+            //Execute the query when this
+            var update =
+                //a) the RoleId publishes
+                ContextManager.RoleIdObservable.AsGeneric().Merge(
+                //b) a control requires this view model
+                ObservationState.AsGeneric())
+                //c) more items need to be grabbed
+
+                .Throttle(TimeSpan.FromMilliseconds(100));
+    
+            //TODO determine paging
+
+            update.Where(_ => ControlsThatCurrentlyRequireThisVM.Any()).SubscribeOnDispatcher().Subscribe(_ =>
+            {
+                //TODO replace skip number .Skip(50)
+                var clientQuery = Context.GetClientsForRoleQuery(ContextManager.RoleId)
+                    //.OrderBy(c=>c.OwnedParty.Name)
+                    .Take(50);
+
+                DataManager.LoadCollection(clientQuery, clients=> 
+                    this.DomainCollectionViewObservable.OnNext(DomainCollectionViewFactory<Client>.GetDomainCollectionView(clients)));
+                //Add any contexts
+            });
         }
 
         #region Logic

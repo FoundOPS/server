@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Data;
 using System.Threading;
@@ -22,23 +23,34 @@ namespace FoundOps.Server.Services.CoreDomainService
     {
         #region Client
 
-        public IQueryable<Client> GetClientsForRole(Guid roleId)
+        /// <summary>
+        /// Gets the clients for the role id.
+        /// NOTE: Skip and take are required to limit the force load workaround below.
+        /// NOTE: Must add any other limiting parts as parameters to get full effect of their optimization. 
+        /// Otherwise the force load of PartyImage will happen on unnecessary items.
+        /// </summary>
+        /// <param name="roleId">The role to determine the businessaccount from.</param>
+        /// <param name="skip">Number of entities to skip.</param>
+        /// <param name="take">Number of entities to take.</param>
+        /// <returns></returns>
+        public IQueryable<Client> GetClientsForRole(Guid roleId, int skip, int take)
         {
             var businessForRole = ObjectContext.BusinessForRole(roleId);
 
-            if (businessForRole == null)
-                return null;
+            if (businessForRole == null) return null;
 
-            var clients =
-                ((ObjectQuery<Client>)this.ObjectContext.Clients.Where(client => client.VendorId == businessForRole.Id))
-                    .Include("OwnedParty").Include("OwnedParty.ContactInfoSet");
+            //Cast as ObjectQuerys so the includes are done at the last minute when they are required.
+            var clients = 
+                    ((ObjectQuery<Client>)
+                        ((ObjectQuery<Client>) ObjectContext.Clients.Where(client => client.VendorId == businessForRole.Id))
+                                      .Include("OwnedParty").OrderBy(c => c.OwnedParty.Name).Skip(skip).Take(take))
+                .Include("OwnedParty.ContactInfoSet");
 
             //Force load OwnedParty.PartyImage
-            var t = (from c in clients
-                     join pi in this.ObjectContext.Files.OfType<PartyImage>()
-                         on c.OwnedParty.Id equals pi.Id
-                     select pi).ToArray();
-            var count = t.Count();
+            (from c in clients
+             join pi in this.ObjectContext.Files.OfType<PartyImage>()
+                 on c.OwnedParty.PartyImage.Id equals pi.Id
+             select pi).ToArray();
 
             return clients;
         }
@@ -46,13 +58,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         public void InsertClient(Client client)
         {
             if ((client.EntityState != EntityState.Detached))
-            {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(client, EntityState.Added);
-            }
             else
-            {
                 this.ObjectContext.Clients.AddObject(client);
-            }
         }
 
         public void UpdateClient(Client currentClient)
@@ -518,7 +526,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteSubLocation(SubLocation subLocation)
         {
-            var loadedSubLocation  = this.ObjectContext.SubLocations.FirstOrDefault(sl => sl.Id == subLocation.Id);
+            var loadedSubLocation = this.ObjectContext.SubLocations.FirstOrDefault(sl => sl.Id == subLocation.Id);
 
             if (loadedSubLocation != null)
                 this.ObjectContext.Detach(loadedSubLocation);

@@ -77,14 +77,11 @@ namespace FoundOps.SLClient.Data.ViewModels
         ///</summary>
         protected ObservableCollection<object> ControlsThatCurrentlyRequireThisVM { get; set; }
 
-        private readonly Dispatcher _currentDispatcher = System.Windows.Deployment.Current.Dispatcher;
+        private readonly Dispatcher _currentDispatcher = Deployment.Current.Dispatcher;
         /// <summary>
         /// Gets the current dispatcher.
         /// </summary>
-        protected Dispatcher CurrentDispatcher
-        {
-            get { return _currentDispatcher; }
-        }
+        protected Dispatcher CurrentDispatcher { get { return _currentDispatcher; } }
 
         #endregion
 
