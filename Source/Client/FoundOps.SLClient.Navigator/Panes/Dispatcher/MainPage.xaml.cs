@@ -3,23 +3,20 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Collections;
-using System.Windows.Media;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
 using System.Windows.Controls;
-using FoundOps.SLClient.UI.Controls.Dispatcher;
 using FoundOps.SLClient.UI.Tools;
-using Telerik.Windows.Controls;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
 using FoundOps.SLClient.Data.Tools;
-using System.Collections.ObjectModel;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.GridView;
 using Telerik.Windows.Controls.TreeView;
 using FoundOps.Common.Silverlight.Blocks;
+using FoundOps.SLClient.UI.Controls.Dispatcher;
 using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 
 namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
