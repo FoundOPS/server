@@ -33,9 +33,8 @@ namespace FoundOps.Server.Controllers
 
             return RedirectToAction("Silverlight", "Home");
         }
-#if RELEASE
+
         [RequireHttps]
-#endif
         [AddTestUsersThenAuthorize]
         public ActionResult Silverlight()
         {
