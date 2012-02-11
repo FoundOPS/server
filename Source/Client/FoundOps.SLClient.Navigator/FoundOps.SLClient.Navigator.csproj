@@ -234,6 +234,9 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.Data">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Data.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>True</Private>

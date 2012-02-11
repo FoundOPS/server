@@ -233,6 +233,9 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Docking.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.DomainServices">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DomainServices.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.FixedDocumentViewers">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.FixedDocumentViewers.dll</HintPath>
     </Reference>
@@ -596,6 +599,7 @@
     <Compile Include="ViewModels\RouteScheduleVM.cs" />
     <Compile Include="ViewModels\RoutesDragDropVM.cs" />
     <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />
+    <Compile Include="ViewModels\SearchVM.cs" />
     <Compile Include="ViewModels\UserAccountSettingsVM.cs" />
     <Compile Include="ViewModels\UserAccountsVM.cs" />
     <Compile Include="ViewModels\RegionsVM.cs" />

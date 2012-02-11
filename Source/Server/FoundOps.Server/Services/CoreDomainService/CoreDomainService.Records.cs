@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Data;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Data.Objects;
 using FoundOps.Common.NET;
@@ -30,10 +31,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// Otherwise the force load of PartyImage will happen on unnecessary items.
         /// </summary>
         /// <param name="roleId">The role to determine the businessaccount from.</param>
-        /// <param name="skip">Number of entities to skip.</param>
-        /// <param name="take">Number of entities to take.</param>
         /// <returns></returns>
-        public IQueryable<Client> GetClientsForRole(Guid roleId, int skip, int take)
+        public IQueryable<Client> GetClientsForRole(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessForRole(roleId);
 
@@ -41,16 +40,15 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Cast as ObjectQuerys so the includes are done at the last minute when they are required.
             var clients = 
-                    ((ObjectQuery<Client>)
-                        ((ObjectQuery<Client>) ObjectContext.Clients.Where(client => client.VendorId == businessForRole.Id))
-                                      .Include("OwnedParty").OrderBy(c => c.OwnedParty.Name).Skip(skip).Take(take))
+                    ((ObjectQuery<Client>) ObjectContext.Clients.Where(client => client.VendorId == businessForRole.Id))
+                        .Include("OwnedParty")
                 .Include("OwnedParty.ContactInfoSet");
 
-            //Force load OwnedParty.PartyImage
-            (from c in clients
-             join pi in this.ObjectContext.Files.OfType<PartyImage>()
-                 on c.OwnedParty.PartyImage.Id equals pi.Id
-             select pi).ToArray();
+            //TODO: Figure a way to force load OwnedParty.PartyImage
+            //(from c in clients
+            // join pi in this.ObjectContext.Files.OfType<PartyImage>()
+            //     on c.OwnedParty.PartyImage.Id equals pi.Id
+            // select pi).ToArray();
 
             return clients;
         }

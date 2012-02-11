@@ -8,10 +8,10 @@
              xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Contacts="clr-namespace:FoundOps.SLClient.UI.Controls.Contacts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
-             xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
+             xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" 
-             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.UI.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" 
+             mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" 
              Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
             <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
             <!--IMPORTANT: DO NOT REMOVE "xmls:ViewModels". It is needed for GetVM-->

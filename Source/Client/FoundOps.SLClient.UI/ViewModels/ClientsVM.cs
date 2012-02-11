@@ -15,6 +15,7 @@ using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -26,6 +27,20 @@ namespace FoundOps.SLClient.UI.ViewModels
         IAddToDeleteFromDestination<Location>, IAddNewExisting<Location>, IRemoveDelete<Location>
     {
         #region Public
+
+        private QueryableCollectionView _queryableCollectionView;
+        /// <summary>
+        /// The collection of Clients.
+        /// </summary>
+        public QueryableCollectionView QueryableCollectionView
+        {
+            get { return _queryableCollectionView; }
+            private set
+            {
+                _queryableCollectionView = value;
+                this.RaisePropertyChanged("QueryableCollectionView");
+            }
+        }
 
         private readonly ObservableAsPropertyHelper<PartyVM> _selectedClientOwnedBusinessVM;
         /// <summary>
@@ -182,28 +197,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupMainQuery()
         {
-            //Execute the query when this
-            var update =
-                //a) the RoleId publishes
-                ContextManager.RoleIdObservable.AsGeneric().Merge(
-                //b) a control requires this view model
-                ObservationState.AsGeneric())
-                //c) more items need to be grabbed
-
-                .Throttle(TimeSpan.FromMilliseconds(100));
-    
-            //TODO determine paging
-
-            update.Where(_ => ControlsThatCurrentlyRequireThisVM.Any()).SubscribeOnDispatcher().Subscribe(_ =>
+            //Whenever the RoleId updates
+            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
-                //TODO replace skip number .Skip(50)
-                var clientQuery = Context.GetClientsForRoleQuery(ContextManager.RoleId)
-                    //.OrderBy(c=>c.OwnedParty.Name)
-                    .Take(50);
-
-                DataManager.LoadCollection(clientQuery, clients=> 
-                    this.DomainCollectionViewObservable.OnNext(DomainCollectionViewFactory<Client>.GetDomainCollectionView(clients)));
-                //Add any contexts
+                var query = Context.GetClientsForRoleQuery(ContextManager.RoleId);
+                var view = new QueryableDomainServiceCollectionView<Client>(Context, query) { AutoLoad = true, PageSize = 25};
+                QueryableCollectionView = view;
             });
         }
 

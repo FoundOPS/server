@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
+using FoundOps.SLClient.Data.Services;
 using Telerik.Windows;
 using System.ComponentModel;
 using FoundOps.SLClient.UI.Tools;
