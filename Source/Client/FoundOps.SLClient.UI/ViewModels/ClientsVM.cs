@@ -200,12 +200,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             //TODO: Wait until visible
 
             //Whenever the RoleId updates
-            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
+            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(async roleId =>
             {
                 var query = Context.GetClientsForRoleQuery(ContextManager.RoleId);
-                var view = new QueryableDomainServiceCollectionView<Client>(Context, query) { AutoLoad = true, PageSize = 25 };
+                //var view = new QueryableDomainServiceCollectionView<Client>(Context, query) { AutoLoad = true, PageSize = 25 };
                
-
                 var view = new VirtualQueryableCollectionView<Client>
                 { 
                     LoadSize = 10, 
@@ -214,14 +213,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 view.FilterDescriptors.CollectionChanged += async (s, e) =>
                 {
-                    view.VirtualItemCount = await 
-                        Context.CountAsync(query.Where(view.FilterDescriptors));
+                    view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors));
                 };
 
                 view.FilterDescriptors.ItemChanged += async (s, e) =>
                 {
-                    view.VirtualItemCount = await
-                        Context.CountAsync(query.Where(view.FilterDescriptors));
+                    view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors));
                 };
 
                 view.ItemsLoading += async (s, e) =>
@@ -234,7 +231,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                     view.Load(e.StartIndex, await Context.LoadAsync(queryToLoad));
                 };
-
 
                 QueryableCollectionView = view;
             });

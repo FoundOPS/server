@@ -6,8 +6,7 @@ namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
 {
     public static class DomainContextExtensions
     {
-        public static Task<IEnumerable<T>> LoadAsync<T>(this DomainContext context,
-            EntityQuery<T> query) where T : Entity
+        public static Task<IEnumerable<T>> LoadAsync<T>(this DomainContext context, EntityQuery<T> query) where T : Entity
         {
             var result = new TaskCompletionSource<IEnumerable<T>>();
 
@@ -20,7 +19,10 @@ namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
         {
             var result = new TaskCompletionSource<int>();
 
-            context.Load(query.Take(0).IncludeTotalCount(true), lo => { result.TrySetResult(lo.TotalEntityCount); }, null);
+            query = query.Take(0);
+            query.IncludeTotalCount = true;
+
+            context.Load(query, lo => result.TrySetResult(lo.TotalEntityCount), null);
 
             return result.Task;
         }

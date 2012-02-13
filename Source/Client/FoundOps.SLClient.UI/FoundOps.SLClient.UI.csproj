@@ -89,6 +89,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AsyncCtpLibrary_Silverlight5">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\AsyncCtpLibrary_Silverlight5.dll</HintPath>
+    </Reference>
     <Reference Include="Croll.Silverlight.Controls">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Croll.Silverlight.Controls.dll</HintPath>
     </Reference>

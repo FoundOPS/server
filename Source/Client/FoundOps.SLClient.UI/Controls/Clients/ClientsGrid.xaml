@@ -6,7 +6,6 @@
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <telerik:RadGridView x:Name="ClientsRadGridView" ShowGroupPanel="False" AutoGenerateColumns="False" 
              RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
@@ -16,6 +15,5 @@
                 <telerik:GridViewDataColumn Header="Date Added" IsReadOnly="True" DataMemberBinding="{Binding DateAdded}" DataFormatString="{}{0:d}" Width="*" />
             </telerik:RadGridView.Columns>
         </telerik:RadGridView>
-        <telerik:RadDataPager Grid.Row="1" Source="{Binding ItemsSource, ElementName=ClientsRadGridView}" DisplayMode="FirstLastPreviousNextNumeric, Text" IsTotalItemCountFixed="True" />
     </Grid>
 </UserControl>
