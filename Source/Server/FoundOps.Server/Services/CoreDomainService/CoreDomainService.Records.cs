@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Data;
-using System.Linq.Expressions;
 using System.Threading;
+using System.Data.Entity;
 using System.Data.Objects;
 using FoundOps.Common.NET;
 using System.Collections.Generic;
@@ -58,7 +57,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //     on c.OwnedParty.PartyImage.Id equals pi.Id
             // select pi).ToArray();
 
-            return clients.Include("OwnedParty.ContactInfoSet");
+            return clients.Include("OwnedParty");
         }
 
         public void InsertClient(Client client)

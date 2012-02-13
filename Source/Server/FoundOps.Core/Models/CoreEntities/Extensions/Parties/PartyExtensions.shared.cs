@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.Linq.Translations;
 using FoundOps.Common.Composite.Entities;
 
 // ReSharper disable CheckNamespace

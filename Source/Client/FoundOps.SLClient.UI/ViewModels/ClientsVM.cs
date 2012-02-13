@@ -1,8 +1,10 @@
 using System;
 using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using ReactiveUI;
 using System.Linq;
 using System.Collections;
+using Telerik.Windows.Controls.DomainServices;
 using Telerik.Windows.Data;
 using System.Reactive.Linq;
 using FoundOps.SLClient.UI.Tools;
@@ -200,10 +202,40 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the RoleId updates
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
-                var query = Context.GetClientsForRoleQuery(ContextManager.RoleId)
-                    .Take(25); //Must add take here first because the QDSCV will execute a load before the PageSize property is set
+                var query = Context.GetClientsForRoleQuery(ContextManager.RoleId);
                 var view = new QueryableDomainServiceCollectionView<Client>(Context, query) { AutoLoad = true, PageSize = 25 };
-                 
+               
+
+                var view = new VirtualQueryableCollectionView<Client>
+                { 
+                    LoadSize = 10, 
+                    VirtualItemCount = await Context.CountAsync(query) 
+                };
+
+                view.FilterDescriptors.CollectionChanged += async (s, e) =>
+                {
+                    view.VirtualItemCount = await 
+                        Context.CountAsync(query.Where(view.FilterDescriptors));
+                };
+
+                view.FilterDescriptors.ItemChanged += async (s, e) =>
+                {
+                    view.VirtualItemCount = await
+                        Context.CountAsync(query.Where(view.FilterDescriptors));
+                };
+
+                view.ItemsLoading += async (s, e) =>
+                {
+                    var queryToLoad = query
+                            .Sort(view.SortDescriptors)
+                            .Where(view.FilterDescriptors)
+                            .Skip(e.StartIndex)
+                            .Take(e.ItemCount);
+
+                    view.Load(e.StartIndex, await Context.LoadAsync(queryToLoad));
+                };
+
+
                 QueryableCollectionView = view;
             });
 
