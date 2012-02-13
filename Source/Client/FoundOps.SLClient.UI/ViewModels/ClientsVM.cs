@@ -1,11 +1,10 @@
 using System;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.Services;
-using FoundOps.Common.Tools;
 using ReactiveUI;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Collections;
+using Telerik.Windows.Data;
+using System.Reactive.Linq;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using System.Reactive.Disposables;
@@ -15,7 +14,6 @@ using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
-using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -197,13 +195,19 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupMainQuery()
         {
+            //TODO: Wait until visible
+
             //Whenever the RoleId updates
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
-                var query = Context.GetClientsForRoleQuery(ContextManager.RoleId);
-                var view = new QueryableDomainServiceCollectionView<Client>(Context, query) { AutoLoad = true, PageSize = 25};
+                var query = Context.GetClientsForRoleQuery(ContextManager.RoleId)
+                    .Take(25); //Must add take here first because the QDSCV will execute a load before the PageSize property is set
+                var view = new QueryableDomainServiceCollectionView<Client>(Context, query) { AutoLoad = true, PageSize = 25 };
+                 
                 QueryableCollectionView = view;
             });
+
+            //TODO: Whenever the context updates add filter descriptors (or context)
         }
 
         #region Logic

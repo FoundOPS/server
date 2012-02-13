@@ -34,23 +34,31 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<Client> GetClientsForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             if (businessForRole == null) return null;
 
-            //Cast as ObjectQuerys so the includes are done at the last minute when they are required.
-            var clients = 
-                    ((ObjectQuery<Client>) ObjectContext.Clients.Where(client => client.VendorId == businessForRole.Id))
-                        .Include("OwnedParty")
-                .Include("OwnedParty.ContactInfoSet");
+            var clients =
+                from c in ObjectContext.Clients
+                join p in ObjectContext.Parties.OfType<Person>()
+                    on c.OwnedParty.Id equals p.Id into personClient
+                from person in personClient.DefaultIfEmpty() //Left Join
+                join b in ObjectContext.Parties.OfType<Business>()
+                    on c.OwnedParty.Id equals b.Id into businessClient
+                from business in businessClient.DefaultIfEmpty() //Left Join
+                let displayName = business != null ? business.Name : 
+                                  person.LastName + " " + person.FirstName + " " + person.MiddleInitial
+                orderby displayName
+                select c;
 
-            //TODO: Figure a way to force load OwnedParty.PartyImage
+            //Client's images are not currently used, so this can be commented out
+            //TODO: Figure a way to force load OwnedParty.PartyImage. 
             //(from c in clients
             // join pi in this.ObjectContext.Files.OfType<PartyImage>()
             //     on c.OwnedParty.PartyImage.Id equals pi.Id
             // select pi).ToArray();
 
-            return clients;
+            return clients.Include("OwnedParty.ContactInfoSet");
         }
 
         public void InsertClient(Client client)
@@ -120,7 +128,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<ClientTitle> GetClientTitlesForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             if (businessForRole == null)
                 return null;
@@ -169,7 +177,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IEnumerable<Contact> GetContactsForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             if (businessForRole == null)
                 return null;
@@ -232,7 +240,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             //TODO Check they have access
 
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             if (businessForRole == null)
                 return null;
@@ -319,7 +327,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<EmployeeHistoryEntry> GetEmployeeHistoryEntriesForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             if (businessForRole == null)
                 return null;
@@ -368,16 +376,16 @@ namespace FoundOps.Server.Services.CoreDomainService
             return this.ObjectContext.Locations;
         }
 
-        /// <summary> This method will return the locations to administer for the current business account
+        /// <summary> 
+        /// This method will return the locations to administer for the current business account
         /// </summary>
         /// <param name="roleId">The Business's Id.</param>
         /// <returns>The Business's Client's Locations</returns>
         public IEnumerable<Location> GetLocationsToAdministerForRole(Guid roleId)
         {
-            var partyForRole = ObjectContext.PartyForRole(roleId);
+            var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
-            if (!ObjectContext.CurrentUserCanAdministerThisParty(partyForRole.Id))
-                return null;
+            if (!ObjectContext.CurrentUserCanAccessParty(partyForRole.Id)) return null;
 
             var locations =
                 ((ObjectQuery<Location>)this.ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id))
@@ -445,7 +453,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<Region> GetRegionsForServiceProvider(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             return this.ObjectContext.Regions.Include("Locations").Where(v => v.BusinessAccountId == businessForRole.Id);
         }
@@ -559,7 +567,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<Vehicle> GetVehiclesForParty(Guid roleId)
         {
-            var partyForRole = ObjectContext.PartyForRole(roleId);
+            var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
             return
                 this.ObjectContext.Vehicles.Where(v => v.OwnerPartyId == partyForRole.Id);
@@ -619,7 +627,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<VehicleMaintenanceLineItem> GetVehicleMaintenanceLineItemsForParty(Guid roleId)
         {
-            var partyForRole = ObjectContext.PartyForRole(roleId);
+            var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
             return
                 this.ObjectContext.VehicleMaintenanceLineItems.Include("VehicleMaintenanceLogEntry").Where(
@@ -674,7 +682,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<VehicleMaintenanceLogEntry> GetVehicleMaintenanceLogForParty(Guid roleId)
         {
-            var partyForRole = ObjectContext.PartyForRole(roleId);
+            var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
             return ((ObjectQuery<VehicleMaintenanceLogEntry>)
                     this.ObjectContext.VehicleMaintenanceLog.Include("Vehicle").Where(

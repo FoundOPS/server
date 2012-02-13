@@ -5,7 +5,6 @@ using System.Windows;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
 using System.Collections.Generic;
-using FoundOps.Core.Navigator.VMs;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
@@ -271,13 +270,14 @@ namespace FoundOps.SLClient.Navigator.ViewModels
             if (SelectedContent != null)
             {
                 var selectedContentDataContext = ((FrameworkElement)SelectedContent).DataContext;
-                if (typeof(IPreventNavigationFrom).IsAssignableFrom(selectedContentDataContext.GetType()))
+                var preventNavigationFrom = selectedContentDataContext as IPreventNavigationFrom;
+
+                if (preventNavigationFrom != null)
                 {
-                    if (!((IPreventNavigationFrom)selectedContentDataContext).CanNavigateFrom(() =>
-                        MessageBus.Current.SendMessage(new NavigateToMessage { UriToNavigateTo = new Uri(uri, UriKind.RelativeOrAbsolute) })))
+                    if (!preventNavigationFrom.CanNavigateFrom(() => MessageBus.Current.SendMessage(new NavigateToMessage { UriToNavigateTo = new Uri(uri, UriKind.RelativeOrAbsolute) })))
                         return;
 
-                    ((IPreventNavigationFrom)selectedContentDataContext).OnNavigateFrom();
+                    (preventNavigationFrom).OnNavigateFrom();
                 }
             }
 
@@ -307,23 +307,21 @@ namespace FoundOps.SLClient.Navigator.ViewModels
 
         private void OnDataLoaded()
         {
-            if (PublicBlocks != null && CurrentUserAccount != null)
-            {
-                SetupBlocksMappingInMEFContentLoader();
-                NavigateToCommand.RaiseCanExecuteChanged();
-            }
+            if (CurrentUserAccount == null) return;
+
+            SetupBlocksMappingInMEFContentLoader();
+            NavigateToCommand.RaiseCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Setups the blocks mapping in MEF content loader.
+        /// </summary>
         private void SetupBlocksMappingInMEFContentLoader()
         {
-            foreach (var block in CurrentUserAccount.AccessibleBlocks.Union(PublicBlocks))
-            {
-                if (block.Link != null)
-                    MEFBlockLoader.MapUri(new Uri(block.NavigateUri, UriKind.RelativeOrAbsolute),
-                                            new Uri(block.Link, UriKind.RelativeOrAbsolute));
-            }
+            foreach (var block in CurrentUserAccount.AccessibleBlocks.Union(PublicBlocks).Where(block => block.Link != null))
+                MEFBlockLoader.MapUri(new Uri(block.NavigateUri, UriKind.RelativeOrAbsolute), new Uri(block.Link, UriKind.RelativeOrAbsolute));
+
             _setupBlocksMappingInMEFContentLoader = true;
-            MessageBus.Current.SendMessage(new BlockMappingSetupMessage());
         }
 
         #endregion

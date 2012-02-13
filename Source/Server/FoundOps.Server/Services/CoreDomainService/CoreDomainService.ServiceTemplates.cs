@@ -144,7 +144,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<ServiceTemplate> GetServiceTemplatesForServiceProvider(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var recurringServicesForServiceProvider = GetRecurringServicesForServiceProvider(roleId);
 

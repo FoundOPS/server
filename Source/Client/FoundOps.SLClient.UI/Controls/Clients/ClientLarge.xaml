@@ -42,13 +42,14 @@
         </Border>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel>
-                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ClientBrush}">
+                <!--Image is not used for now-->
+                <!--<toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ClientBrush}">
                     <toolkit:Expander.Header>
                         <TextBlock Text="Photo" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ClientBrush}" />
                     </toolkit:Expander.Header>
                     <Files:ImageFileUpload x:Name="accountImage1" Margin="10" HorizontalAlignment="Center" DefaultFileTypeToCreate="CoreEntities:PartyImage" 
                                            OwnerParty="{Binding SelectedEntity.OwnedParty}" File="{Binding SelectedEntity.OwnedParty.PartyImage, Mode=TwoWay}" />
-                </toolkit:Expander>
+                </toolkit:Expander>-->
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ClientBrush}">
                     <toolkit:Expander.Header>
                         <TextBlock Text="Details" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ClientBrush}" />

@@ -306,7 +306,6 @@
       <DependentUpon>SettingsPane.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Messages\BlockMappingSetupMessage.cs" />
     <Compile Include="ViewModels\NavigationBarVM.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -25,7 +25,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         private IEnumerable<Service> GetExistingServicesForRole(Guid roleId, Guid clientIdFilter, Guid locationIdFilter, Guid recurringServiceIdFilter)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             if (businessForRole == null) return null;
 
@@ -97,7 +97,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         private IEnumerable<RecurringService> GetRecurringServicesForServiceProvider(Guid roleId, Guid clientIdFilter, Guid locationIdFilter, Guid recurringServiceIdFilter)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var recurringServicesToReturn = this.ObjectContext.RecurringServices.Include("Client").Where(v => v.Client.VendorId == businessForRole.Id);
 

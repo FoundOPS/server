@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Data.Objects;
 using FoundOps.Common.NET;
 using System.Collections.Generic;
-using FoundOps.Core.Server.Blocks;
 using FoundOps.Server.Controllers;
 using System.Security.Authentication;
 using FoundOps.Server.Authentication;
@@ -60,7 +59,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<Party> GetBusinessAccountsForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             //Make sure current account is a FoundOPS account
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
@@ -81,7 +80,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public BusinessAccount BusinessAccountWithClientsForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
             return businessForRole == null
                        ? null
                        : this.ObjectContext.Parties.OfType<BusinessAccount>().Include("Clients")
@@ -90,7 +89,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public Business BusinessForRole(Guid roleId)
         {
-            return ObjectContext.BusinessForRole(roleId);
+            return ObjectContext.BusinessOwnerOfRole(roleId);
         }
 
         #endregion
@@ -103,7 +102,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 throw new InvalidOperationException("You are trying to delete the FoundOPS account?!");
 
             //Make sure current account is a FoundOPS account
-            if (!this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
+            if (!this.ObjectContext.CurrentUserCanAdministerFoundOPS())
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
             businessAccountToDelete.Employees.Load();
@@ -272,7 +271,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public Party PartyForRole(Guid roleId)
         {
-            return this.ObjectContext.PartyForRole(roleId);
+            return this.ObjectContext.OwnerPartyOfRole(roleId);
         }
 
         public Party PartyToAdministerForRole(Guid roleId)
@@ -473,7 +472,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IEnumerable<Party> GetAllUserAccounts(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             //make sure current account is a foundops account
             if (businessForRole.Id == BusinessAccountsDesignData.FoundOps.Id)
@@ -502,7 +501,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Update]
         public void UpdateUserAccount(UserAccount currentUserAccount)
         {
-            if (!ObjectContext.CurrentUserCanAdministerThisParty(currentUserAccount.Id))
+            if (!ObjectContext.CurrentUserCanAdministerParty(currentUserAccount.Id))
                 throw new AuthenticationException();
 
             //Check if there is a temporary password

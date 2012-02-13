@@ -11,11 +11,11 @@
         <telerik:RadGridView x:Name="ClientsRadGridView" ShowGroupPanel="False" AutoGenerateColumns="False" 
              RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
             <telerik:RadGridView.Columns>
-                <telerik:GridViewDataColumn UniqueName="OwnedPartyDisplayName" Header="Name" IsReadOnly="True" DataMemberBinding="{Binding DisplayName}" />
+                <!--Filtering and sorting does not work/is not setup because DisplayName is a generated property. Consider looking into http://damieng.com/blog/2009/06/24/client-side-properties-and-any-remote-linq-provider-->
+                <telerik:GridViewDataColumn UniqueName="OwnedPartyDisplayName" Header="Name" IsReadOnly="True" IsFilterable="False" IsSortable="False" DataMemberBinding="{Binding DisplayName}" />
                 <telerik:GridViewDataColumn Header="Date Added" IsReadOnly="True" DataMemberBinding="{Binding DateAdded}" DataFormatString="{}{0:d}" Width="*" />
             </telerik:RadGridView.Columns>
         </telerik:RadGridView>
-        <telerik:RadDataPager Grid.Row="1" Source="{Binding ItemsSource, ElementName=ClientsRadGridView}"
-                          DisplayMode="FirstLastPreviousNextNumeric, Text" IsTotalItemCountFixed="True" />
+        <telerik:RadDataPager Grid.Row="1" Source="{Binding ItemsSource, ElementName=ClientsRadGridView}" DisplayMode="FirstLastPreviousNextNumeric, Text" IsTotalItemCountFixed="True" />
     </Grid>
 </UserControl>

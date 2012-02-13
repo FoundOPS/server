@@ -492,6 +492,9 @@
     <Compile Include="Controls\Dispatcher\RoutesListView.xaml.cs">
       <DependentUpon>RoutesListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Search.xaml.cs">
+      <DependentUpon>Search.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Services\RecurringServices\RecurringServicesLinkSmall.xaml.cs">
       <DependentUpon>RecurringServicesLinkSmall.xaml</DependentUpon>
     </Compile>
@@ -921,6 +924,10 @@
     <Page Include="Controls\Repeat.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Search.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Services\RecurringServices\RecurringServicesLinkSmall.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -25,7 +25,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<Route> GetRoutesForServiceProviderOnDay(Guid roleId, DateTime dateOfRoutes)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var routesDateOnly = dateOfRoutes.Date;
 
@@ -41,7 +41,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<Route> GetRouteLogForServiceProvider(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var routes = ((ObjectQuery<Route>)
                           this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id))
@@ -152,7 +152,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var serviceDate = selectedDate.Date; //Remove time aspect
 
-            var businessAccount = ObjectContext.BusinessAccountForRole(roleId);
+            var businessAccount = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             //Get all the existing services for the day => later to be unioned with generatedServices
             var existingServicesQuery = ((ObjectQuery<Service>)this.ObjectContext.Services.Where(service => service.ServiceDate == serviceDate && service.ServiceProviderId == businessAccount.Id))
