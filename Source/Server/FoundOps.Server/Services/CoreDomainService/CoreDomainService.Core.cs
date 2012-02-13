@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Data.Objects;
 using FoundOps.Common.NET;
 using System.Collections.Generic;
+using FoundOps.Core.Models.QuickBooks;
 using FoundOps.Core.Server.Blocks;
 using FoundOps.Server.Controllers;
 using System.Security.Authentication;
@@ -144,6 +145,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             businessAccountToDelete.Invoices.Load();
             foreach (var invoice in businessAccountToDelete.Invoices.ToList())
                 this.DeleteInvoice(invoice);
+
+            QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
         }
 
         #endregion
