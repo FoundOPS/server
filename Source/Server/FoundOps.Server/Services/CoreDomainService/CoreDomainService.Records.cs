@@ -38,7 +38,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole == null) return null;
 
             var clients =
-                from c in ObjectContext.Clients
+                from c in ObjectContext.Clients.Where(c=>c.VendorId == businessForRole.Id)
                 join p in ObjectContext.Parties.OfType<Person>()
                     on c.OwnedParty.Id equals p.Id into personClient
                 from person in personClient.DefaultIfEmpty() //Left Join

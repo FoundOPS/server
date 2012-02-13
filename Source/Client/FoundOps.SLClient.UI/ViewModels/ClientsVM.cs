@@ -16,6 +16,8 @@ using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using System.Threading;
+using System.Reactive.Subjects;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -204,11 +206,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 var query = Context.GetClientsForRoleQuery(ContextManager.RoleId);
                 //var view = new QueryableDomainServiceCollectionView<Client>(Context, query) { AutoLoad = true, PageSize = 25 };
-               
+
                 var view = new VirtualQueryableCollectionView<Client>
-                { 
-                    LoadSize = 10, 
-                    VirtualItemCount = await Context.CountAsync(query) 
+                {
+                    LoadSize = 100,
+                    VirtualItemCount = await Context.CountAsync(query)
                 };
 
                 view.FilterDescriptors.CollectionChanged += async (s, e) =>
