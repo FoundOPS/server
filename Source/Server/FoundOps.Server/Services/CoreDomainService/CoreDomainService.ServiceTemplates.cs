@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Data;
+using System.ServiceModel.DomainServices.Server;
 using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.EntityFramework;
@@ -174,6 +175,16 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceTemplate"></param>
         public void DeleteServiceTemplate(ServiceTemplate serviceTemplate)
         {
+            //Force delete all sub servicetemplates if you are deleting a business account
+            var forceDelete = this.ChangeSet.ChangeSetEntries
+                .Any(cse => cse.Entity is BusinessAccount && cse.Operation == DomainOperation.Delete &&
+                            ((BusinessAccount) cse.Entity).ServiceTemplates.Contains(serviceTemplate));
+
+            //If not force delete, make sure there are no RecurringServiceLevel or ServiceLevel children before deleting the service template
+                                        
+            if (true)
+                return;
+
             var loadedServiceTemplate = this.ObjectContext.ServiceTemplates.FirstOrDefault(st => st.Id == serviceTemplate.Id);
             if (loadedServiceTemplate != null)
                 this.ObjectContext.Detach(loadedServiceTemplate);
