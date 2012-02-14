@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using ReactiveUI;
@@ -110,7 +111,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         //private
 
-        private EntityList<ServiceTemplate> _loadedServiceTemplates;
+        private IEnumerable<ServiceTemplate> _loadedServiceTemplates;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientsVM"/> class.
@@ -120,15 +121,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public ClientsVM(DataManager dataManager)
             : base(dataManager)
         {
-            //Setup the MainQuery to load Clients
-            //SetupMainQuery(DataManager.Query.Clients, null, "DisplayName");
-            SetupMainQuery();
-
-            //ClientsVM requires ServiceTemplate
-            DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, entities => _loadedServiceTemplates = entities);
-
-            //Can only add whenever ServiceTemplates is loaded
-            DataManager.GetIsLoadingObservable(DataManager.Query.ServiceTemplates).Subscribe(isLoading => CanAddSubject.OnNext(!isLoading));
+            SetupDataLoading();
 
             //Setup the selected client's OwnedParty PartyVM whenever the selected client changes
             _selectedClientOwnedBusinessVM =
@@ -197,15 +190,30 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
-        private void SetupMainQuery()
+        private void SetupDataLoading()
         {
-            //TODO: Wait until visible
+            ////Wait until this is visible
+            //ObservationState.Where(os=>os == Common.Models.ObservationState.Active).Take(1)
+            //.Subscribe()
 
-            //Whenever the RoleId updates
+            //Whenever the RoleId updates, update the VirtualQueryableCollectionView
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(async roleId =>
             {
+                //Service templates are required for adding
+                CanAddSubject.OnNext(false);
+                //Load the service templates
+                var serviceTemplatesQuery = Context.GetServiceTemplatesForServiceProviderQuery(ContextManager.RoleId)
+                    .Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined);
+                
+                Context.Load(serviceTemplatesQuery, lo =>
+                {
+                    _loadedServiceTemplates = lo.Entities;
+                    CanAddSubject.OnNext(true);
+                }, null);
+
+                #region Setup Client Loading
+
                 var query = Context.GetClientsForRoleQuery(ContextManager.RoleId);
-                //var view = new QueryableDomainServiceCollectionView<Client>(Context, query) { AutoLoad = true, PageSize = 25 };
 
                 var view = new VirtualQueryableCollectionView<Client>
                 {
@@ -225,19 +233,20 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 view.ItemsLoading += async (s, e) =>
                 {
-                    var queryToLoad = query
-                            .Sort(view.SortDescriptors)
-                            .Where(view.FilterDescriptors)
-                            .Skip(e.StartIndex)
-                            .Take(e.ItemCount);
+                    var queryToLoad = query.Sort(view.SortDescriptors).Where(view.FilterDescriptors)
+                                           .Skip(e.StartIndex).Take(e.ItemCount);
 
                     view.Load(e.StartIndex, await Context.LoadAsync(queryToLoad));
                 };
 
                 QueryableCollectionView = view;
+
+                #endregion
             });
 
-            //TODO: Whenever the context updates add filter descriptors (or context)
+            //Whenever the client changes load the contact info
+            SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Subscribe(selectedClient =>
+                Context.Load(Context.GetContactInfoSetQuery().Where(c => c.PartyId == selectedClient.Id)));
         }
 
         #region Logic
