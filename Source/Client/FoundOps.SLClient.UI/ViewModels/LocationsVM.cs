@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
 using ReactiveUI;
-using System.Linq;
 using System.Collections;
 using Kent.Boogaart.KBCsv;
+using Telerik.Windows.Data;
 using System.Reactive.Linq;
-using System.ComponentModel;
 using FoundOps.Common.Tools;
 using System.Windows.Controls;
 using System.Reactive.Subjects;
@@ -15,8 +14,10 @@ using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Common.Silverlight.Services;
 using Microsoft.Windows.Data.DomainServices;
+using Telerik.Windows.Controls.DomainServices;
+using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -25,10 +26,24 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Locations
     /// </summary>
     [ExportViewModel("LocationsVM")]
-    public class LocationsVM : CoreEntityCollectionInfiniteAccordionVM<Location>,
-          IAddToDeleteFromSource<Location>
+    public class LocationsVM : CoreEntityCollectionInfiniteAccordionVM<Location>, IAddToDeleteFromSource<Location>
     {
         #region Public Properties
+
+        private QueryableCollectionView _queryableCollectionView;
+        /// <summary>
+        /// The collection of Locations.
+        /// </summary>
+        public QueryableCollectionView QueryableCollectionView
+        {
+            get { return _queryableCollectionView; }
+            private set
+            {
+                _queryableCollectionView = value;
+                this.RaisePropertyChanged("QueryableCollectionView");
+                SetupContexts();
+            }
+        }
 
         private readonly ObservableAsPropertyHelper<bool> _canExportCSV;
         /// <summary>
@@ -40,12 +55,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         public bool CanExportCSV { get { return _canExportCSV.Value; } }
 
         #region Location Properties
-
-        private readonly ObservableAsPropertyHelper<IEnumerable<Location>> _locationsWithoutClient;
-        /// <summary>
-        /// Gets the Locations without Clients.
-        /// </summary>
-        public IEnumerable<Location> LocationsWithoutClient { get { return _locationsWithoutClient.Value; } }
 
         private readonly Subject<LocationVM> _selectedLocationVMObservable = new Subject<LocationVM>();
         /// <summary>
@@ -90,7 +99,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         //There is none required
         public IEqualityComparer<object> CustomComparer { get; set; }
 
-        public IEnumerable ExistingItemsSource { get { return _locationsWithoutClient.Value; } }
+        public IEnumerable ExistingItemsSource { get { return null; } }
 
         public string MemberPath { get; private set; }
 
@@ -115,98 +124,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         public LocationsVM(DataManager dataManager)
             : base(dataManager)
         {
-            //Subscribe to the locations query
-            IsLoadingObservable = DataManager.Subscribe<Location>(DataManager.Query.Locations, this.ObservationState, null);
+            SetupDataLoading();
+            //_loadedLocationsProperty = _loadedLocations.ToProperty(this, x => x.LoadedLocations);
 
-            _loadedLocations = DataManager.GetEntityListObservable<Location>(DataManager.Query.Locations);
-            _loadedLocationsProperty = _loadedLocations.ToProperty(this, x => x.LoadedLocations);
-
-            #region LocationsWithoutClient
-
-            //Whenever loadedLocations changes, select the IObservable<IList<Location>> of Locations without a Client
-            var locationsWithoutClient = _loadedLocations.FromCollectionChangedOrSet()
-                .SelectLatest(loadedLocs => loadedLocs.Select(loadedLoc =>
-                    //Whenever the Location.Party.ClientOwner == null
-                    loadedLoc.WhenAny(x => x.Party, x => x.Party.ClientOwner, (party, clientOwner) => party.Value == null || clientOwner.Value == null)
-                        //Select the Location if there is noClientOwner
-                    .Select(noClientOwner => noClientOwner ? loadedLoc : null))
-                    //Combine the latest of the Location Observables into a list
-                    .CombineLatest())
-                //Remove the locations that are null
-                    .Select(locations => locations.Where(l => l != null));
-
-            //Setup the LocationsWithoutClient property
-            _locationsWithoutClient = locationsWithoutClient.ToProperty(this, x => x.LocationsWithoutClient);
-
-            #endregion
-
-            #region IAddToDeleteFromSource<Location> Implementation
-
-            //Whenever the _locationsWithoutClient changes notify ExistingItemsSource changed
-            _locationsWithoutClient.ToProperty(this, x => x.ExistingItemsSource);
-
-            MemberPath = "Name";
-
-            CreateNewItem = name =>
-            {
-                //Set the Party to the current OwnerAccount
-                var newLocation = new Location { Party = ContextManager.OwnerAccount };
-
-                var client = ContextManager.GetContext<Client>();
-
-                //If the client context != null add this to the current Client's Locations
-                if (client != null)
-                    client.OwnedParty.Locations.Add(newLocation);
-
-                var region = ContextManager.GetContext<Region>();
-
-                //If the region context != null add this to the current Regions's Locations
-                if (region != null)
-                    region.Locations.Add(newLocation);
-
-                newLocation.RaiseValidationErrors();
-
-                //Add the new entity to the loaded locations EntityList
-                LoadedLocations.Add(newLocation);
-
-                return newLocation;
-            };
-
-            #endregion
-
-            #region DomainCollectionView
-
-            //Whenever the OwnerAccount, or the Client or Region context changes, and when the loaded locations changes, update the DCV
-            this.ContextManager.OwnerAccountObservable.AsGeneric().Merge(ContextManager.GetContextObservable<Client>().AsGeneric()).Merge(this.ContextManager.GetContextObservable<Region>().AsGeneric()).Merge(_loadedLocations.AsGeneric())
-                .Throttle(TimeSpan.FromMilliseconds(200))
-                .ObserveOnDispatcher().Subscribe(_ =>
-            {
-                IEnumerable<Location> setOfLocations;
-                var closestContext = this.ContextManager.ClosestContext(new[] { typeof(Client), typeof(Region) });
-
-                if (closestContext is Client)
-                    setOfLocations = ((Client)closestContext).OwnedParty.Locations;
-                else if (closestContext is Region)
-                    setOfLocations = ((Region)closestContext).Locations;
-                else
-                    setOfLocations = this.ContextManager.OwnerAccount == null
-                                         ? (IEnumerable<Location>)new List<Location>()
-                                         : this.ContextManager.OwnerAccount.OwnedLocations;
-
-                this.DomainCollectionViewObservable.OnNext(DomainCollectionViewFactory<Location>.GetDomainCollectionView(setOfLocations));
-            });
-
-            //Whenever the DCV changes, sort by Name and select the first entity
-            this.DomainCollectionViewObservable.Throttle(TimeSpan.FromMilliseconds(300)) //wait for UI to load
-                .ObserveOnDispatcher().Subscribe(dcv =>
-            {
-                dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-                this.SelectedEntity = this.DomainCollectionView.FirstOrDefault();
-            });
-
-            #endregion
-
-            #region Entity
+            #region Setup location/sublocation properties
 
             //Hookup _selectedLocationVM to SelectedLocationVMObservable
             _selectedLocationVM = SelectedLocationVMObservable.ToProperty(this, x => x.SelectedLocationVM);
@@ -239,6 +160,106 @@ namespace FoundOps.SLClient.UI.ViewModels
             var canExportCSV = IsLoadingObservable.CombineLatest(DataManager.GetIsLoadingObservable(DataManager.Query.Clients), DataManager.GetIsLoadingObservable(DataManager.Query.Regions),
                                                   (locationsLoading, clientsLoading, regionsLoading) => !locationsLoading && !clientsLoading && !regionsLoading);
             _canExportCSV = canExportCSV.ToProperty(this, x => x.CanExportCSV);
+
+            #region IAddToDeleteFromSource<Location> Implementation
+
+            MemberPath = "Name";
+
+            CreateNewItem = name =>
+            {
+                //Set the Party to the current OwnerAccount
+                var newLocation = new Location { Party = ContextManager.OwnerAccount };
+
+                var client = ContextManager.GetContext<Client>();
+
+                //If the client context != null add this to the current Client's Locations
+                if (client != null)
+                    client.OwnedParty.Locations.Add(newLocation);
+
+                var region = ContextManager.GetContext<Region>();
+
+                //If the region context != null add this to the current Regions's Locations
+                if (region != null)
+                    region.Locations.Add(newLocation);
+
+                newLocation.RaiseValidationErrors();
+
+                //Add the new entity to the loaded locations EntityList
+                LoadedLocations.Add(newLocation);
+
+                return newLocation;
+            };
+
+            #endregion
+        }
+
+        private void SetupDataLoading()
+        {
+            ////Wait until this is visible
+            //ObservationState.Where(os=>os == Common.Models.ObservationState.Active).Take(1)
+            //.Subscribe()
+
+            //Whenever the RoleId updates, update the VirtualQueryableCollectionView
+            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(async roleId =>
+            {
+                #region Setup Location Loading
+
+                var query = Context.GetLocationsToAdministerForRoleQuery(ContextManager.RoleId);
+
+                var view = new VirtualQueryableCollectionView<Location>
+                {
+                    LoadSize = 100,
+                    VirtualItemCount = await Context.CountAsync(query)
+                };
+
+                view.FilterDescriptors.CollectionChanged += async (s, e) =>
+                {
+                    view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors));
+                };
+
+                view.FilterDescriptors.ItemChanged += async (s, e) =>
+                {
+                    view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors));
+                };
+
+                view.ItemsLoading += async (s, e) =>
+                {
+                    var queryToLoad = query.Sort(view.SortDescriptors).Where(view.FilterDescriptors)
+                                           .Skip(e.StartIndex).Take(e.ItemCount);
+
+                    view.Load(e.StartIndex, await Context.LoadAsync(queryToLoad));
+                };
+
+                QueryableCollectionView = view;
+
+                #endregion
+            });
+
+            //Whenever the location changes load the contact info
+            SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
+                Context.Load(Context.GetContactInfoSetQuery().Where(c => c.PartyId == selectedLocation.Id)));
+
+            //Whenever the QCV, Client or Region context changes update the filter descriptors
+            ContextManager.GetContextObservable<Client>().AsGeneric().Merge(ContextManager.GetContextObservable<Region>().AsGeneric())
+           .Throttle(TimeSpan.FromMilliseconds(200)).ObserveOnDispatcher().Subscribe(_ => SetupContexts());
+        }
+
+        private void SetupContexts()
+        {
+            if (QueryableCollectionView == null) return;
+
+            using (QueryableCollectionView.DeferRefresh())
+            {
+                QueryableCollectionView.FilterDescriptors.Clear();
+                var clientContext = ContextManager.GetContext<Client>();
+                if (clientContext != null)
+                    QueryableCollectionView.FilterDescriptors.Add(new FilterDescriptor("PartyId", FilterOperator.IsEqualTo, clientContext.Id));
+
+                var regionContext = ContextManager.GetContext<Region>();
+                if (regionContext != null)
+                    QueryableCollectionView.FilterDescriptors.Add(new FilterDescriptor("RegionId", FilterOperator.IsEqualTo, regionContext.Id));
+            }
+
         }
 
         #region Logic
@@ -281,6 +302,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
+        #region Add Delete Entities
+
         protected override Location AddNewEntity(object commandParameter)
         {
             //Reuse the CreateNewItem method
@@ -296,6 +319,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             base.DeleteEntity(locationToDelete);
         }
+
+        #endregion
 
         #endregion
     }

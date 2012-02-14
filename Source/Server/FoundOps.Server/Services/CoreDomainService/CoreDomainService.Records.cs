@@ -376,20 +376,15 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary> 
-        /// This method will return the locations to administer for the current business account
+        /// This method will return the locations for the current business account.
         /// </summary>
         /// <param name="roleId">The Business's Id.</param>
         /// <returns>The Business's Client's Locations</returns>
-        public IEnumerable<Location> GetLocationsToAdministerForRole(Guid roleId)
+        public IQueryable<Location> GetLocationsToAdministerForRole(Guid roleId)
         {
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
-            if (!ObjectContext.CurrentUserCanAccessParty(partyForRole.Id)) return null;
-
-            var locations =
-                ((ObjectQuery<Location>)this.ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id))
-                .Include("ContactInfoSet").Include("Region").Include("Party").Include("Party.ClientOwner").Include("SubLocations").ToArray();
-
+            var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id).OrderBy(l => l.Name);
             return locations;
         }
 
