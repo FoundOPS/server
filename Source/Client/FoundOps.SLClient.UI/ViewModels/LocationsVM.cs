@@ -195,10 +195,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
-            ////Wait until this is visible
-            //ObservationState.Where(os=>os == Common.Models.ObservationState.Active).Take(1)
-            //.Subscribe()
-
             //Whenever the RoleId updates, update the VirtualQueryableCollectionView
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(async roleId =>
             {
@@ -212,15 +208,24 @@ namespace FoundOps.SLClient.UI.ViewModels
                     VirtualItemCount = await Context.CountAsync(query)
                 };
 
-                view.FilterDescriptors.CollectionChanged += async (s, e) =>
-                {
-                    view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors));
-                };
+                var cancelFilterChangedCount = new Subject<bool>();
 
-                view.FilterDescriptors.ItemChanged += async (s, e) =>
-                {
-                    view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors));
-                };
+                //Whenever the FilterDescriptors collection or an item changes
+                //update the VirtualItemCount
+                view.FilterDescriptors.FromCollectionChanged().AsGeneric()
+                    .Merge(Observable.FromEventPattern<EventHandler<ItemChangedEventArgs<IFilterDescriptor>>, ItemChangedEventArgs<IFilterDescriptor>>
+                            (h => view.FilterDescriptors.ItemChanged += h, h => view.FilterDescriptors.ItemChanged -= h).AsGeneric())
+                    .Subscribe(async _ =>
+                    {
+                        cancelFilterChangedCount.OnNext(true);
+                        try
+                        {
+                            view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors), cancelFilterChangedCount);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    });
 
                 view.ItemsLoading += async (s, e) =>
                 {
@@ -237,11 +242,15 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Whenever the location changes load the contact info
             SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
-                Context.Load(Context.GetContactInfoSetQuery().Where(c => c.PartyId == selectedLocation.Id)));
+                Context.Load(Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedLocation.Id)));
 
             //Whenever the QCV, Client or Region context changes update the filter descriptors
             ContextManager.GetContextObservable<Client>().AsGeneric().Merge(ContextManager.GetContextObservable<Region>().AsGeneric())
            .Throttle(TimeSpan.FromMilliseconds(200)).ObserveOnDispatcher().Subscribe(_ => SetupContexts());
+
+            ////Wait until this is visible
+            //ObservationState.Where(os=>os == Common.Models.ObservationState.Active).Take(1)
+            //.Subscribe()
         }
 
         private void SetupContexts()
@@ -260,6 +269,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     QueryableCollectionView.FilterDescriptors.Add(new FilterDescriptor("RegionId", FilterOperator.IsEqualTo, regionContext.Id));
             }
 
+            QueryableCollectionView.NeedsRefresh = true;
         }
 
         #region Logic

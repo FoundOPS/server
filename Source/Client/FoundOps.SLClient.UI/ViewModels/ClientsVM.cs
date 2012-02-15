@@ -42,6 +42,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        public string SearchText { get; set; }
+
         private readonly ObservableAsPropertyHelper<PartyVM> _selectedClientOwnedBusinessVM;
         /// <summary>
         /// Gets the selected Client's OwnedParty's PartyVM. (The OwnedPary is a Business)

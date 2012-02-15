@@ -38,14 +38,14 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole == null) return null;
 
             var clients =
-                from c in ObjectContext.Clients.Where(c=>c.VendorId == businessForRole.Id)
+                from c in ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id)
                 join p in ObjectContext.Parties.OfType<Person>()
                     on c.OwnedParty.Id equals p.Id into personClient
                 from person in personClient.DefaultIfEmpty() //Left Join
                 join b in ObjectContext.Parties.OfType<Business>()
                     on c.OwnedParty.Id equals b.Id into businessClient
                 from business in businessClient.DefaultIfEmpty() //Left Join
-                let displayName = business != null ? business.Name : 
+                let displayName = business != null ? business.Name :
                                   person.LastName + " " + person.FirstName + " " + person.MiddleInitial
                 orderby displayName
                 select c;
@@ -378,7 +378,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <summary> 
         /// This method will return the locations for the current business account.
         /// </summary>
-        /// <param name="roleId">The Business's Id.</param>
+        /// <param name="roleId">The current role id.</param>
         /// <returns>The Business's Client's Locations</returns>
         public IQueryable<Location> GetLocationsToAdministerForRole(Guid roleId)
         {
@@ -386,6 +386,21 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id).OrderBy(l => l.Name);
             return locations;
+        }
+
+        /// <summary>
+        /// Gets the location details.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="locationId">The location id.</param>
+        public Location GetLocationDetailsForRole(Guid roleId, Guid locationId)
+        {
+            var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
+
+            var location = ObjectContext.Locations.Where(l => l.Id == locationId && l.OwnerPartyId == partyForRole.Id)
+                .Include("Region").Include("SubLocations").Include("ContactInfoSet").FirstOrDefault();
+
+            return location;
         }
 
         public void InsertLocation(Location location)
