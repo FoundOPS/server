@@ -1776,7 +1776,7 @@ ADD CONSTRAINT [FK_ServiceTemplateField]
     FOREIGN KEY ([ServiceTemplateId])
     REFERENCES [dbo].[ServiceTemplates]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ServiceTemplateField'
 CREATE INDEX [IX_FK_ServiceTemplateField]

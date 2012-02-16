@@ -133,7 +133,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 this.DeleteClient(client);
 
             //This must be after Services
-            //Delete all ServiceTemplates that do not have delete ChangeSetEntries.ServiceTemplates.Load();
+            //Delete all ServiceTemplates that do not have delete ChangeSetEntries
             var serviceTemplatesToDelete = businessAccountToDelete.ServiceTemplates.Where(st =>
                         !ChangeSet.ChangeSetEntries.Any(cse => cse.Operation == DomainOperation.Delete &&
                         cse.Entity is ServiceTemplate && ((ServiceTemplate)cse.Entity).Id == st.Id))

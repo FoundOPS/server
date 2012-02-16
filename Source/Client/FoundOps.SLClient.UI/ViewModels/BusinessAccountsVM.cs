@@ -227,7 +227,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             DeleteItemServiceTemplate = () =>
             {
                 //Add logic to remove a Service template here
-                var selectedServiceTemplate = RemoveItemServiceTemplate();
+                var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
                 if (selectedServiceTemplate != null)
                     VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
 

@@ -84,6 +84,10 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             this.ObjectContext.DetachExistingAndAttach(route);
 
+            route.RouteDestinations.Load();
+            foreach(var routeDestination in route.RouteDestinations.ToArray())
+                DeleteRouteDestination(routeDestination);
+
             this.ObjectContext.Routes.DeleteObject(route);
         }
 
