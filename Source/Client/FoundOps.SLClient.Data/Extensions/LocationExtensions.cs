@@ -84,18 +84,6 @@ namespace FoundOps.Core.Models.CoreEntities
             this.BeginEdit();
             this.EndEdit();
         }
-
-        /// <summary>
-        /// Gets the entity graph of Location to remove.
-        /// </summary>
-        public EntityGraph<Entity> EntityGraphToRemove
-        {
-            get
-            {
-                var graphShape = new EntityGraphShape().Edge<Location, ContactInfo>(location => location.ContactInfoSet);
-                return new EntityGraph<Entity>(this, graphShape);
-            }
-        }
     }
 }
 

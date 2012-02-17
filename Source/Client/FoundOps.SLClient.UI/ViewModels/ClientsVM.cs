@@ -12,9 +12,7 @@ using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
-using Telerik.Windows.Controls.DomainServices;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -191,13 +189,20 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
-            ////Wait until this is visible
-            //ObservationState.Where(os=>os == Common.Models.ObservationState.Active).Take(1)
-            //.Subscribe()
-
-            //Whenever the RoleId updates, update the VirtualQueryableCollectionView
+            //Whenever the RoleId updates
+            //a) update the VirtualQueryableCollectionView
+            //b) load the service templates required for adding new Clients
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(async roleId =>
             {
+                #region a) update the VirtualQueryableCollectionView
+
+                var initialQuery = Context.GetClientsForRoleQuery(ContextManager.RoleId);
+                QueryableCollectionView = DataManager.SetupMainVQCV(initialQuery, IsLoadingSubject);
+
+                #endregion
+
+                #region b) load the service templates required for adding new Clients
+
                 //Service templates are required for adding
                 CanAddSubject.OnNext(false);
                 //Load the service templates
@@ -209,36 +214,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                     _loadedServiceTemplates = lo.Entities;
                     CanAddSubject.OnNext(true);
                 }, null);
-
-                #region Setup Client Loading
-
-                var query = Context.GetClientsForRoleQuery(ContextManager.RoleId);
-
-                var view = new VirtualQueryableCollectionView<Client>
-                {
-                    LoadSize = 100,
-                    VirtualItemCount = await Context.CountAsync(query)
-                };
-
-                view.FilterDescriptors.CollectionChanged += async (s, e) =>
-                {
-                    view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors));
-                };
-
-                view.FilterDescriptors.ItemChanged += async (s, e) =>
-                {
-                    view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors));
-                };
-
-                view.ItemsLoading += async (s, e) =>
-                {
-                    var queryToLoad = query.Sort(view.SortDescriptors).Where(view.FilterDescriptors)
-                                           .Skip(e.StartIndex).Take(e.ItemCount);
-
-                    view.Load(e.StartIndex, await Context.LoadAsync(queryToLoad));
-                };
-
-                QueryableCollectionView = view;
 
                 #endregion
             });

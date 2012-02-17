@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using ReactiveUI;
 using System.Collections;
 using Kent.Boogaart.KBCsv;
@@ -30,6 +31,8 @@ namespace FoundOps.SLClient.UI.ViewModels
     {
         #region Public Properties
 
+        #region Entity Data Items
+
         private QueryableCollectionView _queryableCollectionView;
         /// <summary>
         /// The collection of Locations.
@@ -41,9 +44,24 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 _queryableCollectionView = value;
                 this.RaisePropertyChanged("QueryableCollectionView");
-                SetupContexts();
             }
         }
+
+        /// <summary>
+        /// The search text.
+        /// </summary>
+        public string SearchText { get; set; }
+
+        /// <summary>
+        /// The collection of items being searched.
+        /// </summary>
+        public IEnumerable<Location> SearchCollectionView
+        {
+            get;
+            set;
+        }
+
+        #endregion
 
         private readonly ObservableAsPropertyHelper<bool> _canExportCSV;
         /// <summary>
@@ -125,7 +143,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             : base(dataManager)
         {
             SetupDataLoading();
-            //_loadedLocationsProperty = _loadedLocations.ToProperty(this, x => x.LoadedLocations);
 
             #region Setup location/sublocation properties
 
@@ -195,83 +212,28 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
-            //Whenever the RoleId updates, update the VirtualQueryableCollectionView
-            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(async roleId =>
+            var relatedTypes = new[] { typeof(Region), typeof(Client) };
+
+            var filterDescriptorsObservable = new[]
             {
-                #region Setup Location Loading
+                ContextManager.GetContextObservable<Region>().ObserveOnDispatcher().Select(regionContext=> regionContext==null ? null :
+                    new FilterDescriptor("RegionId", FilterOperator.IsEqualTo, regionContext.Id)),
+                ContextManager.GetContextObservable<Client>().ObserveOnDispatcher().Select(clientContext=> clientContext==null ? null :
+                    new FilterDescriptor("PartyId", FilterOperator.IsEqualTo, clientContext.Id))
+            };
 
-                var query = Context.GetLocationsToAdministerForRoleQuery(ContextManager.RoleId);
-
-                var view = new VirtualQueryableCollectionView<Location>
-                {
-                    LoadSize = 100,
-                    VirtualItemCount = await Context.CountAsync(query)
-                };
-
-                var cancelFilterChangedCount = new Subject<bool>();
-
-                //Whenever the FilterDescriptors collection or an item changes
-                //update the VirtualItemCount
-                view.FilterDescriptors.FromCollectionChanged().AsGeneric()
-                    .Merge(Observable.FromEventPattern<EventHandler<ItemChangedEventArgs<IFilterDescriptor>>, ItemChangedEventArgs<IFilterDescriptor>>
-                            (h => view.FilterDescriptors.ItemChanged += h, h => view.FilterDescriptors.ItemChanged -= h).AsGeneric())
-                    .Subscribe(async _ =>
-                    {
-                        cancelFilterChangedCount.OnNext(true);
-                        try
-                        {
-                            view.VirtualItemCount = await Context.CountAsync(query.Where(view.FilterDescriptors), cancelFilterChangedCount);
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    });
-
-                view.ItemsLoading += async (s, e) =>
-                {
-                    var queryToLoad = query.Sort(view.SortDescriptors).Where(view.FilterDescriptors)
-                                           .Skip(e.StartIndex).Take(e.ItemCount);
-
-                    view.Load(e.StartIndex, await Context.LoadAsync(queryToLoad));
-                };
-
-                QueryableCollectionView = view;
-
-                #endregion
+            //Whenever the RoleId updates, update the VirtualQueryableCollectionView
+            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
+            {
+                var initialQuery = Context.GetLocationsToAdministerForRoleQuery(ContextManager.RoleId);
+                QueryableCollectionView = DataManager.SetupMainVQCV(initialQuery, IsLoadingSubject, relatedTypes, filterDescriptorsObservable);
             });
 
-            //Whenever the location changes load the contact info
+            //Whenever the location changes load the location details
             SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
                 Context.Load(Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedLocation.Id)));
 
-            //Whenever the QCV, Client or Region context changes update the filter descriptors
-            ContextManager.GetContextObservable<Client>().AsGeneric().Merge(ContextManager.GetContextObservable<Region>().AsGeneric())
-           .Throttle(TimeSpan.FromMilliseconds(200)).ObserveOnDispatcher().Subscribe(_ => SetupContexts());
-
-            ////Wait until this is visible
-            //ObservationState.Where(os=>os == Common.Models.ObservationState.Active).Take(1)
-            //.Subscribe()
         }
-
-        private void SetupContexts()
-        {
-            if (QueryableCollectionView == null) return;
-
-            using (QueryableCollectionView.DeferRefresh())
-            {
-                QueryableCollectionView.FilterDescriptors.Clear();
-                var clientContext = ContextManager.GetContext<Client>();
-                if (clientContext != null)
-                    QueryableCollectionView.FilterDescriptors.Add(new FilterDescriptor("PartyId", FilterOperator.IsEqualTo, clientContext.Id));
-
-                var regionContext = ContextManager.GetContext<Region>();
-                if (regionContext != null)
-                    QueryableCollectionView.FilterDescriptors.Add(new FilterDescriptor("RegionId", FilterOperator.IsEqualTo, regionContext.Id));
-            }
-
-            QueryableCollectionView.NeedsRefresh = true;
-        }
-
         #region Logic
 
         #region Export to CSV
@@ -292,8 +254,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                     var csvWriter = new CsvWriter(fileWriter);
 
                     csvWriter.WriteHeaderRecord("Name", "Region", "Client",
-                                             "Address 1", "Address 2", "City", "State", "Zip Code",
-                                             "Latitude", "Longitude");
+                                                "Address 1", "Address 2", "City", "State", "Zip Code",
+                                                "Latitude", "Longitude");
 
                     foreach (var location in DomainCollectionView)
                     {
@@ -322,10 +284,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public override void DeleteEntity(Location locationToDelete)
         {
-            //Remove Location and it's EntityGraphToRemove
-            //This is not automatically done because the DCV is not backed by an EntityList
-            var locationEntitiesToRemove = locationToDelete.EntityGraphToRemove;
-            DataManager.RemoveEntities(locationEntitiesToRemove);
+            //Remove Location (this is not automatically done because the DCV is not backed by an EntityList)
+            DataManager.RemoveEntities(new[] { locationToDelete });
 
             base.DeleteEntity(locationToDelete);
         }

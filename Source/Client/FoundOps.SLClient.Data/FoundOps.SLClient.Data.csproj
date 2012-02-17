@@ -86,6 +86,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AsyncCtpLibrary_Silverlight5">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\AsyncCtpLibrary_Silverlight5.dll</HintPath>
+    </Reference>
     <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\DataValidationFramework.Silverlight.dll</HintPath>
     </Reference>
@@ -171,8 +174,14 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.DomainServices">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DomainServices.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.ScheduleView">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
