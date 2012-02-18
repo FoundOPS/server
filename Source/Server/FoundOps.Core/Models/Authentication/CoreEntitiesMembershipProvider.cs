@@ -13,7 +13,7 @@ namespace FoundOps.Core.Models.Authentication
 
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
-           throw new NotImplementedException("Create user is done another");
+            throw new NotImplementedException("Create user is done another");
         }
 
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
@@ -36,8 +36,7 @@ namespace FoundOps.Core.Models.Authentication
             return true;
         }
 
-
-        internal void ChangePassword(string username, string temporaryPassword)
+        public void ChangePassword(string username, string temporaryPassword)
         {
             var container = new CoreEntitiesContainer();
             var user = AuthenticationLogic.GetUserAccount(container, username);

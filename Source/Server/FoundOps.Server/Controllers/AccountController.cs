@@ -267,8 +267,8 @@ namespace FoundOps.Server.Controllers
                     };
 
                     var to = model.EmailAddress;
-                    var from = "info@foundops.com";
-                    var subject = "FoundOPS Password Reset";
+                    const string from = "info@foundops.com";
+                    const string subject = "FoundOPS Password Reset";
                     var body = "Your new password is: " + temporaryPassword;
                     var mm = new MailMessage(from, to, subject, body)
                     {

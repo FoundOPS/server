@@ -16,26 +16,32 @@ namespace FoundOPS.API.Controllers
             base.Initialize(requestContext);
         }
 
-        public bool Login(string email, string pass)
+        /// <summary>
+        /// Logs in the specified email address.
+        /// </summary>
+        /// <param name="email">The email address.</param>
+        /// <param name="pass">The password.</param>
+        /// <returns></returns>
+        public JsonResult Login(string email, string pass)
         {
             var loginAttempts = AddLoginAttempt();
 
             if (loginAttempts < 5)
-            {
                 if (ModelState.IsValid)
-                {
                     if (MembershipService.ValidateUser(email, pass))
                     {
                         FormsService.SignIn(email, false);
-
-                        return true;
+                        ClearLoginAttempts();
+                        return Json(true);
                     }
-                }
-            }
 
-            return false;
+            return Json(false);
         }
 
+        /// <summary>
+        /// Adds a login attempt.
+        /// </summary>
+        /// <returns></returns>
         private int AddLoginAttempt()
         {
             //Keep track of login attempts
@@ -46,6 +52,15 @@ namespace FoundOPS.API.Controllers
             TempData["LoginAttempts"] = ++loginAttempts;
 
             return loginAttempts;
+        }
+
+
+        /// <summary>
+        /// Clears the login attempts.
+        /// </summary>
+        private void ClearLoginAttempts()
+        {
+            TempData.Remove("LoginAttempts");
         }
     }
 }

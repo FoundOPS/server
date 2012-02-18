@@ -25,17 +25,6 @@ namespace FoundOPS.API.Controllers
             return Json(apiRoutes, JsonRequestBehavior.AllowGet);
         }
 
-        /// <summary>
-        /// Logs in the specified email address.
-        /// </summary>
-        /// <param name="emailAddress">The email address.</param>
-        /// <param name="password">The password.</param>
-        /// <returns></returns>
-        public string Login(string emailAddress, string password)
-        {
-            
-        }
-
         public bool InsertTrackPoint(string json)
         {
             //TODO Insert the GPS trackpoint
