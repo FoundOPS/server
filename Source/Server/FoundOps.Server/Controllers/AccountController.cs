@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Net;
-using FoundOps.Common.Silverlight.Tools;
 using Recaptcha;
 using System.Text;
 using System.Net.Mail;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
-using FoundOps.Server.Authentication;
+using FoundOps.Common.Silverlight.Tools;
+using FoundOps.Core.Models.Authentication;
 
 namespace FoundOps.Server.Controllers
 {
@@ -39,9 +39,8 @@ namespace FoundOps.Server.Controllers
                         FormsService.SignIn(model.EmailAddress, model.RememberMe);
 
                         if (!String.IsNullOrEmpty(returnUrl))
-                        {
                             return Redirect(returnUrl);
-                        }
+
                         return RedirectToAction("Silverlight", "Home");
                     }
                     ModelState.AddModelError("", "The email address or password provided is incorrect.");
@@ -55,6 +54,7 @@ namespace FoundOps.Server.Controllers
             // If we got this far something failed. Display page w validation errors
             return View(redirectToOnFailureAction, model);
         }
+
         private bool PerformRecaptcha()
         {
             var validator = new RecaptchaValidator
@@ -80,6 +80,7 @@ namespace FoundOps.Server.Controllers
                 return false;
             }
         }
+
         private int AddLoginAttempt()
         {
             //Keep track of login attempts
@@ -291,6 +292,5 @@ namespace FoundOps.Server.Controllers
         }
 
         #endregion
-
     }
 }

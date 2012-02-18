@@ -99,8 +99,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Authentication\AccountModels.cs" />
+    <Compile Include="Models\Authentication\CoreEntitiesMembershipProvider.cs" />
+    <Compile Include="Models\Authentication\UserAccountExtensions.cs" />
     <Compile Include="Models\Azure\InvoiceTableDataModel.cs" />
     <Compile Include="Models\Azure\InvoiceDataServiceContext.cs" />
+    <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\CoreEntities\BlocksData.cs" />
     <Compile Include="Models\CoreEntities\CoreEntities.metadata.cs" />
     <Compile Include="Models\CoreEntities\CoreEntities.Designer.cs">
@@ -194,6 +198,7 @@
     <Compile Include="Models\RouteEntities\RouteResponse.cs" />
     <Compile Include="Models\RouteEntities\TimeWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\AuthenticationLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />

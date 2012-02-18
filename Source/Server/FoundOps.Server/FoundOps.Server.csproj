@@ -329,9 +329,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\AccountModels.cs" />
-    <Compile Include="Authentication\CoreEntitiesMembershipProvider.cs" />
-    <Compile Include="Authentication\UserAccountExtensions.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\BlockController.cs" />
@@ -357,9 +354,7 @@
       <DependentUpon>M2M4RiaLinqToEntitiesDomainService.tt</DependentUpon>
     </Compile>
     <Compile Include="Tools\AddTestUsersThenAuthorize.cs" />
-    <Compile Include="Authentication\AuthenticationLogic.cs" />
     <Compile Include="Tools\ImageHelpers.cs" />
-    <Compile Include="Tools\MobileHelpers.cs" />
     <Compile Include="Tools\ServerManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Core.cs" />
@@ -369,11 +364,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Developer.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Web.sitemap" />

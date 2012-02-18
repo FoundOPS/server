@@ -5,7 +5,7 @@ using System.Threading;
 using System.Data.Objects;
 using FoundOps.Common.NET;
 using System.Collections.Generic;
-using FoundOps.Server.Authentication;
+using FoundOps.Core.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.Server;
 using FoundOps.Core.Models.CoreEntities.DesignData;

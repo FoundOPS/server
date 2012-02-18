@@ -1,46 +1,57 @@
 ﻿using System;
-using System.Data.Entity;
-using System.Data.Objects;
-using System.Security.Authentication;
 using System.Web;
 using System.Text;
 using System.Linq;
-using FoundOps.Common.Server;
+using System.Data.Objects;
+using FoundOps.Core.Models;
+using System.Security.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 
-namespace FoundOps.Server.Authentication
+namespace FoundOps.Core.Tools
 {
     public static class AuthenticationLogic
     {
+        /// <summary>
+        /// Returns the current user accounts email address.
+        /// </summary>
         public static string CurrentUserAccountsEmailAddress()
         {
 #if DEBUG
-            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan"))
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin)
                 return "jperl@foundops.com";
-#endif
 
+            if (ServerConstants.AutomaticLoginOPSManager)
+                return "david@gotgrease.net";
+#endif
             return HttpContext.Current.User.Identity.Name;
         }
 
-        public static IQueryable<UserAccount> CurrentUserAccountQueryable(CoreEntitiesContainer coreEntitiesContainer)
-        {
-            return GetUserAccountQueryable(coreEntitiesContainer, CurrentUserAccountsEmailAddress());
-        }
-
+        /// <summary>
+        /// Gets a random 8 digit uppercase alphanumeric code.
+        /// </summary>
         public static string GetCode()
         {
             var builder = new StringBuilder();
             var random = new Random();
             builder.Clear();
-            for (int i = 0; i < 8; i++)
+            for (var i = 0; i < 8; i++)
             {
-                char ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                var ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
                 builder.Append(ch);
             }
 
             var code = builder.ToString().ToUpper();
             return code;
+        }
+
+        /// <summary>
+        /// Returns a queryable with the user account.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        public static IQueryable<UserAccount> CurrentUserAccountQueryable(CoreEntitiesContainer coreEntitiesContainer)
+        {
+            return GetUserAccountQueryable(coreEntitiesContainer, CurrentUserAccountsEmailAddress());
         }
 
         public static IQueryable<UserAccount> GetUserAccountQueryable(CoreEntitiesContainer container, string emailAddress)
@@ -64,7 +75,7 @@ namespace FoundOps.Server.Authentication
         /// <exception cref="AuthenticationException">Thrown if user is not logged in</exception>
         public static IQueryable<Role> RolesCurrentUserHasAccessTo(this CoreEntitiesContainer coreEntitiesContainer)
         {
-            var currentUser = AuthenticationLogic.CurrentUserAccountQueryable(coreEntitiesContainer).FirstOrDefault();
+            var currentUser = CurrentUserAccountQueryable(coreEntitiesContainer).FirstOrDefault();
 
             return RolesCurrentUserHasAccessTo(currentUser, coreEntitiesContainer);
         }

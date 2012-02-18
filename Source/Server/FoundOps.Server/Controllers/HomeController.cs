@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using FoundOps.Core.Models;
 using FoundOps.Core.Server;
 using FoundOps.Server.Tools;
-using FoundOps.Common.Server;
 using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Server.Controllers
@@ -22,18 +22,20 @@ namespace FoundOps.Server.Controllers
             //}
 
 #if DEBUG
-            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan") || UserSpecificResourcesWrapper.GetBool("AutomaticLoginDavid"))
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
                 return RedirectToAction("Silverlight", "Home");
 #endif
 
-            if (!HttpContext.User.Identity.IsAuthenticated)
-            {
+            if (!HttpContext.User.Identity.IsAuthenticated) 
                 return View();
-            }
 
             return RedirectToAction("Silverlight", "Home");
         }
 
+        /// <summary>
+        /// Silverlights this instance.
+        /// </summary>
+        /// <returns></returns>
         [AddTestUsersThenAuthorize]
         public ActionResult Silverlight()
         {
@@ -51,13 +53,18 @@ namespace FoundOps.Server.Controllers
             return View((object)version);
         }
 
+        /// <summary>
+        /// Redirects to the team page of the blog.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns></returns>
         public ActionResult Team(string id)
         {
             return Redirect(String.Format("{0}/Team?id={1}", Global.RootBlogUrl, id));
         }
 
         /// <summary>
-        /// Redirects to the respective wordpress page
+        /// Redirects to the respective wordpress page.
         /// </summary>
         /// <param name="page">The page to redirect to.</param>
         public ActionResult WP(string page)
@@ -68,6 +75,10 @@ namespace FoundOps.Server.Controllers
             return Redirect(String.Format("{0}/{1}", Global.RootBlogUrl, page));
         }
 
+        /// <summary>
+        /// Returns the application sitemap.
+        /// </summary>
+        /// <returns></returns>
         public ContentResult Sitemap()
         {
             XNamespace ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
@@ -159,6 +170,11 @@ namespace FoundOps.Server.Controllers
             return Content(sitemap.ToString(), "text/xml");
         }
 
+        /// <summary>
+        /// Returns the last tiem a file was written to.
+        /// </summary>
+        /// <param name="relativeFilePath">The relative file path.</param>
+        /// <returns></returns>
         private DateTime GetLastWriteTime(string relativeFilePath)
         {
             var filePath = HttpContext.Server.MapPath(relativeFilePath);
@@ -175,8 +191,7 @@ namespace FoundOps.Server.Controllers
         public ActionResult CCDAPDD()
         {
 #if DEBUG
-            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan") ||
-                UserSpecificResourcesWrapper.GetBool("AutomaticLoginDavid") || UserSpecificResourcesWrapper.GetBool("TestServer"))
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
             {
                 CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
                 return View();
@@ -186,10 +201,13 @@ namespace FoundOps.Server.Controllers
             throw new Exception("Invalid attempted access logged for investigation.");
         }
 
+        /// <summary>
+        /// An action for triggering one time server operations.
+        /// </summary>
+        /// <returns></returns>
         [AddTestUsersThenAuthorize]
         public ActionResult PerformServerOperations()
         {
-            //TODO Authenticate first
             ServerManagement.PerformServerOperations();
             return View();
         }

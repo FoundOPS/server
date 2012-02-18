@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Data;
 using System.Data.Objects;
+using FoundOps.Core.Tools;
 using System.Collections.Generic;
-using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.EntityFramework;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;

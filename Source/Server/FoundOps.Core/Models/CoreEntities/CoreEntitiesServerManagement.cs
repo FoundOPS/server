@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Data.SqlClient;
-using System.Linq;
 using FoundOps.Common.NET;
-using FoundOps.Common.Server;
+using System.Configuration;
+using System.Data.SqlClient;
 using FoundOps.Core.Server.Blocks;
 using Microsoft.SqlServer.Management.Common;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -14,16 +13,14 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         #region ConnectionString, Paths and Parameters
 
-        private static readonly string SqlConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreConnectionString");
-        private static readonly string ContainerConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreEntitiesContainer");
-
-        private static readonly string RootDirectory = UserSpecificResourcesWrapper.GetString("RootDirectory");
+        private static readonly string SqlConnectionString = ConfigurationManager.ConnectionStrings["CoreConnectionString"].ConnectionString;
+        private static readonly string ContainerConnectionString = ConfigurationManager.ConnectionStrings["CoreEntitiesContainer"].ConnectionString;
 
         private static readonly string ClearCoreEntitiesDatabaseScriptLocation =
-            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
+            ServerConstants.RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
 
         private static readonly string CreateCoreEntitiesDatabaseScriptLocation =
-            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx.sql";
+            ServerConstants.RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx.sql";
 
         #endregion
 

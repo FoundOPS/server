@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Web.Security;
 using FoundOps.Common.NET;
+using FoundOps.Core.Tools;
 using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Server.Authentication
+namespace FoundOps.Core.Models.Authentication
 {
     public class CoreEntitiesMembershipProvider : MembershipProvider
     {

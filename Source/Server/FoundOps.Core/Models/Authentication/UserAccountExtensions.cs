@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ServiceModel.DomainServices.Server.ApplicationServices;
-using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Core.Models.Account.Extensions
+namespace FoundOps.Core.Models.Authentication
 {
     public class WebContextUser : IUser
     {

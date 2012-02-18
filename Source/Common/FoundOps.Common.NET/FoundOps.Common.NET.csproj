@@ -115,7 +115,6 @@
     <Compile Include="ObjectContextExtensions.cs" />
     <Compile Include="PlaceFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserSpecificResourcesWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="M2M4Ria\Client\M2M4RiaDomainContext.ttinclude" />

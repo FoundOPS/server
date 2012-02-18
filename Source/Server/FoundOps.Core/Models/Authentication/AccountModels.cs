@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using System.Web.Security;
 
-namespace FoundOps.Server.Authentication
+namespace FoundOps.Core.Models.Authentication
 {
     #region Models
     [PropertiesMustMatch("NewPassword", "ConfirmPassword", ErrorMessage = "The new password and confirmation password do not match.")]

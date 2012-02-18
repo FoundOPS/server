@@ -2,7 +2,6 @@
 using System.Data;
 using System.Linq;
 using System.Collections.Generic;
-using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.Server;
 using System.ServiceModel.DomainServices.Hosting;

@@ -1,7 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using FoundOps.Common.Server;
 
 namespace FoundOps.Server.Tools
 {
@@ -10,13 +9,13 @@ namespace FoundOps.Server.Tools
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             #if DEBUG
-            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan"))
+            if (Core.Models.ServerConstants.AutomaticLoginOPSManager)
             {
                 FormsAuthentication.SignOut();
                 FormsAuthentication.SetAuthCookie("jperl@foundops.com", false);
                 return true;
             }
-            else if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginDavid"))
+            if (Core.Models.ServerConstants.AutomaticLoginFoundOPSAdmin)
             {
                 FormsAuthentication.SignOut();
                 FormsAuthentication.SetAuthCookie("david@gotgrease.net", false);

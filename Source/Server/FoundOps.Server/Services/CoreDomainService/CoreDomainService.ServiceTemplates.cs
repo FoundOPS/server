@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Data;
-using FoundOps.Server.Authentication;
+using FoundOps.Core.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.EntityFramework;
 
