@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Subjects;
 using ReactiveUI;
 using System.Linq;
 using System.Collections;
@@ -189,15 +190,19 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
+            var disposeObservable = new Subject<bool>();
             //Whenever the RoleId updates
             //a) update the VirtualQueryableCollectionView
             //b) load the service templates required for adding new Clients
-            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(async roleId =>
+            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
                 #region a) update the VirtualQueryableCollectionView
 
+                //Dispose the last VQCV subscriptions
+                disposeObservable.OnNext(true);
+
                 var initialQuery = Context.GetClientsForRoleQuery(ContextManager.RoleId);
-                QueryableCollectionView = DataManager.SetupMainVQCV(initialQuery, IsLoadingSubject);
+                QueryableCollectionView = DataManager.SetupMainVQCV(initialQuery, disposeObservable);
 
                 #endregion
 

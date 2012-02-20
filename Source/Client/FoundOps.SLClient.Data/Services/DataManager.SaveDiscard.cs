@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Linq;
+using FoundOps.Common.Tools;
 using System.Reactive.Subjects;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using FoundOps.Common.Tools;
+using System.Collections.Specialized;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.Controls;
 using System.ServiceModel.DomainServices.Client;

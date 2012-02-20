@@ -130,7 +130,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         //The loaded locations entity list observable
         private readonly IObservable<EntityList<Location>> _loadedLocations;
         private readonly ObservableAsPropertyHelper<EntityList<Location>> _loadedLocationsProperty;
-        private EntityList<Location> LoadedLocations { get { return _loadedLocationsProperty.Value; } }
+        private EntityList<Location> LoadedLocations { get { return null;// _loadedLocationsProperty.Value; 
+        } }
 
         #endregion
 
@@ -216,24 +217,34 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             var filterDescriptorsObservable = new[]
             {
-                ContextManager.GetContextObservable<Region>().ObserveOnDispatcher().Select(regionContext=> regionContext==null ? null :
+                ContextManager.GetContextObservable<Region>().DistinctUntilChanged().ObserveOnDispatcher().Select(regionContext=> regionContext==null ? null :
                     new FilterDescriptor("RegionId", FilterOperator.IsEqualTo, regionContext.Id)),
-                ContextManager.GetContextObservable<Client>().ObserveOnDispatcher().Select(clientContext=> clientContext==null ? null :
+                ContextManager.GetContextObservable<Client>().DistinctUntilChanged().ObserveOnDispatcher().Select(clientContext=> clientContext==null ? null :
                     new FilterDescriptor("PartyId", FilterOperator.IsEqualTo, clientContext.Id))
             };
+
+            var disposeObservable = new Subject<bool>();
 
             //Whenever the RoleId updates, update the VirtualQueryableCollectionView
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
+                //Dispose the last VQCV subscriptions
+                disposeObservable.OnNext(true);
+
                 var initialQuery = Context.GetLocationsToAdministerForRoleQuery(ContextManager.RoleId);
-                QueryableCollectionView = DataManager.SetupMainVQCV(initialQuery, IsLoadingSubject, relatedTypes, filterDescriptorsObservable);
+
+                //Force load the entities when in a related types view
+                //this is because VDCV will only normally load when a virtual item is loaded onto the screen
+                //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
+                QueryableCollectionView = DataManager.SetupMainVQCV(initialQuery,disposeObservable, relatedTypes, filterDescriptorsObservable, true,
+                    loadedEntities => { SelectedEntity = loadedEntities.FirstOrDefault(); });
             });
 
             //Whenever the location changes load the location details
             SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
                 Context.Load(Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedLocation.Id)));
-
         }
+
         #region Logic
 
         #region Export to CSV
