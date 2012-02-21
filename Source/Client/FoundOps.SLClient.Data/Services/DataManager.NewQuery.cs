@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
+using System.Diagnostics;
 using Telerik.Windows.Data;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
-using System.Threading.Tasks;
 using System.Reactive.Subjects;
 using System.Collections.Generic;
 using Telerik.Windows.Controls.DomainServices;
@@ -35,7 +34,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <returns>
         /// a VirtualQueryableCollectionView (VQCV)
         /// </returns>
-        public VirtualQueryableCollectionView<TEntity> SetupMainVQCV<TEntity>(EntityQuery<TEntity> initialQuery,
+        public CreateVQCVResult<TEntity> SetupMainVQCV<TEntity>(EntityQuery<TEntity> initialQuery,
             IObservable<bool> dispose, IEnumerable<Type> relatedTypes = null, IObservable<FilterDescriptor>[] filterDescriptorObservables = null,
             bool forceLoadRelatedTypesContext = false, Action<IEnumerable<TEntity>> onFirstLoadAfterFilter = null) where TEntity : Entity
         {
@@ -170,7 +169,37 @@ namespace FoundOps.SLClient.Data.Services
                 Debug.WriteLine(typeof(TEntity) + " Virtual load " + e.EventArgs.StartIndex + " to " + e.EventArgs.ItemCount);
             });
 
-            return view;
+            return new CreateVQCVResult<TEntity>
+            {
+                CountLoading = countLoading,
+                LoadingAfterFilterChange = loadingAfterFilterChange,
+                LoadingVirtualItems = loadingVirtualItems,
+                VQCV = view
+            };
         }
+    }
+
+    /// <summary>
+    /// The result of calling the CreateVQCV method.
+    /// </summary>
+    public class CreateVQCVResult<TEntity> where TEntity : Entity
+    {
+        /// <summary>
+        /// A behavior subject which pushes whether or not the item count of the VQCV is loading.
+        /// </summary>
+        public IObservable<bool> CountLoading { get; set; }
+        /// <summary>
+        /// A behavior subject which pushes whether the first load after a filter change is loading.
+        /// </summary>
+        public IObservable<bool> LoadingAfterFilterChange { get; set; }
+        /// <summary>
+        /// A behavior subject which pushes whether the VQCV is loading virtual items.
+        /// </summary>
+        public IObservable<bool> LoadingVirtualItems { get; set; }
+
+        /// <summary>
+        /// The created VirtualQueryableCollectionView.
+        /// </summary>
+        public VirtualQueryableCollectionView<TEntity> VQCV { get; set; }
     }
 }

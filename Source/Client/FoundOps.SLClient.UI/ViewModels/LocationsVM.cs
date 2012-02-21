@@ -236,8 +236,13 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Force load the entities when in a related types view
                 //this is because VDCV will only normally load when a virtual item is loaded onto the screen
                 //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
-                QueryableCollectionView = DataManager.SetupMainVQCV(initialQuery,disposeObservable, relatedTypes, filterDescriptorsObservable, true,
+                var result = DataManager.SetupMainVQCV(initialQuery,disposeObservable, relatedTypes, filterDescriptorsObservable, true,
                     loadedEntities => { SelectedEntity = loadedEntities.FirstOrDefault(); });
+
+                QueryableCollectionView = result.VQCV;
+
+                //Subscribe the loading subject to the LoadingAfterFilterChange observable
+                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
             });
 
             //Whenever the location changes load the location details

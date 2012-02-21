@@ -202,7 +202,11 @@ namespace FoundOps.SLClient.UI.ViewModels
                 disposeObservable.OnNext(true);
 
                 var initialQuery = Context.GetClientsForRoleQuery(ContextManager.RoleId);
-                QueryableCollectionView = DataManager.SetupMainVQCV(initialQuery, disposeObservable);
+                var result = DataManager.SetupMainVQCV(initialQuery, disposeObservable);
+
+                //Subscribe the loading subject to the LoadingAfterFilterChange observable
+                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
+                QueryableCollectionView = result.VQCV;
 
                 #endregion
 
@@ -213,7 +217,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Load the service templates
                 var serviceTemplatesQuery = Context.GetServiceTemplatesForServiceProviderQuery(ContextManager.RoleId)
                     .Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined);
-                
+
                 Context.Load(serviceTemplatesQuery, lo =>
                 {
                     _loadedServiceTemplates = lo.Entities;
