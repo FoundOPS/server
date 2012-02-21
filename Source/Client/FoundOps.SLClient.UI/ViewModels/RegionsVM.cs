@@ -1,13 +1,13 @@
-﻿using System.Windows;
-using System.ComponentModel;
-using GalaSoft.MvvmLight.Command;
+﻿using System;
+using ReactiveUI;
+using Telerik.Windows.Data;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using MEFedMVVM.ViewModelLocator;
-using GalaSoft.MvvmLight.Messaging;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
-using ReactiveUI;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -15,12 +15,23 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Regions
     /// </summary>
     [ExportViewModel("RegionsVM")]
-    public class RegionsVM : CoreEntityCollectionInfiniteAccordionVM<Region>, IAddDeleteSelectedLocation
+    public class RegionsVM : CoreEntityCollectionInfiniteAccordionVM<Region>
     {
         #region Public Properties
 
-        public RelayCommand<Location> AddSelectedLocationCommand { get; set; }
-        public RelayCommand<Location> DeleteSelectedLocationCommand { get; set; }
+        private QueryableCollectionView _queryableCollectionView;
+        /// <summary>
+        /// The collection of Locations.
+        /// </summary>
+        public QueryableCollectionView QueryableCollectionView
+        {
+            get { return _queryableCollectionView; }
+            private set
+            {
+                _queryableCollectionView = value;
+                this.RaisePropertyChanged("QueryableCollectionView");
+            }
+        }
 
         #endregion
 
@@ -32,37 +43,30 @@ namespace FoundOps.SLClient.UI.ViewModels
         public RegionsVM(DataManager dataManager)
             : base(dataManager)
         {
-            //Setup the main query to Regions
-            this.SetupMainQuery(DataManager.Query.Regions);
+            var disposeObservable = new Subject<bool>();
 
-            #region Register Commands
+            //Whenever the RoleId updates, update the VirtualQueryableCollectionView
+            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
+            {
+                //Dispose the last VQCV subscriptions
+                disposeObservable.OnNext(true);
 
-            AddSelectedLocationCommand = new RelayCommand<Location>(OnAddSelectedLocation);
-            DeleteSelectedLocationCommand = new RelayCommand<Location>(OnDeleteSelectedLocation);
+                var initialQuery = Context.GetRegionsForServiceProviderQuery(ContextManager.RoleId);
 
-            #endregion
+                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable);
+                QueryableCollectionView = result.VQCV;
+
+                //Subscribe the loading subject to the LoadingAfterFilterChange observable
+                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
+            });
+
+            //Whenever the location changes load the location details
+            SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
+                Context.Load(Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedLocation.Id)));
+
         }
 
         #region Logic
-
-        private void OnAddSelectedLocation(Location locationToAdd)
-        {
-            if (locationToAdd == null)
-                MessageBox.Show("Please select a Location to add");
-            else
-            {
-                this.SelectedEntity.Locations.Add(locationToAdd);
-                //Refresh the Context to assure proper filtering
-                RaisePropertyChanged("SelectedContext");
-            }
-        }
-
-        private void OnDeleteSelectedLocation(Location locationToRemove)
-        {
-            this.SelectedEntity.Locations.Remove(locationToRemove);
-            //Refresh the Context to assure proper filtering
-            RaisePropertyChanged("SelectedContext");
-        }
 
         protected void OnSelectedEntityChanged(Location oldValue, Location newValue)
         {

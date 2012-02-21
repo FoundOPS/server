@@ -455,16 +455,10 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region Region
 
-        public IQueryable<Region> GetRegions()
-        {
-            return this.ObjectContext.Regions;
-        }
-
         public IQueryable<Region> GetRegionsForServiceProvider(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-
-            return this.ObjectContext.Regions.Include("Locations").Where(v => v.BusinessAccountId == businessForRole.Id);
+            return this.ObjectContext.Regions.Where(v => v.BusinessAccountId == businessForRole.Id).OrderBy(r => r.Name);
         }
 
         public void InsertRegion(Region region)

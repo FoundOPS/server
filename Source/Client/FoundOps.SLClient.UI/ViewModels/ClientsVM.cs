@@ -202,7 +202,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 disposeObservable.OnNext(true);
 
                 var initialQuery = Context.GetClientsForRoleQuery(ContextManager.RoleId);
-                var result = DataManager.SetupMainVQCV(initialQuery, disposeObservable);
+                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable);
 
                 //Subscribe the loading subject to the LoadingAfterFilterChange observable
                 result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);

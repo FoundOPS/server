@@ -34,7 +34,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <returns>
         /// a VirtualQueryableCollectionView (VQCV)
         /// </returns>
-        public CreateVQCVResult<TEntity> SetupMainVQCV<TEntity>(EntityQuery<TEntity> initialQuery,
+        public CreateVQCVResult<TEntity> CreateContextBasedVQCV<TEntity>(EntityQuery<TEntity> initialQuery,
             IObservable<bool> dispose, IEnumerable<Type> relatedTypes = null, IObservable<FilterDescriptor>[] filterDescriptorObservables = null,
             bool forceLoadRelatedTypesContext = false, Action<IEnumerable<TEntity>> onFirstLoadAfterFilter = null) where TEntity : Entity
         {
@@ -180,7 +180,7 @@ namespace FoundOps.SLClient.Data.Services
     }
 
     /// <summary>
-    /// The result of calling the CreateVQCV method.
+    /// The result of creating a VirtualQueryableCollectionView.
     /// </summary>
     public class CreateVQCVResult<TEntity> where TEntity : Entity
     {

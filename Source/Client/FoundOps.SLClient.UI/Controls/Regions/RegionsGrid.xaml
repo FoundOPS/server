@@ -8,7 +8,7 @@
         <Converters:StringToColorConverter x:Key="StringToColorConverter"/>
     </UserControl.Resources>
     <telerik:RadGridView x:Name="RegionsRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
-            RowIndicatorVisibility="Collapsed" ItemsSource="{Binding DomainCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
+            RowIndicatorVisibility="Collapsed" ItemsSource="{Binding QueryableCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Region">
                 <telerik:GridViewDataColumn.CellTemplate>
