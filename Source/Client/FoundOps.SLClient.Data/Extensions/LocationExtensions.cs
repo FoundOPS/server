@@ -1,10 +1,8 @@
 ﻿using System;
-using FoundOps.Common.Silverlight.Tools;
 using ReactiveUI;
-using RiaServicesContrib;
 using System.ComponentModel;
+using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Silverlight.Interfaces;
-using System.ServiceModel.DomainServices.Client;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace

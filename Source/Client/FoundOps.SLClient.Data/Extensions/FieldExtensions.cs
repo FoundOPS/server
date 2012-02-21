@@ -2,6 +2,7 @@
 using RiaServicesContrib;
 using RiaServicesContrib.DomainServices.Client;
 
+//This is a partial class and must be in the same namespace as the generated CoreDomainService
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace

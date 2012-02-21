@@ -2,7 +2,7 @@
 using System.Reactive.Linq;
 using FoundOps.Common.Silverlight.Tools;
 
-//partial class must be part of namespace
+//This is a partial class and must be in the same namespace as the generated CoreDomainService
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace

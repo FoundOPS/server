@@ -1,6 +1,7 @@
 ﻿using System;
 using FoundOps.Common.Composite.Entities;
 
+//Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
@@ -30,10 +31,5 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
-
-        /// <summary>
-        /// The locations count after querying a region.
-        /// </summary>
-        public int LocationsCountAfterQuery { get; set; }
     }
 }
