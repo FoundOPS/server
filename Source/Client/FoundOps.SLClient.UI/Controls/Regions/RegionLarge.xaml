@@ -5,7 +5,8 @@
         xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.DataVisualization" xmlns:Map="clr-namespace:Telerik.Windows.Controls.Map;assembly=Telerik.Windows.Controls.DataVisualization" 
         xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.Controls.Icons;assembly=FoundOps.Common.Silverlight.UI"
         xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-        mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550" ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM" 
+             xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools"
+             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="550" ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM" 
         Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <UserControl.Resources>
         <DataTemplate x:Key="PinPointTemplate">
@@ -107,7 +108,7 @@
                     <toolkit:Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap" Text="Locations (" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
-                            <TextBlock TextWrapping="Wrap" Text="{Binding Locations.Count}" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
+                            <TextBlock TextWrapping="Wrap" Text="{Binding QueryableCollectionView.VirtualItemCount, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
                             <TextBlock TextWrapping="Wrap" Text=")" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
                         </StackPanel>
                     </toolkit:Expander.Header>
@@ -117,17 +118,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False"
-                                ParentContextVM="{Binding DataContext, ElementName=myRegionLarge}"
-                                MaxHeight="150" />
-                        <!--<StackPanel x:Name="AddExistingLocationComboBox" Orientation="Horizontal" Margin="25,0,0,0" Grid.Row="1"
-                                DataContext="{Binding DataContext, ElementName=LocationsGrid}">
-                            <Controls1:RadComboBox x:Name="ExistingLocationsComboBox" MinWidth="150" ItemsSource="{Binding DomainCollectionView}" IsEditable="True"
-                                    DisplayMemberPath="Name" />
-                            <Button x:Name="AddLocationButton" Margin="5,0" Content="Add Location"
-                                    Command="{Binding ParentContextVM.AddSelectedLocationCommand, ElementName=LocationsGrid}"
-                                    CommandParameter="{Binding SelectedItem, ElementName=ExistingLocationsComboBox}" />
-                        </StackPanel>-->
+                        <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myRegionLarge}" MaxHeight="150" />
                     </Grid>
                 </toolkit:Expander>
             </StackPanel>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Telerik.Windows.Data;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
@@ -116,7 +117,7 @@ namespace FoundOps.SLClient.Data.Services
                                 view.VirtualItemCount = task.Result;
 
                             countLoading.OnNext(false);
-                        });
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
                 //If in a related type and the forceLoadRelatedTypesContext option is true than force load the first items
                 if (forceLoadRelatedTypesContext && relatedTypes != null && relatedTypes.Any(t => t == detailsType))
@@ -134,7 +135,7 @@ namespace FoundOps.SLClient.Data.Services
                             }
 
                             loadingAfterFilterChange.OnNext(false);
-                        });
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
 
                     Debug.WriteLine(typeof(TEntity) + " Load after filter change");
                 }
@@ -142,7 +143,7 @@ namespace FoundOps.SLClient.Data.Services
 
             //When the user scrolls to an area, load those entities
             loadVirtualItemsSubscription = Observable.FromEventPattern<EventHandler<VirtualQueryableCollectionViewItemsLoadingEventArgs>, VirtualQueryableCollectionViewItemsLoadingEventArgs>(h => view.ItemsLoading += h, h => view.ItemsLoading -= h)
-                //Throttle by 300 milliseconds to prevent loading throughout every scroll and to allow the filter to resolve
+                //Throttle by .3 seconds to prevent loading throughout every scroll and to allow the filter to resolve
             .Throttle(TimeSpan.FromMilliseconds(300))
             .ObserveOnDispatcher().Subscribe(e =>
             {
@@ -153,7 +154,7 @@ namespace FoundOps.SLClient.Data.Services
                 if (loadingAfterFilterChange.First()) return;
 
                 var itemsToLoad = initialQuery.Where(view.FilterDescriptors).Sort(view.SortDescriptors)
-                    .Skip(e.EventArgs.StartIndex).Take(e.EventArgs.ItemCount);
+                    .Skip(e.EventArgs.StartIndex).Take(view.LoadSize);
 
                 //Cancel whenever the context or filters changed
                 loadingVirtualItems.OnNext(true);
@@ -164,9 +165,9 @@ namespace FoundOps.SLClient.Data.Services
                             view.Load(e.EventArgs.StartIndex, task.Result);
 
                         loadingVirtualItems.OnNext(false);
-                    });
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
 
-                Debug.WriteLine(typeof(TEntity) + " Virtual load " + e.EventArgs.StartIndex + " to " + e.EventArgs.ItemCount);
+                Debug.WriteLine(typeof(TEntity) + " Virtual load " + e.EventArgs.StartIndex + " to " + (e.EventArgs.StartIndex + view.LoadSize));
             });
 
             return new CreateVQCVResult<TEntity>
