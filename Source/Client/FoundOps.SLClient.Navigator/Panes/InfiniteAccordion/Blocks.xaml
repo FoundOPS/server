@@ -185,8 +185,7 @@
                                     <TextBlock TextWrapping="Wrap" Text="Locations" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <StackPanel Orientation="Horizontal" Grid.Column="1">
                                         <AddEditDelete:AddDelete AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" CommandParameter="{Binding SelectedLocationVM.Entity}" />
-                                        <Controls:CsvButton Margin="5,3,5,3" Content="CSV" ToolTipService.ToolTip="Export to CSV"
-                                                Click="ExportLocationsCSV_OnClick" IsEnabled="{Binding CanExportCSV}"/>
+                                        <Controls:CsvButton Margin="5,3,5,3" Content="CSV" ToolTipService.ToolTip="Export to CSV" Click="ExportLocationsCSV_OnClick" />
                                     </StackPanel>
                                 </Grid>
                             </Border>

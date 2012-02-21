@@ -1,12 +1,11 @@
-﻿using System.Linq;
+﻿using ReactiveUI;
+using System.Linq;
 using System.Reactive.Linq;
 using MEFedMVVM.ViewModelLocator;
-using FoundOps.Core.Context.Services;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
-using ReactiveUI;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

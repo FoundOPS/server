@@ -24,13 +24,6 @@
                     </DataTemplate>
                 </telerik:GridViewDataColumn.CellTemplate>
             </telerik:GridViewDataColumn>
-            <telerik:GridViewDataColumn Header="Locations" Width="*">
-                <telerik:GridViewDataColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Locations.Count}" />
-                    </DataTemplate>
-                </telerik:GridViewDataColumn.CellTemplate>
-            </telerik:GridViewDataColumn>
             <!--<telerik:GridViewDataColumn Header="Status"/> Once Mobile App Has Live Linking-->
         </telerik:RadGridView.Columns>
     </telerik:RadGridView>

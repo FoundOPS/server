@@ -6,7 +6,6 @@ using System.Collections;
 using Kent.Boogaart.KBCsv;
 using Telerik.Windows.Data;
 using System.Reactive.Linq;
-using FoundOps.Common.Tools;
 using System.Windows.Controls;
 using System.Reactive.Subjects;
 using System.Collections.Generic;
@@ -15,10 +14,6 @@ using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
-using Microsoft.Windows.Data.DomainServices;
-using Telerik.Windows.Controls.DomainServices;
-using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -62,15 +57,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #endregion
-
-        private readonly ObservableAsPropertyHelper<bool> _canExportCSV;
-        /// <summary>
-        /// Gets a value indicating whether this instance can export CSV.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance can export CSV; otherwise, <c>false</c>.
-        /// </value>
-        public bool CanExportCSV { get { return _canExportCSV.Value; } }
 
         #region Location Properties
 
@@ -127,12 +113,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Locals
 
-        //The loaded locations entity list observable
-        private readonly IObservable<EntityList<Location>> _loadedLocations;
-        private readonly ObservableAsPropertyHelper<EntityList<Location>> _loadedLocationsProperty;
-        private EntityList<Location> LoadedLocations { get { return null;// _loadedLocationsProperty.Value; 
-        } }
-
         #endregion
 
         /// <summary>
@@ -173,12 +153,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
 
-            //Setup CanExportCSV property
-            //it can execute when Locations, Clients, and Regions are loaded
-            var canExportCSV = IsLoadingObservable.CombineLatest(DataManager.GetIsLoadingObservable(DataManager.Query.Clients), DataManager.GetIsLoadingObservable(DataManager.Query.Regions),
-                                                  (locationsLoading, clientsLoading, regionsLoading) => !locationsLoading && !clientsLoading && !regionsLoading);
-            _canExportCSV = canExportCSV.ToProperty(this, x => x.CanExportCSV);
-
             #region IAddToDeleteFromSource<Location> Implementation
 
             MemberPath = "Name";
@@ -201,9 +175,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                     region.Locations.Add(newLocation);
 
                 newLocation.RaiseValidationErrors();
-
-                //Add the new entity to the loaded locations EntityList
-                LoadedLocations.Add(newLocation);
 
                 return newLocation;
             };
@@ -236,7 +207,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Force load the entities when in a related types view
                 //this is because VDCV will only normally load when a virtual item is loaded onto the screen
                 //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
-                var result = DataManager.CreateContextBasedVQCV(initialQuery,disposeObservable, relatedTypes, filterDescriptorsObservable, true,
+                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable, relatedTypes, filterDescriptorsObservable, true,
                     loadedEntities => { SelectedEntity = loadedEntities.FirstOrDefault(); });
 
                 QueryableCollectionView = result.VQCV;
@@ -260,32 +231,26 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public void ExportToCSV()
         {
+            var csvLoadedObservable = new ReplaySubject<byte[]>();
+
+            var clientContext = ContextManager.GetContext<Client>();
+            var regionContext = ContextManager.GetContext<Region>();
+
+            //Load the CSV
+            Context.GetLocationsCSVForRole(ContextManager.RoleId, clientContext != null ? clientContext.Id : new Guid(), regionContext != null ? regionContext.Id : new Guid(),
+                loadedCSV => csvLoadedObservable.OnNext(loadedCSV.Value), null);
+
             var fileName = String.Format("LocationsExport {0}.csv", DateTime.Now.ToString("MM'-'dd'-'yyyy"));
             var saveFileDialog = new SaveFileDialog { DefaultFileName = fileName, DefaultExt = ".csv", Filter = "CSV File|*.csv" };
 
-            if (saveFileDialog.ShowDialog() == true)
+            if (saveFileDialog.ShowDialog() != true) return;
+
+            csvLoadedObservable.Take(1).ObserveOnDispatcher().Subscribe(csvByteArray =>
             {
-                using (var fileWriter = new StreamWriter(saveFileDialog.OpenFile()))
-                {
-                    var csvWriter = new CsvWriter(fileWriter);
-
-                    csvWriter.WriteHeaderRecord("Name", "Region", "Client",
-                                                "Address 1", "Address 2", "City", "State", "Zip Code",
-                                                "Latitude", "Longitude");
-
-                    foreach (var location in DomainCollectionView)
-                    {
-                        csvWriter.WriteDataRecord(location.Name,
-                                               location.Region != null ? location.Region.Name : "",
-                                               location.Party != null && location.Party.ClientOwner != null ? location.Party.DisplayName : "",
-                                               location.AddressLineOne, location.AddressLineTwo, location.City, location.State, location.ZipCode,
-                                               location.Latitude, location.Longitude);
-                    }
-
-                    csvWriter.Close();
-                    fileWriter.Close();
-                }
-            }
+                var fileWriter = new BinaryWriter(saveFileDialog.OpenFile());
+                fileWriter.Write(csvByteArray);
+                fileWriter.Close();
+            });
         }
 
         #endregion

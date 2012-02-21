@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Data;
 using System.Threading;
 using System.Data.Entity;
 using System.Data.Objects;
+using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.NET;
 using System.Collections.Generic;
 using FoundOps.Server.Authentication;
@@ -11,6 +13,7 @@ using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.Server;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using System.ServiceModel.DomainServices.EntityFramework;
+using Kent.Boogaart.KBCsv;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -40,10 +43,10 @@ namespace FoundOps.Server.Services.CoreDomainService
             var clients =
                 from c in ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id)
                 join p in ObjectContext.Parties.OfType<Person>()
-                    on c.OwnedParty.Id equals p.Id into personClient
+                    on c.Id equals p.Id into personClient
                 from person in personClient.DefaultIfEmpty() //Left Join
                 join b in ObjectContext.Parties.OfType<Business>()
-                    on c.OwnedParty.Id equals b.Id into businessClient
+                    on c.Id equals b.Id into businessClient
                 from business in businessClient.DefaultIfEmpty() //Left Join
                 let displayName = business != null ? business.Name :
                                   person.LastName + " " + person.FirstName + " " + person.MiddleInitial
@@ -403,6 +406,72 @@ namespace FoundOps.Server.Services.CoreDomainService
             return location;
         }
 
+        /// <summary>
+        /// Gets the locations CSV for a role.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="clientId">The optional client id filter.</param>
+        /// <param name="regionId">The optional region id filter.</param>
+        /// <returns></returns>
+        public byte[] GetLocationsCSVForRole(Guid roleId, Guid clientId, Guid regionId)
+        {
+            var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
+
+            var memoryStream = new MemoryStream();
+
+            var csvWriter = new CsvWriter(memoryStream);
+
+            csvWriter.WriteHeaderRecord("Name", "Region", "Client",
+                                        "Address 1", "Address 2", "City", "State", "Zip Code",
+                                        "Latitude", "Longitude");
+
+            var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id);
+
+            //Add client context if it exists
+            if (clientId != Guid.Empty)
+                locations = locations.Where(loc => loc.PartyId == clientId);
+
+            //Add region context if it exists
+            if (regionId != Guid.Empty)
+                locations = locations.Where(loc => loc.RegionId == regionId);
+
+            var records = from loc in locations
+                          //Get the Clients names
+                          join p in ObjectContext.Parties.OfType<Person>()
+                              on loc.Party.Id equals p.Id into personParty
+                          from person in personParty.DefaultIfEmpty() //Left Join
+                          join b in ObjectContext.Parties.OfType<Business>()
+                              on loc.Party.Id equals b.Id into businessParty
+                          from business in businessParty.DefaultIfEmpty() //Left Join
+                          let clientName = business != null ? business.Name : person.LastName + " " + person.FirstName + " " + person.MiddleInitial
+                          orderby loc.Name
+                          select new
+                          {
+                              loc.Name,
+                              RegionName = loc.Region.Name,
+                              ClientName = clientName,
+                              loc.AddressLineOne,
+                              loc.AddressLineTwo,
+                              loc.City,
+                              loc.State,
+                              loc.ZipCode,
+                              loc.Latitude,
+                              loc.Longitude
+                          };
+
+            foreach (var record in records.ToArray())
+                csvWriter.WriteDataRecord(record.Name, record.RegionName, record.ClientName,
+                                       record.AddressLineOne, record.AddressLineTwo, record.City, record.State, record.ZipCode,
+                                       record.Latitude, record.Longitude);
+
+            csvWriter.Close();
+
+            var csv = memoryStream.ToArray();
+            memoryStream.Dispose();
+
+            return csv;
+        }
+
         public void InsertLocation(Location location)
         {
             if ((location.EntityState != EntityState.Detached))
@@ -458,7 +527,12 @@ namespace FoundOps.Server.Services.CoreDomainService
         public IQueryable<Region> GetRegionsForServiceProvider(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-            return this.ObjectContext.Regions.Where(v => v.BusinessAccountId == businessForRole.Id).OrderBy(r => r.Name);
+          
+            var regions = from region in this.ObjectContext.Regions.Where(v => v.BusinessAccountId == businessForRole.Id)
+                          orderby region.Name
+                          select region;
+
+            return regions;
         }
 
         public void InsertRegion(Region region)

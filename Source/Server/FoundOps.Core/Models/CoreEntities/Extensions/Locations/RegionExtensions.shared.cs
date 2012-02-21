@@ -1,7 +1,9 @@
 ﻿using System;
 using FoundOps.Common.Composite.Entities;
 
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class Region : IEntityDefaultCreation
     {
@@ -28,5 +30,10 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
+        /// <summary>
+        /// The locations count after querying a region.
+        /// </summary>
+        public int LocationsCountAfterQuery { get; set; }
     }
 }

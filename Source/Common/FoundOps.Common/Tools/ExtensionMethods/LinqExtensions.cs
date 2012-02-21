@@ -61,6 +61,5 @@ namespace FoundOps.Common.Composite.Tools
                 return -1;
             }
         }
-
     }
 }

@@ -63,7 +63,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the location changes load the location details
             SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
                 Context.Load(Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedLocation.Id)));
-
         }
 
         #region Logic
