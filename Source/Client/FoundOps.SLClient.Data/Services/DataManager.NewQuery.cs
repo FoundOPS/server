@@ -119,6 +119,7 @@ namespace FoundOps.SLClient.Data.Services
                             countLoading.OnNext(false);
                         }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
+
                 //If in a related type and the forceLoadRelatedTypesContext option is true than force load the first items
                 if (forceLoadRelatedTypesContext && relatedTypes != null && relatedTypes.Any(t => t == detailsType))
                 {
@@ -143,31 +144,40 @@ namespace FoundOps.SLClient.Data.Services
 
             //When the user scrolls to an area, load those entities
             loadVirtualItemsSubscription = Observable.FromEventPattern<EventHandler<VirtualQueryableCollectionViewItemsLoadingEventArgs>, VirtualQueryableCollectionViewItemsLoadingEventArgs>(h => view.ItemsLoading += h, h => view.ItemsLoading -= h)
-                //Throttle by .3 seconds to prevent loading throughout every scroll and to allow the filter to resolve
-            .Throttle(TimeSpan.FromMilliseconds(300))
-            .ObserveOnDispatcher().Subscribe(e =>
+                .ObserveOnDispatcher().Subscribe(e =>
             {
                 //Do not load if ther VQCV has no load size (the system is not in details view or a related type's details view)
-                if (view.LoadSize == 0) return;
+                if (view.LoadSize == 0)
+                {
+                    e.EventArgs.Cancel = true;
+                    return;
+                }
 
-                //Do not load if loadingAfterFilterChange (to prevent double loading because first load is always forced)
-                if (loadingAfterFilterChange.First()) return;
+                //Do not load if loadingAfterFilterChange (to prevent double loading if force first load is flagged)
+                if (loadingAfterFilterChange.First())
+                {
+                    e.EventArgs.Cancel = true;
+                    return;
+                }
 
                 var itemsToLoad = initialQuery.Where(view.FilterDescriptors).Sort(view.SortDescriptors)
-                    .Skip(e.EventArgs.StartIndex).Take(view.LoadSize);
+                    .Skip(e.EventArgs.StartIndex).Take(e.EventArgs.ItemCount);
+
+                loadingVirtualItems.OnNext(true);
 
                 //Cancel whenever the context or filters changed
-                loadingVirtualItems.OnNext(true);
                 Context.LoadAsync(itemsToLoad, contextOrFiltersChanged)
                     .ContinueWith(task =>
                     {
                         if (!task.IsCanceled)
                             view.Load(e.EventArgs.StartIndex, task.Result);
+                        else
+                            Debug.WriteLine(typeof(TEntity) + " Cancelled virtual load" + e.EventArgs.StartIndex + " to " + (e.EventArgs.StartIndex + e.EventArgs.ItemCount));
 
                         loadingVirtualItems.OnNext(false);
                     }, TaskScheduler.FromCurrentSynchronizationContext());
 
-                Debug.WriteLine(typeof(TEntity) + " Virtual load " + e.EventArgs.StartIndex + " to " + (e.EventArgs.StartIndex + view.LoadSize));
+                Debug.WriteLine(typeof(TEntity) + " Virtual load " + e.EventArgs.StartIndex + " to " + (e.EventArgs.StartIndex + e.EventArgs.ItemCount));
             });
 
             return new CreateVQCVResult<TEntity>
