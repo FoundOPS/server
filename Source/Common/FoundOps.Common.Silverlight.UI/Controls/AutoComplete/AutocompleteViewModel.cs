@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using FoundOps.Common.Composite.Tools;
 using Telerik.Windows.Controls;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.AutoComplete
@@ -105,9 +107,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AutoComplete
 		{
 			var autocompleteProvider = (d as AutocompleteViewModel).AutocompleteProvider;
 			if (autocompleteProvider != null)
-			{
 				autocompleteProvider.TextPath = (string)e.NewValue;
-			}
 		}
 
 		private static void OnAutocompleteProviderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -116,9 +116,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AutoComplete
 
 			var provider = (IAutocompleteProvider)e.OldValue;
 			if (provider != null)
-			{
 				provider.ItemsReceived += model.OnItemsReceived;
-			}
 
 			provider = (IAutocompleteProvider)e.NewValue;
 			if (provider != null)
@@ -133,9 +131,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AutoComplete
 		{
 			var selectedItemText = BindingExpressionHelper.GetValue(this.SelectedItem, this.TextPath) as string;
 			if (this.Text != selectedItemText)
-			{
 				this.IsDropDownOpen = true;
-			}
 
 			if (newText != null && (newText.Length >= this.MinimumTextLength || newText.Length == 0))
 			{
@@ -169,23 +165,11 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AutoComplete
 
 		private void OnItemsReceived(object sender, ItemsReceivedEventArgs e)
 		{
-			bool emptySelection = string.IsNullOrEmpty(this.Text);
+            //Remove all the items except the SelectedItem
+            LinqExtensions.RemoveAll(this.Suggestions, s => s != this.SelectedItem);
 
-			for (int i = this.Suggestions.Count - 1; i >= 0; i--)
-			{
-				if (emptySelection || this.Suggestions[i] != this.SelectedItem)
-				{
-					this.Suggestions.RemoveAt(i);
-				}
-			}
-
-			foreach (object item in e.Items)
-			{
-				if (!this.Suggestions.Contains(item))
-				{
-					this.Suggestions.Insert(0, item);
-				}
-			}
+            //Add all of the loaded items except for existing suggestions
+		    this.Suggestions.AddRange(e.Items.Cast<object>().Where(item => !this.Suggestions.Contains(item)).ToArray());
 		}
 	}
 }

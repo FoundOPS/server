@@ -1,19 +1,25 @@
-﻿using System;
+﻿using FoundOps.Common.Composite;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Converters;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using FoundOps.Common.Composite;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Framework.Views.Converters;
 using Telerik.Windows.Controls;
 
-namespace FoundOps.Framework.Views.Controls
+namespace FoundOps.SLClient.UI.Controls
 {
-    public partial class Repeat : UserControl
+    /// <summary>
+    /// The UI for viewing and editing a repeat.
+    /// </summary>
+    public partial class Repeat
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Repeat"/> class.
+        /// </summary>
         public Repeat()
         {
             InitializeComponent();

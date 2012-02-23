@@ -1,10 +1,11 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.ContactInfo.ContactInfoEdit" x:Name="myContactInfoEdit"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:Converters="clr-namespace:FoundOps.Core.Views.Converters"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
              xmlns:Triggers="clr-namespace:FoundOps.Common.Silverlight.Interactivity.Triggers;assembly=FoundOps.Common.Silverlight.UI" xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo"
              xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.UI.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
              mc:Ignorable="d" MinWidth="100">
     <UserControl.Resources>
         <Converters:OrderByTypeLabelConverter x:Key="OrderByTypeLabelConverter" />

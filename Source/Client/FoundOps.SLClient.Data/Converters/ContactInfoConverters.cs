@@ -1,11 +1,17 @@
-﻿using System;
+﻿using FoundOps.Core.Models.CoreEntities;
+using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Telerik.Windows.Controls;
 
-namespace FoundOps.Core.Views.Converters
+namespace FoundOps.SLClient.Data.Converters
 {
+    /// <summary>
+    /// Orders contact info first by Label then by Type.
+    /// </summary>
     public class OrderByTypeLabelConverter : IValueConverter
     {
         #region Implementation of IValueConverter
@@ -26,6 +32,9 @@ namespace FoundOps.Core.Views.Converters
         #endregion
     }
 
+    /// <summary>
+    /// Selects the proper icon for a contact info's type.
+    /// </summary>
     public class TypeToImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -61,4 +70,31 @@ namespace FoundOps.Core.Views.Converters
         }
     }
 
+    /// <summary>
+    /// Selects the proper datatemplate depending on the contact info type.
+    /// </summary>
+    public class ContactInfoDataTemplateSelector : DataTemplateSelector
+    {
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            string type = ((ContactInfo)item).Type;
+
+            switch (type)
+            {
+                case "Email Address":
+                    return EmailAddressTemplate;
+                case "Phone Number":
+                    return PhoneNumberTemplate;
+                case "Website":
+                    return WebsiteTemplate;
+                default:
+                    return OtherTemplate;
+            }
+        }
+
+        public DataTemplate EmailAddressTemplate { get; set; }
+        public DataTemplate PhoneNumberTemplate { get; set; }
+        public DataTemplate WebsiteTemplate { get; set; }
+        public DataTemplate OtherTemplate { get; set; }
+    }
 }

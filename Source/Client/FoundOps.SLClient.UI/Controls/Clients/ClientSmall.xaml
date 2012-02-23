@@ -1,10 +1,11 @@
-﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Locations="clr-namespace:FoundOps.Framework.Views.Controls.Locations" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices" 
-         xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d"
-        x:Class="FoundOps.SLClient.UI.Controls.Clients.ClientSmall" x:Name="myClientSmall" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" d:DesignWidth="300">
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Clients.ClientSmall" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Locations="clr-namespace:FoundOps.Framework.Views.Controls.Locations" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
+             xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices" xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Converters3="clr-namespace:FoundOps.SLClient.UI.Converters;assembly=FoundOps.SLClient.Data"
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" d:DesignWidth="300">
     <UserControl.Resources>
-        <Converters:ClientTitleConverter x:Key="ClientTitleConverter"/>
+        <Converters3:ClientTitleConverter x:Key="ClientTitleConverter"/>
         <Converters1:DateTimeFormatConverter x:Key="DateTimeFormatConverter"/>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot"  Margin="0,0,0,5">

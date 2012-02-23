@@ -1,19 +1,18 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Data;
-using System.Threading;
-using System.Data.Entity;
-using System.Data.Objects;
-using FoundOps.Common.Composite.Tools;
-using FoundOps.Common.NET;
-using System.Collections.Generic;
+﻿using FoundOps.Common.NET;
 using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
-using System.ServiceModel.DomainServices.Server;
 using FoundOps.Core.Models.CoreEntities.DesignData;
-using System.ServiceModel.DomainServices.EntityFramework;
 using Kent.Boogaart.KBCsv;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Data.Objects;
+using System.IO;
+using System.Linq;
+using System.ServiceModel.DomainServices.Server;
+using System.ServiceModel.DomainServices.EntityFramework;
+using System.Threading;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -428,6 +427,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         /// <summary>
         /// Gets the location details.
+        /// It includes the Client, Region, SubLocations, and ContactInfoSet.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="locationId">The location id.</param>
@@ -436,7 +436,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
             var location = ObjectContext.Locations.Where(l => l.Id == locationId && l.OwnerPartyId == partyForRole.Id)
-                .Include("Region").Include("SubLocations").Include("ContactInfoSet").FirstOrDefault();
+                .Include("Party.ClientOwner").Include("Region").Include("SubLocations").Include("ContactInfoSet").FirstOrDefault();
 
             return location;
         }

@@ -5,8 +5,11 @@ using System.Globalization;
 using System.ComponentModel;
 using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Framework.Views.Converters
+namespace FoundOps.SLClient.Data.Converters
 {
+    /// <summary>
+    /// Returns a default value string for a Field.
+    /// </summary>
     public class FieldDefaultValueStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -50,7 +53,10 @@ namespace FoundOps.Framework.Views.Converters
             throw new NotImplementedException();
         }
     }
-    
+
+    /// <summary>
+    /// Returns a Type string of a Field.
+    /// </summary>
     public class FieldToTypeStringConverter : IValueConverter
     {
         #region IValueConverter Members
@@ -110,6 +116,9 @@ namespace FoundOps.Framework.Views.Converters
         #endregion
     }
 
+    /// <summary>
+    /// Returns a collection that orders Fields by their name.
+    /// </summary>
     public class OrderByNameConverter : IValueConverter
     {
         #region Implementation of IValueConverter

@@ -1,11 +1,6 @@
-﻿using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.UI.Controls.AutoComplete;
-using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using FoundOps.Common.Silverlight.UI.Controls.AutoComplete;
 using FoundOps.Core.Models.CoreEntities;
+using System.ServiceModel.DomainServices.Client;
 using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.Data.Services
@@ -16,20 +11,26 @@ namespace FoundOps.SLClient.Data.Services
     public class ClientsAutocompleteProvider : IAutocompleteProvider
     {
         /// <summary>
-        /// 
+        /// An event to call when [items received].
         /// </summary>
         public event ItemsReceivedEventHandler ItemsReceived;
 
+        /// <summary>
+        /// Bound to the TextSearchMode from the attached property of the AutocompleteBehavior.
+        /// </summary>
         public TextSearchMode TextSearchMode { get; set; }
 
+        /// <summary>
+        /// Bound to the TextPath from the ComboBox.
+        /// </summary>
         public string TextPath { get; set; }
 
         private LoadOperation<Client> _lastLoad;
 
         /// <summary>
-        /// Gets the items.
+        /// A method to gets items based on text.
         /// </summary>
-        /// <param name="text">The searched text.</param>
+        /// <param name="text">The ComboBox's text.</param>
         public void GetItems(string text)
         {
             if (_lastLoad != null && _lastLoad.CanCancel)

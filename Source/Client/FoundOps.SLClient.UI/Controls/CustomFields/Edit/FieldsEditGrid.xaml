@@ -1,15 +1,15 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.CustomFields.Edit.FieldsEditGrid" x:Name="myFieldsEditGrid"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"  
-    xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" 
-    xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" 
-    xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors" 
+             xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
+             xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" 
+             xmlns:Converters2="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:ComboBoxSelectedItemConverter x:Key="ComboBoxSelectedItemConverter"/>
         <Converters1:NumericFieldToValueFormatConverter x:Key="NumericFieldToValueFormatConverter"/>
-        <Converters1:OrderByNameConverter x:Key="OrderByNameConverter"/>
+        <Converters2:OrderByNameConverter x:Key="OrderByNameConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
