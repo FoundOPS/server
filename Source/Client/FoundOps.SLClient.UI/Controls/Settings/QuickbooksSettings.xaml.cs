@@ -28,7 +28,7 @@ namespace FoundOps.SLClient.UI.Controls.Settings
             if (BusinessAccountSettingsVM == null) return;
 
 #if DEBUG
-            var uri = new Uri(string.Concat("http://localhost:31820/Quickbooks/GetAuthorization", "?roleId=", BusinessAccountSettingsVM.ContextManager.RoleId));
+            var uri = new Uri(string.Concat("https://localhost:44300/Quickbooks/GetAuthorization", "?roleId=", BusinessAccountSettingsVM.ContextManager.RoleId));
             RadHtmlPlaceholder1.SourceUrl = uri;
 #else
             var uri = new Uri(string.Concat("http://www.foundops.com/Quickbooks/GetAuthorization", "?roleId=", BusinessAccountSettingsVM.ContextManager.RoleId));

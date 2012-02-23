@@ -30,12 +30,15 @@ namespace FoundOps.Core.Models.QuickBooks
             //AKA oauthLink
             public const string AuthorizeUrl = "https://workplace.intuit.com/Connect/Begin";
 
-            public static readonly string GrantUrl = "http://localhost:31820/QuickBooks/OAuthGrantLogin";
+            public static readonly string GrantUrl = "https://localhost:44300/QuickBooks/OAuthGrantLogin";
 
             public static readonly string ConsumerKey = ConfigurationManager.AppSettings["consumerKey"];
             public static readonly string ConsumerSecret = ConfigurationManager.AppSettings["consumerSecret"];
 
-            public static readonly string OauthCallbackUrl = "http://localhost:31820/QuickBooks/OAuthGrantHandler";
+            public static readonly string OauthCallbackUrl = "https://localhost:44300/QuickBooks/OAuthGrantHandler";
+
+            //Connection String for Azure Tables
+            public const string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=fstorequickbooks;AccountKey=fyZ0dsbFfQZET9RFdIlSeVepYgmtO0aBQYVArhazF0KO2X80BUZ2drEJLmRYjDbzelf7PAKzTrePzMJpt3vGaA==";
         }
 
         #endregion
@@ -77,7 +80,7 @@ namespace FoundOps.Core.Models.QuickBooks
             };
             return oSession;
         }
-        
+
         /// <summary>
         /// Creates the OAuthSession based on the consumer context generated here
         /// as well as the constants provided to us by Intuit for the IntuitAnywhere App  
@@ -270,7 +273,7 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest.Post().WithRawContentType("application/x-www-form-urlencoded").WithBody(completeFilter);
 
             //Reads the response XML
-             return consumerRequest.ReadBody();
+            return consumerRequest.ReadBody();
         }
 
         #endregion
@@ -327,7 +330,7 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest = consumerRequest.SignWithToken();
 
             //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string) body));
+            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
 
             //Reads the response XML
             var responseString = consumerRequest.ReadBody();
@@ -383,7 +386,7 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest = consumerRequest.SignWithToken();
 
             //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string) body));
+            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
 
             //Reads the response XML
             var responseString = consumerRequest.ReadBody();
@@ -439,7 +442,7 @@ namespace FoundOps.Core.Models.QuickBooks
             consumerRequest = consumerRequest.SignWithToken();
 
             //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string) body));
+            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
 
             //Reads the response XML
             var responseString = consumerRequest.ReadBody();
@@ -501,7 +504,7 @@ namespace FoundOps.Core.Models.QuickBooks
                 //Adds the new object to the Table
                 serviceContext.AddObject(currentInvoice.BusinessAccount.Name, newItem);
             }
-                //If an item exists already, update the item and save the changes
+            //If an item exists already, update the item and save the changes
             else
             {
                 //No need to update the InvoiceId becuase it should be the same
@@ -513,6 +516,28 @@ namespace FoundOps.Core.Models.QuickBooks
 
             //Saves the Tables
             serviceContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Deletes a table in azure with the specified name.
+        /// </summary>
+        /// <param name="businessAccountId">The id of the business account that has been deleted.</param>
+        public static void DeleteAzureTable(Guid businessAccountId)
+        {
+            var storageAccount = CloudStorageAccount.Parse(OauthConstants.StorageConnectionString);
+
+            // Create the table client based on the storage account specified above
+            var tableClient = storageAccount.CreateCloudTableClient();
+
+            //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
+            var tableName = "t" + businessAccountId.ToString().Replace("-", "");
+
+            try
+            {
+                //Delete the Table in Azure
+                tableClient.DeleteTable(tableName);
+            }
+            catch { }
         }
     }
 }

@@ -48,7 +48,7 @@ namespace FoundOps.Core.Server.Controllers
             return this.Image(imageBytes, "image/jpeg");
         }
 
-        //http://localhost:31820/Helper/LocationQRCode?latitude=40.434993&longitude=-86.925282
+        //https://localhost:44300/Helper/LocationQRCode?latitude=40.434993&longitude=-86.925282
         public ImageResult LocationQRCode(double latitude, double longitude)
         {
             return QRCode(String.Format("geo:{0},{1},100", latitude, longitude));

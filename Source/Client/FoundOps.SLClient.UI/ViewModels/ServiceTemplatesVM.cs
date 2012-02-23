@@ -266,6 +266,13 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Do not use default filter. This filters by context (ServiceTemplateLevel)
         public override void UpdateFilter() { }
 
+        public override void DeleteEntity(ServiceTemplate entityToDelete)
+        {
+            var entityCollection = new List<ServiceTemplate> { entityToDelete };
+
+            DataManager.RemoveEntities(entityCollection);
+        }
+
         //Use CreateNewServiceTemplate logic
         protected override ServiceTemplate AddNewEntity(object commandParameter)
         {

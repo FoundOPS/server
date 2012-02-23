@@ -85,7 +85,7 @@ namespace FoundOps.SLClient.Navigator
         {
             if (e.ClickCount == 2)
 #if DEBUG
-                HtmlPage.Window.Navigate(new Uri("http://localhost:31820/Home/Silverlight"));
+                HtmlPage.Window.Navigate(new Uri("https://localhost:44300/Home/Silverlight"));
 #else
                 HtmlPage.Window.Navigate(new Uri("http://www.foundops.com/Home/Silverlight"));
 #endif
