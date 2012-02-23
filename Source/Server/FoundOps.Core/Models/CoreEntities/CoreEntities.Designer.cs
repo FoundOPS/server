@@ -853,6 +853,47 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+        #region Function Imports
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="parentTemplateId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(Nullable<global::System.Guid> parentTemplateId)
+        {
+            ObjectParameter parentTemplateIdParameter;
+            if (parentTemplateId.HasValue)
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", parentTemplateId);
+            }
+            else
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId", parentTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId", providerIdParameter);
+        }
+
+        #endregion
     }
     
 

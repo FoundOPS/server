@@ -166,51 +166,10 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceTemplate"></param>
         public void DeleteServiceTemplate(ServiceTemplate serviceTemplate)
         {
-            var loadedServiceTemplate = this.ObjectContext.ServiceTemplates.FirstOrDefault(st => st.Id == serviceTemplate.Id);
-            if (loadedServiceTemplate != null)
-                this.ObjectContext.Detach(loadedServiceTemplate);
-
-            if ((serviceTemplate.EntityState == EntityState.Detached))
-                this.ObjectContext.ServiceTemplates.Attach(serviceTemplate);
-
-            //Force delete all sub servicetemplates if you are deleting a business account
-            var forceDelete = this.ChangeSet.ChangeSetEntries
-                .Any(cse => cse.Entity is BusinessAccount && cse.Operation == DomainOperation.Delete &&
-                            ((BusinessAccount)cse.Entity).ServiceTemplates.Contains(serviceTemplate));
-
-            var decendants = GetDescendants(serviceTemplate);
-
-            //If not force delete, make sure there are no RecurringServiceLevel or ServiceLevel decendants before deleting the service template
-            if (!forceDelete)
-            {
-                //Find last descendant and check what level it is at
-                var recurringServiceOrServiceLevelExist =
-                    decendants.Any(d => d.ServiceTemplateLevel == ServiceTemplateLevel.ServiceDefined ||
-                                        d.ServiceTemplateLevel == ServiceTemplateLevel.RecurringServiceDefined);
-
-                //If the lowest level is either the RecurringService or Service level, do not delete
-                if (recurringServiceOrServiceLevelExist)
-                    return;
-            }
-
-            //Delete the ServiceTemplate and it's descendants
-            var serviceTemplatesToDelete = decendants.Union(new[] { serviceTemplate });
-
-            foreach (var serviceTemplateToDelete in serviceTemplatesToDelete)
-            {
-                //Delete each Field
-                serviceTemplateToDelete.Fields.Load();
-                var fieldsToDelete = serviceTemplateToDelete.Fields.ToArray();
-                foreach (var fieldToDelete in fieldsToDelete)
-                    this.DeleteField(fieldToDelete);
-
-                //Delete the invoice reference
-                serviceTemplateToDelete.InvoiceReference.Load();
-                if (serviceTemplateToDelete.Invoice != null)
-                    DeleteInvoice(serviceTemplateToDelete.Invoice);
-
-                this.ObjectContext.ServiceTemplates.DeleteObject(serviceTemplateToDelete);
-            }
+            //Stored procedure that will find all the children of this ServiceTemplate
+            //Then it will delete all of them
+            //Cascades will take care of all associations
+            ObjectContext.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(serviceTemplate.Id);
         }
 
         private IEnumerable<ServiceTemplate> GetDescendants(ServiceTemplate serviceTemplate)

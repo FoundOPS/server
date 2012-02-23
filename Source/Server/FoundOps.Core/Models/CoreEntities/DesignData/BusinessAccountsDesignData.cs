@@ -48,6 +48,11 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, OrenKosherSteakhouse };
 
+
+            //var setupOG = ServiceTemplatesDesignData.OilGreaseCompanyServiceTemplates;
+            //var setupSD = ServiceTemplatesDesignData.SameDayDeliveryCompanyServiceTemplates;
+
+            //return;
             //Add ServiceTemplates
             foreach (var businessAccount in new[] { GotGrease, ABCouriers, OrenKosherSteakhouse })
             {

@@ -108,6 +108,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (!this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
+            //Stored procedure that will find all ServiceTemplates on this BusinessAccount
+            //Then it will find all of the children of those ServiceTemplates
+            //Then it will delete all of them
+            ObjectContext.DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId(businessAccountToDelete.Id);
+
             businessAccountToDelete.Employees.Load();
             foreach (var employee in businessAccountToDelete.Employees.ToList())
                 this.DeleteEmployee(employee);
@@ -124,29 +129,15 @@ namespace FoundOps.Server.Services.CoreDomainService
             foreach (var route in businessAccountToDelete.Routes.ToList())
                 this.DeleteRoute(route);
 
-            businessAccountToDelete.ServicesToProvide.Load();
-            foreach (var service in businessAccountToDelete.ServicesToProvide.ToList())
-                this.DeleteService(service);
+            //businessAccountToDelete.ServicesToProvide.Load();
+            //foreach (var service in businessAccountToDelete.ServicesToProvide.ToList())
+            //    this.DeleteService(service);
 
             businessAccountToDelete.Clients.Load();
             foreach (var client in businessAccountToDelete.Clients.ToList())
                 this.DeleteClient(client);
 
-            //This must be after Services
-            //Delete all ServiceTemplates that do not have delete ChangeSetEntries
-            var serviceTemplatesToDelete = businessAccountToDelete.ServiceTemplates.Where(st =>
-                        !ChangeSet.ChangeSetEntries.Any(cse => cse.Operation == DomainOperation.Delete &&
-                        cse.Entity is ServiceTemplate && ((ServiceTemplate)cse.Entity).Id == st.Id))
-                        .ToArray();
-
-            foreach (var serviceTemplate in serviceTemplatesToDelete)
-                this.DeleteServiceTemplate(serviceTemplate);
-
-            businessAccountToDelete.Invoices.Load();
-            foreach (var invoice in businessAccountToDelete.Invoices.ToList())
-                this.DeleteInvoice(invoice);
-
-            QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
+            //QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
         }
 
         #endregion

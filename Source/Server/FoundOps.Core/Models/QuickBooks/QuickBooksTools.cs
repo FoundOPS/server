@@ -535,7 +535,7 @@ namespace FoundOps.Core.Models.QuickBooks
             try
             {
                 //Delete the Table in Azure
-                tableClient.DeleteTable(tableName);
+                tableClient.DeleteTableIfExist(tableName);
             }
             catch { }
         }

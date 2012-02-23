@@ -1464,7 +1464,8 @@ ON [dbo].[ServiceTemplates]
     ([OwnerServiceProviderId]);
 GO
 
--- Creating foreign key on [Id] in table 'RecurringServices'
+--TODO
+-- Creating foreign key on [Id] in table 'RecurringServices'i
 ALTER TABLE [dbo].[RecurringServices]
 ADD CONSTRAINT [FK_RecurringServiceServiceTemplate]
     FOREIGN KEY ([Id])
@@ -1762,7 +1763,7 @@ ADD CONSTRAINT [FK_OptionsFieldOption]
     FOREIGN KEY ([OptionsFieldId])
     REFERENCES [dbo].[Fields_OptionsField]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_OptionsFieldOption'
 CREATE INDEX [IX_FK_OptionsFieldOption]
@@ -1790,7 +1791,7 @@ ADD CONSTRAINT [FK_LocationFieldLocation]
     FOREIGN KEY ([LocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LocationFieldLocation'
 CREATE INDEX [IX_FK_LocationFieldLocation]
@@ -1883,7 +1884,7 @@ ADD CONSTRAINT [FK_InvoiceServiceTemplate]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[ServiceTemplates]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [InvoiceId] in table 'LineItems'
@@ -2001,13 +2002,14 @@ ADD CONSTRAINT [FK_UserAccount_inherits_Person]
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
+
 -- Creating foreign key on [Id] in table 'Fields_OptionsField'
 ALTER TABLE [dbo].[Fields_OptionsField]
 ADD CONSTRAINT [FK_OptionsField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_LocationField'
@@ -2016,7 +2018,7 @@ ADD CONSTRAINT [FK_LocationField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Files_PartyImage'
@@ -2034,7 +2036,7 @@ ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_NumericField'
@@ -2043,7 +2045,7 @@ ADD CONSTRAINT [FK_NumericField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_DateTimeField'
@@ -2052,7 +2054,7 @@ ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Options_LocationOption'
@@ -2061,7 +2063,7 @@ ADD CONSTRAINT [FK_LocationOption_inherits_Option]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Options]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------

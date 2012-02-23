@@ -197,7 +197,10 @@
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
     <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
-    <Content Include="Models\CoreEntities\ManualDatabaseChanges.txt" />
+    <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteFields.sql" />
+    <Content Include="Models\CoreEntities\SQL\ManualDatabaseChanges.txt" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\CoreEntities\CoreEntities.edmx">

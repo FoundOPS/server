@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using FoundOps.SLClient.UI.ViewModels;
+using FoundOps.Common.Tools.ExtensionMethods;
 
 namespace FoundOps.SLClient.UI.Controls.Settings
 {
@@ -27,13 +28,8 @@ namespace FoundOps.SLClient.UI.Controls.Settings
         {
             if (BusinessAccountSettingsVM == null) return;
 
-#if DEBUG
-            var uri = new Uri(string.Concat("https://localhost:44300/Quickbooks/GetAuthorization", "?roleId=", BusinessAccountSettingsVM.ContextManager.RoleId));
+            var uri = new Uri(string.Format(@"{0}/Quickbooks/GetAuthorization?roleId={1}", UriExtensions.ThisRootUrl, BusinessAccountSettingsVM.ContextManager.RoleId));
             RadHtmlPlaceholder1.SourceUrl = uri;
-#else
-            var uri = new Uri(string.Concat("http://www.foundops.com/Quickbooks/GetAuthorization", "?roleId=", BusinessAccountSettingsVM.ContextManager.RoleId));
-            RadHtmlPlaceholder1.SourceUrl = uri;
-#endif
         }
 
     }
