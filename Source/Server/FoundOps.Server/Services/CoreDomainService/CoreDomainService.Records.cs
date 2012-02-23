@@ -94,7 +94,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //     on c.OwnedParty.PartyImage.Id equals pi.Id
             // select pi).ToArray();
 
-            return clientsWithDisplayName.Take(1).Select(c => c.c).Include("OwnedParty");
+            return clientsWithDisplayName.Select(c => c.c).Include("OwnedParty");
         }
 
         public void InsertClient(Client client)

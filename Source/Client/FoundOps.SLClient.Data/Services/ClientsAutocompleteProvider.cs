@@ -36,7 +36,7 @@ namespace FoundOps.SLClient.Data.Services
             if (_lastLoad != null && _lastLoad.CanCancel)
                 _lastLoad.Cancel();
 
-            _lastLoad = Manager.Data.Context.Load(Manager.Data.Context.GetClientsForRoleQuery(Manager.Context.RoleId),
+            _lastLoad = Manager.Data.Context.Load(Manager.Data.Context.SearchClientsForRoleQuery(Manager.Context.RoleId, text).Take(10),
                                       clientsLoadOperation =>
                                       {
                                           if (clientsLoadOperation.IsCanceled || clientsLoadOperation.HasError) return;

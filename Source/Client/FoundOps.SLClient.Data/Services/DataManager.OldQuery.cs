@@ -315,8 +315,6 @@ namespace FoundOps.SLClient.Data.Services
             //Let the isLoadingObserver know this query started loading
             isLoadingObserver.OnNext(true);
 
-            query = query.Take(100);
-
             var loadOperation = _coreDomainContext.Load(query, (callback) =>
             {
                 //Call the response action and pass the Entities as an IEnumerable
