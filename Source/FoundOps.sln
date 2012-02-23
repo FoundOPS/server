@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Server", "Server\F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Core", "Server\FoundOps.Core\FoundOps.Core.csproj", "{C5170A8A-CAD2-47E2-8552-FEF87C771C03}"
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "FoundOps.Azure", "Server\FoundOps.Azure\FoundOps.Azure.ccproj", "{4CB3F72C-3943-4BE5-AC76-6D5BB8B82790}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = FoundOps.vsmdi
@@ -87,6 +89,10 @@ Global
 		{C5170A8A-CAD2-47E2-8552-FEF87C771C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5170A8A-CAD2-47E2-8552-FEF87C771C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5170A8A-CAD2-47E2-8552-FEF87C771C03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CB3F72C-3943-4BE5-AC76-6D5BB8B82790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CB3F72C-3943-4BE5-AC76-6D5BB8B82790}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CB3F72C-3943-4BE5-AC76-6D5BB8B82790}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CB3F72C-3943-4BE5-AC76-6D5BB8B82790}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
