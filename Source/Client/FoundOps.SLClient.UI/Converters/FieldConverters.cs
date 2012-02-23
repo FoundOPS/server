@@ -50,6 +50,59 @@ namespace FoundOps.Framework.Views.Converters
             throw new NotImplementedException();
         }
     }
+
+    public class ManifestFieldDefaultValueStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var field = value as Field;
+
+            if (field == null) return "";
+
+            var optionsField = field as OptionsField;
+            if (optionsField != null)
+            {
+                if (optionsField.OptionsType == OptionsType.Checkbox && optionsField.Options.FirstOrDefault() != null)
+                    return optionsField.Options.First().IsChecked ? "Checked" : "Not Checked";
+                if (optionsField.OptionsType == OptionsType.Checklist)
+                    return "";
+                if (optionsField.OptionsType == OptionsType.Combobox)
+                    return "";
+            }
+            var numericField = field as NumericField;
+            if (numericField != null)
+            {
+                if ((numericField).Value == null)
+                {
+                    return "__________";
+                }
+                return (numericField).Value;
+            }
+            var textBoxField = field as TextBoxField;
+            if (textBoxField != null)
+            {
+                if ((textBoxField).Value == null)
+                {
+                    return "__________";
+                }
+                return (textBoxField).Value;
+            }
+
+            var dateTimeField = field as DateTimeField;
+            if (dateTimeField != null)
+            {
+                if (dateTimeField.DateTimeType == DateTimeType.TimeOnly)
+                    return dateTimeField.Value.HasValue ? dateTimeField.Value.Value.ToLongTimeString() : "__________";
+            }
+
+            return "Not setup yet";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
     
     public class FieldToTypeStringConverter : IValueConverter
     {

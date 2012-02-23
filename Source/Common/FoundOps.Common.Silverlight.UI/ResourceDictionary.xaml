@@ -1778,18 +1778,14 @@
 					<VisualState x:Name="WatermarkInvisible" />
 				</VisualStateGroup>
 			</VisualStateManager.VisualStateGroups>
-			
-
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
-
 			<Border x:Name="Background" Grid.Column="0" IsHitTestVisible="False" Background="{StaticResource PickerBackground_Normal}" CornerRadius="{StaticResource SplitButton_LeftPartCornerRadius}" />
 			<Border Grid.ColumnSpan="2" IsHitTestVisible="False" Background="{TemplateBinding Background}" CornerRadius="{StaticResource SplitButton_SpanCornerRadius}" />
 			<Border x:Name="Border" Grid.ColumnSpan="2" IsHitTestVisible="False" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{StaticResource SplitButton_SpanCornerRadius}" />
 			<Border x:Name="MouseOverVisual" Grid.ColumnSpan="2" IsHitTestVisible="False" BorderBrush="{StaticResource ControlOuterBorder_MouseOver}" BorderThickness="{TemplateBinding BorderThickness}" Opacity="0" Visibility="Collapsed" CornerRadius="{StaticResource SplitButton_SpanCornerRadius}" />
-			
 			<telerik:PickerTextBox x:Name="PART_EditableTextBox"
 				Grid.Column="0"
 				BorderThickness="{TemplateBinding BorderThickness}"
@@ -1799,20 +1795,16 @@
 				VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
 				IsReadOnly="{TemplateBinding IsReadOnly}"
 				telerik:StyleManager.Theme="{StaticResource Theme}" />
-
 			<Border x:Name="FocusVisual" Visibility="Collapsed" Grid.ColumnSpan="2" IsHitTestVisible="False" BorderBrush="{StaticResource ControlOuterBorder_Focused}" CornerRadius="{StaticResource SplitButton_SpanCornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" >
 				<Border BorderBrush="{StaticResource ControlInnerBorder_Focused}" CornerRadius="{StaticResource SplitButton_SpanInnerCornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" />
 			</Border>
-
 			<telerik:RadToggleButton x:Name="PART_DropDownButton" Margin="0" Padding="0"
 				Grid.Column="1" IsTabStop="False" ClickMode="Press" telerik:StyleManager.Theme="{StaticResource Theme}">
-
 				<telerik:RadToggleButton.Template>
 					<ControlTemplate TargetType="telerik:RadToggleButton">
 						<ContentPresenter />
 					</ControlTemplate>
 				</telerik:RadToggleButton.Template>
-
 				<Grid>
 					<Telerik_Windows_Controls_Chromes:ButtonChrome x:Name="ButtonChrome"
 						telerik:StyleManager.Theme="{StaticResource Theme}"
@@ -1821,11 +1813,7 @@
 						RenderPressed="{TemplateBinding IsDropDownOpen}"
 						RenderMouseOver="{Binding IsMouseOver, ElementName=PART_DropDownButton}"
 						CornerRadius="{StaticResource SplitButton_RightPartCornerRadius}"
-							
-						RenderFocused="{TemplateBinding IsFocused}"
-							
-							 />
-
+						RenderFocused="{TemplateBinding IsFocused}" />
 					<ContentControl x:Name="DropDownIcon"
 						Grid.Column="1" IsTabStop="False"
 						Foreground="{StaticResource ButtonIconForeground_Normal}"
@@ -1833,72 +1821,46 @@
 						Template="{StaticResource ArrowTemplateEditableCombobox}" />
 				</Grid>
 			</telerik:RadToggleButton>
-
 			<TextBlock x:Name="Watermark" Text="{TemplateBinding EmptyText}" Opacity=".5" IsHitTestVisible="False" 
 				VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0" Visibility="Collapsed" />
-					   
-			
 			<Telerik_Windows_Controls_Chromes:ValidationTooltip x:Name="ValidationTooltip" 
 				Grid.ColumnSpan="2" Visibility="Collapsed"
 				telerik:StyleManager.Theme="{StaticResource Theme}"
 				TooltipPlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" TooltipContent="{Binding (Validation.Errors), RelativeSource={RelativeSource TemplatedParent}}"/>
-			
-
-			
-			
 			<telerik:Popup Owner="{Binding RelativeSource={RelativeSource TemplatedParent}}" CloseOnOutsideClick="True" 
 				IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
-			
-				
 				<Grid x:Name="PopupRoot">
 					<Telerik_Windows_Controls_Chromes:ShadowChrome telerik:StyleManager.Theme="{StaticResource Theme}" Margin="0 0 0 3" />
-					
 					<Border BorderThickness="{TemplateBinding BorderThickness}"
 						BorderBrush="{TemplateBinding BorderBrush}"
 						MinWidth="{TemplateBinding MinDropDownWidth}"
 						MaxHeight="{TemplateBinding MaxDropDownHeight}"
 						Background="{StaticResource PickerPopupBackground}"
 						CornerRadius="{StaticResource SplitButton_SpanCornerRadius}"
-						Margin="0 0 0 3"
-						 >
-
+						Margin="0 0 0 3">
 						<Grid>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto" />
 								<RowDefinition Height="*" />
 							</Grid.RowDefinitions>
-
 							<telerik:RadButton x:Name="PART_ClearButton" Grid.Row="0"
 								Margin="-1 -1 -1 0"
 								Visibility="{TemplateBinding ClearSelectionButtonVisibility}"
 								Content="{TemplateBinding ClearSelectionButtonContent}"
 								telerik:StyleManager.Theme="{StaticResource Theme}" />
-
 							<ScrollViewer x:Name="PART_ScrollViewer" Grid.Row="1"
 								Padding="0 1 0 0" BorderThickness="0"
 								VerticalScrollBarVisibility="Auto"
 								Foreground="{TemplateBinding Foreground}"
 								telerik:StyleManager.Theme="{StaticResource Theme}"
-								
 								telerik:ScrollViewerExtensions.EnableMouseWheel="True"
-								
 								 >
-
 								<ItemsPresenter />
-
 							</ScrollViewer>
 						</Grid>
 					</Border>
-					
 				</Grid>
-				
-			
-			
 			</telerik:Popup>
-			
 		</Grid>
-
-		
 	</ControlTemplate>
-	
 </ResourceDictionary>

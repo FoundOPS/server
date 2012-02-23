@@ -19,14 +19,14 @@ namespace FoundOps.Core.Server
             //Ignore All Services, For WCF RIA Services
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            //Route for the Beta page: wp.foundops.com/beta
+            //Route for the Beta page: foundops.com/beta
             routes.MapRoute("WP pages",
                 "{page}",
                 new { controller = "Home", action = "WP" },
                 new { page = @"^beta$|^product$|^team$|^values$|^jobs$|^contact$|^blog$" }
                 );
 
-            //Route for team profiles: wp.foundops.com/namehere to Home/Team
+            //Route for team profiles: foundops.com/namehere to Home/Team
             routes.MapRoute(
                 // Route name
                 "Names",
@@ -34,6 +34,16 @@ namespace FoundOps.Core.Server
                 "{id}",
                 new { controller = "Home", action = "Team" },
                 new { id = @"((?:[a-z][a-z0-9_]*))" }
+                );
+
+            //Route for qrcodes from foundops.com/qrcode to Home/Card
+            routes.MapRoute(
+                // Route name
+                "Cards",
+                // URL with parameters
+                "{id}",
+                new { controller = "Home", action = "Card" },
+                new { id = @"^415919$||^112091$||^317067$" }
                 );
 
             //Default route: foundops.com/Controller/Action

@@ -3730,7 +3730,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="CoreEntities" ZoomLevel="82" >
+      <Diagram Name="CoreEntities" ZoomLevel="81" >
         <EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="19.75" PointY="205.625" Height="2.7494921874999818" />
         <EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="17.5" PointY="205.875" Height="2.5571907552083246" />
         <EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="14.875" PointY="205.625" Height="2.7494921875000102" />

@@ -269,30 +269,20 @@
     </Content>
     <Content Include="ClientBin\FoundOps.SLClient.Navigator.xap" />
     <Content Include="ClientBin\version.txt" />
-    <Content Include="Content\Banner1.png" />
-    <Content Include="Content\banner2.png" />
-    <Content Include="Content\Banner3.png" />
     <Content Include="Content\bgGradient.png" />
     <Content Include="Content\bgLogo.png" />
     <Content Include="Content\BlankPhoto.png" />
-    <Content Include="Content\Chimp.png" />
     <Content Include="Content\DefaultDispatcherLayout.xml" />
     <Content Include="Content\facebook.png" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\footerBg.png" />
-    <Content Include="Content\MobileSite.css" />
     <Content Include="Content\headerBg.png" />
-    <Content Include="Content\infoBg.png" />
     <Content Include="Content\linkedin.png" />
     <Content Include="Content\navLogo.png" />
-    <Content Include="Content\navRibbons.png" />
-    <Content Include="Content\pagingBtn.png" />
-    <Content Include="Content\pagingBtnActive.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\SiteLogo.png" />
     <Content Include="Content\TouchIcon.png" />
     <Content Include="Content\twitter.png" />
-    <Content Include="Content\wt-rotator.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.1.min.js" />
@@ -332,6 +322,13 @@
     <Compile Include="Authentication\AccountModels.cs" />
     <Compile Include="Authentication\CoreEntitiesMembershipProvider.cs" />
     <Compile Include="Authentication\UserAccountExtensions.cs" />
+    <Compile Include="ClientBin\SplashScreen.xaml.cs">
+      <DependentUpon>SplashScreen.xaml</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClientBin\SplashScreen.xaml.designer.cs">
+      <DependentUpon>SplashScreen.xaml.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\BlockController.cs" />
@@ -428,13 +425,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientBin\SplashScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\FoundOps.Common.NET\FoundOps.Common.NET.csproj">
       <Project>{DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB}</Project>
       <Name>FoundOps.Common.NET</Name>
@@ -446,6 +436,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ClientBin\SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

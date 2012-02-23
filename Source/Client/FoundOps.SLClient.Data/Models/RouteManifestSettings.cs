@@ -400,7 +400,7 @@ namespace FoundOps.SLClient.Data.Models
                                                          "IsContactInfoVisible", "IsPhoneNumberVisible",
                                                          "IsFaxNumberVisible", "IsEmailAddressVisible",
                                                          "IsWebsiteVisible", "IsOtherContactInfoVisible",
-                                                         "IsRouteTasksVisible", "IsTaskSpecificDetailsVisible",
+                                                         "IsRouteTasksVisible","IsFieldsVisible", "IsTaskSpecificDetailsVisible",
                                                          "IsNotesVisible", "IsMapVisible",
                                                          "IsSubLocationsVisible", "Is2DBarcodeVisible",
                                                          "IsUserUploadedImageVisible"
@@ -542,6 +542,21 @@ namespace FoundOps.SLClient.Data.Models
             {
                 _isRouteTasksVisible = value;
                 this.RaisePropertyChanged("IsRouteTasksVisible");
+            }
+        }
+
+        #endregion
+
+        #region Fields
+
+        private bool _isFieldsVisible;
+        public bool IsFieldsVisible
+        {
+            get { return _isFieldsVisible; }
+            set
+            {
+                _isFieldsVisible = value;
+                this.RaisePropertyChanged("IsFieldsVisible");
             }
         }
 
@@ -828,7 +843,7 @@ namespace FoundOps.SLClient.Data.Models
             IsRouteTasksVisible = true;
             //IsTaskSpecificDetailsVisible = true;
             //IsNotesVisible = true;
-
+            IsFieldsVisible = true;
             #endregion
 
             //IsMapVisible = false;

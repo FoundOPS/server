@@ -267,6 +267,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomFields\ManifestFields.xaml.cs">
+      <DependentUpon>ManifestFields.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\FieldSmall.xaml.cs">
+      <DependentUpon>FieldSmall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
       <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
     </Compile>
@@ -619,6 +625,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\ManifestFields.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\FieldSmall.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

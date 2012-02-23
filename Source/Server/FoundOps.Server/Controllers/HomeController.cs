@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Windows.Browser;
 using System.Xml.Linq;
 using FoundOps.Core.Server;
 using FoundOps.Server.Tools;
@@ -66,6 +67,11 @@ namespace FoundOps.Server.Controllers
                 page = ""; //wp.foundops.com
 
             return Redirect(String.Format("{0}/{1}", Global.RootBlogUrl, page));
+        }
+
+        public ActionResult Card(string id)
+        {
+            return Redirect(String.Format("{0}/customers?id={1}", Global.RootBlogUrl, id));
         }
 
         public ContentResult Sitemap()

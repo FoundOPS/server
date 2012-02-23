@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" mc:Ignorable="d">
-    <Grid x:Name="LayoutRoot" DataContext="{Binding RouteManifestVM, Source={Tools:GetVM Type=ViewModels:RoutesVM}}">
+    <Grid x:Name="LayoutRoot" Margin="5,0,0,0" DataContext="{Binding RouteManifestVM, Source={Tools:GetVM Type=ViewModels:RoutesVM}}">
         <StackPanel>
             <StackPanel Orientation="Horizontal" Visibility="Collapsed">
                 <!--Add back in when feature is supported-->
@@ -78,6 +78,9 @@
                     <CheckBox  Content="Notes" IsChecked="{Binding RouteManifestSettings.IsNotesVisible, Mode=TwoWay}"/>
                 </StackPanel>
 
+                <CheckBox Content="Fields" IsChecked="{Binding RouteManifestSettings.IsFieldsVisible, Mode=TwoWay}" Margin="25,0,0,0" 
+                          Visibility="{Binding RouteManifestSettings.IsRouteTasksVisible, Converter={StaticResource VisibilityConverter}}"/>
+
                 <!--<CheckBox Content="Map" IsChecked="{Binding RouteManifestSettings.IsMapVisible, Mode=TwoWay}"/>
                 <StackPanel Margin="25,0,0,0" Visibility="{Binding RouteManifestSettings.IsMapVisible, Converter={StaticResource VisibilityConverter}}">
                     <CheckBox Content="SubLocations" IsChecked="{Binding RouteManifestSettings.IsSubLocationsVisible, Mode=TwoWay}"/>
@@ -92,12 +95,13 @@
                 <CheckBox Content="Estimated Time" IsChecked="{Binding RouteManifestSettings.IsEstimatedTimeVisible, Mode=TwoWay}"/>
             </StackPanel>-->
 
-            <StackPanel  Visibility="Collapsed">
+            <StackPanel  Visibility="Visible">
                 <CheckBox Content="Footer" FontWeight="Bold" IsChecked="{Binding RouteManifestSettings.IsFooterVisible, Mode=TwoWay}"/>
                 <StackPanel Margin="25,0,0,0" Visibility="{Binding RouteManifestSettings.IsFooterVisible, Converter={StaticResource VisibilityConverter}}">
                     <CheckBox Content="Page Numbers" IsChecked="{Binding RouteManifestSettings.IsPageNumbersVisible, Mode=TwoWay}"/>
                     <CheckBox Content="Custom Message" IsChecked="{Binding RouteManifestSettings.IsCustomMessageVisible, Mode=TwoWay}"/>
-                    <TextBox TextWrapping="Wrap" Text="{Binding RouteManifestSettings.CustomMessage, Mode=TwoWay}" IsEnabled="{Binding RouteManifestSettings.IsCustomMessageVisible, Mode=TwoWay}"/>
+                    <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding RouteManifestSettings.CustomMessage, Mode=TwoWay}" 
+                             IsEnabled="{Binding RouteManifestSettings.IsCustomMessageVisible, Mode=TwoWay}" MaxWidth="200"/>
                     <!--IsEnabled if custom message checkbox isselected=true-->
                 </StackPanel>
             </StackPanel>
