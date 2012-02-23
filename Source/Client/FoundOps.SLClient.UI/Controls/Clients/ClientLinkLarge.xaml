@@ -12,7 +12,7 @@
             </toolkit:Expander.Header>
             <Controls:RadComboBox x:Name="ClientsRadComboBox" Margin="5,3,5,3" Foreground="Black" MinWidth="100" IsEditable="True" IsFilteringEnabled="True"
                     TextSearchMode="Contains" DisplayMemberPath="OwnedParty.DisplayName" ItemsSource="{Binding DomainCollectionView}" SelectedValue="{Binding SelectedClient, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Clients:ClientLinkLarge}}" 
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}" EditableTemplate="{StaticResource SL5BugWorkaround}">
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
                 <i:Interaction.Behaviors>
                     <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=Controls1:Selector.SelectedValueProperty}"/>
                 </i:Interaction.Behaviors>

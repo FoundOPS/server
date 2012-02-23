@@ -30,7 +30,7 @@
                 <Button Content="Select File" Click="SelectFileButtonClick" Grid.Column="2"/>
             </Grid>
             <TextBlock Text="Destination:" HorizontalAlignment="Right" Grid.Row="1"/>
-            <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" Grid.Row="1" Grid.Column="2" Margin="0,5,0,10" SelectedIndex="{Binding ImportDestination, Mode=TwoWay, Converter={StaticResource IndexToImportDestinationConverter}}">
+            <telerik:RadComboBox Grid.Row="1" Grid.Column="2" Margin="0,5,0,10" SelectedIndex="{Binding ImportDestination, Mode=TwoWay, Converter={StaticResource IndexToImportDestinationConverter}}">
                 <telerik:RadComboBoxItem Content="Clients"/>
                 <telerik:RadComboBoxItem Content="Locations"/>
                 <!--<telerik:RadComboBoxItem Content="Services"/>-->

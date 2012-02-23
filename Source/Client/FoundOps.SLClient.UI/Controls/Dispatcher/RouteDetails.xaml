@@ -15,7 +15,7 @@
         <StackPanel>
             <TextBox Text="{Binding Name, Mode=TwoWay}" TextAlignment="Center" FontWeight="Bold"/>
             <!--Bind to Route Name, For A New Route, autoname it Untitled #1 etc -->
-            <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" AllowDrop="True" ItemsSource="{Binding DataContext.RouteTypes, ElementName=myRouteDetails}" Width="150" SelectedValue="{Binding RouteType, Mode=TwoWay}" />
+            <telerik:RadComboBox AllowDrop="True" ItemsSource="{Binding DataContext.RouteTypes, ElementName=myRouteDetails}" Width="150" SelectedValue="{Binding RouteType, Mode=TwoWay}" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MinWidth="5"/>

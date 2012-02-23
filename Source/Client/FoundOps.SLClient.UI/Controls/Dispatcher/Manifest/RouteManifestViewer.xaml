@@ -40,7 +40,7 @@
                 </LinearGradientBrush>
             </Border.Background>
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
-                <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" x:Name="SelectedRouteComboBox" Margin="5,0"  DisplayMemberPath="Name"
+                <telerik:RadComboBox x:Name="SelectedRouteComboBox" Margin="5,0"  DisplayMemberPath="Name"
                              DataContext="{Tools:GetVM Type=ViewModels:RoutesVM}" SelectedValue="{Binding SelectedEntity, Mode=TwoWay}" 
                              ItemsSource="{Binding DomainCollectionView}" Height="25"/>
                 <telerik:RadButton x:Name="btnPrint" ToolTipService.ToolTip="Print" Content="Print" Style="{StaticResource PanelButtonStyle}" Click="BtnPrint_OnClick" />

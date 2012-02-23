@@ -42,6 +42,11 @@
             The only purpose is to close an internal popup if any.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.ApplicationMenu.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.ApplicationMenu.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
             <summary>
             The MouseLeftButtonDown callback.
@@ -1428,6 +1433,11 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RibbonView.KeyTips.KeyTipControl"/> class.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.RibbonView.KeyTips.KeyTipControl.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.RibbonView.KeyTipService">
             <summary>
             Class used to Enable/Disable key tips for RadRibbonView control.
@@ -1735,6 +1745,11 @@
         <member name="M:Telerik.Windows.Controls.RadRibbonTab.OnUnselected(Telerik.Windows.RadRoutedEventArgs)">
             <summary>
             Called when the item is unselected.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRibbonTab.ResetTheme">
+            <summary>
+            Resets the theme.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadRibbonTab.ChangeVisualState(System.Boolean)">
@@ -2072,6 +2087,11 @@
             Identifies the IsActive property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadRibbonContextualGroup.IsFixedSizeProperty">
+            <summary>
+            Identifies the IsFixedSize property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadRibbonContextualGroup.SelectFirstTabOnActivationProperty">
             <summary>
             Identifies the SelectFirstTabOnActivation property.
@@ -2111,6 +2131,11 @@
         <member name="P:Telerik.Windows.Controls.RadRibbonContextualGroup.IsActive">
             <summary>
             Gets or sets whether the group is active (visible) or not.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRibbonContextualGroup.IsFixedSize">
+            <summary>
+            Gets or sets whether the group's size is fixed by the contextual tabs' size.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadRibbonContextualGroup.SelectFirstTabOnActivation">
@@ -2213,6 +2238,11 @@
         <member name="M:Telerik.Windows.Controls.RadRibbonComboBox.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadRibbonComboBox"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRibbonComboBox.ResetTheme">
+            <summary>
+            Resets the theme.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadRibbonComboBox.GetContainerForItemOverride">
@@ -2671,6 +2701,11 @@
             When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.RibbonView.Primitives.RibbonScrollViewer.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.RibbonView.Primitives.RibbonScrollViewer.MeasureOverride(System.Windows.Size)">
             <summary>
             Called when the control is measured.
@@ -2840,6 +2875,18 @@
             When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass)
             call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.QuickAccessToolBar.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.QuickAccessToolBar.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Prepares the specified element to display the specified item.
+            </summary>
+            <param name="element">Element used to display the specified item.</param>
+            <param name="item">Specified item.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.QuickAccessToolBar.OnIsOverflowOpened(System.Boolean,System.Boolean)">
             <summary>
@@ -3089,6 +3136,11 @@
             <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadRibbonGroup.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.RadRibbonGroup.OnLaunchDialog(Telerik.Windows.RadRoutedEventArgs)">
             <summary>
             Raises the <see cref="E:LaunchDialog"/> event.
@@ -3172,6 +3224,11 @@
             <summary>
             When overridden in a derived class, is invoked whenever application code
             or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRibbonView.ResetTheme">
+            <summary>
+            Resets the theme.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadRibbonView.OnToolBarPositionChanged(Telerik.Windows.RadRoutedEventArgs)">
@@ -3465,6 +3522,11 @@
             Identifies the MinimizedChanged routed event.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadRibbonView.PreviewMinimizedChangedEvent">
+            <summary>
+            Identifies the PreviewMinimizedChanged routed event.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadRibbonView.MinimizedPopupStateChangedEvent">
             <summary>
             Identifies the MinimizedPopupStateChanged routed event.
@@ -3503,6 +3565,11 @@
         <member name="E:Telerik.Windows.Controls.RadRibbonView.MinimizedChanged">
             <summary>
             Occurs when ribbon bar minimized state has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRibbonView.PreviewMinimizedChanged">
+            <summary>
+            Occurs before ribbon bar minimized state has changed.
             </summary>
         </member>
         <member name="E:Telerik.Windows.Controls.RadRibbonView.MinimizedPopupOpenStateChanged">
@@ -4039,6 +4106,11 @@
         <member name="M:Telerik.Windows.Controls.ScreenTip.OnApplyTemplate">
             <summary>
             Builds the visual tree for the <see cref="T:System.Windows.Controls.ToolTip"/> when a new template is applied.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.ScreenTip.ResetTheme">
+            <summary>
+            Resets the theme.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.ScreenTip.Description">

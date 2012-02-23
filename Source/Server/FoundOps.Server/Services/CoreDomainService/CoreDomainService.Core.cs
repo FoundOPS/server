@@ -1,20 +1,20 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Data.Objects;
-using FoundOps.Common.NET;
-using System.Collections.Generic;
+﻿using FoundOps.Common.NET;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.Core.Models.QuickBooks;
 using FoundOps.Core.Server.Blocks;
-using FoundOps.Server.Controllers;
-using System.Security.Authentication;
 using FoundOps.Server.Authentication;
-using FoundOps.Core.Models.CoreEntities;
-using System.ServiceModel.DomainServices.Server;
-using System.ServiceModel.DomainServices.Hosting;
-using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.Server.Controllers;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Objects;
+using System.Linq;
+using System.Reflection;
+using System.Security.Authentication;
 using System.ServiceModel.DomainServices.EntityFramework;
+using System.ServiceModel.DomainServices.Hosting;
+using System.ServiceModel.DomainServices.Server;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -149,7 +149,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
         }
 
-        #endregion
+        #endregion 
 
         #region ContactInfo
 

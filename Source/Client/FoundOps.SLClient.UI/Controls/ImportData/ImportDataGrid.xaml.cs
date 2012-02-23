@@ -49,7 +49,7 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
 
             var columnHeaderColumnStackPanel = new StackPanel();
 
-            var importColumnTypeComboBox = new RadComboBox { Width = 100, DisplayMemberPath = "DisplayName", EditableTemplate = (ControlTemplate) App.Current.Resources["SL5BugWorkaround"] };
+            var importColumnTypeComboBox = new RadComboBox { Width = 100, DisplayMemberPath = "DisplayName" };
 
             ////Setup ComboBox's ItemTemplate to work with Multiplicity
             //importColumnTypeComboBox.ItemTemplate = (DataTemplate)this.Resources["ImportDestinationComboBoxTemplate"];

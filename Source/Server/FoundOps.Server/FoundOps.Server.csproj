@@ -322,13 +322,6 @@
     <Compile Include="Authentication\AccountModels.cs" />
     <Compile Include="Authentication\CoreEntitiesMembershipProvider.cs" />
     <Compile Include="Authentication\UserAccountExtensions.cs" />
-    <Compile Include="ClientBin\SplashScreen.xaml.cs">
-      <DependentUpon>SplashScreen.xaml</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ClientBin\SplashScreen.xaml.designer.cs">
-      <DependentUpon>SplashScreen.xaml.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\BlockController.cs" />
@@ -398,6 +391,7 @@
     <Content Include="ClientBin\Telerik.Windows.Data.zip" />
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Documents.zip" />
     <None Include="Services\M2M4RiaLinqToEntitiesDomainService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>M2M4RiaLinqToEntitiesDomainService.g.cs</LastGenOutput>
@@ -438,10 +432,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ClientBin\SplashScreen.xaml">
+    <Content Include="ClientBin\SplashScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

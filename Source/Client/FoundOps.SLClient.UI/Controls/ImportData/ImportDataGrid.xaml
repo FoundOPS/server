@@ -22,12 +22,12 @@
         </DataTemplate>
         <DataTemplate x:Key="ClientNameTemplate">
             <Grid DataContext="{Binding Value, RelativeSource={RelativeSource AncestorType=GridView:GridViewCell}}">
-                <Controls:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" IsEditable="True" CanAutocompleteSelectItems="True" Text="{Binding Value, Mode=TwoWay}" DisplayMemberPath="OwnedParty.DisplayName" SelectedValue="{Binding OptionalAssociation, Mode=TwoWay}" ItemsSource="{Binding DataContext.Clients, RelativeSource={RelativeSource AncestorType=ImportData:ImportDataGrid}}"/>
+                <Controls:RadComboBox IsEditable="True" CanAutocompleteSelectItems="True" Text="{Binding Value, Mode=TwoWay}" DisplayMemberPath="OwnedParty.DisplayName" SelectedValue="{Binding OptionalAssociation, Mode=TwoWay}" ItemsSource="{Binding DataContext.Clients, RelativeSource={RelativeSource AncestorType=ImportData:ImportDataGrid}}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="LocationNameTemplate">
             <Grid DataContext="{Binding Value, RelativeSource={RelativeSource AncestorType=GridView:GridViewCell}}">
-                <Controls:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" IsEditable="True" CanAutocompleteSelectItems="True" Text="{Binding Value, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValue="{Binding OptionalAssociation, Mode=TwoWay}" ItemsSource="{Binding DataContext.Locations, RelativeSource={RelativeSource AncestorType=ImportData:ImportDataGrid}}"/>
+                <Controls:RadComboBox IsEditable="True" CanAutocompleteSelectItems="True" Text="{Binding Value, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValue="{Binding OptionalAssociation, Mode=TwoWay}" ItemsSource="{Binding DataContext.Locations, RelativeSource={RelativeSource AncestorType=ImportData:ImportDataGrid}}"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ImportDestinationComboBoxTemplate">

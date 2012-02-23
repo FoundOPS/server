@@ -25,7 +25,7 @@ namespace FoundOps.SLClient.Data.Converters
             string locationUrl = "";
 
 #if DEBUG
-            locationUrl = String.Format("https://localhost:44300/Helper/LocationQRCode?latitude={0}&longitude={1}", latitude, longitude);
+            locationUrl = String.Format("http://localhost:31820/Helper/LocationQRCode?latitude={0}&longitude={1}", latitude, longitude);
 #else
             locationUrl = String.Format("http://www.foundops.com/Helper/LocationQRCode?latitude={0}&longitude={1}", latitude, longitude);
 #endif
