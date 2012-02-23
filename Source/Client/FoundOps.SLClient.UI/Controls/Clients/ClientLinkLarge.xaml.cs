@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using FoundOps.SLClient.Data.Tools;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 
@@ -17,12 +18,7 @@ namespace FoundOps.SLClient.UI.Controls.Clients
         {
             InitializeComponent();
 
-            this.DependentWhenVisible(ClientsVM);
-        }
-
-        public ClientsVM ClientsVM
-        {
-            get { return (ClientsVM)this.DataContext; }
+            this.DependentWhenVisible(VM.Clients);
         }
 
         #region SelectedClient Dependency Property
@@ -67,7 +63,7 @@ namespace FoundOps.SLClient.UI.Controls.Clients
                 "IsReadOnly",
                 typeof(bool),
                 typeof(ClientLinkLarge),
-                new PropertyMetadata(new PropertyChangedCallback(IsReadOnlyChanged)));
+                new PropertyMetadata(IsReadOnlyChanged));
 
         private static void IsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

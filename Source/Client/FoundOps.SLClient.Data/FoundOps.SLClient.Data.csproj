@@ -286,6 +286,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Models\RouteManifestSettings.cs" />
+    <Compile Include="Services\ClientsAutocompleteProvider.cs" />
     <Compile Include="Services\ContextManager.cs" />
     <Compile Include="Services\DataManager.Base.cs" />
     <Compile Include="Services\DataManager.NewQuery.cs" />

@@ -63,6 +63,41 @@ namespace FoundOps.Server.Services.CoreDomainService
             return clients.Include("OwnedParty");
         }
 
+        public IQueryable<Client> SearchClientsForRole(Guid roleId, string searchText)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            if (businessForRole == null) return null;
+
+            var clientsWithDisplayName =
+                from c in ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id)
+                join p in ObjectContext.Parties.OfType<Person>()
+                    on c.Id equals p.Id into personClient
+                from person in personClient.DefaultIfEmpty()
+                //Left Join
+                join b in ObjectContext.Parties.OfType<Business>()
+                    on c.Id equals b.Id into businessClient
+                from business in businessClient.DefaultIfEmpty()
+                //Left Join
+                let displayName = business != null
+                                      ? business.Name
+                                      : person.LastName + " " + person.FirstName + " " + person.MiddleInitial
+                orderby displayName
+                select new {c, displayName};
+
+            if (!String.IsNullOrEmpty(searchText))
+                clientsWithDisplayName = clientsWithDisplayName.Where(cdn => cdn.displayName.StartsWith(searchText));
+
+            //Client's images are not currently used, so this can be commented out
+            //TODO: Figure a way to force load OwnedParty.PartyImage. 
+            //(from c in clients
+            // join pi in this.ObjectContext.Files.OfType<PartyImage>()
+            //     on c.OwnedParty.PartyImage.Id equals pi.Id
+            // select pi).ToArray();
+
+            return clientsWithDisplayName.Take(1).Select(c => c.c).Include("OwnedParty");
+        }
+
         public void InsertClient(Client client)
         {
             if ((client.EntityState != EntityState.Detached))

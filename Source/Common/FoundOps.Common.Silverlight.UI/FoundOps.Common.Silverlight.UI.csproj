@@ -190,6 +190,12 @@
     <Compile Include="Controls\AddEditDelete\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AutoComplete\AutocompleteBehavior.cs" />
+    <Compile Include="Controls\AutoComplete\AutocompleteViewModel.cs" />
+    <Compile Include="Controls\AutoComplete\CollectionViewSourceProvider.cs" />
+    <Compile Include="Controls\AutoComplete\IAutocompleteProvider.cs" />
+    <Compile Include="Controls\AutoComplete\SuggestionsReceivedEventArgs.cs" />
+    <Compile Include="Controls\AutoComplete\SuggestionsReceivedEventHandler.cs" />
     <Compile Include="Controls\Icons\FeedbackSupportBlockIcon.xaml.cs">
       <DependentUpon>FeedbackSupportBlockIcon.xaml</DependentUpon>
     </Compile>
