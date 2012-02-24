@@ -36,6 +36,7 @@
     <EntitySet Name="SalesTerms" EntityType="CoreEntities.Store.SalesTerms" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LineItems" EntityType="CoreEntities.Store.LineItems" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="RouteTasks" EntityType="CoreEntities.Store.RouteTasks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Errors" EntityType="CoreEntities.Store.Errors" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Parties_Business" EntityType="CoreEntities.Store.Parties_Business" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Parties_BusinessAccount" EntityType="CoreEntities.Store.Parties_BusinessAccount" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Parties_Person" EntityType="CoreEntities.Store.Parties_Person" store:Type="Tables" Schema="dbo" />
@@ -691,6 +692,17 @@
     <Property Name="ReadyToInvoice" Type="bit" Nullable="true" />
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="OrderInRouteDestination" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Errors">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="true" />
+    <Property Name="BusinessName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="UserEmail" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ErrorText" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="InnerException" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Parties_Business">
     <Key>
@@ -1995,6 +2007,7 @@
             <End Role="Client" EntitySet="Clients" />
             <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
+          <EntitySet Name="Errors" EntityType="CoreEntities.Error" />
         </EntityContainer>
         <EntityType Name="Block">
           <Key>
@@ -3218,6 +3231,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Error">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="BusinessName" Nullable="true" />
+          <Property Type="String" Name="UserEmail" Nullable="true" />
+          <Property Type="String" Name="ErrorText" Nullable="true" />
+          <Property Type="String" Name="InnerException" Nullable="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3676,6 +3700,18 @@
           <ScalarProperty Name="ReadyToInvoice" ColumnName="ReadyToInvoice" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="OrderInRouteDestination" ColumnName="OrderInRouteDestination" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Errors">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Error)">
+        <MappingFragment StoreEntitySet="Errors">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="BusinessName" ColumnName="BusinessName" />
+          <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+          <ScalarProperty Name="ErrorText" ColumnName="ErrorText" />
+          <ScalarProperty Name="InnerException" ColumnName="InnerException" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -4385,6 +4421,7 @@
           <ConnectorPoint PointX="11.546907393778053" PointY="198.73180663148878" />
           <ConnectorPoint PointX="11.546907393778053" PointY="204.625" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="CoreEntities.Error" Width="1.5" PointX="5.125" PointY="187.375" Height="2.1725878906249818" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

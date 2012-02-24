@@ -73,13 +73,6 @@ namespace FoundOps.SLClient.Navigator
 
         private void OnNavigateToMessageRecieved(NavigateToMessage navigateToMessage)
         {
-            if (navigateToMessage.UriToNavigateTo.OriginalString.Contains("Dispatcher"))
-            {
-                var uri = new Uri(UriExtensions.ThisRootUrl + "/Home/Silverlight#" + navigateToMessage.UriToNavigateTo.OriginalString);
-
-                HtmlPage.Window.Navigate(uri, "blank");
-            }
-
             ContentFrame.Navigate(navigateToMessage.UriToNavigateTo);
         }
 
