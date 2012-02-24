@@ -78,8 +78,8 @@
                     <CheckBox  Content="Notes" IsChecked="{Binding RouteManifestSettings.IsNotesVisible, Mode=TwoWay}"/>
                 </StackPanel>
 
-                <CheckBox Content="Fields" IsChecked="{Binding RouteManifestSettings.IsFieldsVisible, Mode=TwoWay}" Margin="25,0,0,0" 
-                          Visibility="{Binding RouteManifestSettings.IsRouteTasksVisible, Converter={StaticResource VisibilityConverter}}"/>
+                <!--<CheckBox Content="Fields" IsChecked="{Binding RouteManifestSettings.IsFieldsVisible, Mode=TwoWay}" Margin="25,0,0,0" 
+                          Visibility="{Binding RouteManifestSettings.IsRouteTasksVisible, Converter={StaticResource VisibilityConverter}}"/>-->
 
                 <!--<CheckBox Content="Map" IsChecked="{Binding RouteManifestSettings.IsMapVisible, Mode=TwoWay}"/>
                 <StackPanel Margin="25,0,0,0" Visibility="{Binding RouteManifestSettings.IsMapVisible, Converter={StaticResource VisibilityConverter}}">
