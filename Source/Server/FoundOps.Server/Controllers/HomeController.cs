@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 using System.Web.Mvc;
+using FoundOps.Common.Server;
 using FoundOps.Server.Tools;
 
 namespace FoundOps.Server.Controllers
