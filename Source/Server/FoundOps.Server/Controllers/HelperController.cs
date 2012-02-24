@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using com.google.zxing;
 using FoundOps.Core.Server.Tools;
 
-namespace FoundOps.Core.Server.Controllers
+namespace FoundOps.Server.Controllers
 {
     [Authorize]
     public class HelperController : Controller

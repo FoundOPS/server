@@ -32,7 +32,7 @@
         </LinearGradientBrush>
     </Grid.Background>
 
-    <TextBlock x:Name="progressText" IsHitTestVisible="False" FontSize="250" FontFamily="Arial" Margin="0,250,0,0" Foreground="White" Text="0" HorizontalAlignment="Right" />
+    <!--<TextBlock x:Name="progressText" IsHitTestVisible="False" FontSize="250" FontFamily="Arial" Margin="0,250,0,0" Foreground="White" Text="0" HorizontalAlignment="Right" />-->
     <Grid MinWidth="1005" MinHeight="562" MaxWidth="1380" MaxHeight="900">
         <Grid x:Name="logo" Background="Transparent" HorizontalAlignment="Left" Height="160" Margin="30,0,0,0" VerticalAlignment="Top" Width="320">
             <Canvas x:Name="splashLogo" HorizontalAlignment="Left" Height="160" UseLayoutRounding="False" VerticalAlignment="Top" Width="320">

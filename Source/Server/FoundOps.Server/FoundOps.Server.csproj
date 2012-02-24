@@ -262,7 +262,6 @@
     <Content Include="Content\bgGradient.png" />
     <Content Include="Content\bgLogo.png" />
     <Content Include="Content\BlankPhoto.png" />
-    <Content Include="Content\DefaultDispatcherLayout.xml" />
     <Content Include="Content\facebook.png" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\footerBg.png" />
@@ -330,7 +329,6 @@
     <Compile Include="Services\CoreDomainService\CoreDomainService.Invoicing.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Records.cs" />
     <Compile Include="Services\DomainServiceTools.cs" />
-    <Compile Include="Services\TechnicianDomainService.cs" />
     <Compile Include="Services\M2M4RiaLinqToEntitiesDomainService.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -356,7 +354,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Web.sitemap" />
     <Content Include="ClientBin\Microsoft.Windows.Data.DomainServices.zip" />
     <Content Include="ClientBin\SLaB.Printing.Controls.zip" />
     <Content Include="ClientBin\SLaB.Utilities.zip" />
@@ -387,7 +384,6 @@
       <LastGenOutput>M2M4RiaLinqToEntitiesDomainService.g.cs</LastGenOutput>
     </None>
     <Content Include="packages.config" />
-    <Content Include="Views\Account\BlogLogin.cshtml" />
     <Content Include="Views\Account\Captcha.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
@@ -395,7 +391,6 @@
     <Content Include="Views\Account\ForgotPasswordSuccess.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Home\CCDAPDD.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\PerformServerOperations.cshtml" />
     <Content Include="Views\Home\Silverlight.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />

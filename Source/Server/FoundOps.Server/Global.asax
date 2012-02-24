@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="FoundOps.Core.Server.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="FoundOps.Server.Global" Language="C#" %>

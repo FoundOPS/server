@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace FoundOps.Core.Server
+namespace FoundOps.Server
 {
     public class Global : System.Web.HttpApplication
     {
@@ -19,34 +19,7 @@ namespace FoundOps.Core.Server
             //Ignore All Services, For WCF RIA Services
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            //Route for the Beta page: foundops.com/beta
-            routes.MapRoute("WP pages",
-                "{page}",
-                new { controller = "Home", action = "WP" },
-                new { page = @"^beta$|^product$|^team$|^values$|^jobs$|^contact$|^blog$" }
-                );
-
-            //Route for team profiles: foundops.com/namehere to Home/Team
-            routes.MapRoute(
-                // Route name
-                "Names",
-                // URL with parameters
-                "{id}",
-                new { controller = "Home", action = "Team" },
-                new { id = @"((?:[a-z][a-z0-9_]*))" }
-                );
-
-            //Route for qrcodes from foundops.com/qrcode to Home/Card
-            routes.MapRoute(
-                // Route name
-                "Cards",
-                // URL with parameters
-                "{id}",
-                new { controller = "Home", action = "Card" },
-                new { id = @"^415919$||^112091$||^317067$" }
-                );
-
-            //Default route: foundops.com/Controller/Action
+            //Default route: app.foundops.com/Controller/Action
             routes.MapRoute(
                 // Route name
                 "Default",

@@ -14,5 +14,7 @@
     <AzureStorageAccountName>fstore</AzureStorageAccountName>
     <AzureStorageAccountLabel>fstore</AzureStorageAccountLabel>
     <AzureAppendTimestampToDeploymentLabel>True</AzureAppendTimestampToDeploymentLabel>
+    <AzureAllowUpgrade>False</AzureAllowUpgrade>
+    <AzureEnableRemoteDesktop>False</AzureEnableRemoteDesktop>
   </PropertyGroup>
 </Project>
