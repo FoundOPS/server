@@ -12,15 +12,12 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (1/26/2012)
+                (2/23/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            * Setup auto download of FoundOPS application updates.<LineBreak/>
-            * Optimized manifests and dispatching.<LineBreak/>
-            * Setup Add New/Existing Location on Clients.<LineBreak/>
-            * Fixed drag-n-drop in dispatching, service schedule bug. <LineBreak/>
-            * Fixed dispatcher service loading issue.<LineBreak/>
+            * Fixed manifest printing.<LineBreak/>
+            * Setup automatic error submission so we can eliminate the save/discard bug.<LineBreak/>
             * Fixed other minor issues.<LineBreak/>
         </TextBlock>
     </Grid>
