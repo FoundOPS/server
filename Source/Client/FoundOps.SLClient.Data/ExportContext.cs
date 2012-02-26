@@ -38,7 +38,8 @@ namespace FoundOps.SLClient.Data
             rootUrl = rootUrl + "/ClientBin";
 #else
             //In release mode setup the endpoint to be HTTPS
-            rootUrl.Replace("http", "https");
+           if(!rootUrl.Contains("https"))
+               rootUrl = rootUrl.Replace("http", "https");
 #endif
 
             var serviceUrl = new Uri(String.Format("{0}/{1}", rootUrl, "FoundOps-Server-Services-CoreDomainService-CoreDomainService.svc"), UriKind.RelativeOrAbsolute);
