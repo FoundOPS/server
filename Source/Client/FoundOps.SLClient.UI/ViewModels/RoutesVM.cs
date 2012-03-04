@@ -319,22 +319,20 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private readonly Subject<RouteDestination> _selectedRouteDestinationSubject = new Subject<RouteDestination>();
         private readonly ObservableAsPropertyHelper<RouteDestination> _selectedRouteDestination;
+
         /// <summary>
         /// The first selected route destination in route tree view
         /// </summary>
-        public RouteDestination SelectedRouteDestination { get { return _selectedRouteDestination.Value; } set { _selectedRouteDestinationSubject.OnNext(value); } }
-
-        private ObservableCollection<RouteDestination> _selectedRouteDestinations = new ObservableCollection<RouteDestination>();
-        /// <summary>
-        /// The route destinations selected in route tree view
-        /// </summary>
-        public ObservableCollection<RouteDestination> SelectedRouteDestinations
+        public RouteDestination SelectedRouteDestination
         {
-            get { return _selectedRouteDestinations; }
+            get { return _selectedRouteDestination.Value; }
             set
             {
-                _selectedRouteDestinations = value;
-                this.RaisePropertyChanged("SelectedRouteDestinations");
+                //Set the SelectedRoute to the selected RouteDestination's Route
+                if (value != null && value.Route != null)
+                    SelectedEntity = value.Route;
+
+                _selectedRouteDestinationSubject.OnNext(value);
             }
         }
 
@@ -537,7 +535,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             _selectedRouteDestinationLocationContactInfoVM = _selectedRouteDestinationLocationContactInfoVMSubject.ToProperty(this, x => x.SelectedRouteDestinationLocationContactInfoVM);
 
             //Whenever the Selected Route Destination changes: update the _selectedRouteDestinationClientContactInfoVM
-            _selectedRouteDestinationSubject.Where(srd => srd != null && srd.Client != null && srd.Client.OwnedParty!=null).Subscribe(selectedRouteDestination =>
+            _selectedRouteDestinationSubject.Where(srd => srd != null && srd.Client != null && srd.Client.OwnedParty != null).Subscribe(selectedRouteDestination =>
                 _selectedRouteDestinationClientContactInfoVMSubject.OnNext(
                 new ContactInfoVM(DataManager, ContactInfoType.OwnedParties, selectedRouteDestination.Client.OwnedParty.ContactInfoSet)));
 
@@ -864,7 +862,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public void DeleteRouteDestination(RouteDestination routeDestination)
         {
             //Clear references to the RouteDestination
-            foreach(var routeTask in routeDestination.RouteTasks)
+            foreach (var routeTask in routeDestination.RouteTasks)
                 routeTask.RemoveRouteDestination();
 
             this.Context.RouteDestinations.Remove(routeDestination);
