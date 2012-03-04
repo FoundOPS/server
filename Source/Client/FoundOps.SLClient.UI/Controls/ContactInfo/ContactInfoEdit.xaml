@@ -14,18 +14,14 @@
                 <telerik:RadComboBox x:Name="TypesComboBox" Width="100" IsMouseWheelEnabled="False"
                                      ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoTypes, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}" 
                                      SelectedValue="{Binding Type, Mode=TwoWay, Converter={StaticResource ConvertBackWhenExists}}" />
-                <telerik:RadComboBox x:Name="LabelsComboBox" MinWidth="100" IsEditable="True" IsMouseWheelEnabled="False" CanAutocompleteSelectItems="True" CanKeyboardNavigationSelectItems="True" 
-                                     StaysOpenOnEdit="True" TextSearchMode="Contains" OpenDropDownOnFocus="True"
-                                     ItemsSource="{Binding ContactInfoVM.ContactInfoDataService.ContactInfoLabels, RelativeSource={RelativeSource AncestorType=ContactInfo:ContactInfoEdit}}"
-                                     EmptyText="Label" Text="{Binding Label, Mode=TwoWay, Converter={StaticResource ConvertBackWhenExists}}" />
+                <TextBox x:Name="LabelsComboBox" MinWidth="100" Text="{Binding Label, Mode=TwoWay, Converter={StaticResource ConvertBackWhenExists}}" />
                 <!--Bind Items to all of the currently used Labels of the Selected Info Type-->
                 <telerik:RadMaskedTextBox MaskType="None" Width="180" EmptyContent="{Binding Type}" Value="{Binding Data, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" />
                 <!--MaskType, EmptyContent, and Mask is bound to selected InfoType-->
                 <Button Height="20">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <Triggers:ConfirmBeforeCommandTrigger ConfirmationString="Delete?" CommandParameter="{Binding}"
-    							Command="{Binding ContactInfoVM.DeleteContactInfoCommand, ElementName=myContactInfoEdit}" />
+                            <Triggers:ConfirmBeforeCommandTrigger ConfirmationString="Delete?" CommandParameter="{Binding}" Command="{Binding ContactInfoVM.DeleteContactInfoCommand, ElementName=myContactInfoEdit}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <Image Source="/FoundOps.Common.Silverlight;component/Resources/Delete.png" Stretch="Fill" />

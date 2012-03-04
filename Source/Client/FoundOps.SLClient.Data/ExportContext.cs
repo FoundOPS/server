@@ -36,6 +36,10 @@ namespace FoundOps.SLClient.Data
 #if DEBUG
             //In debug mode, on the local server, the CoreDomainContext is under ClientBin
             rootUrl = rootUrl + "/ClientBin";
+#else
+            //In release mode setup the endpoint to be HTTPS
+           if(!rootUrl.Contains("https"))
+               rootUrl = rootUrl.Replace("http", "https");
 #endif
 
             var serviceUrl = new Uri(String.Format("{0}/{1}", rootUrl, "FoundOps-Server-Services-CoreDomainService-CoreDomainService.svc"), UriKind.RelativeOrAbsolute);

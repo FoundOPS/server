@@ -23,9 +23,10 @@ namespace FoundOps.Server.Controllers
             return RedirectToAction("Silverlight", "Home");
         }
 
-#if !DEBUG
-        [RequireHttps]
-#endif
+        //Cannot require the page to be HTTPS until we have our own tile server
+        //#if !DEBUG
+        //        [RequireHttps]
+        //#endif
         [AddTestUsersThenAuthorize]
         public ActionResult Silverlight()
         {
