@@ -88,23 +88,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" />
-    <Reference Include="GalaSoft.MvvmLight.SL4">
-      <HintPath>..\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\Microsoft.CSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MEFedMVVM.1.2\lib\sl40\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="SLaB.Utilities">
-      <HintPath>..\Lib\SLaB.Utilities.dll</HintPath>
-    </Reference>
     <Reference Include="SLaB.Utilities.Xaml">
       <HintPath>..\Lib\SLaB.Utilities.Xaml.dll</HintPath>
     </Reference>
@@ -118,11 +102,7 @@
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.Composition.Initialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=5.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
     <Reference Include="System.Net">
       <Private>True</Private>
     </Reference>
@@ -131,33 +111,13 @@
     <Reference Include="System.ServiceModel.DomainServices.Client">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Windows.Controls">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Windows.Controls.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Windows.Controls.Navigation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Windows.Controls.Navigation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Windows.Controls.Toolkit">
-      <HintPath>..\Lib\System.Windows.Controls.Toolkit.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Windows.Controls.Toolkit.Internals">
-      <HintPath>..\Lib\System.Windows.Controls.Toolkit.Internals.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Windows.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="mscorlib">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="SLMultiBinding">
-      <HintPath>..\Lib\SLMultiBinding.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows">
@@ -169,19 +129,10 @@
     <Reference Include="System.Core">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MEFedMVVM.1.2\lib\sl40\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Browser">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Xml.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls">

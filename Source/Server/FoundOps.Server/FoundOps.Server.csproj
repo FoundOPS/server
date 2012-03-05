@@ -354,21 +354,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientBin\Microsoft.Windows.Data.DomainServices.zip" />
-    <Content Include="ClientBin\SLaB.Printing.Controls.zip" />
-    <Content Include="ClientBin\SLaB.Utilities.zip" />
-    <Content Include="ClientBin\SLaB.Utilities.Xaml.zip" />
     <Content Include="ClientBin\System.ComponentModel.Composition.zip" />
     <Content Include="ClientBin\System.ComponentModel.Composition.Initialization.zip" />
-    <Content Include="ClientBin\System.ComponentModel.DataAnnotations.zip" />
     <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.zip" />
     <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.Web.zip" />
-    <Content Include="ClientBin\System.Windows.Controls.Data.Input.zip" />
     <Content Include="ClientBin\System.Windows.Controls.zip" />
+    <Content Include="ClientBin\System.Windows.Controls.Input.zip" />
     <Content Include="ClientBin\System.Windows.Controls.Navigation.zip" />
     <Content Include="ClientBin\System.Windows.Data.zip" />
-    <Content Include="ClientBin\System.Xml.Linq.zip" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.Docking.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.GridView.zip" />
@@ -378,7 +371,7 @@
     <Content Include="ClientBin\Telerik.Windows.Data.zip" />
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
-    <Content Include="ClientBin\Telerik.Windows.Documents.zip" />
+    <Content Include="ClientBin\System.Xml.Linq.zip" />
     <None Include="Services\M2M4RiaLinqToEntitiesDomainService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>M2M4RiaLinqToEntitiesDomainService.g.cs</LastGenOutput>
@@ -420,6 +413,7 @@
     <Content Include="ClientBin\SplashScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using ReactiveUI;

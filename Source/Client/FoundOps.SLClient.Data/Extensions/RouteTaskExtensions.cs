@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Reactive.Linq;
 using FoundOps.Common.Silverlight.Interfaces;
-using FoundOps.Common.Tools;
 using RiaServicesContrib;
 using RiaServicesContrib.DomainServices.Client;
 

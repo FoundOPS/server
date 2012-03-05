@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 
 namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions

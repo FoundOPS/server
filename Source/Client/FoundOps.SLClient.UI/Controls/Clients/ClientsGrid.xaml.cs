@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using Telerik.Windows;
 using System.ComponentModel;
 using FoundOps.SLClient.Data.Tools;
