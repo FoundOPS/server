@@ -1,30 +1,27 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Data;
-using System.Globalization;
-using System.Reactive.Linq;
 using System.Windows.Media;
-using System.ComponentModel;
 using System.Windows.Controls;
+using Telerik.Data;
+using Telerik.Windows.Controls;
 using FoundOps.Common.Tools;
 using FoundOps.SLClient.UI.Tools;
-using Telerik.Windows.Controls;
-using FoundOps.Common.Silverlight.Models.Import;
-using FoundOps.Common.Silverlight.Models.DataTable;
 using ItemsControl = System.Windows.Controls.ItemsControl;
 
 namespace FoundOps.SLClient.UI.Controls.ImportData
 {
     //TODO Setup multiplicity
     /// <summary>
-    /// 
+    /// A DataGrid for importing a CSV and classifying the type of data importing.
     /// </summary>
     public partial class ImportDataGrid : INotifyPropertyChanged
     {
         //For creating unique names on extra columns
         private int _customColumnIndex;
-        private readonly DataRowColumnToValueConverter<ValueWithOptionalAssociation> _dataRowColumnToValueConverter = new DataRowColumnToValueConverter<ValueWithOptionalAssociation>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImportDataGrid"/> class.
@@ -38,24 +35,33 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
             {
                 //Update the columns whenever the DataTable changes
                 this.ImportRadGridView.Columns.Clear();
-                foreach (var column in VM.ImportData.DataTable.Columns.OfType<ImportColumn>()) //All are ImportColumns
+
+                //Go through each column and setup the GridView
+                foreach (var column in VM.ImportData.DataTable.Columns.Cast<ImportColumn>())
                     this.ImportRadGridView.Columns.Add(CreateColumn(column, column.ColumnName));
             });
         }
 
+        /// <summary>
+        /// Creates the ImportDataGrid's import column.
+        /// </summary>
+        /// <param name="importColumn">The import column to setup a DataGridColumn for.</param>
+        /// <param name="columnDisplayName">Display name of the column.</param>
+        /// <returns></returns>
         private GridViewDataColumn CreateColumn(ImportColumn importColumn, string columnDisplayName)
         {
-            string uniqueColumnName = importColumn.ColumnName;
+            #region Setup the import column header
 
             var columnHeaderColumnStackPanel = new StackPanel();
 
             var importColumnTypeComboBox = new RadComboBox { Width = 100, DisplayMemberPath = "DisplayName" };
 
-            ////Setup ComboBox's ItemTemplate to work with Multiplicity
-            //importColumnTypeComboBox.ItemTemplate = (DataTemplate)this.Resources["ImportDestinationComboBoxTemplate"];
+            //TODO: Setup ComboBox's ItemTemplate to work with Multiplicity
 
+            //Bind the ImportColumnTypeComboBox's itemsource to the import destination's column types
             importColumnTypeComboBox.SetBinding(ItemsControl.ItemsSourceProperty, new Binding("DestinationColumnTypes") { Source = VM.ImportData });
-            //Bind the ImportColumnType to the DataTable's ImportColumn
+
+            //Bind the selected item of the ImportColumnTypeComboBox to the ImportColumn.ImportColumnType
             importColumnTypeComboBox.SetBinding(Selector.SelectedItemProperty, new Binding("ImportColumnType") { Mode = BindingMode.TwoWay, Source = importColumn });
 
             columnHeaderColumnStackPanel.Children.Add(importColumnTypeComboBox);
@@ -76,27 +82,22 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
 
             columnHeaderStackPanel.Children.Add(removeColumnButton);
 
+            #endregion
+
             var gridViewColumn = new GridViewDataColumn
             {
-                UniqueName = uniqueColumnName,
-                DataMemberBinding = new Binding { Converter = _dataRowColumnToValueConverter, ConverterParameter = uniqueColumnName },
-                CellTemplate = (DataTemplate)this.Resources["DefaultCellTemplate"],
-                CellEditTemplate = (DataTemplate)((ImportDataGridCellTemplateConverter)this.Resources["ImportDataGridCellTemplateConverter"]).Convert(importColumnTypeComboBox.SelectedValue, null, null, null),
+                UniqueName = importColumn.ColumnName,
+                DataMemberBinding = new Binding(importColumn.ColumnName),
+                //CellTemplate = (DataTemplate)this.Resources["DefaultCellTemplate"],
+                //CellEditTemplate = (DataTemplate)this.Resources["DefaultEditTemplate"],
                 Header = columnHeaderStackPanel
             };
 
-            removeColumnButton.Click += (sender, args) =>
-                                            {
-                                                importColumn.ImportColumnType = null;
-                                                this.ImportRadGridView.Columns.Remove(gridViewColumn);
-                                            };
+            //When the remove column button is pressed, remove this column from the DataGrid.
+            removeColumnButton.Click += (sender, args) => this.ImportRadGridView.Columns.Remove(gridViewColumn);
 
             importColumnTypeComboBox.SelectionChanged += (sender, e) =>
             {
-                //Setup the cell template
-                gridViewColumn.CellEditTemplate =
-                      (DataTemplate)((ImportDataGridCellTemplateConverter)this.Resources["ImportDataGridCellTemplateConverter"]).Convert(importColumnTypeComboBox.SelectedValue, null, null, null);
-  
                 //Check if every column is selected, if so create another column
                 var allAreSelected = true;
                 foreach (var column in ImportRadGridView.Columns)
@@ -113,13 +114,7 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
                     ImportRadGridView.Columns.Add(CreateColumn(newColumn, ""));
                     _customColumnIndex++;
                 }
-
-                //TODO: update multiplicity
-
-                ////Refresh the UI
-                //ImportRadGridView.Items.Refresh();
-                //ImportRadGridView.InvalidateArrange();
-               };
+            };
 
             return gridViewColumn;
         }
@@ -148,14 +143,13 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
 
         private void ImportRadGridViewCopyingCellClipboardContent(object sender, GridViewCellClipboardEventArgs e)
         {
-            var dataRow = (DataRow<ValueWithOptionalAssociation>)e.Cell.Item;
-            e.Value = ((ValueWithOptionalAssociation)_dataRowColumnToValueConverter.Convert(dataRow, null, e.Cell.Column.UniqueName, null)).Value;
+            e.Value = e.Cell.Item;
         }
 
         private void ImportRadGridViewPastingCellClipboardContent(object sender, GridViewCellClipboardEventArgs e)
         {
-            var dataRow = (DataRow<ValueWithOptionalAssociation>)e.Cell.Item;
-            dataRow[e.Cell.Column.UniqueName] = new ValueWithOptionalAssociation { Value = e.Value };
+            var dataRow = (DataRow)e.Cell.Item;
+            dataRow[e.Cell.Column.UniqueName] = e.Value;
         }
 
         private void ImportRadGridViewPasted(object sender, Telerik.Windows.RadRoutedEventArgs e)
@@ -163,40 +157,6 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
             //Refresh Cells
             ImportRadGridView.Items.Refresh();
             ImportRadGridView.InvalidateArrange();
-        }
-    }
-
-    public class ImportDataGridCellTemplateConverter : IValueConverter
-    {
-        #region Public Properties
-
-        public DataTemplate DefaultTemplate { get; set; }
-        public DataTemplate ClientNameTemplate { get; set; }
-        public DataTemplate ClientNameAssociationTemplate { get; set; }
-
-        #endregion
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var importColumnType = (ImportColumnType)value;
-            if (importColumnType == null)
-                return DefaultTemplate;
-
-            var importDestination = VM.ImportData.ImportDestination;
-
-            if (importColumnType.Type == ImportColumnEnum.ClientName)
-            {
-                return importDestination == ImportDestination.Clients
-                           ? DefaultTemplate
-                           : ClientNameAssociationTemplate;
-            }
-
-            return DefaultTemplate;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
         }
     }
 }

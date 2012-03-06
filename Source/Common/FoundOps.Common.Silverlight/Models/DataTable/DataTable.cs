@@ -1,80 +1,134 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.Collections.Specialized;
+using System.Collections.Generic;
+using System.Linq;
+using System.Collections;
+using System.Collections.ObjectModel;
 
-
-namespace FoundOps.Common.Silverlight.Models.DataTable
+namespace Telerik.Data
 {
-    public class DataTable<T> : IEnumerable, INotifyCollectionChanged
+    /// <summary>
+    /// More details http://blogs.telerik.com/vladimirenchev/posts/09-04-23/lightweight-datatable-for-your-silverlight-applications.aspx
+    /// </summary>
+    public class DataTable : IEnumerable, INotifyCollectionChanged
     {
-        private IList<DataColumn<T>> _columns;
-        private ObservableCollection<DataRow<T>> _rows;
+        private IList<DataColumn> columns;
+        private ObservableCollection<DataRow> rows;
+        private IList internalView;
+        private Type elementType;
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        public IList<DataColumn<T>> Columns
+        public IList<DataColumn> Columns
         {
             get
             {
-                if (_columns == null)
+                if (columns == null)
                 {
-                    _columns = new List<DataColumn<T>>();
+                    columns = new List<DataColumn>();
                 }
 
-                return _columns;
+                return columns;
             }
         }
 
-        public IList<DataRow<T>> Rows
+
+        public IList<DataRow> Rows
         {
             get
             {
-                if (this._rows == null)
+                if (this.rows == null)
                 {
-                    this._rows = new ObservableCollection<DataRow<T>>();
-                    this._rows.CollectionChanged += OnRowsCollectionChanged;
+                    this.rows = new ObservableCollection<DataRow>();
+                    this.rows.CollectionChanged += OnRowsCollectionChanged;
                 }
 
-                return _rows;
+                return rows;
             }
         }
+
+        public DataRow NewRow()
+        {
+            return new DataRow(this);
+        }
+
 
         private void OnRowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    this.OnCollectionChanged(e);
+                    this.InternalView.Insert(e.NewStartingIndex, ((DataRow)e.NewItems[0]).RowObject);
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    this.OnCollectionChanged(e);
+                    this.InternalView.RemoveAt(e.OldStartingIndex);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    this.OnCollectionChanged(e);
+                    this.InternalView.Remove(((DataRow)e.OldItems[0]).RowObject);
+                    this.InternalView.Insert(e.NewStartingIndex, ((DataRow)e.NewItems[0]).RowObject);
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    this.OnCollectionChanged(e);
-                    break;
                 default:
-                    this.OnCollectionChanged(e);
+                    this.InternalView.Clear();
+                    this.Rows.Select(r => r.RowObject).ToList().ForEach(o => this.InternalView.Add(o));
                     break;
             }
+        }
+
+        private IList InternalView
+        {
+            get
+            {
+                if (this.internalView == null)
+                    this.CreateInternalView();
+
+                return this.internalView;
+            }
+        }
+
+        private void CreateInternalView()
+        {
+            this.internalView = (IList)Activator.CreateInstance(typeof(ObservableCollection<>).MakeGenericType(this.ElementType));
+            ((INotifyCollectionChanged)internalView).CollectionChanged += (s, e) => this.OnCollectionChanged(e);
+        }
+
+        internal Type ElementType
+        {
+            get
+            {
+                if (this.elementType == null)
+                    this.InitializeElementType();
+
+                return this.elementType;
+            }
+        }
+
+        private void InitializeElementType()
+        {
+            this.Seal();
+            this.elementType = DynamicObjectBuilder.GetDynamicObjectBuilderType(this.Columns);
+        }
+
+        private void Seal()
+        {
+            this.columns = new ReadOnlyCollection<DataColumn>(this.Columns);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return this.InternalView.GetEnumerator();
+        }
+
+        public IList ToList()
+        {
+            return this.InternalView;
         }
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             var handler = this.CollectionChanged;
             if (handler != null)
-            {
                 handler(this, e);
-            }
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return this.Rows.GetEnumerator();
         }
     }
-
 }

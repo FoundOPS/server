@@ -220,6 +220,8 @@
     <Compile Include="Controls\Dispatcher\Manifest\ManifestSummary.xaml.cs">
       <DependentUpon>ManifestSummary.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ImportData\ImportColumn.cs" />
+    <Compile Include="Controls\ImportData\ImportColumnType.cs" />
     <Compile Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml.cs">
       <DependentUpon>BusinessDetailsView.xaml</DependentUpon>
     </Compile>
