@@ -52,14 +52,12 @@ namespace FoundOps.Server.Controllers
         /// <returns></returns>
         public ActionResult CCDAPDD()
         {
-#if DEBUG
             if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan") ||
                 UserSpecificResourcesWrapper.GetBool("AutomaticLoginDavid") || UserSpecificResourcesWrapper.GetBool("TestServer"))
             {
                 CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
                 return View();
             }
-#endif
 
             throw new Exception("Invalid attempted access logged for investigation.");
         }

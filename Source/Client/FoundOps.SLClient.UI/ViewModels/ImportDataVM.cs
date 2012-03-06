@@ -1,19 +1,19 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.Models.Import;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.Controls.ImportData;
+using GalaSoft.MvvmLight.Command;
+using Kent.Boogaart.KBCsv;
+using MEFedMVVM.ViewModelLocator;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows;
-using Kent.Boogaart.KBCsv;
-using System.Collections.Generic;
-using GalaSoft.MvvmLight.Command;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Common.Silverlight.Models.Import;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.Models.DataTable;
+using System.Windows;
+using Telerik.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -24,15 +24,6 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class ImportDataVM : DataFedVM
     {
         #region Public Properties
-
-        /// <summary>
-        /// Gets the loaded clients.
-        /// </summary>
-        public IEnumerable<Client> Clients { get { return Manager.Data.Context.Clients; } }
-        /// <summary>
-        /// Gets the loaded locations.
-        /// </summary>
-        public IEnumerable<Location> Locations { get { return Manager.Data.Context.Locations; } }
 
         private bool _isBusy;
         /// <summary>
@@ -84,8 +75,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        private DataTable<ValueWithOptionalAssociation> _dataTable;
-        public DataTable<ValueWithOptionalAssociation> DataTable
+        private DataTable _dataTable;
+        /// <summary>
+        /// Gets the imported csv data table.
+        /// </summary>
+        public DataTable DataTable
         {
             get { return _dataTable; }
             private set
@@ -139,38 +133,39 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Adds a column to the DataTable.
         /// </summary>
         /// <param name="newColumnUniqueName">New name of the column unique.</param>
-        /// <returns></returns>
         public ImportColumn AddColumn(string newColumnUniqueName)
         {
+            var newDataTable = new DataTable();
+
+            //Copy the previous datatable
+
+            //Add the new column
             var newColumn = new ImportColumn { ColumnName = newColumnUniqueName };
             DataTable.Columns.Add(newColumn);
-            foreach (var row in DataTable.Rows)
-                row[newColumnUniqueName] = new ValueWithOptionalAssociation { Value = "" };
+
+            //Set the new DataTable            
+
             return newColumn;
         }
 
-        private static DataTable<ValueWithOptionalAssociation> ReadInCSVData(CsvReader reader)
+        private static DataTable ReadInCSVData(CsvReader reader)
         {
-            var dataTable = new DataTable<ValueWithOptionalAssociation>();
-            var headers = new List<string>();
+            var dataTable = new DataTable();
 
             try
             {
-                var header = reader.ReadHeaderRecord();
-                foreach (var fieldName in header.Values)
-                {
-                    dataTable.Columns.Add(new ImportColumn { ColumnName = fieldName });
-                    headers.Add(fieldName);
-                }
+                var headerRecord = reader.ReadHeaderRecord();
+                foreach (var headerName in headerRecord.Values)
+                    dataTable.Columns.Add(new ImportColumn { ColumnName = headerName, DataType = typeof(string) });
 
                 foreach (var record in reader.DataRecords)
                 {
-                    var newRow = new DataRow<ValueWithOptionalAssociation>();
+                    var newRow = dataTable.NewRow();
                     var headerIndex = 0;
-                    foreach (var headerKey in record.HeaderRecord.Values)
+                    foreach (var headerKey in headerRecord.Values)
                     {
                         var cleanedString = record.Values[headerIndex].Replace('�', ' ');
-                        newRow[headerKey] = new ValueWithOptionalAssociation { Value = cleanedString };
+                        newRow[headerKey] = cleanedString;
                         headerIndex++;
                     }
 
@@ -233,26 +228,16 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.ClientName)
                     {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        if (valueWithOptionalAssociation.OptionalAssociation != null)
-                            selectedClient = (Client)valueWithOptionalAssociation.OptionalAssociation;
-                        else
-                        {
-                            clientName = (string)valueWithOptionalAssociation.Value;
-                            selectedClient = Clients.FirstOrDefault(client => client.DisplayName == clientName);
-                        }
+                        clientName = (string)row[column.ColumnName];
+                        //TODO    
+                        //selectedClient = Clients.FirstOrDefault(client => client.DisplayName == clientName);
                     }
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.LocationName)
                     {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        if (valueWithOptionalAssociation.OptionalAssociation != null)
-                            selectedLocation = (Location)valueWithOptionalAssociation.OptionalAssociation;
-                        else
-                        {
-                            locationName = (string)valueWithOptionalAssociation.Value;
-                            selectedLocation = Locations.FirstOrDefault(location => location.Name == locationName);
-                        }
+                        locationName = (string)row[column.ColumnName];
+                        //TODO    
+                        //selectedLocation = Locations.FirstOrDefault(location => location.Name == locationName);
                     }
 
                     #endregion
@@ -260,56 +245,34 @@ namespace FoundOps.SLClient.UI.ViewModels
                     #region Contact Info Columns
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoEmailAddressLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoEmailAddressLabel = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoEmailAddressLabel = (string)row[column.ColumnName];
+
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoEmailAddressData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoEmailAddressData = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoEmailAddressData = (string)row[column.ColumnName];
+
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoFaxNumberLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoFaxNumberLabel = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoFaxNumberLabel = (string)row[column.ColumnName];
+
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoFaxNumberData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoFaxNumberData = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoFaxNumberData = (string)row[column.ColumnName];
+
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoPhoneNumberLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoPhoneNumberLabel = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoPhoneNumberLabel = (string)row[column.ColumnName];
+
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoPhoneNumberData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoPhoneNumberData = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoPhoneNumberData = (string)row[column.ColumnName];
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoOtherLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoOtherLabel = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoOtherLabel = (string)row[column.ColumnName];
+
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoOtherData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoOtherData = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoOtherData = (string)row[column.ColumnName];
+
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoWebsiteLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoWebsiteLabel = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoWebsiteLabel = (string)row[column.ColumnName];
+
                     if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoWebsiteData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoWebsiteData = (string)valueWithOptionalAssociation.Value;
-                    }
+                        contactInfoWebsiteData = (string)row[column.ColumnName];
 
                     #endregion
 
@@ -317,49 +280,32 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.LocationLatitude)
                     {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
                         decimal parsedDecimal;
-                        if (Decimal.TryParse((string)valueWithOptionalAssociation.Value, out parsedDecimal))
+                        if (Decimal.TryParse((string)row[column.ColumnName], out parsedDecimal))
                             locationLatitude = parsedDecimal;
                     }
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.LocationLongitude)
                     {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
                         decimal parsedDecimal;
-                        if (Decimal.TryParse((string)valueWithOptionalAssociation.Value, out parsedDecimal))
+                        if (Decimal.TryParse((string)row[column.ColumnName], out parsedDecimal))
                             locationLongitude = parsedDecimal;
                     }
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.LocationAddressLineOne)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationAddressLineOne = (string)valueWithOptionalAssociation.Value;
-                    }
+                        locationAddressLineOne = (string)row[column.ColumnName];
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.LocationAddressLineTwo)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationAddressLineTwo = (string)valueWithOptionalAssociation.Value;
-                    }
+                        locationAddressLineTwo = (string)row[column.ColumnName];
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.LocationCity)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationCity = (string)valueWithOptionalAssociation.Value;
-                    }
+                        locationCity = (string)row[column.ColumnName];
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.LocationState)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationState = (string)valueWithOptionalAssociation.Value;
-                    }
+                        locationState = (string)row[column.ColumnName];
 
                     if (column.ImportColumnType.Type == ImportColumnEnum.LocationZipCode)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationZipCode = (string)valueWithOptionalAssociation.Value;
-                    }
+                        locationZipCode = (string)row[column.ColumnName];
 
                     #endregion
                 }

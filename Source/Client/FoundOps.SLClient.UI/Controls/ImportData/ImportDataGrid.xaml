@@ -9,34 +9,11 @@
              xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
              mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="ImportDataVM">
-    <UserControl.Resources>
-        <DataTemplate x:Key="DefaultCellTemplate">
-            <Grid DataContext="{Binding Value, RelativeSource={RelativeSource AncestorType=GridView:GridViewCell}}">
-                <TextBlock Text="{Binding Value}"/>
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="DefaultEditTemplate">
-            <Grid DataContext="{Binding Value, RelativeSource={RelativeSource AncestorType=GridView:GridViewCell}}">
-                <TextBox Text="{Binding Value, Mode=TwoWay}"/>
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="ClientNameTemplate">
-            <Grid DataContext="{Binding Value, RelativeSource={RelativeSource AncestorType=GridView:GridViewCell}}">
-                <Controls:RadComboBox IsEditable="True" CanAutocompleteSelectItems="True" Text="{Binding Value, Mode=TwoWay}" DisplayMemberPath="OwnedParty.DisplayName" SelectedValue="{Binding OptionalAssociation, Mode=TwoWay}" ItemsSource="{Binding DataContext.Clients, RelativeSource={RelativeSource AncestorType=ImportData:ImportDataGrid}}"/>
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="LocationNameTemplate">
-            <Grid DataContext="{Binding Value, RelativeSource={RelativeSource AncestorType=GridView:GridViewCell}}">
-                <Controls:RadComboBox IsEditable="True" CanAutocompleteSelectItems="True" Text="{Binding Value, Mode=TwoWay}" DisplayMemberPath="Name" SelectedValue="{Binding OptionalAssociation, Mode=TwoWay}" ItemsSource="{Binding DataContext.Locations, RelativeSource={RelativeSource AncestorType=ImportData:ImportDataGrid}}"/>
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="ImportDestinationComboBoxTemplate">
-            <TextBlock Text="{MarkupExtensions:AppendNumberToStringMarkupExtension StringValue={Binding DisplayName}, NumberValue={Binding Multiplicity}}"/>
-        </DataTemplate>
-        <ImportData:ImportDataGridCellTemplateConverter x:Key="ImportDataGridCellTemplateConverter" DefaultTemplate="{StaticResource DefaultEditTemplate}"  ClientNameAssociationTemplate="{StaticResource ClientNameTemplate}"/>
-    </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">
-        <telerik:RadGridView x:Name="ImportRadGridView" ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding DataTable.Rows}" AutoGenerateColumns="False" CanUserDeleteRows="True" CanUserReorderColumns="True"
-                             SelectionMode="Extended" ClipboardCopyMode="Cells" ClipboardPasteMode="Default" SelectionUnit="Cell" CopyingCellClipboardContent="ImportRadGridViewCopyingCellClipboardContent" PastingCellClipboardContent="ImportRadGridViewPastingCellClipboardContent" Pasted="ImportRadGridViewPasted"/>
+        <telerik:RadGridView x:Name="ImportRadGridView" AutoGenerateColumns="False" ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" IsSynchronizedWithCurrentItem="True"
+                             SelectionMode="Extended" ClipboardCopyMode="Cells" ClipboardPasteMode="Default" SelectionUnit="Cell" 
+                             CopyingCellClipboardContent="ImportRadGridViewCopyingCellClipboardContent" 
+                             PastingCellClipboardContent="ImportRadGridViewPastingCellClipboardContent" Pasted="ImportRadGridViewPasted"
+                             ItemsSource="{Binding DataTable}" CanUserDeleteRows="True" CanUserReorderColumns="True" />
     </Grid>
 </UserControl>

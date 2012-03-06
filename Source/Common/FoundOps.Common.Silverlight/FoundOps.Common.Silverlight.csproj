@@ -152,6 +152,9 @@
     <Compile Include="Models\Collections\RBTree.cs" />
     <Compile Include="Models\Collections\SortedSet.cs" />
     <Compile Include="Models\Collections\ThreadableObservableCollection.cs" />
+    <Compile Include="Models\DataTable\DynamicObject.cs" />
+    <Compile Include="Models\DataTable\DynamicObjectBuilder.cs" />
+    <Compile Include="Models\DataTable\TypeSignature.cs" />
     <Compile Include="Models\SmartDispatcher.cs" />
     <Compile Include="Models\ThreadableNotifiableObject.cs" />
     <Compile Include="Loader\ContentLoaderBase.cs" />
@@ -167,9 +170,6 @@
     <Compile Include="Models\DataTable\DataColumn.cs" />
     <Compile Include="Models\DataTable\DataRow.cs" />
     <Compile Include="Models\DataTable\DataTable.cs" />
-    <Compile Include="Models\Import\ImportColumn.cs" />
-    <Compile Include="Models\Import\ImportColumnType.cs" />
-    <Compile Include="Models\Import\ValueWithOptionalAssociation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\DomainCollectionViewFactory.cs" />
     <Compile Include="Tools\DynamicTools.cs" />
