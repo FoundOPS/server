@@ -107,6 +107,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (!this.ObjectContext.CurrentUserHasFoundOPSAdminAccess() && !this.ObjectContext.CurrentUserCanAdministerThisParty(account.Id))
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
+            this.ObjectContext.DetachExistingAndAttach(account);
+
             var originalBusinessAccount = this.ChangeSet.GetOriginal(account);
 
             //Only FoundOPS's admins can change the MaxRoutes
@@ -533,9 +535,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Check if there is a temporary password
             if (string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
-            {
                 currentUserAccount.PasswordHash = EncryptionTools.Hash(currentUserAccount.TemporaryPassword);
-            }
 
             this.ObjectContext.Parties.AttachAsModified(currentUserAccount);
         }
