@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using FoundOps.Common.Silverlight.UI.Controls;
 using ReactiveUI;
 using System.Linq;
 using ReactiveUI.Xaml;
@@ -875,6 +876,25 @@ namespace FoundOps.SLClient.UI.ViewModels
             newRoute.Date = SelectedDate;
             newRoute.OwnerBusinessAccount = (BusinessAccount)ContextManager.OwnerAccount;
             newRoute.RouteType = SelectedRouteTypes.FirstOrDefault();
+        }
+
+        protected override bool BeforeAdd()
+        {
+            if (((BusinessAccount)ContextManager.OwnerAccount).MaxRoutes == null)
+                ((BusinessAccount)ContextManager.OwnerAccount).MaxRoutes = 0;
+
+            if (((BusinessAccount)ContextManager.OwnerAccount).MaxRoutes <= DomainCollectionView.Count())
+            {
+                var tooManyRoutes = new TooManyRoutesError
+                {
+                    MaxNumberOfRoutes = (int)((BusinessAccount)ContextManager.OwnerAccount).MaxRoutes
+                };
+
+                tooManyRoutes.Show();
+
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

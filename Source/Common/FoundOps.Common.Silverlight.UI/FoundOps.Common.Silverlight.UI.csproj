@@ -166,6 +166,9 @@
     <Compile Include="Controls\AddEditDelete\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TooManyRoutesError.xaml.cs">
+      <DependentUpon>TooManyRoutesError.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
@@ -367,6 +370,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\AddEditDelete\EditButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TooManyRoutesError.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

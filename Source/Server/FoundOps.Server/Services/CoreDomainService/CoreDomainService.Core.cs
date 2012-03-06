@@ -101,6 +101,21 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region BusinessAccount
 
+        private void UpdateBusinessAccount(BusinessAccount account)
+        {
+            //Only FoundOPS admin accounts or a user with admin capabilities for the current account can update the account
+            if (!this.ObjectContext.CurrentUserHasFoundOPSAdminAccess() && !this.ObjectContext.CurrentUserCanAdministerThisParty(account.Id))
+                throw new AuthenticationException("Invalid attempted access logged for investigation.");
+
+            var originalBusinessAccount = this.ChangeSet.GetOriginal(account);
+
+            //Only FoundOPS's admins can change the MaxRoutes
+            if (originalBusinessAccount.MaxRoutes != account.MaxRoutes && !this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
+                throw new AuthenticationException("Invalid attempted access logged for investigation.");
+
+            this.ObjectContext.Parties.AttachAsModified(account);
+        }
+
         private void DeleteBusinessAccount(BusinessAccount businessAccountToDelete)
         {
             if (businessAccountToDelete.Id == BusinessAccountsConstants.FoundOpsId)
@@ -151,7 +166,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
         }
 
-        #endregion 
+        #endregion
 
         #region ContactInfo
 
@@ -310,7 +325,12 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateParty(Party account)
         {
-            this.ObjectContext.Parties.AttachAsModified(account);
+            if (!(account is BusinessAccount))
+            {
+                this.ObjectContext.Parties.AttachAsModified(account);
+            }
+            else
+                UpdateBusinessAccount((BusinessAccount)account);
         }
 
         public void DeleteParty(Party party)
