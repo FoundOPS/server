@@ -1,27 +1,27 @@
-﻿using System;
+﻿using FoundOps.Common.Tools;
+using FoundOps.SLClient.UI.Tools;
+using ItemsControl = System.Windows.Controls.ItemsControl;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Controls;
 using Telerik.Data;
 using Telerik.Windows.Controls;
-using FoundOps.Common.Tools;
-using FoundOps.SLClient.UI.Tools;
-using ItemsControl = System.Windows.Controls.ItemsControl;
 
 namespace FoundOps.SLClient.UI.Controls.ImportData
 {
-    //TODO Setup multiplicity
+    //TODO Add columns when all columns are used
     /// <summary>
     /// A DataGrid for importing a CSV and classifying the type of data importing.
     /// </summary>
     public partial class ImportDataGrid : INotifyPropertyChanged
     {
-        //For creating unique names on extra columns
-        private int _customColumnIndex;
+        ////For creating unique names on extra columns
+        //private int _customColumnIndex;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImportDataGrid"/> class.
@@ -31,12 +31,12 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
             InitializeComponent();
             if (DesignerProperties.IsInDesignTool) return;
 
+            //Update the columns whenever the DataTable changes
             Observable2.FromPropertyChangedPattern(VM.ImportData, x => x.DataTable).WhereNotNull().ObserveOnDispatcher().Subscribe(_ =>
             {
-                //Update the columns whenever the DataTable changes
                 this.ImportRadGridView.Columns.Clear();
 
-                //Go through each column and setup the GridView
+                //Go through each of the datatables's columns and setup the radgridview's columns
                 foreach (var column in VM.ImportData.DataTable.Columns.Cast<ImportColumn>())
                     this.ImportRadGridView.Columns.Add(CreateColumn(column, column.ColumnName));
             });
@@ -96,25 +96,26 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
             //When the remove column button is pressed, remove this column from the DataGrid.
             removeColumnButton.Click += (sender, args) => this.ImportRadGridView.Columns.Remove(gridViewColumn);
 
-            importColumnTypeComboBox.SelectionChanged += (sender, e) =>
-            {
-                //Check if every column is selected, if so create another column
-                var allAreSelected = true;
-                foreach (var column in ImportRadGridView.Columns)
-                {
-                    if (((StackPanel)column.Header).FindChildByType<RadComboBox>().SelectedItem == null)
-                        allAreSelected = false;
-                }
+            //TODO: Dynamically add columns when all are selected. Wait on response from 
+            //importColumnTypeComboBox.SelectionChanged += (sender, e) =>
+            //{
+            //    //Check if every column is selected
+            //    var allAreSelected = true;
+            //    foreach (var column in ImportRadGridView.Columns)
+            //    {
+            //        if (((StackPanel)column.Header).FindChildByType<RadComboBox>().SelectedItem == null)
+            //            allAreSelected = false;
+            //    }
 
-                //Create another column if all columns are selected
-                if (allAreSelected)
-                {
-                    var newColumnUniqueName = String.Format("CustomColumn{0}", _customColumnIndex);
-                    var newColumn = VM.ImportData.AddColumn(newColumnUniqueName);
-                    ImportRadGridView.Columns.Add(CreateColumn(newColumn, ""));
-                    _customColumnIndex++;
-                }
-            };
+            //    //Create another column if all columns are selected
+            //    if (allAreSelected)
+            //    {
+            //        var newColumnUniqueName = String.Format("CustomColumn{0}", _customColumnIndex);
+            //        var newColumn = VM.ImportData.AddColumn(newColumnUniqueName);
+            //        ImportRadGridView.Columns.Add(CreateColumn(newColumn, ""));
+            //        _customColumnIndex++;
+            //    }
+            //};
 
             return gridViewColumn;
         }

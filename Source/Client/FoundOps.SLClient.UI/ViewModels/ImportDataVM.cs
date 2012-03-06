@@ -106,9 +106,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public ImportDataVM()
         {
-            Manager.Data.Subscribe<Client>(DataManager.Query.Clients, ObservationState, null);
-            Manager.Data.Subscribe<Location>(DataManager.Query.Locations, ObservationState, null);
-
             #region Setup Commands
 
             //When the SelectFileCommand is executed read the CSV data
@@ -129,24 +126,19 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Logic
 
-        /// <summary>
-        /// Adds a column to the DataTable.
-        /// </summary>
-        /// <param name="newColumnUniqueName">New name of the column unique.</param>
-        public ImportColumn AddColumn(string newColumnUniqueName)
-        {
-            var newDataTable = new DataTable();
+        //TODO: Wait on http://www.telerik.com/community/forums/silverlight/gridview/lightweight-datatable-add-column-after-rows-have-been-added.aspx
+        ///// <summary>
+        ///// Adds a column to the DataTable.
+        ///// </summary>
+        ///// <param name="newColumnUniqueName">New name of the column unique.</param>
+        //public ImportColumn AddColumn(string newColumnUniqueName)
+        //{
+        //    //Add the new column at the end
+        //    var newColumn = new ImportColumn { ColumnName = newColumnUniqueName };
+        //    DataTable.Columns.Add(newColumn);
 
-            //Copy the previous datatable
-
-            //Add the new column
-            var newColumn = new ImportColumn { ColumnName = newColumnUniqueName };
-            DataTable.Columns.Add(newColumn);
-
-            //Set the new DataTable            
-
-            return newColumn;
-        }
+        //    return newColumn;
+        //}
 
         private static DataTable ReadInCSVData(CsvReader reader)
         {
@@ -157,6 +149,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var headerRecord = reader.ReadHeaderRecord();
                 foreach (var headerName in headerRecord.Values)
                     dataTable.Columns.Add(new ImportColumn { ColumnName = headerName, DataType = typeof(string) });
+
+                //Add 3 extra columns
+                for (var i = 0; i < 3; i++)
+                    dataTable.Columns.Add(new ImportColumn { ColumnName = "Extra Column " + i, DataType = typeof(string) });
 
                 foreach (var record in reader.DataRecords)
                 {

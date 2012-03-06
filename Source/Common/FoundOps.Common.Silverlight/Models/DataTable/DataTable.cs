@@ -52,7 +52,6 @@ namespace Telerik.Data
             return new DataRow(this);
         }
 
-
         private void OnRowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
