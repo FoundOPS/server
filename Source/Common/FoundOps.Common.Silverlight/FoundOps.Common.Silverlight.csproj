@@ -88,6 +88,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" />
+    <Reference Include="Kent.Boogaart.KBCsv, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="SLaB.Utilities.Xaml">
       <HintPath>..\Lib\SLaB.Utilities.Xaml.dll</HintPath>

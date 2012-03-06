@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Collections.ObjectModel;
+using Kent.Boogaart.KBCsv;
 
 namespace Telerik.Data
 {
@@ -128,6 +130,41 @@ namespace Telerik.Data
             var handler = this.CollectionChanged;
             if (handler != null)
                 handler(this, e);
+        }
+
+        /// <summary>
+        /// Converts the DataTable to a CSV.
+        /// </summary>
+        /// <param name="alternateHeaders">The alternate headers.</param>
+        /// <param name="columnsIndexesToIgnore">The columns indexes to ignore.</param>
+        /// <returns>A byte[] CSV.</returns>
+        public byte[] ToCSV(IEnumerable<string> alternateHeaders = null, IEnumerable<int> columnsIndexesToIgnore = null)
+        {
+            var memoryStream = new MemoryStream();
+            var csvWriter = new CsvWriter(memoryStream);
+
+            var columnsToTake = this.Columns.Select(c => c.ColumnName).ToList();
+
+            //Remove any column indexes to ignores
+            if (columnsIndexesToIgnore != null)
+                foreach(var columnIndexToIgnore in columnsIndexesToIgnore.OrderByDescending(ci=>ci))
+                    columnsToTake.RemoveAt(columnIndexToIgnore);
+
+            //If alternateHeaders is not null use them for the header record
+            //Otherwise use the datatable's column names for the header record
+            csvWriter.WriteHeaderRecord(alternateHeaders.ToArray() ?? columnsToTake.ToArray());
+
+            foreach (var row in this.Rows)
+            {
+                var rowValues = columnsToTake.Select(column => row[column]).ToArray();
+                csvWriter.WriteDataRecord(rowValues);
+            }
+
+            csvWriter.Close();
+            var csv = memoryStream.ToArray();
+            memoryStream.Dispose();
+
+            return csv;
         }
     }
 }

@@ -238,6 +238,15 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\VehiclesDesignData.cs">
       <Link>DesignData\VehiclesDesignData.cs</Link>
     </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\Import\DataCategory.cs">
+      <Link>Models\DataCategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\Import\ImportColumnType.cs">
+      <Link>Models\ImportColumnType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\Import\ImportDestinationTools.cs">
+      <Link>Models\ImportDestinationTools.cs</Link>
+    </Compile>
     <Compile Include="Converters\OwnerPartyToClientConverter.cs" />
     <Compile Include="Converters\LocationConverters.cs" />
     <Compile Include="Converters\ServiceTemplatesConverters.cs" />

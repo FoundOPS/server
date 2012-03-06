@@ -54,6 +54,12 @@
       <HintPath>Lib\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Kent.Boogaart.HelperTrinity">
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Kent.Boogaart.HelperTrinity.dll</HintPath>
+    </Reference>
+    <Reference Include="Kent.Boogaart.KBCsv">
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
@@ -323,6 +329,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Services\AuthenticationDomainService.cs" />
+    <Compile Include="Services\CoreDomainService\CoreDomainService.Import.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Services.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Dispatching.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.ServiceTemplates.cs" />

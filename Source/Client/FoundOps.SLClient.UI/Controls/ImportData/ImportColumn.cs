@@ -1,5 +1,5 @@
-﻿using FoundOps.Common.Silverlight.Models.Import;
-using Telerik.Data;
+﻿using Telerik.Data;
+using FoundOps.Core.Models.Import;
 
 namespace FoundOps.SLClient.UI.Controls.ImportData
 {
