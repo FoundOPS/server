@@ -199,7 +199,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             var csvToImport = DataTable.ToCSV(headerRecord, columnIndexesToIgnore);
 
-            Manager.Data.Context.ImportEntities(ImportDestination, csvToImport, invokeOp =>
+            Manager.Data.Context.ImportEntities(Manager.Context.RoleId, ImportDestination, csvToImport, invokeOp =>
             {
                 if (!invokeOp.HasError)
                     MessageBox.Show("Data Imported");

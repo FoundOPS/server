@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="EncryptionTools.cs" />
     <Compile Include="EntityCloneTools.cs" />
+    <Compile Include="EntityDataReader.cs" />
     <Compile Include="ObjectContextExtensions.cs" />
     <Compile Include="PlaceFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
