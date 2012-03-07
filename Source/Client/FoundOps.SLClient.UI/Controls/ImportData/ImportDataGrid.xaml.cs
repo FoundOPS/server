@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using Telerik.Data;
 using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.ImportData
@@ -141,23 +140,5 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
             }
         }
         #endregion
-
-        private void ImportRadGridViewCopyingCellClipboardContent(object sender, GridViewCellClipboardEventArgs e)
-        {
-            e.Value = e.Cell.Item;
-        }
-
-        private void ImportRadGridViewPastingCellClipboardContent(object sender, GridViewCellClipboardEventArgs e)
-        {
-            var dataRow = (DataRow)e.Cell.Item;
-            dataRow[e.Cell.Column.UniqueName] = e.Value;
-        }
-
-        private void ImportRadGridViewPasted(object sender, Telerik.Windows.RadRoutedEventArgs e)
-        {
-            //Refresh Cells
-            ImportRadGridView.Items.Refresh();
-            ImportRadGridView.InvalidateArrange();
-        }
     }
 }

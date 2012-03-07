@@ -154,135 +154,151 @@ namespace FoundOps.Server.Services.CoreDomainService
                             locationZipCode = value;
 
                         #endregion
-
-                        //TODO Columns with possible associations
-
-                        EntityObject newEntity = null;
-
-                        //Add the Client entity
-                        if (importDestination == ImportDestination.Clients)
-                        {
-                            var client = new Client
-                            {
-                                Vendor = business,
-                                OwnedParty = new Business { Name = clientName }
-                            };
-
-                            //Add the location association to the hookup queue
-                            if (!String.IsNullOrEmpty(locationName))
-                                clientLocationAssociationsToHookup.Add(new Tuple<Client, string>(client, clientName));
-
-                            newEntity = client;
-                        }
-
-                        //Add the Location entity
-                        if (importDestination == ImportDestination.Locations)
-                        {
-                            var location = new Location
-                            {
-                                OwnerParty = business,
-                                Name = locationName,
-                                Latitude = locationLatitude,
-                                Longitude = locationLongitude,
-                                AddressLineOne = locationAddressLineOne,
-                                AddressLineTwo = locationAddressLineTwo,
-                                City = locationCity,
-                                State = locationState,
-                                ZipCode = locationZipCode
-                            };
-
-                            //Add the client association to the hookup queue
-                            if (!String.IsNullOrEmpty(clientName))
-                                locationClientAssociationsToHookup.Add(new Tuple<Location, string>(location, clientName));
-
-                            newEntity = location;
-                        }
-
-                        #region Add contact info to entities
-
-                        var contactInfoSet = new List<ContactInfo>();
-
-                        if (!String.IsNullOrEmpty(contactInfoEmailAddressLabel) || !String.IsNullOrEmpty(contactInfoEmailAddressData))
-                            contactInfoSet.Add(new ContactInfo { Type = "Email Address", Label = contactInfoEmailAddressLabel ?? "", Data = contactInfoEmailAddressData ?? "" });
-
-                        if (!String.IsNullOrEmpty(contactInfoFaxNumberLabel) || !String.IsNullOrEmpty(contactInfoFaxNumberData))
-                            contactInfoSet.Add(new ContactInfo { Type = "Fax Number", Label = contactInfoFaxNumberLabel ?? "", Data = contactInfoFaxNumberData ?? "" });
-
-                        if (!String.IsNullOrEmpty(contactInfoPhoneNumberLabel) || !String.IsNullOrEmpty(contactInfoPhoneNumberData))
-                            contactInfoSet.Add(new ContactInfo { Type = "Phone Number", Label = contactInfoPhoneNumberLabel ?? "", Data = contactInfoPhoneNumberData ?? "" });
-
-                        if (!String.IsNullOrEmpty(contactInfoOtherLabel) || !String.IsNullOrEmpty(contactInfoOtherData))
-                            contactInfoSet.Add(new ContactInfo { Type = "Other", Label = contactInfoOtherLabel ?? "", Data = contactInfoOtherData ?? "" });
-
-                        if (!String.IsNullOrEmpty(contactInfoWebsiteLabel) || !String.IsNullOrEmpty(contactInfoWebsiteData))
-                            contactInfoSet.Add(new ContactInfo { Type = "Website", Label = contactInfoWebsiteLabel ?? "", Data = contactInfoWebsiteData ?? "" });
-
-                        if (newEntity is Location)
-                        {
-                            foreach (var contactInfo in contactInfoSet)
-                                ((Location)newEntity).ContactInfoSet.Add(contactInfo);
-
-                            locationsToAdd.Add((Location)newEntity);
-                        }
-                        else if (newEntity is Client)
-                        {
-                            foreach (var contactInfo in contactInfoSet)
-                                ((Client)newEntity).OwnedParty.ContactInfoSet.Add(contactInfo);
-
-                            clientsToAdd.Add((Client)newEntity);
-                        }
-
-                        #endregion
                     }
+
+                    //Setup the newEntity
+
+                    EntityObject newEntity = null;
+
+                    #region Add the Client entity
+                   
+                    if (importDestination == ImportDestination.Clients)
+                    {
+                        var client = new Client
+                        {
+                            Vendor = business,
+                            OwnedParty = new Business { Name = clientName }
+                        };
+
+                        //Add the location association to the hookup queue
+                        if (!String.IsNullOrEmpty(locationName))
+                            clientLocationAssociationsToHookup.Add(new Tuple<Client, string>(client, locationName));
+
+                        this.ObjectContext.Clients.AddObject(client);
+
+                        newEntity = client;
+                    }
+
+                    #endregion
+                    #region Add the Location Entity
+
+                    //Add the Location entity
+                    if (importDestination == ImportDestination.Locations)
+                    {
+                        var location = new Location
+                        {
+                            OwnerParty = business,
+                            Name = locationName,
+                            Latitude = locationLatitude,
+                            Longitude = locationLongitude,
+                            AddressLineOne = locationAddressLineOne,
+                            AddressLineTwo = locationAddressLineTwo,
+                            City = locationCity,
+                            State = locationState,
+                            ZipCode = locationZipCode
+                        };
+
+                        //Add the client association to the hookup queue
+                        if (!String.IsNullOrEmpty(clientName))
+                            locationClientAssociationsToHookup.Add(new Tuple<Location, string>(location, clientName));
+
+                        this.ObjectContext.Locations.AddObject(location);
+
+                        newEntity = location;
+                    }
+
+                    #endregion
+
+                    #region Add contact info to entities
+
+                    var contactInfoSet = new List<ContactInfo>();
+
+                    if (!String.IsNullOrEmpty(contactInfoEmailAddressLabel) || !String.IsNullOrEmpty(contactInfoEmailAddressData))
+                        contactInfoSet.Add(new ContactInfo { Type = "Email Address", Label = contactInfoEmailAddressLabel ?? "", Data = contactInfoEmailAddressData ?? "" });
+
+                    if (!String.IsNullOrEmpty(contactInfoFaxNumberLabel) || !String.IsNullOrEmpty(contactInfoFaxNumberData))
+                        contactInfoSet.Add(new ContactInfo { Type = "Fax Number", Label = contactInfoFaxNumberLabel ?? "", Data = contactInfoFaxNumberData ?? "" });
+
+                    if (!String.IsNullOrEmpty(contactInfoPhoneNumberLabel) || !String.IsNullOrEmpty(contactInfoPhoneNumberData))
+                        contactInfoSet.Add(new ContactInfo { Type = "Phone Number", Label = contactInfoPhoneNumberLabel ?? "", Data = contactInfoPhoneNumberData ?? "" });
+
+                    if (!String.IsNullOrEmpty(contactInfoOtherLabel) || !String.IsNullOrEmpty(contactInfoOtherData))
+                        contactInfoSet.Add(new ContactInfo { Type = "Other", Label = contactInfoOtherLabel ?? "", Data = contactInfoOtherData ?? "" });
+
+                    if (!String.IsNullOrEmpty(contactInfoWebsiteLabel) || !String.IsNullOrEmpty(contactInfoWebsiteData))
+                        contactInfoSet.Add(new ContactInfo { Type = "Website", Label = contactInfoWebsiteLabel ?? "", Data = contactInfoWebsiteData ?? "" });
+
+                    if (newEntity is Location)
+                    {
+                        foreach (var contactInfo in contactInfoSet)
+                            ((Location)newEntity).ContactInfoSet.Add(contactInfo);
+                    }
+                    else if (newEntity is Client)
+                    {
+                        foreach (var contactInfo in contactInfoSet)
+                            ((Client)newEntity).OwnedParty.ContactInfoSet.Add(contactInfo);
+                    }
+
+                    #endregion
                 }
             }
 
-            foreach (var clientToAdd in clientsToAdd)
-                this.ObjectContext.Clients.AddObject(clientToAdd);
-
-            foreach (var locationToAdd in locationsToAdd)
-                this.ObjectContext.Locations.AddObject(locationToAdd);
 
             #region Hookup remaining assocations
-            var locations = (from location in this.ObjectContext.Locations.Where(l => l.OwnerPartyId == business.Id)
-                             join locationName in clientLocationAssociationsToHookup.Select(cl => cl.Item2).Distinct()
-                             on location.Name equals locationName
-                             select location).ToArray();
 
-            foreach (var clientLocationAssociation in clientLocationAssociationsToHookup)
+            //Hookup Locations to Clients
+            if (importDestination == ImportDestination.Clients)
             {
-                var associatedLocation = locations.FirstOrDefault(l => l.Name == clientLocationAssociation.Item2);
-                if (associatedLocation != null)
-                    associatedLocation.PartyId = clientLocationAssociation.Item1.Id;
+                var locationNamesToLoad = clientLocationAssociationsToHookup.Select(cl => cl.Item2).Distinct();
+               
+                //Load all the associatedLocations
+                var associatedLocations = (from location in this.ObjectContext.Locations.Where(l => l.OwnerPartyId == business.Id)
+                                           join locationNameToLoad in locationNamesToLoad
+                                           on location.Name equals locationNameToLoad
+                                           select location).ToArray();
+
+                foreach (var clientLocationAssociation in clientLocationAssociationsToHookup)
+                {
+                    var associatedLocation = associatedLocations.FirstOrDefault(l => l.Name == clientLocationAssociation.Item2);
+                    
+                    //If the associatedLocation was found set it's PartyId to this Client's (OwnerParty) Id
+                    if (associatedLocation != null)
+                        associatedLocation.PartyId = clientLocationAssociation.Item1.Id;
+                }
             }
-
-            var clients =
-                (from client in ObjectContext.Clients.Where(c => c.VendorId == business.Id)
-                 //Need to get the client displayname, so join with the person and the business table
-                 join p in ObjectContext.Parties.OfType<Person>()
-                     on client.Id equals p.Id into personClient
-                 from personParty in personClient.DefaultIfEmpty()
-                 //Left Join
-                 join b in ObjectContext.Parties.OfType<Business>()
-                     on client.Id equals b.Id into businessClient
-                 from businessParty in businessClient.DefaultIfEmpty()
-                 //Left Join
-                 let displayName = businessParty != null
-                                       ? businessParty.Name
-                                       : personParty.LastName + " " + personParty.FirstName + " " +
-                                         personParty.MiddleInitial
-                 join clientName in locationClientAssociationsToHookup.Select(cl => cl.Item2).Distinct()
-                 on displayName equals clientName
-                 select new { displayName, client }).ToArray();
-
-            foreach (var locationClientAssociation in locationClientAssociationsToHookup)
+            //Hookup Clients to Locations
+            else if (importDestination == ImportDestination.Locations)
             {
-                var associatedClient = clients.FirstOrDefault(c => c.displayName == locationClientAssociation.Item2);
-                if (associatedClient != null)
-                    locationClientAssociation.Item1.PartyId = associatedClient.client.Id;
+                var clientNamesToLoad = locationClientAssociationsToHookup.Select(cl => cl.Item2).Distinct();
 
-                //if (selectedClient != null)
-                //    location.Party = selectedClient.OwnedParty;
+                //Load all the associatedClients
+                var associatedClients =
+                    (from client in ObjectContext.Clients.Where(c => c.VendorId == business.Id)
+                     //Need to get the client displayname, so join with the person and the business table
+                     join p in ObjectContext.Parties.OfType<Person>()
+                         on client.Id equals p.Id into personClient
+                     from personParty in personClient.DefaultIfEmpty()
+                     //Left Join
+                     join b in ObjectContext.Parties.OfType<Business>()
+                         on client.Id equals b.Id into businessClient
+                     from businessParty in businessClient.DefaultIfEmpty()
+                     //Left Join
+                     let displayName = businessParty != null
+                                           ? businessParty.Name
+                                           : personParty.LastName + " " + personParty.FirstName + " " +
+                                             personParty.MiddleInitial
+                     where clientNamesToLoad.Contains(displayName) 
+                     select new {displayName, client}).ToArray();
+
+                foreach (var locationClientAssociation in locationClientAssociationsToHookup)
+                {
+                    var associatedClient =
+                        associatedClients.FirstOrDefault(c => c.displayName == locationClientAssociation.Item2);
+
+                    //If the associatedClient was found set the Location's PartyId to this Client's (OwnerParty) Id
+                    if (associatedClient != null)
+                        locationClientAssociation.Item1.PartyId = associatedClient.client.Id;
+                }
             }
 
             #endregion

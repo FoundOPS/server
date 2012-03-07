@@ -226,7 +226,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void OnSearch()
         {
-            DataManager.TryGeocode(SearchText, results =>
+            DataManager.TryGeocode(SearchText, (results, us) =>
             {
                 GeocoderResults = new ObservableCollection<GeocoderResult>(results);
                 //Signal end of search event

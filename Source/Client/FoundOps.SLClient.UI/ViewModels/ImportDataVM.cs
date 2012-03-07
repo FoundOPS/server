@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using FoundOps.Core.Models.Import;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
@@ -91,6 +92,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// A command to choose a csv file to import.
         /// </summary>
         public RelayCommand<FileInfo> SelectFileCommand { get; private set; }
+
+        /// <summary>
+        /// A command to try and geocode the current data.
+        /// </summary>
+        public RelayCommand TryGeocodeCommand { get; private set; }
+
         /// <summary>
         /// A command to import the current data.
         /// </summary>
@@ -115,6 +122,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                     DataTable = ReadInCSVData(csv);
                 IsBusy = false;
             });
+
+            TryGeocodeCommand = new RelayCommand(TryGeocode);
 
             //When the ImportDataCommand is executed save the datatable to the database
             ImportDataCommand = new RelayCommand(SaveDataTableToDatabase);
@@ -173,6 +182,62 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
 
             return dataTable;
+        }
+
+
+        private void TryGeocode()
+        {
+            if (ImportDestination != ImportDestination.Locations)
+            {
+                MessageBox.Show("This is only for importing locations");
+                return;
+            }
+
+            MessageBox.Show("NOTE: This is limited to 5,000 locations per day");
+
+            var selectedColumnDataCategories = DataTable.Columns.OfType<ImportColumn>().Where(ic => ic.ImportColumnType != null).Select(ic => new { ic.ColumnName, ic.ImportColumnType.Type });
+            var addressLineOneColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationAddressLineOne);
+            var cityColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationCity);
+            var stateColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationState);
+            var zipCodeColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationZipCode);
+            var latitudeColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationLatitude);
+            var longitudeColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationLongitude);
+
+            //Make sure all the columns are selected
+            if (addressLineOneColumn == null || cityColumn == null || stateColumn == null || zipCodeColumn == null || latitudeColumn == null || longitudeColumn == null)
+            {
+                MessageBox.Show("You need to select a column for: Address Line One, City, State, Zip Code, Latitude, and Longitude");
+                return;
+            }
+
+            //Try to Geocode
+            foreach (var row in this.DataTable.Rows)
+            {
+                var addressLineOne = (string)row[addressLineOneColumn.ColumnName];
+                var city = (string)row[cityColumn.ColumnName];
+                var state = (string)row[stateColumn.ColumnName];
+                var zipCode = (string)row[zipCodeColumn.ColumnName];
+
+                var searchText = string.Format("{0}, {1}, {2}, {3}", addressLineOne, city, state, zipCode);
+                Manager.Data.TryGeocode(searchText, (geocodeComplete, userState) =>
+                                                        {
+                                                            var rowToChange = (DataRow) userState;
+                                                            if (geocodeComplete.Count() != 1) return;
+
+                                                            var result = geocodeComplete.First();
+
+                                                            //If it is not a good match return
+                                                            if (Convert.ToInt32(result.Precision) < 85) return;
+
+                                                            //Clean the rows data with the result
+                                                            rowToChange[addressLineOneColumn.ColumnName] = result.AddressLineOne;
+                                                            rowToChange[cityColumn.ColumnName] = result.City;
+                                                            rowToChange[stateColumn.ColumnName] = result.State;
+                                                            rowToChange[zipCodeColumn.ColumnName] = result.ZipCode;
+                                                            rowToChange[latitudeColumn.ColumnName] = result.Latitude;
+                                                            rowToChange[longitudeColumn.ColumnName] = result.Longitude;
+                                                        }, row);
+            }
         }
 
         private void SaveDataTableToDatabase()
