@@ -697,7 +697,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="true" />
     <Property Name="BusinessName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="UserEmail" Type="nvarchar(max)" Nullable="true" />
@@ -3237,7 +3237,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Type="DateTime" Name="Date" Nullable="true" />
           <Property Type="String" Name="BusinessName" Nullable="true" />
           <Property Type="String" Name="UserEmail" Nullable="true" />
