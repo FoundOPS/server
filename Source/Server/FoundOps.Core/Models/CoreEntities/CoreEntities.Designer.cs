@@ -1342,9 +1342,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> MaxRoutes
+        public global::System.Int32 MaxRoutes
         {
             get
             {
@@ -1359,8 +1359,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnMaxRoutesChanged();
             }
         }
-        private Nullable<global::System.Int32> _MaxRoutes;
-        partial void OnMaxRoutesChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _MaxRoutes = 1;
+        partial void OnMaxRoutesChanging(global::System.Int32 value);
         partial void OnMaxRoutesChanged();
 
         #endregion

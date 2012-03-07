@@ -720,7 +720,7 @@
     <Property Name="QuickBooksAccessTokenSecret" Type="nvarchar(max)" Nullable="true" />
     <Property Name="RouteManifestSettings" Type="nvarchar(max)" Nullable="true" />
     <Property Name="QuickBooksSessionXml" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="MaxRoutes" Type="int" Nullable="true" />
+    <Property Name="MaxRoutes" Type="int" Nullable="false" DefaultValue="1" />
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Parties_Person">
@@ -2496,7 +2496,7 @@
           <Property Type="String" Name="RouteManifestSettings" Nullable="true" />
           <Property Type="String" Name="QuickBooksSessionXml" Nullable="true" />
           <NavigationProperty Name="Invoices" Relationship="CoreEntities.BusinessAccountInvoice" FromRole="BusinessAccount" ToRole="Invoice" />
-          <Property Type="Int32" Name="MaxRoutes" Nullable="true" />
+          <Property Type="Int32" Name="MaxRoutes" Nullable="false" DefaultValue="1" />
         </EntityType>
         <Association Name="BusinessAccountService">
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />

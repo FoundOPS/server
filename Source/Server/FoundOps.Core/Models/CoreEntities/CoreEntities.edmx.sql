@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/05/2012 17:47:00
+-- Date Created: 03/07/2012 09:25:47
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -755,7 +755,7 @@ CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [QuickBooksAccessTokenSecret] nvarchar(max)  NULL,
     [RouteManifestSettings] nvarchar(max)  NULL,
     [QuickBooksSessionXml] nvarchar(max)  NULL,
-    [MaxRoutes] int  NULL,
+    [MaxRoutes] int  NOT NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -1125,25 +1125,25 @@ GO
 -- Creating primary key on [Roles_Id], [Blocks_Id] in table 'RoleBlock'
 ALTER TABLE [dbo].[RoleBlock]
 ADD CONSTRAINT [PK_RoleBlock]
-    PRIMARY KEY NONCLUSTERED ([Roles_Id], [Blocks_Id] ASC);
+    PRIMARY KEY CLUSTERED ([Roles_Id], [Blocks_Id] ASC);
 GO
 
 -- Creating primary key on [Routes_Id], [Vehicles_Id] in table 'RouteVehicle'
 ALTER TABLE [dbo].[RouteVehicle]
 ADD CONSTRAINT [PK_RouteVehicle]
-    PRIMARY KEY NONCLUSTERED ([Routes_Id], [Vehicles_Id] ASC);
+    PRIMARY KEY CLUSTERED ([Routes_Id], [Vehicles_Id] ASC);
 GO
 
 -- Creating primary key on [MemberParties_Id], [RoleMembership_Id] in table 'PartyRole'
 ALTER TABLE [dbo].[PartyRole]
 ADD CONSTRAINT [PK_PartyRole]
-    PRIMARY KEY NONCLUSTERED ([MemberParties_Id], [RoleMembership_Id] ASC);
+    PRIMARY KEY CLUSTERED ([MemberParties_Id], [RoleMembership_Id] ASC);
 GO
 
 -- Creating primary key on [Routes_Id], [Technicians_Id] in table 'RouteEmployee'
 ALTER TABLE [dbo].[RouteEmployee]
 ADD CONSTRAINT [PK_RouteEmployee]
-    PRIMARY KEY NONCLUSTERED ([Routes_Id], [Technicians_Id] ASC);
+    PRIMARY KEY CLUSTERED ([Routes_Id], [Technicians_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -1286,7 +1286,7 @@ ADD CONSTRAINT [FK_RouteTaskRouteDestination]
     FOREIGN KEY ([RouteDestinationId])
     REFERENCES [dbo].[RouteDestinations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskRouteDestination'
 CREATE INDEX [IX_FK_RouteTaskRouteDestination]

@@ -135,6 +135,7 @@
     <None Include="Snapshots\FoundOps.Database.Core_20120126_06-31-06.sqlx" />
     <None Include="Snapshots\FoundOps.Database.Core_20120202_08-43-46.sqlx" />
     <None Include="Snapshots\FoundOps.Database.Core_20120223_11-10-32.sqlx" />
+    <None Include="Snapshots\FoundOps.Database.Core_20120307_09-38-08.sqlx" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\RouteEmployee.sql">

@@ -12,13 +12,12 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (2/23/2012)
+                (3/7/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            * Fixed manifest printing.<LineBreak/>
-            * Setup automatic error submission so we can eliminate the save/discard bug.<LineBreak/>
-            * Fixed other minor issues.<LineBreak/>
+            * Fixed route selection to make it more intuitive.<LineBreak/>
+            * Updated administrative tools: Optimized importer and update business account settings.<LineBreak/>
         </TextBlock>
     </Grid>
 </sdk:Page>
