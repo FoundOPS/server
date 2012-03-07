@@ -185,17 +185,13 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void TryGeocode()
         {
-            //TODO: Remove
-            if (MessageBox.Show("Hmm..", "Oh you thought it was going to be this easy?", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
-                return;
-
             if (ImportDestination != ImportDestination.Locations)
             {
                 MessageBox.Show("This is only to be used when importing locations.");
                 return;
             }
 
-            MessageBox.Show("NOTE: This is limited to 5,000 locations per day");
+            MessageBox.Show("NOTE: All geocoding is limited to 50,000 locations per day");
 
             var selectedColumnDataCategories = DataTable.Columns.OfType<ImportColumn>().Where(ic => ic.ImportColumnType != null).Select(ic => new { ic.ColumnName, ic.ImportColumnType.Type });
             var addressLineOneColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationAddressLineOne);

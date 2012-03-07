@@ -76,7 +76,7 @@
                                 <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Max Number of Routes:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-                            <telerik:RadNumericUpDown Minimum="0" Value="{Binding MaxRoutes, Mode=TwoWay}" Grid.Column="2"/>
+                            <telerik:RadNumericUpDown Minimum="0" Value="{Binding MaxRoutes, Mode=TwoWay}" Grid.Column="2" NumberDecimalDigits="0"/>
                         </Grid>
                         <!--<Controls1:ImageUpload Grid.Row="1" HorizontalAlignment="Center" Margin="5" ImageData="{Binding , Mode=TwoWay}" />-->
                     </Grid>
