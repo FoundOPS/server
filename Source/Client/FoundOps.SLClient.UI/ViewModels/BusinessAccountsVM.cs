@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.DomainServices.Client;
 using System.Windows;
 using System.Collections;
 using System.Reactive.Linq;

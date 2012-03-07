@@ -7,7 +7,6 @@ using System.Collections;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
 using System.Collections.Specialized;
-using FoundOps.Common.Silverlight.Tools;
 
 namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {

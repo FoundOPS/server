@@ -16,6 +16,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition />
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
@@ -35,8 +36,9 @@
                 <telerik:RadComboBoxItem Content="Locations"/>
                 <!--<telerik:RadComboBoxItem Content="Services"/>-->
             </telerik:RadComboBox>
-            <ImportData1:ImportDataGrid Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <Button Content=" Import Data " Margin="15" HorizontalAlignment="Right" Grid.Column="2" Grid.Row="3" Command="{Binding ImportDataCommand}"/>
+            <Button x:Name="TryGeocode" Grid.Row="2" Grid.Column="2" Content="Try to Geocode" Margin="0,0,0,5" Command="{Binding TryGeocodeCommand}" />
+            <ImportData1:ImportDataGrid Grid.ColumnSpan="3" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Button Content=" Import Data " Margin="15" HorizontalAlignment="Right" Grid.Column="2" Grid.Row="4" Command="{Binding ImportDataCommand}"/>
         </Grid>
     </telerik:RadBusyIndicator>
 </sdk:Page>

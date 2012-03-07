@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 02/23/2012 19:01:52
+-- Date Created: 03/07/2012 09:25:47
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -336,6 +336,9 @@ IF OBJECT_ID(N'[dbo].[LineItems]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[RouteTasks]', 'U') IS NOT NULL
     DROP TABLE [dbo].[RouteTasks];
+GO
+IF OBJECT_ID(N'[dbo].[Errors]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Errors];
 GO
 IF OBJECT_ID(N'[dbo].[Parties_Business]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_Business];
@@ -752,6 +755,7 @@ CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [QuickBooksAccessTokenSecret] nvarchar(max)  NULL,
     [RouteManifestSettings] nvarchar(max)  NULL,
     [QuickBooksSessionXml] nvarchar(max)  NULL,
+    [MaxRoutes] int  NOT NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO

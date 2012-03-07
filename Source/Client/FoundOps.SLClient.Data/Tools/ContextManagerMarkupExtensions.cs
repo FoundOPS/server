@@ -6,7 +6,6 @@ using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;
 using FoundOps.SLClient.Data.Services;
-using FoundOps.Common.Silverlight.Tools;
 
 // Markup extensions for the ContextManager
 

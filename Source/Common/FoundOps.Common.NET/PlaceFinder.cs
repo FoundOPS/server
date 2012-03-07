@@ -44,7 +44,7 @@ namespace FoundOps.Common.NET
         private static void TryGeocodeUrl(string restQueryUrl, Action<IEnumerable<GeocoderResult>> geocodingCompleteCallback)
         {
             // Initiate Async Network call to Yahoo Geocoding Service
-            WebClient yahooGeocodeService = new WebClient();
+            var yahooGeocodeService = new WebClient();
             yahooGeocodeService.DownloadStringCompleted +=
                 (sender, e) =>
                 YahooGeocodeServiceDownloadStringCompleted(e, geocodingCompleteCallback);

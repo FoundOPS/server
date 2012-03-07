@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Reactive.Linq;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Tools.ExtensionMethods;
 

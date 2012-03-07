@@ -1338,6 +1338,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _QuickBooksSessionXml;
         partial void OnQuickBooksSessionXmlChanging(global::System.String value);
         partial void OnQuickBooksSessionXmlChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 MaxRoutes
+        {
+            get
+            {
+                return _MaxRoutes;
+            }
+            set
+            {
+                OnMaxRoutesChanging(value);
+                ReportPropertyChanging("MaxRoutes");
+                _MaxRoutes = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MaxRoutes");
+                OnMaxRoutesChanged();
+            }
+        }
+        private global::System.Int32 _MaxRoutes = 1;
+        partial void OnMaxRoutesChanging(global::System.Int32 value);
+        partial void OnMaxRoutesChanged();
 
         #endregion
     
