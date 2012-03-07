@@ -16,7 +16,8 @@
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            * Fixed route selection to make it more intuitive.<LineBreak/>
+            * Made route selection more intuitive.<LineBreak/>
+            * Fixed popup placements.<LineBreak/>
             * Updated administrative tools: Optimized importer and update business account settings.<LineBreak/>
         </TextBlock>
     </Grid>
