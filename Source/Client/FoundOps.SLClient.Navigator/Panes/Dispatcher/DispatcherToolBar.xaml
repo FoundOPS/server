@@ -27,7 +27,7 @@
                     </StackPanel>
                 </telerik:RadDropDownButton.Content>
                 <telerik:RadDropDownButton.DropDownContent>
-                    <telerik:RadContextMenu>
+                    <telerik:RadContextMenu Placement="Bottom">
                         <telerik:RadMenuItem Header="Route" Command="{Binding AddCommand}" Click="AddNewRouteClick"/>
                         <telerik:RadMenuItem Header="Route Task" Command="{Binding AddRouteTask}" Click="AddNewRouteTaskClick"/>
                     </telerik:RadContextMenu>

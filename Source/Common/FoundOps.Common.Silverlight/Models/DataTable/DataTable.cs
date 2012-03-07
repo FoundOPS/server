@@ -34,7 +34,6 @@ namespace Telerik.Data
             }
         }
 
-
         public IList<DataRow> Rows
         {
             get
@@ -52,6 +51,15 @@ namespace Telerik.Data
         public DataRow NewRow()
         {
             return new DataRow(this);
+        }
+
+        /// <summary>
+        /// Removes the row of a dynamic item.
+        /// </summary>
+        /// <param name="dynamicItem">The dynamic item.</param>
+        public void RemoveRowFromItem(object dynamicItem)
+        {
+            this.InternalView.Remove(dynamicItem);
         }
 
         private void OnRowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -147,7 +155,7 @@ namespace Telerik.Data
 
             //Remove any column indexes to ignores
             if (columnsIndexesToIgnore != null)
-                foreach(var columnIndexToIgnore in columnsIndexesToIgnore.OrderByDescending(ci=>ci))
+                foreach (var columnIndexToIgnore in columnsIndexesToIgnore.OrderByDescending(ci => ci))
                     columnsToTake.RemoveAt(columnIndexToIgnore);
 
             //If alternateHeaders is not null use them for the header record
