@@ -22,9 +22,6 @@ namespace FoundOps.Server.Controllers
         {
             var container = new CoreEntitiesContainer();
             
-            //Time stamp
-            var date = DateTime.Now;
-
             //Current user logged in (email)
             var currentUser = AuthenticationLogic.CurrentUserAccountsEmailAddress();
 
@@ -43,6 +40,8 @@ namespace FoundOps.Server.Controllers
 
 
             container.Errors.AddObject(newError);
+
+            container.SaveChanges();
         }
     }
 }
