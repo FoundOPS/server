@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Objects.DataClasses;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Security.Authentication;
@@ -10,7 +8,6 @@ using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.Import;
 using FoundOps.Server.Authentication;
 using Kent.Boogaart.KBCsv;
-using Microsoft.Samples.EntityDataReader;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -24,9 +21,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             var business = ObjectContext.BusinessAccountForRole(currentRoleId);
             if (business == null)
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
-
-            var clientsToAdd = new List<Client>();
-            var locationsToAdd = new List<Location>();
 
             //Tuple contains the Client and the name of the Location to associate
             var clientLocationAssociationsToHookup = new List<Tuple<Client, string>>();
@@ -253,8 +247,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                
                 //Load all the associatedLocations
                 var associatedLocations = (from location in this.ObjectContext.Locations.Where(l => l.OwnerPartyId == business.Id)
-                                           join locationNameToLoad in locationNamesToLoad
-                                           on location.Name equals locationNameToLoad
+                                           where locationNamesToLoad.Contains(location.Name)
                                            select location).ToArray();
 
                 foreach (var clientLocationAssociation in clientLocationAssociationsToHookup)
@@ -266,6 +259,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                         associatedLocation.PartyId = clientLocationAssociation.Item1.Id;
                 }
             }
+
             //Hookup Clients to Locations
             else if (importDestination == ImportDestination.Locations)
             {

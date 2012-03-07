@@ -184,12 +184,15 @@ namespace FoundOps.SLClient.UI.ViewModels
             return dataTable;
         }
 
-
         private void TryGeocode()
         {
+            //TODO: Remove
+            if (MessageBox.Show("Hmm..", "Oh you thought it was going to be this easy?", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+                return;
+
             if (ImportDestination != ImportDestination.Locations)
             {
-                MessageBox.Show("This is only for importing locations");
+                MessageBox.Show("This is only to be used when importing locations.");
                 return;
             }
 
@@ -221,7 +224,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var searchText = string.Format("{0}, {1}, {2}, {3}", addressLineOne, city, state, zipCode);
                 Manager.Data.TryGeocode(searchText, (geocodeComplete, userState) =>
                                                         {
-                                                            var rowToChange = (DataRow) userState;
+                                                            var rowToChange = (DataRow)userState;
                                                             if (geocodeComplete.Count() != 1) return;
 
                                                             var result = geocodeComplete.First();
