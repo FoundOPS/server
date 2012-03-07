@@ -18,5 +18,7 @@
     <WebRoleSkipLaunchInBrowser>
     </WebRoleSkipLaunchInBrowser>
     <WebRoleHttpsSkipLaunchInBrowser>FoundOps.Server</WebRoleHttpsSkipLaunchInBrowser>
+    <ActivePublishProfile>FoundOpsProduction</ActivePublishProfile>
+    <DeploymentPromptBeforeUpgrading>False</DeploymentPromptBeforeUpgrading>
   </PropertyGroup>
 </Project>

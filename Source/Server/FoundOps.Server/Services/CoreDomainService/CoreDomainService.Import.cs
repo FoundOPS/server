@@ -155,7 +155,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                     EntityObject newEntity = null;
 
                     #region Add the Client entity
-                   
+
                     if (importDestination == ImportDestination.Clients)
                     {
                         var client = new Client
@@ -244,7 +244,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (importDestination == ImportDestination.Clients)
             {
                 var locationNamesToLoad = clientLocationAssociationsToHookup.Select(cl => cl.Item2).Distinct();
-               
+
                 //Load all the associatedLocations
                 var associatedLocations = (from location in this.ObjectContext.Locations.Where(l => l.OwnerPartyId == business.Id)
                                            where locationNamesToLoad.Contains(location.Name)
@@ -253,10 +253,13 @@ namespace FoundOps.Server.Services.CoreDomainService
                 foreach (var clientLocationAssociation in clientLocationAssociationsToHookup)
                 {
                     var associatedLocation = associatedLocations.FirstOrDefault(l => l.Name == clientLocationAssociation.Item2);
-                    
+
+                    if (associatedLocation == null) continue;
                     //If the associatedLocation was found set it's PartyId to this Client's (OwnerParty) Id
-                    if (associatedLocation != null)
-                        associatedLocation.PartyId = clientLocationAssociation.Item1.Id;
+                    //and set the Client's DefaultBillingLocation to the associatedLocation
+
+                    associatedLocation.PartyId = clientLocationAssociation.Item1.Id;
+                    clientLocationAssociation.Item1.DefaultBillingLocationId = clientLocationAssociation.Item1.Id;
                 }
             }
 
@@ -281,17 +284,20 @@ namespace FoundOps.Server.Services.CoreDomainService
                                            ? businessParty.Name
                                            : personParty.LastName + " " + personParty.FirstName + " " +
                                              personParty.MiddleInitial
-                     where clientNamesToLoad.Contains(displayName) 
-                     select new {displayName, client}).ToArray();
+                     where clientNamesToLoad.Contains(displayName)
+                     select new { displayName, client }).ToArray();
 
                 foreach (var locationClientAssociation in locationClientAssociationsToHookup)
                 {
                     var associatedClient =
                         associatedClients.FirstOrDefault(c => c.displayName == locationClientAssociation.Item2);
 
+                    if (associatedClient == null) continue;
                     //If the associatedClient was found set the Location's PartyId to this Client's (OwnerParty) Id
-                    if (associatedClient != null)
-                        locationClientAssociation.Item1.PartyId = associatedClient.client.Id;
+                    //and set the associatedClient's DefaultBillingLocation to the associatedLocation
+
+                    locationClientAssociation.Item1.PartyId = associatedClient.client.Id;
+                    associatedClient.client.DefaultBillingLocationId = locationClientAssociation.Item1.Id;
                 }
             }
 
