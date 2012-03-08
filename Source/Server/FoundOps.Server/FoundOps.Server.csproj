@@ -269,8 +269,6 @@
     </Content>
     <Content Include="ClientBin\FoundOps.SLClient.Navigator.xap" />
     <Content Include="ClientBin\version.txt" />
-    <Content Include="Content\bgGradient.png" />
-    <Content Include="Content\bgLogo.png" />
     <Content Include="Content\BlankPhoto.png" />
     <Content Include="Content\DefaultDispatcherLayout.xml" />
     <Content Include="Content\facebook.png" />
@@ -284,31 +282,7 @@
     <Content Include="Content\TouchIcon.png" />
     <Content Include="Content\twitter.png" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.1.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.11.js" />
-    <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
-    <Content Include="Scripts\jquery-ui.js" />
-    <Content Include="Scripts\jquery-ui.min.js" />
-    <Content Include="Scripts\jquery.easing.1.3.min.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\jquery.wt-rotator.js" />
-    <Content Include="Scripts\MicrosoftAjax.debug.js" />
-    <Content Include="Scripts\MicrosoftAjax.js" />
-    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
-    <Content Include="Scripts\MicrosoftMvcAjax.js" />
-    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
-    <Content Include="Scripts\MicrosoftMvcValidation.js" />
-    <Content Include="Scripts\modernizr-1.7.js" />
-    <Content Include="Scripts\modernizr-1.7.min.js" />
-    <Content Include="Scripts\form.js" />
-    <Content Include="Scripts\touch.js" />
     <Content Include="Scripts\Silverlight.js" />
     <Content Include="Scripts\userVoice.js" />
     <Content Include="Silverlight.js" />
@@ -403,7 +377,6 @@
       <LastGenOutput>M2M4RiaLinqToEntitiesDomainService.g.cs</LastGenOutput>
     </None>
     <Content Include="packages.config" />
-    <Content Include="Views\Account\BlogLogin.cshtml" />
     <Content Include="Views\Account\Captcha.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
@@ -411,7 +384,6 @@
     <Content Include="Views\Account\ForgotPasswordSuccess.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Home\CCDAPDD.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\PerformServerOperations.cshtml" />
     <Content Include="Views\Home\Silverlight.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
