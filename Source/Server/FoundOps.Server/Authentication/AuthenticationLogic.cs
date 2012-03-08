@@ -70,17 +70,29 @@ namespace FoundOps.Server.Authentication
 
         /// <summary>
         /// Gets the owner party of a role.
+        /// It will return one entity as an IQueryable for performance.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="roleId">The role id.</param>
+        /// <returns></returns>
+        public static IQueryable<Party> OwnerPartyOfRoleQueryable(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
+        {
+            var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer)
+                             where role.Id == roleId
+                             select role.OwnerParty;
+
+            return ownerParty;
+        }
+
+        /// <summary>
+        /// Gets the owner party of a role.
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <param name="roleId">The role id.</param>
         /// <returns></returns>
         public static Party OwnerPartyOfRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
         {
-            var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer)
-                             where role.Id == roleId
-                             select role.OwnerParty;
-
-            return ownerParty.FirstOrDefault();
+            return coreEntitiesContainer.OwnerPartyOfRoleQueryable(roleId).FirstOrDefault();
         }
 
         /// <summary>

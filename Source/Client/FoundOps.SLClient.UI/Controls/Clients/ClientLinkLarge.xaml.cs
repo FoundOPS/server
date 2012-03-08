@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.ServiceModel.DomainServices.Client;
+using System.Windows;
+using System.Windows.Controls;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
@@ -69,9 +72,36 @@ namespace FoundOps.SLClient.UI.Controls.Clients
         {
             var c = d as ClientLinkLarge;
             if (c != null)
-                c.ClientsRadComboBox.IsEnabled = !((bool)e.NewValue);
+                c.ClientsAutoCompleteBox.IsEnabled = !((bool)e.NewValue);
         }
 
         #endregion
+
+        private void ClientsAutoCompleteBox_OnPopulating(object sender, PopulatingEventArgs e)
+        {
+            // Allow us to wait for the response
+            e.Cancel = true;
+
+            UpdateSuggestions();
+        }
+
+        private LoadOperation<Client> _lastSuggestionQuery;
+        /// <summary>
+        /// Updates the client suggestions.
+        /// </summary>
+        private void UpdateSuggestions()
+        {
+            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
+                _lastSuggestionQuery.Cancel();
+
+            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchClientsForRoleQuery(Manager.Context.RoleId, ClientsAutoCompleteBox.Text).Take(10),
+                                clientsLoadOperation =>
+                                {
+                                    if (clientsLoadOperation.IsCanceled || clientsLoadOperation.HasError) return;
+
+                                    ClientsAutoCompleteBox.ItemsSource = clientsLoadOperation.Entities;
+                                    ClientsAutoCompleteBox.PopulateComplete();
+                                }, null);
+        }
     }
 }

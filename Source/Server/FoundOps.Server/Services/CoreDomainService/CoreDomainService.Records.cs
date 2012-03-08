@@ -62,30 +62,23 @@ namespace FoundOps.Server.Services.CoreDomainService
             return clients.Include("OwnedParty");
         }
 
+        /// <summary>
+        /// Searches the clients for the current role. Uses a StartsWith search mode.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <returns></returns>
         public IQueryable<Client> SearchClientsForRole(Guid roleId, string searchText)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-
-            if (businessForRole == null) return null;
-
+            var ownerParty = ObjectContext.OwnerPartyOfRole(roleId);
             var clientsWithDisplayName =
-                from c in ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id)
-                join p in ObjectContext.Parties.OfType<Person>()
-                    on c.Id equals p.Id into personClient
-                from person in personClient.DefaultIfEmpty()
-                //Left Join
-                join b in ObjectContext.Parties.OfType<Business>()
-                    on c.Id equals b.Id into businessClient
-                from business in businessClient.DefaultIfEmpty()
-                //Left Join
-                let displayName = business != null
-                                      ? business.Name
-                                      : person.LastName + " " + person.FirstName + " " + person.MiddleInitial
-                orderby displayName
-                select new {c, displayName};
+                from c in ObjectContext.Clients.Where(c => c.VendorId == ownerParty.Id)
+                join p in ObjectContext.PartiesWithNames
+                    on c.Id equals p.Id
+                select new { c, p.ChildName };
 
             if (!String.IsNullOrEmpty(searchText))
-                clientsWithDisplayName = clientsWithDisplayName.Where(cdn => cdn.displayName.StartsWith(searchText));
+                clientsWithDisplayName = clientsWithDisplayName.Where(cdn => cdn.ChildName.StartsWith(searchText));
 
             //Client's images are not currently used, so this can be commented out
             //TODO: Figure a way to force load OwnedParty.PartyImage. 
@@ -562,7 +555,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         public IQueryable<Region> GetRegionsForServiceProvider(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-          
+
             var regions = from region in this.ObjectContext.Regions.Where(v => v.BusinessAccountId == businessForRole.Id)
                           orderby region.Name
                           select region;
