@@ -46,30 +46,48 @@ GO
 
 4. After generating database from model need to fix the PartiesWithNames view in the CoreEntities.edmx
 
-Replace  <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />
-with
- <EntitySet Name="PartiesWithName" EntityType="CoreEntities.Store.PartiesWithName" store:Type="Views" store:Schema="dbo" store:Name="PartiesWithName">
-            <DefiningQuery>SELECT 
-      [PartiesWithName].[Id] AS [Id], 
-      [PartiesWithName].[ChildName] AS [ChildName]
-      FROM [dbo].[PartiesWithName] AS [PartiesWithName]</DefiningQuery>
- </EntitySet>
-
 Replace
-<EntitySetMapping Name="PartiesWithNames">
-   <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.PartiesWithName)">
-      <MappingFragment StoreEntitySet="PartiesWithNames">
-         <ScalarProperty Name="Id" ColumnName="Id" />
-         <ScalarProperty Name="ChildName" ColumnName="ChildName" />
-      </MappingFragment>
-   </EntityTypeMapping>
-</EntitySetMapping>
+    <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />
 with
-<EntitySetMapping Name="PartiesWithNames">
-   <EntityTypeMapping TypeName="CoreEntities.PartiesWithName">
-      <MappingFragment StoreEntitySet="PartiesWithName">
-         <ScalarProperty Name="ChildName" ColumnName="ChildName" />
-         <ScalarProperty Name="Id" ColumnName="Id" />
-      </MappingFragment>
-   </EntityTypeMapping>
-</EntitySetMapping>
+    <EntitySet Name="PartiesWithName" EntityType="CoreEntities.Store.PartiesWithName" store:Type="Views" store:Schema="dbo" store:Name="PartiesWithName">
+      <DefiningQuery>
+        SELECT
+        [PartiesWithName].[Id] AS [Id],
+        [PartiesWithName].[ChildName] AS [ChildName]
+        FROM [dbo].[PartiesWithName] AS [PartiesWithName]
+      </DefiningQuery>
+    </EntitySet>
+Replace
+  <EntityType Name="PartiesWithNames">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ChildName" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+with
+  <EntityType Name="PartiesWithName">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ChildName" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+Replace
+    <EntitySetMapping Name="PartiesWithNames">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.PartyWithName)">
+        <MappingFragment StoreEntitySet="PartiesWithNames">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ChildName" ColumnName="ChildName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+with
+    <EntitySetMapping Name="PartiesWithNames">
+      <EntityTypeMapping TypeName="CoreEntities.PartyWithName">
+        <MappingFragment StoreEntitySet="PartiesWithName">
+          <ScalarProperty Name="ChildName" ColumnName="ChildName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
