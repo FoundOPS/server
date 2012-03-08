@@ -1,9 +1,4 @@
-﻿using System;
-using System.Reactive.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.SLClient.Data.Services;
+using System;
 using Telerik.Windows;
 using System.ComponentModel;
 using FoundOps.SLClient.Data.Tools;

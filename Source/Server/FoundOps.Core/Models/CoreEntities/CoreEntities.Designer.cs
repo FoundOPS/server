@@ -608,6 +608,22 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
         private ObjectSet<RouteTask> _RouteTasks;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Error> Errors
+        {
+            get
+            {
+                if ((_Errors == null))
+                {
+                    _Errors = base.CreateObjectSet<Error>("Errors");
+                }
+                return _Errors;
+            }
+        }
+        private ObjectSet<Error> _Errors;
 
         #endregion
         #region AddTo Methods
@@ -850,6 +866,14 @@ namespace FoundOps.Core.Models.CoreEntities
         public void AddToRouteTasks(RouteTask routeTask)
         {
             base.AddObject("RouteTasks", routeTask);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Errors EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToErrors(Error error)
+        {
+            base.AddObject("Errors", error);
         }
 
         #endregion
@@ -1314,6 +1338,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _QuickBooksSessionXml;
         partial void OnQuickBooksSessionXmlChanging(global::System.String value);
         partial void OnQuickBooksSessionXmlChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 MaxRoutes
+        {
+            get
+            {
+                return _MaxRoutes;
+            }
+            set
+            {
+                OnMaxRoutesChanging(value);
+                ReportPropertyChanging("MaxRoutes");
+                _MaxRoutes = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MaxRoutes");
+                OnMaxRoutesChanged();
+            }
+        }
+        private global::System.Int32 _MaxRoutes = 1;
+        partial void OnMaxRoutesChanging(global::System.Int32 value);
+        partial void OnMaxRoutesChanged();
 
         #endregion
     
@@ -3454,6 +3502,181 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Error")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Error : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Error object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        public static Error CreateError(global::System.Guid id)
+        {
+            Error error = new Error();
+            error.Id = id;
+            return error;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> Date
+        {
+            get
+            {
+                return _Date;
+            }
+            set
+            {
+                OnDateChanging(value);
+                ReportPropertyChanging("Date");
+                _Date = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Date");
+                OnDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _Date;
+        partial void OnDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String BusinessName
+        {
+            get
+            {
+                return _BusinessName;
+            }
+            set
+            {
+                OnBusinessNameChanging(value);
+                ReportPropertyChanging("BusinessName");
+                _BusinessName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("BusinessName");
+                OnBusinessNameChanged();
+            }
+        }
+        private global::System.String _BusinessName;
+        partial void OnBusinessNameChanging(global::System.String value);
+        partial void OnBusinessNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String UserEmail
+        {
+            get
+            {
+                return _UserEmail;
+            }
+            set
+            {
+                OnUserEmailChanging(value);
+                ReportPropertyChanging("UserEmail");
+                _UserEmail = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("UserEmail");
+                OnUserEmailChanged();
+            }
+        }
+        private global::System.String _UserEmail;
+        partial void OnUserEmailChanging(global::System.String value);
+        partial void OnUserEmailChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ErrorText
+        {
+            get
+            {
+                return _ErrorText;
+            }
+            set
+            {
+                OnErrorTextChanging(value);
+                ReportPropertyChanging("ErrorText");
+                _ErrorText = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ErrorText");
+                OnErrorTextChanged();
+            }
+        }
+        private global::System.String _ErrorText;
+        partial void OnErrorTextChanging(global::System.String value);
+        partial void OnErrorTextChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String InnerException
+        {
+            get
+            {
+                return _InnerException;
+            }
+            set
+            {
+                OnInnerExceptionChanging(value);
+                ReportPropertyChanging("InnerException");
+                _InnerException = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("InnerException");
+                OnInnerExceptionChanged();
+            }
+        }
+        private global::System.String _InnerException;
+        partial void OnInnerExceptionChanging(global::System.String value);
+        partial void OnInnerExceptionChanged();
+
+        #endregion
+    
     }
     
     /// <summary>

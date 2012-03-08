@@ -92,7 +92,9 @@
     <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\DataValidationFramework.Silverlight.dll</HintPath>
     </Reference>
-    <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" />
+    <Reference Include="EntityGraph.Silverlight">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
       <Private>False</Private>
@@ -121,7 +123,6 @@
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.Composition.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.ComponentModel.Composition.Initialization, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.ComponentModel.DataAnnotations, Version=5.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
@@ -166,9 +167,6 @@
     <Reference Include="Telerik.Windows.Controls">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Data.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
@@ -253,6 +251,15 @@
     </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\VehiclesDesignData.cs">
       <Link>DesignData\VehiclesDesignData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\Import\DataCategory.cs">
+      <Link>Models\DataCategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\Import\ImportColumnType.cs">
+      <Link>Models\ImportColumnType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\Import\ImportDestinationTools.cs">
+      <Link>Models\ImportDestinationTools.cs</Link>
     </Compile>
     <Compile Include="Converters\ClientConverters.cs" />
     <Compile Include="Converters\ContactInfoConverters.cs" />

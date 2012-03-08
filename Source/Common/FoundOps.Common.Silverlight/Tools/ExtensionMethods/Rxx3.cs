@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Reactive.Linq;
-using FoundOps.Common.Tools;
-using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
 {

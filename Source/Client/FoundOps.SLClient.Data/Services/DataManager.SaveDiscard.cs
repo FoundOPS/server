@@ -1,13 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Reactive.Linq;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Common.Silverlight.Controls;
+using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Tools;
-using System.Reactive.Subjects;
+using FoundOps.Common.Tools.ExtensionMethods;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Common.Silverlight.Controls;
+using System.Linq;
+using System.Net;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.Data.Services
@@ -89,6 +92,27 @@ namespace FoundOps.SLClient.Data.Services
             _currentSubmitOperation = this.Context.SubmitChanges(
                 submitOperationCallback =>
                 {
+                    //Log error
+                    if (submitOperationCallback.HasError)
+                    {
+                        var errorUrl = String.Format("{0}/Error/SaveChangesError", UriExtensions.ThisRootUrl);
+                        var parameters = String.Format("roleId={0}&error={1}&innerException={2}", ContextManager.RoleId, submitOperationCallback.Error, submitOperationCallback.Error.InnerException);
+
+                        var wc = new WebClient();
+                        wc.Headers["Content-type"] = "application/x-www-form-urlencoded";
+                        wc.UploadStringAsync(new Uri(errorUrl), parameters);
+
+                        Context.RejectChanges();
+
+                        //Setup the ErrorWindow prompt
+                        var errorWindow = new ErrorWindow();
+
+                        //The ErrorWindow is now setup, show it to the user
+                        errorWindow.Show();
+
+                        return;
+                    }
+
                     //When the submit operation is completed, inform the dequeuedObservables
                     foreach (var submitOperationQueued in dequeuedObservables)
                     {

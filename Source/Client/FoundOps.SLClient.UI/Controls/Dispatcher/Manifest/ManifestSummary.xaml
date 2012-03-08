@@ -1,13 +1,16 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.Manifest.ManifestSummary" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:DynamicallySizedWrapPanel="clr-namespace:FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" mc:Ignorable="d" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools"
+             xmlns:DynamicallySizedWrapPanel="clr-namespace:FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel;assembly=FoundOps.Common.Silverlight.UI"
+             mc:Ignorable="d" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" 
            > <!--Do not remove ViewModels, it is used by GetVM-->
-    <StackPanel x:Name="SummaryStackPanel" DataContext="{Tools1:GetVM Type=ViewModels:RoutesVM}" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, Converter={StaticResource VisibilityConverter}}">
+    <StackPanel x:Name="SummaryStackPanel" DataContext="{Tools1:GetVM Type=ViewModels:RoutesVM}" 
+                Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, Converter={StaticResource VisibilityConverter}}">
         <!--Route Summary-->
         <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel HorizontalAlignment="Center" Width="750" NumberOfColumns="3"
-                                                      Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, Converter={StaticResource VisibilityConverter}}">
-            <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0" >
+                                                      Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, 
+            Converter={StaticResource VisibilityConverter}}">
+            <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0">
                 <StackPanel Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteSummaryVisible, Converter={StaticResource VisibilityConverter}}">
                     <TextBlock Text="Route Summary" FontWeight="Bold"/>
                     <!--<TextBlock Text="Capabilities: " Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}"/>-->
@@ -58,24 +61,29 @@
             </StackPanel>
             <!--Destinations Summary-->
 
-            <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsDestinationsSummaryVisible, Converter={StaticResource VisibilityConverter}}">
+            <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsDestinationsSummaryVisible, 
+                Converter={StaticResource VisibilityConverter}}">
                 <TextBlock Text="Destinations Summary" FontWeight="Bold"/>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsNumberofDestinationsVisible, Converter={StaticResource VisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsNumberofDestinationsVisible, 
+                    Converter={StaticResource VisibilityConverter}}">
                     <TextBlock Text="Number of Destinations: "/>
                     <TextBlock Text="{Binding SelectedEntity.RouteDestinations.Count}"/>
                     <!--Bind to total estimated time between stops-->
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAverageTimeAtDestinationVisible, Converter={StaticResource VisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAverageTimeAtDestinationVisible, 
+                    Converter={StaticResource VisibilityConverter}}">
                     <TextBlock Text="Average Time at Destination: "/>
                     <TextBlock Text="17 Minutes"/>
                     <!--Bind to average estimated time between stops-->
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAverageTimeBetweenDestinationsVisible, Converter={StaticResource VisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAverageTimeBetweenDestinationsVisible, 
+                    Converter={StaticResource VisibilityConverter}}">
                     <TextBlock Text="Average Time Between Destinations: "/>
                     <TextBlock Text="17 Minutes"/>
                     <!--Bind to average estimated time between stops-->
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAverageDistanceBetweenDestinationsVisible, Converter={StaticResource VisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAverageDistanceBetweenDestinationsVisible, 
+                    Converter={StaticResource VisibilityConverter}}">
                     <TextBlock Text="Average Distance: "/>
                     <TextBlock Text="12 Miles"/>
                     <!--Bind to average distance between stops-->
@@ -84,7 +92,8 @@
 
             <!--Task Summary-->
 
-            <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsTaskSummaryVisible, Converter={StaticResource VisibilityConverter}}">
+            <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsTaskSummaryVisible, 
+                Converter={StaticResource VisibilityConverter}}">
                 <TextBlock Text="Tasks Summary" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsNumberOfTasksVisible, Converter={StaticResource VisibilityConverter}}">
                     <TextBlock Text="Number of Tasks: "/>
@@ -116,6 +125,7 @@
             <!--<Image Margin="4,2" Height="150" Width="150" Source="/FoundOps.Common.Silverlight;component/Resources/ImageToBeBound.png" 
                                         Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteMapVisible, Converter={StaticResource VisibilityConverter}}" />-->
         </DynamicallySizedWrapPanel:DynamicallySizedWrapPanel>
-        <Rectangle Height="2" Fill="Black" Margin="0,5" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, Converter={StaticResource VisibilityConverter}}"/>
+        <Rectangle Height="2" Fill="Black" Margin="0,5" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, 
+            Converter={StaticResource VisibilityConverter}}"/>
     </StackPanel>
 </UserControl>

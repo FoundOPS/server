@@ -206,6 +206,9 @@ namespace FoundOps.SLClient.Data.ViewModels
             AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher()
                 .Subscribe(x =>
             {
+                var canAdd = BeforeAdd();
+                if(!canAdd)
+                    return;
                 _disableSelectedEntity = true;
                 var newEntity = AddNewEntity(x);
                 if (newEntity == null)
@@ -416,6 +419,15 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <param name="newValue">The new value.</param>
         /// <returns></returns>
         protected virtual bool BeforeSelectedEntityChanges(TEntity oldValue, TEntity newValue) { return true; }
+
+        /// <summary>
+        /// Called before an entity is added.
+        /// </summary>
+        /// <returns>Whether to continue adding a new entity.</returns>
+        protected virtual bool BeforeAdd()
+        {
+            return true;
+        }
 
         #region After something happened
 

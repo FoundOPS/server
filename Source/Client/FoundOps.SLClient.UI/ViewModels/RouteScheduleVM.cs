@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Tools;
-using System.Reactive.Linq;
 using Telerik.Windows.Controls;
 using System.Reactive.Subjects;
 using MEFedMVVM.ViewModelLocator;

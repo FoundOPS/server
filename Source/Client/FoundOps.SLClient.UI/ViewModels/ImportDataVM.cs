@@ -1,18 +1,17 @@
-﻿using System;
-using System.IO;
 using System.Linq;
-using System.Windows;
-using Kent.Boogaart.KBCsv;
-using System.Collections.Generic;
-using GalaSoft.MvvmLight.Command;
-using MEFedMVVM.ViewModelLocator;
+using FoundOps.Core.Models.Import;
 using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Common.Silverlight.Models.Import;
-using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.Models.DataTable;
+using FoundOps.SLClient.UI.Controls.ImportData;
+using GalaSoft.MvvmLight.Command;
+using Kent.Boogaart.KBCsv;
+using MEFedMVVM.ViewModelLocator;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Windows;
+using Telerik.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -23,15 +22,6 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class ImportDataVM : DataFedVM
     {
         #region Public Properties
-
-        /// <summary>
-        /// Gets the loaded clients.
-        /// </summary>
-        public IEnumerable<Client> Clients { get { return Manager.Data.Context.Clients; } }
-        /// <summary>
-        /// Gets the loaded locations.
-        /// </summary>
-        public IEnumerable<Location> Locations { get { return Manager.Data.Context.Locations; } }
 
         private bool _isBusy;
         /// <summary>
@@ -83,8 +73,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        private DataTable<ValueWithOptionalAssociation> _dataTable;
-        public DataTable<ValueWithOptionalAssociation> DataTable
+        private DataTable _dataTable;
+        /// <summary>
+        /// Gets the imported csv data table.
+        /// </summary>
+        public DataTable DataTable
         {
             get { return _dataTable; }
             private set
@@ -98,6 +91,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// A command to choose a csv file to import.
         /// </summary>
         public RelayCommand<FileInfo> SelectFileCommand { get; private set; }
+
+        /// <summary>
+        /// A command to try and geocode the current data.
+        /// </summary>
+        public RelayCommand TryGeocodeCommand { get; private set; }
+
         /// <summary>
         /// A command to import the current data.
         /// </summary>
@@ -111,9 +110,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public ImportDataVM()
         {
-            Manager.Data.Subscribe<Client>(DataManager.Query.Clients, ObservationState, null);
-            Manager.Data.Subscribe<Location>(DataManager.Query.Locations, ObservationState, null);
-
             #region Setup Commands
 
             //When the SelectFileCommand is executed read the CSV data
@@ -121,19 +117,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 IsBusy = true;
                 //use the CSVReader to read in the data
-                try
-                {
-                    using (var csv = new CsvReader(fileInfo.OpenRead()))
+                using (var csv = new CsvReader(fileInfo.OpenRead()))
                     DataTable = ReadInCSVData(csv);
-                }
-                catch (Exception)
-                {
-                    IsBusy = false;
-                    throw;
-                }
-            
                 IsBusy = false;
             });
+
+            TryGeocodeCommand = new RelayCommand(TryGeocode);
 
             //When the ImportDataCommand is executed save the datatable to the database
             ImportDataCommand = new RelayCommand(SaveDataTableToDatabase);
@@ -143,324 +132,139 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Logic
 
-        /// <summary>
-        /// Adds a column to the DataTable.
-        /// </summary>
-        /// <param name="newColumnUniqueName">New name of the column unique.</param>
-        /// <returns></returns>
-        public ImportColumn AddColumn(string newColumnUniqueName)
-        {
-            var newColumn = new ImportColumn { ColumnName = newColumnUniqueName };
-            DataTable.Columns.Add(newColumn);
-            foreach (var row in DataTable.Rows)
-                row[newColumnUniqueName] = new ValueWithOptionalAssociation { Value = "" };
-            return newColumn;
-        }
+        //TODO: Wait on http://www.telerik.com/community/forums/silverlight/gridview/lightweight-datatable-add-column-after-rows-have-been-added.aspx
+        ///// <summary>
+        ///// Adds a column to the DataTable.
+        ///// </summary>
+        ///// <param name="newColumnUniqueName">New name of the column unique.</param>
+        //public ImportColumn AddColumn(string newColumnUniqueName)
+        //{
+        //    //Add the new column at the end
+        //    var newColumn = new ImportColumn { ColumnName = newColumnUniqueName };
+        //    DataTable.Columns.Add(newColumn);
 
-        private DataTable<ValueWithOptionalAssociation> ReadInCSVData(CsvReader reader)
+        //    return newColumn;
+        //}
+
+        private static DataTable ReadInCSVData(CsvReader reader)
         {
-            var dataTable = new DataTable<ValueWithOptionalAssociation>();
-            var headers = new List<string>();
+            var dataTable = new DataTable();
 
             try
             {
-                //Try to read the header record
-                try
-                {
-                    var header = reader.ReadHeaderRecord();
-                    foreach (var fieldName in header.Values)
-                    {
-                        dataTable.Columns.Add(new ImportColumn { ColumnName = fieldName });
-                        headers.Add(fieldName);
-                    }
-                }
-                catch { }
+                var headerRecord = reader.ReadHeaderRecord();
+                foreach (var headerName in headerRecord.Values)
+                    dataTable.Columns.Add(new ImportColumn { ColumnName = headerName, DataType = typeof(string) });
+
+                //Add 3 extra columns
+                for (var i = 0; i < 3; i++)
+                    dataTable.Columns.Add(new ImportColumn { ColumnName = "Extra Column " + i, DataType = typeof(string) });
 
                 foreach (var record in reader.DataRecords)
                 {
-                    var newRow = new DataRow<ValueWithOptionalAssociation>();
+                    var newRow = dataTable.NewRow();
                     var headerIndex = 0;
-                    foreach (var headerKey in record.HeaderRecord.Values)
+                    foreach (var headerKey in headerRecord.Values)
                     {
                         var cleanedString = record.Values[headerIndex].Replace('�', ' ');
-                        newRow[headerKey] = new ValueWithOptionalAssociation { Value = cleanedString };
+                        newRow[headerKey] = cleanedString;
                         headerIndex++;
                     }
 
                     dataTable.Rows.Add(newRow);
                 }
             }
-            catch (Exception)
+            catch (ArgumentException)
             {
                 MessageBox.Show("The data needs to be in CSV format.", "Error importing data.", MessageBoxButton.OK);
-                IsBusy = false;
                 return null;
             }
 
             return dataTable;
         }
 
+        private void TryGeocode()
+        {
+            if (ImportDestination != ImportDestination.Locations)
+            {
+                MessageBox.Show("This is only to be used when importing locations.");
+                return;
+            }
+
+            MessageBox.Show("NOTE: All geocoding is limited to 50,000 locations per day");
+
+            var selectedColumnDataCategories = DataTable.Columns.OfType<ImportColumn>().Where(ic => ic.ImportColumnType != null).Select(ic => new { ic.ColumnName, ic.ImportColumnType.Type });
+            var addressLineOneColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationAddressLineOne);
+            var cityColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationCity);
+            var stateColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationState);
+            var zipCodeColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationZipCode);
+            var latitudeColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationLatitude);
+            var longitudeColumn = selectedColumnDataCategories.FirstOrDefault(cdc => cdc.Type == DataCategory.LocationLongitude);
+
+            //Make sure all the columns are selected
+            if (addressLineOneColumn == null || cityColumn == null || stateColumn == null || zipCodeColumn == null || latitudeColumn == null || longitudeColumn == null)
+            {
+                MessageBox.Show("You need to select a column for: Address Line One, City, State, Zip Code, Latitude, and Longitude");
+                return;
+            }
+
+            //Try to Geocode
+            foreach (var row in this.DataTable.Rows)
+            {
+                var addressLineOne = (string)row[addressLineOneColumn.ColumnName];
+                var city = (string)row[cityColumn.ColumnName];
+                var state = (string)row[stateColumn.ColumnName];
+                var zipCode = (string)row[zipCodeColumn.ColumnName];
+
+                var searchText = string.Format("{0}, {1}, {2}, {3}", addressLineOne, city, state, zipCode);
+                Manager.Data.TryGeocode(searchText, (geocodeComplete, userState) =>
+                                                        {
+                                                            var rowToChange = (DataRow)userState;
+                                                            if (geocodeComplete.Count() != 1) return;
+
+                                                            var result = geocodeComplete.First();
+
+                                                            //If it is not a good match return
+                                                            if (Convert.ToInt32(result.Precision) < 85) return;
+
+                                                            //Clean the rows data with the result
+                                                            rowToChange[addressLineOneColumn.ColumnName] = result.AddressLineOne;
+                                                            rowToChange[cityColumn.ColumnName] = result.City;
+                                                            rowToChange[stateColumn.ColumnName] = result.State;
+                                                            rowToChange[zipCodeColumn.ColumnName] = result.ZipCode;
+                                                            rowToChange[latitudeColumn.ColumnName] = result.Latitude;
+                                                            rowToChange[longitudeColumn.ColumnName] = result.Longitude;
+                                                        }, row);
+            }
+        }
+
         private void SaveDataTableToDatabase()
         {
+            //Convert the DataTable to CSV, and send it to be imported
+
+            //Set this to busy until the operation is complete
             IsBusy = true;
 
-            var locationsToAdd = new List<Location>();
-            var clientsToAdd = new List<Client>();
+            //Use the user selected ImportColumnTypes as the header record of the CSV
+            var headerRecord = new List<string>();
 
-            #region Setup Entities to Add
-
-            foreach (var row in DataTable.Rows)
+            var columnIndexesToIgnore = new List<int>();
+            var indexToIgnore = 0;
+            foreach (var importColumn in DataTable.Columns.OfType<ImportColumn>())
             {
-                Client selectedClient = null;
-                string clientName = null;
+                if (importColumn.ImportColumnType != null)
+                    headerRecord.Add(importColumn.ImportColumnType.Type.ToString());
+                else //Ignore columns that do not have a ImportColumnType selected
+                    columnIndexesToIgnore.Add(indexToIgnore);
 
-                //string salespersonName = null;
-
-                string contactInfoEmailAddressLabel = null;
-                string contactInfoEmailAddressData = null;
-                string contactInfoFaxNumberLabel = null;
-                string contactInfoFaxNumberData = null;
-                string contactInfoPhoneNumberLabel = null;
-                string contactInfoPhoneNumberData = null;
-                string contactInfoOtherLabel = null;
-                string contactInfoOtherData = null;
-                string contactInfoWebsiteLabel = null;
-                string contactInfoWebsiteData = null;
-
-                Location selectedLocation = null;
-                string locationName = null;
-
-                decimal? locationLatitude = null;
-                decimal? locationLongitude = null;
-                string locationAddressLineOne = null;
-                string locationAddressLineTwo = null;
-                string locationCity = null;
-                string locationState = null;
-                string locationZipCode = null;
-
-                //DateTime? serviceDate = null;
-
-                //Go through each selected column (those with a ImportColumnType !=null)
-                foreach (var column in DataTable.Columns.OfType<ImportColumn>().Where(ic => ic.ImportColumnType != null))
-                {
-                    #region Columns with possible associations
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ClientName)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        if (valueWithOptionalAssociation.OptionalAssociation != null)
-                            selectedClient = (Client)valueWithOptionalAssociation.OptionalAssociation;
-                        else
-                        {
-                            clientName = (string)valueWithOptionalAssociation.Value;
-                            selectedClient = Clients.FirstOrDefault(client => client.DisplayName == clientName);
-                        }
-                    }
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.LocationName)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        if (valueWithOptionalAssociation.OptionalAssociation != null)
-                            selectedLocation = (Location)valueWithOptionalAssociation.OptionalAssociation;
-                        else
-                        {
-                            locationName = (string)valueWithOptionalAssociation.Value;
-                            selectedLocation = Locations.FirstOrDefault(location => location.Name == locationName);
-                        }
-                    }
-
-                    #endregion
-
-                    #region Contact Info Columns
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoEmailAddressLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoEmailAddressLabel = (string)valueWithOptionalAssociation.Value;
-                    }
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoEmailAddressData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoEmailAddressData = (string)valueWithOptionalAssociation.Value;
-                    }
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoFaxNumberLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoFaxNumberLabel = (string)valueWithOptionalAssociation.Value;
-                    }
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoFaxNumberData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoFaxNumberData = (string)valueWithOptionalAssociation.Value;
-                    }
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoPhoneNumberLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoPhoneNumberLabel = (string)valueWithOptionalAssociation.Value;
-                    }
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoPhoneNumberData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoPhoneNumberData = (string)valueWithOptionalAssociation.Value;
-                    }
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoOtherLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoOtherLabel = (string)valueWithOptionalAssociation.Value;
-                    }
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoOtherData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoOtherData = (string)valueWithOptionalAssociation.Value;
-                    }
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoWebsiteLabel)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoWebsiteLabel = (string)valueWithOptionalAssociation.Value;
-                    }
-                    if (column.ImportColumnType.Type == ImportColumnEnum.ContactInfoWebsiteData)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        contactInfoWebsiteData = (string)valueWithOptionalAssociation.Value;
-                    }
-
-                    #endregion
-
-                    #region Location Columns
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.LocationLatitude)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        decimal parsedDecimal;
-                        if (Decimal.TryParse((string)valueWithOptionalAssociation.Value, out parsedDecimal))
-                            locationLatitude = parsedDecimal;
-                    }
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.LocationLongitude)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        decimal parsedDecimal;
-                        if (Decimal.TryParse((string)valueWithOptionalAssociation.Value, out parsedDecimal))
-                            locationLongitude = parsedDecimal;
-                    }
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.LocationAddressLineOne)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationAddressLineOne = (string)valueWithOptionalAssociation.Value;
-                    }
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.LocationAddressLineTwo)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationAddressLineTwo = (string)valueWithOptionalAssociation.Value;
-                    }
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.LocationCity)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationCity = (string)valueWithOptionalAssociation.Value;
-                    }
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.LocationState)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationState = (string)valueWithOptionalAssociation.Value;
-                    }
-
-                    if (column.ImportColumnType.Type == ImportColumnEnum.LocationZipCode)
-                    {
-                        var valueWithOptionalAssociation = row[column.ColumnName];
-                        locationZipCode = (string)valueWithOptionalAssociation.Value;
-                    }
-
-                    #endregion
-                }
-
-                Entity newEntity = null;
-                //Add new entity
-                if (ImportDestination == ImportDestination.Locations)
-                {
-                    var location = new Location
-                    {
-                        OwnerParty = Manager.Context.OwnerAccount,
-                        Name = locationName,
-                        Latitude = locationLatitude,
-                        Longitude = locationLongitude,
-                        AddressLineOne = locationAddressLineOne,
-                        AddressLineTwo = locationAddressLineTwo,
-                        City = locationCity,
-                        State = locationState,
-                        ZipCode = locationZipCode
-                    };
-
-                    if (selectedClient != null)
-                        location.Party = selectedClient.OwnedParty;
-
-                    newEntity = location;
-                }
-
-                if (ImportDestination == ImportDestination.Clients)
-                {
-                    var client = new Client
-                    {
-                        Vendor = (BusinessAccount)Manager.Context.OwnerAccount,
-                        OwnedParty = new Business { Name = clientName }
-                    };
-
-                    if (selectedLocation != null)
-                        client.OwnedParty.Locations.Add(selectedLocation);
-
-                    newEntity = client;
-                }
-
-                //Add contact info
-                var contactInfoSet = new List<ContactInfo>();
-
-                if (!String.IsNullOrEmpty(contactInfoEmailAddressLabel) || !String.IsNullOrEmpty(contactInfoEmailAddressData))
-                    contactInfoSet.Add(new ContactInfo { Type = "Email Address", Label = contactInfoEmailAddressLabel ?? "", Data = contactInfoEmailAddressData ?? "" });
-
-                if (!String.IsNullOrEmpty(contactInfoFaxNumberLabel) || !String.IsNullOrEmpty(contactInfoFaxNumberData))
-                    contactInfoSet.Add(new ContactInfo { Type = "Fax Number", Label = contactInfoFaxNumberLabel ?? "", Data = contactInfoFaxNumberData ?? "" });
-
-                if (!String.IsNullOrEmpty(contactInfoPhoneNumberLabel) || !String.IsNullOrEmpty(contactInfoPhoneNumberData))
-                    contactInfoSet.Add(new ContactInfo { Type = "Phone Number", Label = contactInfoPhoneNumberLabel ?? "", Data = contactInfoPhoneNumberData ?? "" });
-
-                if (!String.IsNullOrEmpty(contactInfoOtherLabel) || !String.IsNullOrEmpty(contactInfoOtherData))
-                    contactInfoSet.Add(new ContactInfo { Type = "Other", Label = contactInfoOtherLabel ?? "", Data = contactInfoOtherData ?? "" });
-
-                if (!String.IsNullOrEmpty(contactInfoWebsiteLabel) || !String.IsNullOrEmpty(contactInfoWebsiteData))
-                    contactInfoSet.Add(new ContactInfo { Type = "Website", Label = contactInfoWebsiteLabel ?? "", Data = contactInfoWebsiteData ?? "" });
-
-                //Add contactinfo, and add entity to list of entities
-                if (newEntity is Location)
-                {
-                    foreach (var contactInfo in contactInfoSet)
-                        ((Location)newEntity).ContactInfoSet.Add(contactInfo);
-
-                    locationsToAdd.Add((Location)newEntity);
-                }
-
-                if (newEntity is Client)
-                {
-                    foreach (var contactInfo in contactInfoSet)
-                        ((Client)newEntity).OwnedParty.ContactInfoSet.Add(contactInfo);
-
-                    clientsToAdd.Add((Client)newEntity);
-                }
+                indexToIgnore++;
             }
-            #endregion
 
-            foreach (var location in locationsToAdd)
-                Manager.Data.Context.Locations.Add(location);
+            var csvToImport = DataTable.ToCSV(headerRecord, columnIndexesToIgnore);
 
-            foreach (var client in clientsToAdd)
-                Manager.Data.Context.Clients.Add(client);
-
-            Manager.Data.EnqueueSubmitOperation(onSaveCallback =>
+            Manager.Data.Context.ImportEntities(Manager.Context.RoleId, ImportDestination, csvToImport, invokeOp =>
             {
-                if (!onSaveCallback.HasError)
+                if (!invokeOp.HasError)
                     MessageBox.Show("Data Imported");
                 else
                 {
@@ -469,7 +273,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 }
 
                 IsBusy = false;
-            });
+            }, null);
         }
 
         #endregion

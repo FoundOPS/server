@@ -6277,6 +6277,12 @@
             </summary>
             <value>The connector.</value>
         </member>
+        <member name="T:Telerik.Windows.Controls.Charting.ChartThemeHelper">
+            <summary>
+            RadChart will not support the implicit styling infrastructure.
+            This class contains the necessary methods from Telerik.Windows.Controls.Theme to keep the control working.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.Charting.PlotAreaMouseEventArgs">
             <summary>
             This class holds the event arguments collected when the ChartArea mouse events are raised.
@@ -15136,11 +15142,6 @@
         <member name="F:Telerik.Windows.Controls.RadChart.HierarchicalViewDescriptorsProperty">
             <summary>
             Identifies the <see cref="P:Telerik.Windows.Controls.RadChart.HierarchicalViewDescriptors"/> dependency property.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.RadChart.StyleBuilderProperty">
-            <summary>
-            Identifies the <see cref="P:Telerik.Windows.Controls.RadChart.StyleBuilder"/> dependency property.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.RadChart.InheritanceContextPropagatorProperty">

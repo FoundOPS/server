@@ -10,7 +10,7 @@
              xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
              xmlns:BusinessAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts"
-             mc:Ignorable="d" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="BusinessAccountsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="BusinessAccountsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!-- Note: You cannot remove CoreEntities, it is used by GetVM-->
     <UserControl.Resources>
         <BusinessAccounts:ServiceTemplateAddModeConverter x:Name="ServiceTemplateAddModeConverter" />
@@ -55,6 +55,28 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Name:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                             <TextBox Text="{Binding Name, Mode=TwoWay}" Grid.Column="2" />
+                        </Grid>
+                        <!--<Controls1:ImageUpload Grid.Row="1" HorizontalAlignment="Center" Margin="5" ImageData="{Binding , Mode=TwoWay}" />-->
+                    </Grid>
+                </toolkit:Expander>
+                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">
+                    <toolkit:Expander.Header>
+                        <TextBlock TextWrapping="Wrap" Text="Subscription Type" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource PermissionBrush}" />
+                    </toolkit:Expander.Header>
+                    <Grid Margin="0,5" HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Margin="0,5" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource LargeLabelColumn}" />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Max Number of Routes:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                            <telerik:RadNumericUpDown Minimum="0" Value="{Binding MaxRoutes, Mode=TwoWay}" Grid.Column="2" NumberDecimalDigits="0"/>
                         </Grid>
                         <!--<Controls1:ImageUpload Grid.Row="1" HorizontalAlignment="Center" Margin="5" ImageData="{Binding , Mode=TwoWay}" />-->
                     </Grid>

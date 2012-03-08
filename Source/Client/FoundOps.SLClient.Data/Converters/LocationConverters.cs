@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Globalization;
+using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.Data.Converters
@@ -24,11 +25,7 @@ namespace FoundOps.SLClient.Data.Converters
 
             string locationUrl = "";
 
-#if DEBUG
-            locationUrl = String.Format("http://localhost:31820/Helper/LocationQRCode?latitude={0}&longitude={1}", latitude, longitude);
-#else
-            locationUrl = String.Format("http://www.foundops.com/Helper/LocationQRCode?latitude={0}&longitude={1}", latitude, longitude);
-#endif
+            locationUrl = String.Format(UriExtensions.ThisRootUrl+ "/Helper/LocationQRCode?latitude={0}&longitude={1}", latitude, longitude);
             return new Uri(locationUrl);
         }
 

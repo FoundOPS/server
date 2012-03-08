@@ -13,7 +13,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding Label, Source={MarkupExtensions:RootElement}}" />
                 <telerik:RadComboBox x:Name="RadComboBox" Grid.Row="1" MinWidth="120" StaysOpenOnEdit="True" IsEditable="True"
-                                     EditableTemplate="{StaticResource SL5BugWorkaround}"
+                                    
                                      DataContext="{MarkupExtensions:RootElement}"
                                      ItemsSource="{MarkupExtensions:Except Collection={Binding Source.ExistingItemsSource, Source={MarkupExtensions:RootElement}}, CustomComparer={Binding Source.CustomComparer, Source={MarkupExtensions:RootElement}},
                     ExceptCollection={Binding DestinationItemsSource, Source={MarkupExtensions:RootElement}}}"

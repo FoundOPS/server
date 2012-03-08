@@ -29,7 +29,11 @@
         <DataTemplate x:Key="TimeTemplate">
             <CustomFields:TimeDefine DateTimeField="{Binding}"/>
         </DataTemplate>
-        <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" CheckListTemplate="{StaticResource OptionsFieldTemplate}" ComboBoxTemplate="{StaticResource OptionsFieldTemplate}" CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberTemplate}" PercentageTemplate="{StaticResource PercentageTemplate}" TextSmTemplate="{StaticResource TextTemplate}" TextLgTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+        <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
+                                             CheckListTemplate="{StaticResource OptionsFieldTemplate}" ComboBoxTemplate="{StaticResource OptionsFieldTemplate}" 
+                                             CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberTemplate}" 
+                                             PercentageTemplate="{StaticResource PercentageTemplate}" TextSmTemplate="{StaticResource TextTemplate}" 
+                                             TextLgTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
     </UserControl.Resources>
     <telerik:RadTreeListView x:Name="FieldDefineTreeListView"  AutoGenerateColumns="False" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" 
                              RowIndicatorVisibility="Collapsed" SelectionMode="Single" RowDetailsTemplateSelector="{StaticResource FieldDataTemplateSelector}" 

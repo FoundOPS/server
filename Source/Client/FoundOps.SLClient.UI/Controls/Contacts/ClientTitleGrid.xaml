@@ -16,10 +16,10 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock Text="Client" />
-                <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" Grid.Row="1" MinWidth="150" StaysOpenOnEdit="True" IsEditable="True" TextSearchMode="Contains" DisplayMemberPath="DisplayName" 
+                <telerik:RadComboBox Grid.Row="1" MinWidth="150" StaysOpenOnEdit="True" IsEditable="True" TextSearchMode="Contains" DisplayMemberPath="DisplayName" 
                        SelectedValue="{Binding Client, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView, Source={Tools1:GetVM Type=CoreEntities:ClientsVM}}"/>
                 <TextBlock Text="Role" Grid.Row="2"/>
-                <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" Grid.Row="3" MinWidth="150" StaysOpenOnEdit="True" IsEditable="True" TextSearchMode="Contains" 
+                <telerik:RadComboBox Grid.Row="3" MinWidth="150" StaysOpenOnEdit="True" IsEditable="True" TextSearchMode="Contains" 
                         Text="{Binding Title, Mode=TwoWay}" ItemsSource="{Binding DistinctTitles, Source={Tools1:GetVM Type=CoreEntities:ClientTitlesVM}}"/>
                 <Button Grid.Row="4" Content="Done" Margin="5,0,0,0" Click="AddClientTitleButtonClicked" Command="{Binding AddCommand, Source={Tools1:GetVM Type=CoreEntities:ClientTitlesVM}}"/>
             </Grid>

@@ -12,7 +12,7 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         #region ConnectionString, Paths and Parameters
 
-        private static readonly string SqlConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreConnectionString");
+        public static readonly string SqlConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreConnectionString");
         private static readonly string ContainerConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreEntitiesContainer");
 
         private static readonly string RootDirectory = UserSpecificResourcesWrapper.GetString("RootDirectory");

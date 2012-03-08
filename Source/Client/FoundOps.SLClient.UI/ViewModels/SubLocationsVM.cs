@@ -171,7 +171,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             RaisePropertyChanged("DomainCollectionView");
         }
 
-        private void OnGeocodingComplete(IEnumerable<GeocoderResult> geocoderResults)
+        private void OnGeocodingComplete(IEnumerable<GeocoderResult> geocoderResults, object userState)
         {
             GeocoderResults = new ObservableCollection<GeocoderResult>(geocoderResults);
         }

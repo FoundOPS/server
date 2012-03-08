@@ -1,18 +1,15 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Windows;
-using FoundOps.Common.Silverlight.Services;
-using FoundOps.Core.Models.CoreEntities.DesignData;
-using FoundOps.Core.Models.CoreEntities.Extensions.Services;
-using FoundOps.SLClient.Data.Services;
+using System.Reactive.Linq;
 using System.Collections.Generic;
-using FoundOps.Core.Context.Services;
+using MEFedMVVM.ViewModelLocator;
+using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
-using MEFedMVVM.ViewModelLocator;
+using FoundOps.Common.Silverlight.Services;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

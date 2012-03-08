@@ -11,8 +11,6 @@ using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using RiaServicesContrib.DataValidation;
-using Telerik.Windows.Documents.FormatProviders;
-using Telerik.Windows.Documents.FormatProviders.Html;
 
 namespace FoundOps.SLClient.Navigator
 {

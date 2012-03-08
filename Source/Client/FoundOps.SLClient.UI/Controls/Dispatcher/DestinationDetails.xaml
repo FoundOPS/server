@@ -50,7 +50,6 @@
             <Rectangle Fill="Black" Height="1" Margin="5,3"/>
             <TextBlock Text="Contact Info" FontWeight="Bold" HorizontalAlignment="Center"/>
             <ContactInfo:ContactInfoView HorizontalAlignment="Center" ContactInfoVM="{Binding DataContext.SelectedRouteDestinationClientContactInfoVM, ElementName=myDestinationDetails}"/>
-            <ContactInfo:ContactInfoView HorizontalAlignment="Center" ContactInfoVM="{Binding DataContext.SelectedRouteDestinationLocationContactInfoVM, ElementName=myDestinationDetails}"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

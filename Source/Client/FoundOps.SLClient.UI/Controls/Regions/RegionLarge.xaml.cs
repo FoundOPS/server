@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using FoundOps.SLClient.UI.ViewModels;
 using Telerik.Windows.Controls.Map;
-using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Silverlight.Tools.Location;
 using FoundOps.Common.Silverlight.Extensions.Telerik;
 

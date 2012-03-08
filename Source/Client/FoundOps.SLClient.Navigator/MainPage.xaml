@@ -23,7 +23,7 @@
                 <ColumnDefinition Width="42"/>
             </Grid.ColumnDefinitions>
             <Controls2:UserIcon HorizontalAlignment="Right" Margin="5,0,0,0"/>
-            <Controls:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" ItemsSource="{Binding OwnerAccountsOfMyRoles}" Grid.Column="2" HorizontalAlignment="Left" Margin="0,0,0,5" 
+            <Controls:RadComboBox ItemsSource="{Binding OwnerAccountsOfMyRoles}" Grid.Column="2" HorizontalAlignment="Left" Margin="0,0,0,5" 
                                     SelectedItem="{Binding SelectedOwnerAccountOfRole, Mode=TwoWay}" Height="30" MinWidth="80" IsEnabled="{Binding CurrentUserAccount, Converter={StaticResource ExistsBoolConverter}}" >
                 <Controls:RadComboBox.ItemTemplate>
                     <DataTemplate>

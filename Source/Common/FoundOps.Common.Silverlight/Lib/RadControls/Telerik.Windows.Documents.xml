@@ -329,6 +329,21 @@
             	<c>true</c> if this position is inside table; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.BinaryDataProviderBase.RichTextBox">
+            <summary>
+            Gets or sets the RadRichTextBox this DataProvider is attached to
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.BinaryDataProviderBase.FormatProvider">
+            <summary>
+            Gets or sets the IDocumentFormatProvider thas is used when converting the document
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Documents.FormatProviders.BinaryDataProviderBase.SetupDocument">
+            <summary>
+            Fires when the DataProvider creates new document
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Documents.FormatProviders.DataProviderBase.RichTextBox">
             <summary>
             Gets or sets the RadRichTextBox this DataProvider is attached to
@@ -375,6 +390,17 @@
             </remarks>
             <value>
               <c>true</c> if [export style metadata]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.HtmlExportSettings.ExportFontStylesAsTags">
+            <summary>
+            Gets or sets the export font styles as tag. This controls if the font styles: bold, italic and underline will be exported as tags.
+            </summary>
+            <remarks>
+            Gets or sets the export font styles as tag. This controls if the font styles: bold, italic and underline will be exported as tags.
+            </remarks>
+            <value>
+            <c>true</c> if [export font styles as tag]; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="F:Telerik.Windows.Documents.FormatProviders.Html.StyleRepositoryExportMode.ExportStylesAsCssClasses">
@@ -606,10 +632,29 @@
             <param name="listItem">The list item info.</param>
             <param name="macOSXSaveBulletSymbols">If set to <c>true</c> changes bullet symbol to one that is correctly visualized on MacOSX.</param>
         </member>
+        <member name="P:Telerik.Windows.Documents.Model.DocumentElement.Style">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Documents.Model.DocumentElement.DefaultStyleSettings">
             <summary>
             Get or sets StyleDefinition instance that holds default values for properties 
             </summary>            
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.DocumentElement.LastLayoutBox">
+            <summary>
+            Traverses AssociatedLayoutBoxes to find the last
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Inline.FieldStart">
+            <summary>
+            Gets the field start of the inner-most field range in which this inline is included. 
+            Note that the property setter is obsolete and does not do anything
+            </summary>
+            <value>
+            The field start.
+            </value>
         </member>
         <member name="F:Telerik.Windows.Documents.Model.DocumentEnvironment.NewLine">
             <summary>
@@ -655,6 +700,14 @@
             <summary>
             Gets the size.
             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.HeaderFooterBase.IsEmpty">
+            <summary>
+            Gets a value indicating whether header/footer is empty.
+            </summary>
+            <value>
+              <c>true</c> if header/footer is empty; otherwise, <c>false</c>.
+            </value>
         </member>
         <member name="E:Telerik.Windows.Documents.Model.HeaderFooterBase.Changed">
             <summary>
@@ -807,6 +860,1304 @@
             Gets the display name.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Documents.UI.IDocumentEditor">
+            <summary>
+            Defines <see cref="T:Telerik.Windows.Documents.Model.RadDocument">RadDocument</see> editor.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.UI.IDocumentEditor.Document">
+            <summary>
+            Gets or sets the current document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertCustomAnnotationRange(Telerik.Windows.Documents.Model.AnnotationRangeStart,Telerik.Windows.Documents.Model.AnnotationRangeEnd)">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.AddOrReplaceTabStop(Telerik.Windows.Documents.Model.TabStop,Telerik.Windows.Documents.Model.TabStop)">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ResizeColumn(Telerik.Windows.Documents.Model.Table,System.Int32,System.Single)">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeTableColumnsLayoutMode(Telerik.Windows.Documents.Model.Table,Telerik.Windows.Documents.Model.TableLayoutMode)">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleList(System.Boolean,Telerik.Windows.Documents.Lists.DocumentList)">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionMagin(Telerik.Windows.Documents.Layout.Padding)">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.IncrementPageWidth">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.DecrementPageWidth">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeListType(Telerik.Windows.Documents.Lists.ListType)">
+            <summary>
+            Changes the list type of the current paragraph.
+            </summary>
+            <param name="listType">The new list type to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangePageSize(Telerik.Windows.Documents.Model.SizeF)">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionMargin(Telerik.Windows.Documents.Layout.Padding)">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangePageSize(System.Windows.Size)">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadRichTextBox.MinScaleFactor">
+            <summary>
+            Represents the minimum scale factor the control supports.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadRichTextBox.MaxScaleFactor">
+            <summary>
+            Represents the maximum scale factor the control supports.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.EnsureActiveEditorPresenter">
+             <summary>
+             Ensures control template is applied and ensures ActiveEditorPresenter is initialized to its default value.
+             </summary>
+            <returns>Whether the ActiveEditorPresenter has been created as a result of this method call.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.#ctor">
+            <summary>
+            Initializes a new instance of the RadRichTextBox class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ScrollToHorizontalOffset(System.Double)">
+            <summary>
+            Scrolls the contents of RadRichTextBox to the specified horizontal offset.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ScrollToVerticalOffset(System.Double)">
+            <summary>
+            Scrolls the contents of RadRichTextBox to the specified vertical offset.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InvalidateProofingErrors(System.Boolean)">
+            <summary>
+            Clears the spell-checking state of all words in the document and updates the UI.
+            </summary>
+            <param name="invalidateIncorrectWordsOnly">True to invalidate incorrect word only.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InvalidateEditorLayout">
+            <summary>
+            Forces the control to invalidate the layout of its child elements.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Print(System.String,Telerik.Windows.Documents.UI.PrintMode)">
+            <summary>
+            Initializes printing of the current document.
+            </summary>
+            <param name="documentName">The name of the document to print.</param>
+            <param name="mode">The printing mode.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.PrintPreview">
+            <summary>
+            Initializing print preview of the current document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.UpdateEditorLayout">
+            <summary>
+            Forces the control to update the layout of its child elements.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleHeaderFooterEditingMode">
+            <summary>
+            Toggles the headers/footers editing mode.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleFormattingSymbols">
+            <summary>
+            Toggles the visibility of the formatting symbols in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleComments">
+            <summary>
+            Toggles the visibility of the comments in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleBookmarks">
+            <summary>
+            Toggles the visibility of the bookmarks in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Undo">
+            <summary>
+            Executes the Undo command.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Redo">
+            <summary>
+            Executes the Redo command.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Cut">
+            <summary>
+            Executes the Cut command.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Copy">
+            <summary>
+            Copies currently selected document elements into the clipboard
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Paste">
+            <summary>
+            Pastes from clipboard into the document respecting CaretPosition and Selection
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Delete(System.Boolean)">
+            <summary>
+            Deletes from the document respecting CaretPosition and Selection.
+            </summary>
+            <param name="deletePrevious">If the selection is empty, indicates whether to delete the character before or after the caret.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Insert(System.String)">
+            <summary>
+            Inserts text into the document at current caret position.
+            </summary>
+            <param name="text">The text to insert.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertPageBreak">
+            <summary>
+            Inserts PageBreak into the document at current caret position.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertLineBreak">
+            <summary>
+            Inserts LineBreak into the document at current caret position.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertSectionBreak(Telerik.Windows.Documents.SectionBreakType)">
+            <summary>
+            Inserts SectionBreak of the specified type into the document at current caret position.
+            </summary>
+            <seealso cref="!:Telerik.Windows.Documents.RadDocument.CaretPosition"/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertInline(Telerik.Windows.Documents.Model.Inline)">
+            <summary>
+            Inserts inline element into the document.
+            </summary>
+            <param name="inline">The inline element to insert.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertFragment(Telerik.Windows.Documents.Model.DocumentFragment)">
+            <summary>
+            Inserts a document fragment.
+            </summary>
+            <param name="documentFragment">The document fragment to insert.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo,System.Collections.Generic.IEnumerable{Telerik.Windows.Documents.Model.Inline})">
+            <summary>
+            Inserts collection of inlines as hyperlink into the document.
+            </summary>
+            <param name="hyperlinkInfo">The hyperlink info.</param>
+            <param name="inlines">The inlines.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo,System.String)">
+            <summary>
+            Inserts hyperlink into the document.
+            </summary>
+            <param name="hyperlinkInfo">The hyperlink info.</param>
+            <param name="hyperlinkText">The hyperlink text.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo,System.String,Telerik.Windows.Documents.Model.Styles.StyleDefinition)">
+            <summary>
+            Inserts hyperlink into the document.
+            </summary>
+            <param name="hyperlinkInfo">The hyperlink info.</param>
+            <param name="hyperlinkText">The hyperlink text.</param>
+            <param name="hyperlinkStyle">The hyperlink style.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo)">
+            <summary>
+            Creates hyperlink form the current selection.
+            </summary>
+            <param name="hyperlinkInfo">The hyperlink info.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo,Telerik.Windows.Documents.Model.Styles.StyleDefinition)">
+            <summary>
+            Creates hyperlink form the current selection.
+            </summary>
+            <param name="hyperlinkInfo">The hyperlink info.</param>
+            <param name="hyperlinkStyle">The hyperlink style.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.RemoveHyperlink">
+            <summary>
+            Removes the hyperlink on the caret position.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertImage(System.IO.Stream,System.String)">
+            <summary>
+            Inserts image inline into the document.
+            </summary>
+            <param name="imageStream">The stream to the image's contents.</param>
+            <param name="extension">The extension specifying the image format.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.GetContent(System.String)">
+            <summary>
+            Gets the content in various formats.
+            </summary>
+            <param name="format">The format to export into.</param>
+            <returns>String representation of the content.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeLayoutMode(Telerik.Windows.Documents.Model.DocumentLayoutMode)">
+            <summary>
+            Changes the layout mode.
+            </summary>
+            <param name="layoutMode">The new layout mode to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.UpdateHeader(Telerik.Windows.Documents.Model.Section,Telerik.Windows.Documents.Model.HeaderFooterType,Telerik.Windows.Documents.Model.Header)">
+            <summary>
+            Updates the header for a section.
+            </summary>
+            <param name="section">The section of the header.</param>
+            <param name="headerType">Type of the header.</param>
+            <param name="header">The header.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.UpdateFooter(Telerik.Windows.Documents.Model.Section,Telerik.Windows.Documents.Model.HeaderFooterType,Telerik.Windows.Documents.Model.Footer)">
+            <summary>
+            Updates the footer for a section.
+            </summary>
+            <param name="section">The section of the footer.</param>
+            <param name="footerType">Type of the footer.</param>
+            <param name="footer">The footer.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.FocusHeader">
+            <summary>
+            Focuses the header of the current page.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.FocusFooter">
+            <summary>
+            Focuses the footer of the current page.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ClearFormatting">
+            <summary>
+            Clears the formatting of the current run in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleBold">
+            <summary>
+            Toggles the bold state of the current run in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleItalic">
+            <summary>
+            Toggles the italic state of the current run in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeFontFamily(System.Windows.Media.FontFamily)">
+            <summary>
+            Changes the font family of the current run in the document.
+            </summary>
+            <param name="newFontFamily">The new font family to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeStyleNameToActiveEditor(System.String)">
+            <summary>
+            Changes the style name of the current run in the document.
+            </summary>
+            <param name="newFontFamily">The new font family to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeStyleName(System.String)">
+            <summary>
+            Changes the style name of the current run in the document.
+            </summary>
+            <param name="newStyleName">The new style name to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeFontSize(System.Double)">
+            <summary>
+            Changes the font size of the current run in the document.
+            </summary>
+            <param name="newFontSize">The new font size to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.IncrementFontSize">
+            <summary>
+            Increments the font size of the current run in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.DecrementFontSize">
+            <summary>
+            Decrements the font size of the current run in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeTextForeColor(System.Windows.Media.Color)">
+            <summary>
+            Changes the text foreground color of the current run in the document.
+            </summary>
+            <param name="newColor">The new foreground color to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeUnderlineColor(System.Windows.Media.Color)">
+            <summary>
+            Changes the underline color of the current run in the document.
+            </summary>
+            <param name="newColor">The new underline color to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphBackground(System.Windows.Media.Color)">
+            <summary>
+            Changes the background color of the selected paragraphs in the document.
+            </summary>
+            <param name="newColor">The new background color to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeTextHighlightColor(System.Windows.Media.Color)">
+            <summary>
+            Changes the text highligh color of the current run in the document.
+            </summary>
+            <param name="newColor">The new highlight color to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeBaselineAlignment(Telerik.Windows.Documents.Model.BaselineAlignment)">
+            <summary>
+            Changes the baseline alignment of the current run in the document.
+            </summary>
+            <param name="newBaselineAlignment">The new baseline alignment to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleSubscript">
+            <summary>
+            Toggles the subscript state of the current run in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleSuperscript">
+            <summary>
+            Changes the superscript state of the current run in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleUnderline">
+            <summary>
+            Toggles the underline state of the current run in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeUnderlineDecoration(Telerik.Windows.Documents.UI.TextDecorations.DecorationProviders.IUnderlineUIDecorationProvider)">
+            <summary>
+            Changes the underline decoration of the current run in the document.
+            </summary>
+            <param name="decoration">The new underline decoration provider to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleStrikethrough">
+            <summary>
+            Toggles the subscript state of the current run in the document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSpanStyle(Telerik.Windows.Documents.Model.Styles.StyleDefinition)">
+            <summary>
+            Changes the style of current run in the document.
+            </summary>
+            <param name="styleInfo">The new style to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeTextAlignment(Telerik.Windows.Documents.Layout.RadTextAlignment)">
+            <summary>
+            Changes the text alignment of the current run in the document.
+            </summary>
+            <param name="alignment">The new text alignment to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.IncrementParagraphLeftIndent">
+            <summary>
+            Increments the left indent of the current paragraph.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.DecrementParagraphLeftIndent">
+            <summary>
+            Decrements the left indent of the current paragraph.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphLeftIndent(System.Double)">
+            <summary>
+            Changes the left indent of the current paragraph.
+            </summary>
+            <param name="newLeftIndent">The new left indent to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphRightIndent(System.Double)">
+            <summary>
+            Changes the right indent of the current paragraph.
+            </summary>
+            <param name="newRightIndent">The new right indent to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphFirstLineIndent(System.Double)">
+            <summary>
+            Changes the left indent of the current paragraph.
+            </summary>
+            <param name="newLeftIndent">The new left indent to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphSpacingBefore(System.Double)">
+            <summary>
+            Changes the spacing before the current paragraph.
+            </summary>
+            <param name="newSpacingBefore">The new spacing to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphSpacingAfter(System.Double)">
+            <summary>
+            Changes the spacing after the current paragraph.
+            </summary>
+            <param name="newSpacingAfter">The new spacing to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphLineSpacing(System.Double,Telerik.Windows.Documents.Model.LineSpacingType)">
+            <summary>
+            Changes the line spacing inside the current paragraph.
+            </summary>
+            <param name="newLineSpacing">The new line spacing to be applied.</param>
+            <param name="newLineSpacingType">The type of the line spacing to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphLineSpacing(System.Double)">
+            <summary>
+            Changes the lines spacing inside the current paragraph.
+            </summary>
+            <param name="newLineSpacing">The new line spacing to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphLineSpacingType(Telerik.Windows.Documents.Model.LineSpacingType)">
+            <summary>
+            Changes the line spacing type inside the current paragraph.
+            </summary>
+            <param name="newLineSpacingType">The new line spacing type to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphStyle(Telerik.Windows.Documents.Model.Styles.StyleDefinition)">
+            <summary>
+            Changes the paragraph style of the current paragraph.
+            </summary>
+            <param name="styleInfo">The new style to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionPageSize(System.Windows.Size)">
+            <summary>
+            Changes the page size of the current section.
+            </summary>
+            <param name="newSize">The new page size to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionPageMargin(Telerik.Windows.Documents.Layout.Padding)">
+            <summary>
+            Changes the page margin of the current section.
+            </summary>
+            <param name="newSectionMargin">The new margin to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionPageOrientation(Telerik.Windows.Documents.Model.PageOrientation)">
+            <summary>
+            Changes the page orientation of the current section.
+            </summary>
+            <param name="newSectionPageOrientation"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionHeaderTopMargin(System.Int32)">
+            <summary>
+            Changes the top margin of the header of the current section.
+            </summary>
+            <param name="newSectionHeaderTopMargin">Section header top margin.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionFooterBottomMargin(System.Int32)">
+            <summary>
+            Changes the bottom margin of the footer of the current section.
+            </summary>
+            <param name="newSectionHeaderTopMargin">Section footer bottom margin.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.SatisfyImports">
+            <summary>
+            Loads extensible UI components through MEF.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowParagraphPropertiesDialog">
+            <summary>
+            Shows the paragraph properties dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowFontPropertiesDialog">
+            <summary>
+            Shows the font properties dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowTablePropertiesDialog">
+            <summary>
+            Shows the table properties dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowTableBordersDialog">
+            <summary>
+            Shows the table borders dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertSymbolWindow">
+            <summary>
+            Show the insert symbol dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertHyperlinkDialog">
+            <summary>
+            Shows the insert hyperlink dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowManageBookmarksDialog">
+            <summary>
+            Shows the dialog for managing bookmarks.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowFindReplaceDialog">
+            <summary>
+            Shows the find replace dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertTableDialog">
+            <summary>
+            Shows the insert table dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowSpellCheckingDialog">
+            <summary>
+            Shows the spell checking dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowEditCustomDictionaryDialog">
+            <summary>
+            Shows the dialog for editing custom spellchecking dictionaries.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowFloatingBlockPropertiesDialog">
+            <summary>
+            Shows the floating block properties dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowTabStopsPropertiesDialog">
+            <summary>
+            Shows the dialog for editing tab stops.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowImageEditorDialog(System.String)">
+            <summary>
+            Shows the image editor dialog.
+            </summary>
+            <param name="executeToolName">Name of the tool to execute when the dialog is opened.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowStyleFormattingPropertiesDialog">
+            <summary>
+            Shows the dialog for modifieng style formatting.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowManageStylesDialog">
+            <summary>
+            Shows the dialog for managing styles.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowImageEditorDialog">
+            <summary>
+            Shows the image editor dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertDateTimeDialog">
+            <summary>
+            Shows the insert date field dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowProtectDocumentDialog">
+            <summary>
+            Shows the dialog for enforcing document protection.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowUnprotectDocumentDialog">
+            <summary>
+            Shows the dialog for removing document protection.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowChangeEditingPermissionsDialog">
+            <summary>
+            Shows the dialog for changing editing permissions.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnCommentShowing(Telerik.Windows.Documents.UI.CommentShowingEventArgs)">
+            <summary>
+            Raises the <see cref="E:CommentShowing"/> event.
+            </summary>
+            <param name="e">The <see cref="T:Telerik.Windows.Documents.UI.CommentShowingEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnCommandExecuting(Telerik.Windows.Documents.RichTextBoxCommands.CommandExecutingEventArgs)">
+            <summary>
+            Raises the <see cref="E:CommandExecuting"/> event.
+            </summary>
+            <param name="e">The <see cref="T:Telerik.Windows.Documents.RichTextBoxCommands.CommandExecutingEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnCommandExecuted(Telerik.Windows.Documents.RichTextBoxCommands.CommandExecutedEventArgs)">
+            <summary>
+            Raises the <see cref="E:CommandExecuted"/> event.
+            </summary>
+            <param name="e">The <see cref="T:Telerik.Windows.Documents.RichTextBoxCommands.CommandExecutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnIsReadOnlyChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:IsReadOnlyChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnPrintStarted(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:PrintStarted"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnPrintCompleted(Telerik.Windows.Documents.UI.PrintCompletedEventArgs)">
+            <summary>
+            Raises the <see cref="E:PrintCompleted"/> event.
+            </summary>
+            <param name="e">The <see cref="T:Telerik.Windows.Documents.UI.PrintCompletedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnIsSpellCheckingEnabledChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:IsSpellCheckingEnabledChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnIsInHeaderFooterEditModeChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:IsInHeaderFooterEditModeChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnShowCommentsChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:ShowCommentsChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnActiveDocumentEditorChanged(Telerik.Windows.Documents.UI.ActiveDocumentEditorChangedEventArgs)">
+            <summary>
+            Raises the <see cref="E:ActiveDocumentEditorChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:Telerik.Windows.Documents.UI.ActiveDocumentEditorChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.NewDocumentCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.OpenDocumentCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.PrintCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SaveCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.UndoCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.RedoCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeFontFamilyCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeFontSizeCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeFontForeColorCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeFontHighlightColorCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleBoldCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleItalicCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleStrikethroughCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleSubscriptCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleSuperscriptCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleUnderlineCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleFormattingSymbolsCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IncrementFontSizeCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DecrementFontSizeCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IncrementPageWidthCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DecrementPageWidthCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleBulletsCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleNumberedCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeTextAlignmentCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IncrementParagraphLeftIndentCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DecrementParagraphLeftIndentCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeUnderlineDecorationCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeLayoutModeCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ClearFormattingCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.CopyCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.CutCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.PasteCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertPageBreakCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertPictureCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowInsertHyperlinkDialogCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowInsertSymbolWindowCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowParagraphPropertiesDialogCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangePageMarginsCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangePaperTypeCommand">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsFocusable">
+            <summary>
+            Gets or sets a value that indicates whether a control is included in tab navigation. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.AcceptsReturn">
+            <summary>
+            Gets or sets a value indicating whether pressing the RETURN key types a RETURN character in the control.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.AcceptsTab">
+            <summary>
+            Gets or sets a value indicating whether pressing the TAB key types a TAB character in the control instead of moving the focus to the next control in the tab order.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.AllowScaling">
+            <summary>
+            Gets or sets a value indicating whether the scaling is enabled.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ScaleFactor">
+            <summary>
+            Gets or sets a value representing the current view scale factor.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HorizontalScrollBarVisibility">
+            <summary>
+            Gets or sets a value representing the horizontal scroll bar visibility.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.VerticalScrollBarVisibility">
+            <summary>
+            Gets or sets a value representing the vertical scroll bar visibility.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsReadOnly">
+            <summary>
+            Gets or sets a value indicating whether the control is read-only.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsSelectionEnabled">
+            <summary>
+            Gets or sets a value indicating whether selection can be made in the document.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HyperlinkNavigationMode">
+            <summary>
+            Gets or sets the hyperlink navigation mode.
+            </summary>
+            <value>The hyperlink navigation mode.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.LayoutMode">
+            <summary>
+            Gets or sets the document layout mode.
+            </summary>
+            <value>The document layout mode.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HyperlinkToolTipFormatString">
+            <summary>
+            Gets or sets the hyperlink tool text.
+            </summary>
+            <value>The hyperlink tool tip.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsSelectionMiniToolBarEnabled">
+            <summary>
+            Gets or sets value indicating whether selection mini toolBar is enabled.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsImageMiniToolBarEnabled">
+            <summary>
+            Gets or sets value indicating whether image mini toolBar is enabled.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsContextMenuEnabled">
+            <summary>
+            Gets or sets a value indicating whether context menu is enabled.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowComments">
+            <summary>
+            Gets or sets a value indicating whether the comments are shown.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowFormattingSymbols">
+            <summary>
+            Gets or sets a value indicating whether formatting symbols are shown in the document.
+            </summary>
+            <value>
+            	<c>true</c> if formatting symbols are shown; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.CommentTemplateContentMargin">
+            <summary>
+            Gets or sets the comment template content margin.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsSpellCheckingEnabled">
+            <summary>
+            Gets or sets a value indicating whether the spell checking is enabled for this document.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DocumentInheritsDefaultStyleSettings">
+            <summary>
+            Gets or sets value indicating whether the edited Document instance should use by default 
+            the FontFamily, FontSize, ForeColor and other style properties applied to this RadRichTextBox using the DefaultStyleSettings.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HorizontalOffset">
+            <summary>
+            Gets the horizontal scroll position.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.VerticalOffset">
+            <summary>
+            Gets the vertical scroll position.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SelectedComment">
+            <summary>
+            Gets or sets the currently focused comment in the document
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ValidationErrors">
+            <summary>
+            Gets or sets(private) an instance of ValidationError that provides an error set by DataProviderBase.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IgnoredWords">
+            <summary>
+            Gets or sets an instance of IIgnoredWordDictionary that provides a list of words that would be ignored by spell checker.
+            </summary>
+            <seealso cref="P:Telerik.Windows.Controls.RadRichTextBox.SpellChecker"/>
+            <seealso cref="P:Telerik.Windows.Controls.RadRichTextBox.IsSpellCheckingEnabled"/>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DefaultStyleSettings">
+            <summary>
+            Gets StyleDefinition instance that stores default values for various RichTextBox and 
+            Document properties like FontSize, FontFamily, ForeColor, etc.
+            </summary>
+            <seealso cref="P:Telerik.Windows.Controls.RadRichTextBox.DocumentInheritsDefaultStyleSettings"/>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SpellChecker">
+            <summary>
+            Gets or sets the ISpellChecker implementation used when proofing.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HorizontalScrollBar">
+            <summary>
+            Gets the horizontal scroll bar instance of the control.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.VerticalScrollBar">
+            <summary>
+            Gets the vertical scroll bar instance of the control.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.Document">
+            <summary>
+            Gets or sets the current document.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ActiveEditorPresenter">
+            <summary>
+            Gets or sets a value representing the active document presenter.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ParagraphPropertiesDialog">
+            <summary>
+            Gets or sets a value representing the current paragraph properties dialog.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertSymbolWindow">
+            <summary>
+            Gets or sets a value representing the current insert symbol window.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlinkDialog">
+            <summary>
+            Gets or sets a value representing the current insert-hyperlink dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ManageBookmarksDialog">
+            <summary>
+            Gets or sets a value representing the current manage bookmark dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.FindReplaceDialog">
+            <summary>
+            Gets or sets a value representing the current find/replace dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertTableDialog">
+            <summary>
+            Gets or sets a value representing the current insert table dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.TablePropertiesDialog">
+            <summary>
+            Gets or sets a value representing the current table properties dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.TableBordersDialog">
+            <summary>
+            Gets or sets a value representing the current table borders dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.FloatingBlockPropertiesDialog">
+            <summary>
+            Gets or sets a value representing the current floating block properties dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.TabStopsPropertiesDialog">
+            <summary>
+            Gets or sets a value representing the current tab stops properties dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.FontPropertiesDialog">
+            <summary>
+            Gets or sets a value representing the current font properties dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.EditCustomDictionaryDialog">
+            <summary>
+            Gets or sets a value representing the current instance of the dialog for editing custom dictionaries.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SpellCheckingDialog">
+            <summary>
+            Gets or sets a value representing the current spell checking dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SelectionMiniToolBar">
+            <summary>
+            Gets or sets a value representing the current selection mini toolbar.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ImageEditorDialog">
+            <summary>
+            Gets or sets the image editor dialog.
+            </summary>
+            <value>The image editor dialog.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ImageMiniToolBar">
+            <summary>
+            Gets or sets the image mini toolbar.
+            </summary>
+            <value>The image mini toolbar.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ContextMenu">
+            <summary>
+            Gets or sets a value representing the current context menu.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.CurrentEditingStyle">
+            <summary>
+            Gets a value indicating the current editing style.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertDateTimeDialog">
+            <summary>
+            Gets or sets a value representing the current spell checking dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ProtectDocumentDialog">
+            <summary>
+            Gets or sets a value representing the current dialog for enforcing document protection.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.UnprotectDocumentDialog">
+            <summary>
+            Gets or sets a value representing the current dialog for removing document protection.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeEditingPermissionsDialog">
+            <summary>
+            Gets or sets a value representing the current dialog for changing document permissions.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.StyleFormattingPropertiesDialog">
+            <summary>
+            Gets or sets a value representing the current style formatting properties dialog instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ManageStylesDialog">
+            <summary>
+            Gets or sets a value representing the current mange styles dialog instance.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentChanging">
+            <summary>
+            Occurs when the current document is changing.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.UserInfoChanged">
+            <summary>
+            Occurs when the current user info has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.ProtectionStateChanged">
+            <summary>
+            Occurs when the current protection state has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentChanged">
+            <summary>
+            Occurs when the current document has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentLayoutModeChanged">
+            <summary>
+            Occurs when the layout mode of the current document has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentContentChanged">
+            <summary>
+            Occurs when the content of the current document has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentArranged">
+            <summary>
+            Occurs when the current document has been arranged.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CurrentSpanStyleChanged">
+            <summary>
+            Occurs when the current span's style has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CurrentParagraphStyleChanged">
+            <summary>
+            Occurs when the current paragraph's style has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CurrentEditingStyleChanged">
+            <summary>
+            Occurs when the current editing style has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.SelectedLayoutBoxChanged">
+            <summary>
+            Occurs when currently selected layout box has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.ScaleFactorChanged">
+            <summary>
+            Occurs when the ScaleFactor property value has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CurrentVisiblePageChanged">
+            <summary>
+            Occurs when the CurrentPage property value has changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CommandError">
+            <summary>
+            Occurs on error while executing command.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CommentShowing">
+            <summary>
+            Occurs when showing comment.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CommandExecuting">
+            <summary>
+            Occurs before the execution of <see cref="T:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase"/>.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CommandExecuted">
+            <summary>
+            Occurs after the execution of <see cref="T:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase"/>.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.HyperlinkClicked">
+            <summary>
+            Occurs when the users clicks on a hyperlink in the current document.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.MergeFieldToStringConverting">
+            <summary>
+            Occurs when MergeField is going to calculate its value. 
+            If MergeFieldToStringConvertingEventArgs.ConvertedValue is set it becames a result string value.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.IsReadOnlyChanged">
+            <summary>
+            Occurs when IsReadOnly property changes.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.PrintStarted">
+            <summary>
+            Occurs when printing has started.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.PrintCompleted">
+            <summary>
+            Occurs when print is completed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.IsSpellCheckingEnabledChanged">
+            <summary>
+            Occurs when IsSpellCheckingEnabled property changes.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.IsInHeaderFooterEditModeChanged">
+            <summary>
+            Occurs when going in or out of header/footer editing mode.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.ShowCommentsChanged">
+            <summary>
+            Occurs when ShowCommentsChanged.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.ActiveDocumentEditorChanged">
+            <summary>
+            Occurs when active document editor changes.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.AssociatedRichTextBox">
             <summary>
             Gets the associated rich text box.
@@ -834,6 +2185,45 @@
         <member name="E:Telerik.Windows.Documents.RichTextBoxCommands.ToggleCommandBase.ToggleExecuted">
             <summary>
             Deprecated.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.UI.ActiveDocumentEditorChangedEventArgs">
+            <summary>
+            Provides data for active document editor changed event.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.UI.ActiveDocumentEditorChangedEventArgs.#ctor(Telerik.Windows.Documents.UI.DocumentEditorType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.UI.ActiveDocumentEditorChangedEventArgs"/> class.
+            </summary>
+            <param name="documentEditorType">Type of the document editor.</param>
+        </member>
+        <member name="P:Telerik.Windows.Documents.UI.ActiveDocumentEditorChangedEventArgs.DocumentEditorType">
+            <summary>
+            Gets the type of the active document editor.
+            </summary>
+            <value>
+            The type of the active document editor.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Documents.UI.DocumentEditorType">
+            <summary>
+            Describes document editor types.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Documents.UI.DocumentEditorType.MainDocument">
+            <summary>
+            Main document editor.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Documents.UI.DocumentEditorType.Header">
+            <summary>
+            Header editor.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Documents.UI.DocumentEditorType.Footer">
+            <summary>
+            Footer editor.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Documents.UI.Extensibility.ChangeEditingPermissionsDialogContext">
@@ -1013,6 +2403,13 @@
             </summary>
             <param name="UpdateParagraph">The delegate to invoke when a paragraph is updated.</param>
         </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.UpdateSectionsStyle(System.Collections.Generic.IEnumerable{Telerik.Windows.Documents.Model.Section},Telerik.Windows.Documents.Model.UpdateDocumentElementDelegate{Telerik.Windows.Documents.Model.Section})">
+            <summary>
+            Updates the sections style.
+            </summary>
+            <param name="sections">The sections to update.</param>
+            <param name="UpdateSection">The delegate to invoke when a section is updated.</param>
+        </member>
         <member name="M:Telerik.Windows.Documents.Model.RadDocument.UpdateSelectedSectionsStyle(Telerik.Windows.Documents.Model.UpdateDocumentElementDelegate{Telerik.Windows.Documents.Model.Section})">
             <summary>
             Updates the selected sections's styles.
@@ -1119,6 +2516,14 @@
             Forces document layout update, measuring document in RadDocument.MAX_DOCUMENT_SIZE
             </summary>        
         </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.InsertSectionBreak(Telerik.Windows.Documents.DocumentPosition,Telerik.Windows.Documents.Model.Styles.StyleDefinition,Telerik.Windows.Documents.SectionBreakType)">
+            <summary>
+            Inserts a section break.
+            </summary>
+            <param name="position">The position.</param>
+            <param name="style">The style.</param>
+            <param name="sectionBreakType">Type of the section break.</param>
+        </member>
         <member name="M:Telerik.Windows.Documents.Model.RadDocument.EnsureDocumentMeasuredAndArranged">
             <summary>
             Ensures document layout is performed and layout-boxes have been created.
@@ -1132,9 +2537,9 @@
             Gets or sets a value representing the current layout mode.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Documents.Model.RadDocument.DefaultPageLayoutSettings">
+        <member name="P:Telerik.Windows.Documents.Model.RadDocument.DefaultStyleSettings">
             <summary>
-            Gets or sets a value representing the default page layout settings.
+            This property is introduced for backward compatibility only. Please use Style instead.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Documents.Model.RadDocument.ShowFormattingSymbols">
@@ -1206,6 +2611,11 @@
         <member name="P:Telerik.Windows.Documents.Model.RadDocument.DefaultTabWidth">
             <summary>
             Gets or sets the default tab width.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.RadDocument.SectionDefaultPageSize">
+            <summary>
+            Gets or sets the default section page size.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Documents.Model.RadDocument.SectionDefaultPageMargin">
@@ -2102,1240 +3512,9 @@
             Gets or sets a value indicating whether the spell checking is enabled for this document
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleList(System.Boolean,Telerik.Windows.Documents.Lists.DocumentList)">
+        <member name="P:Telerik.Windows.Controls.RadRichTextPageView.IsReadOnly">
             <summary>
             Deprecated.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionMagin(Telerik.Windows.Documents.Layout.Padding)">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.IncrementPageWidth">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.DecrementPageWidth">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeListType(Telerik.Windows.Documents.Lists.ListType)">
-            <summary>
-            Changes the list type of the current paragraph.
-            </summary>
-            <param name="listType">The new list type to be applied.</param>
-        </member>
-        <member name="F:Telerik.Windows.Controls.RadRichTextBox.MinScaleFactor">
-            <summary>
-            Represents the minimum scale factor the control supports.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.RadRichTextBox.MaxScaleFactor">
-            <summary>
-            Represents the maximum scale factor the control supports.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.EnsureActiveEditorPresenter">
-             <summary>
-             Ensures control template is applied and ensures ActiveEditorPresenter is initialized to its default value.
-             </summary>
-            <returns>Whether the ActiveEditorPresenter has been created as a result of this method call.</returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.#ctor">
-            <summary>
-            Initializes a new instance of the RadRichTextBox class.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ScrollToHorizontalOffset(System.Double)">
-            <summary>
-            Scrolls the contents of RadRichTextBox to the specified horizontal offset.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ScrollToVerticalOffset(System.Double)">
-            <summary>
-            Scrolls the contents of RadRichTextBox to the specified vertical offset.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InvalidateProofingErrors(System.Boolean)">
-            <summary>
-            Clears the spell-checking state of all words in the document and updates the UI.
-            </summary>
-            <param name="invalidateIncorrectWordsOnly">True to invalidate incorrect word only.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InvalidateEditorLayout">
-            <summary>
-            Forces the control to invalidate the layout of its child elements.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Print(System.String,Telerik.Windows.Documents.UI.PrintMode)">
-            <summary>
-            Initializes printing of the current document.
-            </summary>
-            <param name="documentName">The name of the document to print.</param>
-            <param name="mode">The printing mode.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.PrintPreview">
-            <summary>
-            Initializing print preview of the current document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.UpdateEditorLayout">
-            <summary>
-            Forces the control to update the layout of its child elements.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleHeaderFooterEditingMode">
-            <summary>
-            Toggles the headers/footers editing mode.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleFormattingSymbols">
-            <summary>
-            Toggles the visibility of the formatting symbols in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleComments">
-            <summary>
-            Toggles the visibility of the comments in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleBookmarks">
-            <summary>
-            Toggles the visibility of the bookmarks in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Undo">
-            <summary>
-            Executes the Undo command.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Redo">
-            <summary>
-            Executes the Redo command.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Cut">
-            <summary>
-            Executes the Cut command.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Copy">
-            <summary>
-            Executes the Copy command.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Paste">
-            <summary>
-            Executes the Paste command.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Delete(System.Boolean)">
-            <summary>
-            Executes the Delete command.
-            </summary>
-            <param name="deletePrevious">If the selection is empty, indicates whether to delete the character before or after the caret.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.Insert(System.String)">
-            <summary>
-            Inserts text into the document.
-            </summary>
-            <param name="text">The text to insert.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertPageBreak">
-            <summary>
-            Inserts PageBreak into the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertLineBreak">
-            <summary>
-            Inserts LineBreak into the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertInline(Telerik.Windows.Documents.Model.Inline)">
-            <summary>
-            Inserts inline element into the document.
-            </summary>
-            <param name="inline">The inline element to insert.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertFragment(Telerik.Windows.Documents.Model.DocumentFragment)">
-            <summary>
-            Inserts a document fragment.
-            </summary>
-            <param name="documentFragment">The document fragment to insert.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo,System.Collections.Generic.IEnumerable{Telerik.Windows.Documents.Model.Inline})">
-            <summary>
-            Inserts collection of inlines as hyperlink into the document.
-            </summary>
-            <param name="hyperlinkInfo">The hyperlink info.</param>
-            <param name="inlines">The inlines.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo,System.String)">
-            <summary>
-            Inserts hyperlink into the document.
-            </summary>
-            <param name="hyperlinkInfo">The hyperlink info.</param>
-            <param name="hyperlinkText">The hyperlink text.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo,System.String,Telerik.Windows.Documents.Model.Styles.StyleDefinition)">
-            <summary>
-            Inserts hyperlink into the document.
-            </summary>
-            <param name="hyperlinkInfo">The hyperlink info.</param>
-            <param name="hyperlinkText">The hyperlink text.</param>
-            <param name="hyperlinkStyle">The hyperlink style.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo)">
-            <summary>
-            Creates hyperlink form the current selection.
-            </summary>
-            <param name="hyperlinkInfo">The hyperlink info.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlink(Telerik.Windows.Documents.Model.HyperlinkInfo,Telerik.Windows.Documents.Model.Styles.StyleDefinition)">
-            <summary>
-            Creates hyperlink form the current selection.
-            </summary>
-            <param name="hyperlinkInfo">The hyperlink info.</param>
-            <param name="hyperlinkStyle">The hyperlink style.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.RemoveHyperlink">
-            <summary>
-            Removes the hyperlink on the caret position.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertImage(System.IO.Stream,System.String)">
-            <summary>
-            Inserts image inline into the document.
-            </summary>
-            <param name="imageStream">The stream to the image's contents.</param>
-            <param name="extension">The extension specifying the image format.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.GetContent(System.String)">
-            <summary>
-            Gets the content in various formats.
-            </summary>
-            <param name="format">The format to export into.</param>
-            <returns>String representation of the content.</returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.UpdateHeader(Telerik.Windows.Documents.Model.Section,Telerik.Windows.Documents.Model.HeaderFooterType,Telerik.Windows.Documents.Model.Header)">
-            <summary>
-            Updates the header for a section.
-            </summary>
-            <param name="section">The section of the header.</param>
-            <param name="headerType">Type of the header.</param>
-            <param name="header">The header.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.UpdateFooter(Telerik.Windows.Documents.Model.Section,Telerik.Windows.Documents.Model.HeaderFooterType,Telerik.Windows.Documents.Model.Footer)">
-            <summary>
-            Updates the footer for a section.
-            </summary>
-            <param name="section">The section of the footer.</param>
-            <param name="footerType">Type of the footer.</param>
-            <param name="footer">The footer.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.FocusHeader">
-            <summary>
-            Focuses the header of the current page.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.FocusFooter">
-            <summary>
-            Focuses the footer of the current page.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ClearFormatting">
-            <summary>
-            Clears the formatting of the current run in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleBold">
-            <summary>
-            Toggles the bold state of the current run in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleItalic">
-            <summary>
-            Toggles the italic state of the current run in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeFontFamily(System.Windows.Media.FontFamily)">
-            <summary>
-            Changes the font family of the current run in the document.
-            </summary>
-            <param name="newFontFamily">The new font family to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeStyleNameToActiveEditor(System.String)">
-            <summary>
-            Changes the style name of the current run in the document.
-            </summary>
-            <param name="newFontFamily">The new font family to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeStyleName(System.String)">
-            <summary>
-            Changes the style name of the current run in the document.
-            </summary>
-            <param name="newStyleName">The new style name to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeFontSize(System.Double)">
-            <summary>
-            Changes the font size of the current run in the document.
-            </summary>
-            <param name="newFontSize">The new font size to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.IncrementFontSize">
-            <summary>
-            Increments the font size of the current run in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.DecrementFontSize">
-            <summary>
-            Decrements the font size of the current run in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeTextForeColor(System.Windows.Media.Color)">
-            <summary>
-            Changes the text foreground color of the current run in the document.
-            </summary>
-            <param name="newColor">The new foreground color to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeUnderlineColor(System.Windows.Media.Color)">
-            <summary>
-            Changes the underline color of the current run in the document.
-            </summary>
-            <param name="newColor">The new underline color to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphBackground(System.Windows.Media.Color)">
-            <summary>
-            Changes the background color of the selected paragraphs in the document.
-            </summary>
-            <param name="newColor">The new background color to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeTextHighlightColor(System.Windows.Media.Color)">
-            <summary>
-            Changes the text highligh color of the current run in the document.
-            </summary>
-            <param name="newColor">The new highlight color to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeBaselineAlignment(Telerik.Windows.Documents.Model.BaselineAlignment)">
-            <summary>
-            Changes the baseline alignment of the current run in the document.
-            </summary>
-            <param name="newBaselineAlignment">The new baseline alignment to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleSubscript">
-            <summary>
-            Toggles the subscript state of the current run in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleSuperscript">
-            <summary>
-            Changes the superscript state of the current run in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleUnderline">
-            <summary>
-            Toggles the underline state of the current run in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeUnderlineDecoration(Telerik.Windows.Documents.UI.TextDecorations.DecorationProviders.IUnderlineUIDecorationProvider)">
-            <summary>
-            Changes the underline decoration of the current run in the document.
-            </summary>
-            <param name="decoration">The new underline decoration provider to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ToggleStrikethrough">
-            <summary>
-            Toggles the subscript state of the current run in the document.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSpanStyle(Telerik.Windows.Documents.Model.Styles.StyleDefinition)">
-            <summary>
-            Changes the style of current run in the document.
-            </summary>
-            <param name="styleInfo">The new style to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeTextAlignment(Telerik.Windows.Documents.Layout.RadTextAlignment)">
-            <summary>
-            Changes the text alignment of the current run in the document.
-            </summary>
-            <param name="alignment">The new text alignment to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.IncrementParagraphLeftIndent">
-            <summary>
-            Increments the left indent of the current paragraph.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.DecrementParagraphLeftIndent">
-            <summary>
-            Decrements the left indent of the current paragraph.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphLeftIndent(System.Double)">
-            <summary>
-            Changes the left indent of the current paragraph.
-            </summary>
-            <param name="newLeftIndent">The new left indent to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphRightIndent(System.Double)">
-            <summary>
-            Changes the right indent of the current paragraph.
-            </summary>
-            <param name="newRightIndent">The new right indent to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphFirstLineIndent(System.Double)">
-            <summary>
-            Changes the left indent of the current paragraph.
-            </summary>
-            <param name="newLeftIndent">The new left indent to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphSpacingBefore(System.Double)">
-            <summary>
-            Changes the spacing before the current paragraph.
-            </summary>
-            <param name="newSpacingBefore">The new spacing to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphSpacingAfter(System.Double)">
-            <summary>
-            Changes the spacing after the current paragraph.
-            </summary>
-            <param name="newSpacingAfter">The new spacing to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphLineSpacing(System.Double,Telerik.Windows.Documents.Model.LineSpacingType)">
-            <summary>
-            Changes the line spacing inside the current paragraph.
-            </summary>
-            <param name="newLineSpacing">The new line spacing to be applied.</param>
-            <param name="newLineSpacingType">The type of the line spacing to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphLineSpacing(System.Double)">
-            <summary>
-            Changes the lines spacing inside the current paragraph.
-            </summary>
-            <param name="newLineSpacing">The new line spacing to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphLineSpacingType(Telerik.Windows.Documents.Model.LineSpacingType)">
-            <summary>
-            Changes the line spacing type inside the current paragraph.
-            </summary>
-            <param name="newLineSpacingType">The new line spacing type to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeParagraphStyle(Telerik.Windows.Documents.Model.Styles.StyleDefinition)">
-            <summary>
-            Changes the paragraph style of the current paragraph.
-            </summary>
-            <param name="styleInfo">The new style to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangePageSize(Telerik.Windows.Documents.Model.SizeF)">
-            <summary>
-            Changes the page size of the current section.
-            </summary>
-            <param name="newSize">The new page size to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeLayoutMode(Telerik.Windows.Documents.Model.DocumentLayoutMode)">
-            <summary>
-            Changes the layout mode of the current section.
-            </summary>
-            <param name="layoutMode">The new layout mode to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionMargin(Telerik.Windows.Documents.Layout.Padding)">
-            <summary>
-            Changes the margin of the current section.
-            </summary>
-            <param name="newSectionMargin">The new margin to be applied.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionPageOrientation(Telerik.Windows.Documents.Model.PageOrientation)">
-            <summary>
-            Changes the page orientation of the current section.
-            </summary>
-            <param name="newSectionPageOrientation"></param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionHeaderTopMargin(System.Int32)">
-            <summary>
-            Changes the top margin of the header of the current section.
-            </summary>
-            <param name="newSectionHeaderTopMargin">Section header top margin.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ChangeSectionFooterBottomMargin(System.Int32)">
-            <summary>
-            Changes the bottom margin of the footer of the current section.
-            </summary>
-            <param name="newSectionHeaderTopMargin">Section footer bottom margin.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.SatisfyImports">
-            <summary>
-            Loads extensible UI components through MEF.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowParagraphPropertiesDialog">
-            <summary>
-            Shows the paragraph properties dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowFontPropertiesDialog">
-            <summary>
-            Shows the font properties dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowTablePropertiesDialog">
-            <summary>
-            Shows the table properties dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowTableBordersDialog">
-            <summary>
-            Shows the table borders dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertSymbolWindow">
-            <summary>
-            Show the insert symbol dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertHyperlinkDialog">
-            <summary>
-            Shows the insert hyperlink dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowManageBookmarksDialog">
-            <summary>
-            Shows the dialog for managing bookmarks.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowFindReplaceDialog">
-            <summary>
-            Shows the find replace dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertTableDialog">
-            <summary>
-            Shows the insert table dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowSpellCheckingDialog">
-            <summary>
-            Shows the spell checking dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowEditCustomDictionaryDialog">
-            <summary>
-            Shows the dialog for editing custom spellchecking dictionaries.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowFloatingBlockPropertiesDialog">
-            <summary>
-            Shows the floating block properties dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowTabStopsPropertiesDialog">
-            <summary>
-            Shows the dialog for editing tab stops.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowImageEditorDialog(System.String)">
-            <summary>
-            Shows the image editor dialog.
-            </summary>
-            <param name="executeToolName">Name of the tool to execute when the dialog is opened.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowStyleFormattingPropertiesDialog">
-            <summary>
-            Shows the dialog for modifieng style formatting.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowManageStylesDialog">
-            <summary>
-            Shows the dialog for managing styles.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowImageEditorDialog">
-            <summary>
-            Shows the image editor dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertDateTimeDialog">
-            <summary>
-            Shows the insert date field dialog.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowProtectDocumentDialog">
-            <summary>
-            Shows the dialog for enforcing document protection.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowUnprotectDocumentDialog">
-            <summary>
-            Shows the dialog for removing document protection.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowChangeEditingPermissionsDialog">
-            <summary>
-            Shows the dialog for changing editing permissions.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnCommentShowing(Telerik.Windows.Documents.UI.CommentShowingEventArgs)">
-            <summary>
-            Raises the <see cref="E:CommentShowing"/> event.
-            </summary>
-            <param name="e">The <see cref="T:Telerik.Windows.Documents.UI.CommentShowingEventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnCommandExecuting(Telerik.Windows.Documents.RichTextBoxCommands.CommandExecutingEventArgs)">
-            <summary>
-            Raises the <see cref="E:CommandExecuting"/> event.
-            </summary>
-            <param name="e">The <see cref="T:Telerik.Windows.Documents.RichTextBoxCommands.CommandExecutingEventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnCommandExecuted(Telerik.Windows.Documents.RichTextBoxCommands.CommandExecutedEventArgs)">
-            <summary>
-            Raises the <see cref="E:CommandExecuted"/> event.
-            </summary>
-            <param name="e">The <see cref="T:Telerik.Windows.Documents.RichTextBoxCommands.CommandExecutedEventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnIsReadOnlyChanged(System.EventArgs)">
-            <summary>
-            Raises the <see cref="E:IsReadOnlyChanged"/> event.
-            </summary>
-            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnPrintStarted(System.EventArgs)">
-            <summary>
-            Raises the <see cref="E:PrintStarted"/> event.
-            </summary>
-            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnPrintCompleted(Telerik.Windows.Documents.UI.PrintCompletedEventArgs)">
-            <summary>
-            Raises the <see cref="E:PrintCompleted"/> event.
-            </summary>
-            <param name="e">The <see cref="T:Telerik.Windows.Documents.UI.PrintCompletedEventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnIsSpellCheckingEnabledChanged(System.EventArgs)">
-            <summary>
-            Raises the <see cref="E:IsSpellCheckingEnabledChanged"/> event.
-            </summary>
-            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnIsInHeaderFooterEditModeChanged(System.EventArgs)">
-            <summary>
-            Raises the <see cref="E:IsInHeaderFooterEditModeChanged"/> event.
-            </summary>
-            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnShowCommentsChanged(System.EventArgs)">
-            <summary>
-            Raises the <see cref="E:ShowCommentsChanged"/> event.
-            </summary>
-            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.NewDocumentCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.OpenDocumentCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.PrintCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SaveCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.UndoCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.RedoCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeFontFamilyCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeFontSizeCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeFontForeColorCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeFontHighlightColorCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleBoldCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleItalicCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleStrikethroughCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleSubscriptCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleSuperscriptCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleUnderlineCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleFormattingSymbolsCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IncrementFontSizeCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DecrementFontSizeCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IncrementPageWidthCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DecrementPageWidthCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleBulletsCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ToggleNumberedCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeTextAlignmentCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IncrementParagraphLeftIndentCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DecrementParagraphLeftIndentCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeUnderlineDecorationCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeLayoutModeCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ClearFormattingCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.CopyCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.CutCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.PasteCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertPageBreakCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertPictureCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowInsertHyperlinkDialogCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowInsertSymbolWindowCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowParagraphPropertiesDialogCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangePageMarginsCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangePaperTypeCommand">
-            <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsFocusable">
-            <summary>
-            Gets or sets a value that indicates whether a control is included in tab navigation. 
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.AcceptsReturn">
-            <summary>
-            Gets or sets a value indicating whether pressing the RETURN key types a RETURN character in the control.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.AcceptsTab">
-            <summary>
-            Gets or sets a value indicating whether pressing the TAB key types a TAB character in the control instead of moving the focus to the next control in the tab order.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.AllowScaling">
-            <summary>
-            Gets or sets a value indicating whether the scaling is enabled.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ScaleFactor">
-            <summary>
-            Gets or sets a value representing the current view scale factor.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HorizontalScrollBarVisibility">
-            <summary>
-            Gets or sets a value representing the horizontal scroll bar visibility.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.VerticalScrollBarVisibility">
-            <summary>
-            Gets or sets a value representing the vertical scroll bar visibility.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsReadOnly">
-            <summary>
-            Gets or sets a value indicating whether the control is read-only.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsSelectionEnabled">
-            <summary>
-            Gets or sets a value indicating whether selection can be made in the document.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HyperlinkNavigationMode">
-            <summary>
-            Gets or sets the hyperlink navigation mode.
-            </summary>
-            <value>The hyperlink navigation mode.</value>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.LayoutMode">
-            <summary>
-            Gets or sets the document layout mode.
-            </summary>
-            <value>The document layout mode.</value>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HyperlinkToolTipFormatString">
-            <summary>
-            Gets or sets the hyperlink tool text.
-            </summary>
-            <value>The hyperlink tool tip.</value>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsSelectionMiniToolBarEnabled">
-            <summary>
-            Gets or sets value indicating whether selection mini toolBar is enabled.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsImageMiniToolBarEnabled">
-            <summary>
-            Gets or sets value indicating whether image mini toolBar is enabled.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsContextMenuEnabled">
-            <summary>
-            Gets or sets a value indicating whether context menu is enabled.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowComments">
-            <summary>
-            Gets or sets a value indicating whether the comments are shown.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ShowFormattingSymbols">
-            <summary>
-            Gets or sets a value indicating whether formatting symbols are shown in the document.
-            </summary>
-            <value>
-            	<c>true</c> if formatting symbols are shown; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.CommentTemplateContentMargin">
-            <summary>
-            Gets or sets the comment template content margin.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsSpellCheckingEnabled">
-            <summary>
-            Gets or sets a value indicating whether the spell checking is enabled for this document.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DocumentInheritsDefaultStyleSettings">
-            <summary>
-            Gets or sets value indicating whether the edited Document instance should use by default 
-            the FontFamily, FontSize, ForeColor and other style properties applied to this RadRichTextBox using the DefaultStyleSettings.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HorizontalOffset">
-            <summary>
-            Gets the horizontal scroll position.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.VerticalOffset">
-            <summary>
-            Gets the vertical scroll position.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SelectedComment">
-            <summary>
-            Gets or sets the currently focused comment in the document
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ValidationErrors">
-            <summary>
-            Gets or sets(private) an instance of ValidationError that provides an error set by DataProviderBase.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IgnoredWords">
-            <summary>
-            Gets or sets an instance of IIgnoredWordDictionary that provides a list of words that would be ignored by spell checker.
-            </summary>
-            <seealso cref="P:Telerik.Windows.Controls.RadRichTextBox.SpellChecker"/>
-            <seealso cref="P:Telerik.Windows.Controls.RadRichTextBox.IsSpellCheckingEnabled"/>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.DefaultStyleSettings">
-            <summary>
-            Gets StyleDefinition instance that stores default values for various RichTextBox and 
-            Document properties like FontSize, FontFamily, ForeColor, etc.
-            </summary>
-            <seealso cref="P:Telerik.Windows.Controls.RadRichTextBox.DocumentInheritsDefaultStyleSettings"/>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SpellChecker">
-            <summary>
-            Gets or sets the ISpellChecker implementation used when proofing.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.HorizontalScrollBar">
-            <summary>
-            Gets the horizontal scroll bar instance of the control.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.VerticalScrollBar">
-            <summary>
-            Gets the vertical scroll bar instance of the control.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.Document">
-            <summary>
-            Gets or sets the current document.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ActiveEditorPresenter">
-            <summary>
-            Gets or sets a value representing the active document presenter.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ParagraphPropertiesDialog">
-            <summary>
-            Gets or sets a value representing the current paragraph properties dialog.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertSymbolWindow">
-            <summary>
-            Gets or sets a value representing the current insert symbol window.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertHyperlinkDialog">
-            <summary>
-            Gets or sets a value representing the current insert-hyperlink dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ManageBookmarksDialog">
-            <summary>
-            Gets or sets a value representing the current manage bookmark dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.FindReplaceDialog">
-            <summary>
-            Gets or sets a value representing the current find/replace dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertTableDialog">
-            <summary>
-            Gets or sets a value representing the current insert table dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.TablePropertiesDialog">
-            <summary>
-            Gets or sets a value representing the current table properties dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.TableBordersDialog">
-            <summary>
-            Gets or sets a value representing the current table borders dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.FloatingBlockPropertiesDialog">
-            <summary>
-            Gets or sets a value representing the current floating block properties dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.TabStopsPropertiesDialog">
-            <summary>
-            Gets or sets a value representing the current tab stops properties dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.FontPropertiesDialog">
-            <summary>
-            Gets or sets a value representing the current font properties dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.EditCustomDictionaryDialog">
-            <summary>
-            Gets or sets a value representing the current instance of the dialog for editing custom dictionaries.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SpellCheckingDialog">
-            <summary>
-            Gets or sets a value representing the current spell checking dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.SelectionMiniToolBar">
-            <summary>
-            Gets or sets a value representing the current selection mini toolbar.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ImageEditorDialog">
-            <summary>
-            Gets or sets the image editor dialog.
-            </summary>
-            <value>The image editor dialog.</value>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ImageMiniToolBar">
-            <summary>
-            Gets or sets the image mini toolbar.
-            </summary>
-            <value>The image mini toolbar.</value>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ContextMenu">
-            <summary>
-            Gets or sets a value representing the current context menu.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.CurrentEditingStyle">
-            <summary>
-            Gets a value indicating the current editing style.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertDateTimeDialog">
-            <summary>
-            Gets or sets a value representing the current spell checking dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ProtectDocumentDialog">
-            <summary>
-            Gets or sets a value representing the current dialog for enforcing document protection.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.UnprotectDocumentDialog">
-            <summary>
-            Gets or sets a value representing the current dialog for removing document protection.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ChangeEditingPermissionsDialog">
-            <summary>
-            Gets or sets a value representing the current dialog for changing document permissions.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.StyleFormattingPropertiesDialog">
-            <summary>
-            Gets or sets a value representing the current style formatting properties dialog instance.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadRichTextBox.ManageStylesDialog">
-            <summary>
-            Gets or sets a value representing the current mange styles dialog instance.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentChanging">
-            <summary>
-            Occurs when the current document is changing.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.UserInfoChanged">
-            <summary>
-            Occurs when the current user info has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.ProtectionStateChanged">
-            <summary>
-            Occurs when the current protection state has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentChanged">
-            <summary>
-            Occurs when the current document has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentLayoutModeChanged">
-            <summary>
-            Occurs when the layout mode of the current document has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentContentChanged">
-            <summary>
-            Occurs when the content of the current document has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentArranged">
-            <summary>
-            Occurs when the current document has been arranged.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CurrentSpanStyleChanged">
-            <summary>
-            Occurs when the current span's style has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CurrentParagraphStyleChanged">
-            <summary>
-            Occurs when the current paragraph's style has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CurrentEditingStyleChanged">
-            <summary>
-            Occurs when the current editing style has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.SelectedLayoutBoxChanged">
-            <summary>
-            Occurs when currently selected layout box has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.ScaleFactorChanged">
-            <summary>
-            Occurs when the ScaleFactor property value has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CurrentVisiblePageChanged">
-            <summary>
-            Occurs when the CurrentPage property value has changed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CommandError">
-            <summary>
-            Occurs on error while executing command.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CommentShowing">
-            <summary>
-            Occurs when showing comment.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CommandExecuting">
-            <summary>
-            Occurs before the execution of <see cref="T:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase"/>.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.CommandExecuted">
-            <summary>
-            Occurs after the execution of <see cref="T:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase"/>.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.HyperlinkClicked">
-            <summary>
-            Occurs when the users clicks on a hyperlink in the current document.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.MergeFieldToStringConverting">
-            <summary>
-            Occurs when MergeField is going to calculate its value. 
-            If MergeFieldToStringConvertingEventArgs.ConvertedValue is set it becames a result string value.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.IsReadOnlyChanged">
-            <summary>
-            Occurs when IsReadOnly property changes.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.PrintStarted">
-            <summary>
-            Occurs when printing has started.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.PrintCompleted">
-            <summary>
-            Occurs when print is completed.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.IsSpellCheckingEnabledChanged">
-            <summary>
-            Occurs when IsSpellCheckingEnabled property changes.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.IsInHeaderFooterEditModeChanged">
-            <summary>
-            Occurs when going in or out of header/footer editing mode.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Controls.RadRichTextBox.ShowCommentsChanged">
-            <summary>
-            Occurs when ShowCommentsChanged.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Documents.UI.Extensibility.IInsertSymbolWindow">
@@ -3575,6 +3754,11 @@
             <returns>the bounding rectangle around <paramref name="rect"/>
             that is transformed with <paramref name="matrix"/>.</returns>
         </member>
+        <member name="T:Telerik.Windows.Documents.Model.PageLayoutSettings">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Documents.RadDocumentBindingSource">
             <summary>
             Represents collection of DocumentPageItems that wraps RadDocument and provides collection-changed events when document content changes 
@@ -3709,6 +3893,56 @@
             	<c>true</c> if first page header/footer is different; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:Telerik.Windows.Documents.Model.Section.FirstPageNumber">
+            <summary>
+            Gets or sets the page number that appears on the first page of the section.
+            </summary>
+            <value>
+            The page number.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Section.Number">
+            <summary>
+            Gets the section number (starting from 1).
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.Styles.StyleDefinition.#cctor">
+            <summary>
+            Initializes StyleDefinition type.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.Styles.StyleDefinition.#ctor(Telerik.Windows.Documents.Model.Styles.StyleType)">
+            <summary>
+            Creates a new instance of StyleDefinition of corresponding StyleType
+            </summary>
+            <param name="styleType">StyleType corresponding to the type of document elements this style should apply to</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.Styles.StyleDefinition.#ctor(System.String,Telerik.Windows.Documents.Model.Styles.StyleType)">
+            <summary>
+            Creates a new instance of StyleDefinition of corresponding StyleType and Name (style id).
+            </summary>
+            <param name="name">Unique Name of the style, that would be used to identify style in StyleRepository collection</param>
+            <param name="styleType">StyleType corresponding to the type of document elements this style should apply to</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.Styles.StyleDefinition.#ctor(Telerik.Windows.Documents.Model.DocumentElement)">
+            <summary>
+            Creates a new instance of StyleDefinition of StyleType corresponding to specific DocumentElement
+            </summary>
+            <param name="styleType">DocumentElement that would be used to determine the StyleType</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.Styles.StyleDefinition.#ctor(System.String,Telerik.Windows.Documents.Model.DocumentElement)">
+            <summary>
+            Creates a new instance of StyleDefinition of StyleType corresponding to specific DocumentElement, with specified Name
+            </summary>
+            <param name="name">Unique Name of the style, that would be used to identify style in StyleRepository collection</param>
+            <param name="styleType">DocumentElement that would be used to determine the StyleType</param>        
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.Styles.StyleDefinition.#ctor(Telerik.Windows.Documents.Model.Styles.StyleDefinition)">
+            <summary>
+            Creates a new instance of StyleDefinition and copies all relevant property values from the specified StyleDefinition instance.
+            </summary>
+            <param name="styleDefinition"></param>
+        </member>
         <member name="M:Telerik.Windows.Documents.Model.Styles.StyleDefinition.GetPropertyValue(Telerik.Windows.Documents.Model.Styles.IStylePropertyDefinition)">
             <summary>
             Metod provided for backward compatibility. Please use the provided properties instead.
@@ -3729,6 +3963,98 @@
             </summary>
             <param name="propertyDefinition"></param>
             <param name="newValue"></param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.Styles.StyleDefinition.ToString">
+            <summary>
+            Gets the string representation of this StyleDefinition that can be used to display information about property values.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.Name">
+            <summary>
+            Gets or sets value corresponding to the unique name of the style, that would be used to identify style in StyleRepository collection in the document
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.DisplayName">
+            <summary>
+            Gets or sets value corresponding to the name of the style, that would be displayed in Styles dialog, style gallery and other parts of the UI
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.BasedOnName">
+            <summary>
+            Gets or sets the name of base style
+            </summary>
+            <remarks>StyleDefinition inherits its property values from BasedOn style. Either BasedOn or BasedOnName can be specified. If BasedOnName is specified BasedOn StyleDefinition would be set automatically if this style definition is added to a document StyleRepository that contains StyleDefinition with corresponding Name.</remarks>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.BasedOn">
+            <summary>
+            Gets or sets the base StyleDefinition
+            </summary>
+            <remarks>StyleDefinition inherits its property values from BasedOn style. Either BasedOn or BasedOnName can be specified. If BasedOnName is specified BasedOn StyleDefinition would be set automatically if this style definition is added to a document StyleRepository that contains StyleDefinition with corresponding Name.</remarks>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.LinkedStyleName">
+            <summary>
+            Gets or sets the name of the linked style.
+            </summary>
+            <remarks>This property can be set to Paragraph or Character style only. Paragraph style can be linked only to Character style and vice versa. 
+            StyleDefinition would obtain the corresponding property values from the linked style. Either LenkedStyle or LinkedStyleName can be specified. If BasedOnName is specified BasedOn StyleDefinition would be set automatically if this style definition is added to a document StyleRepository that contains StyleDefinition with corresponding Name.</remarks>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.LinkedStyle">
+            <summary>
+            Gets or sets linked StyleDefinition. Only Paragraph and Character types of styles can be linked
+            </summary>
+            <remarks>This property can be set to Paragraph or Character style only. Paragraph style can be linked only to Character style and vice versa. 
+            StyleDefinition would obtain the corresponding property values from the linked style. Either LenkedStyle or LinkedStyleName can be specified. If BasedOnName is specified BasedOn StyleDefinition would be set automatically if this style definition is added to a document StyleRepository that contains StyleDefinition with corresponding Name.</remarks>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.IsCustom">
+            <summary>
+            Gets or sets value indicating whether the
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.IsDefault">
+            <summary>
+            Gets or sets value indicating whether the style will be applied by default to the document elements of type corresponding to style's Type.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.IsPrimary">
+            <summary>
+            Gets or sets value indicating whether the style will be visible in the styles gallery.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.Document">
+            <summary>
+            Gets RadDocument that owns this StyleDefinition instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.Type">
+            <summary>
+            Gets or sets StyleType corresponding to the type of document elements this style should be applied to.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.SpanProperties">
+            <summary>
+            Gets properties related to Spans in the document
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.ParagraphProperties">
+            <summary>
+            Gets properties related to Paragraphs in the document
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.TableProperties">
+            <summary>
+            Gets properties related to Tables in the document
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.TableRowProperties">
+            <summary>
+            Gets properties related to Table-rows in the document
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.TableCellProperties">
+            <summary>
+            Gets properties related to Table-cells in the document
+            </summary>
         </member>
         <member name="T:Telerik.Windows.Documents.RichTextBoxCommands.DecrementPageWidthCommand">
             <summary>
@@ -3959,7 +4285,7 @@
         </member>
         <member name="M:Telerik.Windows.Documents.Model.PaperTypeConverter.ToSize(Telerik.Windows.Documents.Model.PaperTypes)">
             <summary>
-            Converts the specified PaperType enumeration to a pair of pixel values in SizeF.
+            Converts the specified PaperType enumeration to a pair of pixel values in Size.
             </summary>
             <param name="type">PaperType</param>
             <returns></returns>

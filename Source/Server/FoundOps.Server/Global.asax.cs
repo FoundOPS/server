@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace FoundOps.Core.Server
+namespace FoundOps.Server
 {
     public class Global : System.Web.HttpApplication
     {
@@ -19,24 +19,7 @@ namespace FoundOps.Core.Server
             //Ignore All Services, For WCF RIA Services
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            //Route for the Beta page: wp.foundops.com/beta
-            routes.MapRoute("WP pages",
-                "{page}",
-                new { controller = "Home", action = "WP" },
-                new { page = @"^beta$|^product$|^team$|^values$|^jobs$|^contact$|^blog$" }
-                );
-
-            //Route for team profiles: wp.foundops.com/namehere to Home/Team
-            routes.MapRoute(
-                // Route name
-                "Names",
-                // URL with parameters
-                "{id}",
-                new { controller = "Home", action = "Team" },
-                new { id = @"((?:[a-z][a-z0-9_]*))" }
-                );
-
-            //Default route: foundops.com/Controller/Action
+            //Default route: app.foundops.com/Controller/Action
             routes.MapRoute(
                 // Route name
                 "Default",
@@ -56,11 +39,9 @@ namespace FoundOps.Core.Server
             RootUrl = "http://localhost:31820";
             RootBlogUrl = "http://localhost:55206";
 #else
-            RootUrl = "http://www.foundops.com";
-            RootBlogUrl = "http://wp.foundops.com";
+            RootUrl = "https://app.foundops.com";
+            RootBlogUrl = "http://foundops.com";
 #endif
-            //RootBlogUrl = "http://wp.foundops.com";
-
             RegisterRoutes(RouteTable.Routes);
         }
 

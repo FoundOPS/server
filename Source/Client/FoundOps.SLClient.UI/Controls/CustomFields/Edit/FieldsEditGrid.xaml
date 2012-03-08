@@ -60,7 +60,7 @@
                     <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
                     <TextBlock Text=":" />
                 </StackPanel>
-                <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" Grid.Column="2" SelectedValue="{Binding Path=ThisField, Mode=TwoWay, Converter={StaticResource ComboBoxSelectedItemConverter}}" ItemsSource="{Binding OptionsWrapper}" DisplayMemberPath="Name" IsReadOnly="True"/>
+                <telerik:RadComboBox Grid.Column="2" SelectedValue="{Binding Path=ThisField, Mode=TwoWay, Converter={StaticResource ComboBoxSelectedItemConverter}}" ItemsSource="{Binding OptionsWrapper}" DisplayMemberPath="Name" IsReadOnly="True"/>
                 <!--bind item source to possible items-->
             </Grid>
         </DataTemplate>
@@ -148,11 +148,14 @@
                 <!--bind to image-->
             </Grid>
         </DataTemplate>
-        <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" CheckListTemplate="{StaticResource CheckListTemplate}" ComboBoxTemplate="{StaticResource ComboBoxTemplate}" 
-                      CurrencyTemplate="{StaticResource CurrencyTemplate}" LocationTemplate="{StaticResource LocationTemplate}"  NumberTemplate="{StaticResource NumberPercentageTemplate}" PercentageTemplate="{StaticResource NumberPercentageTemplate}" TextLgTemplate="{StaticResource TextTemplate}" 
-                      TextSmTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+        <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
+                   CheckListTemplate="{StaticResource CheckListTemplate}" ComboBoxTemplate="{StaticResource ComboBoxTemplate}" 
+                   CurrencyTemplate="{StaticResource CurrencyTemplate}" LocationTemplate="{StaticResource LocationTemplate}"  NumberTemplate="{StaticResource NumberPercentageTemplate}" 
+                   PercentageTemplate="{StaticResource NumberPercentageTemplate}" TextLgTemplate="{StaticResource TextTemplate}" 
+                   TextSmTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
     </UserControl.Resources>
     <Grid>
-        <Controls:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" ItemsSource="{Binding ServiceTemplate.Fields, ElementName=myFieldsEditGrid, Converter={StaticResource OrderByNameConverter}}" />
+        <Controls:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" 
+                               ItemsSource="{Binding ServiceTemplate.Fields, ElementName=myFieldsEditGrid, Converter={StaticResource OrderByNameConverter}}" />
     </Grid>
 </UserControl>

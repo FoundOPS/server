@@ -1,12 +1,12 @@
-﻿using System;
+﻿using FoundOps.Server.Services.CoreDomainService;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
-using System.ComponentModel;
 using System.Reactive.Subjects;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.Data.Services
 {

@@ -463,9 +463,10 @@ namespace FoundOps.SLClient.Data.Services
         /// </summary>
         /// <param name="searchText">The search text.</param>
         /// <param name="geocoderResultsCallback">The geocoder results callback.</param>
-        public void TryGeocode(string searchText, Action<IEnumerable<GeocoderResult>> geocoderResultsCallback)
+        /// <param name="userState">State of the user.</param>
+        public void TryGeocode(string searchText, Action<IEnumerable<GeocoderResult>, object> geocoderResultsCallback, object userState = null)
         {
-            Context.TryGeocode(searchText, callback => geocoderResultsCallback(callback.Value), null);
+            Context.TryGeocode(searchText, callback => geocoderResultsCallback(callback.Value, userState), userState);
         }
 
         /// <summary>
