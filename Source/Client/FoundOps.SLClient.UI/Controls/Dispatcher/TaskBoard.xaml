@@ -38,7 +38,7 @@
                         </telerik:GridViewDataColumn.CellTemplate>
                         <telerik:GridViewDataColumn.CellEditTemplate>
                             <DataTemplate>
-                                <Controls:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" IsEditable="True" DisplayMemberPath="Name" SelectedItem="{Binding Location, Mode=TwoWay}" 
+                                <Controls:RadComboBox IsEditable="True" DisplayMemberPath="Name" SelectedItem="{Binding Location, Mode=TwoWay}" 
                                                       ItemsSource="{Binding LocationsVM.DomainCollectionView, RelativeSource={RelativeSource AncestorType=Dispatcher1:TaskBoard}}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellEditTemplate>
@@ -55,7 +55,7 @@
                         </telerik:GridViewDataColumn.CellTemplate>
                         <telerik:GridViewDataColumn.CellEditTemplate>
                             <DataTemplate>
-                                <Controls:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" IsEditable="True" DisplayMemberPath="DisplayName" SelectedItem="{Binding Client, Mode=TwoWay}"
+                                <Controls:RadComboBox IsEditable="True" DisplayMemberPath="DisplayName" SelectedItem="{Binding Client, Mode=TwoWay}"
                                                       ItemsSource="{Binding ClientsVM.DomainCollectionView, RelativeSource={RelativeSource AncestorType=Dispatcher1:TaskBoard}}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellEditTemplate>

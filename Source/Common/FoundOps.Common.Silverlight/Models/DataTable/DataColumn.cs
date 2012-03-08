@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace FoundOps.Common.Silverlight.Models.DataTable
+namespace Telerik.Data
 {
-    public class DataColumn<T>
+    public class DataColumn
     {
         public DataColumn()
         {
-            this.DataType = typeof(T);
+            this.DataType = typeof(object);
         }
 
         public Type DataType { get; set; }

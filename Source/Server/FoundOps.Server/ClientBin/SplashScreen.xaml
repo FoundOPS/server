@@ -10,84 +10,12 @@
                         <DiscreteDoubleKeyFrame KeyTime="0:0:4.4" Value="0"/>
                         <SplineDoubleKeyFrame KeyTime="0:0:5" Value="0.897" KeySpline="0,0,0,1" />
                     </DoubleAnimationUsingKeyFrames>
-                    <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="path1">
-                        <SplineDoubleKeyFrame KeyTime="0:0:4.4" Value="0.115"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:5.2" Value="1" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:8.8" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:9.4" Value="0.897" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="path2">
-                        <SplineDoubleKeyFrame KeyTime="0:0:8.8" Value="0.115"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:9.6" Value="1" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:13.2" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:13.8" Value="0.897" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="path3">
-                        <SplineDoubleKeyFrame KeyTime="0:0:13.2" Value="0.115"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:14" Value="1" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:17.6" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:18.2" Value="0.897" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="path4">
-                        <SplineDoubleKeyFrame KeyTime="0:0:17.6" Value="0.115"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:18.4" Value="1" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:22" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:22.6" Value="0.897" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="path5">
-                        <SplineDoubleKeyFrame KeyTime="0:0:22" Value="0.115"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:22.8" Value="1" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:26.4" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:27" Value="0.897" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="path6">
-                        <SplineDoubleKeyFrame KeyTime="0:0:26.4" Value="0.115"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:27.2" Value="1" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:30.8" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:31.4" Value="0.897" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>-->
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="path">
                         <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
                         <SplineDoubleKeyFrame KeyTime="0:0:0.8" Value="0.956" KeySpline="0,0,0,1" />
                         <DiscreteDoubleKeyFrame KeyTime="0:0:4.4" Value="0.044"/>
                         <SplineDoubleKeyFrame KeyTime="0:0:5" Value="1" KeySpline="0,0,0,1" />
                     </DoubleAnimationUsingKeyFrames>
-                    <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="path1">
-                        <SplineDoubleKeyFrame KeyTime="0:0:4.4" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:5.2" Value="0.956" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:8.8" Value="0.044"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:9.4" Value="1" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="path2">
-                        <SplineDoubleKeyFrame KeyTime="0:0:8.8" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:9.6" Value="0.956" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:13.2" Value="0.044"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:13.8" Value="1" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="path3">
-                        <SplineDoubleKeyFrame KeyTime="0:0:13.2" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:14" Value="0.956" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:17.6" Value="0.044"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:18.2" Value="1" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="path4">
-                        <SplineDoubleKeyFrame KeyTime="0:0:17.6" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:18.4" Value="0.956" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:22" Value="0.044"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:22.6" Value="1" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="path5">
-                        <SplineDoubleKeyFrame KeyTime="0:0:22" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:22.8" Value="0.956" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:26.4" Value="0.044"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:27" Value="1" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>
-                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.OpacityMask).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="path6">
-                        <SplineDoubleKeyFrame KeyTime="0:0:26.4" Value="0"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:27.2" Value="0.956" KeySpline="0,0,0,1" />
-                        <DiscreteDoubleKeyFrame KeyTime="0:0:30.8" Value="0.044"/>
-                        <SplineDoubleKeyFrame KeyTime="0:0:31.4" Value="1" KeySpline="0,0,0,1" />
-                    </DoubleAnimationUsingKeyFrames>-->
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="grid">
                         <SplineDoubleKeyFrame KeyTime="0" Value="0"/>
                         <SplineDoubleKeyFrame KeyTime="0:0:31.4" Value="424"/>
@@ -104,7 +32,7 @@
         </LinearGradientBrush>
     </Grid.Background>
 
-    <TextBlock x:Name="progressText" IsHitTestVisible="False" FontSize="250" FontFamily="Arial" Margin="0,250,0,0" Foreground="White" Text="0" HorizontalAlignment="Right" />
+    <TextBlock x:Name="progressText" Visibility="Collapsed" IsHitTestVisible="False" FontSize="250" FontFamily="Arial" Margin="0,250,0,0" Foreground="White" Text="0" HorizontalAlignment="Right" />
     <Grid MinWidth="1005" MinHeight="562" MaxWidth="1380" MaxHeight="900">
         <Grid x:Name="logo" Background="Transparent" HorizontalAlignment="Left" Height="160" Margin="30,0,0,0" VerticalAlignment="Top" Width="320">
             <Canvas x:Name="splashLogo" HorizontalAlignment="Left" Height="160" UseLayoutRounding="False" VerticalAlignment="Top" Width="320">

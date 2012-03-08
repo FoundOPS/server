@@ -1,15 +1,14 @@
-﻿using System;
-using ReactiveUI;
-using System.Linq;
-using System.Reactive.Linq;
+﻿using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Tools;
-using System.Reactive.Subjects;
+using FoundOps.Core.Models.CoreEntities;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using FoundOps.Core.Context.Services;
-using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
-using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace FoundOps.SLClient.Data.Services
 {

@@ -1,20 +1,20 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Data.Objects;
-using FoundOps.Common.NET;
-using System.Collections.Generic;
+﻿using FoundOps.Common.NET;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.Core.Models.QuickBooks;
 using FoundOps.Core.Server.Blocks;
-using FoundOps.Server.Controllers;
-using System.Security.Authentication;
 using FoundOps.Server.Authentication;
-using FoundOps.Core.Models.CoreEntities;
-using System.ServiceModel.DomainServices.Server;
-using System.ServiceModel.DomainServices.Hosting;
-using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.Server.Controllers;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Objects;
+using System.Linq;
+using System.Reflection;
+using System.Security.Authentication;
 using System.ServiceModel.DomainServices.EntityFramework;
+using System.ServiceModel.DomainServices.Hosting;
+using System.ServiceModel.DomainServices.Server;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -23,9 +23,11 @@ namespace FoundOps.Server.Services.CoreDomainService
     /// Businesses, ContactInfo, Files,
     /// Parties, Repeats, Roles, User Accounts
     /// </summary>
-    //TODO: Secure
-    //(RequiresSecureEndpoint = true)
+#if DEBUG
     [EnableClientAccess]
+#else
+    [EnableClientAccess(RequiresSecureEndpoint = true)]
+#endif
     public partial class CoreDomainService : LinqToEntitiesDomainService<CoreEntitiesContainer>
     {
         protected override bool PersistChangeSet()
@@ -98,6 +100,23 @@ namespace FoundOps.Server.Services.CoreDomainService
         #endregion
 
         #region BusinessAccount
+
+        private void UpdateBusinessAccount(BusinessAccount account)
+        {
+            //Only FoundOPS admin accounts or a user with admin capabilities for the current account can update the account
+            if (!this.ObjectContext.CurrentUserHasFoundOPSAdminAccess() && !this.ObjectContext.CurrentUserCanAdministerThisParty(account.Id))
+                throw new AuthenticationException("Invalid attempted access logged for investigation.");
+
+            this.ObjectContext.DetachExistingAndAttach(account);
+
+            var originalBusinessAccount = this.ChangeSet.GetOriginal(account);
+
+            //Only FoundOPS's admins can change the MaxRoutes
+            if (originalBusinessAccount.MaxRoutes != account.MaxRoutes && !this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
+                throw new AuthenticationException("Invalid attempted access logged for investigation.");
+
+            this.ObjectContext.Parties.AttachAsModified(account);
+        }
 
         private void DeleteBusinessAccount(BusinessAccount businessAccountToDelete)
         {
@@ -308,7 +327,12 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateParty(Party account)
         {
-            this.ObjectContext.Parties.AttachAsModified(account);
+            if (!(account is BusinessAccount))
+            {
+                this.ObjectContext.Parties.AttachAsModified(account);
+            }
+            else
+                UpdateBusinessAccount((BusinessAccount)account);
         }
 
         public void DeleteParty(Party party)
@@ -506,14 +530,12 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Update]
         public void UpdateUserAccount(UserAccount currentUserAccount)
         {
-            if (!ObjectContext.CurrentUserCanAdministerThisParty(currentUserAccount.Id))
+            if (!ObjectContext.CurrentUserCanAdministerThisParty(currentUserAccount.Id) || !this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
                 throw new AuthenticationException();
 
             //Check if there is a temporary password
-            if (string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
-            {
+            if (!string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
                 currentUserAccount.PasswordHash = EncryptionTools.Hash(currentUserAccount.TemporaryPassword);
-            }
 
             this.ObjectContext.Parties.AttachAsModified(currentUserAccount);
         }

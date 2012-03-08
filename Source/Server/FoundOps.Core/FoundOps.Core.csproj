@@ -177,6 +177,10 @@
     </Compile>
     <Compile Include="Models\CoreEntities\Validation\FieldValidators.shared.cs" />
     <Compile Include="Models\CoreEntities\Validation\RepeatValidators.shared.cs" />
+    <Compile Include="Models\Import\ImportDestinationTools.cs" />
+    <Compile Include="Models\Import\DataCategory.cs" />
+    <Compile Include="Models\Import\ImportColumnType.cs" />
+    <Compile Include="Models\Import\ImportDestination.cs" />
     <Compile Include="Models\QuickBooks\QuickBooksXml.cs" />
     <Compile Include="Models\QuickBooks\QuickBooksSession.cs" />
     <Compile Include="Models\QuickBooks\QuickBooksTools.cs" />

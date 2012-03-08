@@ -1,0 +1,427 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.Windows.Scheduling.Core</name>
+    </assembly>
+    <members>
+        <member name="M:Telerik.Windows.Core.SelectionChanger`1.End">
+            <summary>
+            Commit selection changes.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Core.SelectionChanger`1.Begin">
+            <summary>
+            Begin tracking selection changes.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Core.SelectionChanger`1.Cancel">
+            <summary>
+            Cancels the currently active SelectionChanger.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Core.SelectionChanger`1.Select(System.Int32,`0)">
+            <summary>
+            Queue something to be added to the selection.
+            Does nothing if the item is already selected.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Core.SelectionChanger`1.Unselect(System.Int32,`0)">
+            <summary>
+            Queue something to be removed from the selection.
+            Does nothing if the item is not already selected.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Core.SelectionChanger`1.SelectJustThisItem(`0)">
+            <summary>
+            Select just this item; all other items in Selection will be removed.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Core.SelectionChanger`1.SynchronizeInternalSelection">
+            <summary>
+            Update the InternalSelection.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Core.SelectionChanger`1.CoerceItemCallback">
+            <summary>
+            Coerce Item before it is selected.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Core.SelectionChanger`1.IsActive">
+            <summary>
+            True if there is a SelectionChange currently in progress.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Core.HierarchicalCollectionAdapterBase">
+            <summary>
+            This class wraps a hierarchical collection with observable collection, containing the flattened items, wrapped in HierarchicalItem.
+            This collection doesn't track the source collection for changes.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Core.HierarchicalCollectionAdapterBase.#ctor(System.Collections.IEnumerable,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Core.HierarchicalCollectionAdapterBase"/> class. It doesn't track the source hierarchical 
+            collection for changes.
+            </summary>
+            <param name="sourceCollection">The hierarchical collection to be flattened.</param>
+        </member>
+        <member name="M:Telerik.Windows.Core.HierarchicalCollectionAdapterBase.GetChildren(System.Object)">
+            <summary>
+            When overridden in the inherited class, this method returns all the children of the provided item.
+            </summary>
+            <param name="item">The item, which children are to be retrieved.</param>
+            <returns>All the children of the provided item.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Core.HierarchicalCollectionAdapterBase.InitializeWrapper(Telerik.Windows.Core.HierarchicalItem,System.Object)">
+            <summary>
+            When overridden in the inherited class, this method is used to perform additional initializations to the newly created wrapper.
+            It is the best place to initialize the <see cref="P:Telerik.Windows.Core.HierarchicalItem.IsExpanded"/> and <see cref="P:Telerik.Windows.Core.HierarchicalItem.CanExpand"/> properties.
+            This method is called when a new wrapper is initialized. In the base method only the SourceItem is set and 
+            an event handler is hooked to the PropertyChanged event to track changes in the IsExpanded property.
+            </summary>
+            <param name="wrapper">The wrapper that was created for the item.</param>
+            <param name="item">The item that have been wrapped.</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Telerik.Windows.Core.HierarchicalCollectionAdapterBase.System#Collections#Generic#IEnumerable{Telerik#Windows#Core#HierarchicalItem}#GetEnumerator" -->
+        <member name="M:Telerik.Windows.Core.HierarchicalCollectionAdapterBase.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An System.Collections.IEnumerator object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="E:Telerik.Windows.Core.HierarchicalCollectionAdapterBase.CollectionChanged">
+            <summary>
+            Occurs when the collection changes.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Core.SynchronizedCollection`2">
+            <summary>
+            TODO: Update summary.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Core.IndexTree">
+            <summary>
+            An index tree structure, used to store non-negative double values and query for a cumulative value up
+            to an index or index that reaches a given value. Add and remove operations are expensive.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Core.IndexTree.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Core.IndexTree"/> class.
+            </summary>
+            <param name="capacity">The capacity of the tree.</param>
+        </member>
+        <member name="M:Telerik.Windows.Core.IndexTree.#ctor(System.Int32,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Core.IndexTree"/> class. Has complexity of N.
+            </summary>
+            <param name="capacity">The capacity of the tree.</param>
+            <param name="defaultValue">The default value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Core.IndexTree.RemoveAt(System.Int32)">
+            <summary>
+            Removes the element at the given index. Worst complexity is
+            (N-InsertIndex) + Log(N)*NonDefaultsInRange(N-InsertIndex).
+            </summary>
+            <param name="index">The index at which to remove the item.</param>
+        </member>
+        <member name="M:Telerik.Windows.Core.IndexTree.Add(System.Double)">
+            <summary>
+            Adds a value in the end of the index tree. Constant or N complexity, depending on whether capacity
+            expansion will be needed.
+            </summary>
+            <param name="value">The value that will be added.</param>
+        </member>
+        <member name="M:Telerik.Windows.Core.IndexTree.Insert(System.Int32,System.Double)">
+            <summary>
+            Inserts a value at the given index. Will cheaply enqueue an item if possibe. Worst complexity is
+            (N-InsertIndex) + Log(N)*NonDefaultsIn(N-InsertIndex).
+            </summary>
+            <param name="value">The value that will be inserted.</param>
+            <param name="index">The index at which it will be inserted.</param>
+        </member>
+        <member name="M:Telerik.Windows.Core.IndexTree.System#Collections#Generic#IEnumerable{System#Double}#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through
+            the collection.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Core.IndexTree.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the
+            collection.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Core.IndexTree.CumulativeIndex(System.Double)">
+            <summary>
+            Returns the index of the element that reaches the given value. Has complexity of log(N).
+            </summary>
+            <param name="value">The value that needs to be reached.</param>
+            <returns>The index of the item that reached the given value.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Core.IndexTree.CumulativeValue(System.Int32)">
+            <summary>
+            Gets or sets the value that has built up for the items up to a given end index. Has complexity of log(N).
+            </summary>
+            <param name="endIndex">The index of the item for which to return the cumulative value.</param>
+            <returns>The cumulative value for all items up to and including a given index.</returns>
+        </member>
+        <member name="P:Telerik.Windows.Core.IndexTree.Count">
+            <summary>
+            Gets the number of items in the index tree. Has complexity of 0.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Core.IndexTree.Capacity">
+            <summary>
+            Gets the numer of items that the index tree can accomodate before resizing is needed.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Core.IndexTree.Item(System.Int32)">
+            <summary>
+            Returns the value for a given index. Has constant complexity for get and log(N) complexity for set.
+            </summary>
+            <param name="index">The index to get the value for.</param>
+            <returns>The value for the given index.</returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.FocusManagerHelper">
+            <summary>
+            Represents a helper that gets the focused element in the SL4, SL5 (including OOB) and WPF platforms.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FocusManagerHelper.GetFocusedElement(System.Windows.DependencyObject)">
+            <summary>
+            Gets the focused element.
+            </summary>
+            <param name="element">The element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SelectorItemBase.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SelectorItemBase.OnGotFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.GotFocus"/> event occurs.
+            </summary>
+            <param name="e">The data for the event.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SelectorItemBase.OnLostFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
+            </summary>
+            <param name="e">The data for the event.</param>
+        </member>
+        <member name="P:Telerik.Windows.Rendering.TreeContainer.TreeItemProxy.IsExpanded">
+            <Summary>Gets or sets IsExpanded and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Rendering.TreeContainer.TreeItemProxy.CanExpand">
+            <Summary>Gets or sets CanExpand and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Rendering.TreeContainer.TreeItemProxy.Level">
+            <Summary>Gets or sets Level and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Rendering.TreeContainer.TreeItemProxy.SourceItem">
+            <Summary>Gets or sets SourceItem and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Rendering.ICellsRenderingStatistics.ItemsCount">
+            <summary>
+            The count of the items for which the statistics are held.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Rendering.IRenderingStatistics.InsertStatsForItems(System.Int32,System.Int32)">
+            <summary>
+            Inserts a new item with the currently calculated default values at a specified index.
+            </summary>
+            <param name="index">The index in which to be inserted the new item.</param>
+        </member>
+        <member name="M:Telerik.Windows.Rendering.IRenderingStatistics.RemoveStatsForItems(System.Int32,System.Int32)">
+            <summary>
+            Removes an item from the specified index.
+            </summary>
+            <param name="index">The index to be removed.</param>
+        </member>
+        <member name="M:Telerik.Windows.Rendering.Tree.TreeRenderingHelper.GetNextItemIndexOfSameOrUpperLevel(System.Collections.Generic.IList{Telerik.Windows.Core.HierarchicalItem},System.Int32)">
+            <summary>
+            This method retrieves the index of the next item that has the same or upper level then the item with specified index.
+            </summary>
+            <param name="dataSource"></param>
+            <param name="itemIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Rendering.Tree.TreeRenderingHelper.GetNextItemIndexOfSameOrUpperLevel(Telerik.Windows.Core.HierarchicalItem,System.Int32)">
+            <summary>
+            This method retrieves the index of the next item that has the same or upper level then the item with specified index.
+            </summary>
+            <param name="dataSource"></param>
+            <param name="itemIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Rendering.Virtualization.RecyclingContext.GetAllGeneratedContainers">
+            <summary>
+            This method if for test purposes only!
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.HeaderedTickContainer.TickProxy.FormattedValue">
+            <Summary>Gets or sets FormattedValue and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.HeaderedTickContainer.TickProxy.DateTime">
+            <Summary>Gets or sets DateTime and notifies for changes</Summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.GroupsDataSource.Reset(System.Collections.IEnumerable,System.Collections.Generic.IEnumerable{Telerik.Windows.Data.Grouping.IGroupDescription})">
+            <summary>
+            Resets the groups data source. This method should be called when the grouping is changed, or the items source collection is replaced.
+            Data source observes the items collection for collection changes.
+            </summary>
+            <param name="items"></param>
+            <param name="groupDescriptions"></param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.MouseOverHighlightHelper.HighlightedItem">
+            <Summary>Gets or sets HighlightedItem and notifies for changes</Summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Scheduling.IMultiSelector">
+            <summary>
+            An interface that is implemented by classes which are responsible for selecting multiple items among their child elements.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.IMultiSelector.SelectItems(System.Collections.IEnumerable)">
+            <summary>
+            Selects multiple items.
+            </summary>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.IMultiSelector.SelectItems(System.Object,System.Object,System.Boolean)">
+            <summary>
+            Selects all items between two indexes in the children collection.
+            </summary>
+            <param name="from">From.</param>
+            <param name="destination">The destination.</param>
+            <param name="clearSelected">if set to <c>true</c> [clear selected].</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.IMultiSelector.SelectedItems">
+            <summary>
+            Gets a collection of selected items.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Scheduling.SchedulingSelector.SelectionChangedEvent">
+            <summary>
+            Identifies the SelectionChanged routed event. 
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingSelector.SelectItems(System.Collections.IEnumerable)">
+            <summary>
+            Selects multiple items.
+            </summary>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingSelector.SelectItems(System.Object,System.Object,System.Boolean)">
+            <summary>
+            Selects all items between two indexes in the children collection.
+            </summary>
+            <param name="from">From.</param>
+            <param name="destination">The destination.</param>
+            <param name="clearSelected">if set to <c>true</c> [clear selected].</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Scheduling.DeferredAction">
+            <summary>
+            Request for a simple action.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.DeferredAction.#ctor(System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.DeferredAction"/> class.
+            </summary>
+            <param name="action">The action.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.DeferredAction.Execute">
+            <summary>
+            Executes this instance.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Scheduling.TimeRulerLine.IntervalsProperty">
+            <summary>
+            Identifies the Intervals dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Scheduling.TimeRulerLine.MinTickLengthProperty">
+            <summary>
+            Identifies the MinTickLength dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Scheduling.TimeRulerLine.HeightProperty">
+            <summary>
+            Identifies the Height dependency property. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.TimeRulerLine.Intervals">
+            <summary>
+            Gets or sets the Intervals. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.TimeRulerLine.MinTickLength">
+            <summary>
+            Gets or sets the MinTickLength. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.TimeRulerLine.Height">
+            <summary>
+            Gets or sets the Height of the time ruler line. This is a dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.VisibleRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.VisibleRange"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.VisibleRange.#ctor(System.DateTime,System.DateTime)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.VisibleRange"/> class.
+            </summary>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Scheduling.VisibleRange.StartProperty">
+            <summary>
+            Identifies the VisibleRangeStart dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Scheduling.VisibleRange.EndProperty">
+            <summary>
+            Identifies the VisibleRangeEnd dependency property. 
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.VisibleRange.OnPropertyChanged(System.String)">
+            <summary>
+            Raises the PropertyChanged event. This method is called when a property of this control is changed.
+            </summary>
+            <param name="propertyName">The name of the property that was changed.</param>
+        </member>
+        <member name="E:Telerik.Windows.Controls.Scheduling.VisibleRange.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.VisibleRange.Start">
+            <summary>
+            Gets or sets the Start of the range. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.VisibleRange.End">
+            <summary>
+            Gets or sets the End of the range. This is a dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Scheduling.ToolTipManager.DataContextProperty">
+            <summary>
+            Hidden dependency property that enables us to receive notifications when the source data context changes and 
+            needs to be flushed into the context of the tooltip
+            </summary>
+        </member>
+    </members>
+</doc>

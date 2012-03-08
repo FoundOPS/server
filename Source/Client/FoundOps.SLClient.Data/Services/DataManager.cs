@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Diagnostics;
+using System.Net;
 using FoundOps.Common.NET;
 using System.Reactive.Linq;
 using System.ComponentModel;
+using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Models;
 using System.Reactive.Subjects;
@@ -13,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using FoundOps.Common.Silverlight.Controls;
+using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.Windows.Data.DomainServices;
 using System.ServiceModel.DomainServices.Client;
@@ -632,9 +635,10 @@ namespace FoundOps.SLClient.Data.Services
         /// </summary>
         /// <param name="searchText">The search text.</param>
         /// <param name="geocoderResultsCallback">The geocoder results callback.</param>
-        public void TryGeocode(string searchText, Action<IEnumerable<GeocoderResult>> geocoderResultsCallback)
+        /// <param name="userState">State of the user.</param>
+        public void TryGeocode(string searchText, Action<IEnumerable<GeocoderResult>, object> geocoderResultsCallback, object userState = null)
         {
-            Context.TryGeocode(searchText, callback => geocoderResultsCallback(callback.Value), null);
+            Context.TryGeocode(searchText, callback => geocoderResultsCallback(callback.Value, userState), userState);
         }
 
         /// <summary>
@@ -728,6 +732,27 @@ namespace FoundOps.SLClient.Data.Services
             _currentSubmitOperation = this.Context.SubmitChanges(
                 submitOperationCallback =>
                 {
+                    //Log error
+                    if (submitOperationCallback.HasError)
+                    {
+                        var errorUrl = String.Format("{0}/Error/SaveChangesError", UriExtensions.ThisRootUrl);
+                        var parameters = String.Format("roleId={0}&error={1}&innerException={2}", ContextManager.RoleId, submitOperationCallback.Error, submitOperationCallback.Error.InnerException);
+
+                        var wc = new WebClient();
+                        wc.Headers["Content-type"] = "application/x-www-form-urlencoded";
+                        wc.UploadStringAsync(new Uri(errorUrl), parameters);
+
+                        Context.RejectChanges();
+
+                        //Setup the ErrorWindow prompt
+                        var errorWindow = new ErrorWindow();
+
+                        //The ErrorWindow is now setup, show it to the user
+                        errorWindow.Show();
+
+                        return;
+                    }
+
                     //When the submit operation is completed, inform the dequeuedObservables
                     foreach (var submitOperationQueued in dequeuedObservables)
                     {

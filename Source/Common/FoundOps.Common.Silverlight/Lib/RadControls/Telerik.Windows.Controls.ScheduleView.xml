@@ -894,6 +894,16 @@
             Identifies IsInInlineEditingMode read-only dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.AppointmentItem.IsMouseOverProperty">
+            <summary>
+            Identifies IsMouseOver dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.AppointmentItem.IsMouseOver">
+            <summary>
+            Gets IsMouseOver property.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.AppointmentItem.DurationMarkerMargin">
             <summary>
             Gets DurationMarker visibility.
@@ -4220,6 +4230,15 @@
             <param name="currentStart">The current start.</param>
             <returns></returns>
         </member>
+        <member name="M:Telerik.Windows.Controls.AutomaticTickLengthProvider.Equals(System.Object)">
+            <summary>
+            Indicates whether this instance and a specified object are equal.
+            </summary>
+            <param name="obj">Another object to compare to.</param>
+            <returns>
+            True if <paramref name="obj"/> and this instance are the same type and represent the same Threshold; otherwise, false.
+            </returns>
+        </member>
         <member name="P:Telerik.Windows.Controls.AutomaticTickLengthProvider.Threshold">
             <summary>
             The Threshold to use while determining the tick lengths.
@@ -4383,6 +4402,15 @@
             <param name="formatString">The format string.</param>
             <param name="currentStart">The current start.</param>
             <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedTickLengthProvider.Equals(System.Object)">
+            <summary>
+            Indicates whether this instance and a specified object are equal.
+            </summary>
+            <param name="obj">Another object to compare to.</param>
+            <returns>
+            True if <paramref name="obj"/> and this instance are the same type and represent the same TickLength; otherwise, false.
+            </returns>
         </member>
         <member name="P:Telerik.Windows.Controls.FixedTickLengthProvider.TickLength">
             <summary>

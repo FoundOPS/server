@@ -4,6 +4,59 @@
         <name>Telerik.Windows.Controls.FixedDocumentViewers</name>
     </assembly>
     <members>
+        <member name="T:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands">
+            <summary>
+            Represents commands for a given <see cref="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.FixedDocumentViewer"/> instance.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.#ctor(Telerik.Windows.Controls.FixedDocumentViewerBase)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands"/> class.
+            </summary>
+            <param name="fixedDocumentViewerBase">The fixed document viewer base.</param>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.FixedDocumentViewer">
+            <summary>
+            Gets the fixed document viewer.
+            </summary>
+            <value>The fixed document viewer.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.OpenPdfDocumentCommand">
+            <summary>
+            Gets the open PDF document command.
+            </summary>
+            <value>The open PDF document command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.PrintPdfDocumentCommand">
+            <summary>
+            Gets the print PDF document command.
+            </summary>
+            <value>The print PDF document command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.PageUpCommand">
+            <summary>
+            Gets the page up command.
+            </summary>
+            <value>The page up command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.PageDownCommand">
+            <summary>
+            Gets the page down command.
+            </summary>
+            <value>The page down command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.ZoomInCommand">
+            <summary>
+            Gets the zoom in command.
+            </summary>
+            <value>The zoom in command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.ZoomOutCommand">
+            <summary>
+            Gets the zoom out command.
+            </summary>
+            <value>The zoom out command.</value>
+        </member>
         <member name="T:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource">
             <summary>
             Represents a fixed document source, which can load a document from URI or stream.
@@ -82,9 +135,75 @@
             Supports conversion from string representing URI, Uri and stream.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Documents.UI.FixedDocumentPagesPresenter">
+            <summary>
+            Represents fixed document with pages.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.UI.FixedDocumentPresenterBase">
+            <summary>
+            Represents base document presenter class.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.FixedDocumentViewerBase">
             <summary>
             Base document viewing control that can host <see cref="T:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.Print">
+            <summary>
+            Prints the current document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.GoToPage(System.Int32)">
+            <summary>
+            Goes to specified page.
+            </summary>
+            <param name="pageNo">The page number.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.PageUp">
+            <summary>
+            Goes a page up.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.PageDown">
+            <summary>
+            Goes a page down.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.Document">
+            <summary>
+            Gets or sets the document for the viewer.
+            </summary>
+            <value>The document.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.DocumentSource">
+            <summary>
+            Gets or sets the document source for the viewer.
+            </summary>
+            <value>The document source.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.ScaleFactor">
+            <summary>
+            Gets or sets the scale factor for the viewer.
+            </summary>
+            <value>The scale factor.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.IsInPanMode">
+            <summary>
+            Gets or sets if the viewer is in pan mode.
+            </summary>
+            <value>The is in pan mode.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.CurrentPageNumber">
+            <summary>
+            Gets or sets the current page number.
+            </summary>
+            <value>The current page number.</value>
+        </member>
+        <member name="T:Telerik.Windows.Documents.UI.Page">
+            <summary>
+            Represents a Fixed Page UI.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.RadPdfViewer">
@@ -96,6 +215,12 @@
             <summary>
             A <see cref="T:Telerik.Windows.Documents.Fixed.PdfDocumentSource"/> instance representing a PDF file.
             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadPdfViewer.Commands">
+            <summary>
+            Gets or sets the commands.
+            </summary>
+            <value>The commands.</value>
         </member>
     </members>
 </doc>

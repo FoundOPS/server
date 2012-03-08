@@ -31,7 +31,7 @@
                 <Map:InformationLayer x:Name="InformationLayer" />
                 <Map:InformationLayer x:Name="InformationLayer2" ItemTemplate="{StaticResource PolylineTemplate}"/>
             </Controls:RadMap>
-        <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" x:Name="MapTypeSelector" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,25" BorderBrush="Black" 
+        <telerik:RadComboBox x:Name="MapTypeSelector" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,25" BorderBrush="Black" 
                              Foreground="Black" Background="SlateGray" SelectionChanged="MapTypeSelector_SelectionChanged">
             <telerik:RadComboBoxItem x:Name="OSMRoad" Content="Map View"/>
             <telerik:RadComboBoxItem x:Name="YahooSatellite" Content="Satellite View"/>

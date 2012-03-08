@@ -46,7 +46,7 @@
         <member name="T:Telerik.Windows.Documents.FormatProviders.Html.CSS.Combinator">
             <summary></summary>
         </member>
-        <member name="F:Telerik.Windows.Documents.FormatProviders.Html.CSS.Combinator.DirectChild">
+        <member name="F:Telerik.Windows.Documents.FormatProviders.Html.CSS.Combinator.ChildOf">
             <summary></summary>
         </member>
         <member name="F:Telerik.Windows.Documents.FormatProviders.Html.CSS.Combinator.PrecededImmediatelyBy">
@@ -56,6 +56,12 @@
             <summary></summary>
         </member>
         <member name="T:Telerik.Windows.Documents.FormatProviders.Html.CSS.CssDocument">
+            <summary></summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.FormatProviders.Html.CSS.IRuleSetContainer">
+            <summary></summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.CSS.IRuleSetContainer.RuleSets">
             <summary></summary>
         </member>
         <member name="M:Telerik.Windows.Documents.FormatProviders.Html.CSS.CssDocument.ToString">
@@ -85,6 +91,12 @@
             <summary></summary>
         </member>
         <member name="T:Telerik.Windows.Documents.FormatProviders.Html.CSS.Directive">
+            <summary></summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.FormatProviders.Html.CSS.IDeclarationContainer">
+            <summary></summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.CSS.IDeclarationContainer.Declarations">
             <summary></summary>
         </member>
         <member name="M:Telerik.Windows.Documents.FormatProviders.Html.CSS.Directive.ToString">
@@ -204,10 +216,16 @@
             <summary></summary>
             <returns></returns>
         </member>
-        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.CSS.PropertyValue.Separator">
+        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.CSS.PropertyValue.Seperator">
+            <summary></summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.CSS.PropertyValue.SeperatorChar">
             <summary></summary>
         </member>
         <member name="P:Telerik.Windows.Documents.FormatProviders.Html.CSS.PropertyValue.Sign">
+            <summary></summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.CSS.PropertyValue.SignChar">
             <summary></summary>
         </member>
         <member name="P:Telerik.Windows.Documents.FormatProviders.Html.CSS.PropertyValue.Type">

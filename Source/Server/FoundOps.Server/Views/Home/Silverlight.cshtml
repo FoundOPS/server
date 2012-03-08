@@ -1,5 +1,5 @@
 ﻿@model string
-@using FoundOps.Core.Server
+@using FoundOps.Server
 <!DOCTYPE html>
 <html>
 <head>
@@ -107,21 +107,14 @@
             <param name="onError" value="onSilverlightError" />
             <param name="background" value="#ff333335" />
             <param name="windowless" value="true" />
-            <param name="minRuntimeVersion" value="5.0.60401.0" />
+            <param name="minRuntimeVersion" value="5.0.61118.0" />
             <param name="enableHtmlAccess" value="true" />
-            @*   <%
-                string currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture.ToString();
-                Response.Cookies.Add(new HttpCookie("FoundOps-culture", currentCulture));
-                %>
-               <param name="uiculture" value="@System.Threading.Thread.CurrentThread.CurrentUICulture" />*@
             <param name="autoUpgrade" value="true" />
-            <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.60401.0" style="text-decoration: none">
-                <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"
-                    style="border-style: none" />
+            <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration: none">
+                <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style: none" />
             </a>
         </object>
-        <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px;
-            border: 0px"></iframe>
+        <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px; border: 0px"></iframe>
     </div>
     </form>
 </body>

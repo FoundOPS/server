@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 01/27/2012 16:28:48
+-- Date Created: 03/07/2012 11:26:18
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -336,6 +336,9 @@ IF OBJECT_ID(N'[dbo].[LineItems]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[RouteTasks]', 'U') IS NOT NULL
     DROP TABLE [dbo].[RouteTasks];
+GO
+IF OBJECT_ID(N'[dbo].[Errors]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Errors];
 GO
 IF OBJECT_ID(N'[dbo].[Parties_Business]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_Business];
@@ -727,6 +730,17 @@ CREATE TABLE [dbo].[RouteTasks] (
 );
 GO
 
+-- Creating table 'Errors'
+CREATE TABLE [dbo].[Errors] (
+    [Id] uniqueidentifier  NOT NULL,
+    [Date] datetime  NULL,
+    [BusinessName] nvarchar(max)  NULL,
+    [UserEmail] nvarchar(max)  NULL,
+    [ErrorText] nvarchar(max)  NULL,
+    [InnerException] nvarchar(max)  NULL
+);
+GO
+
 -- Creating table 'Parties_Business'
 CREATE TABLE [dbo].[Parties_Business] (
     [Name] nvarchar(max)  NULL,
@@ -741,6 +755,7 @@ CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [QuickBooksAccessTokenSecret] nvarchar(max)  NULL,
     [RouteManifestSettings] nvarchar(max)  NULL,
     [QuickBooksSessionXml] nvarchar(max)  NULL,
+    [MaxRoutes] int  NOT NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -1035,6 +1050,12 @@ ADD CONSTRAINT [PK_RouteTasks]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'Errors'
+ALTER TABLE [dbo].[Errors]
+ADD CONSTRAINT [PK_Errors]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- Creating primary key on [Id] in table 'Parties_Business'
 ALTER TABLE [dbo].[Parties_Business]
 ADD CONSTRAINT [PK_Parties_Business]
@@ -1237,7 +1258,7 @@ ADD CONSTRAINT [FK_RouteTaskLocation]
     FOREIGN KEY ([LocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE SET NULL ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskLocation'
 CREATE INDEX [IX_FK_RouteTaskLocation]
@@ -1265,7 +1286,7 @@ ADD CONSTRAINT [FK_RouteTaskRouteDestination]
     FOREIGN KEY ([RouteDestinationId])
     REFERENCES [dbo].[RouteDestinations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskRouteDestination'
 CREATE INDEX [IX_FK_RouteTaskRouteDestination]
@@ -1776,7 +1797,7 @@ ADD CONSTRAINT [FK_ServiceTemplateField]
     FOREIGN KEY ([ServiceTemplateId])
     REFERENCES [dbo].[ServiceTemplates]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ServiceTemplateField'
 CREATE INDEX [IX_FK_ServiceTemplateField]
