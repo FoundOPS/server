@@ -326,7 +326,6 @@
     <Compile Include="Tools\ExtensionMethods\DocumentExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\ColorExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\FrameworkElementExtensions.cs" />
-    <Compile Include="Tools\ExtensionMethods\GridViewExtensions.cs" />
     <Compile Include="Tools\FileTools.cs" />
     <Compile Include="Tools\MarkupExtensions\AppendNumberToStringMarkupExtension.cs" />
     <Compile Include="Tools\MarkupExtensions\AreEqual.cs" />

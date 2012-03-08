@@ -59,7 +59,8 @@ namespace Telerik.Data
         /// <param name="dynamicItem">The dynamic item.</param>
         public void RemoveRowFromItem(object dynamicItem)
         {
-            this.InternalView.Remove(dynamicItem);
+            var rowToRemove = Rows.First(r => r.RowObject.Equals(dynamicItem));
+            Rows.Remove(rowToRemove);
         }
 
         private void OnRowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

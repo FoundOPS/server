@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,18 +23,18 @@ namespace Telerik.Data
 
         protected DynamicObject()
         {
-            this.valuesStorage = new Dictionary<string,object>();
+            this.valuesStorage = new Dictionary<string, object>();
         }
 
         protected internal virtual T GetValue<T>(string propertyName)
         {
             object value;
             if (!this.valuesStorage.TryGetValue(propertyName, out value))
-	        {
+            {
                 return default(T);
-	        }
+            }
 
-            return (T) value;
+            return (T)value;
         }
 
         protected internal virtual void SetValue<T>(string propertyName, T value)

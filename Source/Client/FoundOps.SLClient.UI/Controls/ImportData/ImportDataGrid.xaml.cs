@@ -1,8 +1,5 @@
-﻿using System.Windows.Input;
-using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
-using FoundOps.Common.Tools;
+﻿using FoundOps.Common.Tools;
 using FoundOps.SLClient.UI.Tools;
-using Telerik.Data;
 using ItemsControl = System.Windows.Controls.ItemsControl;
 using System;
 using System.ComponentModel;
@@ -147,11 +144,10 @@ namespace FoundOps.SLClient.UI.Controls.ImportData
         private void DeleteSelectedRows(object sender, Telerik.Windows.RadRoutedEventArgs e)
         {
             //Delete any row with selected cells
-            var selectedItems = this.ImportRadGridView.SelectedCells.Select(c => c.Item).Distinct();
-            foreach (var item in selectedItems)
-                VM.ImportData.DataTable.RemoveRowFromItem(item);
+            var selectedRows = this.ImportRadGridView.SelectedCells.Select(c => c.Item).Distinct().ToArray();
 
-            this.ImportRadGridView.Items.Refresh();
+            foreach (var item in selectedRows)
+                VM.ImportData.DataTable.RemoveRowFromItem(item);
         }
     }
 }
