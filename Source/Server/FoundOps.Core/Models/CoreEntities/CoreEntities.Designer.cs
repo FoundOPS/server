@@ -628,18 +628,18 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<PartiesWithName> PartiesWithNames
+        public ObjectSet<PartyWithName> PartiesWithNames
         {
             get
             {
                 if ((_PartiesWithNames == null))
                 {
-                    _PartiesWithNames = base.CreateObjectSet<PartiesWithName>("PartiesWithNames");
+                    _PartiesWithNames = base.CreateObjectSet<PartyWithName>("PartiesWithNames");
                 }
                 return _PartiesWithNames;
             }
         }
-        private ObjectSet<PartiesWithName> _PartiesWithNames;
+        private ObjectSet<PartyWithName> _PartiesWithNames;
 
         #endregion
         #region AddTo Methods
@@ -895,9 +895,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Deprecated Method for adding a new object to the PartiesWithNames EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToPartiesWithNames(PartiesWithName partiesWithName)
+        public void AddToPartiesWithNames(PartyWithName partyWithName)
         {
-            base.AddObject("PartiesWithNames", partiesWithName);
+            base.AddObject("PartiesWithNames", partyWithName);
         }
 
         #endregion
@@ -6278,85 +6278,6 @@ namespace FoundOps.Core.Models.CoreEntities
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="PartiesWithName")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class PartiesWithName : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new PartiesWithName object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static PartiesWithName CreatePartiesWithName(global::System.Guid id)
-        {
-            PartiesWithName partiesWithName = new PartiesWithName();
-            partiesWithName.Id = id;
-            return partiesWithName;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Guid _Id;
-        partial void OnIdChanging(global::System.Guid value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String ChildName
-        {
-            get
-            {
-                return _ChildName;
-            }
-            set
-            {
-                OnChildNameChanging(value);
-                ReportPropertyChanging("ChildName");
-                _ChildName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("ChildName");
-                OnChildNameChanged();
-            }
-        }
-        private global::System.String _ChildName;
-        partial void OnChildNameChanging(global::System.String value);
-        partial void OnChildNameChanged();
-
-        #endregion
-    
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Party")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -6740,6 +6661,85 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="PartyWithName")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class PartyWithName : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new PartyWithName object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        public static PartyWithName CreatePartyWithName(global::System.Guid id)
+        {
+            PartyWithName partyWithName = new PartyWithName();
+            partyWithName.Id = id;
+            return partyWithName;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ChildName
+        {
+            get
+            {
+                return _ChildName;
+            }
+            set
+            {
+                OnChildNameChanging(value);
+                ReportPropertyChanging("ChildName");
+                _ChildName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ChildName");
+                OnChildNameChanged();
+            }
+        }
+        private global::System.String _ChildName;
+        partial void OnChildNameChanging(global::System.String value);
+        partial void OnChildNameChanged();
+
+        #endregion
+    
     }
     
     /// <summary>
