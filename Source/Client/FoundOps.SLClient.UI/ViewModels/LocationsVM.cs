@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.ServiceModel.DomainServices.Client;
 using ReactiveUI;
 using System.Collections;
 using Kent.Boogaart.KBCsv;
@@ -216,9 +217,18 @@ namespace FoundOps.SLClient.UI.ViewModels
                 result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
             });
 
+            LoadOperation<Location> detailsLoadOperation = null;
+
             //Whenever the location changes load the location details
             SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
-                Context.Load(Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedLocation.Id)));
+            {
+                if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
+                    detailsLoadOperation.Cancel();
+
+                selectedLocation.DetailsLoading = true;
+                detailsLoadOperation = Context.Load(Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedLocation.Id),
+                                 loadOp => selectedLocation.DetailsLoading = false, null);
+            });
         }
 
         #region Logic

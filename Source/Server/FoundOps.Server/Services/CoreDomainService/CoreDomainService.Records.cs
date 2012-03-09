@@ -553,6 +553,21 @@ namespace FoundOps.Server.Services.CoreDomainService
             return regions;
         }
 
+        /// <summary>
+        /// Searches the regions for the current role. Uses a StartsWith search mode.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="searchText">The search text.</param>
+        public IQueryable<Region> SearchRegionsForRole(Guid roleId, string searchText)
+        {
+            var regions = GetRegionsForServiceProvider(roleId);
+
+            if (!String.IsNullOrEmpty(searchText))
+                regions = regions.Where(r => r.Name.StartsWith(searchText));
+
+            return regions;
+        }
+
         public void InsertRegion(Region region)
         {
             if ((region.EntityState == EntityState.Detached))

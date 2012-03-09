@@ -59,6 +59,24 @@ namespace FoundOps.Core.Models.CoreEntities
                 SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
         }
 
+        private bool _detailsLoading;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [details loading].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DetailsLoading
+        {
+            get { return _detailsLoading; }
+            set
+            {
+                _detailsLoading = value;
+                this.RaisePropertyChanged("DetailsLoading");
+            }
+        }
+
         /// <summary>
         /// Gets the telerik location.
         /// </summary>

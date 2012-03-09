@@ -8,7 +8,7 @@
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI" 
              xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools" 
              xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400" 
+             xmlns:SLMultiBinding="clr-namespace:SLMultiBinding;assembly=SLMultiBinding" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400" 
              Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--IMPORTANT: DO NOT REMOVE "xmls:ViewModels". It is needed for GetVM-->
     <UserControl.Resources>
@@ -16,7 +16,7 @@
         <Converters:OwnerPartyToClientConverter x:Key="OwnerPartyToClientConverter" />
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
-    <Grid x:Name="LayoutRoot" Background="White" DataContext="{Tools:GetVM Type=ViewModels:LocationsVM}">
+    <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -37,10 +37,22 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel>
                 <Locations1:LocationEdit />
-                <ContactInfo:ContactInfoEdit ContactInfoVM="{Binding SelectedLocationVM.ContactInfoVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
-                <my1:ClientLinkLarge SelectedClient="{Binding SelectedEntity.Party, Mode=TwoWay, Converter={StaticResource OwnerPartyToClientConverter}, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
-                <Regions1:RegionLinkLarge SelectedRegion="{Binding SelectedEntity.Region, Mode=TwoWay, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
-                <Locations1:SubLocations SubLocationsVM="{Binding SelectedSubLocationsVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}"/>
+                <ContactInfo:ContactInfoEdit IsEnabled="{Binding SelectedEntity.DetailsLoading, Converter={StaticResource NotExistsBoolConverter}}" ContactInfoVM="{Binding SelectedLocationVM.ContactInfoVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
+                <my1:ClientLinkLarge IsEnabled="{Binding SelectedEntity.DetailsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools:GetVM Type=ViewModels:LocationsVM}}">
+                    <SLMultiBinding:BindingUtil.MultiBindings>
+                        <SLMultiBinding:MultiBindings>
+                            <SLMultiBinding:MultiBinding TargetProperty="SelectedClient" Converter="{StaticResource OwnerPartyToClientConverter}" Mode="TwoWay">
+                                <SLMultiBinding:BindingCollection>
+                                    <Binding Path="SelectedEntity.Party" Mode="TwoWay" Source="{Tools:GetVM Type=ViewModels:LocationsVM}"/>
+                                    <Binding Path="SelectedEntity.Party.ClientOwner" Source="{Tools:GetVM Type=ViewModels:LocationsVM}"/>
+                                    <Binding Path="SelectedEntity.DetailsLoading" Mode="TwoWay" Source="{Tools:GetVM Type=ViewModels:LocationsVM}"/>
+                                </SLMultiBinding:BindingCollection>
+                            </SLMultiBinding:MultiBinding>
+                        </SLMultiBinding:MultiBindings>
+                    </SLMultiBinding:BindingUtil.MultiBindings>
+                </my1:ClientLinkLarge>
+                <Regions1:RegionLinkLarge IsEnabled="{Binding SelectedEntity.DetailsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SelectedRegion="{Binding SelectedEntity.Region, Mode=TwoWay, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
+                <Locations1:SubLocations IsEnabled="{Binding SelectedEntity.DetailsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SubLocationsVM="{Binding SelectedSubLocationsVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}"/>
                 <toolkit:Expander Margin="5" IsExpanded="True" 
                                   BorderBrush="{StaticResource ServiceBrush}" Foreground="{StaticResource ServiceBrush}" Style="{StaticResource ExpanderStyle}"
                                   IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">

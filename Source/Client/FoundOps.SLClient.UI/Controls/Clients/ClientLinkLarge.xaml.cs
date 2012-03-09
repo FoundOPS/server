@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Tools;
-using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.UI.Controls.Clients
