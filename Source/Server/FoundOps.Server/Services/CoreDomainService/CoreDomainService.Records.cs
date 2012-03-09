@@ -40,17 +40,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole == null) return null;
 
             var clients =
-                from c in ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id)
-                join p in ObjectContext.Parties.OfType<Person>()
-                    on c.Id equals p.Id into personClient
-                from person in personClient.DefaultIfEmpty() //Left Join
-                join b in ObjectContext.Parties.OfType<Business>()
-                    on c.Id equals b.Id into businessClient
-                from business in businessClient.DefaultIfEmpty() //Left Join
-                let displayName = business != null ? business.Name :
-                                  person.LastName + " " + person.FirstName + " " + person.MiddleInitial
-                orderby displayName
-                select c;
+              from c in ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id)
+              join p in ObjectContext.PartiesWithNames
+                  on c.Id equals p.Id
+              orderby p.ChildName
+              select c;
 
             //Client's images are not currently used, so this can be commented out
             //TODO: Figure a way to force load OwnedParty.PartyImage. 
@@ -75,6 +69,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 from c in ObjectContext.Clients.Where(c => c.VendorId == ownerParty.Id)
                 join p in ObjectContext.PartiesWithNames
                     on c.Id equals p.Id
+                orderby p.ChildName
                 select new { c, p.ChildName };
 
             if (!String.IsNullOrEmpty(searchText))
@@ -465,19 +460,14 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var records = from loc in locations
                           //Get the Clients names
-                          join p in ObjectContext.Parties.OfType<Person>()
-                              on loc.Party.Id equals p.Id into personParty
-                          from person in personParty.DefaultIfEmpty() //Left Join
-                          join b in ObjectContext.Parties.OfType<Business>()
-                              on loc.Party.Id equals b.Id into businessParty
-                          from business in businessParty.DefaultIfEmpty() //Left Join
-                          let clientName = business != null ? business.Name : person.LastName + " " + person.FirstName + " " + person.MiddleInitial
+                          join p in ObjectContext.PartiesWithNames
+                              on loc.Party.Id equals p.Id
                           orderby loc.Name
                           select new
                           {
                               loc.Name,
                               RegionName = loc.Region.Name,
-                              ClientName = clientName,
+                              ClientName = p.ChildName,
                               loc.AddressLineOne,
                               loc.AddressLineTwo,
                               loc.City,
