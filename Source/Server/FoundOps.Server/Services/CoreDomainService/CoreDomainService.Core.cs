@@ -530,11 +530,11 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Update]
         public void UpdateUserAccount(UserAccount currentUserAccount)
         {
-            if (!ObjectContext.CurrentUserCanAdministerThisParty(currentUserAccount.Id))
+            if (!ObjectContext.CurrentUserCanAdministerThisParty(currentUserAccount.Id) || !this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
                 throw new AuthenticationException();
 
             //Check if there is a temporary password
-            if (string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
+            if (!string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
                 currentUserAccount.PasswordHash = EncryptionTools.Hash(currentUserAccount.TemporaryPassword);
 
             this.ObjectContext.Parties.AttachAsModified(currentUserAccount);
