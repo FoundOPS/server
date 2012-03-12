@@ -17,7 +17,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Employees
     /// </summary>
     [ExportViewModel("EmployeesVM")]
-    public class EmployeesVM : CoreEntityCollectionInfiniteAccordionVM<Employee>, IAddToDeleteFromSource<Employee>
+    public class EmployeesVM : InfiniteAccordionVM<Employee>, IAddToDeleteFromSource<Employee>
     {
         #region Public Properties
 
@@ -49,14 +49,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public EmployeesVM(DataManager dataManager)
-            : base(dataManager)
+        public EmployeesVM()
         {
             //Setup the selected Employee's OwnedPerson PartyVM whenever the selected employee changes
             _selectedEmployeePersonVM =
-                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
+                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson))
                 .ToProperty(this, x => x.SelectedEmployeePersonVM);
 
             //Load the employees

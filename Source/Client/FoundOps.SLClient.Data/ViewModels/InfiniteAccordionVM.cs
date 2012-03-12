@@ -1,14 +1,13 @@
-﻿using System;
-using ReactiveUI;
-using System.Reactive.Linq;
+﻿using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Tools;
-using System.ComponentModel;
-using System.Reactive.Subjects;
-using GalaSoft.MvvmLight.Command;
-using FoundOps.SLClient.Data.Services;
-using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.MVVM.Interfaces;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+using GalaSoft.MvvmLight.Command;
+using ReactiveUI;
+using System;
+using System.ComponentModel;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.Data.ViewModels
 {
@@ -16,7 +15,7 @@ namespace FoundOps.SLClient.Data.ViewModels
     /// Contains logic for displaying things in the infinite accordion.
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
-    public abstract class CoreEntityCollectionInfiniteAccordionVM<TEntity> : CoreEntityCollectionVM<TEntity>, IProvideContext where TEntity : Entity
+    public abstract class InfiniteAccordionVM<TEntity> : CoreEntityCollectionVM<TEntity>, IProvideContext where TEntity : Entity
     {
         #region Public Properties
 
@@ -62,8 +61,8 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         #endregion
 
-        protected CoreEntityCollectionInfiniteAccordionVM(DataManager dataManager, bool preventChangingSelectionWhenChanges = true)
-            : base(preventChangingSelectionWhenChanges, dataManager)
+        protected InfiniteAccordionVM(bool preventChangingSelectionWhenChanges = true)
+            : base(preventChangingSelectionWhenChanges)
         {
             _selectedContext = this._selectedContextSubject.ToProperty(this, x => x.SelectedContext);
 

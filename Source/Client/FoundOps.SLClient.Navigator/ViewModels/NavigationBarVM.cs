@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.Common.Silverlight.UI.Interfaces;
 using ReactiveUI;
 using System.Linq;
 using System.Windows;
@@ -11,7 +12,6 @@ using System.ComponentModel.Composition;
 using FoundOps.Common.Silverlight.Loader;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.UI.ViewModels;
-using FoundOps.Common.Silverlight.MVVM.Interfaces;
 
 namespace FoundOps.SLClient.Navigator.ViewModels
 {
@@ -142,7 +142,7 @@ namespace FoundOps.SLClient.Navigator.ViewModels
                 this.RaisePropertyChanged("SelectedRole");
 
                 //Update the ContextManager's RoleId
-                _dataManager.ContextManager.RoleIdObserver.OnNext(SelectedRole.Id);
+                Manager.Context.RoleIdObserver.OnNext(SelectedRole.Id);
             }
         }
 
@@ -191,15 +191,6 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         /// </value>
         public object SelectedContent { get; set; }
 
-        private readonly DataManager _dataManager;
-        /// <summary>
-        /// Gets the data manager.
-        /// </summary>
-        public DataManager DataManager
-        {
-            get { return _dataManager; }
-        }
-
         #endregion
 
         #region Local Variables
@@ -211,19 +202,16 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationBarVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public NavigationBarVM(DataManager dataManager)
+        public NavigationBarVM()
         {
-            _dataManager = dataManager;
+            Manager.Context.UserAccountObservable.Subscribe(ua => CurrentUserAccount = ua);
 
-            DataManager.ContextManager.UserAccountObservable.Subscribe(ua => CurrentUserAccount = ua);
-
-            dataManager.GetPublicBlocks(blocks =>
-            {
-                PublicBlocks = blocks;
-                OnDataLoaded();
-            });
+            Manager.Data.GetPublicBlocks(blocks =>
+             {
+                 PublicBlocks = blocks;
+                 OnDataLoaded();
+             });
         }
 
         #region NavigationBarVM's Logic

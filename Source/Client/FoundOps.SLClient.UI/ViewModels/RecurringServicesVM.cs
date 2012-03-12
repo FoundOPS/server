@@ -16,15 +16,13 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying RecurringServices
     /// </summary>
     [ExportViewModel("RecurringServicesVM")]
-    public class RecurringServicesVM : CoreEntityCollectionInfiniteAccordionVM<RecurringService>
+    public class RecurringServicesVM : InfiniteAccordionVM<RecurringService>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RecurringServicesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public RecurringServicesVM(DataManager dataManager)
-            : base(dataManager)
+        public RecurringServicesVM()
         {
             //Subscribe to the RecurringServices query
             IsLoadingObservable = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, null);

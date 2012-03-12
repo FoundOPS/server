@@ -16,7 +16,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the Vehicles
     /// </summary>
     [ExportViewModel("VehiclesVM")]
-    public class VehiclesVM : CoreEntityCollectionInfiniteAccordionVM<Vehicle>, IAddToDeleteFromSource<Vehicle>
+    public class VehiclesVM : InfiniteAccordionVM<Vehicle>, IAddToDeleteFromSource<Vehicle>
     {
         #region Implementation of IAddToDeleteFromSource
 
@@ -38,10 +38,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="VehiclesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public VehiclesVM(DataManager dataManager)
-            : base(dataManager)
+        public VehiclesVM()
         {
             var loadedVehicles = this.SetupMainQuery(DataManager.Query.Vehicles, null, "VehicleId");
 

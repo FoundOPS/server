@@ -40,35 +40,26 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         #region Protected
 
-        private CoreDomainContext _context;
         /// <summary>
-        /// Gets or sets the CoreDomainContext.
+        /// Gets the CoreDomainContext.
         /// </summary>
-        /// <value>
-        /// The CoreDomainContext.
-        /// </value>
         public CoreDomainContext Context
         {
             get
             {
-                return _context;
-            }
-            private set
-            {
-                _context = value;
-                this.RaisePropertyChanged("Context");
+                return Manager.Data.Context;
             }
         }
 
         /// <summary>
-        /// The DataManager.
+        /// Gets the data manager.
         /// </summary>
-        protected readonly DataManager DataManager;
+        protected DataManager DataManager { get { return Manager.Data; } }
 
         /// <summary>
         /// Gets the context manager.
         /// </summary>
-        public ContextManager ContextManager { get; private set; }
+        public ContextManager ContextManager { get { return Manager.Context; } }
 
         private readonly Subject<bool> _discardObservable = new Subject<bool>();
         /// <summary>
@@ -84,21 +75,16 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreEntityVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
-        protected CoreEntityVM(DataManager dataManager)
+        protected CoreEntityVM()
         {
-            DataManager = dataManager;
-            ContextManager = dataManager.ContextManager;
-            Context = DataManager.Context;
-
             //Hookup NavigateToObservable
             MessageBus.Current.Listen<NavigateToMessage>().Subscribe(message => _navigateToObservable.OnNext(message.UriToNavigateTo.ToString()));
 
             #region Register Commands
 
             //Can save when: context has changes and is not submitting
-            var canSaveCommand = 
-                DataManager.DomainContextHasChangesObservable.CombineLatest(DataManager.DomainContextIsSubmittingObservable, (hasChanges, isSubmitting)=> hasChanges && !isSubmitting)
+            var canSaveCommand =
+                DataManager.DomainContextHasChangesObservable.CombineLatest(DataManager.DomainContextIsSubmittingObservable, (hasChanges, isSubmitting) => hasChanges && !isSubmitting)
                 //Combine with the CanSaveObservable
                 .CombineLatest(CanSaveObservable, (canSave, canSaveTwo) => canSave && canSaveTwo).DistinctUntilChanged();
 
@@ -111,8 +97,8 @@ namespace FoundOps.SLClient.Data.ViewModels
             });
 
             //Can discard when: context has changes and is not submitting. Check every .25 second
-            var canDiscardCommand = 
-                DataManager.DomainContextHasChangesObservable.CombineLatest(DataManager.DomainContextIsSubmittingObservable, (hasChanges, isSubmitting)=> hasChanges && !isSubmitting)
+            var canDiscardCommand =
+                DataManager.DomainContextHasChangesObservable.CombineLatest(DataManager.DomainContextIsSubmittingObservable, (hasChanges, isSubmitting) => hasChanges && !isSubmitting)
                 //Combine with the CanDiscardObservable
                 .CombineLatest(CanDiscardObservable, (canDiscard, canDiscardTwo) => canDiscard && canDiscardTwo).DistinctUntilChanged();
 

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Windows;
 using System.Collections;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 {
@@ -264,7 +264,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public IAddToDeleteFromSource<object> Source
         {
-            get { return (IAddToDeleteFromSource<object>)GetValue(SourceProperty); }
+            get { return (IAddToDeleteFromSource<object>) GetValue(SourceProperty); }
             set { SetValue(SourceProperty, value); }
         }
 
@@ -274,8 +274,9 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.Register(
                 "Source",
-                typeof(IAddToDeleteFromSource<object>),
-                typeof(AddToDeleteFrom), null);
+                typeof (IAddToDeleteFromSource<object>),
+                typeof (AddToDeleteFrom),
+                new PropertyMetadata(null));
 
         #endregion
 

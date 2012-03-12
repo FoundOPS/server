@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.Common.Silverlight.UI.Interfaces;
 using ReactiveUI;
 using System.Linq;
 using System.Windows;
@@ -7,8 +8,6 @@ using System.ComponentModel;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using FoundOps.Common.Silverlight.UI.Tools;
-using FoundOps.Common.Silverlight.MVVM.Interfaces;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
 {

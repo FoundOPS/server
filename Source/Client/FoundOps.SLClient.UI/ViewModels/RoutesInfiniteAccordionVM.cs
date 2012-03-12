@@ -14,15 +14,13 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// 
     /// </summary>
     [ExportViewModel("RoutesInfiniteAccordionVM")]
-    public class RoutesInfiniteAccordionVM : CoreEntityCollectionInfiniteAccordionVM<Route>
+    public class RoutesInfiniteAccordionVM : InfiniteAccordionVM<Route>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutesInfiniteAccordionVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public RoutesInfiniteAccordionVM(DataManager dataManager)
-            : base(dataManager)
+        public RoutesInfiniteAccordionVM()
         {
             SetupMainQuery(DataManager.Query.RouteLog, null, "Date");
 

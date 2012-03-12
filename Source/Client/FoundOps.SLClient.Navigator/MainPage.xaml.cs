@@ -1,5 +1,6 @@
 ﻿using System;
 using FoundOps.Common.Tools.ExtensionMethods;
+using FoundOps.SLClient.Data.Services;
 using ReactiveUI;
 using System.Windows;
 using System.Windows.Browser;
@@ -56,7 +57,7 @@ namespace FoundOps.SLClient.Navigator
             if (!navigationContext.QueryString.ContainsKey("roleid")) return;
 
             var roleId = new Guid(navigationContext.QueryString["roleid"]);
-            ((NavigationBarVM)this.DataContext).DataManager.ContextManager.RoleIdObserver.OnNext(roleId);
+            Manager.Context.RoleIdObserver.OnNext(roleId);
         }
 
         private void OnNavigateToMessageRecieved(NavigateToMessage navigateToMessage)

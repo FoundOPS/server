@@ -26,7 +26,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="RouteManifestVM"/> class.
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
-        public RouteManifestVM(DataManager dataManager) : base(dataManager)
+        public RouteManifestVM()
         {
             //Setup the RouteManifestSettings based on the OwnerAccount
             ContextManager.OwnerAccountObservable.Select(oa => oa as BusinessAccount).Where(ba => ba != null)

@@ -86,12 +86,14 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
             if (source == null) return null;
 
             var value = source;
+
+            if (propertyName == null)
+                return value;
+
             var properties = propertyName.Split('.');
 
             foreach (var propName in properties)
-            {
                 value = value.GetProperty<object>(propName);
-            }
 
             return value;
         }

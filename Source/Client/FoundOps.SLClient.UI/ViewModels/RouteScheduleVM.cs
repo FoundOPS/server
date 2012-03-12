@@ -81,9 +81,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="RouteScheduleVM"/> class.
         /// </summary>
         /// <param name="domainCollectionView">The domain collection view.</param>
-        /// <param name="dataManager">The data manager.</param>
-        public RouteScheduleVM(DomainCollectionView<Route> domainCollectionView, DataManager dataManager)
-            : base(false, dataManager)
+        public RouteScheduleVM(DomainCollectionView<Route> domainCollectionView) : base(false)
         {
             //DomainCollectionViewObservable.OnNext(domainCollectionView);
 

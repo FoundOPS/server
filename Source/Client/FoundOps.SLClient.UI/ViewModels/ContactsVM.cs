@@ -13,7 +13,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Contacts
     /// </summary>
     [ExportViewModel("ContactsVM")]
-    public class ContactsVM : CoreEntityCollectionInfiniteAccordionVM<Contact>
+    public class ContactsVM : InfiniteAccordionVM<Contact>
     {
         private readonly ObservableAsPropertyHelper<PartyVM> _selectedContactPersonVM;
         /// <summary>
@@ -24,16 +24,14 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ContactsVM(DataManager dataManager)
-            : base(dataManager)
+        public ContactsVM()
         {
             this.SetupMainQuery(DataManager.Query.Contacts, null, "DisplayName");
 
             //Setup the selected contact's OwnedPerson PartyVM whenever the selected contact changes
             _selectedContactPersonVM =
-                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
+                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson))
                 .ToProperty(this, x => x.SelectedContactPersonVM);
         }
 

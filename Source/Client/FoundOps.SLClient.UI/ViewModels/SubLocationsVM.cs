@@ -111,11 +111,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="SubLocationsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         /// <param name="selectedLocation">The selected location.</param>
         [ImportingConstructor]
-        public SubLocationsVM(DataManager dataManager, Location selectedLocation)
-            : base(false, dataManager)
+        public SubLocationsVM(Location selectedLocation) : base(false)
         {
             GeocoderResults = new ObservableCollection<GeocoderResult>();
             ManuallySelectGeocoderResult = new GeocoderResult

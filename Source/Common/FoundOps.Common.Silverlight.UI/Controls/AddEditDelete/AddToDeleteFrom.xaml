@@ -1,8 +1,9 @@
 ﻿<UserControl x:Class="FoundOps.Common.Silverlight.UI.Controls.AddEditDelete.AddToDeleteFrom" x:Name="myAddToDeleteFrom"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete"
-             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions" mc:Ignorable="d">
+             xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions"
+             xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+             mc:Ignorable="d">
     <UserControl.Resources>
         <DataTemplate x:Key="AddMenuTemplate">
             <Grid>
@@ -12,13 +13,17 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding Label, Source={MarkupExtensions:RootElement}}" />
-                <telerik:RadComboBox x:Name="RadComboBox" Grid.Row="1" MinWidth="120" StaysOpenOnEdit="True" IsEditable="True"
-                                    
-                                     DataContext="{MarkupExtensions:RootElement}"
+                <sdk:AutoCompleteBox x:Name="RadComboBox" Grid.Row="1" MinWidth="120"
+                                     DataContext="{MarkupExtensions:RootElement}" Text="{Binding ExistingItemsComboBoxText, Mode=TwoWay}" 
+                                     SelectedItem="{Binding SelectedExistingItem, Mode=TwoWay}" 
                                      ItemsSource="{MarkupExtensions:Except Collection={Binding Source.ExistingItemsSource, Source={MarkupExtensions:RootElement}}, CustomComparer={Binding Source.CustomComparer, Source={MarkupExtensions:RootElement}},
-                    ExceptCollection={Binding DestinationItemsSource, Source={MarkupExtensions:RootElement}}}"
-                                     DisplayMemberPath="{Binding Source.MemberPath}" SelectedValue="{Binding SelectedExistingItem, Mode=TwoWay}" 
-                                     Text="{Binding ExistingItemsComboBoxText, Mode=TwoWay}" TextSearchMode="StartsWith" />
+                    ExceptCollection={Binding DestinationItemsSource, Source={MarkupExtensions:RootElement}}}" ValueMemberPath="{MarkupExtensions:Resolver Source={Binding Source.MemberPath, Source={MarkupExtensions:RootElement}}}">
+                    <!--<i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseEnter">
+                            <EventToCommand Command="{Binding TestCommand, Mode=OneWay}" CommandParameter="{Binding Text, ElementName=MyTextBox, Mode=OneWay}" MustToggleIsEnabledValue="True" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>-->
+                </sdk:AutoCompleteBox>
                 <StackPanel Orientation="Horizontal" Margin="5,2,0,0" Grid.Row="2">
                     <Button Grid.Row="2" Content="Add New" Margin="0,2,0,0" Click="AddNewButtonClick" IsEnabled="{Binding SelectedValue, ElementName=RadComboBox, Converter={StaticResource NotExistsBoolConverter}}"/>
                     <Button Grid.Row="2" Content="Add Existing" Margin="3,2,0,0" Click="AddExistingButtonClick" IsEnabled="{Binding SelectedValue, ElementName=RadComboBox, Converter={StaticResource ExistsBoolConverter}}"/>

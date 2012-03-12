@@ -1,21 +1,19 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.ServiceModel.DomainServices.Client;
-using ReactiveUI;
-using System.Collections;
-using Kent.Boogaart.KBCsv;
-using Telerik.Windows.Data;
 using System.Reactive.Linq;
-using System.Windows.Controls;
 using System.Reactive.Subjects;
-using System.Collections.Generic;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.ViewModels;
-using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using System.ServiceModel.DomainServices.Client;
+using System.Windows.Controls;
+using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -23,7 +21,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Locations
     /// </summary>
     [ExportViewModel("LocationsVM")]
-    public class LocationsVM : CoreEntityCollectionInfiniteAccordionVM<Location>, IAddToDeleteFromSource<Location>
+    public class LocationsVM : InfiniteAccordionVM<Location>, IAddToDeleteFromSource<Location>
     {
         #region Public Properties
 
@@ -119,10 +117,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public LocationsVM(DataManager dataManager)
-            : base(dataManager)
+        public LocationsVM()
         {
             SetupDataLoading();
 
@@ -133,7 +129,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Hookup _selectedSubLocationsVM to SelectedSubLocationsVMObservable
             _selectedSubLocationsVM =
-                SelectedSubLocationsVMObservable.ToProperty(this, x => x.SelectedSubLocationsVM, new SubLocationsVM(dataManager, SelectedEntity));
+                SelectedSubLocationsVMObservable.ToProperty(this, x => x.SelectedSubLocationsVM, new SubLocationsVM(SelectedEntity));
 
             //Whenever the SelectedEntity changes: create a new LocationVM and SubLocationsVM; update the SearchText
             SelectedEntityObservable.ObserveOnDispatcher().Subscribe(selectedLocation =>
@@ -146,10 +142,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                 }
 
                 //Create a new LocationVM
-                _selectedLocationVMObservable.OnNext(new LocationVM(selectedLocation, dataManager));
+                _selectedLocationVMObservable.OnNext(new LocationVM(selectedLocation));
 
                 //Create a new SubLocationsVM
-                _selectedSubLocationsVMObservable.OnNext(new SubLocationsVM(DataManager, selectedLocation));
+                _selectedSubLocationsVMObservable.OnNext(new SubLocationsVM(selectedLocation));
             });
 
             #endregion

@@ -1,19 +1,18 @@
-﻿using System;
-using ReactiveUI;
-using System.Linq;
-using System.Windows;
-using ReactiveUI.Xaml;
-using System.Reactive.Linq;
-using System.ComponentModel;
-using System.Reactive.Subjects;
-using System.Collections.ObjectModel;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.Common.Silverlight.MVVM.VMs;
+﻿using FoundOps.Common.Silverlight.MVVM.VMs;
 using FoundOps.Common.Silverlight.Services;
-using Microsoft.Windows.Data.DomainServices;
+using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Silverlight.MVVM.Models;
+using Microsoft.Windows.Data.DomainServices;
+using ReactiveUI;
+using ReactiveUI.Xaml;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.MVVM.Interfaces;
+using System.Windows;
 
 namespace FoundOps.SLClient.Data.ViewModels
 {
@@ -167,8 +166,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         private readonly bool _preventChangingSelectionWhenChanges;
 
-        protected CoreEntityCollectionVM(bool preventChangingSelectionWhenChanges, DataManager dataManager)
-            : base(dataManager)
+        protected CoreEntityCollectionVM(bool preventChangingSelectionWhenChanges)
         {
             //Setup SelectedEntity property
             _selectedEntity = SelectedEntityObservable.ToProperty(this, x => x.SelectedEntity);

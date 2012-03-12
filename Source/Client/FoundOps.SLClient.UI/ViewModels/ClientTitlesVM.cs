@@ -18,7 +18,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A VM which manages Contact's ClientTitles
     /// </summary>
     [ExportViewModel("ClientTitlesVM")]
-    public class ClientTitlesVM : CoreEntityCollectionInfiniteAccordionVM<ClientTitle>
+    public class ClientTitlesVM : InfiniteAccordionVM<ClientTitle>
     {
         //Public
 
@@ -61,10 +61,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientTitlesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ClientTitlesVM(DataManager dataManager)
-            : base(dataManager)
+        public ClientTitlesVM()
         {
             SetupMainQuery(DataManager.Query.ClientTitles, entities => this.RaisePropertyChanged("DistinctTitles"), "Title");
 

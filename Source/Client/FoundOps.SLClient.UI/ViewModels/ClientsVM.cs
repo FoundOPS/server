@@ -1,20 +1,20 @@
-using System;
-using System.Reactive.Subjects;
-using ReactiveUI;
-using System.Linq;
-using System.Collections;
-using Telerik.Windows.Data;
-using System.Reactive.Linq;
-using System.Collections.Generic;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
-using MEFedMVVM.ViewModelLocator;
-using System.Reactive.Disposables;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
+using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -22,7 +22,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Clients
     ///</summary>
     [ExportViewModel("ClientsVM")]
-    public class ClientsVM : CoreEntityCollectionInfiniteAccordionVM<Client>,
+    public class ClientsVM : InfiniteAccordionVM<Client>, 
         IAddToDeleteFromDestination<Location>, IAddNewExisting<Location>, IRemoveDelete<Location>
     {
         #region Public
@@ -40,8 +40,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 this.RaisePropertyChanged("QueryableCollectionView");
             }
         }
-
-        public string SearchText { get; set; }
 
         private readonly ObservableAsPropertyHelper<PartyVM> _selectedClientOwnedBusinessVM;
         /// <summary>
@@ -114,16 +112,14 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ClientsVM(DataManager dataManager)
-            : base(dataManager)
+        public ClientsVM()
         {
             SetupDataLoading();
 
             //Setup the selected client's OwnedParty PartyVM whenever the selected client changes
             _selectedClientOwnedBusinessVM =
-                SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty, this.DataManager))
+                SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty))
                 .ToProperty(this, x => x.SelectedClientOwnedBusinessVM);
 
             var serialDisposable = new SerialDisposable();

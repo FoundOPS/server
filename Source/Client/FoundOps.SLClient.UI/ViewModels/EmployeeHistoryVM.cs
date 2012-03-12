@@ -13,15 +13,14 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying EmployeeHistory
     /// </summary>
     [ExportViewModel("EmployeeHistoryVM")]
-    public class EmployeeHistoryVM : CoreEntityCollectionInfiniteAccordionVM<EmployeeHistoryEntry>
+    public class EmployeeHistoryVM : InfiniteAccordionVM<EmployeeHistoryEntry>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeHistoryVM"/> class.
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public EmployeeHistoryVM(DataManager dataManager)
-            : base(dataManager)
+        public EmployeeHistoryVM()
         {
             this.SetupMainQuery(DataManager.Query.EmployeeHistory);
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reactive.Linq;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Services.CoreDomainService;
@@ -13,7 +12,13 @@ namespace FoundOps.SLClient.UI.ViewModels
     public abstract class PartySettingsVM : CoreEntityVM
     {
         //Public Properties
+        /// <summary>
+        /// Gets the party VM.
+        /// </summary>
         public PartyVM PartyVM { get; private set; }
+        /// <summary>
+        /// Gets the contact info VM.
+        /// </summary>
         public ContactInfoVM ContactInfoVM { get; private set; }
 
         #region Protected (Extendable) Features
@@ -25,18 +30,16 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="PartySettingsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         /// <param name="partyVM">The party VM.</param>
-        protected PartySettingsVM(DataManager dataManager, PartyVM partyVM)
-            : base(dataManager)
+        protected PartySettingsVM(PartyVM partyVM)
         {
             PartyVM = partyVM;
 
-            dataManager.ContextManager.OwnerAccountObservable.Where(ownerAccount => ownerAccount != null)
+            DataManager.ContextManager.OwnerAccountObservable.Where(ownerAccount => ownerAccount != null)
                 .Subscribe(ownerAccount =>
                  {
                      OnGetPartyToAdminister(ownerAccount);
-                     ContactInfoVM = new ContactInfoVM(dataManager, ContactInfoType.OwnedParties, ownerAccount.ContactInfoSet);
+                     ContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, ownerAccount.ContactInfoSet);
                  });
         }
     }

@@ -118,6 +118,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Input, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Controls.Navigation, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Controls.Toolkit, Version=4.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\System.Windows.Controls.Toolkit.dll</HintPath>
@@ -142,6 +143,9 @@
     <Reference Include="Telerik.Windows.Controls.Navigation">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Navigation.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.RibbonBar">
+      <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.RibbonBar.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Data">
       <HintPath>..\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>

@@ -22,7 +22,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the UserAccounts
     /// </summary>
     [ExportViewModel("UserAccountsVM")]
-    public class UserAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, //Base class is Party because DomainCollectionView does not work well with inheritance
+    public class UserAccountsVM : InfiniteAccordionVM<Party>, //Base class is Party because DomainCollectionView does not work well with inheritance
         IAddToDeleteFromSource<Party> //Base class is Party because loadedUserAccounts is EntityList<Party>
     {
         #region Public Properties and Variables
@@ -59,8 +59,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public UserAccountsVM(DataManager dataManager)
-            : base(dataManager, true)
+        public UserAccountsVM()
+            : base(true)
         {
             //Subscribe to the UserAccounts observable
             IsLoadingObservable = DataManager.Subscribe<UserAccount>(DataManager.Query.UserAccounts, this.ObservationState, null);

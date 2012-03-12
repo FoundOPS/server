@@ -429,10 +429,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public RoutesVM(DataManager dataManager)
-            : base(false, dataManager)
+        public RoutesVM() : base(false)
         {
             #region Implementation of IAddToDeleteFromDestination<Employee> and IAddToDeleteFromDestination<Vehicle>
 
@@ -529,7 +527,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             #region Setup Sub ViewModels
 
             //Setup the RouteManifestVM
-            RouteManifestVM = new RouteManifestVM(dataManager);
+            RouteManifestVM = new RouteManifestVM();
 
             //Setup the ContactInfoVM properties
             _selectedRouteDestinationClientContactInfoVM = _selectedRouteDestinationClientContactInfoVMSubject.ToProperty(this, x => x.SelectedRouteDestinationClientContactInfoVM);
@@ -538,12 +536,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the Selected Route Destination changes: update the _selectedRouteDestinationClientContactInfoVM
             _selectedRouteDestinationSubject.Where(srd => srd != null && srd.Client != null && srd.Client.OwnedParty != null).Subscribe(selectedRouteDestination =>
                 _selectedRouteDestinationClientContactInfoVMSubject.OnNext(
-                new ContactInfoVM(DataManager, ContactInfoType.OwnedParties, selectedRouteDestination.Client.OwnedParty.ContactInfoSet)));
+                new ContactInfoVM(ContactInfoType.OwnedParties, selectedRouteDestination.Client.OwnedParty.ContactInfoSet)));
 
             //Whenever the Selected Route Destination changes: update the _selectedRouteDestinationLocationContactInfoVM
             _selectedRouteDestinationSubject.Where(srd => srd != null && srd.Location != null).Subscribe(selectedRouteDestination =>
                 _selectedRouteDestinationLocationContactInfoVMSubject.OnNext(
-                new ContactInfoVM(DataManager, ContactInfoType.Locations, selectedRouteDestination.Location.ContactInfoSet)));
+                new ContactInfoVM(ContactInfoType.Locations, selectedRouteDestination.Location.ContactInfoSet)));
 
             #endregion
 
@@ -686,7 +684,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                       Context.Routes, loadData);
 
             //Setup the MainQuery
-            this.SetupMainQuery(Query.RoutesForServiceProviderOnDay, routes => RouteScheduleVM = new RouteScheduleVM(DomainCollectionView, DataManager), null, false);
+            this.SetupMainQuery(Query.RoutesForServiceProviderOnDay, routes => RouteScheduleVM = new RouteScheduleVM(DomainCollectionView), null, false);
 
             //Setup RoutesLoading property
             var routesLoading = this.DataManager.GetIsLoadingObservable(Query.RoutesForServiceProviderOnDay)

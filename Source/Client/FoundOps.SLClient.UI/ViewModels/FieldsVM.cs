@@ -17,7 +17,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Fields
     /// </summary>
     [ExportViewModel("FieldsVM")]
-    public class FieldsVM : CoreEntityCollectionInfiniteAccordionVM<Field>
+    public class FieldsVM : InfiniteAccordionVM<Field>
     {
         # region Public Properties
 
@@ -44,8 +44,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public FieldsVM(DataManager dataManager)
-            : base(dataManager, false)
+        public FieldsVM()
+            : base(false)
         {
             //Can only delete if the selected field is not required
             this.SelectedEntityObservable.Where(se => se != null)

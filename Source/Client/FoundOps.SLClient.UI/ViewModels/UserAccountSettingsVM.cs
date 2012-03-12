@@ -27,12 +27,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAccountSettingsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public UserAccountSettingsVM(DataManager dataManager)
-            : base(dataManager)
+        public UserAccountSettingsVM()
         {
-            _selectedUserAccount = dataManager.ContextManager.UserAccountObservable.SubscribeOnDispatcher().Select(ua => ua)
+            _selectedUserAccount = Manager.Context.UserAccountObservable.SubscribeOnDispatcher().Select(ua => ua)
                  .ToProperty(this, x => x.SelectedUserAccount);
         }
     }

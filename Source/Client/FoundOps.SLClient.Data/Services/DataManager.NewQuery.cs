@@ -1,15 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Telerik.Windows.Data;
-using System.Reactive.Linq;
+﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
-using System.Reactive.Subjects;
+using System;
 using System.Collections.Generic;
-using Telerik.Windows.Controls.DomainServices;
+using System.Diagnostics;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using System.Threading.Tasks;
+using Telerik.Windows.Controls.DomainServices;
+using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.Data.Services
 {
@@ -125,6 +125,7 @@ namespace FoundOps.SLClient.Data.Services
                 {
                     //Load the first items after a filter change
                     loadingAfterFilterChange.OnNext(true);
+
                     Context.LoadAsync(filteredQuery.Sort(view.SortDescriptors).Take(view.LoadSize), contextOrFiltersChanged)
                         .ContinueWith(task =>
                         {
@@ -138,7 +139,7 @@ namespace FoundOps.SLClient.Data.Services
                             loadingAfterFilterChange.OnNext(false);
                         }, TaskScheduler.FromCurrentSynchronizationContext());
 
-                    Debug.WriteLine(typeof(TEntity) + " Load after filter change");
+                    Debug.WriteLine(typeof(TEntity) + " Force load after filter change in related type");
                 }
             });
 
@@ -172,7 +173,7 @@ namespace FoundOps.SLClient.Data.Services
                         if (!task.IsCanceled)
                             view.Load(e.EventArgs.StartIndex, task.Result);
                         else
-                            Debug.WriteLine(typeof(TEntity) + " Cancelled virtual load" + e.EventArgs.StartIndex + " to " + (e.EventArgs.StartIndex + e.EventArgs.ItemCount));
+                            Debug.WriteLine(typeof(TEntity) + " Cancelled virtual load " + e.EventArgs.StartIndex + " to " + (e.EventArgs.StartIndex + e.EventArgs.ItemCount));
 
                         loadingVirtualItems.OnNext(false);
                     }, TaskScheduler.FromCurrentSynchronizationContext());

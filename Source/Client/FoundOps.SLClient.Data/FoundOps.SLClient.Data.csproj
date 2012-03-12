@@ -310,7 +310,7 @@
     <Compile Include="Tools\SimpleRouteCalculator.cs" />
     <Compile Include="Validation\LocationFieldValueRequired.cs" />
     <Compile Include="ViewModels\CoreEntityVM.cs" />
-    <Compile Include="ViewModels\CoreEntityCollectionInfiniteAccordionVM.cs" />
+    <Compile Include="ViewModels\InfiniteAccordionVM.cs" />
     <Compile Include="ViewModels\CoreEntityCollectionVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CoreSelectedEntitiesCollectionVM.cs" />

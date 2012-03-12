@@ -1,9 +1,8 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
+using System;
 using System.ComponentModel;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
-using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 
 namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {

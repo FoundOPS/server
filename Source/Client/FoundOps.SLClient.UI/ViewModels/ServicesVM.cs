@@ -22,7 +22,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Loads, displays (and generates) services based on context. Allows adding/deleting of services.
     /// </summary>
     [ExportViewModel("ServicesVM")]
-    public class ServicesVM : CoreEntityCollectionInfiniteAccordionVM<Service>
+    public class ServicesVM : InfiniteAccordionVM<Service>
     {
         #region Locals
 
@@ -61,8 +61,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         /// <param name="dataManager">The data manager</param>
         [ImportingConstructor]
-        public ServicesVM(DataManager dataManager)
-            : base(dataManager, true)
+        public ServicesVM() : base(true)
         {
             //It doesn't seem to need it on this VM
             KeepTrackLastSelectedEntity = false;

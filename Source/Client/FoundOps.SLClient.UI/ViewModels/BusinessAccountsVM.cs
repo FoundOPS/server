@@ -21,7 +21,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying BusinessAccounts
     /// </summary>
     [ExportViewModel("BusinessAccountsVM")]
-    public class BusinessAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, //Base class is Party instead of BusinessAccount because DomainCollectionView does not work well with inheritance
+    public class BusinessAccountsVM : InfiniteAccordionVM<Party>, //Base class is Party instead of BusinessAccount because DomainCollectionView does not work well with inheritance
         IAddToDeleteFromDestination<UserAccount>, IAddNewExisting<UserAccount>, IRemoveDelete<UserAccount>,
         IAddToDeleteFromDestination<ServiceTemplate>, IAddNewExisting<ServiceTemplate>, IRemoveDelete<ServiceTemplate>
     {
@@ -184,8 +184,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public BusinessAccountsVM(DataManager dataManager)
-            : base(dataManager, true)
+        public BusinessAccountsVM()
+            : base(true)
         {
             SetupMainQuery(DataManager.Query.BusinessAccounts);
 
@@ -319,7 +319,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             if (newValue != null)
                 //Whenever the SelectedEntity changes setup the ContactInfoVM for that entity
-                SelectedEntityContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.OwnedParties, newValue.ContactInfoSet);
+                SelectedEntityContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, newValue.ContactInfoSet);
         }
 
         #endregion

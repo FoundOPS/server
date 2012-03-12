@@ -13,7 +13,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the VehicleMaintenanceLogEntries
     ///</summary>
     [ExportViewModel("VehicleMaintenanceVM")]
-    public class VehicleMaintenanceVM : CoreEntityCollectionInfiniteAccordionVM<VehicleMaintenanceLogEntry>
+    public class VehicleMaintenanceVM : InfiniteAccordionVM<VehicleMaintenanceLogEntry>
     {
         //Public Properties
         public RelayCommand AddLineItemCommand { get; private set; }
@@ -22,10 +22,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="VehicleMaintenanceVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public VehicleMaintenanceVM(DataManager dataManager)
-            : base(dataManager)
+        public VehicleMaintenanceVM()
         {
             SetupMainQuery(DataManager.Query.VehicleMaintenance);
 

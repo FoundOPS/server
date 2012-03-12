@@ -70,33 +70,27 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        //Locals
-        private readonly DataManager _dataManager;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactInfoVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         /// <param name="contactInfoType">Type of the contact info.</param>
         /// <param name="contactInfoSet">The contact info set.</param>
         [ImportingConstructor]
-        public ContactInfoVM(DataManager dataManager, ContactInfoType contactInfoType, EntityCollection<ContactInfo> contactInfoSet)
+        public ContactInfoVM(ContactInfoType contactInfoType, EntityCollection<ContactInfo> contactInfoSet)
         {
-            _dataManager = dataManager;
-
             //Update the ContactInfoDataService whenever the LocationsContactInfoDataService or the PartyContactInfoDataService changes
-            dataManager.Context.FromAnyPropertyChanged()
+            Manager.Data.Context.FromAnyPropertyChanged()
                 .Where(pce => pce.PropertyName == "LocationsContactInfoDataService" || pce.PropertyName == "PartyContactInfoDataService")
                 .AsGeneric().AndNow().SubscribeOnDispatcher().Subscribe(_ =>
                 {
-                    if (_dataManager.ContextManager.OwnerAccount != null)
+                    if (Manager.Context.OwnerAccount != null)
                         switch (contactInfoType)
                         {
                             case ContactInfoType.Locations:
-                                ContactInfoDataService = _dataManager.Context.LocationsContactInfoDataService(_dataManager.ContextManager.OwnerAccount.Id);
+                                ContactInfoDataService = Manager.Data.Context.LocationsContactInfoDataService(Manager.Context.OwnerAccount.Id);
                                 break;
                             case ContactInfoType.OwnedParties:
-                                ContactInfoDataService = _dataManager.Context.PartyContactInfoDataService(_dataManager.ContextManager.OwnerAccount.Id);
+                                ContactInfoDataService = Manager.Data.Context.PartyContactInfoDataService(Manager.Context.OwnerAccount.Id);
                                 break;
                         }
                 });

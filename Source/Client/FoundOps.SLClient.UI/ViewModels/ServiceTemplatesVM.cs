@@ -24,7 +24,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the ServiceTemplates
     /// </summary>
     [ExportViewModel("ServiceTemplatesVM")]
-    public class ServiceTemplatesVM : CoreEntityCollectionInfiniteAccordionVM<ServiceTemplate>,
+    public class ServiceTemplatesVM : InfiniteAccordionVM<ServiceTemplate>,
           IAddToDeleteFromSource<ServiceTemplate>
     {
         #region Public Properties
@@ -83,8 +83,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ServiceTemplatesVM(DataManager dataManager)
-            : base(dataManager, false)
+        public ServiceTemplatesVM() : base(false)
         {
             //Subscribe to the ServiceTemplates query
             IsLoadingObservable = DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, null);

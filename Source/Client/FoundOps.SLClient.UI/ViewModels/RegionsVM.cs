@@ -15,7 +15,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Regions
     /// </summary>
     [ExportViewModel("RegionsVM")]
-    public class RegionsVM : CoreEntityCollectionInfiniteAccordionVM<Region>
+    public class RegionsVM : InfiniteAccordionVM<Region>
     {
         #region Public Properties
 
@@ -38,10 +38,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="RegionsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public RegionsVM(DataManager dataManager)
-            : base(dataManager)
+        public RegionsVM()
         {
             var disposeObservable = new Subject<bool>();
 

@@ -153,12 +153,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationVM"/> class.
         /// </summary>
-        /// <param name="locationsDataService">The locations data service.</param>
         /// <param name="entity">The entity this viewmodel is for</param>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public LocationVM(Location entity, DataManager dataManager)
-            : base(dataManager)
+        public LocationVM(Location entity)
         {
             #region Register Commands
 
@@ -181,7 +178,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             _entity = entity;
 
             //Setup the ContactInfoVM
-            ContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.Locations, entity != null ? entity.ContactInfoSet : null);
+            ContactInfoVM = new ContactInfoVM(ContactInfoType.Locations, entity != null ? entity.ContactInfoSet : null);
 
             //Set ManuallySelectGeocoderResult to the Entity if it has a Latitude/Longitude
             ManuallySelectGeocoderResult = new GeocoderResult { Name = ManuallySelectLocationString, AddressLineOne = ClickOnTheMapString };
