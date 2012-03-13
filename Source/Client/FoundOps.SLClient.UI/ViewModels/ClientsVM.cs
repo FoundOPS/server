@@ -22,7 +22,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Clients
     ///</summary>
     [ExportViewModel("ClientsVM")]
-    public class ClientsVM : InfiniteAccordionVM<Client>, 
+    public class ClientsVM : InfiniteAccordionVM<Client>,
         IAddToDeleteFromDestination<Location>, IAddNewExisting<Location>, IRemoveDelete<Location>
     {
         #region Public
@@ -229,6 +229,19 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #region Logic
+
+        /// <summary>
+        /// TODO Replace base with QueryableCollectionView and this logic
+        /// The method called for the AddCommand to create an entity. Defaults to DomainCollectionView.AddNew()
+        /// </summary>
+        /// <param name="commandParameter">The command parameter.</param>
+        /// <returns>The entity to add.</returns>
+        protected override Client AddNewEntity(object commandParameter)
+        {
+            var newClient = (Client)this.QueryableCollectionView.AddNew();
+            Context.Clients.Add(newClient);
+            return newClient;
+        }
 
         protected override void OnAddEntity(Client newClient)
         {
