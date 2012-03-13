@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Windows.Controls;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
@@ -74,6 +75,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public string MemberPath { get; private set; }
 
+        //TODO
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions
+        {
+            get { return null; }
+        }
+
         #endregion
 
         #endregion
@@ -81,7 +88,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceTemplatesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
         public ServiceTemplatesVM() : base(false)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Controls;
 using ReactiveUI;
 using System.Collections;
 using System.Reactive.Linq;
@@ -30,6 +31,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         public IEnumerable ExistingItemsSource { get { return _loadedEmployees.Value; } }
 
         public string MemberPath { get { return "DisplayName"; } }
+
+        //TODO
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions
+        {
+            get { return null; }
+        }
 
         /// <summary>
         /// A function to create a new item from a string.

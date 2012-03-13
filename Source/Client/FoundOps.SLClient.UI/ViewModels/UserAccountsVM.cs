@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Controls;
 using FoundOps.Common.Tools;
 using ReactiveUI;
 using System.Linq;
@@ -50,6 +51,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         public override Type ObjectTypeProvided
         {
             get { return typeof(UserAccount); }
+        }
+
+        //TODO
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions
+        {
+            get { return null; }
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
@@ -102,9 +103,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         //There is none required
         public IEqualityComparer<object> CustomComparer { get; set; }
 
-        public IEnumerable ExistingItemsSource { get { return null; } }
+        public IEnumerable ExistingItemsSource { get { return Context.Locations; } }
 
         public string MemberPath { get; private set; }
+
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
 
@@ -176,6 +179,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return newLocation;
             };
 
+            ManuallyUpdateSuggestions = UpdateSuggestionsHelper;
+
             #endregion
         }
 
@@ -228,6 +233,32 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #region Logic
+
+        #region IAddToDeleteFromSource
+
+        private LoadOperation<Location> _lastSuggestionQuery;
+
+        /// <summary>
+        /// Updates the locations suggestions.
+        /// </summary>
+        /// <param name="text">The search text</param>
+        /// <param name="autoCompleteBox">The autocomplete box.</param>
+        private void UpdateSuggestionsHelper(string text, AutoCompleteBox autoCompleteBox)
+        {
+            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
+                _lastSuggestionQuery.Cancel();
+
+            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchLocationsForRoleQuery(Manager.Context.RoleId, text).Take(10),
+                                locationsLoadOperation =>
+                                {
+                                    if (locationsLoadOperation.IsCanceled || locationsLoadOperation.HasError) return;
+
+                                    autoCompleteBox.ItemsSource = locationsLoadOperation.Entities;
+                                    autoCompleteBox.PopulateComplete();
+                                }, null);
+        }
+
+        #endregion
 
         #region Export to CSV
 
