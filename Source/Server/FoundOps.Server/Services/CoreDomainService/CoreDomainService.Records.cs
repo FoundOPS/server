@@ -414,6 +414,26 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
+        /// Searches the locations for the current role. Uses a StartsWith search mode.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <returns></returns>
+        public IQueryable<Location> SearchLocationsForRole(Guid roleId, string searchText)
+        {
+            var ownerParty = ObjectContext.OwnerPartyOfRole(roleId);
+            var locations =
+                from l in ObjectContext.Locations.Where(c => c.OwnerPartyId == ownerParty.Id)
+                orderby l.Name
+                select l;
+
+            if (!String.IsNullOrEmpty(searchText))
+                locations = locations.Where(l => l.Name.StartsWith(searchText)).OrderBy(l => l.Name);
+
+            return locations;
+        }
+
+        /// <summary>
         /// Gets the location details.
         /// It includes the Client, Region, SubLocations, and ContactInfoSet.
         /// </summary>

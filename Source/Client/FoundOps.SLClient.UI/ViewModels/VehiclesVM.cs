@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Controls;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
@@ -32,6 +33,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// A function to create a new item from a string.
         /// </summary>
         public Func<string, Vehicle> CreateNewItem { get; private set; }
+
+        //TODO
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions
+        {
+            get { return null; }
+        }
 
         #endregion
 
