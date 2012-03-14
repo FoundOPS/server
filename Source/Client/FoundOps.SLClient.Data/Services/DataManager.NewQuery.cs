@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
+using Microsoft.Windows.Data.DomainServices;
 using Telerik.Windows.Controls.DomainServices;
 using Telerik.Windows.Data;
 

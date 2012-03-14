@@ -232,8 +232,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
         }
 
-        #region Logic
-
         #region IAddToDeleteFromSource
 
         private LoadOperation<Location> _lastSuggestionQuery;
@@ -297,7 +295,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override Location AddNewEntity(object commandParameter)
         {
             //Reuse the CreateNewItem method
-            return CreateNewItem("");
+            var newLocation = CreateNewItem("");
+            this.QueryableCollectionView.AddNew(newLocation);
+            return newLocation;
         }
 
         public override void DeleteEntity(Location locationToDelete)
@@ -305,10 +305,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Remove Location (this is not automatically done because the DCV is not backed by an EntityList)
             DataManager.RemoveEntities(new[] { locationToDelete });
 
-            base.DeleteEntity(locationToDelete);
+            this.QueryableCollectionView.Remove(locationToDelete);
         }
-
-        #endregion
 
         #endregion
     }

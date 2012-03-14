@@ -73,7 +73,7 @@
                     </Grid>
                 </toolkit:Expander>
                 <ContactInfo:ContactInfoEdit ContactInfoVM="{Binding SelectedClientOwnedBusinessVM.ContactInfoVM}" />
-                <toolkit:Expander  Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource EmployeeBrush}" Visibility="Collapsed"
+                <toolkit:Expander  Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource EmployeeBrush}"
                         BorderBrush="{StaticResource EmployeeBrush}" IsEnabled="{Binding DataContext.IsLoading, ElementName=ContactsGrid, Converter={StaticResource NotExistsBoolConverter}}">
                     <toolkit:Expander.Header>
                         <TextBlock Text="Contacts" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource EmployeeBrush}" />

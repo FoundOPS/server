@@ -4,7 +4,7 @@
     xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"  mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="ContactsVM">
     <telerik:RadGridView x:Name="ContactsGridView" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
-                RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}">
+                RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding OwnedPerson.DisplayName}" Width="*"/>
         </telerik:RadGridView.Columns>

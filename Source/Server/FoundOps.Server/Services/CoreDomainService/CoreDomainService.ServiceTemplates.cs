@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.ServiceModel.DomainServices.Server;
+using FoundOps.Common.NET;
 using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.EntityFramework;
@@ -61,6 +62,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteOptionsField(OptionsField optionsField)
         {
+            this.ObjectContext.DetachExistingAndAttach(optionsField);
+
             optionsField.Options.Load();
             var optionsToDelete = optionsField.Options.ToArray();
             foreach (var option in optionsToDelete)

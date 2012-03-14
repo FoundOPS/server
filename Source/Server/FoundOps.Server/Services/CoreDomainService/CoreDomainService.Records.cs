@@ -199,6 +199,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             return this.ObjectContext.Contacts;
         }
 
+        /// <summary>
+        /// Gets the contacts for role. Includes the OwnedPerson
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <returns></returns>
         public IEnumerable<Contact> GetContactsForRole(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
@@ -206,18 +211,17 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole == null)
                 return null;
 
-            var contactsQueryable =
-                ((ObjectQuery<Contact>)
-                 this.ObjectContext.Contacts.Where(contact => contact.OwnerPartyId == businessForRole.Id));
+            var contactsPeople =
+                from contact in this.ObjectContext.Contacts.Where(contact => contact.OwnerPartyId == businessForRole.Id)
+                join person in ObjectContext.Parties.OfType<Person>()
+                    on contact.Id equals person.Id
+                orderby person.LastName + " " + person.FirstName
+                select new { contact, person };
 
-            //Force load OwnedPerson and ContactInfoSet
-            //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            (from p in this.ObjectContext.Parties
-             join e in contactsQueryable
-                 on p.Id equals e.Id
-             select p.ContactInfoSet).ToArray();
+            //Force loads the OwnedPerson (workaround for inheritance includes not working in Entity Framework)
+            contactsPeople.Select(cp => cp.person).ToArray();
 
-            return contactsQueryable;
+            return contactsPeople.Select(i => i.contact);
         }
 
         public void InsertContact(Contact contact)

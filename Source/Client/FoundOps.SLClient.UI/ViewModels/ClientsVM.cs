@@ -230,8 +230,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Logic
 
+        #region TODO Replace base with QueryableCollectionView and this logic
+ 
         /// <summary>
-        /// TODO Replace base with QueryableCollectionView and this logic
         /// The method called for the AddCommand to create an entity. Defaults to DomainCollectionView.AddNew()
         /// </summary>
         /// <param name="commandParameter">The command parameter.</param>
@@ -242,6 +243,18 @@ namespace FoundOps.SLClient.UI.ViewModels
             Context.Clients.Add(newClient);
             return newClient;
         }
+
+        /// <summary>
+        /// The logic to delete an entity. Returns true if it can delete.
+        /// </summary>
+        /// <param name="entityToDelete">The entity to delete.</param>
+        public override void DeleteEntity(Client entityToDelete)
+        {
+            this.QueryableCollectionView.Remove(entityToDelete);
+            Context.Clients.Remove(entityToDelete);
+        }
+
+        #endregion
 
         protected override void OnAddEntity(Client newClient)
         {

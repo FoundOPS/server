@@ -11,56 +11,9 @@ namespace FoundOps.Core.Models.CoreEntities
 {
     public partial class Location : IRaiseValidationErrors, IReactiveNotifyPropertyChanged
     {
-        #region IReactiveNotifyPropertyChanged
-
-        public event PropertyChangingEventHandler PropertyChanging;
-
-        MakeObjectReactiveHelper _reactiveHelper;
-
-        public IObservable<IObservedChange<object, object>> Changed { get { return _reactiveHelper.Changed; } }
-
-        public IObservable<IObservedChange<object, object>> Changing { get { return _reactiveHelper.Changing; } }
-
-        public IDisposable SuppressChangeNotifications()
-        {
-            return _reactiveHelper.SuppressChangeNotifications();
-        }
-
-        #endregion
-
-        private OrderedEntityCollection<SubLocation> _subLocationsListWrapper;
-        /// <summary>
-        /// Gets the sub locations list wrapper. It orders and numbers the SubLocations automatically when items are added and removed.
-        /// </summary>
-        public OrderedEntityCollection<SubLocation> SubLocationsListWrapper
-        {
-            get { return _subLocationsListWrapper; }
-            private set
-            {
-                _subLocationsListWrapper = value;
-                this.RaisePropertyChanged("SubLocationsListWrapper");
-            }
-        }
-
-        partial void OnCreation()
-        {
-            //Setup IReactiveNotifyPropertyChanged
-            _reactiveHelper = new MakeObjectReactiveHelper(this);
-
-            SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
-        }
-
-        protected override void OnLoaded(bool isInitialLoad)
-        {
-            //Setup IReactiveNotifyPropertyChanged
-            _reactiveHelper = new MakeObjectReactiveHelper(this);
-
-            if (isInitialLoad)
-                SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
-        }
+        #region Public Properties
 
         private bool _detailsLoading;
-
         /// <summary>
         /// Gets or sets a value indicating whether [details loading].
         /// </summary>
@@ -90,6 +43,56 @@ namespace FoundOps.Core.Models.CoreEntities
                 return new Telerik.Windows.Controls.Map.Location(System.Convert.ToDouble(this.Latitude),
                                                                  System.Convert.ToDouble(this.Longitude));
             }
+        }
+
+        private OrderedEntityCollection<SubLocation> _subLocationsListWrapper;
+        /// <summary>
+        /// Gets the sub locations list wrapper. It orders and numbers the SubLocations automatically when items are added and removed.
+        /// </summary>
+        public OrderedEntityCollection<SubLocation> SubLocationsListWrapper
+        {
+            get { return _subLocationsListWrapper; }
+            private set
+            {
+                _subLocationsListWrapper = value;
+                this.RaisePropertyChanged("SubLocationsListWrapper");
+            }
+        }
+
+        #region IReactiveNotifyPropertyChanged
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        MakeObjectReactiveHelper _reactiveHelper;
+
+        public IObservable<IObservedChange<object, object>> Changed { get { return _reactiveHelper.Changed; } }
+
+        public IObservable<IObservedChange<object, object>> Changing { get { return _reactiveHelper.Changing; } }
+
+        public IDisposable SuppressChangeNotifications()
+        {
+            return _reactiveHelper.SuppressChangeNotifications();
+        }
+
+        #endregion
+
+        #endregion
+
+        partial void OnCreation()
+        {
+            //Setup IReactiveNotifyPropertyChanged
+            _reactiveHelper = new MakeObjectReactiveHelper(this);
+
+            SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
+        }
+
+        protected override void OnLoaded(bool isInitialLoad)
+        {
+            //Setup IReactiveNotifyPropertyChanged
+            _reactiveHelper = new MakeObjectReactiveHelper(this);
+
+            if (isInitialLoad)
+                SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
         }
 
         /// <summary>
