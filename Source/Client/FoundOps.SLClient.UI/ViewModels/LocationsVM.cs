@@ -28,33 +28,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Entity Data Items
 
-        private QueryableCollectionView _queryableCollectionView;
-        /// <summary>
-        /// The collection of Locations.
-        /// </summary>
-        public QueryableCollectionView QueryableCollectionView
-        {
-            get { return _queryableCollectionView; }
-            private set
-            {
-                _queryableCollectionView = value;
-                this.RaisePropertyChanged("QueryableCollectionView");
-            }
-        }
-
         /// <summary>
         /// The search text.
         /// </summary>
         public string SearchText { get; set; }
-
-        /// <summary>
-        /// The collection of items being searched.
-        /// </summary>
-        public IEnumerable<Location> SearchCollectionView
-        {
-            get;
-            set;
-        }
 
         #endregion
 
@@ -184,6 +161,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
+        /// <summary>
+        /// Setups the data loading.
+        /// </summary>
         private void SetupDataLoading()
         {
             var relatedTypes = new[] { typeof(Region), typeof(Client) };
@@ -219,7 +199,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             LoadOperation<Location> detailsLoadOperation = null;
-
             //Whenever the location changes load the location details
             SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
             {

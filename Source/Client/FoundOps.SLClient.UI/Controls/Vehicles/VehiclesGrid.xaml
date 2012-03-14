@@ -6,7 +6,7 @@
          mc:Ignorable="d"
         ViewModelLocator:ViewModelLocator.SharedViewModel="VehiclesVM">
     <telerik:RadGridView x:Name="VehiclesRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
-            RowIndicatorVisibility="Collapsed" ItemsSource="{Binding DomainCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
+            RowIndicatorVisibility="Collapsed" ItemsSource="{Binding QueryableCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Vehicle ID" Width="*">
                 <telerik:GridViewDataColumn.CellTemplate>

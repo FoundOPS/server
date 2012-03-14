@@ -32,12 +32,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                 .Merge(this.ContextManager.GetContextObservable<Vehicle>().AsGeneric())
                 .ObserveOnDispatcher().Subscribe(_ =>
             {
-                if (DomainCollectionView == null)
+                if (EditableCollectionView == null)
                     return;
-                //a) update the filter
-                UpdateFilter();
                 //b) select the closest Route to today
-                SelectedEntity = DomainCollectionView.FirstOrDefault(r => r.Date >= DateTime.Now.Date);
+                SelectedEntity = Collection.FirstOrDefault(r => r.Date >= DateTime.Now.Date);
             });
         }
 

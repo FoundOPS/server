@@ -1,16 +1,15 @@
-﻿using System;
-using System.Windows.Controls;
-using ReactiveUI;
-using System.Collections;
-using System.Reactive.Linq;
-using System.Collections.Generic;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
-using System.ComponentModel.Composition;
-using Microsoft.Windows.Data.DomainServices;
+﻿using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Core.Models.CoreEntities;
+using MEFedMVVM.ViewModelLocator;
+using Microsoft.Windows.Data.DomainServices;
+using ReactiveUI;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Reactive.Linq;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -27,16 +26,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Want to use the default comparer. So this does not need to be set.
         public IEqualityComparer<object> CustomComparer { get; set; }
 
-        private readonly ObservableAsPropertyHelper<IEnumerable> _loadedEmployees;
-        public IEnumerable ExistingItemsSource { get { return _loadedEmployees.Value; } }
+        public IEnumerable ExistingItemsSource { get { return Context.Employees; } }
 
         public string MemberPath { get { return "DisplayName"; } }
 
-        //TODO
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions
-        {
-            get { return null; }
-        }
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         /// <summary>
         /// A function to create a new item from a string.
@@ -64,13 +58,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson))
                 .ToProperty(this, x => x.SelectedEmployeePersonVM);
 
-            //Load the employees
-            var loadedEmployees = SetupMainQuery(DataManager.Query.Employees, null, "DisplayName");
+            SetupTopEntityDataLoading(roleId => Context.GetEmployeesForRoleQuery(roleId));
 
             #region Implementation of IAddToDeleteFromSource<Employee>
-
-            //Whenever loadedEmployees changes notify ExistingItemsSource changed
-            _loadedEmployees = loadedEmployees.ToProperty(this, x => x.ExistingItemsSource);
 
             CreateNewItem = name =>
             {
@@ -89,23 +79,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #region Logic
-
-        protected override bool EntityIsPartOfView(Employee entity, bool isNew)
-        {
-            if (isNew)
-                return true;
-
-            var entityIsPartOfView = true;
-
-            //Setup filters
-
-            var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
-
-            if (businessAccountContext != null)
-                entityIsPartOfView = entity.EmployerId == businessAccountContext.Id;
-
-            return entityIsPartOfView;
-        }
 
         protected override Employee AddNewEntity(object commandParameter)
         {

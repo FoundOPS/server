@@ -26,7 +26,7 @@ namespace FoundOps.SLClient.UI.Converters
             var serviceType = values[0] as string;
             var selectedRegions = values[1] as IEnumerable<string>;
             var routesVM = (RoutesVM)values[2];
-            var routesDCV = routesVM.DomainCollectionView;
+            var routesDCV = routesVM.Collection;
             var selectedRouteTypes = routesVM.SelectedRouteTypes;
 
             //If the variables have not propogated yet, return nothing
@@ -103,7 +103,7 @@ namespace FoundOps.SLClient.UI.Converters
 
             //Filter Routes by Region name and checks to see if each Route has the region passed to the converter
             var filteredRoutes =
-                ((RoutesVM)values[2]).DomainCollectionView.Where(
+                ((RoutesVM)values[2]).Collection.Where(
                     route =>
                     route.RouteDestinations.Where(rd => rd != null && rd.Location != null && rd.Location.Region != null)
                         .Select(rd => rd.Location.Region.Name).Distinct().ToArray().Contains(regionName));

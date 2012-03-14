@@ -1,14 +1,13 @@
-﻿using System;
-using System.Reactive.Subjects;
-using System.ServiceModel.DomainServices.Client;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
+using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.Core.Models.CoreEntities;
-using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
+using System.Reactive.Subjects;
+using System.ServiceModel.DomainServices.Client;
 using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -20,20 +19,6 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class ContactsVM : InfiniteAccordionVM<Contact>
     {
         #region Public
-
-        private QueryableCollectionView _queryableCollectionView;
-        /// <summary>
-        /// The collection of Contacts.
-        /// </summary>
-        public QueryableCollectionView QueryableCollectionView
-        {
-            get { return _queryableCollectionView; }
-            private set
-            {
-                _queryableCollectionView = value;
-                this.RaisePropertyChanged("QueryableCollectionView");
-            }
-        }
 
         private readonly ObservableAsPropertyHelper<PartyVM> _selectedContactPersonVM;
         /// <summary>

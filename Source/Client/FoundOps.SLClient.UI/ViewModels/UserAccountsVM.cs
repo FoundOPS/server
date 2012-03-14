@@ -105,19 +105,19 @@ namespace FoundOps.SLClient.UI.ViewModels
                                                         ? businessAccountContext.OwnedRoles.SelectMany(r => r.MemberParties.OfType<UserAccount>())
                                                         : this.Context.Parties.OfType<UserAccount>();
 
-                    this.DomainCollectionViewObservable.OnNext(DomainCollectionViewFactory<Party>.GetDomainCollectionView(new EntityList<Party>(Context.Parties, setOfUserAccounts)));
+                    this.CollectionViewObservable.OnNext(DomainCollectionViewFactory<Party>.GetDomainCollectionView(new EntityList<Party>(Context.Parties, setOfUserAccounts)));
                 });
 
             //Whenever the DCV changes:
             //a) sort by Name 
             //b) select the first entity
-            this.DomainCollectionViewObservable.Throttle(TimeSpan.FromMilliseconds(300)) //wait for UI to load
+            this.CollectionViewObservable.Throttle(TimeSpan.FromMilliseconds(300)) //wait for UI to load
                 .ObserveOnDispatcher().Subscribe(dcv =>
                 {
                     //a) sort by Name 
-                    dcv.SortDescriptions.Add(new SortDescription("DisplayName", ListSortDirection.Ascending));
+                    ((ICollectionView)dcv).SortDescriptions.Add(new SortDescription("DisplayName", ListSortDirection.Ascending));
                     //b) select the first entity
-                    this.SelectedEntity = this.DomainCollectionView.FirstOrDefault();
+                    this.SelectedEntity = this.CollectionView.Cast<Party>().FirstOrDefault();
                 });
 
             #endregion

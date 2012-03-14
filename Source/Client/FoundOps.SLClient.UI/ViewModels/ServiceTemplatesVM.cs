@@ -213,7 +213,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 {
                     var clientContextDCV = DomainCollectionViewFactory<ServiceTemplate>.GetDomainCollectionView(clientContext.ServiceTemplates);
                     clientContextDCV.Filter += st => ((ServiceTemplate)st).ServiceTemplateLevel == ServiceTemplateLevel.ClientDefined;
-                    DomainCollectionViewObservable.OnNext(clientContextDCV);
+                    CollectionViewObservable.OnNext(clientContextDCV);
                     return;
                 }
 
@@ -223,7 +223,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     var serviceProviderContextDCV = DomainCollectionViewFactory<ServiceTemplate>
                         .GetDomainCollectionView(new EntityList<ServiceTemplate>(Context.ServiceTemplates, ServiceTemplatesForServiceProvider));
                     serviceProviderContextDCV.Filter += st => ((ServiceTemplate)st).ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined;
-                    DomainCollectionViewObservable.OnNext(serviceProviderContextDCV);
+                    CollectionViewObservable.OnNext(serviceProviderContextDCV);
                     return;
                 }
             });
@@ -237,12 +237,12 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var serviceProviderContextDCV = DomainCollectionViewFactory<ServiceTemplate>.GetDomainCollectionView(businessAccountContext.ServiceTemplates);
                 serviceProviderContextDCV.Filter += st => ((ServiceTemplate)st).ServiceTemplateLevel == ServiceTemplateLevel.FoundOpsDefined
                     || ((ServiceTemplate)st).ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined;
-                DomainCollectionViewObservable.OnNext(serviceProviderContextDCV);
+                CollectionViewObservable.OnNext(serviceProviderContextDCV);
             });
 
 
             //Whenever the DCV changes, sort by Name
-            this.DomainCollectionViewObservable.Subscribe(dcv => dcv.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending)));
+            this.CollectionViewObservable.Subscribe(dcv => ((ICollectionView) dcv).SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending)));
 
             #endregion
 
@@ -267,9 +267,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #region Logic
-
-        //Do not use default filter. This filters by context (ServiceTemplateLevel)
-        public override void UpdateFilter() { }
 
         public override void DeleteEntity(ServiceTemplate entityToDelete)
         {

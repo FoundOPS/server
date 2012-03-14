@@ -1,7 +1,6 @@
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
@@ -14,7 +13,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
-using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -26,20 +24,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         IAddToDeleteFromDestination<Location>, IAddNewExisting<Location>, IRemoveDelete<Location>
     {
         #region Public
-
-        private QueryableCollectionView _queryableCollectionView;
-        /// <summary>
-        /// The collection of Clients.
-        /// </summary>
-        public QueryableCollectionView QueryableCollectionView
-        {
-            get { return _queryableCollectionView; }
-            private set
-            {
-                _queryableCollectionView = value;
-                this.RaisePropertyChanged("QueryableCollectionView");
-            }
-        }
 
         private readonly ObservableAsPropertyHelper<PartyVM> _selectedClientOwnedBusinessVM;
         /// <summary>
@@ -186,30 +170,16 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
-            var disposeObservable = new Subject<bool>();
-            //Whenever the RoleId updates
-            //a) update the VirtualQueryableCollectionView
-            //b) load the service templates required for adding new Clients
+            SetupTopEntityDataLoading(roleId => Context.GetClientsForRoleQuery(ContextManager.RoleId));
+
+            //Whenever the RoleId updates load the service templates required for adding new Clients
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
-                #region a) update the VirtualQueryableCollectionView
+                #region load the service templates required for adding new Clients
 
-                //Dispose the last VQCV subscriptions
-                disposeObservable.OnNext(true);
-
-                var initialQuery = Context.GetClientsForRoleQuery(ContextManager.RoleId);
-                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable);
-
-                //Subscribe the loading subject to the LoadingAfterFilterChange observable
-                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
-                QueryableCollectionView = result.VQCV;
-
-                #endregion
-
-                #region b) load the service templates required for adding new Clients
-
-                //Service templates are required for adding
+                //Service templates are required for adding. So disable CanAdd until they are loaded.
                 CanAddSubject.OnNext(false);
+
                 //Load the service templates
                 var serviceTemplatesQuery = Context.GetServiceTemplatesForServiceProviderQuery(ContextManager.RoleId)
                     .Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined);
@@ -217,6 +187,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 Context.Load(serviceTemplatesQuery, lo =>
                 {
                     _loadedServiceTemplates = lo.Entities;
+                    
+                    //After Service templates are loaded, enable CanAdd.
                     CanAddSubject.OnNext(true);
                 }, null);
 

@@ -125,8 +125,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             if (_selectedLocation != null)
             {
-                DomainCollectionViewObservable.OnNext(new DomainCollectionViewFactory<SubLocation>(_selectedLocation.SubLocationsListWrapper).View);
-                DomainCollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
+                CollectionViewObservable.OnNext(new DomainCollectionViewFactory<SubLocation>(_selectedLocation.SubLocationsListWrapper).View);
+                CollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
             }
 
             #region Register Commands

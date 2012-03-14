@@ -283,7 +283,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds))
                 role.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
-            ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newBusinessAccount);
+            ((EntityList<Party>)this.CollectionView.SourceCollection).Add(newBusinessAccount);
 
             return newBusinessAccount;
         }

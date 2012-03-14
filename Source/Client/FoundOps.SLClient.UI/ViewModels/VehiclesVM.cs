@@ -1,15 +1,14 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Controls;
-using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
-using Microsoft.Windows.Data.DomainServices;
-using ReactiveUI;
+using System.ServiceModel.DomainServices.Client;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -24,8 +23,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Want to use the default comparer. So this does not need to be set.
         public IEqualityComparer<object> CustomComparer { get; set; }
 
-        private readonly ObservableAsPropertyHelper<IEnumerable> _loadedVehicles;
-        public IEnumerable ExistingItemsSource { get { return _loadedVehicles.Value; } }
+        public IEnumerable ExistingItemsSource { get { return Context.Vehicles; } }
 
         public string MemberPath { get { return "VehicleId"; } }
 
@@ -34,11 +32,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public Func<string, Vehicle> CreateNewItem { get; private set; }
 
-        //TODO
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions
-        {
-            get { return null; }
-        }
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
 
@@ -48,26 +42,50 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public VehiclesVM()
         {
-            var loadedVehicles = this.SetupMainQuery(DataManager.Query.Vehicles, null, "VehicleId");
+            SetupTopEntityDataLoading(roleId => Context.GetVehiclesForPartyQuery(roleId));
 
             #region Implementation of IAddToDeleteFromSource<Employee>
-
-            //Whenever loadedVehicles changes notify ExistingItemsSource changed
-            _loadedVehicles = loadedVehicles.ToProperty(this, x => x.ExistingItemsSource);
 
             //Set the new Vehicles OwnerParty to this OwnerAccount
             CreateNewItem = vehicleId =>
             {
                 var newVehicle = new Vehicle { VehicleId = vehicleId, OwnerParty = ContextManager.OwnerAccount };
-                
-                //Add the new entity to the EntityList behind the DCV
-                ((EntityList<Vehicle>)ExistingItemsSource).Add(newVehicle);
-                
+
+                Context.Vehicles.Add(newVehicle);
+                this.QueryableCollectionView.AddNew(newVehicle);
+
                 return newVehicle;
             };
 
+            ManuallyUpdateSuggestions = UpdateSuggestionsHelper;
+
             #endregion
         }
+
+        #region IAddToDeleteFromSource
+
+        private LoadOperation<Vehicle> _lastSuggestionQuery;
+        /// <summary>
+        /// Updates the locations suggestions.
+        /// </summary>
+        /// <param name="text">The search text</param>
+        /// <param name="autoCompleteBox">The autocomplete box.</param>
+        private void UpdateSuggestionsHelper(string text, AutoCompleteBox autoCompleteBox)
+        {
+            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
+                _lastSuggestionQuery.Cancel();
+
+            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchVehiclesForRoleQuery(Manager.Context.RoleId, text).Take(10),
+                                locationsLoadOperation =>
+                                {
+                                    if (locationsLoadOperation.IsCanceled || locationsLoadOperation.HasError) return;
+
+                                    autoCompleteBox.ItemsSource = locationsLoadOperation.Entities;
+                                    autoCompleteBox.PopulateComplete();
+                                }, null);
+        }
+
+        #endregion
 
         #region Logic
 

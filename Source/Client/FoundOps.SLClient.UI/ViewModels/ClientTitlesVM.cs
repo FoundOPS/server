@@ -79,7 +79,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (ClientTitleInCreation == null) return;
 
                 //Add the ClientTitleInCreation to the DCV
-                ((IList<ClientTitle>)this.DomainCollectionView.SourceCollection).Add(ClientTitleInCreation);
+                ((IList<ClientTitle>)this.CollectionView.SourceCollection).Add(ClientTitleInCreation);
                 ClientTitleInCreation = null;
             });
 

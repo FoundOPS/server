@@ -631,13 +631,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return meetsRegionFilter && meetsRouteTypeFilter;
             };
 
-            //Throttle .2 seconds to allow add/delete to DCV to happen first, and prevent too many updates
-            _updateFilter.Throttle(new TimeSpan(0, 0, 0, 0, 200)).ObserveOnDispatcher().SubscribeOnDispatcher().Subscribe(obj =>
-                 {
-                     DomainCollectionView.Filter = null;
-                     DomainCollectionView.Filter = filter;
-                 });
-
             //Update the counts on the Dispatcher Filter whenever:
             var updateFilterCounts =
                 //a) routesOrFiltersChanged
@@ -684,7 +677,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                       Context.Routes, loadData);
 
             //Setup the MainQuery
-            this.SetupMainQuery(Query.RoutesForServiceProviderOnDay, routes => RouteScheduleVM = new RouteScheduleVM(DomainCollectionView), null, false);
+            this.SetupMainQuery(Query.RoutesForServiceProviderOnDay, routes => RouteScheduleVM = new RouteScheduleVM(), null, false);
 
             //Setup RoutesLoading property
             var routesLoading = this.DataManager.GetIsLoadingObservable(Query.RoutesForServiceProviderOnDay)
@@ -726,7 +719,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
             {
                 //Populate the routes with the unrouted tasks
-                var routedTasks = SimpleRouteCalculator.PopulateRoutes(this.UnroutedTasks, DomainCollectionView);
+                var routedTasks = SimpleRouteCalculator.PopulateRoutes(this.UnroutedTasks, CollectionView.Cast<Route>());
 
                 //Remove the routedTasks from the task board
                 foreach (var routeTaskToRemove in routedTasks.ToArray())
@@ -734,7 +727,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Allow the user to open the route manifests whenever there is more than one route visible
-            OpenRouteManifests = new ReactiveCommand(_updateFilter.ObserveOnDispatcher().Throttle(new TimeSpan(0, 0, 0, 0, 250)).Select(_ => this.DomainCollectionView.Count() > 0));
+            OpenRouteManifests = new ReactiveCommand(_updateFilter.ObserveOnDispatcher().Throttle(new TimeSpan(0, 0, 0, 0, 250)).Select(_ => this.CollectionView.Cast<object>().Any()));
 
             OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
             {
@@ -881,7 +874,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (((BusinessAccount)ContextManager.OwnerAccount).MaxRoutes == null)
                 ((BusinessAccount)ContextManager.OwnerAccount).MaxRoutes = 0;
 
-            if (((BusinessAccount)ContextManager.OwnerAccount).MaxRoutes <= DomainCollectionView.Count())
+            if (((BusinessAccount)ContextManager.OwnerAccount).MaxRoutes <= CollectionView.Cast<object>().Count())
             {
                 var tooManyRoutes = new TooManyRoutesError
                 {

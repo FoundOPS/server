@@ -135,9 +135,26 @@ namespace FoundOps.SLClient.Data.Services
         {
             #region Current Account and Role Properties
 
+            //Whenever a role id changes, clear the Context
+            ((Subject<Guid>)RoleIdObserver).DistinctUntilChanged().Subscribe(_ =>
+            {
+                foreach(var entitySet in Manager.Data.Context.EntityContainer.EntitySets)
+                {
+                    if (entitySet == Manager.Data.Context.Roles || entitySet == Manager.Data.Context.Blocks 
+                        || entitySet == Manager.Data.Context.Parties)
+                        continue;
+
+                    entitySet.Clear();
+                }
+
+               //TODO Clear parties that are not UserAccounts
+               //Manager.Data.Context.DetachEntities()
+               //Manager.Data.Context.Parties.OfType<UserAccount>()
+            });
+
             //Subcribe _roleIdObservable to the distinct RoleIdObserver changes
             ((Subject<Guid>)RoleIdObserver).DistinctUntilChanged()
-                .Throttle(new TimeSpan(0, 0, 0, 1)) //Thottle for 1 second to allow controls to unload
+                .Throttle(TimeSpan.FromSeconds(1)) //Thottle for 1 second to allow controls to unload
                 .Subscribe(_roleIdObservable);
 
             _roleId = RoleIdObservable.ToProperty(this, x => x.RoleId);
@@ -201,7 +218,7 @@ namespace FoundOps.SLClient.Data.Services
                 var currentContextType = CurrentContextProvider != null && CurrentContextProvider.SelectedContext != null
                                              ? CurrentContextProvider.SelectedContext.GetType().ToString().Split('.').Last()
                                              : "";
-                if((newContextProvider == null)) return;
+                if ((newContextProvider == null)) return;
                 var nextContextType = newContextProvider.ObjectTypeProvided.ToString().Split('.').Last();
 
                 //Make sure that there is a context and the context is actually changing

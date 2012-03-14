@@ -1,7 +1,7 @@
-﻿using FoundOps.Common.Silverlight.MVVM.VMs;
+﻿using System.Collections.Generic;
+using FoundOps.Common.Silverlight.MVVM.VMs;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.UI.Interfaces;
-using FoundOps.Common.Silverlight.MVVM.Models;
 using Microsoft.Windows.Data.DomainServices;
 using ReactiveUI;
 using ReactiveUI.Xaml;
@@ -13,6 +13,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Windows;
+using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.Data.ViewModels
 {
@@ -60,15 +61,25 @@ namespace FoundOps.SLClient.Data.ViewModels
         #endregion
 
         /// <summary>
-        /// The DomainCollectionView observable.
+        /// The CollectionView observable.
         /// </summary>
-        protected readonly Subject<DomainCollectionView<TEntity>> DomainCollectionViewObservable = new Subject<DomainCollectionView<TEntity>>();
+        protected readonly Subject<IEditableCollectionView> CollectionViewObservable = new Subject<IEditableCollectionView>();
 
-        private readonly ObservableAsPropertyHelper<DomainCollectionView<TEntity>> _domainCollectionView;
+        private readonly ObservableAsPropertyHelper<IEditableCollectionView> _collectionView;
         /// <summary>
-        /// Gets or sets the domain collection view.
+        /// Gets the editable collection view.
         /// </summary>
-        public DomainCollectionView<TEntity> DomainCollectionView { get { return _domainCollectionView.Value; } }
+        public IEditableCollectionView EditableCollectionView { get { return _collectionView.Value; } }
+
+        /// <summary>
+        /// Gets the collection view.
+        /// </summary>
+        public ICollectionView CollectionView { get { return (ICollectionView) _collectionView.Value; } }
+
+        /// <summary>
+        /// Gets the casted collection.
+        /// </summary>
+        public IEnumerable<TEntity> Collection { get { return ((ICollectionView)_collectionView.Value).Cast<TEntity>(); } }
 
         #region Selected Entity
 
@@ -122,7 +133,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                         Action customDiscardAction = () => this.DiscardCommand.Execute(null);
                         //Move back to the old value
-                        Action moveToOldValue = () => DomainCollectionView.MoveCurrentTo(SelectedEntity);
+                        Action moveToOldValue = () => ((ICollectionView)EditableCollectionView).MoveCurrentTo(SelectedEntity);
 
                         //Call SaveDiscardCancelPrompt
                         DataManager.SaveDiscardCancelPrompt(afterSave: selectNewValue, customDiscardAction: customDiscardAction, afterDiscard: selectNewValue, afterCancel: moveToOldValue);
@@ -176,16 +187,15 @@ namespace FoundOps.SLClient.Data.ViewModels
                 {
                     OnSelectedEntityChanged(_oldValue, newSelectedEntity);
 
-                    if (DomainCollectionView != null)
-                        DomainCollectionView.MoveCurrentTo(newSelectedEntity);
+                    if (EditableCollectionView != null)
+                        ((ICollectionView)EditableCollectionView).MoveCurrentTo(newSelectedEntity);
 
                     if (newSelectedEntity == null) return;
-                    Commit();
                     IsAddingNew = false;
                 });
 
-            //Setup DomainCollectionView property, set an initial ObservableCollection (many VMs expect the DomainCollectionView source to be an ObservableCollection)
-            _domainCollectionView = DomainCollectionViewObservable.ToProperty(this, x => x.DomainCollectionView, DomainCollectionViewFactory<TEntity>.GetDomainCollectionView(new ObservableCollection<TEntity>()));
+            //Setup CollectionView property, set an initial ObservableCollection (many VMs expect the CollectionView source to be an ObservableCollection)
+            _collectionView = CollectionViewObservable.ToProperty(this, x => x.EditableCollectionView, new QueryableCollectionView(new ObservableCollection<TEntity>()));
 
             _preventChangingSelectionWhenChanges = preventChangingSelectionWhenChanges;
 
@@ -195,7 +205,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             _canAdd = CanAddSubject.ToProperty(this, x => x.CanAdd);
 
             //can add when: not loading && OwnerAccount != null && DomainCollectionView != null && CanAdd
-            var canAddCommand = this.WhenAny(x => x.IsLoading, x => x.ContextManager.OwnerAccount, x => x.DomainCollectionView, x => x.CanAdd,
+            var canAddCommand = this.WhenAny(x => x.IsLoading, x => x.ContextManager.OwnerAccount, x => x.EditableCollectionView, x => x.CanAdd,
                                              (isLoading, ownerAccount, domainCollectionView, canAdd) =>
                                                  !isLoading.Value && ownerAccount.Value != null && domainCollectionView.Value != null && canAdd.Value);
 
@@ -205,7 +215,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                 .Subscribe(x =>
             {
                 var canAdd = BeforeAdd();
-                if(!canAdd)
+                if (!canAdd)
                     return;
                 _disableSelectedEntity = true;
                 var newEntity = AddNewEntity(x);
@@ -213,7 +223,6 @@ namespace FoundOps.SLClient.Data.ViewModels
                     return;
                 IsAddingNew = true;
                 OnAddEntity(newEntity);
-                Commit();
                 EntityAdded();
                 _disableSelectedEntity = false;
                 SelectedEntity = newEntity;
@@ -223,7 +232,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             _canDelete = CanDeleteSubject.ToProperty(this, x => x.CanDelete);
 
             //can delete when: not loading && SelectedEntity != null && DomainCollectionView != null && CanDelete
-            var canDeleteCommand = this.WhenAny(x => x.IsLoading, x => x.SelectedEntity, x => x.DomainCollectionView, x => x.CanDelete,
+            var canDeleteCommand = this.WhenAny(x => x.IsLoading, x => x.SelectedEntity, x => x.EditableCollectionView, x => x.CanDelete,
                                                 (isLoading, selectedEntity, domainCollectionView, canDelete) =>
                                                !isLoading.Value && selectedEntity.Value != null && domainCollectionView.Value != null && canDelete.Value);
 
@@ -279,7 +288,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                 if (sortBy != null)
                     domainCollectionView.SortDescriptions.Add(new SortDescription(sortBy, ListSortDirection.Ascending));
 
-                DomainCollectionViewObservable.OnNext(domainCollectionView);
+                CollectionViewObservable.OnNext(domainCollectionView);
 
                 if (action != null)
                     action(entities);
@@ -290,7 +299,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                 DataManager.GetEntityListObservable<TEntity>(queryKey).Throttle(TimeSpan.FromMilliseconds(300)) //Delay .3 second to allow UI to catchup
                     .ObserveOnDispatcher().Subscribe(_ =>
                     {
-                        SelectedEntity = DomainCollectionView.FirstOrDefault();
+                        SelectedEntity = ((ICollectionView)EditableCollectionView).Cast<TEntity>().FirstOrDefault();
                     });
 
             return DataManager.GetEntityListObservable<TEntity>(queryKey);
@@ -301,39 +310,14 @@ namespace FoundOps.SLClient.Data.ViewModels
         #region Methods w Initial Logic
 
         /// <summary>
-        /// If your logic is true, when overriding, call this at the end
-        /// </summary>
-        /// <returns>Whether you can discard</returns>
-        protected override bool BeforeDiscardCommand()
-        {
-            if (DomainCollectionView != null)
-                DomainCollectionView.Commit();
-
-            return true;
-        }
-
-        /// <summary>
-        /// If your logic is true, when overriding, call this at the end
-        /// </summary>
-        /// <returns>Whether you can save</returns>
-        protected override bool BeforeSaveCommand()
-        {
-            if (DomainCollectionView != null)
-                DomainCollectionView.Commit();
-
-            return true;
-        }
-
-        /// <summary>
         /// The method called for the AddCommand to create an entity. Defaults to DomainCollectionView.AddNew()
         /// </summary>
         /// <param name="commandParameter">The command parameter.</param>
         /// <returns>The entity to add.</returns>
         protected virtual TEntity AddNewEntity(object commandParameter)
         {
-            return (TEntity)this.DomainCollectionView.AddNew();
+            return (TEntity)this.EditableCollectionView.AddNew();
         }
-
 
         /// <summary>
         /// Checks if you can delete.
@@ -349,7 +333,7 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         public virtual void DeleteEntity(TEntity entityToDelete)
         {
-            this.DomainCollectionView.Remove(entityToDelete);
+            this.EditableCollectionView.Remove(entityToDelete);
         }
 
         /// <summary>
@@ -408,7 +392,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         #region Empty methods
 
-        // Before something happened
+        #region Before something happened
 
         /// <summary>
         /// Before the selected entity changes.
@@ -426,6 +410,8 @@ namespace FoundOps.SLClient.Data.ViewModels
         {
             return true;
         }
+
+        #endregion
 
         #region After something happened
 
@@ -464,24 +450,6 @@ namespace FoundOps.SLClient.Data.ViewModels
         #endregion //Methods to Override
 
         #endregion //Protected
-
-        //Private methods
-
-        protected void Commit()
-        {
-            //Must Commit and EndEdit to prevent error on Save or DiscardChanges
-            if (this.DomainCollectionView == null)
-                return;
-            if (this.DomainCollectionView.IsAddingNew)
-                IsAddingNew = true;
-
-            this.DomainCollectionView.Commit();
-            this.DomainCollectionView.CommitEdit();
-            this.DomainCollectionView.CommitNew();
-
-            if (SelectedEntity != null)
-                ((IEditableObject)SelectedEntity).EndEdit();
-        }
 
         #endregion //Logic
     }

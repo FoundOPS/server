@@ -75,13 +75,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (!String.IsNullOrEmpty(searchText))
                 clientsWithDisplayName = clientsWithDisplayName.Where(cdn => cdn.ChildName.StartsWith(searchText));
 
-            //Client's images are not currently used, so this can be commented out
-            //TODO: Figure a way to force load OwnedParty.PartyImage. 
-            //(from c in clients
-            // join pi in this.ObjectContext.Files.OfType<PartyImage>()
-            //     on c.OwnedParty.PartyImage.Id equals pi.Id
-            // select pi).ToArray();
-
             return clientsWithDisplayName.Select(c => c.c).Include("OwnedParty");
         }
 
@@ -425,11 +418,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<Location> SearchLocationsForRole(Guid roleId, string searchText)
         {
-            var ownerParty = ObjectContext.OwnerPartyOfRole(roleId);
-            var locations =
-                from l in ObjectContext.Locations.Where(c => c.OwnerPartyId == ownerParty.Id)
-                orderby l.Name
-                select l;
+            var locations = GetLocationsToAdministerForRole(roleId);
 
             if (!String.IsNullOrEmpty(searchText))
                 locations = locations.Where(l => l.Name.StartsWith(searchText)).OrderBy(l => l.Name);
@@ -702,9 +691,23 @@ namespace FoundOps.Server.Services.CoreDomainService
         public IQueryable<Vehicle> GetVehiclesForParty(Guid roleId)
         {
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
+            return this.ObjectContext.Vehicles.Where(v => v.OwnerPartyId == partyForRole.Id).OrderBy(v => v.VehicleId);
+        }
 
-            return
-                this.ObjectContext.Vehicles.Where(v => v.OwnerPartyId == partyForRole.Id);
+        /// <summary>
+        /// Searches the vehicles for the current role. Uses a StartsWith search mode.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <returns></returns>
+        public IQueryable<Vehicle> SearchVehiclesForRole(Guid roleId, string searchText)
+        {
+            var vehiclesQueryable = GetVehiclesForParty(roleId);
+
+            if (!String.IsNullOrEmpty(searchText))
+                vehiclesQueryable = vehiclesQueryable.Where(v => v.VehicleId.StartsWith(searchText)).OrderBy(v => v.VehicleId);
+
+            return vehiclesQueryable;
         }
 
         public void InsertVehicle(Vehicle vehicle)

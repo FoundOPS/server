@@ -61,18 +61,19 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         /// <param name="dataManager">The data manager</param>
         [ImportingConstructor]
-        public ServicesVM() : base(true)
+        public ServicesVM()
+            : base(true)
         {
             //It doesn't seem to need it on this VM
             KeepTrackLastSelectedEntity = false;
 
             //Instantiate the DomainCollectionView wrapping _visibleServices
-            DomainCollectionViewObservable.OnNext(new DomainCollectionViewFactory<Service>(_visibleServices).View);
+            CollectionViewObservable.OnNext(new DomainCollectionViewFactory<Service>(_visibleServices).View);
 
             //Setup Filters
-            DomainCollectionView.SortDescriptions.Add(new SortDescription("ServiceDate", ListSortDirection.Ascending));
-            DomainCollectionView.SortDescriptions.Add(new SortDescription("ServiceType", ListSortDirection.Ascending));
-            DomainCollectionView.SortDescriptions.Add(new SortDescription("Client.DisplayName", ListSortDirection.Ascending));
+            CollectionView.SortDescriptions.Add(new SortDescription("ServiceDate", ListSortDirection.Ascending));
+            CollectionView.SortDescriptions.Add(new SortDescription("ServiceType", ListSortDirection.Ascending));
+            CollectionView.SortDescriptions.Add(new SortDescription("Client.DisplayName", ListSortDirection.Ascending));
 
             _updateVisibleServicesTimer = new Timer(cbk =>
             {
@@ -279,10 +280,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (!_visibleServices.Any() || ContextChanged) { } //Keep selectedEntity null
             //Condition B: There are services and we need to generate services in the past (from the first generated service)
             else if (_pushBackwardSwitch)
-                selectedEntity = DomainCollectionView.First();
+                selectedEntity = CollectionView.Cast<Service>().First();
             //Condition C: There are services and we need to generate services in the future (from the last generated service))
             else if (_pushForwardSwitch)
-                selectedEntity = DomainCollectionView.Last();
+                selectedEntity = CollectionView.Cast<Service>().Last();
 
             int pageSize;
 
@@ -320,9 +321,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Select the corresponding selectedEntity
             if (selectedEntity == null)
-                selectedEntity = DomainCollectionView.FirstOrDefault(s => s != null && s.ServiceDate >= DateTime.Now.Date);
+                selectedEntity = CollectionView.Cast<Service>().FirstOrDefault(s => s != null && s.ServiceDate >= DateTime.Now.Date);
             else if (selectedEntity.Generated)
-                selectedEntity = DomainCollectionView.FirstOrDefault(s => s != null && s.ServiceDate == selectedEntity.ServiceDate && s.RecurringServiceId == selectedEntity.RecurringServiceId);
+                selectedEntity = CollectionView.Cast<Service>().FirstOrDefault(s => s != null && s.ServiceDate == selectedEntity.ServiceDate && s.RecurringServiceId == selectedEntity.RecurringServiceId);
 
             SelectedEntity = selectedEntity;
 
@@ -438,7 +439,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 {
                     _visibleServices.Remove(SelectedEntity);
                     DirectSetSelectedEntity(null);
-                    DomainCollectionView.MoveCurrentTo(null);
+                    CollectionView.MoveCurrentTo(null);
                 }
             }
 

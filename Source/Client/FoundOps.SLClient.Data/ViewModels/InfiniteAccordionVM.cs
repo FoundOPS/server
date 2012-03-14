@@ -4,10 +4,10 @@ using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using GalaSoft.MvvmLight.Command;
 using ReactiveUI;
 using System;
-using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
+using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.Data.ViewModels
 {
@@ -18,6 +18,21 @@ namespace FoundOps.SLClient.Data.ViewModels
     public abstract class InfiniteAccordionVM<TEntity> : CoreEntityCollectionVM<TEntity>, IProvideContext where TEntity : Entity
     {
         #region Public Properties
+
+        private QueryableCollectionView _queryableCollectionView;
+        /// <summary>
+        /// The collection of Entities.
+        /// </summary>
+        public QueryableCollectionView QueryableCollectionView
+        {
+            get { return _queryableCollectionView; }
+            protected set
+            {
+                _queryableCollectionView = value;
+                CollectionViewObservable.OnNext(value); 
+                this.RaisePropertyChanged("QueryableCollectionView");
+            }
+        }
 
         #region Implementation of IProvideContext
 
@@ -69,28 +84,6 @@ namespace FoundOps.SLClient.Data.ViewModels
             //Set the SelectedContext to the SelectedEntity
             this.SelectedEntityObservable.Subscribe(_selectedContextSubject);
 
-            #region Setup Filter
-
-            //Setup Filter observable to trigger whenever:
-            //a) an entity is Added
-            //b) the DomainCollectionView changes
-            //c) the Context changes
-
-            var filter =
-                //a) an entity is Added. Delay is to wait until after it is added.
-                AddCommand.Delay(new TimeSpan(0, 0, 0, 0, 300)).AsGeneric()
-                //b) the DomainCollectionView changes
-                .Merge(this.DomainCollectionViewObservable.AsGeneric())
-                //c) the Context changes
-                .Merge(this.ContextManager.ContextChangedObservable);
-
-            //UpdateFilter whenever filterObservable publishes
-            filter.Throttle(new TimeSpan(0, 0, 0, 0, 150)) //throttled to prevent overcalculation
-                .ObserveOnDispatcher() //UpdateFilter is on UI thread
-                .Subscribe(_ => UpdateFilter());
-
-            #endregion
-
             MoveToDetailsView = new RelayCommand(NavigateToThis);
 
             //Whenever not in details view, disable SaveDiscardCancel
@@ -102,6 +95,29 @@ namespace FoundOps.SLClient.Data.ViewModels
         }
 
         #region CoreEntityCollectionInfiniteAccordionVM's Logic
+
+        /// <summary>
+        /// Sets up data loading for entities without any context.
+        /// </summary>
+        /// <param name="entityQuery">An action which is passed the role id, and should return the entity query to load data with.</param>
+        protected void SetupTopEntityDataLoading(Func<Guid, EntityQuery<TEntity>> entityQuery)
+        {
+            var disposeObservable = new Subject<bool>();
+            //Whenever the RoleId updates
+            //update the VirtualQueryableCollectionView
+            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
+            {
+                //Dispose the last VQCV subscriptions
+                disposeObservable.OnNext(true);
+
+                var initialQuery = entityQuery(roleId);
+                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable);
+
+                //Subscribe the loading subject to the LoadingAfterFilterChange observable
+                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
+                QueryableCollectionView = result.VQCV;
+            });
+        }
 
         /// <summary>
         /// Navigates to this ViewModel.
@@ -126,21 +142,6 @@ namespace FoundOps.SLClient.Data.ViewModels
         protected virtual bool EntityIsPartOfView(TEntity entity, bool isNew) { return true; }
 
         #endregion
-
-        /// <summary>
-        /// Updates the filter.
-        /// </summary>
-        public virtual void UpdateFilter()
-        {
-            if (DomainCollectionView == null || DomainCollectionView.IsAddingNew)
-                return;
-
-            if (DesignerProperties.IsInDesignTool) return;
-
-            DomainCollectionView.Filter = null;
-
-            DomainCollectionView.Filter = obj => EntityIsPartOfView((TEntity)obj, IsAddingNew);
-        }
 
         #endregion
     }
