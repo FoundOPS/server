@@ -1,17 +1,17 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.Loader;
+using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.UI.Interfaces;
-using ReactiveUI;
-using System.Linq;
-using System.Windows;
+using FoundOps.Common.Silverlight.UI.ViewModels;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
-using FoundOps.Common.Silverlight.Loader;
-using FoundOps.Common.Silverlight.MVVM.Messages;
-using FoundOps.Common.Silverlight.UI.ViewModels;
+using System.Linq;
+using System.Windows;
 
 namespace FoundOps.SLClient.Navigator.ViewModels
 {

@@ -809,21 +809,11 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region VehicleMaintenanceLogEntry
 
-        public IQueryable<VehicleMaintenanceLogEntry> GetVehicleMaintenanceLog(Guid roleId, Guid vehicleId)
-        {
-            //TODO: Check if the current role has access to the vehicles
-
-            return
-                this.ObjectContext.VehicleMaintenanceLog.Where(v => v.VehicleId == vehicleId);
-        }
-
         public IQueryable<VehicleMaintenanceLogEntry> GetVehicleMaintenanceLogForParty(Guid roleId)
         {
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
-            return ((ObjectQuery<VehicleMaintenanceLogEntry>)
-                    this.ObjectContext.VehicleMaintenanceLog.Include("Vehicle").Where(
-                        vm => vm.Vehicle.OwnerPartyId == partyForRole.Id))
+            return ObjectContext.VehicleMaintenanceLog.Where(vm => vm.Vehicle.OwnerPartyId == partyForRole.Id)
                 .Include("LineItems");
         }
 

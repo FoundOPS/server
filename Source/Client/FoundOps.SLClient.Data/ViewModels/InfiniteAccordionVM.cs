@@ -1,6 +1,11 @@
-﻿using FoundOps.Common.Silverlight.UI.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using GalaSoft.MvvmLight.Command;
 using ReactiveUI;
 using System;
@@ -29,7 +34,12 @@ namespace FoundOps.SLClient.Data.ViewModels
             protected set
             {
                 _queryableCollectionView = value;
-                CollectionViewObservable.OnNext(value); 
+                CollectionViewObservable.OnNext(value);
+
+                //Make sure the SelectedEntity is selected
+                if (value != null)
+                    value.MoveCurrentTo(SelectedEntity);
+
                 this.RaisePropertyChanged("QueryableCollectionView");
             }
         }
@@ -97,6 +107,42 @@ namespace FoundOps.SLClient.Data.ViewModels
         #region CoreEntityCollectionInfiniteAccordionVM's Logic
 
         /// <summary>
+        /// Sets up data loading for context based entities.
+        /// </summary>
+        /// <param name="entityQuery">The entity query.</param>
+        /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
+        /// <param name="forceLoadRelatedTypesContext">if set to <c>true</c> [force load when in a related types context].</param>
+        public void SetupContextDataLoading(Func<Guid, EntityQuery<TEntity>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters, bool forceLoadRelatedTypesContext = false)
+        {
+            //Build an array of FilterDescriptorObservables from the related types and from the GetContextObservable
+            var filterDescriptorObservables = (from relatedType in contextRelationshipFilters
+                                               let method = typeof (ContextManager).GetMethod("GetContextObservable")
+                                               let generic = method.MakeGenericMethod(new[] {relatedType.RelatedContextType})
+                                               let contextObservable = (IObservable<object>) generic.Invoke(this, null)
+                                               select contextObservable.DistinctUntilChanged().ObserveOnDispatcher().Select(context => context == null ? null :
+                                                   new FilterDescriptor(relatedType.EntityMember, FilterOperator.IsEqualTo, relatedType.FilterValueGenerator(context)))).ToArray();
+
+            var disposeObservable = new Subject<bool>();
+
+            //Whenever the RoleId updates, update the VirtualQueryableCollectionView
+            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
+            {
+                //Dispose the last VQCV subscriptions
+                disposeObservable.OnNext(true);
+
+                var initialQuery = entityQuery(roleId);
+
+                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable, contextRelationshipFilters.Select(crf => crf.RelatedContextType), filterDescriptorObservables, false,
+                    loadedEntities => { SelectedEntity = loadedEntities.FirstOrDefault(); });
+
+                QueryableCollectionView = result.VQCV;
+
+                //Subscribe the loading subject to the LoadingAfterFilterChange observable
+                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
+            });
+        }
+
+        /// <summary>
         /// Sets up data loading for entities without any context.
         /// </summary>
         /// <param name="entityQuery">An action which is passed the role id, and should return the entity query to load data with.</param>
@@ -130,19 +176,28 @@ namespace FoundOps.SLClient.Data.ViewModels
                 MessageBus.Current.SendMessage(new MoveToDetailsViewMessage(ObjectTypeProvided, MoveStrategy.AddContextToExisting)));
         }
 
-        #region Implementation of IContextAware
+        #endregion
+    }
+
+    /// <summary>
+    /// Defines the relationship between an entity and its context/
+    /// </summary>
+    public class ContextRelationshipFilter
+    {
+        /// <summary>
+        /// The type of related entity context. Ex. Vehicle
+        /// </summary>
+        public Type RelatedContextType { get; set; }
 
         /// <summary>
-        /// Used by the Filter to determine if the current entity should be part of the view.
-        /// This is generally relying on Context.
+        /// The Member of the current entity related to the context. Ex. VehicleMaintenance's "VehicleId"
         /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <param name="isNew">if set to <c>true</c> [is new].</param>
-        /// <returns></returns>
-        protected virtual bool EntityIsPartOfView(TEntity entity, bool isNew) { return true; }
+        public String EntityMember { get; set; }
 
-        #endregion
-
-        #endregion
+        /// <summary>
+        /// A function when given the current related entity context, return the value of the context.
+        /// Ex. FilterValueGenerator(someVehicle) = abcd-1324-asfa-fegeg (someVehicle.Id)
+        /// </summary>
+        public Func<object, object> FilterValueGenerator { get; set; }
     }
 }

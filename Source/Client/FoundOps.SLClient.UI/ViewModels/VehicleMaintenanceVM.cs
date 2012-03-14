@@ -1,11 +1,9 @@
 ﻿using System;
-using FoundOps.Core.Models.CoreEntities;
-using GalaSoft.MvvmLight.Command;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
+using GalaSoft.MvvmLight.Command;
+using MEFedMVVM.ViewModelLocator;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -25,7 +23,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public VehicleMaintenanceVM()
         {
-            SetupMainQuery(DataManager.Query.VehicleMaintenance);
+            SetupDataLoading();
 
             #region Register Commands
 
@@ -35,25 +33,21 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
-        #region Logic
-
-        protected override bool EntityIsPartOfView(VehicleMaintenanceLogEntry vehicleMaintenanceLogEntry, bool isNew)
+        private void SetupDataLoading()
         {
-            if (isNew)
-                return true;
-
-            var entityIsPartOfView = false;
-
-            //Setup filters
-
-            //Find if there is a client context
-            var vehicleContext = ContextManager.GetContext<Vehicle>();
-
-            if (vehicleContext != null)
-                entityIsPartOfView = vehicleMaintenanceLogEntry.VehicleId == vehicleContext.Id;
-
-            return entityIsPartOfView;
+            SetupContextDataLoading(roleId => Context.GetVehicleMaintenanceLogForPartyQuery(roleId),
+                                    new[]
+                                        {
+                                            new ContextRelationshipFilter
+                                                {
+                                                    EntityMember = "VehicleId",
+                                                    FilterValueGenerator = v => ((Vehicle) v).Id,
+                                                    RelatedContextType = typeof (Vehicle)
+                                                }
+                                        });
         }
+
+        #region Logic
 
         protected override void OnAddEntity(VehicleMaintenanceLogEntry vehicleMaintenanceLogEntry)
         {

@@ -1,14 +1,14 @@
-﻿using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+﻿using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
-using Microsoft.Windows.Data.DomainServices;
 using ReactiveUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Reactive.Linq;
+using System.ServiceModel.DomainServices.Client;
 using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -70,7 +70,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 ((BusinessAccount)ContextManager.OwnerAccount).Employees.Add(newEmployee);
 
                 //Add the new entity to the EntityList behind the DCV
-                ((EntityList<Employee>)ExistingItemsSource).Add(newEmployee);
+                ((EntitySet<Employee>)ExistingItemsSource).Add(newEmployee);
 
                 return newEmployee;
             };

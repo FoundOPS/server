@@ -135,22 +135,23 @@ namespace FoundOps.SLClient.Data.Services
         {
             #region Current Account and Role Properties
 
-            //Whenever a role id changes, clear the Context
-            ((Subject<Guid>)RoleIdObserver).DistinctUntilChanged().Subscribe(_ =>
-            {
-                foreach(var entitySet in Manager.Data.Context.EntityContainer.EntitySets)
-                {
-                    if (entitySet == Manager.Data.Context.Roles || entitySet == Manager.Data.Context.Blocks 
-                        || entitySet == Manager.Data.Context.Parties)
-                        continue;
+            //TODO Clear entity sets whenever Roles change
+            ////Whenever a role id changes, clear the Context
+            //((Subject<Guid>)RoleIdObserver).DistinctUntilChanged().Subscribe(_ =>
+            //{
+            //    foreach (var entitySet in Manager.Data.Context.EntityContainer.EntitySets)
+            //    {
+            //        if (entitySet == Manager.Data.Context.Roles || entitySet == Manager.Data.Context.Blocks
+            //            || entitySet == Manager.Data.Context.Parties)
+            //            continue;
 
-                    entitySet.Clear();
-                }
+            //        //entitySet.Clear();
+            //    }
 
-               //TODO Clear parties that are not UserAccounts
-               //Manager.Data.Context.DetachEntities()
-               //Manager.Data.Context.Parties.OfType<UserAccount>()
-            });
+            //   Clear parties that are not UserAccounts...
+            //    //Manager.Data.Context.DetachEntities()
+            //    //Manager.Data.Context.Parties.OfType<UserAccount>()
+            //});
 
             //Subcribe _roleIdObservable to the distinct RoleIdObserver changes
             ((Subject<Guid>)RoleIdObserver).DistinctUntilChanged()

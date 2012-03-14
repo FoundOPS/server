@@ -128,8 +128,8 @@ namespace FoundOps.SLClient.Data.Services
             //Keep track of domain context changes and domain context is submitting every quarter second (and update this public properties)
             Observable.Interval(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
             {
-                DomainContextHasChanges=this.Context.HasChanges;
-                DomainContextIsSubmitting=this.Context.IsSubmitting;
+                DomainContextHasChanges = this.Context.HasChanges;
+                DomainContextIsSubmitting = this.Context.IsSubmitting;
             });
 
             SetupQueries();

@@ -166,37 +166,26 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            var relatedTypes = new[] { typeof(Region), typeof(Client) };
+            //Force load the entities when in a related types view
+            //this is because VDCV will only normally load when a virtual item is loaded onto the screen
+            //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
+            SetupContextDataLoading(roleId => Context.GetLocationsToAdministerForRoleQuery(roleId),
+                                    new[]
+                                        {
+                                            new ContextRelationshipFilter
+                                                {
+                                                    EntityMember = "RegionId",
+                                                    FilterValueGenerator = v => ((Region) v).Id,
+                                                    RelatedContextType = typeof (Region)
+                                                },
+                                            new ContextRelationshipFilter
+                                                {
+                                                    EntityMember = "PartyId",
+                                                    FilterValueGenerator = v => ((Client) v).Id,
+                                                    RelatedContextType = typeof (Client)
+                                                }
+                                        }, true);
 
-            var filterDescriptorsObservable = new[]
-            {
-                ContextManager.GetContextObservable<Region>().DistinctUntilChanged().ObserveOnDispatcher().Select(regionContext=> regionContext==null ? null :
-                    new FilterDescriptor("RegionId", FilterOperator.IsEqualTo, regionContext.Id)),
-                ContextManager.GetContextObservable<Client>().DistinctUntilChanged().ObserveOnDispatcher().Select(clientContext=> clientContext==null ? null :
-                    new FilterDescriptor("PartyId", FilterOperator.IsEqualTo, clientContext.Id))
-            };
-
-            var disposeObservable = new Subject<bool>();
-
-            //Whenever the RoleId updates, update the VirtualQueryableCollectionView
-            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
-            {
-                //Dispose the last VQCV subscriptions
-                disposeObservable.OnNext(true);
-
-                var initialQuery = Context.GetLocationsToAdministerForRoleQuery(ContextManager.RoleId);
-
-                //Force load the entities when in a related types view
-                //this is because VDCV will only normally load when a virtual item is loaded onto the screen
-                //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
-                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable, relatedTypes, filterDescriptorsObservable, true,
-                    loadedEntities => { SelectedEntity = loadedEntities.FirstOrDefault(); });
-
-                QueryableCollectionView = result.VQCV;
-
-                //Subscribe the loading subject to the LoadingAfterFilterChange observable
-                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
-            });
 
             LoadOperation<Location> detailsLoadOperation = null;
             //Whenever the location changes load the location details
