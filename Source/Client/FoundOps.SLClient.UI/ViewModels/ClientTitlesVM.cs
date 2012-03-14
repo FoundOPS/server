@@ -112,14 +112,14 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         //Overridden
 
-        protected override bool EntityIsPartOfView(ClientTitle entity, bool isNew)
-        {
-            var contactContext = ContextManager.GetContext<Contact>();
+        //protected override bool EntityIsPartOfView(ClientTitle entity, bool isNew)
+        //{
+        //    var contactContext = ContextManager.GetContext<Contact>();
 
-            if (contactContext == null) return true;
+        //    if (contactContext == null) return true;
 
-            return entity.ContactId == contactContext.Id;
-        }
+        //    return entity.ContactId == contactContext.Id;
+        //}
 
 
         #endregion

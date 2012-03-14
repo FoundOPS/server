@@ -41,22 +41,22 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Logic
 
-        protected override bool EntityIsPartOfView(Route route, bool isNew)
-        {
-            var entityIsPartOfView = true;
+        //protected override bool EntityIsPartOfView(Route route, bool isNew)
+        //{
+        //    var entityIsPartOfView = true;
 
-            var employeeContext = this.ContextManager.GetContext<Employee>();
+        //    var employeeContext = this.ContextManager.GetContext<Employee>();
 
-            if (employeeContext != null)
-                entityIsPartOfView = route.Technicians.Contains(employeeContext);
+        //    if (employeeContext != null)
+        //        entityIsPartOfView = route.Technicians.Contains(employeeContext);
 
-            var vehicleContext = this.ContextManager.GetContext<Vehicle>();
+        //    var vehicleContext = this.ContextManager.GetContext<Vehicle>();
 
-            if (vehicleContext != null)
-                entityIsPartOfView = entityIsPartOfView && route.Vehicles.Contains(vehicleContext);
+        //    if (vehicleContext != null)
+        //        entityIsPartOfView = entityIsPartOfView && route.Vehicles.Contains(vehicleContext);
 
-            return entityIsPartOfView;
-        }
+        //    return entityIsPartOfView;
+        //}
 
         protected override void OnAddEntity(Route newEntity)
         {
