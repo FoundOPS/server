@@ -5,16 +5,11 @@ namespace FoundOps.Common.NET
 {
     public partial class Address
     {
-        partial void OnLatitudeChanged()
-        {
-            this.RaisePropertyChanged("TelerikLocation");
-        }
+        #region Public Properties
 
-        partial void OnLongitudeChanged()
-        {
-            this.RaisePropertyChanged("TelerikLocation");
-        }
-
+        /// <summary>
+        /// Returns a TelerikLocation based off this Latitude and Longitude.
+        /// </summary>
         public Telerik.Windows.Controls.Map.Location? TelerikLocation
         {
             get
@@ -26,5 +21,25 @@ namespace FoundOps.Common.NET
                                                                  System.Convert.ToDouble(this.Longitude));
             }
         }
+
+        #endregion
+
+        #region Logic
+
+        #region Overriden Methods
+
+        partial void OnLatitudeChanged()
+        {
+            this.RaisePropertyChanged("TelerikLocation");
+        }
+
+        partial void OnLongitudeChanged()
+        {
+            this.RaisePropertyChanged("TelerikLocation");
+        }
+
+        #endregion
+
+        #endregion
     }
 }

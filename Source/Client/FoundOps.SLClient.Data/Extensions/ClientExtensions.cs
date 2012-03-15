@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Silverlight.UI.Interfaces;
 using RiaServicesContrib;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
@@ -11,8 +12,12 @@ using FoundOps.Common.Silverlight.Interfaces;
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class Client : IReject
+    public partial class Client : IReject, ILoadDetails
     {
+        #region Public Properties
+
+        #region Implementation of ILoadDetails
+
         private bool _detailsLoading;
         /// <summary>
         /// Gets or sets a value indicating whether [details loading].
@@ -30,10 +35,47 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
+        #endregion
+
+        /// <summary>
+        /// Gets the entity graph of Client to remove.
+        /// </summary>
+        public EntityGraph<Entity> EntityGraphToRemove
+        {
+            get
+            {
+                var graphShape =
+                    new EntityGraphShape().Edge<Client, Party>(client => client.OwnedParty).Edge<Party, ContactInfo>(ownedParty => ownedParty.ContactInfoSet)
+                    .Edge<Client, ServiceTemplate>(client => client.ServiceTemplates).Edge<ServiceTemplate, Field>(st => st.Fields)
+                    .Edge<OptionsField, Option>(of => of.Options);
+
+                return new EntityGraph<Entity>(this, graphShape);
+            }
+        }
+
+        #endregion
+
+        #region Logic
+
+        #region Public Methods
+
+        /// <summary>
+        /// Rejects the changes of this individual entity.
+        /// </summary>
+        public void Reject()
+        {
+            this.RejectChanges();
+        }
+
+        #endregion
+
+        #region Overriden Methods
+
         partial void OnCreation()
         {
             InitializeHelper();
         }
+
         protected override void OnLoaded(bool isInitialLoad)
         {
             if (isInitialLoad)
@@ -81,25 +123,8 @@ namespace FoundOps.Core.Models.CoreEntities
             };
         }
 
-        /// <summary>
-        /// Gets the entity graph of Client to remove.
-        /// </summary>
-        public EntityGraph<Entity> EntityGraphToRemove
-        {
-            get
-            {
-                var graphShape =
-                    new EntityGraphShape().Edge<Client, Party>(client => client.OwnedParty).Edge<Party, ContactInfo>(ownedParty => ownedParty.ContactInfoSet)
-                    .Edge<Client, ServiceTemplate>(client => client.ServiceTemplates).Edge<ServiceTemplate, Field>(st => st.Fields)
-                    .Edge<OptionsField, Option>(of => of.Options);
+        #endregion
 
-                return new EntityGraph<Entity>(this, graphShape);
-            }
-        }
-
-        public void Reject()
-        {
-            this.RejectChanges();
-        }
+        #endregion
     }
 }

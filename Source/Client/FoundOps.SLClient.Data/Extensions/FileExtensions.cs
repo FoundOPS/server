@@ -1,6 +1,6 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.Tools;
+using System;
 using System.Reactive.Linq;
-using FoundOps.Common.Silverlight.Tools;
 
 //This is a partial class and must be in the same namespace as the generated CoreDomainService
 // ReSharper disable CheckNamespace
@@ -9,8 +9,9 @@ namespace FoundOps.Core.Models.CoreEntities
 {
     public partial class File
     {
-        private byte[] _byteData;
+        #region Public Properties
 
+        private byte[] _byteData;
         /// <summary>
         /// Gets the byte data of the file.
         /// </summary>
@@ -45,5 +46,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 this.CompositeRaiseEntityPropertyChanged("ByteData");
             }
         }
+
+        #endregion
     }
 }

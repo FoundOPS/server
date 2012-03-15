@@ -9,12 +9,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Windows.Controls;
-using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

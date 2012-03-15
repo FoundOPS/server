@@ -252,46 +252,56 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region Employees
 
-        public IQueryable<Employee> GetEmployees()
+        public IQueryable<Employee> GetEmployeesForRole(Guid roleId)
         {
-            return this.ObjectContext.Employees;
-        }
-
-        public IEnumerable<Employee> GetEmployeesForRole(Guid roleId)
-        {
-            //TODO Check they have access
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-            if (businessForRole == null) 
+            if (businessForRole == null)
                 return null;
 
-            IQueryable<Employee> employeesQueryable = ObjectContext.Employees;
+            //If the account is a FoundOPS admin return all Employees
+            //Otherwise return the Employees of the specified business account
+            var employees = businessForRole.Id == BusinessAccountsDesignData.FoundOps.Id
+                                     ? ObjectContext.Employees
+                                     : ObjectContext.Employees.Where(c => c.EmployerId == businessForRole.Id);
 
-            //Unless account is a foundops account, return employees for the current role's business
-            if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
-                employeesQueryable = employeesQueryable.Where(employee => employee.EmployerId == businessForRole.Id);
+            var employeesPeople =
+                from employee in employees
+                join person in ObjectContext.Parties.OfType<Person>()
+                    on employee.Id equals person.Id
+                orderby person.LastName + " " + person.FirstName
+                select new {employee, person};
 
-            //TODO Setup employee details
-            ////Force load OwnedPerson and ContactInfoSet
-            ////Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            //(from e in employeesQueryable
-            // join p in this.ObjectContext.Parties
-            //     on e.Id equals p.Id
-            // select p.ContactInfoSet).ToArray();
+            //Force loads the OwnedPerson (workaround for inheritance includes not working in Entity Framework)
+            employeesPeople.Select(cp => cp.person).ToArray();
 
-            ////Force load LinkedUserAccount
-            //(from e in employeesQueryable
-            // join p in this.ObjectContext.Parties
-            //     on e.LinkedUserAccount.Id equals p.Id
-            // select p).ToArray();
+            return employeesPeople.Select(i => i.employee);
+        }
 
-            ////Force load OwnedPerson.PartyImage
-            //var t = (from e in employeesQueryable
-            //         join pi in this.ObjectContext.Files.OfType<PartyImage>()
-            //             on e.OwnedPerson.Id equals pi.Id
-            //         select pi).ToArray();
-            //var count = t.Count();
+        /// <summary>
+        /// Gets the employee details.
+        /// It includes the OwnedPerson, ContactInfoSet, LinkedUserAccount, and PartyImage.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="employeeId">The employee id.</param>
+        public Employee GetEmployeeDetailsForRole(Guid roleId, Guid employeeId)
+        {
+            var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
-            return employeesQueryable;
+            var employee = ObjectContext.Employees.FirstOrDefault(e => e.Id == employeeId && e.EmployerId == partyForRole.Id);
+            if(employee ==null) return null;
+
+            //Force load contact info set
+            var contactInfoSet =
+                this.ObjectContext.Parties.OfType<Person>().Where(p => p.Id == employee.Id).Select(p => p.ContactInfoSet)
+                    .FirstOrDefault();
+
+            //Force load party image
+            var partyImage = this.ObjectContext.Files.OfType<PartyImage>().FirstOrDefault(pi => pi.PartyId == employeeId);
+            
+            //Force load linked user account
+            var linkedUserAccount = this.ObjectContext.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.Id == employeeId);
+
+            return employee;
         }
 
         public void InsertEmployee(Employee employee)
@@ -350,8 +360,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole == null)
                 return null;
 
-            return
-                this.ObjectContext.EmployeeHistoryEntries.Where(e => e.Employee.EmployerId == businessForRole.Id);
+            return ObjectContext.EmployeeHistoryEntries.Where(e => e.Employee.EmployerId == businessForRole.Id).
+                    OrderBy(ehe => ehe.Date);
         }
 
         public void InsertEmployeeHistoryEntry(EmployeeHistoryEntry employeeHistoryEntry)
@@ -810,7 +820,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
             return ObjectContext.VehicleMaintenanceLog.Where(vm => vm.Vehicle.OwnerPartyId == partyForRole.Id)
-                .Include("LineItems");
+                .Include("LineItems").OrderBy(vm => vm.Date);
         }
 
         public void InsertVehicleMaintenanceLogEntry(VehicleMaintenanceLogEntry vehicle)

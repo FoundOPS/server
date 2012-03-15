@@ -272,6 +272,7 @@
     <Compile Include="Extensions\AddressExtensions.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
     <Compile Include="Extensions\ClientTitleExtensions.cs" />
+    <Compile Include="Extensions\EmployeeExtensions.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Extensions\VehicleMaintenanceLogEntryExtensions.cs" />
     <Compile Include="Extensions\LocationFieldExtensions.cs" />

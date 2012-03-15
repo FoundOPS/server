@@ -132,7 +132,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                 var initialQuery = entityQuery(roleId);
 
-                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable, contextRelationshipFilters.Select(crf => crf.RelatedContextType), filterDescriptorObservables, false,
+                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable, contextRelationshipFilters.Select(crf => crf.RelatedContextType), filterDescriptorObservables, forceLoadRelatedTypesContext,
                     loadedEntities => { SelectedEntity = loadedEntities.FirstOrDefault(); });
 
                 QueryableCollectionView = result.VQCV;

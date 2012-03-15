@@ -1,17 +1,20 @@
-﻿using System;
-using ReactiveUI;
-using System.ComponentModel;
+﻿using FoundOps.Common.Silverlight.Interfaces;
 using FoundOps.Common.Silverlight.Tools;
-using FoundOps.Common.Silverlight.Interfaces;
+using FoundOps.Common.Silverlight.UI.Interfaces;
+using ReactiveUI;
+using System;
+using System.ComponentModel;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class Location : IRaiseValidationErrors, IReactiveNotifyPropertyChanged
+    public partial class Location : IRaiseValidationErrors, IReactiveNotifyPropertyChanged, ILoadDetails
     {
         #region Public Properties
+
+        #region Implementation of ILoadDetails
 
         private bool _detailsLoading;
         /// <summary>
@@ -29,6 +32,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 this.RaisePropertyChanged("DetailsLoading");
             }
         }
+
+        #endregion
 
         /// <summary>
         /// Gets the telerik location.

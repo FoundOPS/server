@@ -18,7 +18,7 @@ namespace FoundOps.Server.Controllers
 #endif
 
             if (!HttpContext.User.Identity.IsAuthenticated)
-                return Redirect(Global.RootBlogUrl);
+                return Redirect(Global.RootFrontSiteUrl);
 
             return RedirectToAction("Silverlight", "Home");
         }

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using FoundOps.Common.Silverlight.Tools;
+﻿using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Context.Services.Interface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel.DomainServices.Client;
 
 //This is a partial class and must be in the same namespace as the generated CoreDomainService

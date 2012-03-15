@@ -53,12 +53,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public EmployeesVM()
         {
+            SetupDataLoading();
+
             //Setup the selected Employee's OwnedPerson PartyVM whenever the selected employee changes
             _selectedEmployeePersonVM =
                 SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson))
                 .ToProperty(this, x => x.SelectedEmployeePersonVM);
-
-            SetupTopEntityDataLoading(roleId => Context.GetEmployeesForRoleQuery(roleId));
 
             #region Implementation of IAddToDeleteFromSource<Employee>
 
@@ -77,6 +77,27 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
         }
+
+        /// <summary>
+        /// Setups the data loading.
+        /// </summary>
+        private void SetupDataLoading()
+        {
+            SetupTopEntityDataLoading(roleId => Context.GetEmployeesForRoleQuery(roleId));
+
+            LoadOperation<Employee> detailsLoadOperation = null;
+            //Whenever the location changes load the employee details
+            SelectedEntityObservable.Where(se => se != null).Subscribe(selectedEntity =>
+            {
+                if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
+                    detailsLoadOperation.Cancel();
+
+                selectedEntity.DetailsLoading = true;
+                detailsLoadOperation = Context.Load(Context.GetEmployeeDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id),
+                                 loadOp => selectedEntity.DetailsLoading = false, null);
+            });
+        }
+
 
         #region Logic
 

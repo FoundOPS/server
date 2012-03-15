@@ -316,6 +316,7 @@
     <Compile Include="Interactivity\Behaviors\SetPropertyOnStateBehavior.cs" />
     <Compile Include="Interactivity\Behaviors\SetSelectedRowOnRowDetailsExpandedBehavior.cs" />
     <Compile Include="Interactivity\Triggers\ConfirmBeforeCommandTrigger.cs" />
+    <Compile Include="Interfaces\ILoadDetails.cs" />
     <Compile Include="Interfaces\IPreventNavigationFrom.cs" />
     <Compile Include="Messages\IsBusyMessage.cs" />
     <Compile Include="Messages\NavigateToMessage.cs" />
