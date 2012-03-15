@@ -118,7 +118,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             var filterDescriptorObservables = (from relatedType in contextRelationshipFilters
                                                let method = typeof (ContextManager).GetMethod("GetContextObservable")
                                                let generic = method.MakeGenericMethod(new[] {relatedType.RelatedContextType})
-                                               let contextObservable = (IObservable<object>) generic.Invoke(this, null)
+                                               let contextObservable = (IObservable<object>) generic.Invoke(ContextManager, null)
                                                select contextObservable.DistinctUntilChanged().ObserveOnDispatcher().Select(context => context == null ? null :
                                                    new FilterDescriptor(relatedType.EntityMember, FilterOperator.IsEqualTo, relatedType.FilterValueGenerator(context)))).ToArray();
 

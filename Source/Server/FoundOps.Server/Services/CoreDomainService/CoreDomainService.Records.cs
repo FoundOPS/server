@@ -260,39 +260,36 @@ namespace FoundOps.Server.Services.CoreDomainService
         public IEnumerable<Employee> GetEmployeesForRole(Guid roleId)
         {
             //TODO Check they have access
-
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-
-            if (businessForRole == null)
+            if (businessForRole == null) 
                 return null;
 
-            IQueryable<Employee> employeesQueryable = this.ObjectContext.Employees;
+            IQueryable<Employee> employeesQueryable = ObjectContext.Employees;
 
             //Unless account is a foundops account, return employees for the current role's business
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
-            {
                 employeesQueryable = employeesQueryable.Where(employee => employee.EmployerId == businessForRole.Id);
-            }
 
-            //Force load OwnedPerson and ContactInfoSet
-            //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            (from e in employeesQueryable
-             join p in this.ObjectContext.Parties
-                 on e.Id equals p.Id
-             select p.ContactInfoSet).ToArray();
+            //TODO Setup employee details
+            ////Force load OwnedPerson and ContactInfoSet
+            ////Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
+            //(from e in employeesQueryable
+            // join p in this.ObjectContext.Parties
+            //     on e.Id equals p.Id
+            // select p.ContactInfoSet).ToArray();
 
-            //Force load LinkedUserAccount
-            (from e in employeesQueryable
-             join p in this.ObjectContext.Parties
-                 on e.LinkedUserAccount.Id equals p.Id
-             select p).ToArray();
+            ////Force load LinkedUserAccount
+            //(from e in employeesQueryable
+            // join p in this.ObjectContext.Parties
+            //     on e.LinkedUserAccount.Id equals p.Id
+            // select p).ToArray();
 
-            //Force load OwnedPerson.PartyImage
-            var t = (from e in employeesQueryable
-                     join pi in this.ObjectContext.Files.OfType<PartyImage>()
-                         on e.OwnedPerson.Id equals pi.Id
-                     select pi).ToArray();
-            var count = t.Count();
+            ////Force load OwnedPerson.PartyImage
+            //var t = (from e in employeesQueryable
+            //         join pi in this.ObjectContext.Files.OfType<PartyImage>()
+            //             on e.OwnedPerson.Id equals pi.Id
+            //         select pi).ToArray();
+            //var count = t.Count();
 
             return employeesQueryable;
         }
@@ -354,8 +351,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return null;
 
             return
-                this.ObjectContext.EmployeeHistoryEntries.Include("Employee").Where(
-                    e => e.Employee.EmployerId == businessForRole.Id);
+                this.ObjectContext.EmployeeHistoryEntries.Where(e => e.Employee.EmployerId == businessForRole.Id);
         }
 
         public void InsertEmployeeHistoryEntry(EmployeeHistoryEntry employeeHistoryEntry)

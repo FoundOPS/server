@@ -7,7 +7,8 @@
     <UserControl.Resources>
         <Converters:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
     </UserControl.Resources>
-    <telerik:RadGridView x:Name="MaintenanceRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding DomainCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
+    <telerik:RadGridView x:Name="MaintenanceRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True" RowIndicatorVisibility="Collapsed" 
+                         ItemsSource="{Binding QueryableCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Date">
                 <telerik:GridViewDataColumn.CellTemplate>
