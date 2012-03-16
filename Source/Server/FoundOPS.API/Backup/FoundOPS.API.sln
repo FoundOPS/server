@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 11
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOPS.API", "FoundOPS.API\FoundOPS.API.csproj", "{8BE952E2-F077-42D0-A4AD-704EEC696840}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Core", "..\FoundOps.Core\FoundOps.Core.csproj", "{C5170A8A-CAD2-47E2-8552-FEF87C771C03}"

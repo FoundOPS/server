@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="FoundOPS.API">
+</Property><Property Name="Solution File" Value="C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\FoundOPS.API.sln">
+</Property><Property Name="User Options File" Value="C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\FoundOPS.API.v11.suo">
+</Property><Property Name="Date" Value="Thursday, March 15, 2012">
+</Property><Property Name="Time" Value="22:46 PM">
+</Property></Properties><Event ErrorLevel="3" Project="" Source="FoundOPS.API.sln" Description="SafeUpgrade">
+</Event><Event ErrorLevel="0" Project="" Source="FoundOPS.API.sln" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API.sln">
+</Event><Event ErrorLevel="0" Project="" Source="FoundOPS.API.v11.suo" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API.v11.suo">
+</Event><Event ErrorLevel="3" Project="FoundOPS.API" Source="FoundOPS.API\FoundOPS.API.csproj" Description="SafeUpgrade">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\FoundOPS.API.csproj" Description="Project file successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\FoundOPS.API.csproj">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\FoundOPS.API.csproj.user" Description="Project user file successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\FoundOPS.API.csproj.user">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Controllers\AuthController.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Controllers\AuthController.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Controllers\TechnicianController.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Controllers\TechnicianController.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Global.asax.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Global.asax.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Models\Client.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Models\Client.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Models\ContactInfo.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Models\ContactInfo.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Models\Location.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Models\Location.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Models\Route.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Models\Route.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Models\RouteDestination.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Models\RouteDestination.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\TechnicianDomainService.cs" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\TechnicianDomainService.cs">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Global.asax" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Global.asax">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery-1.6.2-vsdoc.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery-1.6.2-vsdoc.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery-1.6.2.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery-1.6.2.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery-1.6.2.min.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery-1.6.2.min.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery-ui-1.8.11.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery-ui-1.8.11.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery-ui-1.8.11.min.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery-ui-1.8.11.min.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery.unobtrusive-ajax.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery.unobtrusive-ajax.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery.unobtrusive-ajax.min.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery.unobtrusive-ajax.min.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery.validate-vsdoc.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery.validate-vsdoc.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery.validate.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery.validate.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery.validate.min.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery.validate.min.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery.validate.unobtrusive.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery.validate.unobtrusive.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\jquery.validate.unobtrusive.min.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\jquery.validate.unobtrusive.min.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\knockout-1.3.0beta.debug.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\knockout-1.3.0beta.debug.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\knockout-1.3.0beta.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\knockout-1.3.0beta.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Scripts\modernizr-2.0.6-development-only.js" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Scripts\modernizr-2.0.6-development-only.js">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Web.config" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Web.config">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Web.Debug.config" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Web.Debug.config">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\Web.Release.config" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\Web.Release.config">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\packages.config" Description="File successfully backed up as C:\FoundOPS\GitHub\Source\Server\FoundOPS.API\Backup\FoundOPS.API\packages.config">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\FoundOPS.API.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="FoundOPS.API" Source="FoundOPS.API\FoundOPS.API.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="FoundOPS.API.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="FoundOPS.API.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="FoundOPS.API" Source="FoundOPS.API\FoundOPS.API.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
