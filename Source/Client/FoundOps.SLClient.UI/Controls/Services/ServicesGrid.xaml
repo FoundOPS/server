@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" d:DesignWidth="400"
         xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Services1="clr-namespace:FoundOps.SLClient.UI.Controls.Services" mc:Ignorable="d"
-        ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM" Loaded="ServicesGridLoaded" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
+        Loaded="ServicesGridLoaded" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
     <UserControl.Resources>
         <Services1:ServiceStyleSelector x:Key="ServiceStyleSelector" />
     </UserControl.Resources>

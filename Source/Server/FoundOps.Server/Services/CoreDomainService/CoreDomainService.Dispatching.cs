@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Data;
 using System.Data.Objects;
@@ -39,14 +40,27 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         }
 
-        public IQueryable<Route> GetRouteLogForServiceProvider(Guid roleId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="vehicleId">(Optional) filter routes that have this vehicle.</param>
+        /// <param name="employeeId">(Optional) filter routes that have this employee.</param>
+        /// <returns></returns>
+        public IQueryable<Route> GetRouteLogForServiceProvider(Guid roleId, Guid vehicleId, Guid employeeId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var routes = ((ObjectQuery<Route>)
-                          this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id))
+            var routes = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id)
                           .Include("Vehicles").Include("Technicians").Include("RouteDestinations");
 
+            if(vehicleId!=Guid.Empty)
+                routes = routes.Where(r => r.Vehicles.Any(v => v.Id == vehicleId));
+
+            if(employeeId!=Guid.Empty)
+                routes = routes.Where(r => r.Technicians.Any(t => t.Id == employeeId));
+
+            //TODO: optimize this
             //Force load OwnedPerson
             //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
             (from t in routes.SelectMany(r => r.Technicians)
@@ -54,7 +68,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                  on t.Id equals p.Id
              select p).ToArray();
 
-            return routes;
+            return routes.OrderBy(r => r.Date);
         }
 
         public void InsertRoute(Route route)

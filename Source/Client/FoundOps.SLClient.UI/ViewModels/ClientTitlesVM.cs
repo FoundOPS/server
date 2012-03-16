@@ -32,7 +32,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         //Local
         private ClientTitle _clientTitleInCreation;
-        public ClientTitle ClientTitleInCreation //Only public for this.WhenAny 
+        /// <summary>
+        /// Only public for this.WhenAny. TODO, update to use AddToDeleteFrom
+        /// </summary>
+        public ClientTitle ClientTitleInCreation
         {
             get { return _clientTitleInCreation; }
             set

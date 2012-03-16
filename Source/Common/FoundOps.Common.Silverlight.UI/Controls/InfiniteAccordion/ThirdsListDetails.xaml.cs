@@ -17,13 +17,6 @@ namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
         private readonly RadFluidContentControl _leftRadFluidContentControl = new RadFluidContentControl { ContentChangeMode = ContentChangeMode.Manual };
         private readonly RadFluidContentControl _rightRadFluidContentControl = new RadFluidContentControl { ContentChangeMode = ContentChangeMode.Manual, TransitionDuration = new TimeSpan(0, 0, 0, 0, 300) };
 
-        private readonly RadBusyIndicator _listBusyIndicator = new RadBusyIndicator
-        {
-            HorizontalAlignment = HorizontalAlignment.Stretch,
-            VerticalAlignment = VerticalAlignment.Stretch,
-            BusyContent = "Loading"
-        };
-
         public ThirdsListDetails()
         {
             InitializeComponent();
@@ -132,11 +125,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
 
                 if (List != null)
                 {
-                    _listBusyIndicator.Content = List;
-                    _listBusyIndicator.SetBinding(RadBusyIndicator.IsBusyProperty, new Binding("DataContext.IsLoading") { Source = Display });
-
-                    _leftRadFluidContentControl.SmallContent = _listBusyIndicator;
-                    _leftRadFluidContentControl.Content = _listBusyIndicator;
+                    _leftRadFluidContentControl.SmallContent = List;
+                    _leftRadFluidContentControl.Content = List;
                 }
 
                 _leftRadFluidContentControl.State = FluidContentControlState.Small;

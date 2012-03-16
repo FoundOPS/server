@@ -11,7 +11,7 @@ using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 namespace FoundOps.SLClient.UI.Controls.Employees
 {
     /// <summary>
-    /// Contains a list of Employees.
+    /// Contains a list of Employees for the current context.
     /// </summary>
     public partial class EmployeesGrid : INotifyPropertyChanged
     {

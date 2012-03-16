@@ -116,7 +116,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                                                let generic = method.MakeGenericMethod(new[] {relatedType.RelatedContextType})
                                                let contextObservable = (IObservable<object>) generic.Invoke(ContextManager, null)
                                                select contextObservable.DistinctUntilChanged().ObserveOnDispatcher().Select(context => context == null ? null :
-                                                   new FilterDescriptor(relatedType.EntityMember, FilterOperator.IsEqualTo, relatedType.FilterValueGenerator(context)))).ToArray();
+                                               new FilterDescriptor(relatedType.EntityMember, FilterOperator.IsEqualTo, relatedType.FilterValueGenerator(context)))).ToArray();
 
             var disposeObservable = new Subject<bool>();
 
@@ -133,8 +133,8 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                 QueryableCollectionView = result.VQCV;
 
-                //Subscribe the loading subject to the LoadingAfterFilterChange observable
-                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
+                //Subscribe the loading subject to when the count is loading
+                result.CountLoading.Subscribe(IsLoadingSubject);
             });
         }
 
@@ -155,8 +155,9 @@ namespace FoundOps.SLClient.Data.ViewModels
                 var initialQuery = entityQuery(roleId);
                 var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable);
 
-                //Subscribe the loading subject to the LoadingAfterFilterChange observable
-                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
+                //Subscribe the loading subject to when the count is loading
+                result.CountLoading.Subscribe(IsLoadingSubject);
+
                 QueryableCollectionView = result.VQCV;
             });
         }

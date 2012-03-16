@@ -1,29 +1,26 @@
-﻿using System;
-using System.Windows.Controls;
-using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
+﻿using FoundOps.SLClient.Data.Tools;
+using FoundOps.SLClient.UI.Tools;
+using System;
 using Telerik.Windows;
 using Telerik.Windows.Controls.GridView;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
-    public partial class RoutesLogGrid : UserControl
+    /// <summary>
+    /// Contains the route log for the current context.
+    /// </summary>
+    public partial class RoutesLogGrid
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoutesLogGrid"/> class.
+        /// </summary>
         public RoutesLogGrid()
         {
             InitializeComponent();
 
-            this.DependentWhenVisible(RoutesInfiniteAccordionVM);
+            this.DependentWhenVisible(VM.RoutesInfiniteAccordion);
 
             RouteLogRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
-        }
-
-        public RoutesInfiniteAccordionVM RoutesInfiniteAccordionVM
-        {
-            get
-            {
-                return (RoutesInfiniteAccordionVM)this.DataContext;
-            }
         }
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs radRoutedEventArgs)
@@ -31,6 +28,5 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             //TODO:
             //Navigate to the Dispatcher on the Service date of the selected route
         }
-
     }
 }

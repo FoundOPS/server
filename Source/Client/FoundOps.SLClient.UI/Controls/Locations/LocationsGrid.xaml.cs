@@ -1,12 +1,12 @@
-using System;
-using System.Windows;
-using Telerik.Windows;
-using System.ComponentModel;
+using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
-using Telerik.Windows.Controls.GridView;
 using PropertyMetadata = System.Windows.PropertyMetadata;
-using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+using System;
+using System.ComponentModel;
+using System.Windows;
+using Telerik.Windows;
+using Telerik.Windows.Controls.GridView;
 
 namespace FoundOps.SLClient.UI.Controls.Locations
 {

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using FoundOps.SLClient.UI.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Markup;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.UI.ViewModels;
-using System.ComponentModel.Composition;
 
 namespace FoundOps.SLClient.UI.Tools
 {
@@ -42,6 +42,17 @@ namespace FoundOps.SLClient.UI.Tools
             get
             {
                 return (ClientTitlesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientTitlesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ContactsVM.
+        /// </summary>
+        public static ContactsVM Contacts
+        {
+            get
+            {
+                return (ContactsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ContactsVM", null, CreationPolicy.Shared).Value;
             }
         }
 
@@ -108,6 +119,17 @@ namespace FoundOps.SLClient.UI.Tools
             get
             {
                 return (RoutesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the RoutesInfiniteAccordionVM.
+        /// </summary>
+        public static RoutesInfiniteAccordionVM RoutesInfiniteAccordion
+        {
+            get
+            {
+                return (RoutesInfiniteAccordionVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesInfiniteAccordionVM", null, CreationPolicy.Shared).Value;
             }
         }
 

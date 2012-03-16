@@ -64,14 +64,15 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAccountsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
         public UserAccountsVM()
             : base(true)
         {
+            return;
+            //TODO Optimization
+
             //Subscribe to the UserAccounts observable
             IsLoadingObservable = DataManager.Subscribe<UserAccount>(DataManager.Query.UserAccounts, this.ObservationState, null);
-
             #region DomainCollectionView
 
             var loadedUserAccounts = DataManager.GetEntityListObservable<Party>(DataManager.Query.UserAccounts);

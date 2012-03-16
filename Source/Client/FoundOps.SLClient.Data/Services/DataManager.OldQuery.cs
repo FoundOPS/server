@@ -149,7 +149,7 @@ namespace FoundOps.SLClient.Data.Services
             SetupQuery(Query.Regions, roleId => _coreDomainContext.GetRegionsForServiceProviderQuery(roleId), _coreDomainContext.Regions);
 
             //Setup RouteLog query
-            SetupQuery(Query.RouteLog, roleId => _coreDomainContext.GetRouteLogForServiceProviderQuery(roleId), _coreDomainContext.Routes);
+            SetupQuery(Query.RouteLog, roleId => _coreDomainContext.GetRouteLogForServiceProviderQuery(roleId, Guid.Empty, Guid.Empty), _coreDomainContext.Routes);
 
             //Setup Services query
             SetupQuery(Query.Services, roleId => _coreDomainContext.GetServicesForRoleQuery(roleId), _coreDomainContext.Services);
@@ -158,7 +158,7 @@ namespace FoundOps.SLClient.Data.Services
             SetupQuery(Query.ServiceTemplates, roleId => _coreDomainContext.GetServiceTemplatesForServiceProviderQuery(roleId), _coreDomainContext.ServiceTemplates);
 
             //Setup UserAccounts query
-            SetupQuery(Query.UserAccounts, roleId => _coreDomainContext.GetAllUserAccountsQuery(roleId), _coreDomainContext.Parties);
+            //SetupQuery(Query.UserAccounts, roleId => _coreDomainContext.GetUserAccountsQuery(roleId), _coreDomainContext.Parties);
 
             //Setup Vehicles query
             SetupQuery(Query.Vehicles, roleId => _coreDomainContext.GetVehiclesForPartyQuery(roleId), _coreDomainContext.Vehicles);

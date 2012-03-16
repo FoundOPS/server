@@ -8,7 +8,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
-using Microsoft.Windows.Data.DomainServices;
 using Telerik.Windows.Controls.DomainServices;
 using Telerik.Windows.Data;
 
@@ -74,6 +73,8 @@ namespace FoundOps.SLClient.Data.Services
             var countLoading = new BehaviorSubject<bool>(false);
             var loadingAfterFilterChange = new BehaviorSubject<bool>(false);
             var loadingVirtualItems = new BehaviorSubject<bool>(false);
+
+            #region Setup Initial Count & Load (after a Filter changes, or the DetailsView changes)
 
             var contextOrFiltersChanged = new Subject<bool>();
             //Setup the load size and set the count whenever
@@ -144,6 +145,10 @@ namespace FoundOps.SLClient.Data.Services
                 }
             });
 
+            #endregion
+
+            #region Setup Virtual Load (when a user scrolls or the collection is first shown in a loaded GridView)
+
             //When the user scrolls to an area, load those entities
             loadVirtualItemsSubscription = Observable.FromEventPattern<EventHandler<VirtualQueryableCollectionViewItemsLoadingEventArgs>, VirtualQueryableCollectionViewItemsLoadingEventArgs>(h => view.ItemsLoading += h, h => view.ItemsLoading -= h)
                 .ObserveOnDispatcher().Subscribe(e =>
@@ -181,6 +186,8 @@ namespace FoundOps.SLClient.Data.Services
 
                 Debug.WriteLine(typeof(TEntity) + " Virtual load " + e.EventArgs.StartIndex + " to " + (e.EventArgs.StartIndex + e.EventArgs.ItemCount));
             });
+
+            #endregion
 
             return new CreateVQCVResult<TEntity>
             {

@@ -486,6 +486,11 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region User Accounts
 
+        /// <summary>
+        /// Gets the current user account. Includes RoleMembership, RoleMembership.OwnerParty, OwnedRoles, OwnedRoles.Blocks, LinkedEmployees
+        /// and PartyImage.
+        /// TODO optimize
+        /// </summary>
         public UserAccount CurrentUserAccount()
         {
             var currentUserAccount = ((ObjectQuery<UserAccount>)AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext))
@@ -498,16 +503,42 @@ namespace FoundOps.Server.Services.CoreDomainService
             return currentUserAccount;
         }
 
-        public IEnumerable<Party> GetAllUserAccounts(Guid roleId)
+        /// <summary>
+        /// Returns the UserAccounts the current role has access to.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        public IQueryable<UserAccount> GetUserAccounts(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            //make sure current account is a foundops account
+            //Return all users if the current account is a foundops account
             if (businessForRole.Id == BusinessAccountsDesignData.FoundOps.Id)
                 return this.ObjectContext.Parties.OfType<UserAccount>();
 
-            //Filter by current businesses role
-            return businessForRole.OwnedRoles.SelectMany(or => or.MemberParties);
+            //If not a FoundOPS account, return the current business's owned roles memberparties
+            var memberPartyUserAccounts =
+                from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == businessForRole.Id)
+                from userAccount in this.ObjectContext.Parties.OfType<UserAccount>()
+                where role.MemberParties.Any(p => p.Id == userAccount.Id)
+                select userAccount;
+
+            return memberPartyUserAccounts;
+        }
+
+        /// <summary>
+        /// Returns the UserAccounts the current role has access to filtered by the search text.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <returns></returns>
+        public IQueryable<UserAccount> SearchUserAccountsForRole(Guid roleId, string searchText)
+        {
+            var userAccounts = GetUserAccounts(roleId);
+
+            if (!String.IsNullOrEmpty(searchText))
+                userAccounts = userAccounts.Where(ua => ua.FirstName.StartsWith(searchText) || ua.LastName.StartsWith(searchText));
+
+            return userAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName);
         }
 
         public void InsertUserAccount(UserAccount userAccount)

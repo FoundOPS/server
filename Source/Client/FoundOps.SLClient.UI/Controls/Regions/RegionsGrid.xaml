@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView"
         xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"  xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d"
-        ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM">
+        ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
     <UserControl.Resources>
         <Converters:StringToColorConverter x:Key="StringToColorConverter"/>
     </UserControl.Resources>

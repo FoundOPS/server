@@ -1,14 +1,15 @@
-﻿using System.Windows;
-using System.Windows.Data;
-using Telerik.Windows.Controls;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.UI.Tools;
+using System.ServiceModel.DomainServices.Client;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
 {
     /// <summary>
-    /// Displays the linked UserAccount
+    /// Displays the linked UserAccount.
     /// </summary>
     public partial class UserAccountLinkLarge
     {
@@ -19,24 +20,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         {
             InitializeComponent();
 
-            UserAccountsVM.PropertyChanged += (sender, e) =>
-            {
-                //After the User Accounts are loaded, setup two way binding
-                if (e.PropertyName == "IsLoading" && !UserAccountsVM.IsLoading)
-                {
-                    UserAccountsRadComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("SelectedUserAccount") { Source = this, Mode = BindingMode.TwoWay });
-                }
-            };
-
-            this.DependentWhenVisible(UserAccountsVM);
-        }
-
-        /// <summary>
-        /// Gets the user accounts VM.
-        /// </summary>
-        public UserAccountsVM UserAccountsVM
-        {
-            get { return (UserAccountsVM)DataContext; }
+            this.DependentWhenVisible(VM.UserAccounts);
         }
 
         #region SelectedUserAccount Dependency Property
@@ -61,5 +45,31 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
                 new PropertyMetadata(null));
 
         #endregion
+
+        private void UserAccountsAutoCompleteBox_OnPopulating(object sender, PopulatingEventArgs e)
+        {
+            // Allow us to wait for the response
+            e.Cancel = true;
+            UpdateSuggestions();
+        }
+
+        private LoadOperation<UserAccount> _lastSuggestionQuery;
+        /// <summary>
+        /// Updates the user account suggestions.
+        /// </summary>
+        private void UpdateSuggestions()
+        {
+            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
+                _lastSuggestionQuery.Cancel();
+
+            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchUserAccountsForRoleQuery(Manager.Context.RoleId, UserAccountsAutoCompleteBox.Text).Take(10),
+                                loadOperation =>
+                                {
+                                    if (loadOperation.IsCanceled || loadOperation.HasError) return;
+
+                                    UserAccountsAutoCompleteBox.ItemsSource = loadOperation.Entities;
+                                    UserAccountsAutoCompleteBox.PopulateComplete();
+                                }, null);
+        }
     }
 }
