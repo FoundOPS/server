@@ -185,17 +185,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                                         }, true);
 
 
-            LoadOperation<Location> detailsLoadOperation = null;
             //Whenever the location changes load the location details
-            SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
-            {
-                if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
-                    detailsLoadOperation.Cancel();
-
-                selectedLocation.DetailsLoading = true;
-                detailsLoadOperation = Context.Load(Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedLocation.Id),
-                                 loadOp => selectedLocation.DetailsLoading = false, null);
-            });
+            SetupDetailsLoading(selectedEntity => Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
         #region IAddToDeleteFromSource

@@ -85,17 +85,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             SetupTopEntityDataLoading(roleId => Context.GetEmployeesForRoleQuery(roleId));
 
-            LoadOperation<Employee> detailsLoadOperation = null;
-            //Whenever the location changes load the employee details
-            SelectedEntityObservable.Where(se => se != null).Subscribe(selectedEntity =>
-            {
-                if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
-                    detailsLoadOperation.Cancel();
-
-                selectedEntity.DetailsLoading = true;
-                detailsLoadOperation = Context.Load(Context.GetEmployeeDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id),
-                                 loadOp => selectedEntity.DetailsLoading = false, null);
-            });
+            SetupDetailsLoading(selectedEntity => Context.GetEmployeeDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
 

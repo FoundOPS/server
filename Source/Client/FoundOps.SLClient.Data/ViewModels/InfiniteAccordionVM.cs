@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Linq;
 using FoundOps.Common.Silverlight.UI.Interfaces;
-using FoundOps.Common.Tools;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
-using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using GalaSoft.MvvmLight.Command;
 using ReactiveUI;
@@ -112,7 +108,7 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <param name="entityQuery">The entity query.</param>
         /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
         /// <param name="forceLoadRelatedTypesContext">if set to <c>true</c> [force load when in a related types context].</param>
-        public void SetupContextDataLoading(Func<Guid, EntityQuery<TEntity>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters, bool forceLoadRelatedTypesContext = false)
+        protected void SetupContextDataLoading(Func<Guid, EntityQuery<TEntity>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters, bool forceLoadRelatedTypesContext = false)
         {
             //Build an array of FilterDescriptorObservables from the related types and from the GetContextObservable
             var filterDescriptorObservables = (from relatedType in contextRelationshipFilters
@@ -162,6 +158,26 @@ namespace FoundOps.SLClient.Data.ViewModels
                 //Subscribe the loading subject to the LoadingAfterFilterChange observable
                 result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
                 QueryableCollectionView = result.VQCV;
+            });
+        }
+
+        /// <summary>
+        /// Sets up data loading of an entities details when it is selected.
+        /// TEntity must implement ILoadDetails.
+        /// </summary>
+        /// <param name="entityQuery">An action which is passed the selected entity and should return the entity query to load data with.</param>
+        protected void SetupDetailsLoading(Func<TEntity, EntityQuery<TEntity>> entityQuery)
+        {
+            LoadOperation<TEntity> detailsLoadOperation = null;
+            //Whenever the selected entity changes load the details
+            SelectedEntityObservable.Where(se => se != null).Subscribe(selectedEntity =>
+            {
+                //Cancel the last load
+                if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
+                    detailsLoadOperation.Cancel();
+
+                ((ILoadDetails)selectedEntity).DetailsLoading = true;
+                detailsLoadOperation = Context.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoading = false, null);
             });
         }
 
