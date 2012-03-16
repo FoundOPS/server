@@ -3,13 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              d:DesignWidth="400" mc:Ignorable="d" 
-             ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
+             ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM">
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition />
         </Grid.RowDefinitions>
         <telerik:RadGridView x:Name="ClientsRadGridView" ShowGroupPanel="False" AutoGenerateColumns="False" 
-             RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
+                             RowIndicatorVisibility="Collapsed" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}" 
+                             SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
             <telerik:RadGridView.Columns>
                 <!--Filtering and sorting does not work/is not setup because DisplayName is a generated property. Consider looking into http://damieng.com/blog/2009/06/24/client-side-properties-and-any-remote-linq-provider-->
                 <telerik:GridViewDataColumn UniqueName="OwnedPartyDisplayName" Header="Name" IsReadOnly="True" IsFilterable="False" IsSortable="False" DataMemberBinding="{Binding DisplayName}" />
