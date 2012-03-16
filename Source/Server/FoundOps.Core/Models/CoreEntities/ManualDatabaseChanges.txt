@@ -7,4 +7,4 @@ ADD CONSTRAINT [FK_RouteTaskRouteDestination]
         ([Id])
 -----> ON DELETE NO ACTION ON UPDATE NO ACTION;  
 
-2. Replace all NONCLUSTERED w CLUSTERED
+2. Replace all NONCLUSTERED w CLUSTERED (4 of them)

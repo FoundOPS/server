@@ -15,5 +15,10 @@
     <PublishSolutionConfiguration>Release</PublishSolutionConfiguration>
     <PublishProfile>Default</PublishProfile>
     <TimestampLabel>True</TimestampLabel>
+    <WebRoleSkipLaunchInBrowser>
+    </WebRoleSkipLaunchInBrowser>
+    <WebRoleHttpsSkipLaunchInBrowser>FoundOps.Server</WebRoleHttpsSkipLaunchInBrowser>
+    <ActivePublishProfile>FoundOpsProduction</ActivePublishProfile>
+    <DeploymentPromptBeforeUpgrading>False</DeploymentPromptBeforeUpgrading>
   </PropertyGroup>
 </Project>

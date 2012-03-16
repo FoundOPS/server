@@ -8,10 +8,11 @@
     <UserControl.Resources>
         <Converters:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter"/>
     </UserControl.Resources>
-    <StackPanel x:Name="LayoutRoot" Background="White" DataContext="{Tools1:GetVM Type=ViewModels:RoutesVM}" 
+    <StackPanel x:Name="LayoutRoot" HorizontalAlignment="Center" Width="750" Margin="25,0,0,0" DataContext="{Tools1:GetVM Type=ViewModels:RoutesVM}" 
           Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsHeaderVisible, Converter={StaticResource VisibilityConverter}}">
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
@@ -23,13 +24,11 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" Text="{Binding SelectedEntity.Name}" 
                    Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteNameVisible, Converter={StaticResource VisibilityConverter}}"/>
-
-            <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="0,5" Height="2" Fill="Black"/>
-
+            <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="0,5" Height="2" Fill="Black" 
+                       Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteNameVisible, Converter={StaticResource VisibilityConverter}}"/>
             <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Text="{Binding SelectedEntity.Date, Converter={StaticResource DateTimeToLongDateConverter}}"
                                    Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteDateVisible, Converter={StaticResource VisibilityConverter}}"/>
-
-            <ItemsControl Grid.Row="3" ItemsSource="{Binding SelectedEntity.Vehicles}"
+            <ItemsControl Grid.Row="3" Grid.Column="1" ItemsSource="{Binding SelectedEntity.Vehicles}"
                                       Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedVehiclesVisible, Converter={StaticResource VisibilityConverter}}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -37,7 +36,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-
             <ItemsControl Grid.Row="3" Grid.Column="2" ItemsSource="{Binding SelectedEntity.Technicians}"
                       Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedTechniciansVisible, Converter={StaticResource VisibilityConverter}}">
                 <ItemsControl.ItemTemplate>

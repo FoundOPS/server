@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.Common.Tools.ExtensionMethods;
 using ReactiveUI;
 using System.Windows;
 using System.Windows.Browser;
@@ -84,11 +85,7 @@ namespace FoundOps.SLClient.Navigator
         private void CompassImageMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
-#if DEBUG
-                HtmlPage.Window.Navigate(new Uri("http://localhost:31820/Home/Silverlight"));
-#else
-                HtmlPage.Window.Navigate(new Uri("http://www.foundops.com/Home/Silverlight"));
-#endif
+                HtmlPage.Window.Navigate(new Uri(UriExtensions.ThisRootUrl + "/Home/Silverlight"));
         }
     }
 }

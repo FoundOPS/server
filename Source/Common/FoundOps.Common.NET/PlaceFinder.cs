@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Net;
-using System.Linq;
-using System.Xml.Linq;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Net;
+using System.Runtime.Serialization;
+using System.Xml.Linq;
 
 //Only works in .NET (not Silverlight) for now because PlaceFinder's Cross Domain Policy is messed up
 namespace FoundOps.Common.NET
@@ -15,7 +15,7 @@ namespace FoundOps.Common.NET
         private const string YahooId = "dj0yJmk9UWtYQVg3OVluUksyJmQ9WVdrOU1VcGlNWGRwTkdrbWNHbzlNVFF3TVRJM01UZzJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD1mMA--";
         private const string GeocodeUrl = "http://where.yahooapis.com/geocode?appid=" + YahooId;
 
-        public static void TryGeocode(Address addressToGeocode, Action<IEnumerable<GeocoderResult>> geocodingCompleteCallback)
+        public static IEnumerable<GeocoderResult> TryGeocode(Address addressToGeocode)
         {
             string parameters = "";
 
@@ -32,34 +32,26 @@ namespace FoundOps.Common.NET
                 parameters += String.Format("&zip={0}", addressToGeocode.ZipCode.Replace(" ", "+"));
 
             string restQueryUrl = GeocodeUrl + parameters;
-            TryGeocodeUrl(restQueryUrl, geocodingCompleteCallback);
+            return TryGeocodeUrl(restQueryUrl);
         }
 
-        public static void TryGeocode(string location, Action<IEnumerable<GeocoderResult>> geocodingCompleteCallback)
+        public static IEnumerable<GeocoderResult> TryGeocode(string location)
         {
-            string restQueryUrl = GeocodeUrl + String.Format("&location={0}", location.Replace(" ", "+"));
-            TryGeocodeUrl(restQueryUrl, geocodingCompleteCallback);
+            var restQueryUrl = GeocodeUrl + String.Format("&location={0}", location.Replace(" ", "+"));
+            return TryGeocodeUrl(restQueryUrl);
         }
 
-        private static void TryGeocodeUrl(string restQueryUrl, Action<IEnumerable<GeocoderResult>> geocodingCompleteCallback)
+        private static IEnumerable<GeocoderResult> TryGeocodeUrl(string restQueryUrl)
         {
             // Initiate Async Network call to Yahoo Geocoding Service
-            WebClient yahooGeocodeService = new WebClient();
-            yahooGeocodeService.DownloadStringCompleted +=
-                (sender, e) =>
-                YahooGeocodeServiceDownloadStringCompleted(e, geocodingCompleteCallback);
-            yahooGeocodeService.DownloadStringAsync(new Uri(restQueryUrl));
+            var yahooGeocodeService = new WebClient();
+            var data = yahooGeocodeService.DownloadString(new Uri(restQueryUrl));
+            return YahooGeocodeServiceDownloadStringCompleted(data);
         }
 
-        private static void YahooGeocodeServiceDownloadStringCompleted(DownloadStringCompletedEventArgs e, Action<IEnumerable<GeocoderResult>> geocodingCompleteCallback)
+        private static IEnumerable<GeocoderResult> YahooGeocodeServiceDownloadStringCompleted(string data)
         {
-            if (e.Error != null)
-            {
-                geocodingCompleteCallback(new List<GeocoderResult>());
-                return;
-            }
-
-            string xmlContent = e.Result;
+            string xmlContent = data;
             XDocument xmlResultSet = XDocument.Parse(xmlContent);
             var results =
                 xmlResultSet.Elements("ResultSet").Elements("Result").Select(
@@ -77,7 +69,7 @@ namespace FoundOps.Common.NET
                                       ZipCode = result.Element("postal").Value
                                   });
 
-            geocodingCompleteCallback(results);
+            return results;
         }
     }
 

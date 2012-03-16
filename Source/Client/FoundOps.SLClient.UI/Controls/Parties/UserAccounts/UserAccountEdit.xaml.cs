@@ -2,7 +2,9 @@
 using System.Windows;
 using System.Windows.Browser;
 using FoundOps.Common.Silverlight.UI.ViewModels;
+using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Models;
 
 namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
 {
@@ -72,11 +74,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
         private void HyperlinkButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
-#if DEBUG
-            HtmlPage.Window.Navigate(new Uri("http://localhost:31820/Account/ChangePassword"));
-#else
-            HtmlPage.Window.Navigate(new Uri("http://www.foundops.com/Account/ChangePassword"));
-#endif
+            HtmlPage.Window.Navigate(new Uri(UriExtensions.ThisRootUrl + @"/Account/ChangePassword"));
         }
     }
 }

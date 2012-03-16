@@ -3,8 +3,7 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
                       xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools"
-                      xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" 
-                      mc:Ignorable="d" Closed="MyRouteManifestViewerClosed">
+                      xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" mc:Ignorable="d" Closed="MyRouteManifestViewerClosed">
     <!--Do not remove ViewModels, it is used by GetVM-->
     <Controls:ChildWindow.Resources>
         <Style x:Key="PanelButtonStyle" TargetType="telerik:RadButton">
@@ -41,7 +40,7 @@
                 </LinearGradientBrush>
             </Border.Background>
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
-                <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" x:Name="SelectedRouteComboBox" Margin="5,0"  DisplayMemberPath="Name"
+                <telerik:RadComboBox x:Name="SelectedRouteComboBox" Margin="5,0"  DisplayMemberPath="Name"
                              DataContext="{Tools:GetVM Type=ViewModels:RoutesVM}" SelectedValue="{Binding SelectedEntity, Mode=TwoWay}" 
                              ItemsSource="{Binding DomainCollectionView}" Height="25"/>
                 <telerik:RadButton x:Name="btnPrint" ToolTipService.ToolTip="Print" Content="Print" Style="{StaticResource PanelButtonStyle}" Click="BtnPrint_OnClick" />

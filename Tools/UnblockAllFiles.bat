@@ -1,2 +1,1 @@
-cd Tools
-streams -s -d C:\FoundOps\GitHub
+C:\FoundOps\GitHub\Tools\streams -s -d C:\FoundOps\GitHub

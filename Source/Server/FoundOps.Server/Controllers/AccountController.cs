@@ -2,8 +2,8 @@
 using System.Net;
 using Recaptcha;
 using System.Text;
-using System.Net.Mail;
 using System.Web.Mvc;
+using System.Net.Mail;
 using System.Web.Routing;
 using System.Web.Security;
 using FoundOps.Common.Silverlight.Tools;
@@ -36,6 +36,7 @@ namespace FoundOps.Server.Controllers
                 {
                     if (MembershipService.ValidateUser(model.EmailAddress, model.Password))
                     {
+                        ClearLoginAttempts();
                         FormsService.SignIn(model.EmailAddress, model.RememberMe);
 
                         if (!String.IsNullOrEmpty(returnUrl))
@@ -103,56 +104,6 @@ namespace FoundOps.Server.Controllers
 
         #region Login/LogOff Actions
 
-        public ActionResult BlogLogin()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult BlogLogin(LogOnModel model, string returnUrl)
-        {
-            var loginAttempts = AddLoginAttempt();
-
-            if (loginAttempts < 5)
-            {
-                if (ModelState.IsValid)
-                {
-                    if (MembershipService.ValidateUser(model.EmailAddress, model.Password))
-                    {
-                        //User was validate, save information
-                        FormsService.SignIn(model.EmailAddress, model.RememberMe);
-
-                        //If there is a return url on login, pass that to the View for redirection 
-                        if (!String.IsNullOrEmpty(returnUrl))
-                        {
-                            model.RedirectUrl = returnUrl;
-                            return View(model);
-                        }
-
-                        //If there is not a return url on login, pass the Silverlight url to the View for redirection
-                        model.RedirectUrl = Url.Action("Silverlight", "Home");
-                        return View(model);
-                    }
-
-                    ModelState.AddModelError("", "The email address or password provided is incorrect.");
-                }
-            }
-            else
-            {
-                //If there are more than 5 attempts, redirect to the captcha
-                model.RedirectUrl = Url.Action("Captcha", "Account");
-                return View(model);
-            }
-
-            // If we got this far something failed. Redirect to login page w validation errors
-            model.RedirectUrl = Url.Action("Login", "Account");
-
-            //Store the ViewData so that you can maintain validation errors on LoginPage
-            TempData["ViewData"] = ViewData;
-
-            return View(model);
-        }
-
         /// <summary>
         /// Allows a user to login after they have passed the 5 attempts threshold.
         /// </summary>
@@ -168,9 +119,7 @@ namespace FoundOps.Server.Controllers
         public ActionResult CaptchaLogin(LogOnModel model, string returnUrl)
         {
             if (PerformRecaptcha())
-            {
                 ClearLoginAttempts();
-            }
 
             return LogOnLogic(model, returnUrl, "Captcha");
         }
@@ -196,7 +145,7 @@ namespace FoundOps.Server.Controllers
         {
             FormsService.SignOut();
 
-            return RedirectToAction("Index", "Home");
+            return Redirect(Global.RootBlogUrl);
         }
 
         #endregion

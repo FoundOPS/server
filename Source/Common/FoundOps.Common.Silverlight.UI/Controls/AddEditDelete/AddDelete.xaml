@@ -13,7 +13,7 @@
         <Button Margin="2" x:Name="AddButton" ToolTipService.ToolTip="Add New" Style="{StaticResource AddButtonStyle}" Click="AddButtonClick" 
                 Command="{Binding AddCommand}" CommandParameter="{Binding CommandParameter}" IsEnabled="{Binding AddIsEnabled}">
             <telerik:RadContextMenu.ContextMenu>
-                <telerik:RadContextMenu x:Name="RadContextMenu" IconColumnWidth="0" x:FieldModifier="public">
+                <telerik:RadContextMenu x:Name="RadContextMenu" IconColumnWidth="0" x:FieldModifier="public" Placement="Bottom">
                     <!--New Existing Menu Items-->
                     <telerik:RadMenuItem x:Name="NewExistingNewMenuItem" Header="New" Command="{Binding AddCommand}"/>
                     <telerik:RadMenuItem x:Name="NewExistingExistingMenuItem" Header="Existing" ItemsSource="{Binding ItemsSource}"

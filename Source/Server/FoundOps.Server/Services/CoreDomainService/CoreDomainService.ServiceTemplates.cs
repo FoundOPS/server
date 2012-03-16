@@ -1,9 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Data;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
-using FoundOps.Core.Models.CoreEntities;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.ServiceModel.DomainServices.EntityFramework;
+using System.ServiceModel.DomainServices.Server;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -59,14 +61,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteOptionsField(OptionsField optionsField)
         {
-            var loadedField = this.ObjectContext.Fields.FirstOrDefault(f => f.Id == optionsField.Id);
-
-            if (loadedField != null)
-                this.ObjectContext.Detach(loadedField);
-
-            if ((optionsField.EntityState == EntityState.Detached))
-                this.ObjectContext.Fields.Attach(optionsField);
-
             optionsField.Options.Load();
             var optionsToDelete = optionsField.Options.ToArray();
             foreach (var option in optionsToDelete)
@@ -78,23 +72,21 @@ namespace FoundOps.Server.Services.CoreDomainService
         public void DeleteField(Field field)
         {
             var loadedField = this.ObjectContext.Fields.FirstOrDefault(f => f.Id == field.Id);
+            if (loadedField != null) this.ObjectContext.Detach(loadedField);
 
-            if (loadedField != null)
-                this.ObjectContext.Detach(loadedField);
+            if ((field.EntityState == EntityState.Detached))
+                this.ObjectContext.Fields.Attach(field);
 
-            if (field is OptionsField)
+            if (field as OptionsField != null)
             {
                 this.DeleteOptionsField((OptionsField)field);
                 return;
             }
 
-            if ((field.EntityState == EntityState.Detached))
-                this.ObjectContext.Fields.Attach(field);
-
             field.ChildrenFields.Load();
-            //Do not delete children, just remove their parent
+            //Delete children
             foreach (var child in field.ChildrenFields.ToArray())
-                field.ChildrenFields.Remove(child);
+                DeleteField(child);
 
             this.ObjectContext.Fields.DeleteObject(field);
         }
@@ -181,21 +173,62 @@ namespace FoundOps.Server.Services.CoreDomainService
             if ((serviceTemplate.EntityState == EntityState.Detached))
                 this.ObjectContext.ServiceTemplates.Attach(serviceTemplate);
 
-            //Clear the reference to ChildrenServiceTemplates
+            //Force delete all sub servicetemplates if you are deleting a business account
+            var forceDelete = this.ChangeSet.ChangeSetEntries
+                .Any(cse => cse.Entity is BusinessAccount && cse.Operation == DomainOperation.Delete &&
+                            ((BusinessAccount)cse.Entity).ServiceTemplates.Contains(serviceTemplate));
+
+            var decendants = GetDescendants(serviceTemplate);
+
+            //If not force delete, make sure there are no RecurringServiceLevel or ServiceLevel decendants before deleting the service template
+            if (!forceDelete)
+            {
+                //Find last descendant and check what level it is at
+                var recurringServiceOrServiceLevelExist =
+                    decendants.Any(d => d.ServiceTemplateLevel == ServiceTemplateLevel.ServiceDefined ||
+                                        d.ServiceTemplateLevel == ServiceTemplateLevel.RecurringServiceDefined);
+
+                //If the lowest level is either the RecurringService or Service level, do not delete
+                if (recurringServiceOrServiceLevelExist)
+                    return;
+            }
+
+            //Delete the ServiceTemplate and it's descendants
+            var serviceTemplatesToDelete = decendants.Union(new[] { serviceTemplate });
+
+            foreach (var serviceTemplateToDelete in serviceTemplatesToDelete)
+            {
+                //Delete each Field
+                serviceTemplateToDelete.Fields.Load();
+                var fieldsToDelete = serviceTemplateToDelete.Fields.ToArray();
+                foreach (var fieldToDelete in fieldsToDelete)
+                    this.DeleteField(fieldToDelete);
+
+                //Delete the invoice reference
+                serviceTemplateToDelete.InvoiceReference.Load();
+                if (serviceTemplateToDelete.Invoice != null)
+                    DeleteInvoice(serviceTemplateToDelete.Invoice);
+
+                this.ObjectContext.ServiceTemplates.DeleteObject(serviceTemplateToDelete);
+            }
+        }
+
+        private IEnumerable<ServiceTemplate> GetDescendants(ServiceTemplate serviceTemplate)
+        {
             serviceTemplate.ChildrenServiceTemplates.Load();
-            serviceTemplate.ChildrenServiceTemplates.Clear();
 
-            //Delete each Field
-            serviceTemplate.Fields.Load();
-            var fieldsToDelete = serviceTemplate.Fields.ToArray();
-            foreach (var fieldToDelete in fieldsToDelete)
-                this.DeleteField(fieldToDelete);
+            if (!serviceTemplate.ChildrenServiceTemplates.Any())
+                return new List<ServiceTemplate>();
 
-            serviceTemplate.InvoiceReference.Load();
-            if (serviceTemplate.Invoice != null)
-                DeleteInvoice(serviceTemplate.Invoice);
+            var descendants = new List<ServiceTemplate>();
 
-            this.ObjectContext.ServiceTemplates.DeleteObject(serviceTemplate);
+            foreach (var child in serviceTemplate.ChildrenServiceTemplates)
+            {
+                descendants.Add(child);
+                GetDescendants(child);
+            }
+
+            return descendants;
         }
 
         public void InsertServiceTemplate(ServiceTemplate serviceTemplate)

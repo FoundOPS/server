@@ -518,7 +518,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteSubLocation(SubLocation subLocation)
         {
-            var loadedSubLocation  = this.ObjectContext.SubLocations.FirstOrDefault(sl => sl.Id == subLocation.Id);
+            var loadedSubLocation = this.ObjectContext.SubLocations.FirstOrDefault(sl => sl.Id == subLocation.Id);
 
             if (loadedSubLocation != null)
                 this.ObjectContext.Detach(loadedSubLocation);
@@ -534,19 +534,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         public IEnumerable<GeocoderResult> TryGeocode(string searchText)
         {
             //TODO: Also include Factual.com local business data
-            IEnumerable<GeocoderResult> results = null;
-
-            YahooPlaceFinder.TryGeocode(searchText, geocodingCompleteCallback =>
-                                                        {
-                                                            results = geocodingCompleteCallback;
-                                                        });
-
-            while (results == null)
-            {
-                Thread.Sleep(500);
-            }
-
-            return results;
+            return YahooPlaceFinder.TryGeocode(searchText);
         }
 
         #region Vehicle

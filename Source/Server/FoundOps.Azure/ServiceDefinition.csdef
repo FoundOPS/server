@@ -5,14 +5,21 @@
       <Site name="Web">
         <Bindings>
           <Binding name="Endpoint1" endpointName="Endpoint1" />
+          <Binding name="Endpoint2" endpointName="Endpoint2" />
         </Bindings>
       </Site>
     </Sites>
     <Endpoints>
       <InputEndpoint name="Endpoint1" protocol="http" port="80" />
+      <InputEndpoint name="Endpoint2" protocol="https" port="443" certificate="app.foundops.com" />
     </Endpoints>
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
+    <Certificates>
+      <Certificate name="app.foundops.com" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="GoDaddyClass2" storeLocation="LocalMachine" storeName="Trust" />
+      <Certificate name="GoDaddySecure" storeLocation="LocalMachine" storeName="Trust" />
+    </Certificates>
   </WebRole>
 </ServiceDefinition>

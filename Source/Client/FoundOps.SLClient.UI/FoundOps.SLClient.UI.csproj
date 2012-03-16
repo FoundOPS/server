@@ -89,15 +89,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Croll.Silverlight.Controls">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Croll.Silverlight.Controls.dll</HintPath>
-    </Reference>
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
-    </Reference>
-    <Reference Include="Kent.Boogaart.HelperTrinity">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.HelperTrinity.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Kent.Boogaart.KBCsv">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
@@ -113,11 +106,6 @@
     </Reference>
     <Reference Include="MEFedMVVM.SL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\MEFedMVVM.SL.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.CSharp, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\Microsoft.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ReactiveUI.Xaml_SL5">
@@ -139,29 +127,8 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.ServiceModel.DomainServices.Client.Web, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Windows.Controls.Data.Input, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Interactivity.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Expression.Effects">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Effects.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Expression.Interactions">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Interactions.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SLaB.Utilities">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\SLaB.Utilities.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SLaB.Utilities.Xaml">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\SLaB.Utilities.Xaml.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SLMultiBinding">
@@ -176,13 +143,7 @@
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.Composition.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations, Version=5.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.ComponentModel.DataAnnotations.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Core, Version=5.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
-    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Net" />
@@ -191,19 +152,8 @@
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Windows.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Windows.Controls.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Windows.Controls.Input.Toolkit">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Controls.Input.Toolkit.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Windows.Controls.Toolkit">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Controls.Toolkit.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Windows.Controls.Toolkit.Internals">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Controls.Toolkit.Internals.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Windows.Data, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -213,28 +163,13 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
-    <Reference Include="System.Xml.Linq, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Silverlight\v5.0\Libraries\Client\System.Xml.Linq.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Telerik.Windows.Controls">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Telerik.Windows.Controls.Data">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Data.dll</HintPath>
-    </Reference>
     <Reference Include="Telerik.Windows.Controls.DataVisualization">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.Docking">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Docking.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Telerik.Windows.Controls.FixedDocumentViewers">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.FixedDocumentViewers.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.GridView">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.GridView.dll</HintPath>
@@ -267,6 +202,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomFields\ManifestFields.xaml.cs">
+      <DependentUpon>ManifestFields.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomFields\FieldSmall.xaml.cs">
+      <DependentUpon>FieldSmall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
       <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
     </Compile>
@@ -279,6 +220,7 @@
     <Compile Include="Controls\Dispatcher\Manifest\ManifestSummary.xaml.cs">
       <DependentUpon>ManifestSummary.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ImportData\ImportColumn.cs" />
     <Compile Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml.cs">
       <DependentUpon>BusinessDetailsView.xaml</DependentUpon>
     </Compile>
@@ -619,6 +561,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\ManifestFields.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\FieldSmall.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

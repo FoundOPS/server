@@ -1,0 +1,407 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.Windows.Controls.GanttView</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.Windows.Controls.GanttView.InvertedDoubleToGridLengthConverter">
+            <summary>
+            TODO: Update summary.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.DoubleToGridLengthConverter">
+            <summary>
+            TODO: Update summary.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.CellEditTemplateProperty">
+            <summary>
+            Identifies the Header dependency property. 
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.CellTemplateProperty" -->
+        <member name="F:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.HeaderProperty">
+            <summary>
+            Identifies the Header dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.IsFrozenColumnProperty">
+            <summary>
+            Identifies the IsFrozen dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.ColumnWidthProperty">
+            <summary>
+            Identifies the ColumnWidth dependency property. 
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.GetSubItems">
+            <summary>
+            When overridden in the derived class this method returns the sub columns of the column. By default it doesn't return any columns.
+            </summary>
+            <returns>The sub columns of the column. By default it doesn't return any columns.</returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.Header">
+            <summary>
+            Gets or sets the Header. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.ColumnWidth">
+            <summary>
+            Gets or sets the Width of the column. If set to NaN the width is calculated depending on the Header. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.IsFrozenColumn">
+            <summary>
+            Gets or sets a value determining whether the column is frozen or not. Only root-level columns could be frozen or not and all 
+            frozen columns are displayed before the non-frozen columns. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.ColumnDefinition.MemberBinding">
+            <summary>
+            Gets or sets the MemberBinding. This is a dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.ColumnDefinitionGroup.ChildrenProperty">
+            <summary>
+            Identifies the Children dependency property. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.ColumnDefinitionGroup.Children">
+            <summary>
+            Gets or sets the Children. This is a dependency property.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.ArrowType">
+            <summary>
+            TODO: Update summary.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.Subject">
+            <Summary>Gets or sets Subject and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.Start">
+            <Summary>Gets or sets Start and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.End">
+            <Summary>Gets or sets End and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.Progress">
+            <Summary>Gets or sets Progress and notifies for changes</Summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.GanttTask">
+            <summary>
+            Represents the objects displayed from RadGanttView control. Every task can be a milestone, summary and a regular task.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.IGanttTask">
+            <summary>
+            Defines basic methods and properties of a gantt task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IGanttTask.Relations">
+            <summary>
+            Collection with relation to other tasks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IGanttTask.Duration">
+            <summary>
+            Gets or set the duration of the task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IGanttTask.Title">
+            <summary>
+            Gets or set the title of the task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IGanttTask.Description">
+            <summary>
+            Gets or set the description of the task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IGanttTask.Progress">
+            <summary>
+            Gets or set the progress in percents of completion of the task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IGanttTask.Deadline">
+            <summary>
+             Gets or set the deadline date of the task. This property is also used for calculating the critical path.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.IMilestone">
+            <summary>
+            Interface representing objects that can be set as a milestone.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IMilestone.IsMilestone">
+            <summary>
+            Gets or sets a value indicating whether the instance is a milestone.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.ISummary">
+            <summary>
+            Interface representing objects that can be a summary and can have children.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.ISummary.IsSummary">
+            <summary>
+            Gets a value indicating whether the instance is a summary.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.ISummary.Children">
+            <summary>
+            Collection with subtasks of given task/summary.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.GanttTask"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.#ctor(System.DateTime,System.DateTime)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.GanttTask"/> class.
+            </summary>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.#ctor(System.DateTime,System.DateTime,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.GanttTask"/> class.
+            </summary>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.#ctor(System.DateTime,System.DateTime,System.String,System.Collections.Generic.IEnumerable{Telerik.Windows.Controls.GanttView.IRelation})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.GanttTask"/> class.
+            </summary>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+            <param name="title">The title.</param>
+            <param name="relations">The relations between this task and other tasks.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.SetChildren(System.Collections.Generic.IEnumerable{Telerik.Windows.Controls.GanttView.IGanttTask})">
+            <summary>
+            Sets the children tasks of the task.
+            </summary>
+            <param name="children">The children.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.SetRelations(System.Collections.Generic.IEnumerable{Telerik.Windows.Controls.GanttView.IRelation})">
+            <summary>
+            Sets the relations to other tasks.
+            </summary>
+            <param name="relations">The relations.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Start">
+            <summary>
+            Gets or sets the start.
+            </summary>
+            <value>
+            The start.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.End">
+            <summary>
+            Gets or sets the end.
+            </summary>
+            <value>
+            The end.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Children">
+            <summary>
+            Gets the children (subtasks).
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Relations">
+            <summary>
+            Collection with relations to other tasks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Duration">
+            <summary>
+            Gets or set the duration of the task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Title">
+            <summary>
+            Gets or set the title of the task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Description">
+            <summary>
+            Gets or set the description of the task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Progress">
+            <summary>
+            Gets or set the progress in percents of completion of the task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Deadline">
+            <summary>
+            Gets or set the deadline date of the task. This property is also used for calculating the critical path.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.IsMilestone">
+            <summary>
+            Gets or sets a value indicating whether the instance is a milestone.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.IsSummary">
+            <summary>
+            Gets a value indicating whether the instance is a summary.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Telerik#Windows#Controls#Scheduling#IResourceContainer#Resources">
+            <summary>
+            Gets the resources assigned to the task.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.UniqueId">
+            <summary>
+            Gets or sets the unique id.
+            </summary>
+            <value>
+            The unique id.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.IRelation">
+            <summary>
+            Interface representing objects that define relation between two tasks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IRelation.Task">
+            <summary>
+            Represents the destination task of relation.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IRelation.Type">
+            <summary>
+            Represents the type of relation between two tasks,
+            such as finish to start, start to finish,
+            start to start, and finish to finish. 
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.RelationType">
+            <summary>
+             Represents the type of relation between two tasks, such as finish to start, start to finish, start to start, and finish to finish. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.RelationType.FinishStart">
+            <summary>
+            'finish to start' type of relation.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.RelationType.StartStart">
+            <summary>
+            'start to start' type of relation.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.RelationType.FinishFinish">
+            <summary>
+            'finish to finish' type of relation.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.RelationType.StartFinish">
+            <summary>
+            'start to finish' type of relation.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.RowHighlightingAndSelectionData.HighlightedRow">
+            <Summary>Gets or sets HighlightedRow and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.RowHighlightingAndSelectionData.EditedRow">
+            <Summary>Gets or sets EditedRow and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.RowHighlightingAndSelectionData.SelectedRows">
+            <Summary>Gets or sets SelectedRows and notifies for changes</Summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.GanttViewGridSplitter">
+            <summary>
+            TODO: Update summary.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.ColumnsProperty">
+            <summary>
+            Identifies the ColumnsProperty dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.TimeRulerLinesProperty">
+            <summary>
+            Identifies the TimeRulerLines dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.TasksSourceProperty">
+            <summary>
+            Identifies the TasksSource dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.PixelLengthProperty">
+            <summary>
+            Identifies the PixelLength dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.ShowCurrentHourIndicatorProperty">
+            <summary>
+            Identifies the ShowCurrentHourIndicator dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.FirstDayOfWeekProperty">
+            <summary>
+            Identifies the FirstDayOfWeek dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.VisibleRangeProperty">
+            <summary>
+            Identifies the VisibleRange dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.HighlightedItemsSourceProperty">
+            <summary>
+            Identifies the HighlightedItemsSource dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.HighlightsBehaviorProperty">
+            <summary>
+            Identifies the HighlightsBehavior dependency property. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.PixelLength">
+            <summary>
+            Gets or sets the PixelLength. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.ShowCurrentHourIndicator">
+            <summary>
+            Gets or sets the ShowCurrentHourIndicator. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.FirstDayOfWeek">
+            <summary>
+            Gets or sets the FirstDayOfWeek. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.VisibleRange">
+            <summary>
+            Gets or sets the VisibleRange. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.TimeRulerLines">
+            <summary>
+            Gets or sets the TimeRulerLines. This is a dependency property.
+            </summary>
+        </member>
+    </members>
+</doc>

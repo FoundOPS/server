@@ -1,50 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Windows.Data;
 
-namespace FoundOps.Common.Silverlight.Models.DataTable
+namespace Telerik.Data
 {
-	public class DataRow<T>
-	{
-        public Dictionary<string, T> Values { get; set; }
+    public class DataRow
+    {
+        private readonly DataTable owner;
+        private DynamicObject rowObject;
 
-        public DataRow()
+        protected internal DataRow(DataTable owner)
         {
-            Values = new Dictionary<string, T>();
+            this.owner = owner;
         }
 
-	    public T this[string columnName]
+        public object this[string columnName]
         {
             get
             {
-                return this.Values[columnName];
+                return this.RowObject.GetValue<object>(columnName);
             }
             set
             {
-                if (Values.ContainsKey(columnName))
-                    this.Values[columnName] = value;
-                else
-                    Values.Add(columnName, value);
+                this.RowObject.SetValue(columnName, value);
             }
         }
-	}
 
-    public class DataRowColumnToValueConverter<T>:IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        internal DynamicObject RowObject
         {
-            if (value == null || parameter == null)
-                return null;
-
-            var dataRow = (DataRow<T>) value;
-            var valueToReturn = dataRow[(string) parameter];
-            return valueToReturn;
+            get
+            {
+                this.EnsureRowObject();
+                return this.rowObject; 
+            }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        private void EnsureRowObject()
         {
-            throw new NotImplementedException();
+            if (this.rowObject == null)
+                this.rowObject = (DynamicObject) Activator.CreateInstance(this.owner.ElementType);
         }
     }
 }

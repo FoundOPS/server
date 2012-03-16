@@ -128,7 +128,7 @@ namespace FoundOps.Core.Server.Blocks
         /// <summary>
         /// The AdministrativeConsole blocks' ids.
         /// </summary>
-        public static IEnumerable<Guid> AdministrativeConsoleBlockIds = new[] { BusinessAccountsBlockId, ServiceTemplatesBlockId };
+        public static IEnumerable<Guid> AdministrativeConsoleBlockIds = new[] { BusinessAccountsBlockId };
 
         #endregion
     }
@@ -429,7 +429,7 @@ namespace FoundOps.Core.Server.Blocks
                 NavigateUri = "ServiceTemplates"
             };
 
-            AdministrativeConsoleBlocks = new List<Block> { BusinessAccountsBlock, ServiceTemplatesBlock };
+            AdministrativeConsoleBlocks = new List<Block> { BusinessAccountsBlock };
         }
 
         #endregion

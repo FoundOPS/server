@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Globalization;
+using System.Windows.Input;
 using Telerik.Windows.Controls;
 using FoundOps.SLClient.UI.Tools;
 using System.Collections.Generic;
@@ -35,6 +37,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         public RoutesListView()
         {
             InitializeComponent();
+
+            //Adds the Mouse Click event to the possible events because for some reason the one provided does not work as it should
+            //For more info: http://en.csharp-online.net/WPF_Concepts%E2%80%94Routed_Events_in_Action
+            this.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(RoutesListBox_MouseLeftButtonDown), true);
         }
 
         #region Logic
@@ -449,6 +455,28 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         }
 
         #endregion
+
+        /// <summary>
+        /// Handles the MouseLeftButtonDown event of the RoutesListBox control.
+        /// Overriders the actual Mouse button click event because the one provided does not work for some reason
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs"/> instance containing the event data.</param>
+        private void RoutesListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //Checks to be sure that the click happened on a route
+            var border = e.OriginalSource as Border;
+
+            if(border == null)
+                return;
+
+            //Further checks to be sure that the click happened on a click
+            var route = (border).DataContext as Route;
+
+            //Sets the SelectedEntity to the route that was clicked on
+            if(route != null)
+                VM.Routes.SelectedEntity = route;
+        }
 
         #endregion
     }

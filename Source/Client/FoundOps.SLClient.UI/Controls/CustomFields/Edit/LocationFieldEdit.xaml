@@ -16,7 +16,7 @@
             <TextBlock Text=":" />
         </StackPanel>
         <!--Disable the Location combobox if it is a generated service. TODO: Change this if LocationField has other types than just Destination-->
-        <telerik:RadComboBox EditableTemplate="{StaticResource SL5BugWorkaround}" x:Name="LocationFieldComboBox" Grid.Column="2" DisplayMemberPath="Name" IsEditable="True"
+        <telerik:RadComboBox x:Name="LocationFieldComboBox" Grid.Column="2" DisplayMemberPath="Name" IsEditable="True"
                              ItemsSource="{Binding DomainCollectionView, Source={Tools1:GetVM Type=ViewModels:LocationsVM}}" 
                              SelectedValue="{MarkupExtensions:ExtendedBinding Binding={Binding LocationField.Value, Mode=TwoWay, Source={MarkupExtensions:RootElement}}, 
                                 ShouldBindingUpdate={MarkupExtensions:Resolver PropertyName=IsLocationValueValid, Source={MarkupExtensions:RootElement}}}" />

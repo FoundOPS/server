@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.DomainServices.Client;
 using System.Windows;
 using System.Collections;
 using System.Reactive.Linq;
@@ -51,7 +50,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 control.AddExistingItem += (s, existingItem) => this.AddExistingItemServiceTemplate((ServiceTemplate)existingItem);
                 control.AddNewItem += (s, newItemText) => this.AddNewItemServiceTemplate(newItemText);
                 control.RemoveItem += (s, e) => this.RemoveItemServiceTemplate();
-                control.DeleteItem += (s, e) => this.DeleteItemServiceTemplate();
+                control.DeleteItem += (s, itemToDelete) => this.DeleteItemServiceTemplate();
             }
         }
 
@@ -214,14 +213,27 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             RemoveItemServiceTemplate = () =>
             {
-                MessageBox.Show("You cannot remove FoundOPS ServiceTemplates manually yet.");
-                return null;
+                var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
+                if (selectedServiceTemplate != null)
+                    ((BusinessAccount)this.SelectedEntity).ServiceTemplates.Remove(selectedServiceTemplate);
+
+                return selectedServiceTemplate;
+
+                //MessageBox.Show("You cannot remove FoundOPS ServiceTemplates manually yet.");
+                //return null;
             };
 
             DeleteItemServiceTemplate = () =>
             {
-                MessageBox.Show("You cannot delete FoundOPS ServiceTemplates manually yet.");
-                return null;
+                //Add logic to remove a Service template here
+                var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
+                if (selectedServiceTemplate != null)
+                    VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
+
+                return selectedServiceTemplate;
+
+                //MessageBox.Show("You cannot delete FoundOPS ServiceTemplates manually yet.");
+                //return null;
             };
 
             #endregion

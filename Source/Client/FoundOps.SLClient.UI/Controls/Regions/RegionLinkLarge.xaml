@@ -11,7 +11,7 @@
             </toolkit:Expander.Header>
             <Controls:RadComboBox x:Name="RegionsRadComboBox" Margin="5,3,5,3" Foreground="Black" MinWidth="100" IsEditable="True" IsFilteringEnabled="True"
                     TextSearchMode="Contains" DisplayMemberPath="Name" ItemsSource="{Binding DomainCollectionView}" SelectedValue="{Binding SelectedRegion, Mode=TwoWay, ElementName=myRegionLinkLarge}" 
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}" EditableTemplate="{StaticResource SL5BugWorkaround}">
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
                 <i:Interaction.Behaviors>
                     <Behaviors:ConditionalBinding RequiredDependencyPropertyName="ItemsSource" ConditionalDependencyProperty="{MarkupExtensions:Static Member=Controls1:Selector.SelectedValueProperty}"/>
                 </i:Interaction.Behaviors>
