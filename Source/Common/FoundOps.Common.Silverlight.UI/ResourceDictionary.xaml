@@ -1,7 +1,13 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls.Icons" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters" xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.Icons" xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:Telerik_Windows_Controls_Chromes="clr-namespace:Telerik.Windows.Controls.Chromes;assembly=Telerik.Windows.Controls" mc:Ignorable="d">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls.Icons" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters" 
+                    xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.Icons" xmlns:System="clr-namespace:System;assembly=mscorlib" 
+                    xmlns:Telerik_Windows_Controls_Chromes="clr-namespace:Telerik.Windows.Controls.Chromes;assembly=Telerik.Windows.Controls"
+                    xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.UI.Converters" mc:Ignorable="d">
     <!--Common Converters-->
-    <Converters:ExistsBoolConverter x:Key="ExistsBoolConverter"/>
-    <Converters:NotExistsBoolConverter x:Key="NotExistsBoolConverter"/>
+    <Converters1:ExistsBoolConverter x:Key="ExistsBoolConverter"/>
+    <Converters1:NotExistsBoolConverter x:Key="NotExistsBoolConverter"/>
     <Converters:VisibilityConverter x:Key="VisibilityConverter"/>
     <Converters:NotVisibilityConverter x:Key="NotVisibilityConverter"/>
     <!--Color Sheet-->
