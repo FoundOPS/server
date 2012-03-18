@@ -42,10 +42,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public FieldsVM()
-            : base(false)
+        public FieldsVM() : base(new[] { typeof(ServiceTemplate)}, false )
         {
             //Can only delete if the selected field is not required
             this.SelectedEntityObservable.Where(se => se != null)

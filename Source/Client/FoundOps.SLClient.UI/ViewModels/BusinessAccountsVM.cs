@@ -182,10 +182,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="BusinessAccountsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
         public BusinessAccountsVM()
-            : base(true)
         {
             SetupMainQuery(DataManager.Query.BusinessAccounts);
 

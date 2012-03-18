@@ -23,6 +23,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public RecurringServicesVM()
+            : base(new[] { typeof(Client) })
         {
             //Subscribe to the RecurringServices query
             IsLoadingObservable = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, null);

@@ -11,7 +11,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -168,6 +167,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
         private void SetupDataLoading()
         {
             SetupTopEntityDataLoading(roleId => Context.GetClientsForRoleQuery(ContextManager.RoleId));
@@ -187,7 +189,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 Context.Load(serviceTemplatesQuery, lo =>
                 {
                     _loadedServiceTemplates = lo.Entities;
-                    
+
                     //After Service templates are loaded, enable CanAdd.
                     CanAddSubject.OnNext(true);
                 }, null);
@@ -203,7 +205,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Logic
 
         #region TODO Replace base with QueryableCollectionView and this logic
- 
+
         /// <summary>
         /// The method called for the AddCommand to create an entity. Defaults to DomainCollectionView.AddNew()
         /// </summary>

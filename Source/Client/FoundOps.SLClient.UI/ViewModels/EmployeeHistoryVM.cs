@@ -17,10 +17,14 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public EmployeeHistoryVM()
+            : base(new[] { typeof(Employee) })
         {
             SetupDataLoading();
         }
 
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
         private void SetupDataLoading()
         {
             SetupContextDataLoading(roleId => Context.GetEmployeeHistoryEntriesForRoleQuery(roleId),

@@ -89,7 +89,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="ServiceTemplatesVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public ServiceTemplatesVM() : base(false)
+        public ServiceTemplatesVM() : base(null, //<-- TODO when setting up data loading
+            false)
         {
             //Subscribe to the ServiceTemplates query
             IsLoadingObservable = DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, null);

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.SLClient.Data.Services;
@@ -80,11 +81,23 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// The relationships where this is the * end of a 1 to * relationship. Ex. LocationVM  = { Client, Region }
+        /// </summary>
+        public IEnumerable<Type> ManyRelationships { get; private set; }
+
         #endregion
 
-        protected InfiniteAccordionVM(bool preventChangingSelectionWhenChanges = true)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InfiniteAccordionVM&lt;TEntity&gt;"/> class.
+        /// </summary>
+        /// <param name="manyRelationships">(Optional) The relationships where this is the * end of a 1 to * relationship. Ex. LocationVM  = { Client, Region }</param>
+        /// <param name="preventChangingSelectionWhenChanges">Whether or not to prevent changing the selected entity when the DomainContext has changes.</param>
+        protected InfiniteAccordionVM(IEnumerable<Type> manyRelationships = null, bool preventChangingSelectionWhenChanges = true)
             : base(preventChangingSelectionWhenChanges)
         {
+            ManyRelationships = manyRelationships;
+
             _selectedContext = this._selectedContextSubject.ToProperty(this, x => x.SelectedContext);
 
             //Set the SelectedContext to the SelectedEntity
@@ -101,6 +114,8 @@ namespace FoundOps.SLClient.Data.ViewModels
         }
 
         #region CoreEntityCollectionInfiniteAccordionVM's Logic
+
+        #region Data Loading
 
         /// <summary>
         /// Sets up data loading for context based entities.
@@ -181,6 +196,8 @@ namespace FoundOps.SLClient.Data.ViewModels
                 detailsLoadOperation = Context.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoading = false, null);
             });
         }
+
+        #endregion
 
         /// <summary>
         /// Navigates to this ViewModel.

@@ -65,7 +65,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="ClientTitlesVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public ClientTitlesVM()
+        public ClientTitlesVM() : base(new [] { typeof(Contact) })
         {
             SetupMainQuery(DataManager.Query.ClientTitles, entities => this.RaisePropertyChanged("DistinctTitles"), "Title");
 

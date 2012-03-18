@@ -7,9 +7,19 @@ ADD CONSTRAINT [FK_RouteTaskRouteDestination]
         ([Id])
 -----> ON DELETE NO ACTION ON UPDATE NO ACTION;  
 
-2. Replace all NONCLUSTERED w CLUSTERED (4 of them)
+2. ON DELETE SET NULL ON UPDATE NO ACTION; //This will remove the DefaultBillingLocation from a Client when the Locations is deleted
 
-3. Create PartiesWithName view
+-- Creating foreign key on [DefaultBillingLocationId] in table 'Clients'
+ALTER TABLE [dbo].[Clients]
+ADD CONSTRAINT [FK_ClientLocation]
+    FOREIGN KEY ([DefaultBillingLocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+-----> ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+3. Replace all NONCLUSTERED w CLUSTERED (4 of them)
+
+4. Create PartiesWithName view
 
 Delete
 IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[PartiesWithName]', 'U') IS NOT NULL
@@ -44,7 +54,7 @@ FROM            dbo.Parties INNER JOIN
 
 GO
 
-4. After generating database from model need to fix the PartiesWithNames view in the CoreEntities.edmx
+5. After generating database from model need to fix the PartiesWithNames view in the CoreEntities.edmx
 
 Replace
     <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />

@@ -97,6 +97,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public LocationsVM()
+            : base(new[] { typeof(Client), typeof(Region) })
         {
             SetupDataLoading();
 
@@ -160,7 +161,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         /// <summary>
-        /// Setups the data loading.
+        /// Used in the constructor to setup data loading.
         /// </summary>
         private void SetupDataLoading()
         {
@@ -172,15 +173,15 @@ namespace FoundOps.SLClient.UI.ViewModels
                                         {
                                             new ContextRelationshipFilter
                                                 {
-                                                    EntityMember = "RegionId",
-                                                    FilterValueGenerator = v => ((Region) v).Id,
-                                                    RelatedContextType = typeof (Region)
-                                                },
-                                            new ContextRelationshipFilter
-                                                {
                                                     EntityMember = "PartyId",
                                                     FilterValueGenerator = v => ((Client) v).Id,
                                                     RelatedContextType = typeof (Client)
+                                                },
+                                                  new ContextRelationshipFilter
+                                                {
+                                                    EntityMember = "RegionId",
+                                                    FilterValueGenerator = v => ((Region) v).Id,
+                                                    RelatedContextType = typeof (Region)
                                                 }
                                         }, true);
 

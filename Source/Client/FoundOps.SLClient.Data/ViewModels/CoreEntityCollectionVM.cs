@@ -177,6 +177,11 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         private readonly bool _preventChangingSelectionWhenChanges;
 
+        /// <summary>
+        /// A base class for a type of Entity that has a collection and one selected item.
+        /// Contains standard logic for saving, discarding changes, and adding and removing items.
+        /// </summary>
+        /// <param name="preventChangingSelectionWhenChanges">Whether or not to prevent changing the selected entity when the DomainContext has changes.</param>
         protected CoreEntityCollectionVM(bool preventChangingSelectionWhenChanges)
         {
             //Setup SelectedEntity property

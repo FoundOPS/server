@@ -1978,7 +1978,7 @@ ADD CONSTRAINT [FK_ClientLocation]
     FOREIGN KEY ([DefaultBillingLocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ClientLocation'
 CREATE INDEX [IX_FK_ClientLocation]

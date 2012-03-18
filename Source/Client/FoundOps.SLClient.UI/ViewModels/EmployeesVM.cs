@@ -79,7 +79,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         /// <summary>
-        /// Setups the data loading.
+        /// Used in the constructor to setup data loading.
         /// </summary>
         private void SetupDataLoading()
         {

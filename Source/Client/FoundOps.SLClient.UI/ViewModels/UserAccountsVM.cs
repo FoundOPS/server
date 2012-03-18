@@ -65,8 +65,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="UserAccountsVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public UserAccountsVM()
-            : base(true)
+        public UserAccountsVM() : base(new[] { typeof(BusinessAccount) })
         {
             return;
             //TODO Optimization
@@ -89,11 +88,11 @@ namespace FoundOps.SLClient.UI.ViewModels
                                 ba.OwnedRoles.FromCollectionChangedAndNow()
                                 .SelectLatest(_ => //d) the BusinessAccount context OwnedRoles' MemberParties changes
                                                 ba.OwnedRoles.Select(or => or.MemberParties.FromCollectionChangedGeneric()).Merge()
-                                                //c) the BusinessAccount context's OwnedRoles changes
+                                                    //c) the BusinessAccount context's OwnedRoles changes
                                                 .AndNow())
-                                                //b) the BusinessAccount context changes
+                                    //b) the BusinessAccount context changes
                                                 .AndNow()))
-                                                //a) the loaded UserAccounts changes
+                //a) the loaded UserAccounts changes
                                                 .AndNow()
                 .Throttle(TimeSpan.FromMilliseconds(200))
                 .ObserveOnDispatcher().Subscribe(_ =>

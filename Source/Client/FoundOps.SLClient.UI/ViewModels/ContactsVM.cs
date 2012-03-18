@@ -30,6 +30,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public ContactsVM()
+            : base(new[] { typeof(Client) })
         {
             SetupDataLoading();
 
@@ -39,6 +40,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 .ToProperty(this, x => x.SelectedContactPersonVM);
         }
 
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
         private void SetupDataLoading()
         {
             SetupContextDataLoading(roleId => Context.GetContactsForRoleQuery(roleId),

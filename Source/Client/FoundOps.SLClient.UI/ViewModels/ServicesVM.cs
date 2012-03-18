@@ -59,10 +59,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ServicesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager</param>
         [ImportingConstructor]
         public ServicesVM()
-            : base(true)
         {
             //It doesn't seem to need it on this VM
             KeepTrackLastSelectedEntity = false;

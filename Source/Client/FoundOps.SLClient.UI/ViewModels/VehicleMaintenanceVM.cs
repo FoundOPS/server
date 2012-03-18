@@ -22,6 +22,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public VehicleMaintenanceVM()
+            : base(new[] { typeof(Vehicle) })
         {
             SetupDataLoading();
 
