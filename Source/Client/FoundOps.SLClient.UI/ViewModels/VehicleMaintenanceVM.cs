@@ -1,9 +1,10 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
+using System;
+using System.ComponentModel.Composition;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

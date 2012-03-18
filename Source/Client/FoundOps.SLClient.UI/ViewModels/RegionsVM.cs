@@ -1,13 +1,9 @@
-﻿using System;
-using ReactiveUI;
-using Telerik.Windows.Data;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
 using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
+using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -41,26 +37,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public RegionsVM()
         {
-            var disposeObservable = new Subject<bool>();
-
-            //Whenever the RoleId updates, update the VirtualQueryableCollectionView
-            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
-            {
-                //Dispose the last VQCV subscriptions
-                disposeObservable.OnNext(true);
-
-                var initialQuery = Context.GetRegionsForServiceProviderQuery(ContextManager.RoleId);
-
-                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable);
-                QueryableCollectionView = result.VQCV;
-
-                //Subscribe the loading subject to the LoadingAfterFilterChange observable
-                result.LoadingAfterFilterChange.Subscribe(IsLoadingSubject);
-            });
-
-            //Whenever the location changes load the location details
-            SelectedEntityObservable.Where(se => se != null).Subscribe(selectedLocation =>
-                Context.Load(Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedLocation.Id)));
+            //Setup data loading
+            SetupTopEntityDataLoading(roleId => Context.GetRegionsForServiceProviderQuery(ContextManager.RoleId));
         }
 
         #region Logic
@@ -83,6 +61,5 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #endregion
-
     }
 }

@@ -122,18 +122,10 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         /// <param name="entityQuery">The entity query.</param>
         /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
-        /// <param name="forceLoadRelatedTypesContext">if set to <c>true</c> [force load when in a related types context].</param>
+        /// <param name="forceLoadRelatedTypesContext">if set to <c>true</c> [force load when in a related types context.</param>
         protected void SetupContextDataLoading(Func<Guid, EntityQuery<TEntity>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters, bool forceLoadRelatedTypesContext = false)
         {
-            //Build an array of FilterDescriptorObservables from the related types and from the GetContextObservable
-            var filterDescriptorObservables = (from relatedType in contextRelationshipFilters
-                                               let method = typeof (ContextManager).GetMethod("GetContextObservable")
-                                               let generic = method.MakeGenericMethod(new[] {relatedType.RelatedContextType})
-                                               let contextObservable = (IObservable<object>) generic.Invoke(ContextManager, null)
-                                               select contextObservable.DistinctUntilChanged().ObserveOnDispatcher().Select(context => context == null ? null :
-                                               new FilterDescriptor(relatedType.EntityMember, FilterOperator.IsEqualTo, relatedType.FilterValueGenerator(context)))).ToArray();
-
-            var disposeObservable = new Subject<bool>();
+           var disposeObservable = new Subject<bool>();
 
             //Whenever the RoleId updates, update the VirtualQueryableCollectionView
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
@@ -141,9 +133,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                 //Dispose the last VQCV subscriptions
                 disposeObservable.OnNext(true);
 
-                var initialQuery = entityQuery(roleId);
-
-                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable, contextRelationshipFilters.Select(crf => crf.RelatedContextType), filterDescriptorObservables, forceLoadRelatedTypesContext,
+                var result = DataManager.CreateContextBasedVQCV(() => entityQuery(roleId), disposeObservable, contextRelationshipFilters.Select(crf => crf.RelatedContextType), contextRelationshipFilters, forceLoadRelatedTypesContext,
                     loadedEntities => { SelectedEntity = loadedEntities.FirstOrDefault(); });
 
                 QueryableCollectionView = result.VQCV;
@@ -167,8 +157,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                 //Dispose the last VQCV subscriptions
                 disposeObservable.OnNext(true);
 
-                var initialQuery = entityQuery(roleId);
-                var result = DataManager.CreateContextBasedVQCV(initialQuery, disposeObservable);
+                var result = DataManager.CreateContextBasedVQCV(() => entityQuery(roleId), disposeObservable);
 
                 //Subscribe the loading subject to when the count is loading
                 result.CountLoading.Subscribe(IsLoadingSubject);
@@ -211,27 +200,5 @@ namespace FoundOps.SLClient.Data.ViewModels
         }
 
         #endregion
-    }
-
-    /// <summary>
-    /// Defines the relationship between an entity and its context/
-    /// </summary>
-    public class ContextRelationshipFilter
-    {
-        /// <summary>
-        /// The type of related entity context. Ex. Vehicle
-        /// </summary>
-        public Type RelatedContextType { get; set; }
-
-        /// <summary>
-        /// The Member of the current entity related to the context. Ex. VehicleMaintenance's "VehicleId"
-        /// </summary>
-        public String EntityMember { get; set; }
-
-        /// <summary>
-        /// A function when given the current related entity context, return the value of the context.
-        /// Ex. FilterValueGenerator(someVehicle) = abcd-1324-asfa-fegeg (someVehicle.Id)
-        /// </summary>
-        public Func<object, object> FilterValueGenerator { get; set; }
     }
 }

@@ -26,17 +26,17 @@ namespace FoundOps.SLClient.Data.Services
         /// If a related type of the entity is in details view: it will load 20 at a time.
         /// </summary>
         /// <typeparam name="TEntity">The type of entity</typeparam>
-        /// <param name="initialQuery">The initial query.</param>
+        /// <param name="queryFunction">A function which returns the query to execute.</param>
         /// <param name="dispose">Will dispose all the subscriptions when any value is pushed.</param>
         /// <param name="relatedTypes">The related types when this is in details view and should load.</param>
-        /// <param name="filterDescriptorObservables">An array of IObservable'FilterDescriptors to filter by.</param>
+        /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
         /// <param name="forceLoadRelatedTypesContext">if set to <c>true</c> [force load when in a related types context].</param>
         /// <param name="onFirstLoadAfterFilter">An action to call after the first load after a filter.</param>
         /// <returns>
         /// a VirtualQueryableCollectionView (VQCV)
         /// </returns>
-        public CreateVQCVResult<TEntity> CreateContextBasedVQCV<TEntity>(EntityQuery<TEntity> initialQuery,
-            IObservable<bool> dispose, IEnumerable<Type> relatedTypes = null, IObservable<FilterDescriptor>[] filterDescriptorObservables = null,
+        public CreateVQCVResult<TEntity> CreateContextBasedVQCV<TEntity>(Func<EntityQuery<TEntity>> queryFunction,
+            IObservable<bool> dispose, IEnumerable<Type> relatedTypes = null, ContextRelationshipFilter[] contextRelationshipFilters = null,
             bool forceLoadRelatedTypesContext = false, Action<IEnumerable<TEntity>> onFirstLoadAfterFilter = null) where TEntity : Entity
         {
             var view = new VirtualQueryableCollectionView<TEntity>();
@@ -56,6 +56,20 @@ namespace FoundOps.SLClient.Data.Services
                 disposeSubscription.Dispose();
             });
 
+            #region Setup FilterDescriptor Observables from the ContextRelationshipFilters
+
+            if (contextRelationshipFilters == null) 
+                contextRelationshipFilters = new ContextRelationshipFilter[] {};
+
+            //Build an array of FilterDescriptorObservables from the related types and from the GetContextObservable
+            IObservable<FilterDescriptor>[] filterDescriptorObservables = 
+                                               (from relatedType in contextRelationshipFilters
+                                               let method = typeof(ContextManager).GetMethod("GetContextObservable")
+                                               let generic = method.MakeGenericMethod(new[] { relatedType.RelatedContextType })
+                                               let contextObservable = (IObservable<object>)generic.Invoke(ContextManager, null)
+                                               select contextObservable.DistinctUntilChanged().ObserveOnDispatcher().Select(context => context == null ? null :
+                                               new FilterDescriptor(relatedType.EntityMember, FilterOperator.IsEqualTo, relatedType.FilterValueGenerator(context)))).ToArray();
+
             //Update the filter descriptors on the view whenever the filterDescriptorObservables changes
             if (filterDescriptorObservables != null)
             {
@@ -68,6 +82,8 @@ namespace FoundOps.SLClient.Data.Services
                     view.FilterDescriptors.AddRange(filterDescriptors.Where(fd => fd != null));
                 });
             }
+
+            #endregion
 
             //Loading behavior subjects
             var countLoading = new BehaviorSubject<bool>(false);
@@ -104,7 +120,8 @@ namespace FoundOps.SLClient.Data.Services
                 else //Otherwise do not load anything
                     view.LoadSize = 0;
 
-                var filteredQuery = initialQuery.Where(view.FilterDescriptors);
+                var query = queryFunction();
+                var filteredQuery = query.Where(view.FilterDescriptors);
 
                 //update the item count if in details view or a related type view
                 //cancel whenever the context or filters changed
@@ -167,7 +184,8 @@ namespace FoundOps.SLClient.Data.Services
                     return;
                 }
 
-                var itemsToLoad = initialQuery.Where(view.FilterDescriptors).Sort(view.SortDescriptors)
+                var query = queryFunction();
+                var itemsToLoad = query.Where(view.FilterDescriptors).Sort(view.SortDescriptors)
                     .Skip(e.EventArgs.StartIndex).Take(e.EventArgs.ItemCount);
 
                 loadingVirtualItems.OnNext(true);
@@ -197,6 +215,28 @@ namespace FoundOps.SLClient.Data.Services
                 VQCV = view
             };
         }
+    }
+
+    /// <summary>
+    /// Defines the relationship between an entity and its context/
+    /// </summary>
+    public class ContextRelationshipFilter
+    {
+        /// <summary>
+        /// The type of related entity context. Ex. Vehicle
+        /// </summary>
+        public Type RelatedContextType { get; set; }
+
+        /// <summary>
+        /// The Member of the current entity related to the context. Ex. VehicleMaintenance's "VehicleId"
+        /// </summary>
+        public String EntityMember { get; set; }
+
+        /// <summary>
+        /// A function when given the current related entity context, return the value of the context.
+        /// Ex. FilterValueGenerator(someVehicle) = abcd-1324-asfa-fegeg (someVehicle.Id)
+        /// </summary>
+        public Func<object, object> FilterValueGenerator { get; set; }
     }
 
     /// <summary>

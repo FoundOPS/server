@@ -1,4 +1,5 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using System;
 using System.ComponentModel.Composition;
