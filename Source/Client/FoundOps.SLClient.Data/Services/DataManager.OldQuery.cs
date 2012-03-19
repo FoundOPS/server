@@ -341,9 +341,6 @@ namespace FoundOps.SLClient.Data.Services
         /// </returns>
         private IObservable<Guid> SetupExecuteObservable(object queryKey, IObservable<Guid> loadQuery = null)
         {
-            //Turn off old data manager
-            return Observable.Empty<Guid>();
-
             if (loadQuery == null) //default to the RoleId stream
                 loadQuery = ContextManager.RoleIdObservable;
 

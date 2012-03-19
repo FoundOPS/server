@@ -289,7 +289,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
             var stringVerifier = new StringVerifier();
-            
+
             stringVerifier.Succeeded += (sender, args) => checkCompleted(true);
 
             stringVerifier.Cancelled += (sender, args) => checkCompleted(false);

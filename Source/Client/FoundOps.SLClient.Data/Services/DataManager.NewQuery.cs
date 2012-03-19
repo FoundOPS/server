@@ -32,13 +32,13 @@ namespace FoundOps.SLClient.Data.Services
         /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
         /// <param name="forceLoadInRelatedTypesContext">if set to <c>true</c> [force load when in a related types context].</param>
         /// <param name="updateCountWhenRelatedTypesContextChanges">if set to <c>true</c> [update count when a related types context changes].</param>
-        /// <param name="onFirstLoadAfterFilter">An action to call after the first load after a filter.</param>
+        /// <param name="onForcedFirstLoadAfterFilter">An action to call after the first load after a filter is forced.</param>
         /// <returns>
         /// a VirtualQueryableCollectionView (VQCV)
         /// </returns>
         public CreateVQCVResult<TEntity> CreateContextBasedVQCV<TEntity>(Func<EntityQuery<TEntity>> queryFunction,
             IObservable<bool> dispose, IEnumerable<Type> relatedTypes = null, ContextRelationshipFilter[] contextRelationshipFilters = null,
-            bool forceLoadInRelatedTypesContext = false, bool updateCountWhenRelatedTypesContextChanges = false, Action<IEnumerable<TEntity>> onFirstLoadAfterFilter = null) where TEntity : Entity
+            bool forceLoadInRelatedTypesContext = false, bool updateCountWhenRelatedTypesContextChanges = false, Action<IEnumerable<TEntity>> onForcedFirstLoadAfterFilter = null) where TEntity : Entity
         {
             var view = new VirtualQueryableCollectionView<TEntity>();
 
@@ -167,8 +167,8 @@ namespace FoundOps.SLClient.Data.Services
                             if (!task.IsCanceled)
                             {
                                 view.Load(0, task.Result);
-                                if (onFirstLoadAfterFilter != null)
-                                    onFirstLoadAfterFilter(task.Result);
+                                if (onForcedFirstLoadAfterFilter != null)
+                                    onForcedFirstLoadAfterFilter(task.Result);
                             }
 
                             loadingAfterFilterChange.OnNext(false);
