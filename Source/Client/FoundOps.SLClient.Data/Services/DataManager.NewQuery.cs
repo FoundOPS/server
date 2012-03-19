@@ -30,14 +30,15 @@ namespace FoundOps.SLClient.Data.Services
         /// <param name="dispose">Will dispose all the subscriptions when any value is pushed.</param>
         /// <param name="relatedTypes">The related types when this is in details view and should load.</param>
         /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
-        /// <param name="forceLoadRelatedTypesContext">if set to <c>true</c> [force load when in a related types context].</param>
+        /// <param name="forceLoadInRelatedTypesContext">if set to <c>true</c> [force load when in a related types context].</param>
+        /// <param name="updateCountWhenRelatedTypesContextChanges">if set to <c>true</c> [update count when a related types context changes].</param>
         /// <param name="onFirstLoadAfterFilter">An action to call after the first load after a filter.</param>
         /// <returns>
         /// a VirtualQueryableCollectionView (VQCV)
         /// </returns>
         public CreateVQCVResult<TEntity> CreateContextBasedVQCV<TEntity>(Func<EntityQuery<TEntity>> queryFunction,
             IObservable<bool> dispose, IEnumerable<Type> relatedTypes = null, ContextRelationshipFilter[] contextRelationshipFilters = null,
-            bool forceLoadRelatedTypesContext = false, Action<IEnumerable<TEntity>> onFirstLoadAfterFilter = null) where TEntity : Entity
+            bool forceLoadInRelatedTypesContext = false, bool updateCountWhenRelatedTypesContextChanges = false, Action<IEnumerable<TEntity>> onFirstLoadAfterFilter = null) where TEntity : Entity
         {
             var view = new VirtualQueryableCollectionView<TEntity>();
 
@@ -58,17 +59,17 @@ namespace FoundOps.SLClient.Data.Services
 
             #region Setup FilterDescriptor Observables from the ContextRelationshipFilters
 
-            if (contextRelationshipFilters == null) 
-                contextRelationshipFilters = new ContextRelationshipFilter[] {};
+            if (contextRelationshipFilters == null)
+                contextRelationshipFilters = new ContextRelationshipFilter[] { };
 
             //Build an array of FilterDescriptorObservables from the related types and from the GetContextObservable
-            IObservable<FilterDescriptor>[] filterDescriptorObservables = 
+            IObservable<FilterDescriptor>[] filterDescriptorObservables =
                                                (from relatedType in contextRelationshipFilters
-                                               let method = typeof(ContextManager).GetMethod("GetContextObservable")
-                                               let generic = method.MakeGenericMethod(new[] { relatedType.RelatedContextType })
-                                               let contextObservable = (IObservable<object>)generic.Invoke(ContextManager, null)
-                                               select contextObservable.DistinctUntilChanged().ObserveOnDispatcher().Select(context => context == null ? null :
-                                               new FilterDescriptor(relatedType.EntityMember, FilterOperator.IsEqualTo, relatedType.FilterValueGenerator(context)))).ToArray();
+                                                let method = typeof(ContextManager).GetMethod("GetContextObservable")
+                                                let generic = method.MakeGenericMethod(new[] { relatedType.RelatedContextType })
+                                                let contextObservable = (IObservable<object>)generic.Invoke(ContextManager, null)
+                                                select contextObservable.DistinctUntilChanged().ObserveOnDispatcher().Select(context => context == null ? null :
+                                                new FilterDescriptor(relatedType.EntityMember, FilterOperator.IsEqualTo, relatedType.FilterValueGenerator(context)))).ToArray();
 
             //Update the filter descriptors on the view whenever the filterDescriptorObservables changes
             if (filterDescriptorObservables != null)
@@ -97,11 +98,25 @@ namespace FoundOps.SLClient.Data.Services
             //a) details view changes
             //b) FilterDescriptors collection changes
             //c) a FilterDescriptor item changes
-            filterChangeLoadSubscription = ContextManager.CurrentContextProviderObservable.Where(cp => cp != null).Select(cp => cp.ObjectTypeProvided).DistinctUntilChanged().AsGeneric()
-            .Merge(view.FilterDescriptors.FromCollectionChanged().AsGeneric())
-            .Merge(Observable.FromEventPattern<EventHandler<ItemChangedEventArgs<IFilterDescriptor>>, ItemChangedEventArgs<IFilterDescriptor>>(h => view.FilterDescriptors.ItemChanged += h, h => view.FilterDescriptors.ItemChanged -= h).AsGeneric())
-                //Only allow filter changes every 200 milliseconds
-            .Throttle(TimeSpan.FromMilliseconds(200))
+            //d) updateCountWhenRelatedTypesContextChanges is true and a related type context changes
+            var updateLoadSizeCount = ContextManager.CurrentContextProviderObservable.Where(cp => cp != null).Select(cp => cp.ObjectTypeProvided).DistinctUntilChanged().AsGeneric()
+             .Merge(view.FilterDescriptors.FromCollectionChanged().AsGeneric())
+             .Merge(Observable.FromEventPattern<EventHandler<ItemChangedEventArgs<IFilterDescriptor>>, ItemChangedEventArgs<IFilterDescriptor>>(h => view.FilterDescriptors.ItemChanged += h, h => view.FilterDescriptors.ItemChanged -= h).AsGeneric());
+
+            if (updateCountWhenRelatedTypesContextChanges && relatedTypes != null)
+            {
+                //Setup an observable that pushes whenever a related types context changes
+                var relatedTypeContextChanged = (from relatedType in relatedTypes
+                                                 let method = typeof(ContextManager).GetMethod("GetContextObservable")
+                                                 let generic = method.MakeGenericMethod(new[] { relatedType })
+                                                 let contextObservable = (IObservable<object>)generic.Invoke(ContextManager, null)
+                                                 select contextObservable.DistinctUntilChanged().ObserveOnDispatcher()).Merge().AsGeneric();
+
+                updateLoadSizeCount = updateLoadSizeCount.Merge(relatedTypeContextChanged);
+            }
+
+            //Only allow filter changes every 200 milliseconds
+            filterChangeLoadSubscription = updateLoadSizeCount.Throttle(TimeSpan.FromMilliseconds(200))
             .ObserveOnDispatcher().Subscribe(_ =>
             {
                 //push to contextOrFiltersChanged observable to cancel previous queries
@@ -139,8 +154,9 @@ namespace FoundOps.SLClient.Data.Services
                         }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
 
-                //If in a related type and the forceLoadRelatedTypesContext option is true than force load the first items
-                if (forceLoadRelatedTypesContext && relatedTypes != null && relatedTypes.Any(t => t == detailsType))
+                //Force load the first items if the forceLoadRelatedTypesContext option is true
+                //and the details view is a related type
+                if (forceLoadInRelatedTypesContext && relatedTypes != null && relatedTypes.Any(t => t == detailsType))
                 {
                     //Load the first items after a filter change
                     loadingAfterFilterChange.OnNext(true);

@@ -1,18 +1,18 @@
-﻿using System;
-using System.Data.Entity;
-using System.Linq;
-using System.Data;
-using System.Data.Objects;
-using System.Collections.Generic;
-using System.ServiceModel.DomainServices.EntityFramework;
-using FoundOps.Common.Composite;
+﻿using FoundOps.Common.Composite;
 using FoundOps.Common.NET;
-using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
-using Route = FoundOps.Core.Models.CoreEntities.Route;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
-using RouteTask = FoundOps.Core.Models.CoreEntities.RouteTask;
+using FoundOps.Server.Authentication;
+using Route = FoundOps.Core.Models.CoreEntities.Route;
 using RouteDestination = FoundOps.Core.Models.CoreEntities.RouteDestination;
+using RouteTask = FoundOps.Core.Models.CoreEntities.RouteTask;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Data.Objects;
+using System.Linq;
+using System.ServiceModel.DomainServices.EntityFramework;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -24,6 +24,11 @@ namespace FoundOps.Server.Services.CoreDomainService
     {
         #region Route
 
+        /// <summary>
+        /// Gets the routes for a service provider on a date.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="dateOfRoutes">The date of the routes.</param>
         public IQueryable<Route> GetRoutesForServiceProviderOnDay(Guid roleId, DateTime dateOfRoutes)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
@@ -41,13 +46,12 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
-        /// 
+        /// Gets the routes for a service provider.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
-        /// <param name="vehicleId">(Optional) filter routes that have this vehicle.</param>
         /// <param name="employeeId">(Optional) filter routes that have this employee.</param>
-        /// <returns></returns>
-        public IQueryable<Route> GetRouteLogForServiceProvider(Guid roleId, Guid vehicleId, Guid employeeId)
+        /// <param name="vehicleId">(Optional) filter routes that have this vehicle.</param>
+        public IQueryable<Route> GetRouteLogForServiceProvider(Guid roleId, Guid employeeId, Guid vehicleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 

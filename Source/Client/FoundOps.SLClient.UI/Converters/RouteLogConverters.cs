@@ -12,7 +12,7 @@ namespace FoundOps.Framework.Views.Converters
 
         public object Convert(object item, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (item == null)
+            if (item as IEnumerable<Vehicle> == null)
                 return "";
 
             var vehicles = (IEnumerable<Vehicle>) item;
@@ -38,7 +38,7 @@ namespace FoundOps.Framework.Views.Converters
 
         public object Convert(object item, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (item == null)
+            if (item as IEnumerable<Employee> == null)
                 return "";
 
             var employees = (IEnumerable<Employee>)item;
@@ -64,7 +64,7 @@ namespace FoundOps.Framework.Views.Converters
 
         public object Convert(object item, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (item == null)
+            if (item as Route == null)
                 return "";
             var route = (Route)item;
             var startTime = route.StartTime.TimeOfDay.ToString();

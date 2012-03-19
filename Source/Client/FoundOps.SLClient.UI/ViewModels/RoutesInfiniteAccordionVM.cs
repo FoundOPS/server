@@ -17,11 +17,20 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public RoutesInfiniteAccordionVM()
+            : base(new[] { typeof(Employee), typeof(Vehicle) })
         {
             ////b) select the closest Route to today
             //SelectedEntity = Collection.FirstOrDefault(r => r.Date >= DateTime.Now.Date);
 
-            //SetupContextDataLoading();
+            SetupContextDataLoading(roleId =>
+                                        {
+                                            var employeeContext = ContextManager.GetContext<Employee>();
+                                            var employeeContextId = employeeContext != null ? employeeContext.Id : Guid.Empty;
+                                            var vehicleContext = ContextManager.GetContext<Vehicle>();
+                                            var vehicleContextId = vehicleContext != null ? vehicleContext.Id : Guid.Empty;
+
+                                            return Context.GetRouteLogForServiceProviderQuery(roleId, employeeContextId, vehicleContextId);
+                                        }, null, false, true);
         }
 
         #region Logic

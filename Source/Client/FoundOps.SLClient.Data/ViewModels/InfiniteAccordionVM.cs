@@ -122,10 +122,12 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         /// <param name="entityQuery">The entity query.</param>
         /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
-        /// <param name="forceLoadRelatedTypesContext">if set to <c>true</c> [force load when in a related types context.</param>
-        protected void SetupContextDataLoading(Func<Guid, EntityQuery<TEntity>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters, bool forceLoadRelatedTypesContext = false)
+        /// <param name="forceLoadInRelatedTypesContext">if set to <c>true</c> [force initial load when in a related types context].</param>
+        /// <param name="updateCountWhenRelatedTypesContextChanges">if set to <c>true</c> [update count when a related types context changes].</param>
+        protected void SetupContextDataLoading(Func<Guid, EntityQuery<TEntity>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters,
+            bool forceLoadInRelatedTypesContext = false, bool updateCountWhenRelatedTypesContextChanges = false)
         {
-           var disposeObservable = new Subject<bool>();
+            var disposeObservable = new Subject<bool>();
 
             //Whenever the RoleId updates, update the VirtualQueryableCollectionView
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
@@ -133,7 +135,8 @@ namespace FoundOps.SLClient.Data.ViewModels
                 //Dispose the last VQCV subscriptions
                 disposeObservable.OnNext(true);
 
-                var result = DataManager.CreateContextBasedVQCV(() => entityQuery(roleId), disposeObservable, contextRelationshipFilters.Select(crf => crf.RelatedContextType), contextRelationshipFilters, forceLoadRelatedTypesContext,
+                var result = DataManager.CreateContextBasedVQCV(() => entityQuery(roleId), disposeObservable, ManyRelationships,
+                    contextRelationshipFilters, forceLoadInRelatedTypesContext, updateCountWhenRelatedTypesContextChanges,
                     loadedEntities => { SelectedEntity = loadedEntities.FirstOrDefault(); });
 
                 QueryableCollectionView = result.VQCV;
