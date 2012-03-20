@@ -162,7 +162,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                 //Loads once immediately after creation (and automatically whenever a filter or sort changes).
                 if (virtualItemCountLoadBehavior == VirtualItemCountLoadBehavior.LoadAfterCreation)
                 {
-                    loadVirtualItemCount = new[] { true }.ToObservable();
+                    loadVirtualItemCount = new BehaviorSubject<bool>(true);
                 }
                 else
                 {
@@ -195,6 +195,9 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <returns></returns>
         private static IDisposable AddContextRelationshipFiltersHelper(IEnumerable<ContextRelationshipFilter> contextRelationshipFilters, QueryableCollectionView queryableCollectionView, ContextManager contextManager)
         {
+            if (contextRelationshipFilters == null)
+                return null;
+
             //Build an array of FilterDescriptorObservables from the related types whenever the GetContextObservable pushes a new context
             var filterDescriptorObservableChanged =
                                            (from contextRelationshipFilter in contextRelationshipFilters
@@ -249,7 +252,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                     QueryableCollectionView.Dispose();
 
                 //Load the VirtualItemCount immediately after creation (and automatically whenever a filter or sort changes)
-                var loadVirtualItemCount = new[] { true }.ToObservable();
+                var loadVirtualItemCount = new BehaviorSubject<bool>(true);
 
                 QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TEntity>(Context, () => entityQuery(roleId), loadVirtualItemCount);
 
