@@ -176,7 +176,7 @@
     <Compile Include="Tools\DynamicTools.cs" />
     <Compile Include="Tools\ExtensionMethods\CollectionExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\DependencyObjectExtensions.cs" />
-    <Compile Include="Tools\ExtensionMethods\DomainCollectionViewExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\EditableCollectionViewExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\DomainContextExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\ItemsControlExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\Rxx3.cs" />

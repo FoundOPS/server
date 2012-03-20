@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using FoundOps.Common.Silverlight.MVVM.VMs;
-using FoundOps.Common.Silverlight.Services;
+﻿using FoundOps.Common.Silverlight.MVVM.VMs;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Interfaces;
-using Microsoft.Windows.Data.DomainServices;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -74,7 +73,7 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <summary>
         /// Gets the collection view.
         /// </summary>
-        public ICollectionView CollectionView { get { return (ICollectionView) _collectionView.Value; } }
+        public ICollectionView CollectionView { get { return (ICollectionView)_collectionView.Value; } }
 
         /// <summary>
         /// Gets the casted collection.
@@ -196,6 +195,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                         ((ICollectionView)EditableCollectionView).MoveCurrentTo(newSelectedEntity);
 
                     if (newSelectedEntity == null) return;
+                    Commit();
                     IsAddingNew = false;
                 });
 
@@ -228,6 +228,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                     return;
                 IsAddingNew = true;
                 OnAddEntity(newEntity);
+                Commit();
                 EntityAdded();
                 _disableSelectedEntity = false;
                 SelectedEntity = newEntity;
@@ -421,6 +422,26 @@ namespace FoundOps.SLClient.Data.ViewModels
         #endregion //Methods to Override
 
         #endregion //Protected
+
+        #region Private Methods
+
+        protected void Commit()
+        {
+            //Must Commit and EndEdit to prevent error on Save or DiscardChanges
+            if (this.EditableCollectionView == null)
+                return;
+            if (this.EditableCollectionView.IsAddingNew)
+                IsAddingNew = true;
+
+            this.EditableCollectionView.Commit();
+            this.EditableCollectionView.CommitEdit();
+            this.EditableCollectionView.CommitNew();
+
+            if (SelectedEntity != null)
+                ((IEditableObject)SelectedEntity).EndEdit();
+        }
+
+        #endregion //Private
 
         #endregion //Logic
     }

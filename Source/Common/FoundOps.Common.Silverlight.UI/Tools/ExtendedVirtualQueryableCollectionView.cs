@@ -223,7 +223,10 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             //Cancel any previous loads when reloading the VirtualItemCount
             _cancelAllLoads.OnNext(true);
 
-            _context.CountAsync(_loadItemsQuery(), _cancelAllLoads)
+            //Filter the query with the FilterDescriptors and SortDescriptors
+            var filteredQuery = _loadItemsQuery().Where(this.FilterDescriptors).Sort(this.SortDescriptors);
+
+            _context.CountAsync(filteredQuery, _cancelAllLoads)
                  .ContinueWith(task =>
                  {
                      if (task.IsCanceled)
