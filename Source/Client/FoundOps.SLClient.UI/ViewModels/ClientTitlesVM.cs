@@ -5,7 +5,6 @@ using ReactiveUI.Xaml;
 using System.ComponentModel;
 using MEFedMVVM.ViewModelLocator;
 using System.Collections.Generic;
-using FoundOps.Core.Context.Services;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
