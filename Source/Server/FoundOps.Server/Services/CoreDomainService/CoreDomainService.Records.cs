@@ -138,11 +138,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region ClientTitle
 
-        public IQueryable<ClientTitle> GetClientTitles()
-        {
-            return this.ObjectContext.ClientTitles;
-        }
-
         public IQueryable<ClientTitle> GetClientTitlesForRole(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
@@ -186,11 +181,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         #endregion
 
         #region Contact
-
-        public IQueryable<Contact> GetContacts()
-        {
-            return this.ObjectContext.Contacts;
-        }
 
         /// <summary>
         /// Gets the contacts for role. Includes the OwnedPerson
@@ -348,11 +338,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region EmployeeHistoryEntry
 
-        public IQueryable<EmployeeHistoryEntry> GetEmployeeHistoryEntries()
-        {
-            return this.ObjectContext.EmployeeHistoryEntries;
-        }
-
         public IQueryable<EmployeeHistoryEntry> GetEmployeeHistoryEntriesForRole(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
@@ -398,13 +383,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region Location
 
-        public IQueryable<Location> GetLocations()
-        {
-            return this.ObjectContext.Locations;
-        }
-
         /// <summary> 
-        /// This method will return the locations for the current business account.
+        /// Gets the locations for the role's business account.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <returns>The Business's Client's Locations</returns>
@@ -561,6 +541,10 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region Region
 
+        /// <summary>
+        /// Gets the regions for the role's business account.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
         public IQueryable<Region> GetRegionsForServiceProvider(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
@@ -639,7 +623,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<SubLocation> GetSubLocations()
         {
-            return this.ObjectContext.SubLocations;
+            throw new NotSupportedException("Exists solely to generate SubLocation in the clients data project");
         }
 
         public void InsertSubLocation(SubLocation subLocation)
@@ -762,11 +746,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         #endregion
 
         #region VehicleMaintenanceLineItem
-
-        public IQueryable<VehicleMaintenanceLineItem> GetVehicleMaintenanceLineItem()
-        {
-            return this.ObjectContext.VehicleMaintenanceLineItems;
-        }
 
         public IQueryable<VehicleMaintenanceLineItem> GetVehicleMaintenanceLineItemsForParty(Guid roleId)
         {

@@ -5,7 +5,7 @@
              mc:Ignorable="d"  d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="BusinessAccountsVM" 
              IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
     <telerik:RadGridView x:Name="BusinessAccountsRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
-                RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}">
+                RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}" Width="*"/>
         </telerik:RadGridView.Columns>

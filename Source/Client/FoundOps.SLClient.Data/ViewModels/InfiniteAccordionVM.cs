@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Silverlight.UI.Interfaces;
-using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Silverlight.UI.Tools;
 using FoundOps.Common.Tools;
 using FoundOps.SLClient.Data.Services;
 using GalaSoft.MvvmLight.Command;
 using ReactiveUI;
 using System;
-using System.Reactive;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;

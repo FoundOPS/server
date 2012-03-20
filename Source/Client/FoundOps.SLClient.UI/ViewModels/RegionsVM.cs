@@ -3,7 +3,6 @@ using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System.ComponentModel.Composition;
-using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -13,24 +12,6 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("RegionsVM")]
     public class RegionsVM : InfiniteAccordionVM<Region>
     {
-        #region Public Properties
-
-        private QueryableCollectionView _queryableCollectionView;
-        /// <summary>
-        /// The collection of Locations.
-        /// </summary>
-        public QueryableCollectionView QueryableCollectionView
-        {
-            get { return _queryableCollectionView; }
-            private set
-            {
-                _queryableCollectionView = value;
-                this.RaisePropertyChanged("QueryableCollectionView");
-            }
-        }
-
-        #endregion
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RegionsVM"/> class.
         /// </summary>

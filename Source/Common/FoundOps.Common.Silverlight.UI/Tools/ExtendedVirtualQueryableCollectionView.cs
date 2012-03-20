@@ -226,11 +226,16 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             //Filter the query with the FilterDescriptors and SortDescriptors
             var filteredQuery = _loadItemsQuery().Where(this.FilterDescriptors).Sort(this.SortDescriptors);
 
+            Debug.WriteLine(typeof(TEntity) + " load count");
+
             _context.CountAsync(filteredQuery, _cancelAllLoads)
                  .ContinueWith(task =>
                  {
                      if (task.IsCanceled)
+                     {
+                         Debug.WriteLine(typeof(TEntity) + " cancelled load count");
                          return;
+                     }
 
                      //TODO add count of new items to the entity list. subtract removed items. on save update those counts.
                      this.VirtualItemCount = task.Result;

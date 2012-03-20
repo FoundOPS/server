@@ -1,15 +1,18 @@
-﻿using System;
-using System.Linq;
+﻿using FoundOps.Common.Silverlight.UI.Interfaces;
 using ReactiveUI;
+using System;
 using System.ComponentModel;
+using System.Linq;
 
 //This is a partial class, must be in the same namespace so disable warning
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class Party : IReactiveNotifyPropertyChanged
+    public partial class Party : IReactiveNotifyPropertyChanged, ILoadDetails
     {
+        #region Public Properties
+
         #region IReactiveNotifyPropertyChanged
 
         public event PropertyChangingEventHandler PropertyChanging;
@@ -31,6 +34,34 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
+        #region Implementation of ILoadDetails
+
+        private bool _detailsLoading;
+        /// <summary>
+        /// Gets or sets a value indicating whether [details loading].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DetailsLoading
+        {
+            get { return _detailsLoading; }
+            set
+            {
+                _detailsLoading = value;
+                this.RaisePropertyChanged("DetailsLoading");
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Returns the first owned role.
+        /// </summary>
+        public Role FirstOwnedRole { get { return this.OwnedRoles.FirstOrDefault(); } }
+
+        #endregion
+
         partial void OnCreation()
         {
             InitializeHelper();
@@ -49,10 +80,5 @@ namespace FoundOps.Core.Models.CoreEntities
             //Setup IReactiveNotifyPropertyChanged
             _reactiveHelper = new MakeObjectReactiveHelper(this);
         }
-
-        /// <summary>
-        /// Returns the first owned role.
-        /// </summary>
-        public Role FirstOwnedRole { get { return this.OwnedRoles.FirstOrDefault(); } }
     }
 }

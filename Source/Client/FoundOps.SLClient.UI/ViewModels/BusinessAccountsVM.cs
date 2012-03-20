@@ -1,24 +1,21 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using System.Collections;
-using System.Reactive.Linq;
-using System.Collections.Generic;
-using FoundOps.SLClient.UI.Tools;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
-using Microsoft.Windows.Data.DomainServices;
+﻿using FoundOps.SLClient.UI.Tools;
 using FoundOps.Common.Silverlight.UI.Controls;
-using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Server.Services.CoreDomainService;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Reactive.Linq;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
     /// <summary>
-    /// Contains the logic for displaying BusinessAccounts
+    /// Contains the logic for adding, editing, and removing BusinessAccounts in the admin console.
     /// </summary>
     [ExportViewModel("BusinessAccountsVM")]
     public class BusinessAccountsVM : InfiniteAccordionVM<Party>, //Base class is Party instead of BusinessAccount because DomainCollectionView does not work well with inheritance
@@ -185,8 +182,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public BusinessAccountsVM()
         {
-            //TODO Optimization
-            //SetupMainQuery(DataManager.Query.BusinessAccounts);
+            SetupDataLoading();
 
             #region Implementation of IAddToDeleteFromDestination<UserAccount> and Implementation of IAddToDeleteFromDestination<ServiceTemplate>
 
@@ -236,7 +232,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             };
 
             #endregion
-
             #region Implementation of IAddNewExisting<UserAccount> & IRemoveDelete<UserAccount>
 
             AddNewItemUserAccount = name =>
@@ -269,6 +264,17 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
+        private void SetupDataLoading()
+        {
+            SetupTopEntityDataLoading(roleId => Context.GetBusinessAccountsForRoleQuery(ContextManager.RoleId));
+
+            //Whenever the business account changes load the details
+            SetupDetailsLoading(selectedEntity => Context.GetBusinessAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+        }
+
         #region Logic
 
         //Must override or else it will create a Party
@@ -283,29 +289,23 @@ namespace FoundOps.SLClient.UI.ViewModels
             foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds))
                 role.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
-            ((EntityList<Party>)this.CollectionView.SourceCollection).Add(newBusinessAccount);
+            this.Context.Parties.Add(newBusinessAccount);
 
             return newBusinessAccount;
         }
 
+        /// <summary>
+        /// Before deleting, make the user verify a string.
+        /// </summary>
+        /// <param name="checkCompleted">The action to call after checking.</param>
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
             var stringVerifier = new StringVerifier();
 
             stringVerifier.Succeeded += (sender, args) => checkCompleted(true);
-
             stringVerifier.Cancelled += (sender, args) => checkCompleted(false);
 
             stringVerifier.Show();
-        }
-
-        public override void DeleteEntity(Party entityToDelete)
-        {
-            var entityCollection = new List<BusinessAccount> { (BusinessAccount)entityToDelete };
-
-            //MessageBox.Show("Cannot manually delete Service Providers.");
-
-            DataManager.RemoveEntities(entityCollection);
         }
 
         /// <summary>

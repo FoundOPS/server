@@ -65,6 +65,8 @@ namespace FoundOps.Server.Services.CoreDomainService
                 routes = routes.Where(r => r.Technicians.Any(t => t.Id == employeeId));
 
             //TODO: optimize this
+            //See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
+            //http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
             //Force load OwnedPerson
             //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
             (from t in routes.SelectMany(r => r.Technicians)

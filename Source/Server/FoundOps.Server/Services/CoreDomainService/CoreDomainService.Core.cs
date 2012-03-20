@@ -7,6 +7,7 @@ using FoundOps.Server.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.Objects;
 using System.Linq;
 using System.Reflection;
@@ -61,44 +62,43 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region Businesses
 
+        /// <summary>
+        /// Gets all the BusinessAccounts
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
         public IQueryable<Party> GetBusinessAccountsForRole(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             //Make sure current account is a FoundOPS account
-            if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
-                return null;
-
-            var businessAccounts = this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates")
-                .Include("ContactInfoSet").Include("OwnedRoles").Include("OwnedRoles.MemberParties");
-
-            //Force load PartyImage
-            var t = (from ba in businessAccounts
-                     join pi in this.ObjectContext.Files.OfType<PartyImage>()
-                         on ba.Id equals pi.Id
-                     select pi).ToArray();
-            var count = t.Count();
-
-            return businessAccounts;
+            return businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id
+                       ? null
+                       : this.ObjectContext.Parties.OfType<BusinessAccount>().OrderBy(b => b.Name);
         }
 
-        public BusinessAccount BusinessAccountWithClientsForRole(Guid roleId)
+        /// <summary>
+        /// Gets the BusinessAccount details.
+        /// It includes the ContactInfoSet, ServiceTemplates, OwnedRoles, OwnedRoles.MemberParties, and PartyImage.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="businessAccountId">The businessAccount id.</param>
+        public Party GetBusinessAccountDetailsForRole(Guid roleId, Guid businessAccountId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-            return businessForRole == null
-                       ? null
-                       : this.ObjectContext.Parties.OfType<BusinessAccount>().Include("Clients")
-                       .FirstOrDefault(ba => ba.Id == businessForRole.Id);
+
+            //Make sure current account is a FoundOPS account
+            if(businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
+                return null;
+
+            var businessAccount = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId)
+                .Include("ContactInfoSet").Include("ServiceTemplates").Include("OwnedRoles").Include("OwnedRoles.MemberParties").FirstOrDefault();
+
+            //Force load PartyImage
+            businessAccount.PartyImageReference.Load();
+
+            return businessAccount;
         }
-
-        public Business BusinessForRole(Guid roleId)
-        {
-            return ObjectContext.BusinessOwnerOfRole(roleId);
-        }
-
-        #endregion
-
-        #region BusinessAccount
 
         private void UpdateBusinessAccount(BusinessAccount account)
         {
