@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
+using FoundOps.SLClient.Data.ViewModels;
 using Telerik.Windows.Controls.DomainServices;
 using Telerik.Windows.Data;
 
@@ -36,6 +37,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <returns>
         /// a VirtualQueryableCollectionView (VQCV)
         /// </returns>
+        [Obsolete("Going to delete. Use ExtendedVirtualQueryableCollectionView or the InfiniteAccordionVM's DataLoading methods.")]
         public CreateVQCVResult<TEntity> CreateContextBasedVQCV<TEntity>(Func<EntityQuery<TEntity>> queryFunction,
             IObservable<bool> dispose, IEnumerable<Type> relatedTypes = null, ContextRelationshipFilter[] contextRelationshipFilters = null,
             bool forceLoadInRelatedTypesContext = false, bool updateCountWhenRelatedTypesContextChanges = false, Action<IEnumerable<TEntity>> onForcedFirstLoadAfterFilter = null) where TEntity : Entity
@@ -231,28 +233,6 @@ namespace FoundOps.SLClient.Data.Services
                 VQCV = view
             };
         }
-    }
-
-    /// <summary>
-    /// Defines the relationship between an entity and its context/
-    /// </summary>
-    public class ContextRelationshipFilter
-    {
-        /// <summary>
-        /// The type of related entity context. Ex. Vehicle
-        /// </summary>
-        public Type RelatedContextType { get; set; }
-
-        /// <summary>
-        /// The Member of the current entity related to the context. Ex. VehicleMaintenance's "VehicleId"
-        /// </summary>
-        public String EntityMember { get; set; }
-
-        /// <summary>
-        /// A function when given the current related entity context, return the value of the context.
-        /// Ex. FilterValueGenerator(someVehicle) = abcd-1324-asfa-fegeg (someVehicle.Id)
-        /// </summary>
-        public Func<object, object> FilterValueGenerator { get; set; }
     }
 
     /// <summary>

@@ -18,7 +18,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
     /// <summary>
     /// An extension for the VirtualQueryableCollectionView to automate data loading with an EntityQuery.
     /// The data loading incorporates any CollectionView imposed sort and filter conditions.
-    /// It stays up to date with added and removed entities, see http://www.telerik.com/community/forums/silverlight/gridview/problem-with-paging-and-queryablecollectionview.aspx.
+    /// TODO It stays up to date with added and removed entities, see http://www.telerik.com/community/forums/silverlight/gridview/problem-with-paging-and-queryablecollectionview.aspx.
     /// </summary>
     public class ExtendedVirtualQueryableCollectionView<TEntity> : VirtualQueryableCollectionView<TEntity>, INotifyPropertyChanged where TEntity : Entity
     {
@@ -105,7 +105,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         /// <param name="context">The DomainContext to load the entities with.</param>
         /// <param name="loadItemsQuery">A function which returns the EntityQuery to use to load the entities.</param>
         /// <param name="loadVirtualItemCount">An observable when pushed will load/reload the virtual item count. You must push at least once. It will cancel previous loads.</param>
-        /// <param name="forceFirstLoad">Used to always force the first items load after the VirtualItemCount is loaded. For controls that do not automatically support virtual loading.</param>
+        /// <param name="forceFirstLoad">Force load the first items after the VirtualItemCount is loaded. Used for controls that do not automatically support virtual loading.</param>
         public ExtendedVirtualQueryableCollectionView(DomainContext context, Func<EntityQuery<TEntity>> loadItemsQuery, IObservable<bool> loadVirtualItemCount, bool forceFirstLoad = false)
         {
             _backingSource = new EntityList<TEntity>((EntitySet<TEntity>)context.EntityContainer.GetEntitySet(typeof(TEntity)));
@@ -178,6 +178,24 @@ namespace FoundOps.Common.Silverlight.UI.Tools
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region Overriden
+
+        protected override void Dispose(bool disposing)
+        {
+            //Cancel loads before finishing dispose
+            CancelLoads();
+
+            //Dispose all subscriptions
+            _filterSubscription.Dispose();
+            _loadVirtualItemCountSubscription.Dispose();
+            _loadVirtualItemsSubscription.Dispose();
+            _forceLoadFirstItemsSubscription.Dispose();
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
         #endregion
 
         #region Private
@@ -190,26 +208,31 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             //Keep track of removed added items
         }
 
-        #region Data Loading
+        #region Private
 
         //Used for tracking the first load after the virtual item count is updated
         private bool _firstVirtualLoadAfterVirtualItemCountLoadedFlag;
         /// <summary>
         /// Update the VirtualItemCount
         /// </summary>
-        private async void UpdateVirtualItemCount()
+        private void UpdateVirtualItemCount()
         {
             //Cancel any previous loads when reloading the VirtualItemCount
             _cancelAllLoads.OnNext(true);
 
-            var loadedVirtualItemCount = await _context.CountAsync(_loadItemsQuery(), _cancelAllLoads);
+            var loadedVirtualItemCount = _context.CountAsync(_loadItemsQuery(), _cancelAllLoads)
+                .ContinueWith(task =>
+                                  {
+                                      if (task.IsCanceled)
+                                          return;
 
-            //TODO add count of new items to the entity list. subtract removed items. on save update those counts.
-            this.VirtualItemCount = loadedVirtualItemCount;
+                                      //TODO add count of new items to the entity list. subtract removed items. on save update those counts.
+                                      this.VirtualItemCount = task.Result;
 
-            _virtualItemCountLoaded.OnNext(VirtualItemCount);
+                                      _virtualItemCountLoaded.OnNext(VirtualItemCount);
 
-            _firstVirtualLoadAfterVirtualItemCountLoadedFlag = true;
+                                      _firstVirtualLoadAfterVirtualItemCountLoadedFlag = true;
+                                  });
         }
 
         /// <summary>
@@ -269,24 +292,6 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         }
 
         #endregion
-
-        #endregion
-
-        #region Overriden
-
-        protected override void Dispose(bool disposing)
-        {
-            //Cancel loads before finishing dispose
-            CancelLoads();
-
-            //Dispose all subscriptions
-            _filterSubscription.Dispose();
-            _loadVirtualItemCountSubscription.Dispose();
-            _loadVirtualItemsSubscription.Dispose();
-            _forceLoadFirstItemsSubscription.Dispose();
-
-            base.Dispose(disposing);
-        }
 
         #endregion
 

@@ -2,10 +2,13 @@
 using System.Linq;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+using FoundOps.Common.Silverlight.UI.Tools;
+using FoundOps.Common.Tools;
 using FoundOps.SLClient.Data.Services;
 using GalaSoft.MvvmLight.Command;
 using ReactiveUI;
 using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
@@ -117,33 +120,118 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         #region Data Loading
 
+        //Keep these so they can be disposed whenever replacing a QCV
+        private IDisposable _contextRelationshipFiltersSubscription;
+        private IDisposable _selectFirstEntitySubscription;
         /// <summary>
         /// Sets up data loading for context based entities.
         /// </summary>
         /// <param name="entityQuery">The entity query.</param>
         /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
-        /// <param name="forceLoadInRelatedTypesContext">if set to <c>true</c> [force initial load when in a related types context].</param>
-        /// <param name="updateCountWhenRelatedTypesContextChanges">if set to <c>true</c> [update count when a related types context changes].</param>
+        /// <param name="forceFirstLoad">Force load the first items after the VirtualItemCount is loaded. Used for controls that do not automatically support virtual loading.</param>
+        /// <param name="virtualItemCountLoadBehavior">sets the VirtualItemCountLoadBehavior</param>
         protected void SetupContextDataLoading(Func<Guid, EntityQuery<TEntity>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters,
-            bool forceLoadInRelatedTypesContext = false, bool updateCountWhenRelatedTypesContextChanges = false)
+            bool forceFirstLoad = false, VirtualItemCountLoadBehavior virtualItemCountLoadBehavior = VirtualItemCountLoadBehavior.LoadAfterCreation)
         {
-            var disposeObservable = new Subject<bool>();
-
             //Whenever the RoleId updates, update the VirtualQueryableCollectionView
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
-                //Dispose the last VQCV subscriptions
-                disposeObservable.OnNext(true);
+                #region Dispose last QCV
 
-                var result = DataManager.CreateContextBasedVQCV(() => entityQuery(roleId), disposeObservable, ManyRelationships,
-                    contextRelationshipFilters, forceLoadInRelatedTypesContext, updateCountWhenRelatedTypesContextChanges,
-                    loadedEntities => { SelectedEntity = loadedEntities.FirstOrDefault(); });
+                //Dispose the last QueryableCollectionView
+                if (QueryableCollectionView != null)
+                    QueryableCollectionView.Dispose();
 
-                QueryableCollectionView = result.VQCV;
+                //Dispose the previous QueryableCollectionView's _contextRelationshipFiltersSubscription
+                if (_contextRelationshipFiltersSubscription != null)
+                {
+                    _contextRelationshipFiltersSubscription.Dispose();
+                    _contextRelationshipFiltersSubscription = null;
+                }
 
-                //Subscribe the loading subject to when the count is loading
-                result.CountLoading.Subscribe(IsLoadingSubject);
+                //Dispose the previous _selectFirstEntitySubscription
+                if (_selectFirstEntitySubscription != null)
+                {
+                    _selectFirstEntitySubscription.Dispose();
+                    _selectFirstEntitySubscription = null;
+                }
+
+                #endregion
+
+                IObservable<bool> loadVirtualItemCount;
+                //Loads once immediately after creation (and automatically whenever a filter or sort changes).
+                if (virtualItemCountLoadBehavior == VirtualItemCountLoadBehavior.LoadAfterCreation)
+                {
+                    loadVirtualItemCount = new[] { true }.ToObservable();
+                }
+                else
+                {
+                    //Loads any time a many relation context changes (and automatically whenever a filter or sort changes).
+                    loadVirtualItemCount = (from manyRelation in ManyRelationships
+                                            let method = typeof(ContextManager).GetMethod("GetContextObservable")
+                                            let generic = method.MakeGenericMethod(new[] { manyRelation })
+                                            let contextObservable = (IObservable<object>)generic.Invoke(ContextManager, null)
+                                            select contextObservable.DistinctUntilChanged().ObserveOnDispatcher()).Merge().AsGeneric();
+                }
+
+                QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TEntity>(Context, () => entityQuery(roleId), loadVirtualItemCount, forceFirstLoad);
+
+                _contextRelationshipFiltersSubscription = AddContextRelationshipFiltersHelper(contextRelationshipFilters, QueryableCollectionView, ContextManager);
+
+                //Select the first loaded entity after the virtual item count is loaded
+                _selectFirstEntitySubscription = ((ExtendedVirtualQueryableCollectionView<TEntity>)QueryableCollectionView).
+                        FirstItemsLoadedAfterUpdated.Subscribe(loadedEntities => SelectedEntity = loadedEntities.FirstOrDefault());
+
+                //TODO Subscribe the loading subject to when the count is loading
+                //result.CountLoading.Subscribe(IsLoadingSubject);
             });
+        }
+
+        /// <summary>
+        /// Adds and maintains context relationship filters for a QueryableCollectionView
+        /// </summary>
+        /// <param name="contextRelationshipFilters">The context relationship filters to add and maintain.</param>
+        /// <param name="queryableCollectionView">The QueryableCollectionView to add and maintain the filters on.</param>
+        /// <returns></returns>
+        private static IDisposable AddContextRelationshipFiltersHelper(IEnumerable<ContextRelationshipFilter> contextRelationshipFilters, QueryableCollectionView queryableCollectionView, ContextManager contextManager)
+        {
+            //Build an array of FilterDescriptorObservables from the related types whenever the GetContextObservable pushes a new context
+            var filterDescriptorObservableChanged =
+                                           (from contextRelationshipFilter in contextRelationshipFilters
+                                            let method = typeof(ContextManager).GetMethod("GetContextObservable")
+                                            let generic = method.MakeGenericMethod(new[] { contextRelationshipFilter.RelatedContextType })
+                                            let contextObservable = (IObservable<object>)generic.Invoke(contextManager, null)
+                                            select contextObservable.DistinctUntilChanged().ObserveOnDispatcher()
+                                            .Select(context =>
+                                            {
+                                                var filterDescriptor = context == null ? null :
+                                                    new FilterDescriptor(contextRelationshipFilter.EntityMember, FilterOperator.IsEqualTo, contextRelationshipFilter.FilterValueGenerator(context));
+
+                                                return new Tuple<ContextRelationshipFilter, FilterDescriptor>(contextRelationshipFilter, filterDescriptor);
+                                            })).Merge();
+
+            //Add, remove, or update the context relationship filters whenever their contexts change
+            return filterDescriptorObservableChanged.Subscribe(tple =>
+             {
+                 //Try to find an existing related filter descriptor to the ContextRelationshipFilter.EntityMember for use below
+                 var relatedFilterDescriptor = queryableCollectionView.FilterDescriptors.OfType<FilterDescriptor>().FirstOrDefault(fd => fd.Member == tple.Item1.EntityMember);
+
+                 //If there is not a filter descriptor in the tuple (there is no longer a context)
+                 //remove the existing filter descriptor if there is one
+                 if (tple.Item2 == null && relatedFilterDescriptor != null)
+                     queryableCollectionView.FilterDescriptors.Remove(relatedFilterDescriptor);
+                 //If there is a filter descriptor in the tuple
+                 //a filter should be added or updated on the QCV
+                 else if (tple.Item2 != null)
+                 {
+                     //If no relatedFilterDescriptor exists, add the filter descriptor
+                     if (relatedFilterDescriptor == null)
+                         queryableCollectionView.FilterDescriptors.Add(tple.Item2);
+                     //If a relatedFilterDescriptor exists, update the existing related filter descriptor
+                     else
+                         relatedFilterDescriptor.Value = tple.Item2.Value;
+                 }
+             });
         }
 
         /// <summary>
@@ -152,20 +240,21 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <param name="entityQuery">An action which is passed the role id, and should return the entity query to load data with.</param>
         protected void SetupTopEntityDataLoading(Func<Guid, EntityQuery<TEntity>> entityQuery)
         {
-            var disposeObservable = new Subject<bool>();
             //Whenever the RoleId updates
             //update the VirtualQueryableCollectionView
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
-                //Dispose the last VQCV subscriptions
-                disposeObservable.OnNext(true);
+                //Dispose the last QueryableCollectionView
+                if (QueryableCollectionView != null)
+                    QueryableCollectionView.Dispose();
 
-                var result = DataManager.CreateContextBasedVQCV(() => entityQuery(roleId), disposeObservable);
+                //Load the VirtualItemCount immediately after creation (and automatically whenever a filter or sort changes)
+                var loadVirtualItemCount = new[] { true }.ToObservable();
 
-                //Subscribe the loading subject to when the count is loading
-                result.CountLoading.Subscribe(IsLoadingSubject);
+                QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TEntity>(Context, () => entityQuery(roleId), loadVirtualItemCount);
 
-                QueryableCollectionView = result.VQCV;
+                //TODO Subscribe the loading subject to when the count is loading
+                //result.CountLoading.Subscribe(IsLoadingSubject);
             });
         }
 
@@ -203,5 +292,42 @@ namespace FoundOps.SLClient.Data.ViewModels
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Describes the QueryableCollectionView's virtual item count load behavior
+    /// </summary>
+    public enum VirtualItemCountLoadBehavior
+    {
+        /// <summary>
+        /// Loads once immediately after creation (and automatically whenever a filter or sort changes).
+        /// </summary>
+        LoadAfterCreation,
+        /// <summary>
+        /// Loads any time a many relation context changes (and automatically whenever a filter or sort changes).
+        /// </summary>
+        LoadAfterManyRelationContextChanges
+    }
+
+    /// <summary>
+    /// Defines the relationship between an entity and its context/
+    /// </summary>
+    public class ContextRelationshipFilter
+    {
+        /// <summary>
+        /// The type of related entity context. Ex. Vehicle
+        /// </summary>
+        public Type RelatedContextType { get; set; }
+
+        /// <summary>
+        /// The Member of the current entity related to the context. Ex. VehicleMaintenance's "VehicleId"
+        /// </summary>
+        public String EntityMember { get; set; }
+
+        /// <summary>
+        /// A function when given the current related entity context, return the value of the context.
+        /// Ex. FilterValueGenerator(someVehicle) = abcd-1324-asfa-fegeg (someVehicle.Id)
+        /// </summary>
+        public Func<object, object> FilterValueGenerator { get; set; }
     }
 }

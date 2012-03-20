@@ -30,7 +30,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                             var vehicleContextId = vehicleContext != null ? vehicleContext.Id : Guid.Empty;
 
                                             return Context.GetRouteLogForServiceProviderQuery(roleId, employeeContextId, vehicleContextId);
-                                        }, null, false, true);
+                                        }, null, false, VirtualItemCountLoadBehavior.LoadAfterManyRelationContextChanges);
         }
 
         #region Logic
