@@ -60,7 +60,7 @@ namespace FoundOps.SLClient.Data.Services
             #region Setup FilterDescriptor Observables from the ContextRelationshipFilters
 
             if (contextRelationshipFilters == null)
-                contextRelationshipFilters = new ContextRelationshipFilter[] { };
+                contextRelationshipFilters = new ContextRelationshipFilter[] {};
 
             //Build an array of FilterDescriptorObservables from the related types and from the GetContextObservable
             IObservable<FilterDescriptor>[] filterDescriptorObservables =
