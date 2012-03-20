@@ -19,7 +19,7 @@ namespace FoundOps.SLClient.Data.Services
     public partial class DataManager
     {
         /// <summary>
-        /// This method sets up the VQSV for infinite accordion entities.
+        /// This method sets up the VQCV for infinite accordion entities.
         /// It takes into consideration any UI imposed sort conditions and filter conditions.
         /// It also filters based on the context filters.
         /// If the entity is in details view: it will load 100 at a time.
