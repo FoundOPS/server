@@ -66,7 +66,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public ClientTitlesVM() : base(new [] { typeof(Contact) })
         {
-            SetupMainQuery(DataManager.Query.ClientTitles, entities => this.RaisePropertyChanged("DistinctTitles"), "Title");
+            //TODO Optimization
+            //SetupMainQuery(DataManager.Query.ClientTitles, entities => this.RaisePropertyChanged("DistinctTitles"), "Title");
 
             #region Register Commands
 

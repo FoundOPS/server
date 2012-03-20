@@ -132,7 +132,6 @@ namespace FoundOps.SLClient.Data.Services
                 DomainContextIsSubmitting = this.Context.IsSubmitting;
             });
 
-            SetupQueries();
             SetupConsolidatedSubmit();
         }
 

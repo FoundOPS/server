@@ -276,40 +276,6 @@ namespace FoundOps.SLClient.Data.ViewModels
             _selectedEntityObservable.OnNext(entity);
         }
 
-        /// <summary>
-        /// Sets up the main query for loading Data. Will setup the IsLoadingObservable and the DomainCollectionView.
-        /// </summary>
-        /// <param name="queryKey">The query key.</param>
-        /// <param name="action">Optional: An action to perform after loading the data.</param>
-        /// <param name="sortBy">Optional: a SortDescription to add</param>
-        /// <param name="selectFirstEntity">Optional: Whether or not to select the first entity. Defaults to true.</param>
-        /// <returns>The EntityList Observable</returns>
-        protected IObservable<EntityList<TEntity>> SetupMainQuery(object queryKey, Action<EntityList<TEntity>> action = null, string sortBy = null, bool selectFirstEntity = true)
-        {
-            IsLoadingObservable = DataManager.Subscribe<TEntity>(queryKey, ObservationState, entities =>
-            {
-                //Setup the DomainCollectionView
-                var domainCollectionView = DomainCollectionViewFactory<TEntity>.GetDomainCollectionView(entities);
-                if (sortBy != null)
-                    domainCollectionView.SortDescriptions.Add(new SortDescription(sortBy, ListSortDirection.Ascending));
-
-                CollectionViewObservable.OnNext(domainCollectionView);
-
-                if (action != null)
-                    action(entities);
-            });
-
-            //Set the SelectedEntity to the first entity (or null if there are none)
-            if (selectFirstEntity)
-                DataManager.GetEntityListObservable<TEntity>(queryKey).Throttle(TimeSpan.FromMilliseconds(300)) //Delay .3 second to allow UI to catchup
-                    .ObserveOnDispatcher().Subscribe(_ =>
-                    {
-                        SelectedEntity = ((ICollectionView)EditableCollectionView).Cast<TEntity>().FirstOrDefault();
-                    });
-
-            return DataManager.GetEntityListObservable<TEntity>(queryKey);
-        }
-
         #region Methods to Override
 
         #region Methods w Initial Logic

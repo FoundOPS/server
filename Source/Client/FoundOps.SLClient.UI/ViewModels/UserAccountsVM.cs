@@ -71,73 +71,73 @@ namespace FoundOps.SLClient.UI.ViewModels
             //TODO Optimization
 
             //Subscribe to the UserAccounts observable
-            IsLoadingObservable = DataManager.Subscribe<UserAccount>(DataManager.Query.UserAccounts, this.ObservationState, null);
-            #region DomainCollectionView
+            //IsLoadingObservable = DataManager.Subscribe<UserAccount>(DataManager.Query.UserAccounts, this.ObservationState, null);
+            //#region DomainCollectionView
 
-            var loadedUserAccounts = DataManager.GetEntityListObservable<Party>(DataManager.Query.UserAccounts);
+            //var loadedUserAccounts = DataManager.GetEntityListObservable<Party>(DataManager.Query.UserAccounts);
 
-            //Update the DCV
-            //a) the loaded UserAccounts changes
-            //b) whenever the BusinessAccount context changes
-            //c) the BusinessAccount context OwnedRoles changes
-            //d) the BusinessAccount context OwnedRoles' MemberParties changes
+            ////Update the DCV
+            ////a) the loaded UserAccounts changes
+            ////b) whenever the BusinessAccount context changes
+            ////c) the BusinessAccount context OwnedRoles changes
+            ////d) the BusinessAccount context OwnedRoles' MemberParties changes
 
-            loadedUserAccounts.AsGeneric().Merge(
-                ContextManager.GetContextObservable<BusinessAccount>().WhereNotNull()
-                .SelectLatest(ba =>
-                                ba.OwnedRoles.FromCollectionChangedAndNow()
-                                .SelectLatest(_ => //d) the BusinessAccount context OwnedRoles' MemberParties changes
-                                                ba.OwnedRoles.Select(or => or.MemberParties.FromCollectionChangedGeneric()).Merge()
-                                                    //c) the BusinessAccount context's OwnedRoles changes
-                                                .AndNow())
-                                    //b) the BusinessAccount context changes
-                                                .AndNow()))
-                //a) the loaded UserAccounts changes
-                                                .AndNow()
-                .Throttle(TimeSpan.FromMilliseconds(200))
-                .ObserveOnDispatcher().Subscribe(_ =>
-                {
-                    var businessAccountContext = this.ContextManager.GetContext<BusinessAccount>();
+            //loadedUserAccounts.AsGeneric().Merge(
+            //    ContextManager.GetContextObservable<BusinessAccount>().WhereNotNull()
+            //    .SelectLatest(ba =>
+            //                    ba.OwnedRoles.FromCollectionChangedAndNow()
+            //                    .SelectLatest(_ => //d) the BusinessAccount context OwnedRoles' MemberParties changes
+            //                                    ba.OwnedRoles.Select(or => or.MemberParties.FromCollectionChangedGeneric()).Merge()
+            //                                        //c) the BusinessAccount context's OwnedRoles changes
+            //                                    .AndNow())
+            //                        //b) the BusinessAccount context changes
+            //                                    .AndNow()))
+            //    //a) the loaded UserAccounts changes
+            //                                    .AndNow()
+            //    .Throttle(TimeSpan.FromMilliseconds(200))
+            //    .ObserveOnDispatcher().Subscribe(_ =>
+            //    {
+            //        var businessAccountContext = this.ContextManager.GetContext<BusinessAccount>();
 
-                    //If there is a businessAccount context then return the businessAccount's UserAccounts
-                    //Otherwise return all the loaded UserAccounts
-                    IEnumerable<Party> setOfUserAccounts = businessAccountContext != null
-                                                        ? businessAccountContext.OwnedRoles.SelectMany(r => r.MemberParties.OfType<UserAccount>())
-                                                        : this.Context.Parties.OfType<UserAccount>();
+            //        //If there is a businessAccount context then return the businessAccount's UserAccounts
+            //        //Otherwise return all the loaded UserAccounts
+            //        IEnumerable<Party> setOfUserAccounts = businessAccountContext != null
+            //                                            ? businessAccountContext.OwnedRoles.SelectMany(r => r.MemberParties.OfType<UserAccount>())
+            //                                            : this.Context.Parties.OfType<UserAccount>();
 
-                    this.CollectionViewObservable.OnNext(DomainCollectionViewFactory<Party>.GetDomainCollectionView(new EntityList<Party>(Context.Parties, setOfUserAccounts)));
-                });
+            //        this.CollectionViewObservable.OnNext(DomainCollectionViewFactory<Party>.GetDomainCollectionView(new EntityList<Party>(Context.Parties, setOfUserAccounts)));
+            //    });
 
-            //Whenever the DCV changes:
-            //a) sort by Name 
-            //b) select the first entity
-            this.CollectionViewObservable.Throttle(TimeSpan.FromMilliseconds(300)) //wait for UI to load
-                .ObserveOnDispatcher().Subscribe(dcv =>
-                {
-                    //a) sort by Name 
-                    ((ICollectionView)dcv).SortDescriptions.Add(new SortDescription("DisplayName", ListSortDirection.Ascending));
-                    //b) select the first entity
-                    this.SelectedEntity = this.CollectionView.Cast<Party>().FirstOrDefault();
-                });
+            ////Whenever the DCV changes:
+            ////a) sort by Name 
+            ////b) select the first entity
+            //this.CollectionViewObservable.Throttle(TimeSpan.FromMilliseconds(300)) //wait for UI to load
+            //    .ObserveOnDispatcher().Subscribe(dcv =>
+            //    {
+            //        //a) sort by Name 
+            //        ((ICollectionView)dcv).SortDescriptions.Add(new SortDescription("DisplayName", ListSortDirection.Ascending));
+            //        //b) select the first entity
+            //        this.SelectedEntity = this.CollectionView.Cast<Party>().FirstOrDefault();
+            //    });
 
-            #endregion
+            //#endregion
 
-            #region Implementation of IAddToDeleteFromSource<Party>
+            //#region Implementation of IAddToDeleteFromSource<Party>
 
-            //Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
-            _loadedUserAccounts = loadedUserAccounts.ToProperty(this, x => x.ExistingItemsSource);
+            ////Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
+            //_loadedUserAccounts = loadedUserAccounts.ToProperty(this, x => x.ExistingItemsSource);
 
-            CreateNewItem = name =>
-            {
-                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
+            //CreateNewItem = name =>
+            //{
+            //    var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
 
-                //Add the new entity to the EntityList so it gets tracked/saved
-                ((EntityList<Party>)ExistingItemsSource).Add(newUserAccount);
+            //    //Add the new entity to the EntityList so it gets tracked/saved
+            //    ((EntityList<Party>)ExistingItemsSource).Add(newUserAccount);
 
-                return newUserAccount;
-            };
+            //    return newUserAccount;
+            //};
 
-            #endregion
+            //#endregion
         }
 
         #region Logic

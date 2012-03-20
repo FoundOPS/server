@@ -25,8 +25,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         public RecurringServicesVM()
             : base(new[] { typeof(Client) })
         {
-            //Subscribe to the RecurringServices query
-            IsLoadingObservable = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, null);
+            //TODO Optimization
+            ////Subscribe to the RecurringServices query
+            //IsLoadingObservable = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, null);
 
             //Setup DomainCollectionView based on the current Client context
 

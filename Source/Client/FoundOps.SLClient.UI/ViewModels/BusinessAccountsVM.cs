@@ -185,7 +185,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public BusinessAccountsVM()
         {
-            SetupMainQuery(DataManager.Query.BusinessAccounts);
+            //TODO Optimization
+            //SetupMainQuery(DataManager.Query.BusinessAccounts);
 
             #region Implementation of IAddToDeleteFromDestination<UserAccount> and Implementation of IAddToDeleteFromDestination<ServiceTemplate>
 
@@ -200,7 +201,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Implementation of IAddNewExisting<ServiceTemplate> & IRemoveDelete<ServiceTemplate>
 
-            AddNewItemServiceTemplate = name => VM.ServiceTemplates.CreateNewItem(name);
+            //TODO Optimization
+            //AddNewItemServiceTemplate = name => VM.ServiceTemplates.CreateNewItem(name);
 
             AddExistingItemServiceTemplate = existingItem =>
             {

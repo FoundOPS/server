@@ -92,32 +92,33 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
-            //This will always start as loading (until services are generated)
-            IsLoadingSubject.OnNext(true);
+            //TODO Optimization
+            ////This will always start as loading (until services are generated)
+            //IsLoadingSubject.OnNext(true);
 
-            //Load services
-            var servicesLoading = DataManager.Subscribe<Service>(DataManager.Query.Services, ObservationState, entities => _existingServices = entities);
+            ////Load services
+            //var servicesLoading = DataManager.Subscribe<Service>(DataManager.Query.Services, ObservationState, entities => _existingServices = entities);
 
-            //Load recurring services
-            var recurringServicesLoading = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, entities => _recurringServices = entities);
+            ////Load recurring services
+            //var recurringServicesLoading = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, entities => _recurringServices = entities);
 
-            //This is loading whenever services is loading or recurring services is loading
-            var loadingData = servicesLoading.CombineLatest(recurringServicesLoading).Select(loadingTuple => loadingTuple.Item1 || loadingTuple.Item2);
+            ////This is loading whenever services is loading or recurring services is loading
+            //var loadingData = servicesLoading.CombineLatest(recurringServicesLoading).Select(loadingTuple => loadingTuple.Item1 || loadingTuple.Item2);
 
-            //The first load on any entitylist is empty
-            loadingData.Skip(2).SubscribeOnDispatcher().Subscribe(l => _servicesOrRecurringServicesLoading = l);
+            ////The first load on any entitylist is empty
+            //loadingData.Skip(2).SubscribeOnDispatcher().Subscribe(l => _servicesOrRecurringServicesLoading = l);
 
-            //Whenever loadingData publishes update IsLoadingSubject
-            //Only choose the true statements (it does not stop loading until the services are generated)
-            loadingData.Skip(2).Where(isLoading => isLoading).Subscribe(IsLoadingSubject);
+            ////Whenever loadingData publishes update IsLoadingSubject
+            ////Only choose the true statements (it does not stop loading until the services are generated)
+            //loadingData.Skip(2).Where(isLoading => isLoading).Subscribe(IsLoadingSubject);
 
-            //When everything is loaded update the visible services
-            loadingData.Where(isLoading => !isLoading).Throttle(TimeSpan.FromMilliseconds(300)) //Throttle to allow associations to settle
-                .ObserveOnDispatcher().Subscribe(isLoading =>
-                {
-                    if (_existingServices != null && _recurringServices != null)
-                        UpdateVisibleServices();
-                });
+            ////When everything is loaded update the visible services
+            //loadingData.Where(isLoading => !isLoading).Throttle(TimeSpan.FromMilliseconds(300)) //Throttle to allow associations to settle
+            //    .ObserveOnDispatcher().Subscribe(isLoading =>
+            //    {
+            //        if (_existingServices != null && _recurringServices != null)
+            //            UpdateVisibleServices();
+            //    });
 
             var canSaveDiscard = this.WhenAny(x => x.SelectedEntity, x => x.SelectedEntity.ServiceIsNew,
                                                x => x.SelectedEntity.ServiceHasChanges,

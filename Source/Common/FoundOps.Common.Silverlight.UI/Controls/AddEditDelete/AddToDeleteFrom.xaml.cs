@@ -635,11 +635,6 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-        private void RadComboBox_Populated(object sender, PopulatedEventArgs e)
-        {
-
-        }
-
         #endregion
 
         /// <summary>

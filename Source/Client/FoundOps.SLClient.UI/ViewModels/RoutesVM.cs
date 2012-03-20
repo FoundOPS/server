@@ -242,27 +242,27 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        #region Loading
+        //#region Loading
 
-        private ObservableAsPropertyHelper<bool> _tasksLoading;
-        /// <summary>
-        /// Gets a value indicating whether [tasks is loading].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [tasks is loading]; otherwise, <c>false</c>.
-        /// </value>
-        public bool TasksLoading { get { return _tasksLoading.Value; } }
+        //private ObservableAsPropertyHelper<bool> _tasksLoading;
+        ///// <summary>
+        ///// Gets a value indicating whether [tasks is loading].
+        ///// </summary>
+        ///// <value>
+        /////   <c>true</c> if [tasks is loading]; otherwise, <c>false</c>.
+        ///// </value>
+        //public bool TasksLoading { get { return _tasksLoading.Value; } }
 
-        private ObservableAsPropertyHelper<bool> _routesLoading;
-        /// <summary>
-        /// Gets a value indicating whether [routes is loading].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [routes is loading]; otherwise, <c>false</c>.
-        /// </value>
-        public bool RoutesLoading { get { return _routesLoading.Value; } }
+        //private ObservableAsPropertyHelper<bool> _routesLoading;
+        ///// <summary>
+        ///// Gets a value indicating whether [routes is loading].
+        ///// </summary>
+        ///// <value>
+        /////   <c>true</c> if [routes is loading]; otherwise, <c>false</c>.
+        ///// </value>
+        //public bool RoutesLoading { get { return _routesLoading.Value; } }
 
-        #endregion
+        //#endregion
 
         #region SelectedItems
 
@@ -573,41 +573,42 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             SetupDataLoading();
 
-            #region Setup UpdateFilter observable
+            //TODO Optimization
+            //#region Setup UpdateFilter observable
 
-            //Update Filter whenever: a) routes are changed or is set, b) the SelectedRouteTypes changes,
-            //c) the SelectedRegions changes, d) a route's RouteType is changed
+            ////Update Filter whenever: a) routes are changed or is set, b) the SelectedRouteTypes changes,
+            ////c) the SelectedRegions changes, d) a route's RouteType is changed
 
-            var loadedRoutesChanged = DataManager.GetEntityListObservable<Route>(Query.RoutesForServiceProviderOnDay);
+            //var loadedRoutesChanged = DataManager.GetEntityListObservable<Route>(Query.RoutesForServiceProviderOnDay);
 
-            _updateFilter =
-                //a) routes are changed or set
-               loadedRoutesChanged.FromCollectionChangedOrSet().AsGeneric()
-                //b) the SelectedRouteType changes
-                .Merge(SelectedRouteTypes.FromCollectionChangedGeneric())
-                //c) the SelectedRegions changes
-                .Merge(SelectedRegions.FromCollectionChangedGeneric())
-                //d) a route's RouteType is changed
-                .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectLatest(rts =>
-                    rts.Select(rt => Observable2.FromPropertyChangedPattern(rt, x => x.RouteType)).Merge())
-                    .AsGeneric());
+            //_updateFilter =
+            //    //a) routes are changed or set
+            //   loadedRoutesChanged.FromCollectionChangedOrSet().AsGeneric()
+            //    //b) the SelectedRouteType changes
+            //    .Merge(SelectedRouteTypes.FromCollectionChangedGeneric())
+            //    //c) the SelectedRegions changes
+            //    .Merge(SelectedRegions.FromCollectionChangedGeneric())
+            //    //d) a route's RouteType is changed
+            //    .Merge(loadedRoutesChanged.FromCollectionChangedOrSet().SelectLatest(rts =>
+            //        rts.Select(rt => Observable2.FromPropertyChangedPattern(rt, x => x.RouteType)).Merge())
+            //        .AsGeneric());
 
-            #endregion
+            //#endregion
 
             RegisterCommands();
 
             #region Filters
 
-            //Subscribe to the ServiceTemplates entityList
-            this.DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, null);
+            ////Subscribe to the ServiceTemplates entityList
+            //this.DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, null);
 
-            //Whenever the service templates collection changes, SetupRouteTypes
-            DataManager.GetEntityListObservable<ServiceTemplate>(DataManager.Query.ServiceTemplates)
-                .FromCollectionChangedOrSet().Subscribe(SetupRouteTypesFilter);
+            ////Whenever the service templates collection changes, SetupRouteTypes
+            //DataManager.GetEntityListObservable<ServiceTemplate>(DataManager.Query.ServiceTemplates)
+            //    .FromCollectionChangedOrSet().Subscribe(SetupRouteTypesFilter);
 
-            //Setup the RegionsFilter from loaded Locations
-            DataManager.GetEntityListObservable<Location>(DataManager.Query.Locations)
-                .FromCollectionChangedOrSet().Subscribe(SetupRegionsFilter);
+            ////Setup the RegionsFilter from loaded Locations
+            //DataManager.GetEntityListObservable<Location>(DataManager.Query.Locations)
+            //    .FromCollectionChangedOrSet().Subscribe(SetupRegionsFilter);
 
             //Filter Routes depending on the RouteType and Region
             Predicate<object> filter = obj =>
@@ -632,26 +633,26 @@ namespace FoundOps.SLClient.UI.ViewModels
             };
 
             //Update the counts on the Dispatcher Filter whenever:
-            var updateFilterCounts =
-                //a) routesOrFiltersChanged
-            _updateFilter.Throttle(new TimeSpan(0, 0, 0, 0, 250)).AsGeneric() //delay to wait until DCV is updated
-                //merge with b) whenever a Task is added to a route
-                .Merge(
-                //whenever loadedRoutes is changed or set
-                loadedRoutesChanged.FromCollectionChangedOrSet().SelectLatest(lrs =>
-                    //whenever loadedRoutes.RouteDestinations is changed (and now)
-                  lrs.Select(lr => lr.RouteDestinations.FromCollectionChangedAndNow()
-                      //whenever the loadedRoutes.RouteDestinations.RouteTasks is changed (and now)
-                      .Select(ea => (EntityCollection<RouteDestination>)ea.Sender)
-                      .SelectLatest(routeDestinations =>
-                          routeDestinations.Select(rd => rd.RouteTasks.FromCollectionChangedAndNow())
-                          .Merge()) //Merge loadedRoutes.RouteDestinations.RouteTasks collection changed events
-                        ).Merge() //Merge loadedRoutes.RouteDestinations collection changed events
-                       ).AsGeneric()
-                       );
+            //var updateFilterCounts =
+            //    //a) routesOrFiltersChanged
+            //_updateFilter.Throttle(new TimeSpan(0, 0, 0, 0, 250)).AsGeneric() //delay to wait until DCV is updated
+            //    //merge with b) whenever a Task is added to a route
+            //    .Merge(
+            //    //whenever loadedRoutes is changed or set
+            //    loadedRoutesChanged.FromCollectionChangedOrSet().SelectLatest(lrs =>
+            //        //whenever loadedRoutes.RouteDestinations is changed (and now)
+            //      lrs.Select(lr => lr.RouteDestinations.FromCollectionChangedAndNow()
+            //          //whenever the loadedRoutes.RouteDestinations.RouteTasks is changed (and now)
+            //          .Select(ea => (EntityCollection<RouteDestination>)ea.Sender)
+            //          .SelectLatest(routeDestinations =>
+            //              routeDestinations.Select(rd => rd.RouteTasks.FromCollectionChangedAndNow())
+            //              .Merge()) //Merge loadedRoutes.RouteDestinations.RouteTasks collection changed events
+            //            ).Merge() //Merge loadedRoutes.RouteDestinations collection changed events
+            //           ).AsGeneric()
+            //           );
 
-            //Setup ForceFilterCountUpdate property
-            _forceFilterCountUpdate = updateFilterCounts.Select(_ => new Random().Next()).ToProperty(this, x => x.ForceFilterCountUpdate);
+            ////Setup ForceFilterCountUpdate property
+            //_forceFilterCountUpdate = updateFilterCounts.Select(_ => new Random().Next()).ToProperty(this, x => x.ForceFilterCountUpdate);
 
             #endregion
         }
@@ -669,34 +670,34 @@ namespace FoundOps.SLClient.UI.ViewModels
                 this.WhenAny(x => x.ContextManager.RoleId, x => x.SelectedDate, (roleId, selectedDate) => roleId.Value != Guid.Empty)
                 .Merge(enteredDispatcher).Merge(DiscardObservable).Where(ld => ld).Select(ld => this.ContextManager.RoleId).Throttle(TimeSpan.FromMilliseconds(250));
 
-            #region Load Routes
+            //#region Load Routes
 
-            //Add RoutesForServiceProviderOnDay query. It should load routes whenever loadData changes
-            this.DataManager.AddQuery(Query.RoutesForServiceProviderOnDay,
-                                      roleId => this.Context.GetRoutesForServiceProviderOnDayQuery(roleId, SelectedDate),
-                                      Context.Routes, loadData);
+            ////Add RoutesForServiceProviderOnDay query. It should load routes whenever loadData changes
+            //this.DataManager.AddQuery(Query.RoutesForServiceProviderOnDay,
+            //                          roleId => this.Context.GetRoutesForServiceProviderOnDayQuery(roleId, SelectedDate),
+            //                          Context.Routes, loadData);
 
-            //Setup the MainQuery
-            this.SetupMainQuery(Query.RoutesForServiceProviderOnDay, routes => RouteScheduleVM = new RouteScheduleVM(), null, false);
+            ////Setup the MainQuery
+            //this.SetupMainQuery(Query.RoutesForServiceProviderOnDay, routes => RouteScheduleVM = new RouteScheduleVM(), null, false);
 
-            //Setup RoutesLoading property
-            var routesLoading = this.DataManager.GetIsLoadingObservable(Query.RoutesForServiceProviderOnDay)
-                .CombineLatest(this.DataManager.GetIsLoadingObservable(DataManager.Query.ServiceTemplates), (a, b) => a || b);
+            ////Setup RoutesLoading property
+            //var routesLoading = this.DataManager.GetIsLoadingObservable(Query.RoutesForServiceProviderOnDay)
+            //    .CombineLatest(this.DataManager.GetIsLoadingObservable(DataManager.Query.ServiceTemplates), (a, b) => a || b);
 
-            _routesLoading = routesLoading.ToProperty(this, x => x.RoutesLoading);
+            //_routesLoading = routesLoading.ToProperty(this, x => x.RoutesLoading);
 
-            #endregion
+            //#endregion
 
-            #region Load Route Tasks
+            //#region Load Route Tasks
 
-            //Add UnroutedRouteTasks query. It should load routes whenever loadData changes)
-            this.DataManager.AddQuery(Query.UnroutedRouteTasks, roleId => this.Context.GetUnroutedRouteTasksQuery(roleId, SelectedDate), Context.RouteTasks, loadData);
+            ////Add UnroutedRouteTasks query. It should load routes whenever loadData changes)
+            //this.DataManager.AddQuery(Query.UnroutedRouteTasks, roleId => this.Context.GetUnroutedRouteTasksQuery(roleId, SelectedDate), Context.RouteTasks, loadData);
 
-            //Subscribe to UnroutedRouteTasks (and setup TasksLoading property)
-            _tasksLoading = this.DataManager.Subscribe<RouteTask>(Query.UnroutedRouteTasks, ObservationState,
-                loadedRouteTasks => _loadedRouteTasks.OnNext(loadedRouteTasks)).ToProperty(this, x => x.TasksLoading);
+            ////Subscribe to UnroutedRouteTasks (and setup TasksLoading property)
+            //_tasksLoading = this.DataManager.Subscribe<RouteTask>(Query.UnroutedRouteTasks, ObservationState,
+            //    loadedRouteTasks => _loadedRouteTasks.OnNext(loadedRouteTasks)).ToProperty(this, x => x.TasksLoading);
 
-            #endregion
+            //#endregion
         }
 
         //The only route manifest viewer
@@ -706,41 +707,41 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void RegisterCommands()
         {
-            //Create an observable for when at least 1 route exists
-            var routesExist = DataManager.GetEntityListObservable<Route>(Query.RoutesForServiceProviderOnDay) //select the routes EntityList observable
-                .FromCollectionChangedOrSet() //on collection changed or set
-                .Select(routeEntityList => routeEntityList.Any());  // select routes > 0
+            ////Create an observable for when at least 1 route exists
+            //var routesExist = DataManager.GetEntityListObservable<Route>(Query.RoutesForServiceProviderOnDay) //select the routes EntityList observable
+            //    .FromCollectionChangedOrSet() //on collection changed or set
+            //    .Select(routeEntityList => routeEntityList.Any());  // select routes > 0
 
-            //Can calculate routes when there are routes, and when the context is not submitting
-            var canCalculateRoutes = DataManager.DomainContextIsSubmittingObservable.CombineLatest(routesExist, (isSubmitting, areRoutes) => !isSubmitting && areRoutes);
-            AutoCalculateRoutes = new ReactiveCommand(canCalculateRoutes);
+            ////Can calculate routes when there are routes, and when the context is not submitting
+            //var canCalculateRoutes = DataManager.DomainContextIsSubmittingObservable.CombineLatest(routesExist, (isSubmitting, areRoutes) => !isSubmitting && areRoutes);
+            //AutoCalculateRoutes = new ReactiveCommand(canCalculateRoutes);
 
-            //Populate routes with the UnroutedTasks and refresh the filter counts
-            AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
-            {
-                //Populate the routes with the unrouted tasks
-                var routedTasks = SimpleRouteCalculator.PopulateRoutes(this.UnroutedTasks, CollectionView.Cast<Route>());
+            ////Populate routes with the UnroutedTasks and refresh the filter counts
+            //AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
+            //{
+            //    //Populate the routes with the unrouted tasks
+            //    var routedTasks = SimpleRouteCalculator.PopulateRoutes(this.UnroutedTasks, CollectionView.Cast<Route>());
 
-                //Remove the routedTasks from the task board
-                foreach (var routeTaskToRemove in routedTasks.ToArray())
-                    UnroutedTasks.Remove(routeTaskToRemove);
-            });
+            //    //Remove the routedTasks from the task board
+            //    foreach (var routeTaskToRemove in routedTasks.ToArray())
+            //        UnroutedTasks.Remove(routeTaskToRemove);
+            //});
 
-            //Allow the user to open the route manifests whenever there is more than one route visible
-            OpenRouteManifests = new ReactiveCommand(_updateFilter.ObserveOnDispatcher().Throttle(new TimeSpan(0, 0, 0, 0, 250)).Select(_ => this.CollectionView.Cast<object>().Any()));
+            ////Allow the user to open the route manifests whenever there is more than one route visible
+            //OpenRouteManifests = new ReactiveCommand(_updateFilter.ObserveOnDispatcher().Throttle(new TimeSpan(0, 0, 0, 0, 250)).Select(_ => this.CollectionView.Cast<object>().Any()));
 
-            OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
-            {
-                //Setup the route manifest viewer if there is not one yet
-                if (_routeManifestViewer == null)
-                    _routeManifestViewer = new RouteManifestViewer();
+            //OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
+            //{
+            //    //Setup the route manifest viewer if there is not one yet
+            //    if (_routeManifestViewer == null)
+            //        _routeManifestViewer = new RouteManifestViewer();
 
-                _routeManifestViewer.Show();
+            //    _routeManifestViewer.Show();
 
-                //Whenever the manifests are opened save the Routes
-                if (this.SaveCommand.CanExecute(null))
-                    this.SaveCommand.Execute(null);
-            });
+            //    //Whenever the manifests are opened save the Routes
+            //    if (this.SaveCommand.CanExecute(null))
+            //        this.SaveCommand.Execute(null);
+            //});
 
             #region Date Modifiers
 
@@ -752,58 +753,58 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Route Tasks
 
-            //AddRouteTask can add whenever the OwnerAccount != null && tasks are not loading
-            AddRouteTask = new ReactiveCommand(this.WhenAny(x => x.ContextManager.OwnerAccount, x => x.TasksLoading,
-                (ownerAccount, tasksLoading) => ownerAccount.Value != null && !tasksLoading.Value));
+            ////AddRouteTask can add whenever the OwnerAccount != null && tasks are not loading
+            //AddRouteTask = new ReactiveCommand(this.WhenAny(x => x.ContextManager.OwnerAccount, x => x.TasksLoading,
+            //    (ownerAccount, tasksLoading) => ownerAccount.Value != null && !tasksLoading.Value));
 
             //DeleteRouteTask can delete whenever the SelectedTask != null
             DeleteRouteTask = new ReactiveCommand(this.WhenAny(x => x.SelectedTask, st => st.Value != null));
             //DeleteRouteTasks can delete whenever SelectedTaskBoardTasks has at least 1 route task
             DeleteRouteTasks = new ReactiveCommand(this.WhenAny(x => x.SelectedTaskBoardTasks, sts => sts.Value != null && sts.Value.Count() > 0));
 
-            //Setup AddRouteTask command
-            AddRouteTask.SubscribeOnDispatcher().Subscribe(_ =>
-            {
-                //Add a new RouteTask with the information we have
-                var routeTask = new RouteTask
-                {
-                    Date = SelectedDate,
-                    OwnerBusinessAccount =
-                        (BusinessAccount)ContextManager.OwnerAccount,
-                    Name = "New Route Task"
-                };
+            ////Setup AddRouteTask command
+            //AddRouteTask.SubscribeOnDispatcher().Subscribe(_ =>
+            //{
+            //    //Add a new RouteTask with the information we have
+            //    var routeTask = new RouteTask
+            //    {
+            //        Date = SelectedDate,
+            //        OwnerBusinessAccount =
+            //            (BusinessAccount)ContextManager.OwnerAccount,
+            //        Name = "New Route Task"
+            //    };
 
-                this.LoadedRouteTasks.Add(routeTask);
+            //    this.LoadedRouteTasks.Add(routeTask);
 
-                //Set the SelectedTask to the newly added routeTask
-                this.SelectedTask = routeTask;
-            });
+            //    //Set the SelectedTask to the newly added routeTask
+            //    this.SelectedTask = routeTask;
+            //});
 
-            //Setup DeleteRouteTask command
-            DeleteRouteTask.SubscribeOnDispatcher().Subscribe(_ =>
-            {
-                //Generated services are not tracked
-                if (SelectedTask.GeneratedOnServer) return;
+            ////Setup DeleteRouteTask command
+            //DeleteRouteTask.SubscribeOnDispatcher().Subscribe(_ =>
+            //{
+            //    //Generated services are not tracked
+            //    if (SelectedTask.GeneratedOnServer) return;
 
-                this.LoadedRouteTasks.Remove(SelectedTask);
+            //    this.LoadedRouteTasks.Remove(SelectedTask);
 
-                if (this.Context.RouteTasks.Contains(SelectedTask))
-                    this.Context.RouteTasks.Remove(SelectedTask);
-            });
+            //    if (this.Context.RouteTasks.Contains(SelectedTask))
+            //        this.Context.RouteTasks.Remove(SelectedTask);
+            //});
 
-            //Setup DeleteRouteTasks command
-            DeleteRouteTasks.SubscribeOnDispatcher().Subscribe(_ =>
-            {
-                //Generated services should not be deleted
-                var tasksToDelete = this.SelectedTaskBoardTasks.Where(rt => !rt.GeneratedOnServer);
+            ////Setup DeleteRouteTasks command
+            //DeleteRouteTasks.SubscribeOnDispatcher().Subscribe(_ =>
+            //{
+            //    //Generated services should not be deleted
+            //    var tasksToDelete = this.SelectedTaskBoardTasks.Where(rt => !rt.GeneratedOnServer);
 
-                foreach (var routeTask in tasksToDelete)
-                    this.LoadedRouteTasks.Remove(routeTask);
+            //    foreach (var routeTask in tasksToDelete)
+            //        this.LoadedRouteTasks.Remove(routeTask);
 
-                foreach (var routeTask in tasksToDelete)
-                    if (this.Context.RouteTasks.Contains(routeTask))
-                        this.Context.RouteTasks.Remove(routeTask);
-            });
+            //    foreach (var routeTask in tasksToDelete)
+            //        if (this.Context.RouteTasks.Contains(routeTask))
+            //            this.Context.RouteTasks.Remove(routeTask);
+            //});
 
             #endregion
         }
