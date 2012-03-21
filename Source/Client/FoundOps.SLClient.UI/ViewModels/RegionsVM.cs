@@ -1,4 +1,7 @@
-﻿using FoundOps.Core.Models.CoreEntities;
+﻿using System;
+using System.Windows.Controls;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
@@ -12,6 +15,15 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("RegionsVM")]
     public class RegionsVM : InfiniteAccordionVM<Region>
     {
+        #region Public Properties
+
+        /// <summary>
+        /// A method to update the ExistingItemsSource with suggestions remotely loaded.
+        /// </summary>
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+
+        #endregion
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RegionsVM"/> class.
         /// </summary>
@@ -20,6 +32,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Setup data loading
             SetupTopEntityDataLoading(roleId => Context.GetRegionsForServiceProviderQuery(ContextManager.RoleId));
+
+            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
+              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.Context.SearchRegionsForRoleQuery(Manager.Context.RoleId, searchText));
         }
 
         #region Logic

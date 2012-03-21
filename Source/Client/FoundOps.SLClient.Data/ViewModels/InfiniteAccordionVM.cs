@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+﻿using System.Windows.Controls;
+using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Silverlight.UI.Tools;
 using FoundOps.Common.Tools;
@@ -280,6 +281,27 @@ namespace FoundOps.SLClient.Data.ViewModels
             });
         }
 
+        private LoadOperation<TEntity> _lastSuggestionQuery;
+        /// <summary>
+        /// Sets up the search suggestions for an AutoCompleteBox.
+        /// </summary>
+        /// <param name="autoCompleteBox">The autocomplete box.</param>
+        /// <param name="searchQueryFunction">A function that returns the search EntityQuery.</param>
+        protected void SearchSuggestionsHelper(AutoCompleteBox autoCompleteBox, Func<EntityQuery<TEntity>> searchQueryFunction)
+        {
+            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
+                _lastSuggestionQuery.Cancel();
+
+            _lastSuggestionQuery = Manager.Data.Context.Load(searchQueryFunction().Take(10),
+                                loadOperation =>
+                                {
+                                    if (loadOperation.IsCanceled || loadOperation.HasError) return;
+
+                                    autoCompleteBox.ItemsSource = loadOperation.Entities;
+                                    autoCompleteBox.PopulateComplete();
+                                }, null);
+        }
+
         #endregion
 
         #region Overriden Properties
@@ -310,7 +332,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             //Remove the entity from the EntitySet (so it is deleted by the DomainContext)
             Context.EntityContainer.GetEntitySet(typeof(TEntity)).Remove(entityToDelete);
-            
+
             base.DeleteEntity(entityToDelete);
         }
 

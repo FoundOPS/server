@@ -1,8 +1,6 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Tools;
-using System.ServiceModel.DomainServices.Client;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -81,27 +79,7 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             //Allow us to wait for the response
             e.Cancel = true;
 
-            UpdateSuggestions(ClientsAutoCompleteBox.SearchText);
-        }
-
-        private LoadOperation<Client> _lastSuggestionQuery;
-        /// <summary>
-        /// Updates the client suggestions.
-        /// </summary>
-        /// <param name="text"> </param>
-        private void UpdateSuggestions(string text)
-        {
-            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
-                _lastSuggestionQuery.Cancel();
-
-            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchClientsForRoleQuery(Manager.Context.RoleId, text).Take(10),
-                                clientsLoadOperation =>
-                                {
-                                    if (clientsLoadOperation.IsCanceled || clientsLoadOperation.HasError) return;
-
-                                    ClientsAutoCompleteBox.ItemsSource = clientsLoadOperation.Entities;
-                                    ClientsAutoCompleteBox.PopulateComplete();
-                                }, null);
+            VM.Clients.ManuallyUpdateSuggestions(ClientsAutoCompleteBox.SearchText, ClientsAutoCompleteBox);
         }
     }
 }

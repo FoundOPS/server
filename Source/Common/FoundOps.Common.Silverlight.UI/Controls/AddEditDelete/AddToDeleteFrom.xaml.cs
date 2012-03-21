@@ -68,11 +68,6 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         IEqualityComparer<object> CustomComparer { get; }
 
         /// <summary>
-        /// Returns the existing items. This is not generic because of inheritance issues and entitylists.
-        /// </summary>
-        IEnumerable ExistingItemsSource { get; }
-
-        /// <summary>
         /// The member path to be used for searching and displaying existing items.
         /// </summary>
         string MemberPath { get; }
@@ -206,7 +201,6 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         }
 
         #endregion
-
 
         #region ItemToRemoveDisplayMember Dependency Property
 

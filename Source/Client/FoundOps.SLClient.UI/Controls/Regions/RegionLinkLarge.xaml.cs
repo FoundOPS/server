@@ -1,10 +1,8 @@
-using System.ServiceModel.DomainServices.Client;
-using System.Windows.Controls;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Tools;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.Regions
 {
@@ -81,26 +79,7 @@ namespace FoundOps.SLClient.UI.Controls.Regions
             // Allow us to wait for the response
             e.Cancel = true;
 
-            UpdateSuggestions();
-        }
-
-        private LoadOperation<Region> _lastSuggestionQuery;
-        /// <summary>
-        /// Updates the client suggestions.
-        /// </summary>
-        private void UpdateSuggestions()
-        {
-            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
-                _lastSuggestionQuery.Cancel();
-
-            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchRegionsForRoleQuery(Manager.Context.RoleId, RegionsAutoCompleteBox.Text).Take(10),
-                                clientsLoadOperation =>
-                                {
-                                    if (clientsLoadOperation.IsCanceled || clientsLoadOperation.HasError) return;
-
-                                    RegionsAutoCompleteBox.ItemsSource = clientsLoadOperation.Entities;
-                                    RegionsAutoCompleteBox.PopulateComplete();
-                                }, null);
+            VM.Regions.ManuallyUpdateSuggestions(RegionsAutoCompleteBox.SearchText, RegionsAutoCompleteBox);
         }
     }
 }

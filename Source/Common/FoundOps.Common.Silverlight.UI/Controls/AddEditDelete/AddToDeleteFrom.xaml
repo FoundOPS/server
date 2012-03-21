@@ -16,9 +16,7 @@
                 <sdk:AutoCompleteBox x:Name="AutoCompleteBox" Grid.Row="1" MinWidth="120" MinimumPopulateDelay="200" MinimumPrefixLength="0"
                                      Populating="AutoCompleteBoxPopulating"
                                      DataContext="{MarkupExtensions:RootElement}" Text="{Binding ExistingItemsComboBoxText, Mode=TwoWay}" 
-                                     SelectedItem="{Binding SelectedExistingItem, Mode=TwoWay}" ValueMemberPath="{MarkupExtensions:Resolver Source={Binding Source.MemberPath, Source={MarkupExtensions:RootElement}}}"
-                                     ItemsSource="{MarkupExtensions:Except Collection={Binding Source.ExistingItemsSource, Source={MarkupExtensions:RootElement}}, CustomComparer={Binding Source.CustomComparer, Source={MarkupExtensions:RootElement}},
-                    ExceptCollection={Binding DestinationItemsSource, Source={MarkupExtensions:RootElement}}}">
+                                     SelectedItem="{Binding SelectedExistingItem, Mode=TwoWay}" ValueMemberPath="{MarkupExtensions:Resolver Source={Binding Source.MemberPath, Source={MarkupExtensions:RootElement}}}">
                     <sdk:AutoCompleteBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{MarkupExtensions:IndirectBinder Path={MarkupExtensions:Resolver Source={Binding Source.MemberPath, Source={MarkupExtensions:RootElement}}}}"/>

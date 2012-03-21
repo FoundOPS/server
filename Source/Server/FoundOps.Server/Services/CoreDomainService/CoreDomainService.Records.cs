@@ -242,6 +242,11 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region Employees
 
+        /// <summary>
+        /// Gets the Employees the current role has access to.
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
         public IQueryable<Employee> GetEmployeesForRole(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
@@ -259,9 +264,13 @@ namespace FoundOps.Server.Services.CoreDomainService
                 join person in ObjectContext.Parties.OfType<Person>()
                     on employee.Id equals person.Id
                 orderby person.LastName + " " + person.FirstName
-                select new {employee, person};
+                select new { employee, person };
 
-            //Force loads the OwnedPerson (workaround for inheritance includes not working in Entity Framework)
+            //TODO: optimize this
+            //See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
+            //http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
+            //Force load OwnedPerson
+            //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
             employeesPeople.Select(cp => cp.person).ToArray();
 
             return employeesPeople.Select(i => i.employee);
@@ -278,7 +287,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
             var employee = ObjectContext.Employees.FirstOrDefault(e => e.Id == employeeId && e.EmployerId == partyForRole.Id);
-            if(employee ==null) return null;
+            if (employee == null) return null;
 
             //Force load contact info set
             var contactInfoSet =
@@ -287,12 +296,29 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Force load party image
             var partyImage = this.ObjectContext.Files.OfType<PartyImage>().FirstOrDefault(pi => pi.PartyId == employeeId);
-            
+
             //Force load linked user account
-            var linkedUserAccount = this.ObjectContext.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.LinkedEmployees.Any(le=>le.Id == employeeId));
+            var linkedUserAccount = this.ObjectContext.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.LinkedEmployees.Any(le => le.Id == employeeId));
 
             return employee;
         }
+
+        /// <summary>
+        /// Gets the Employees the current role has access to filtered by the search text.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <returns></returns>
+        public IQueryable<Employee> SearchEmployeesForRole(Guid roleId, string searchText)
+        {
+            var employees = GetEmployeesForRole(roleId);
+
+            if (!String.IsNullOrEmpty(searchText))
+                employees = employees.Where(e => e.OwnedPerson.FirstName.StartsWith(searchText) || e.OwnedPerson.LastName.StartsWith(searchText));
+
+            return employees.OrderBy(e => e.OwnedPerson.LastName + " " + e.OwnedPerson.FirstName);
+        }
+
 
         public void InsertEmployee(Employee employee)
         {

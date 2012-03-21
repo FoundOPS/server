@@ -57,7 +57,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IEnumerable<Block> GetBlocks()
         {
-            return ObjectContext.Blocks;
+            throw new NotSupportedException("Exists solely to generate Blocks in the clients data project");
         }
 
         #region Businesses
@@ -403,7 +403,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<Repeat> GetRepeats()
         {
-            return this.ObjectContext.Repeats;
+            throw new NotSupportedException("Exists solely to generate Repeats in the clients data project");
         }
 
         public void InsertRepeat(Repeat repeat)

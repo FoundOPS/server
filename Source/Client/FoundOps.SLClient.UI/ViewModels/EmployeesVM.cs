@@ -1,14 +1,14 @@
-﻿using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+﻿using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Reactive.Linq;
-using System.ServiceModel.DomainServices.Client;
 using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -26,10 +26,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Want to use the default comparer. So this does not need to be set.
         public IEqualityComparer<object> CustomComparer { get; set; }
 
-        public IEnumerable ExistingItemsSource { get { return Context.Employees; } }
-
         public string MemberPath { get { return "DisplayName"; } }
 
+        /// <summary>
+        /// A method to update the ExistingItemsSource with suggestions remotely loaded.
+        /// </summary>
         public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         /// <summary>
@@ -46,6 +47,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         public PartyVM SelectedEmployeePersonVM { get { return _selectedEmployeePersonVM.Value; } }
 
         #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeesVM"/> class.
@@ -75,6 +78,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return newEmployee;
             };
 
+            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
+              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.Context.SearchEmployeesForRoleQuery(Manager.Context.RoleId, searchText));
+
             #endregion
         }
 
@@ -87,6 +93,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             SetupDetailsLoading(selectedEntity => Context.GetEmployeeDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
+
+        #endregion
 
         #region Logic
 

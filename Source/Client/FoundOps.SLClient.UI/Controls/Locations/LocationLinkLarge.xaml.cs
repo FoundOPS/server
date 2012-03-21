@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Tools;
+using FoundOps.SLClient.UI.Tools;
 
 namespace FoundOps.SLClient.UI.Controls.Locations
 {
@@ -17,12 +17,7 @@ namespace FoundOps.SLClient.UI.Controls.Locations
         {
             InitializeComponent();
 
-            this.DependentWhenVisible(LocationsVM);
-        }
-
-        public LocationsVM LocationsVM
-        {
-            get { return (LocationsVM)this.DataContext; }
+            this.DependentWhenVisible(VM.Locations);
         }
 
         #region Entity Dependency Property
@@ -67,15 +62,13 @@ namespace FoundOps.SLClient.UI.Controls.Locations
                 "IsReadOnly",
                 typeof (bool),
                 typeof (LocationLinkLarge),
-                new PropertyMetadata(new PropertyChangedCallback(IsReadOnlyChanged)));
+                new PropertyMetadata(IsReadOnlyChanged));
 
         private static void IsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            LocationLinkLarge c = d as LocationLinkLarge;
+            var c = d as LocationLinkLarge;
             if (c != null)
-            {
                 c.LocationsRadComboBox.IsEnabled = !((bool)e.NewValue);
-            }
         }
 
         #endregion

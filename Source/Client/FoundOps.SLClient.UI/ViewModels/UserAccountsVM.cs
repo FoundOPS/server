@@ -28,8 +28,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Want to use the default comparer. So this has need to be set.
         public IEqualityComparer<object> CustomComparer { get; set; }
 
-        public IEnumerable ExistingItemsSource { get { return Context.Parties.OfType<UserAccount>(); } }
-
         public string MemberPath { get { return "DisplayName"; } }
 
         /// <summary>
@@ -130,9 +128,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupUserAccountAddToDeleteFromSource()
         {
-            ////Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
-            //_loadedUserAccounts = loadedUserAccounts.ToProperty(this, x => x.ExistingItemsSource);
-
             CreateNewItem = name =>
             {
                 var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
@@ -140,31 +135,16 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Add the new entity to the Context so it gets tracked/saved
                 Context.Parties.Add(newUserAccount);
 
+                //Add the current user to the Administrator role of the ServiceProvider
+                var serviceProviderContext = ContextManager.GetContext<BusinessAccount>();
+                if (serviceProviderContext != null)
+                    serviceProviderContext.OwnedRoles.First(r => r.Name == "Administrator").MemberParties.Add(newUserAccount);
+
                 return newUserAccount;
             };
 
-            ManuallyUpdateSuggestions = UpdateSuggestionsHelper;
-        }
-
-        private LoadOperation<Party> _lastSuggestionQuery;
-        /// <summary>
-        /// Updates the UserAccount suggestions.
-        /// </summary>
-        /// <param name="text">The search text</param>
-        /// <param name="autoCompleteBox">The autocomplete box.</param>
-        private void UpdateSuggestionsHelper(string text, AutoCompleteBox autoCompleteBox)
-        {
-            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
-                _lastSuggestionQuery.Cancel();
-
-            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchUserAccountsForRoleQuery(Manager.Context.RoleId, text).Take(10),
-                                loadOp =>
-                                {
-                                    if (loadOp.IsCanceled || loadOp.HasError) return;
-
-                                    autoCompleteBox.ItemsSource = loadOp.Entities;
-                                    autoCompleteBox.PopulateComplete();
-                                }, null);
+            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
+              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.Context.SearchUserAccountsForRoleQuery(Manager.Context.RoleId, searchText));
         }
 
         #endregion
@@ -174,15 +154,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Reuse the CreateNewItem method
             return CreateNewItem("");
-        }
-
-        protected override void OnAddEntity(Party newUserAccount)
-        {
-            var serviceProviderContext = ContextManager.GetContext<BusinessAccount>();
-            if (serviceProviderContext == null) return;
-
-            //Add the current user to the Administrator role of the ServiceProvider
-            serviceProviderContext.OwnedRoles.First(r => r.Name == "Administrator").MemberParties.Add(newUserAccount);
         }
 
         #endregion

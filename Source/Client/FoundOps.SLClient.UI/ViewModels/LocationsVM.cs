@@ -5,13 +5,11 @@ using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.ServiceModel.DomainServices.Client;
 using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -78,10 +76,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         //There is none required
         public IEqualityComparer<object> CustomComparer { get; set; }
 
-        public IEnumerable ExistingItemsSource { get { return Context.Locations; } }
-
         public string MemberPath { get; private set; }
 
+        /// <summary>
+        /// A method to update the ExistingItemsSource with suggestions remotely loaded.
+        /// </summary>
         public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
@@ -158,7 +157,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return newLocation;
             };
 
-            ManuallyUpdateSuggestions = UpdateSuggestionsHelper;
+            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) => 
+                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.Context.SearchLocationsForRoleQuery(Manager.Context.RoleId, searchText));
 
             #endregion
         }
@@ -192,32 +192,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the location changes load the location details
             SetupDetailsLoading(selectedEntity => Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
-
-        #region IAddToDeleteFromSource
-
-        private LoadOperation<Location> _lastSuggestionQuery;
-
-        /// <summary>
-        /// Updates the locations suggestions.
-        /// </summary>
-        /// <param name="text">The search text</param>
-        /// <param name="autoCompleteBox">The autocomplete box.</param>
-        private void UpdateSuggestionsHelper(string text, AutoCompleteBox autoCompleteBox)
-        {
-            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
-                _lastSuggestionQuery.Cancel();
-
-            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchLocationsForRoleQuery(Manager.Context.RoleId, text).Take(10),
-                                locationsLoadOperation =>
-                                {
-                                    if (locationsLoadOperation.IsCanceled || locationsLoadOperation.HasError) return;
-
-                                    autoCompleteBox.ItemsSource = locationsLoadOperation.Entities;
-                                    autoCompleteBox.PopulateComplete();
-                                }, null);
-        }
-
-        #endregion
 
         #region Export to CSV
 

@@ -1,5 +1,7 @@
+using System.Windows.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
@@ -29,6 +31,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Gets the selected Client's OwnedParty's PartyVM. (The OwnedPary is a Business)
         /// </summary>
         public PartyVM SelectedClientOwnedBusinessVM { get { return _selectedClientOwnedBusinessVM.Value; } }
+
+        /// <summary>
+        /// A method to update the ExistingItemsSource with suggestions remotely loaded.
+        /// </summary>
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #region Implementation of IAddToDeleteFromDestination
 
@@ -88,9 +95,14 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        //private
+        #region Private Properties and Variables
 
-        private IEnumerable<ServiceTemplate> _loadedServiceTemplates;
+        /// <summary>
+        /// Contains the current service provider's service templates
+        /// </summary>
+        private IEnumerable<ServiceTemplate> _loadedServiceProviderServiceTemplates;
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientsVM"/> class.
@@ -122,6 +134,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                         defaultLocation.Name = displayName;
                     });
             });
+
+            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
+                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.Context.SearchClientsForRoleQuery(Manager.Context.RoleId, searchText));
 
             #region Implementation of IAddToDeleteFromDestination<Location>
 
@@ -188,7 +203,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 Context.Load(serviceTemplatesQuery, lo =>
                 {
-                    _loadedServiceTemplates = lo.Entities;
+                    _loadedServiceProviderServiceTemplates = lo.Entities;
 
                     //After Service templates are loaded, enable CanAdd.
                     CanAddSubject.OnNext(true);
@@ -236,7 +251,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             this.RaisePropertyChanged("ClientsView");
 
-            var availableServicesForServiceProvider = _loadedServiceTemplates.Where(st =>
+            var availableServicesForServiceProvider = _loadedServiceProviderServiceTemplates.Where(st =>
                     st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined &&
                     st.OwnerServiceProviderId == ContextManager.OwnerAccount.Id).ToArray();
 

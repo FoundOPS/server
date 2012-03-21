@@ -13,6 +13,7 @@ namespace FoundOps.Server.Services.CoreDomainService
     /// <summary>
     /// Holds the domain service operations for any template entities:
     /// Fields, Options, and ServiceTemplates
+    /// TODO: Secure
     /// </summary>
     public partial class CoreDomainService
     {
