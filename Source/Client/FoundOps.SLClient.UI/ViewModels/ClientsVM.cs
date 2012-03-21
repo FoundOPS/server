@@ -218,16 +218,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             return newClient;
         }
 
-        /// <summary>
-        /// The logic to delete an entity. Returns true if it can delete.
-        /// </summary>
-        /// <param name="entityToDelete">The entity to delete.</param>
-        public override void DeleteEntity(Client entityToDelete)
-        {
-            this.QueryableCollectionView.Remove(entityToDelete);
-            Context.Clients.Remove(entityToDelete);
-        }
-
         #endregion
 
         protected override void OnAddEntity(Client newClient)
@@ -263,12 +253,14 @@ namespace FoundOps.SLClient.UI.ViewModels
                 newClient.OwnedParty.OwnedLocations.Add(currentLocation);
         }
 
+        //TODO remove when DBOptimization is merged
         protected override void OnDeleteEntity(Client entityToDelete)
         {
             //Remove Client's EntityGraphToRemove
             var clientEntitiesToRemove = entityToDelete.EntityGraphToRemove;
-
             DataManager.RemoveEntities(clientEntitiesToRemove);
+
+            QueryableCollectionView.Remove(entityToDelete);
         }
 
         #endregion

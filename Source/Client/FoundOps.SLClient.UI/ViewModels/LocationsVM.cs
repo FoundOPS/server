@@ -152,6 +152,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 newLocation.RaiseValidationErrors();
 
+                //Add the entity to the EntitySet so it is tracked by the DomainContext
+                Context.Locations.Add(newLocation);
+
                 return newLocation;
             };
 
@@ -256,14 +259,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newLocation = CreateNewItem("");
             this.QueryableCollectionView.AddNew(newLocation);
             return newLocation;
-        }
-
-        public override void DeleteEntity(Location locationToDelete)
-        {
-            //Remove Location (this is not automatically done because the DCV is not backed by an EntityList)
-            DataManager.RemoveEntities(new[] { locationToDelete });
-
-            this.QueryableCollectionView.Remove(locationToDelete);
         }
 
         #endregion

@@ -289,6 +289,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds))
                 role.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
+            //Add the entity to the EntitySet so it is tracked by the DomainContext
             this.Context.Parties.Add(newBusinessAccount);
 
             return newBusinessAccount;

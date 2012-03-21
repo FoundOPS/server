@@ -289,7 +289,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var partyImage = this.ObjectContext.Files.OfType<PartyImage>().FirstOrDefault(pi => pi.PartyId == employeeId);
             
             //Force load linked user account
-            var linkedUserAccount = this.ObjectContext.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.Id == employeeId);
+            var linkedUserAccount = this.ObjectContext.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.LinkedEmployees.Any(le=>le.Id == employeeId));
 
             return employee;
         }

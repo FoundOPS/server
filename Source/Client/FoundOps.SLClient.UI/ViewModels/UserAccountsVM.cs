@@ -1,21 +1,16 @@
 ﻿using FoundOps.Common.Silverlight.Tools;
-using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
-using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
-using Microsoft.Windows.Data.DomainServices;
-using ReactiveUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Windows.Controls;
+using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -42,8 +37,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public Func<string, Party> CreateNewItem { get; private set; }
 
-        #endregion
-
         /// <summary>
         /// Gets the object type provided (for the InfiniteAccordion). Overriden because base class is Party.
         /// </summary>
@@ -52,11 +45,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             get { return typeof(UserAccount); }
         }
 
-        //TODO
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions
-        {
-            get { return null; }
-        }
+        /// <summary>
+        /// A method to update the ExistingItemsSource with UserAccount suggestions remotely loaded.
+        /// </summary>
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+
+        #endregion
 
         #endregion
 
@@ -68,6 +62,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             : base(new[] { typeof(BusinessAccount) })
         {
             SetupDataLoading();
+            SetupUserAccountAddToDeleteFromSource();
 
             //Subscribe to the UserAccounts observable
             //IsLoadingObservable = DataManager.Subscribe<UserAccount>(DataManager.Query.UserAccounts, this.ObservationState, null);
@@ -108,23 +103,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             //    });
 
             //#endregion
-
-            //#region Implementation of IAddToDeleteFromSource<Party>
-
-            ////Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
-            //_loadedUserAccounts = loadedUserAccounts.ToProperty(this, x => x.ExistingItemsSource);
-
-            CreateNewItem = name =>
-            {
-                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
-
-                //Add the new entity to the Context so it gets tracked/saved
-                Context.Parties.Add(newUserAccount);
-
-                return newUserAccount;
-            };
-
-            //#endregion
         }
 
         #region Logic
@@ -144,6 +122,52 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the user account changes load the details
             SetupDetailsLoading(selectedEntity => Context.GetUserAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
+
+        #region IAddToDeleteFromSource
+
+        /// <summary>
+        /// Sets up the implementation of IAddToDeleteFromSource&lt;Party&gt;
+        /// </summary>
+        private void SetupUserAccountAddToDeleteFromSource()
+        {
+            ////Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
+            //_loadedUserAccounts = loadedUserAccounts.ToProperty(this, x => x.ExistingItemsSource);
+
+            CreateNewItem = name =>
+            {
+                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
+
+                //Add the new entity to the Context so it gets tracked/saved
+                Context.Parties.Add(newUserAccount);
+
+                return newUserAccount;
+            };
+
+            ManuallyUpdateSuggestions = UpdateSuggestionsHelper;
+        }
+
+        private LoadOperation<Party> _lastSuggestionQuery;
+        /// <summary>
+        /// Updates the UserAccount suggestions.
+        /// </summary>
+        /// <param name="text">The search text</param>
+        /// <param name="autoCompleteBox">The autocomplete box.</param>
+        private void UpdateSuggestionsHelper(string text, AutoCompleteBox autoCompleteBox)
+        {
+            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
+                _lastSuggestionQuery.Cancel();
+
+            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchUserAccountsForRoleQuery(Manager.Context.RoleId, text).Take(10),
+                                loadOp =>
+                                {
+                                    if (loadOp.IsCanceled || loadOp.HasError) return;
+
+                                    autoCompleteBox.ItemsSource = loadOp.Entities;
+                                    autoCompleteBox.PopulateComplete();
+                                }, null);
+        }
+
+        #endregion
 
         //Must override or else it will create a Party
         protected override Party AddNewEntity(object commandParameter)

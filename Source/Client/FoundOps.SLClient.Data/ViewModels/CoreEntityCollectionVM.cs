@@ -301,7 +301,7 @@ namespace FoundOps.SLClient.Data.ViewModels
         }
 
         /// <summary>
-        /// The logic to delete an entity. Returns true if it can delete.
+        /// The logic to delete an entity.
         /// </summary>
         public virtual void DeleteEntity(TEntity entityToDelete)
         {

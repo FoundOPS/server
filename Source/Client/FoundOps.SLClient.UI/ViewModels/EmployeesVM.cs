@@ -69,8 +69,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Add the new entity to the OwnerAccount
                 ((BusinessAccount)ContextManager.OwnerAccount).Employees.Add(newEmployee);
 
-                //Add the new entity to the EntityList behind the DCV
-                ((EntitySet<Employee>)ExistingItemsSource).Add(newEmployee);
+                //Add the new entity to the EntitySet so it is tracked by the DomainContext
+                Context.Employees.Add(newEmployee);
 
                 return newEmployee;
             };
@@ -87,7 +87,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             SetupDetailsLoading(selectedEntity => Context.GetEmployeeDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
-
 
         #region Logic
 

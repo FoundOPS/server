@@ -282,6 +282,40 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         #endregion
 
+        #region Overriden Properties
+
+        /// <summary>
+        /// The method called for the AddCommand to create an entity. Defaults to DomainCollectionView.AddNew()
+        /// </summary>
+        /// <param name="commandParameter">The command parameter.</param>
+        /// <returns>The entity to add.</returns>
+        protected override TEntity AddNewEntity(object commandParameter)
+        {
+            var newEntity = (TEntity)this.QueryableCollectionView.AddNew();
+
+            //Add the entity to the EntitySet so it is tracked by the DomainContext
+            Context.EntityContainer.GetEntitySet(typeof(TEntity)).Add(newEntity);
+
+            return newEntity;
+        }
+
+        /// <summary>
+        /// The logic to delete an entity.
+        /// </summary>
+        /// <param name="entityToDelete">The entity to delete.</param>
+        public override void DeleteEntity(TEntity entityToDelete)
+        {
+            //Remove the entity from the QueryableCollectionView
+            QueryableCollectionView.Remove(entityToDelete);
+
+            //Remove the entity from the EntitySet (so it is deleted by the DomainContext)
+            Context.EntityContainer.GetEntitySet(typeof(TEntity)).Remove(entityToDelete);
+            
+            base.DeleteEntity(entityToDelete);
+        }
+
+        #endregion
+
         /// <summary>
         /// Navigates to this ViewModel.
         /// </summary>

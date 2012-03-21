@@ -1,8 +1,6 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Tools;
-using System.ServiceModel.DomainServices.Client;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -50,26 +48,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         {
             // Allow us to wait for the response
             e.Cancel = true;
-            UpdateSuggestions();
-        }
-
-        private LoadOperation<UserAccount> _lastSuggestionQuery;
-        /// <summary>
-        /// Updates the user account suggestions.
-        /// </summary>
-        private void UpdateSuggestions()
-        {
-            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
-                _lastSuggestionQuery.Cancel();
-
-            _lastSuggestionQuery = Manager.Data.Context.Load(Manager.Data.Context.SearchUserAccountsForRoleQuery(Manager.Context.RoleId, UserAccountsAutoCompleteBox.Text).Take(10),
-                                loadOperation =>
-                                {
-                                    if (loadOperation.IsCanceled || loadOperation.HasError) return;
-
-                                    UserAccountsAutoCompleteBox.ItemsSource = loadOperation.Entities;
-                                    UserAccountsAutoCompleteBox.PopulateComplete();
-                                }, null);
+            VM.UserAccounts.ManuallyUpdateSuggestions(UserAccountsAutoCompleteBox.Text, UserAccountsAutoCompleteBox);
         }
     }
 }

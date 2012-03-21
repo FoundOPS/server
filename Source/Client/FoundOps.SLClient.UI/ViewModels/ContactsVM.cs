@@ -1,5 +1,4 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
@@ -63,33 +62,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #region Logic
-
-        #region TODO Replace base with QueryableCollectionView and this logic
-
-        /// <summary>
-        /// The method called for the AddCommand to create an entity. Defaults to DomainCollectionView.AddNew()
-        /// </summary>
-        /// <param name="commandParameter">The command parameter.</param>
-        /// <returns>The entity to add.</returns>
-        protected override Contact AddNewEntity(object commandParameter)
-        {
-            var newContact = (Contact)this.QueryableCollectionView.AddNew();
-            Context.Contacts.Add(newContact);
-            return newContact;
-        }
-
-        /// <summary>
-        /// The logic to delete an entity. Returns true if it can delete.
-        /// </summary>
-        /// <param name="entityToDelete">The entity to delete.</param>
-        public override void DeleteEntity(Contact entityToDelete)
-        {
-            Context.Contacts.Remove(entityToDelete);
-            this.QueryableCollectionView.Remove(entityToDelete);
-            QueryableCollectionView.Refresh();
-        }
-
-        #endregion
 
         /// <summary>
         /// Called when [add entity].

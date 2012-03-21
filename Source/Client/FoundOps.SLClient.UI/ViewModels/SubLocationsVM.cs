@@ -1,19 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.ComponentModel;
-using FoundOps.Common.NET;
-using MEFedMVVM.ViewModelLocator;
-using GalaSoft.MvvmLight.Command;
-using System.Collections.Generic;
-using GalaSoft.MvvmLight.Messaging;
-using System.Collections.ObjectModel;
-using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Common.NET;
 using FoundOps.Common.Silverlight.Services;
-using FoundOps.Core.Context.Services.Interface;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
+using GalaSoft.MvvmLight.Command;
+using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Linq;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
