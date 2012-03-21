@@ -5,12 +5,10 @@ using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Controls;
-using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -52,6 +50,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
+        #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAccountsVM"/> class.
         /// </summary>
@@ -61,6 +61,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             SetupDataLoading();
             SetupUserAccountAddToDeleteFromSource();
+
+            #region TODO Update the QCV when the BusinessAccount context OwnedRoles changes and the BusinessAccount context OwnedRoles' MemberParties changes
 
             //Subscribe to the UserAccounts observable
             //IsLoadingObservable = DataManager.Subscribe<UserAccount>(DataManager.Query.UserAccounts, this.ObservationState, null);
@@ -100,10 +102,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             //        this.CollectionViewObservable.OnNext(DomainCollectionViewFactory<Party>.GetDomainCollectionView(new EntityList<Party>(Context.Parties, setOfUserAccounts)));
             //    });
 
-            //#endregion
+            #endregion
         }
 
-        #region Logic
 
         private void SetupDataLoading()
         {
@@ -121,8 +122,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             SetupDetailsLoading(selectedEntity => Context.GetUserAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
-        #region IAddToDeleteFromSource
-
         /// <summary>
         /// Sets up the implementation of IAddToDeleteFromSource&lt;Party&gt;
         /// </summary>
@@ -130,6 +129,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             CreateNewItem = name =>
             {
+                //Jump to this details view
+                NavigateToThis();
+
                 var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
 
                 //Add the new entity to the Context so it gets tracked/saved
@@ -140,6 +142,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (serviceProviderContext != null)
                     serviceProviderContext.OwnedRoles.First(r => r.Name == "Administrator").MemberParties.Add(newUserAccount);
 
+                SelectedEntity = newUserAccount;
+
                 return newUserAccount;
             };
 
@@ -148,6 +152,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #endregion
+
+        #region Logic
 
         //Must override or else it will create a Party
         protected override Party AddNewEntity(object commandParameter)

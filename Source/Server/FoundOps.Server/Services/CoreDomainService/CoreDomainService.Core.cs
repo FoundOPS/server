@@ -60,7 +60,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             throw new NotSupportedException("Exists solely to generate Blocks in the clients data project");
         }
 
-        #region Businesses
+        #region Businesses and BusinessAccounts
 
         /// <summary>
         /// Gets all the BusinessAccounts
