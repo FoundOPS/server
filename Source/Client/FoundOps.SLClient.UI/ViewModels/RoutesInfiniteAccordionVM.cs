@@ -16,8 +16,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="RoutesInfiniteAccordionVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public RoutesInfiniteAccordionVM()
-            : base(new[] { typeof(Employee), typeof(Vehicle) })
+        public RoutesInfiniteAccordionVM() : base(new[] { typeof(Employee), typeof(Vehicle) })
         {
             ////b) select the closest Route to today
             //SelectedEntity = Collection.FirstOrDefault(r => r.Date >= DateTime.Now.Date);

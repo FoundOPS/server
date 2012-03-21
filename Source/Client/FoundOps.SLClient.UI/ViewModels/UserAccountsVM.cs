@@ -33,8 +33,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         //Want to use the default comparer. So this has need to be set.
         public IEqualityComparer<object> CustomComparer { get; set; }
 
-        private readonly ObservableAsPropertyHelper<IEnumerable> _loadedUserAccounts;
-        public IEnumerable ExistingItemsSource { get { return _loadedUserAccounts.Value; } }
+        public IEnumerable ExistingItemsSource { get { return Context.Parties.OfType<UserAccount>(); } }
 
         public string MemberPath { get { return "DisplayName"; } }
 
@@ -65,10 +64,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="UserAccountsVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public UserAccountsVM() : base(new[] { typeof(BusinessAccount) })
+        public UserAccountsVM()
+            : base(new[] { typeof(BusinessAccount) })
         {
-            return;
-            //TODO Optimization
+            SetupDataLoading();
 
             //Subscribe to the UserAccounts observable
             //IsLoadingObservable = DataManager.Subscribe<UserAccount>(DataManager.Query.UserAccounts, this.ObservationState, null);
@@ -79,8 +78,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             ////Update the DCV
             ////a) the loaded UserAccounts changes
             ////b) whenever the BusinessAccount context changes
-            ////c) the BusinessAccount context OwnedRoles changes
-            ////d) the BusinessAccount context OwnedRoles' MemberParties changes
+            ////c) //TODO the BusinessAccount context OwnedRoles changes
+            ////d) //TODO the BusinessAccount context OwnedRoles' MemberParties changes
 
             //loadedUserAccounts.AsGeneric().Merge(
             //    ContextManager.GetContextObservable<BusinessAccount>().WhereNotNull()
@@ -108,18 +107,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             //        this.CollectionViewObservable.OnNext(DomainCollectionViewFactory<Party>.GetDomainCollectionView(new EntityList<Party>(Context.Parties, setOfUserAccounts)));
             //    });
 
-            ////Whenever the DCV changes:
-            ////a) sort by Name 
-            ////b) select the first entity
-            //this.CollectionViewObservable.Throttle(TimeSpan.FromMilliseconds(300)) //wait for UI to load
-            //    .ObserveOnDispatcher().Subscribe(dcv =>
-            //    {
-            //        //a) sort by Name 
-            //        ((ICollectionView)dcv).SortDescriptions.Add(new SortDescription("DisplayName", ListSortDirection.Ascending));
-            //        //b) select the first entity
-            //        this.SelectedEntity = this.CollectionView.Cast<Party>().FirstOrDefault();
-            //    });
-
             //#endregion
 
             //#region Implementation of IAddToDeleteFromSource<Party>
@@ -127,20 +114,36 @@ namespace FoundOps.SLClient.UI.ViewModels
             ////Whenever the _loadedUserAccounts changes notify ExistingItemsSource changed
             //_loadedUserAccounts = loadedUserAccounts.ToProperty(this, x => x.ExistingItemsSource);
 
-            //CreateNewItem = name =>
-            //{
-            //    var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
+            CreateNewItem = name =>
+            {
+                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
 
-            //    //Add the new entity to the EntityList so it gets tracked/saved
-            //    ((EntityList<Party>)ExistingItemsSource).Add(newUserAccount);
+                //Add the new entity to the Context so it gets tracked/saved
+                Context.Parties.Add(newUserAccount);
 
-            //    return newUserAccount;
-            //};
+                return newUserAccount;
+            };
 
             //#endregion
         }
 
         #region Logic
+
+        private void SetupDataLoading()
+        {
+            //Force load the entities when in a related types view
+            //this is because VDCV will only normally load when a virtual item is loaded onto the screen
+            //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
+            SetupContextDataLoading(roleId =>
+                                        {
+                                            var businessAccountContext = this.ContextManager.GetContext<BusinessAccount>();
+                                            return Context.GetUserAccountsQuery(roleId, businessAccountContext != null ? businessAccountContext.Id : Guid.Empty);
+                                        }, null, false, VirtualItemCountLoadBehavior.LoadAfterManyRelationContextChanges);
+
+
+            //Whenever the user account changes load the details
+            SetupDetailsLoading(selectedEntity => Context.GetUserAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+        }
 
         //Must override or else it will create a Party
         protected override Party AddNewEntity(object commandParameter)

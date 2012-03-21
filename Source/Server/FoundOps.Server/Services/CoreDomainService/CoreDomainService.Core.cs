@@ -88,7 +88,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             //Make sure current account is a FoundOPS account
-            if(businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
+            if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
                 return null;
 
             var businessAccount = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId)
@@ -507,22 +507,56 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// Returns the UserAccounts the current role has access to.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
-        public IQueryable<UserAccount> GetUserAccounts(Guid roleId)
+        /// <param name="serviceProviderId">(Optional) filter user accounts that are in a owned role of this service provider.</param>
+        public IQueryable<Party> GetUserAccounts(Guid roleId, Guid serviceProviderId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            //Return all users if the current account is a foundops account
+            IQueryable<UserAccount> accesibleUserAccounts;
+
+            //If the current account is a foundops account, return all user accounts
             if (businessForRole.Id == BusinessAccountsDesignData.FoundOps.Id)
-                return this.ObjectContext.Parties.OfType<UserAccount>();
+            {
+                accesibleUserAccounts = this.ObjectContext.Parties.OfType<UserAccount>();
+            }
+            else
+            {
+                //If not a FoundOPS account, return the current business's owned roles memberparties
+                accesibleUserAccounts =
+                    from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == businessForRole.Id)
+                    from userAccount in this.ObjectContext.Parties.OfType<UserAccount>()
+                    where role.MemberParties.Any(p => p.Id == userAccount.Id)
+                    select userAccount;
+            }
 
-            //If not a FoundOPS account, return the current business's owned roles memberparties
-            var memberPartyUserAccounts =
-                from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == businessForRole.Id)
-                from userAccount in this.ObjectContext.Parties.OfType<UserAccount>()
-                where role.MemberParties.Any(p => p.Id == userAccount.Id)
-                select userAccount;
+            //If the serviceProviderId context is not empty
+            //Filter only user accounts that are member parties of one of it's roles
+            if (serviceProviderId != Guid.Empty)
+            {
+                return from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == serviceProviderId)
+                       from userAccount in accesibleUserAccounts
+                       where role.MemberParties.Any(p => p.Id == userAccount.Id)
+                       orderby userAccount.LastName + " " + userAccount.FirstName
+                       select userAccount;
+            }
 
-            return memberPartyUserAccounts;
+            return accesibleUserAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName);
+        }
+
+        /// <summary>
+        /// Gets the UserAccount details.
+        /// It includes the ContactInfoSet and PartyImage.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="userAccountId">The user account id.</param>
+        public Party GetUserAccountDetailsForRole(Guid roleId, Guid userAccountId)
+        {
+            var userAccount = GetUserAccounts(roleId, Guid.Empty).Include("ContactInfoSet").FirstOrDefault(ua => ua.Id == userAccountId);
+
+            //Force load PartyImage
+            userAccount.PartyImageReference.Load();
+
+            return userAccount;
         }
 
         /// <summary>
@@ -533,7 +567,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<UserAccount> SearchUserAccountsForRole(Guid roleId, string searchText)
         {
-            var userAccounts = GetUserAccounts(roleId);
+            var userAccounts = GetUserAccounts(roleId, Guid.Empty).OfType<UserAccount>();
 
             if (!String.IsNullOrEmpty(searchText))
                 userAccounts = userAccounts.Where(ua => ua.FirstName.StartsWith(searchText) || ua.LastName.StartsWith(searchText));
