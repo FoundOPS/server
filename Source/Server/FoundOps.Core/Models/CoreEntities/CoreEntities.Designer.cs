@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -642,6 +643,7 @@ namespace FoundOps.Core.Models.CoreEntities
         private ObjectSet<PartyWithName> _PartiesWithNames;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -901,11 +903,72 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
-    }
+
+        #region Function Imports
     
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
+        }
+
+        #endregion
+
+    }
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -940,6 +1003,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1138,6 +1202,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnHideFromNavigationChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1164,6 +1229,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1189,6 +1255,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1216,6 +1283,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
 
         #endregion
+
     
     }
     
@@ -1241,6 +1309,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1388,6 +1457,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnMaxRoutesChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1568,6 +1638,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1596,6 +1667,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1722,6 +1794,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnDefaultBillingLocationIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1994,6 +2067,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2022,6 +2096,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2124,6 +2199,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnContactIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2204,6 +2280,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2230,6 +2307,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2308,6 +2386,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnOwnerPartyIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2410,6 +2489,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2436,6 +2516,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2610,6 +2691,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnContactIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2690,6 +2772,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2726,6 +2809,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2825,6 +2909,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnValueChanged();
 
         #endregion
+
     
     }
     
@@ -2852,6 +2937,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3146,6 +3232,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnEmployerIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3308,6 +3395,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3334,6 +3422,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3484,6 +3573,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnEmployeeIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3526,6 +3616,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3550,6 +3641,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3700,6 +3792,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnInnerExceptionChanged();
 
         #endregion
+
     
     }
     
@@ -3736,6 +3829,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3910,6 +4004,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnServiceTemplateIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4012,6 +4107,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4041,6 +4137,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4167,6 +4264,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnPartyIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4247,6 +4345,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4273,6 +4372,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4615,6 +4715,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnClientIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4831,6 +4932,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4857,6 +4959,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4959,6 +5062,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnAmountChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -5001,6 +5105,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -5025,6 +5130,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -5319,6 +5425,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRegionIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -5625,6 +5732,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -5657,6 +5765,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -5708,6 +5817,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnLocationFieldTypeIntChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -5750,6 +5860,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -5778,6 +5889,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     
     }
     
@@ -5817,6 +5929,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -5940,6 +6053,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnValueChanged();
 
         #endregion
+
     
     }
     
@@ -5970,6 +6084,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6120,6 +6235,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnTooltipChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6162,6 +6278,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6196,6 +6313,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6247,6 +6365,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnTypeIntChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6273,6 +6392,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6299,6 +6419,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6329,6 +6450,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6591,6 +6713,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6619,6 +6742,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6661,6 +6785,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6685,6 +6810,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6739,6 +6865,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnChildNameChanged();
 
         #endregion
+
     
     }
     
@@ -6765,6 +6892,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6888,6 +7016,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnDateOfBirthChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6968,6 +7097,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6994,6 +7124,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7075,6 +7206,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnExcludedDatesStringChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7215,6 +7347,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7241,6 +7374,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7367,6 +7501,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNotesChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7431,6 +7566,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7461,6 +7597,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7635,6 +7772,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnStartDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7677,6 +7815,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7701,6 +7840,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7827,6 +7967,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRoleTypeIntChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7913,6 +8054,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7947,6 +8089,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -8121,6 +8264,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRouteTypeChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -8229,6 +8373,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -8257,6 +8402,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -8383,6 +8529,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnClientIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -8523,6 +8670,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -8559,6 +8707,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -8853,6 +9002,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnOrderInRouteDestinationChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9047,6 +9197,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -9073,6 +9224,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -9151,6 +9303,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9177,6 +9330,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -9207,6 +9361,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -9333,6 +9488,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnServiceDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9511,6 +9667,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -9537,6 +9694,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -9687,6 +9845,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9963,6 +10122,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -9991,6 +10151,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10165,6 +10326,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNumberChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10207,6 +10369,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10239,6 +10402,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10290,6 +10454,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnValueChanged();
 
         #endregion
+
     
     }
     
@@ -10323,6 +10488,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10473,6 +10639,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnUserAccountIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10515,6 +10682,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10543,6 +10711,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10642,6 +10811,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnCreationDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10712,6 +10882,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10740,6 +10911,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10842,6 +11014,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnUserAccountIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10884,6 +11057,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10910,6 +11084,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11156,6 +11331,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnOwnerPartyIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -11242,6 +11418,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -11268,6 +11445,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11394,6 +11572,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnVehicleMaintenanceLogEntryIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -11436,6 +11615,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -11462,6 +11642,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11612,6 +11793,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnVehicleIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -11676,8 +11858,10 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
 
     #endregion
+
     
 }

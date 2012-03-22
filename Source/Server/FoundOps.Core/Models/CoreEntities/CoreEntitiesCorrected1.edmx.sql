@@ -1,3 +1,4 @@
+﻿ 
 
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
@@ -1128,25 +1129,25 @@ GO
 -- Creating primary key on [Roles_Id], [Blocks_Id] in table 'RoleBlock'
 ALTER TABLE [dbo].[RoleBlock]
 ADD CONSTRAINT [PK_RoleBlock]
-    PRIMARY KEY NONCLUSTERED ([Roles_Id], [Blocks_Id] ASC);
+    PRIMARY KEY CLUSTERED ([Roles_Id], [Blocks_Id] ASC);
 GO
 
 -- Creating primary key on [Routes_Id], [Vehicles_Id] in table 'RouteVehicle'
 ALTER TABLE [dbo].[RouteVehicle]
 ADD CONSTRAINT [PK_RouteVehicle]
-    PRIMARY KEY NONCLUSTERED ([Routes_Id], [Vehicles_Id] ASC);
+    PRIMARY KEY CLUSTERED ([Routes_Id], [Vehicles_Id] ASC);
 GO
 
 -- Creating primary key on [MemberParties_Id], [RoleMembership_Id] in table 'PartyRole'
 ALTER TABLE [dbo].[PartyRole]
 ADD CONSTRAINT [PK_PartyRole]
-    PRIMARY KEY NONCLUSTERED ([MemberParties_Id], [RoleMembership_Id] ASC);
+    PRIMARY KEY CLUSTERED ([MemberParties_Id], [RoleMembership_Id] ASC);
 GO
 
 -- Creating primary key on [Routes_Id], [Technicians_Id] in table 'RouteEmployee'
 ALTER TABLE [dbo].[RouteEmployee]
 ADD CONSTRAINT [PK_RouteEmployee]
-    PRIMARY KEY NONCLUSTERED ([Routes_Id], [Technicians_Id] ASC);
+    PRIMARY KEY CLUSTERED ([Routes_Id], [Technicians_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -1173,7 +1174,8 @@ ADD CONSTRAINT [FK_RoleBlock_Role]
     FOREIGN KEY ([Roles_Id])
     REFERENCES [dbo].[Roles]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 GO
 
 -- Creating foreign key on [Blocks_Id] in table 'RoleBlock'
@@ -1182,7 +1184,8 @@ ADD CONSTRAINT [FK_RoleBlock_Block]
     FOREIGN KEY ([Blocks_Id])
     REFERENCES [dbo].[Blocks]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RoleBlock_Block'
 CREATE INDEX [IX_FK_RoleBlock_Block]
@@ -1196,7 +1199,8 @@ ADD CONSTRAINT [FK_LocationContactInfo]
     FOREIGN KEY ([LocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LocationContactInfo'
 CREATE INDEX [IX_FK_LocationContactInfo]
@@ -1224,7 +1228,8 @@ ADD CONSTRAINT [FK_VehicleMaintenanceLogEntryVehicle]
     FOREIGN KEY ([VehicleId])
     REFERENCES [dbo].[Vehicles]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_VehicleMaintenanceLogEntryVehicle'
 CREATE INDEX [IX_FK_VehicleMaintenanceLogEntryVehicle]
@@ -1289,7 +1294,7 @@ ADD CONSTRAINT [FK_RouteTaskRouteDestination]
     FOREIGN KEY ([RouteDestinationId])
     REFERENCES [dbo].[RouteDestinations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskRouteDestination'
 CREATE INDEX [IX_FK_RouteTaskRouteDestination]
@@ -1303,7 +1308,8 @@ ADD CONSTRAINT [FK_RouteDestinationRoute]
     FOREIGN KEY ([RouteId])
     REFERENCES [dbo].[Routes]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteDestinationRoute'
 CREATE INDEX [IX_FK_RouteDestinationRoute]
@@ -1317,7 +1323,8 @@ ADD CONSTRAINT [FK_VehicleMaintenanceLogEntryLineItem]
     FOREIGN KEY ([VehicleMaintenanceLogEntryId])
     REFERENCES [dbo].[VehicleMaintenanceLog]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_VehicleMaintenanceLogEntryLineItem'
 CREATE INDEX [IX_FK_VehicleMaintenanceLogEntryLineItem]
@@ -1494,7 +1501,8 @@ ADD CONSTRAINT [FK_RecurringServiceServiceTemplate]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[ServiceTemplates]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 GO
 
 -- Creating foreign key on [RecurringServiceId] in table 'Services'
@@ -1568,7 +1576,8 @@ ADD CONSTRAINT [FK_PartyRole_Party]
     FOREIGN KEY ([MemberParties_Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 GO
 
 -- Creating foreign key on [RoleMembership_Id] in table 'PartyRole'
@@ -1577,7 +1586,8 @@ ADD CONSTRAINT [FK_PartyRole_Role]
     FOREIGN KEY ([RoleMembership_Id])
     REFERENCES [dbo].[Roles]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PartyRole_Role'
 CREATE INDEX [IX_FK_PartyRole_Role]
@@ -1661,7 +1671,8 @@ ADD CONSTRAINT [FK_LocationSubLocation]
     FOREIGN KEY ([LocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LocationSubLocation'
 CREATE INDEX [IX_FK_LocationSubLocation]
@@ -1721,7 +1732,8 @@ ADD CONSTRAINT [FK_EmployeeHistoryEntryEmployee]
     FOREIGN KEY ([EmployeeId])
     REFERENCES [dbo].[Employees]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_EmployeeHistoryEntryEmployee'
 CREATE INDEX [IX_FK_EmployeeHistoryEntryEmployee]
@@ -1786,7 +1798,8 @@ ADD CONSTRAINT [FK_OptionsFieldOption]
     FOREIGN KEY ([OptionsFieldId])
     REFERENCES [dbo].[Fields_OptionsField]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_OptionsFieldOption'
 CREATE INDEX [IX_FK_OptionsFieldOption]
@@ -1800,7 +1813,8 @@ ADD CONSTRAINT [FK_ServiceTemplateField]
     FOREIGN KEY ([ServiceTemplateId])
     REFERENCES [dbo].[ServiceTemplates]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ServiceTemplateField'
 CREATE INDEX [IX_FK_ServiceTemplateField]
@@ -1814,7 +1828,8 @@ ADD CONSTRAINT [FK_LocationFieldLocation]
     FOREIGN KEY ([LocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LocationFieldLocation'
 CREATE INDEX [IX_FK_LocationFieldLocation]
@@ -1851,7 +1866,8 @@ ADD CONSTRAINT [FK_ClientTitleClient]
     FOREIGN KEY ([ClientId])
     REFERENCES [dbo].[Clients]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ClientTitleClient'
 CREATE INDEX [IX_FK_ClientTitleClient]
@@ -1907,7 +1923,8 @@ ADD CONSTRAINT [FK_InvoiceServiceTemplate]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[ServiceTemplates]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 GO
 
 -- Creating foreign key on [InvoiceId] in table 'LineItems'
@@ -1981,7 +1998,7 @@ ADD CONSTRAINT [FK_ClientLocation]
     FOREIGN KEY ([DefaultBillingLocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ClientLocation'
 CREATE INDEX [IX_FK_ClientLocation]
@@ -2090,4 +2107,4 @@ GO
 
 -- --------------------------------------------------
 -- Script has ended
--- --------------------------------------------------
+-- --------------------------------------------------	

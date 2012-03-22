@@ -1,4 +1,4 @@
-﻿using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
+using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 using System;
 using System.ComponentModel;
 using System.Windows;

@@ -1,24 +1,3 @@
-﻿1. ON DELETE SET NULL ON UPDATE NO ACTION; //This will remove RouteTasks from a destination when it is deleted
-
-ALTER TABLE [dbo].[RouteTasks]
-ADD CONSTRAINT [FK_RouteTaskRouteDestination]
-    FOREIGN KEY ([RouteDestinationId])
-    REFERENCES [dbo].[RouteDestinations]
-        ([Id])
------> ON DELETE NO ACTION ON UPDATE NO ACTION;  
-
-2. ON DELETE SET NULL ON UPDATE NO ACTION; //This will remove the DefaultBillingLocation from a Client when the Locations is deleted
-
--- Creating foreign key on [DefaultBillingLocationId] in table 'Clients'
-ALTER TABLE [dbo].[Clients]
-ADD CONSTRAINT [FK_ClientLocation]
-    FOREIGN KEY ([DefaultBillingLocationId])
-    REFERENCES [dbo].[Locations]
-        ([Id])
------> ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-3. Replace all NONCLUSTERED w CLUSTERED (4 of them)
-
 4. Create PartiesWithName view
 
 Delete
@@ -59,7 +38,7 @@ GO
 Replace
     <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />
 with
-    <EntitySet Name="PartiesWithName" EntityType="CoreEntities.Store.PartiesWithName" store:Type="Views" store:Schema="dbo" store:Name="PartiesWithName">
+    <EntitySet Name="PartiesWithName" EntityType="CoreEntities.Store.PartyWithName" store:Type="Views" store:Schema="dbo" store:Name="PartiesWithName">
       <DefiningQuery>
         SELECT
         [PartiesWithName].[Id] AS [Id],
@@ -94,7 +73,7 @@ Replace
     </EntitySetMapping>
 with
     <EntitySetMapping Name="PartiesWithNames">
-      <EntityTypeMapping TypeName="CoreEntities.PartyWithName">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.PartyWithName)">
         <MappingFragment StoreEntitySet="PartiesWithName">
           <ScalarProperty Name="ChildName" ColumnName="ChildName" />
           <ScalarProperty Name="Id" ColumnName="Id" />

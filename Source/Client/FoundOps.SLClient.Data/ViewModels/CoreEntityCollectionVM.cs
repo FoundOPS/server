@@ -1,4 +1,4 @@
-﻿using FoundOps.Common.Silverlight.MVVM.VMs;
+using FoundOps.Common.Silverlight.MVVM.VMs;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using ReactiveUI;

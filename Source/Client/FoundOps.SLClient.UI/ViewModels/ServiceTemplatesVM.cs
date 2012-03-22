@@ -1,4 +1,4 @@
-﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System.Collections.Generic;

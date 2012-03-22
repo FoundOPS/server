@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoundOps.Common.Silverlight.UI.Controls.AddEditDelete.AddToDeleteFrom" x:Name="myAddToDeleteFrom"
+<UserControl x:Class="FoundOps.Common.Silverlight.UI.Controls.AddEditDelete.AddToDeleteFrom" x:Name="myAddToDeleteFrom"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions"

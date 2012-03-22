@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-
-#if SILVERLIGHT
-using FoundOps.Core.Context.Extensions;
-#endif
+using FoundOps.Common.Composite.Tools;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
     public class ServicesDesignData
     {
-
         private readonly BusinessAccount _serviceProvider;
         private readonly Client _client;
+        private readonly IEnumerable<ServiceTemplate> _serviceTemplates;
+
         public List<Service> DesignServices;
 
         public Service OilService;
         public Service SmallGreaseTrapService;
 
-        public ServicesDesignData()
-            : this(null, null)
-        {
-        }
+        public ServicesDesignData() : this(null, null, new[] { ServiceTemplatesDesignData.OilServiceTemplate, ServiceTemplatesDesignData.SmallGreaseTrapServiceTemplate }) { }
 
-        public ServicesDesignData(BusinessAccount serviceProvider, Client client)
+        public ServicesDesignData(BusinessAccount serviceProvider, Client client, IEnumerable<ServiceTemplate> serviceTemplates)
         {
+            _serviceTemplates = serviceTemplates;
+
             if (serviceProvider == null || client == null)
             {
                 var designPartyData = new PartyDesignData();
@@ -46,14 +43,16 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         {
             OilService = new Service
             {
-                ServiceTemplate = ServiceTemplatesDesignData.OilServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
+                ServiceDate = DateTime.Now.AddDays(-1),
+                ServiceTemplate = _serviceTemplates.RandomItem().MakeChild(ServiceTemplateLevel.ServiceDefined),
                 Client = _client,
                 ServiceProvider = _serviceProvider
             };
 
             SmallGreaseTrapService = new Service
             {
-                ServiceTemplate = ServiceTemplatesDesignData.SmallGreaseTrapServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
+                ServiceDate = DateTime.Now,
+                ServiceTemplate = _serviceTemplates.RandomItem().MakeChild(ServiceTemplateLevel.ServiceDefined),
                 Client = _client,
                 ServiceProvider = _serviceProvider
             };

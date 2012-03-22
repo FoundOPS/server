@@ -63,6 +63,17 @@ namespace FoundOps.Common.Composite.Tools
         }
 
         /// <summary>
+        /// Returns a random item.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        public static T RandomItem<T>(this IEnumerable<T> source)
+        {
+            var random = new Random();
+
+            return source.ElementAt(source.Count() - 1 - random.Next(source.Count()));
+        }
+        
+        /// <summary>
         /// Removes all entries from a target list where the predicate is true.
         /// </summary>
         /// <typeparam name="T">The type of item that must exist in the list.</typeparam>

@@ -74,7 +74,6 @@ namespace FoundOps.Server.Tests
 
             DateTime? expected = new DateTime(2011, 5, 3);
             var onOrAfterDate = new DateTime(2011, 5, 3);
-
             var actual = target.NextRepeatDateOnOrAfterDate(onOrAfterDate);
             Assert.AreEqual(expected, actual); //tests the functionality of requesting to see the service on the only day it exists
 

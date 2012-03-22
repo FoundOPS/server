@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.SLClient.Data.Services;
 using ReactiveUI;

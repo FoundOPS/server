@@ -32,9 +32,14 @@ namespace FoundOps.Server.Services.CoreDomainService
     {
         protected override bool PersistChangeSet()
         {
-            //Get any files that were just deleted
+           //var original = this.ChangeSet.GetOriginal(this.ChangeSet.ChangeSetEntries.FirstOrDefault().Entity);
+
+           //if (original != ChangeSet.ChangeSetEntries.FirstOrDefault())
+           //     original = this.ChangeSet.ChangeSetEntries.FirstOrDefault();
+
+          //Get any files that were just deleted
             var deletedFiles =
-                this.ChangeSet.ChangeSetEntries.Where(cse => cse.Entity is File && cse.Operation == DomainOperation.Delete)
+              this.ChangeSet.ChangeSetEntries.Where(cse => cse.Entity is File && cse.Operation == DomainOperation.Delete)
                 .Select(cse => cse.Entity as File);
 
             //Delete the files from cloud storage
@@ -100,6 +105,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             return businessAccount;
         }
 
+
+        #endregion
+
+        #region BusinessAccount
+
         private void UpdateBusinessAccount(BusinessAccount account)
         {
             //Only FoundOPS admin accounts or a user with admin capabilities for the current account can update the account
@@ -126,45 +136,42 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (!this.ObjectContext.CurrentUserCanAdministerFoundOPS())
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
-            businessAccountToDelete.Employees.Load();
-            foreach (var employee in businessAccountToDelete.Employees.ToList())
-                this.DeleteEmployee(employee);
+            ObjectContext.DeleteBusinessAccountBasedOnId(businessAccountToDelete.Id);
 
-            businessAccountToDelete.Regions.Load();
-            foreach (var region in businessAccountToDelete.Regions.ToList())
-                this.DeleteRegion(region);
+            #region NOT USED TO DELETE ANYMORE
 
-            businessAccountToDelete.RouteTasks.Load();
-            foreach (var routeTask in businessAccountToDelete.RouteTasks.ToList())
-                this.DeleteRouteTask(routeTask);
+            //businessAccountToDelete.ServicesToProvide.Load();
+            //foreach (var service in businessAccountToDelete.ServicesToProvide.ToList())
+            //    this.DeleteService(service);
 
-            businessAccountToDelete.Routes.Load();
-            foreach (var route in businessAccountToDelete.Routes.ToList())
-                this.DeleteRoute(route);
+            ////Stored procedure that will find all ServiceTemplates on this BusinessAccount
+            ////Then it will find all of the children of those ServiceTemplates
+            ////Then it will delete all of them
+            //ObjectContext.DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId(businessAccountToDelete.Id);
 
-            businessAccountToDelete.ServicesToProvide.Load();
-            foreach (var service in businessAccountToDelete.ServicesToProvide.ToList())
-                this.DeleteService(service);
+            //businessAccountToDelete.Employees.Load();
+            //foreach (var employee in businessAccountToDelete.Employees.ToList())
+            //    this.DeleteEmployee(employee);
 
-            businessAccountToDelete.Clients.Load();
-            foreach (var client in businessAccountToDelete.Clients.ToList())
-                this.DeleteClient(client);
+            //businessAccountToDelete.Regions.Load();
+            //foreach (var region in businessAccountToDelete.Regions.ToList())
+            //    this.DeleteRegion(region);
 
-            //This must be after Services
-            //Delete all ServiceTemplates that do not have delete ChangeSetEntries
-            var serviceTemplatesToDelete = businessAccountToDelete.ServiceTemplates.Where(st =>
-                        !ChangeSet.ChangeSetEntries.Any(cse => cse.Operation == DomainOperation.Delete &&
-                        cse.Entity is ServiceTemplate && ((ServiceTemplate)cse.Entity).Id == st.Id))
-                        .ToArray();
+            //businessAccountToDelete.RouteTasks.Load();
+            //foreach (var routeTask in businessAccountToDelete.RouteTasks.ToList())
+            //    this.DeleteRouteTask(routeTask);
 
-            foreach (var serviceTemplate in serviceTemplatesToDelete)
-                this.DeleteServiceTemplate(serviceTemplate);
+            //businessAccountToDelete.Routes.Load();
+            //foreach (var route in businessAccountToDelete.Routes.ToList())
+            //    this.DeleteRoute(route);
 
-            businessAccountToDelete.Invoices.Load();
-            foreach (var invoice in businessAccountToDelete.Invoices.ToList())
-                this.DeleteInvoice(invoice);
+            //businessAccountToDelete.Clients.Load();
+            //foreach (var client in businessAccountToDelete.Clients.ToList())
+            //    this.DeleteClient(client);
 
-            QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
+            #endregion
+
+            //QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
         }
 
         #endregion
@@ -342,59 +349,71 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             if ((party.EntityState == EntityState.Detached))
                 this.ObjectContext.Parties.Attach(party);
-
-            party.Locations.Load();
-            party.OwnedLocations.Load();
-            party.ClientOwnerReference.Load();
-            party.Contacts.Load();
-            party.ContactInfoSet.Load();
+            
             party.PartyImageReference.Load();
-            party.OwnedRoles.Load();
-            party.Vehicles.Load();
-
-            party.RoleMembership.Load();
-            party.RoleMembership.Clear();
 
             if (party.PartyImage != null)
                 this.DeleteFile(party.PartyImage);
 
-            var accountLocations = party.OwnedLocations.ToArray();
-            foreach (var location in accountLocations)
-                this.DeleteLocation(location);
-
-            var partyLocations = party.Locations.ToArray();
-            foreach (var location in partyLocations)
-                this.DeleteLocation(location);
-
-            var contacts = party.Contacts.ToArray();
-            foreach (var contact in contacts)
-                this.DeleteContact(contact);
-
-            var contactInfoSetToRemove = party.ContactInfoSet.ToArray();
-            foreach (var contactInfo in contactInfoSetToRemove)
-                this.DeleteContactInfo(contactInfo);
-
-            var ownedRolesToDelete = party.OwnedRoles.ToArray();
-            foreach (var ownedRole in ownedRolesToDelete)
-                this.DeleteRole(ownedRole);
-
-            var vehicles = party.Vehicles.ToArray();
-            foreach (var vehicle in vehicles)
-                this.DeleteVehicle(vehicle);
-
             var businessAccountToDelete = party as BusinessAccount;
+            var userAccountToDelete = party as UserAccount;
+
             if (businessAccountToDelete != null)
                 DeleteBusinessAccount(businessAccountToDelete);
+            else if (userAccountToDelete != null)
+                ObjectContext.DeleteUserAccountBasedOnId(userAccountToDelete.Id);
+            
+            #region NOT USED TO DELETE ANYMORE
+            //party.Locations.Load();
+                //party.OwnedLocations.Load();
+                //party.ClientOwnerReference.Load();
+                //party.Contacts.Load();
+                //party.ContactInfoSet.Load();
+                //party.OwnedRoles.Load();
+                //party.Vehicles.Load();
+                //party.OwnedFiles.Load();
 
-            if ((party.EntityState != EntityState.Detached))
-            {
-                this.ObjectContext.ObjectStateManager.ChangeObjectState(party, EntityState.Deleted);
-            }
-            else
-            {
-                this.ObjectContext.Parties.Attach(party);
-                this.ObjectContext.Parties.DeleteObject(party);
-            }
+                //party.RoleMembership.Load();
+                //party.RoleMembership.Clear();
+
+                //var accountLocations = party.OwnedLocations.ToArray();
+                //foreach (var location in accountLocations)
+                //    this.DeleteLocation(location);
+
+                //var partyLocations = party.Locations.ToArray();
+                //foreach (var location in partyLocations)
+                //    this.DeleteLocation(location);
+
+                //var contacts = party.Contacts.ToArray();
+                //foreach (var contact in contacts)
+                //    this.DeleteContact(contact);
+
+                //var contactInfoSetToRemove = party.ContactInfoSet.ToArray();
+                //foreach (var contactInfo in contactInfoSetToRemove)
+                //    this.DeleteContactInfo(contactInfo);
+
+                //var ownedRolesToDelete = party.OwnedRoles.ToArray();
+                //foreach (var ownedRole in ownedRolesToDelete)
+                //    this.DeleteRole(ownedRole);
+
+                //var vehicles = party.Vehicles.ToArray();
+                //foreach (var vehicle in vehicles)
+                //    this.DeleteVehicle(vehicle);
+
+                //var files = party.OwnedFiles.ToArray();
+                //foreach (var file in files)
+                //    this.DeleteFile(file);
+
+                //if ((party.EntityState != EntityState.Detached))
+                //{
+                //    this.ObjectContext.ObjectStateManager.ChangeObjectState(party, EntityState.Deleted);
+                //}
+                //else
+                //{
+                //    this.ObjectContext.Parties.Attach(party);
+                //    this.ObjectContext.Parties.DeleteObject(party);
+            //}
+            #endregion
         }
 
         #endregion
@@ -594,11 +613,11 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Update]
         public void UpdateUserAccount(UserAccount currentUserAccount)
         {
-            if (!ObjectContext.CurrentUserCanAdministerParty(currentUserAccount.Id))
+            if (!ObjectContext.CurrentUserCanAdministerParty(currentUserAccount.Id) || !this.ObjectContext.CurrentUserCanAdministerFoundOPS())
                 throw new AuthenticationException();
 
             //Check if there is a temporary password
-            if (string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
+            if (!string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
                 currentUserAccount.PasswordHash = EncryptionTools.Hash(currentUserAccount.TemporaryPassword);
 
             this.ObjectContext.Parties.AttachAsModified(currentUserAccount);

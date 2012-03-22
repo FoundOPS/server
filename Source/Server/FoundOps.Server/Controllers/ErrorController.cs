@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web.Mvc;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Authentication;

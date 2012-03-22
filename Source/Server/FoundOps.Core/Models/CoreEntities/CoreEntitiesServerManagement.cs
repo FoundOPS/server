@@ -21,7 +21,7 @@ namespace FoundOps.Core.Models.CoreEntities
             RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
 
         private static readonly string CreateCoreEntitiesDatabaseScriptLocation =
-            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx.sql";
+            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql";
 
         #endregion
 
@@ -120,9 +120,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 //container.SaveChanges();
 
                 //Add Services
-                //var servicesDesignData = new ServicesDesignData(businessAccount, clientsDesignData.DesignClient);
-                //foreach (var service in servicesDesignData.DesignServices)
-                //    businessAccount.ServicesToProvide.Add(service);
+                var servicesDesignData = new ServicesDesignData(serviceProvider, clientsDesignData.DesignClient, serviceProvider.ServiceTemplates);
+                foreach (var service in servicesDesignData.DesignServices)
+                    serviceProvider.ServicesToProvide.Add(service);
             }
 
             container.SaveChanges();

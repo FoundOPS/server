@@ -1,0 +1,419 @@
+﻿<#@ template  debug="true" hostSpecific="true" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ output extension=".edmx.sql" #>
+<#@ template language="C#" #>
+<#
+    string absolutePath = Host.ResolvePath("CoreEntities.edmx.sql");
+    string contents = File.ReadAllText(absolutePath);
+    // process file contents here, we'll simply dump it to the output here
+	
+	var oldTextArray = new System.Collections.Generic.List<string> {};
+	var newTextArray = new System.Collections.Generic.List<string> {};
+	
+	//1. Replace all NONCLUSTERED w CLUSTERED
+	oldTextArray.Add(@"NONCLUSTERED");
+
+	newTextArray.Add(@"CLUSTERED");
+	
+	//2. FK_RouteTaskRouteDestination replace with ON DELETE SET NULL ON UPDATE NO ACTION; //This will delete RouteTasks on a destination when it is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[RouteTasks]
+ADD CONSTRAINT [FK_RouteTaskRouteDestination]
+    FOREIGN KEY ([RouteDestinationId])
+    REFERENCES [dbo].[RouteDestinations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[RouteTasks]
+ADD CONSTRAINT [FK_RouteTaskRouteDestination]
+    FOREIGN KEY ([RouteDestinationId])
+    REFERENCES [dbo].[RouteDestinations]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;");	
+
+	//3. FK_ServiceTemplateField replace with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Fields from a ServiceTemplate when it is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields]
+ADD CONSTRAINT [FK_ServiceTemplateField]
+    FOREIGN KEY ([ServiceTemplateId])
+    REFERENCES [dbo].[ServiceTemplates]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Fields]
+ADD CONSTRAINT [FK_ServiceTemplateField]
+    FOREIGN KEY ([ServiceTemplateId])
+    REFERENCES [dbo].[ServiceTemplates]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//4. FK_LocationFieldLocation replace with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete LocationFields when a Location is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields_LocationField]
+ADD CONSTRAINT [FK_LocationFieldLocation]
+    FOREIGN KEY ([LocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Fields_LocationField]
+ADD CONSTRAINT [FK_LocationFieldLocation]
+    FOREIGN KEY ([LocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//5. FK_OptionsFieldOption replace with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete OptionsField when a Option is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Options]
+ADD CONSTRAINT [FK_OptionsFieldOption]
+    FOREIGN KEY ([OptionsFieldId])
+    REFERENCES [dbo].[Fields_OptionsField]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Options]
+ADD CONSTRAINT [FK_OptionsFieldOption]
+    FOREIGN KEY ([OptionsFieldId])
+    REFERENCES [dbo].[Fields_OptionsField]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//6. FK_OptionsField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a OptionsField is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields_OptionsField]
+ADD CONSTRAINT [FK_OptionsField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Fields_OptionsField]
+ADD CONSTRAINT [FK_OptionsField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//7. FK_LocationField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a LocationsField is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields_LocationField]
+ADD CONSTRAINT [FK_LocationField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Fields_LocationField]
+ADD CONSTRAINT [FK_LocationField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//8. FK_TextBoxField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a TextBoxField is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields_TextBoxField]
+ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Fields_TextBoxField]
+ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//9. FK_NumericField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a NumericField is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields_NumericField]
+ADD CONSTRAINT [FK_NumericField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Fields_NumericField]
+ADD CONSTRAINT [FK_NumericField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//10. FK_DateTimeField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a DateTimeField is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields_DateTimeField]
+ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Fields_DateTimeField]
+ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//11. FK_LocationOption_inherits_Option with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Option when a LocationOption is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Options_LocationOption]
+ADD CONSTRAINT [FK_LocationOption_inherits_Option]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Options]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Options_LocationOption]
+ADD CONSTRAINT [FK_LocationOption_inherits_Option]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Options]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");	
+	
+	//12. FK_InvoiceServiceTemplate with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Invoice when a ServiceTemplate is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Invoices]
+ADD CONSTRAINT [FK_InvoiceServiceTemplate]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[ServiceTemplates]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Invoices]
+ADD CONSTRAINT [FK_InvoiceServiceTemplate]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[ServiceTemplates]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//13. FK_RecurringServiceServiceTemplate with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RecurringService when a ServiceTemplate is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[RecurringServices]
+ADD CONSTRAINT [FK_RecurringServiceServiceTemplate]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[ServiceTemplates]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[RecurringServices]
+ADD CONSTRAINT [FK_RecurringServiceServiceTemplate]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[ServiceTemplates]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");	
+	
+	//14. FK_LocationSubLocation with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RoleBlock when a Block is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[SubLocations]
+ADD CONSTRAINT [FK_LocationSubLocation]
+    FOREIGN KEY ([LocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[SubLocations]
+ADD CONSTRAINT [FK_LocationSubLocation]
+    FOREIGN KEY ([LocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//15. FK_ClientTitleClient with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete ClientTitle when a Client is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[ClientTitles]
+ADD CONSTRAINT [FK_ClientTitleClient]
+    FOREIGN KEY ([ClientId])
+    REFERENCES [dbo].[Clients]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[ClientTitles]
+ADD CONSTRAINT [FK_ClientTitleClient]
+    FOREIGN KEY ([ClientId])
+    REFERENCES [dbo].[Clients]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//16. FK_RouteDestinationRoute with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RouteDestination when a Route is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[RouteDestinations]
+ADD CONSTRAINT [FK_RouteDestinationRoute]
+    FOREIGN KEY ([RouteId])
+    REFERENCES [dbo].[Routes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[RouteDestinations]
+ADD CONSTRAINT [FK_RouteDestinationRoute]
+    FOREIGN KEY ([RouteId])
+    REFERENCES [dbo].[Routes]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//17. FK_LocationContactInfo with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RoleBlock when a Block is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[ContactInfoSet]
+ADD CONSTRAINT [FK_LocationContactInfo]
+    FOREIGN KEY ([LocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[ContactInfoSet]
+ADD CONSTRAINT [FK_LocationContactInfo]
+    FOREIGN KEY ([LocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//18. FK_PartyRole_Party with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RoleBlock when a Block is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[PartyRole]
+ADD CONSTRAINT [FK_PartyRole_Party]
+    FOREIGN KEY ([MemberParties_Id])
+    REFERENCES [dbo].[Parties]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[PartyRole]
+ADD CONSTRAINT [FK_PartyRole_Party]
+    FOREIGN KEY ([MemberParties_Id])
+    REFERENCES [dbo].[Parties]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//19. FK_PartyRole_Role with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RoleBlock when a Block is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[PartyRole]
+ADD CONSTRAINT [FK_PartyRole_Role]
+    FOREIGN KEY ([RoleMembership_Id])
+    REFERENCES [dbo].[Roles]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[PartyRole]
+ADD CONSTRAINT [FK_PartyRole_Role]
+    FOREIGN KEY ([RoleMembership_Id])
+    REFERENCES [dbo].[Roles]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");	
+	
+	//20. FK_RoleBlock_Role with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RoleBloack when a Role is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[RoleBlock]
+ADD CONSTRAINT [FK_RoleBlock_Role]
+    FOREIGN KEY ([Roles_Id])
+    REFERENCES [dbo].[Roles]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[RoleBlock]
+ADD CONSTRAINT [FK_RoleBlock_Role]
+    FOREIGN KEY ([Roles_Id])
+    REFERENCES [dbo].[Roles]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//21. FK_RoleBlock_Block with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RoleBlock when a Block is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[RoleBlock]
+ADD CONSTRAINT [FK_RoleBlock_Block]
+    FOREIGN KEY ([Blocks_Id])
+    REFERENCES [dbo].[Blocks]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[RoleBlock]
+ADD CONSTRAINT [FK_RoleBlock_Block]
+    FOREIGN KEY ([Blocks_Id])
+    REFERENCES [dbo].[Blocks]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//22. FK_VehicleMaintenanceLogEntryVehicle with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RoleBlock when a Block is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[VehicleMaintenanceLog]
+ADD CONSTRAINT [FK_VehicleMaintenanceLogEntryVehicle]
+    FOREIGN KEY ([VehicleId])
+    REFERENCES [dbo].[Vehicles]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[VehicleMaintenanceLog]
+ADD CONSTRAINT [FK_VehicleMaintenanceLogEntryVehicle]
+    FOREIGN KEY ([VehicleId])
+    REFERENCES [dbo].[Vehicles]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//23. FK_VehicleMaintenanceLogEntryLineItem with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RoleBlock when a Block is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[VehicleMaintenanceLineItems]
+ADD CONSTRAINT [FK_VehicleMaintenanceLogEntryLineItem]
+    FOREIGN KEY ([VehicleMaintenanceLogEntryId])
+    REFERENCES [dbo].[VehicleMaintenanceLog]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[VehicleMaintenanceLineItems]
+ADD CONSTRAINT [FK_VehicleMaintenanceLogEntryLineItem]
+    FOREIGN KEY ([VehicleMaintenanceLogEntryId])
+    REFERENCES [dbo].[VehicleMaintenanceLog]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");	
+	
+	//24. FK_EmployeeHistoryEntryEmployee with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete EmployeeHistory when an Employee is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[EmployeeHistoryEntries]
+ADD CONSTRAINT [FK_EmployeeHistoryEntryEmployee]
+    FOREIGN KEY ([EmployeeId])
+    REFERENCES [dbo].[Employees]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[EmployeeHistoryEntries]
+ADD CONSTRAINT [FK_EmployeeHistoryEntryEmployee]
+    FOREIGN KEY ([EmployeeId])
+    REFERENCES [dbo].[Employees]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+
+	//25. FK_ClientLocation with ON DELETE SET NULL ON UPDATE NO ACTION; //This will remove the DefaultBillingLocation from a Client when the Location is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Clients]
+ADD CONSTRAINT [FK_ClientLocation]
+    FOREIGN KEY ([DefaultBillingLocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[Clients]
+ADD CONSTRAINT [FK_ClientLocation]
+    FOREIGN KEY ([DefaultBillingLocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE SET NULL ON UPDATE NO ACTION;");
+	
+	contents = ReplaceTextBlock(contents, oldTextArray, newTextArray);
+	//var newContent = contents.Replace(oldText, newText);
+	
+    this.Write(contents);	
+#>
+	<#+
+    public string ReplaceTextBlock(string contents, System.Collections.Generic.List<string> oldBlocks, System.Collections.Generic.List<string> newBlocks)
+    {
+		for(var count = 0; count <= newBlocks.Count() - 1; count++)
+		{
+			contents = contents.Replace(oldBlocks[count], newBlocks[count]);
+		}
+        
+        return contents;
+    }
+#>

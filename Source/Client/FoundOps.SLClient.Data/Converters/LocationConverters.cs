@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Data;
 using System.Globalization;
 using FoundOps.Common.Tools.ExtensionMethods;

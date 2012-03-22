@@ -1,4 +1,4 @@
-﻿using FoundOps.SLClient.UI.Tools;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;

@@ -1,0 +1,45 @@
+﻿1. Replace all NONCLUSTERED w CLUSTERED
+
+Constraint Fixes
+
+Ex. FK_RouteTaskRouteDestination replace with ON DELETE SET NULL ON UPDATE NO ACTION;
+
+Where the FK_RouteTaskRouteDestination constraint is in the edmx.sql:
+replace the last line "ON DELETE NO ACTION ON UPDATE NO ACTION" with "ON DELETE SET NULL ON UPDATE NO ACTION"
+
+ALTER TABLE [dbo].[RouteTasks]
+ADD CONSTRAINT [FK_RouteTaskRouteDestination]
+    FOREIGN KEY ([RouteDestinationId])
+    REFERENCES [dbo].[RouteDestinations]
+        ([Id])
+ON DELETE SET NULL ON UPDATE NO ACTION; 
+
+2. FK_RouteTaskRouteDestination replace with ON DELETE SET NULL ON UPDATE NO ACTION; //This will remove RouteTasks from a destination when it is deleted
+
+3. FK_ServiceTemplateField replace with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Fields from a ServiceTemplate when it is deleted
+
+4. FK_LocationFieldLocation replace with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete LocationFields when a Location is deleted
+
+5. FK_OptionsFieldOption replace with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete OptionsField when a Option is deleted
+
+6. FK_OptionsField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a OptionsField is deleted
+
+7. FK_LocationField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a LocationsField is deleted
+
+8. FK_TextBoxField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a TextBoxField is deleted
+
+9. FK_NumericField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a NumericField is deleted
+
+10. FK_DateTimeField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a DateTimeField is deleted
+
+11. FK_LocationOption_inherits_Option with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Option when a LocationOption is deleted
+
+12. FK_InvoiceServiceTemplate with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Invoice when a ServiceTemplate is deleted
+
+13. FK_RecurringServiceServiceTemplate with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RecurringService when a ServiceTemplate is deleted
+
+14. FK_EmployeeHistoryEntryEmployee with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete EmployeeHistory when an Employee is deleted
+
+15. FK_RouteDestinationRoute with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete RouteDestination when a Route is deleted
+
+16. FK_ClientTitleClient with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete ClientTitle when a Client is deleted

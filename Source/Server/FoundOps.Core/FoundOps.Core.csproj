@@ -201,7 +201,25 @@
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
     <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
-    <Content Include="Models\CoreEntities\ManualDatabaseChanges.txt" />
+    <Content Include="Models\CoreEntities\ManualEDMXChanges.txt" />
+    <Content Include="Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
+    </Content>
+    <Content Include="Models\CoreEntities\SQL\DeleteBasicPartyBasedOnId.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteBusinessAccountBasedOnId.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteFields.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetNextOccurence.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetPreviousOccurance.sql" />
+    <Content Include="Models\CoreEntities\SQL\ManualDatabaseChanges.txt" />
+    <Content Include="Models\CoreEntities\SQL\TestFunctionForRecurringServices.sql" />
+    <Content Include="Models\CoreEntities\SQL\SchedulerTests.sql" />
+    <Content Include="Models\CoreEntities\SQL\SchedulerSubFunctions.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteUserAccountBasedOnId.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetServicesFunction.sql" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\CoreEntities\CoreEntities.edmx">
@@ -211,6 +229,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="Models\CoreEntities\CoreEntitiesCorrected.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CoreEntitiesCorrected1.edmx.sql</LastGenOutput>
+    </None>
     <None Include="Models\CoreEntities\M2M4RiaEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>M2M4RiaEntities.g.cs</LastGenOutput>
