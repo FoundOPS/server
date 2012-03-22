@@ -1,7 +1,4 @@
-﻿USE Core
-GO
-
---This procedure deletes a Business Account
+﻿--This procedure deletes a Business Account
 CREATE PROCEDURE dbo.DeleteClientBasedOnId
 		(@clientId uniqueidentifier)
 
