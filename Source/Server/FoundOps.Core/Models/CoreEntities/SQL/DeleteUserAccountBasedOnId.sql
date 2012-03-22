@@ -1,4 +1,7 @@
 ﻿--This procedure deletes a User Account
+IF OBJECT_ID(N'[dbo].[DeleteUserAccountBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].[DeleteUserAccountBasedOnId]
+GO
 CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 		(@providerId uniqueidentifier)
 

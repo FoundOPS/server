@@ -4,7 +4,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 USE Core;
 GO
-
+IF OBJECT_ID(N'[dbo].[GetServicesBasedOnProvider]', N'FN') IS NOT NULL
+DROP FUNCTION [dbo].[GetServicesBasedOnProvider]
+GO
    /****************************************************************************************************************************************************
 	* FUNCTION GetServicesBasedOnProvider will take the context provided and find all the service dates
 	* for RecurringServices and existing Services with that context. The function will return past, future or both past and future Services.

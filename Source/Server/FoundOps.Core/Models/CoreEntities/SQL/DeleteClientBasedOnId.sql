@@ -1,4 +1,7 @@
-﻿--This procedure deletes a Business Account
+﻿IF OBJECT_ID(N'[dbo].[DeleteClientBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].DeleteClientBasedOnId
+GO
+--This procedure deletes a Business Account
 CREATE PROCEDURE dbo.DeleteClientBasedOnId
 		(@clientId uniqueidentifier)
 

@@ -1,6 +1,8 @@
 ﻿USE Core
 GO
-
+IF OBJECT_ID(N'[dbo].[DeleteBusinessAccountBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].DeleteBusinessAccountBasedOnId
+GO
 --This procedure deletes a Business Account
 CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		(@providerId uniqueidentifier)
