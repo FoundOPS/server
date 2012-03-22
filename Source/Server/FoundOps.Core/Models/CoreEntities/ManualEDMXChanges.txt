@@ -38,7 +38,7 @@ GO
 Replace
     <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />
 with
-    <EntitySet Name="PartiesWithName" EntityType="CoreEntities.Store.PartyWithName" store:Type="Views" store:Schema="dbo" store:Name="PartiesWithName">
+    <EntitySet Name="PartiesWithName" EntityType="CoreEntities.Store.PartiesWithName" store:Type="Views" store:Schema="dbo" store:Name="PartiesWithName">
       <DefiningQuery>
         SELECT
         [PartiesWithName].[Id] AS [Id],
@@ -62,6 +62,9 @@ with
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="ChildName" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
+
+Leave Alone <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.PartyWithName" />
+
 Replace
     <EntitySetMapping Name="PartiesWithNames">
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.PartyWithName)">
@@ -73,7 +76,7 @@ Replace
     </EntitySetMapping>
 with
     <EntitySetMapping Name="PartiesWithNames">
-      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.PartyWithName)">
+      <EntityTypeMapping TypeName="CoreEntities.PartyWithName">
         <MappingFragment StoreEntitySet="PartiesWithName">
           <ScalarProperty Name="ChildName" ColumnName="ChildName" />
           <ScalarProperty Name="Id" ColumnName="Id" />
