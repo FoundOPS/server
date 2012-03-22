@@ -318,7 +318,7 @@ GO
 	WHERE ServiceProviderId = @recurringServiceIdContext AND ServiceDate BETWEEN @firstDateToLookFor AND @firstDateToLookForServices
 	ORDER BY ServiceDate
 
-	INSERT INTO @TempPreviousExistingServiceTable (ServiceId, RecurringServiceId, OccurDate)
+	INSERT INTO @TempNextExistingServiceTable (ServiceId, RecurringServiceId, OccurDate)
 	SELECT TOP(@numberOfOccurrences) Id, RecurringServiceId, ServiceDate
 	FROM Services
 	WHERE ServiceProviderId = @recurringServiceIdContext AND ServiceDate BETWEEN @firstDateToLookForServices AND @lastDateToLookFor
@@ -334,7 +334,7 @@ GO
 	WHERE ServiceProviderId = @clientIdContext AND ServiceDate BETWEEN @firstDateToLookFor AND @firstDateToLookForServices
 	ORDER BY ServiceDate
 
-	INSERT INTO @TempPreviousExistingServiceTable (ServiceId, RecurringServiceId, OccurDate)
+	INSERT INTO @TempNextExistingServiceTable (ServiceId, RecurringServiceId, OccurDate)
 	SELECT TOP(@numberOfOccurrences) Id, RecurringServiceId, ServiceDate
 	FROM Services
 	WHERE ServiceProviderId = @clientIdContext AND ServiceDate BETWEEN @firstDateToLookForServices AND @lastDateToLookFor
@@ -350,7 +350,7 @@ GO
 	WHERE ServiceProviderId = @serviceProviderIdContext AND ServiceDate BETWEEN @firstDateToLookFor AND @firstDateToLookForServices
 	ORDER BY ServiceDate
 
-	INSERT INTO @TempPreviousExistingServiceTable (ServiceId, RecurringServiceId, OccurDate)
+	INSERT INTO @TempNextExistingServiceTable (ServiceId, RecurringServiceId, OccurDate)
 	SELECT TOP(@numberOfOccurrences) Id, RecurringServiceId, ServiceDate
 	FROM Services
 	WHERE ServiceProviderId = @serviceProviderIdContext AND ServiceDate BETWEEN @firstDateToLookForServices AND @lastDateToLookFor

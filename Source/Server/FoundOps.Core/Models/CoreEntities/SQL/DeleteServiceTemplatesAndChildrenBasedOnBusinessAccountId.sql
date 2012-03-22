@@ -1,6 +1,7 @@
 ﻿--This procedure deletes all service templates and child service templates
-CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId
-		(@providerId uniqueidentifier)
+CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId
+		(@serviceProviderId uniqueidentifier,
+		@ownerClientId uniqueidentifier)
 	AS
 	BEGIN
 
@@ -9,12 +10,14 @@ CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId
 		Id uniqueidentifier
 	);
 	
+	IF @serviceProviderId IS NOT NULL
+	BEGIN
 	--This is the CTE for SetviceTemplates and their Children for the specified businessaccount (service provider)
 	WITH		ServiceTemplateRecurs as
 	(
     SELECT		ServiceTemplates.Id, ServiceTemplates.OwnerServiceTemplateId
     FROM		ServiceTemplates
-    WHERE		ServiceTemplates.OwnerServiceProviderId = @providerId
+    WHERE		ServiceTemplates.OwnerServiceProviderId = @serviceProviderId
     UNION		ALL
     SELECT		ServiceTemplates.Id, ServiceTemplates.OwnerServiceTemplateId
     FROM		ServiceTemplates
@@ -25,7 +28,27 @@ CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId
 	INSERT INTO #TempTable (Id)
 	SELECT	ServiceTemplateRecurs.Id
 	FROM	ServiceTemplateRecurs
-	
+	END
+
+	ELSE IF @ownerClientId IS NOT NULL
+	BEGIN
+	WITH		ServiceTemplateRecurs as
+	(
+    SELECT		ServiceTemplates.Id, ServiceTemplates.OwnerServiceTemplateId
+    FROM		ServiceTemplates
+    WHERE		ServiceTemplates.OwnerClientId = @ownerClientId
+    UNION		ALL
+    SELECT		ServiceTemplates.Id, ServiceTemplates.OwnerServiceTemplateId
+    FROM		ServiceTemplates
+    JOIN		ServiceTemplateRecurs
+    ON			ServiceTemplateRecurs.id = ServiceTemplates.OwnerServiceTemplateId
+	)
+	INSERT INTO #TempTable (Id)
+	SELECT	ServiceTemplateRecurs.Id
+	FROM	ServiceTemplateRecurs
+	END
+
+
 	DELETE 
 	FROM		Services
 	--This is a Semi-Join between the ServiceTemplateRecurs table created above and the Services Table
