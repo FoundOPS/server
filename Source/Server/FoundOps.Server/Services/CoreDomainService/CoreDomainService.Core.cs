@@ -171,6 +171,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             #endregion
 
+            //TODO: When quickbooks is setup
             //QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
         }
 

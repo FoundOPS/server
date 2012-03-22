@@ -37,7 +37,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-
         #region Constructor
 
         /// <summary>
@@ -117,22 +116,22 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Force load the entities when in a related types view
             //this is because VDCV will only normally load when a virtual item is loaded onto the screen
             //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
-            SetupContextDataLoading(roleId => Context.GetServiceTemplatesForServiceProviderQuery(roleId),
-                                    new[]
-                                        {
-                                            new ContextRelationshipFilter
-                                                {
-                                                    EntityMember = "PartyId",
-                                                    FilterValueGenerator = v => ((Client) v).Id,
-                                                    RelatedContextType = typeof (Client)
-                                                },
-                                                  new ContextRelationshipFilter
-                                                {
-                                                    EntityMember = "RegionId",
-                                                    FilterValueGenerator = v => ((Region) v).Id,
-                                                    RelatedContextType = typeof (Region)
-                                                }
-                                        }, true);
+            //SetupContextDataLoading(roleId => Context.GetServiceTemplatesForServiceProviderQuery(roleId),
+            //                        new[]
+            //                            {
+            //                                new ContextRelationshipFilter
+            //                                    {
+            //                                        EntityMember = "PartyId",
+            //                                        FilterValueGenerator = v => ((Client) v).Id,
+            //                                        RelatedContextType = typeof (Client)
+            //                                    },
+            //                                      new ContextRelationshipFilter
+            //                                    {
+            //                                        EntityMember = "RegionId",
+            //                                        FilterValueGenerator = v => ((Region) v).Id,
+            //                                        RelatedContextType = typeof (Region)
+            //                                    }
+            //                            }, true);
 
         }
 
