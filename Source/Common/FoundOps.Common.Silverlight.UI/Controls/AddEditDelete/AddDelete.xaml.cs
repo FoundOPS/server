@@ -7,7 +7,6 @@ using System.Windows.Controls;
 using FoundOps.Common.Silverlight.UI.Converters;
 using Telerik.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using FoundOps.Common.Silverlight.Converters;
 using ItemsControl = System.Windows.Controls.ItemsControl;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
@@ -25,7 +24,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
     public partial class AddDelete
     {
-        #region Public Properties and Variables
+        #region Public Properties
 
         #region Events
 

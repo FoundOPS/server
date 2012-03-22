@@ -1,23 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Windows.Controls;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Silverlight.Services;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
-using FoundOps.Core.Models.CoreEntities.DesignData;
-using Microsoft.Windows.Data.DomainServices;
-using ReactiveUI;
-using System.Linq;
-using System.Reactive.Linq;
-using FoundOps.Common.Tools;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -25,44 +10,9 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the ServiceTemplates
     /// </summary>
     [ExportViewModel("ServiceTemplatesVM")]
-    public class ServiceTemplatesVM : InfiniteAccordionVM<ServiceTemplate>
-          //,IAddToDeleteFromSource<ServiceTemplate>
+    public class ServiceTemplatesVM : InfiniteAccordionVM<ServiceTemplate> //, IAddToDeleteFromSource<ServiceTemplate>
     {
-        //#region Public Properties
-
-        //#region ServiceTemplate contexts
-
-        //private readonly ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _serviceTemplatesForServiceProvider;
-        ///// <summary>
-        ///// Returns all service provider service templates
-        ///// </summary>
-        //public IEnumerable<ServiceTemplate> ServiceTemplatesForServiceProvider { get { return _serviceTemplatesForServiceProvider.Value; } }
-
-        //private readonly ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _additionalServiceTemplatesForServiceProvider;
-        ///// <summary>
-        ///// Returns any service templates for service provider the current context does not already have
-        ///// </summary>
-        //public IEnumerable<ServiceTemplate> AdditionalServiceTemplatesForServiceProvider { get { return _additionalServiceTemplatesForServiceProvider.Value; } }
-
-        //private readonly ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _serviceTemplatesForClient;
-        ///// <summary>
-        ///// Returns service templates the current client has
-        ///// </summary>
-        //public IEnumerable<ServiceTemplate> ServiceTemplatesForClient { get { return _serviceTemplatesForClient.Value; } }
-
-        //private readonly ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _foundOPSServiceTemplates;
-        ///// <summary>
-        ///// Returns FoundOPS service templates.
-        ///// </summary>
-        //public IEnumerable<ServiceTemplate> FoundOPSServiceTemplates { get { return _foundOPSServiceTemplates.Value; } }
-
-        //#endregion
-
-        //private readonly ObservableAsPropertyHelper<ObservableCollection<ServiceTemplate>> _loadedServiceTemplates;
-        ///// <summary>
-        ///// Gets the loaded service templates.
-        ///// </summary>
-        //public ObservableCollection<ServiceTemplate> LoadedServiceTemplates { get { return _loadedServiceTemplates.Value; } }
+        #region Public Properties
 
         //#region Implementation of IAddToDeleteFromSource<ServiceTemplate>
 
@@ -85,124 +35,20 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         //#endregion
 
+        #endregion
+
+
+        #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceTemplatesVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public ServiceTemplatesVM() : base(null, //<-- TODO when setting up data loading
-            false)
+        public ServiceTemplatesVM()
+            : base(null, //<-- TODO when setting up data loading
+                false)
         {
-            //TODO Optimization
-            //Subscribe to the ServiceTemplates query
-            //IsLoadingObservable = DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, null);
-
-            //#region Setup ServiceTemplate context Data Properties
-
-            //var loadedServiceTemplates = DataManager.GetEntityListObservable<ServiceTemplate>(DataManager.Query.ServiceTemplates);
-            ////Setup LoadedServiceTemplates property
-            //_loadedServiceTemplates = loadedServiceTemplates.ToProperty(this, x => x.LoadedServiceTemplates, new ObservableCollection<ServiceTemplate>());
-
-            ////_collectionView = loadedServiceTemplates.Select(lst => new CollectionViewSource { Source = lst }.View)
-            ////    .ToProperty(this, x => x.CollectionView);
-
-            ////_collectionView.DistinctUntilChanged().ObserveOnDispatcher()
-            ////    .Subscribe(cv => cv.Filter += obj => EntityIsPartOfView((ServiceTemplate) obj, IsAddingNew));
-
-            ////Select the ServiceTemplates whenevever:
-            ////a) they are changed or set
-            ////b) the current context changes
-            ////c) the OwnerAccount changes
-            ////Condition: the ServiceTemplates are loaded and the OwnerAccount is loaded
-            //var selectServiceTemplateObservable =
-            //    //a) they are changed or set
-            //    loadedServiceTemplates.FromCollectionChangedOrSet()
-            //    //b) the current context changes
-            //    .Merge(this.ContextManager.ContextChangedObservable.Select(cc => LoadedServiceTemplates))
-            //    //c) the OwnerAccount changes
-            //    .Merge(this.ContextManager.OwnerAccountObservable.Select(oa => LoadedServiceTemplates))
-            //    //Condition: the ServiceTemplates are loaded and the OwnerAccount is loaded
-            //    .Where(sts => sts != null && ContextManager.OwnerAccount != null).Throttle(new TimeSpan(0, 0, 0, 0, 300));
-
-            ////Setup FoundOPSServiceTemplates
-
-            //var foundOPSServiceTemplates =
-            //    selectServiceTemplateObservable.Select(lsts =>
-            //    {
-            //        var serviceTemplatesForProvider = lsts.Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.FoundOpsDefined);
-            //        return serviceTemplatesForProvider.OrderBy(st => st.Name).AsEnumerable();
-            //    });
-
-            //_foundOPSServiceTemplates = foundOPSServiceTemplates.ToProperty(this, x => x.FoundOPSServiceTemplates, new ObservableCollection<ServiceTemplate>());
-
-            ////Setup ServiceTemplatesForServiceProvider
-            //var serviceTemplatesForServiceProvider =
-            //    selectServiceTemplateObservable.Select(lsts =>
-            //    {
-            //        var serviceTemplatesForProvider = lsts.Where(st =>
-            //                st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined &&
-            //                st.OwnerServiceProviderId == ContextManager.OwnerAccount.Id);
-
-            //        return serviceTemplatesForProvider.OrderBy(st => st.Name).AsEnumerable();
-            //    });
-
-            //_serviceTemplatesForServiceProvider = serviceTemplatesForServiceProvider.ToProperty(this, x => x.ServiceTemplatesForServiceProvider, new ObservableCollection<ServiceTemplate>());
-
-            ////Setup AdditionalServiceTemplatesForServiceProvider property
-
-            //var additionalServiceTemplatesForServiceProvider =
-            //    serviceTemplatesForServiceProvider.Merge(AddCommand.Merge(this.DeleteCommand).Select(_ => LoadedServiceTemplates)).Select(lsts =>
-            //    {
-            //        var serviceTemplatesForProvider = lsts.Where(st =>
-            //                st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined &&
-            //                st.OwnerServiceProviderId == ContextManager.OwnerAccount.Id);
-
-            //        Func<ServiceTemplate, bool> serviceTemplateExistsUnderContext = st => false;
-
-            //        var clientContext = ContextManager.GetContext<Client>();
-
-            //        if (clientContext != null)
-            //        {
-            //            //Check if there are any service templates with the current client's context
-            //            serviceTemplateExistsUnderContext =
-            //                serviceProviderServiceTemplate =>
-            //                serviceProviderServiceTemplate.ChildrenServiceTemplates.Any(st =>
-            //                    st.ServiceTemplateLevel == ServiceTemplateLevel.ClientDefined && st.OwnerClientId == clientContext.Id);
-            //        }
-
-            //        //Return any FoundOPS service templates that are not already part of the ServiceProvider's service templates
-            //        var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
-            //        if (businessAccountContext != null)
-            //        {
-            //            //Check if there are any service templates with the current BusinessAccount's context
-            //            serviceTemplateExistsUnderContext =
-            //              serviceProviderServiceTemplate => serviceProviderServiceTemplate.ChildrenServiceTemplates.Any(st =>
-            //                  st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined && st.OwnerServiceProviderId == businessAccountContext.Id);
-
-            //            return FoundOPSServiceTemplates.Where(st => !serviceTemplateExistsUnderContext(st)).OrderBy(st => st.Name).AsEnumerable();
-            //        }
-
-            //        //Return the ServiceTemplates that do not exist under the context
-            //        return serviceTemplatesForProvider.Where(st => !serviceTemplateExistsUnderContext(st)).OrderBy(st => st.Name).AsEnumerable();
-            //    });
-
-            //_additionalServiceTemplatesForServiceProvider =
-            //    additionalServiceTemplatesForServiceProvider.ToProperty(this, x => x.AdditionalServiceTemplatesForServiceProvider, new ObservableCollection<ServiceTemplate>());
-
-            ////Setup ServiceTemplatesForClient property (whenever selectServiceTemplateObservable or the Client's ServiceTemplates changes)
-
-            //var serviceTemplatesForClient =
-            //    selectServiceTemplateObservable.Merge(ContextManager.GetContextObservable<Client>().WhereNotNull()
-            //    .SelectLatest(c => c.ServiceTemplates.FromCollectionChanged()).Select(_ => LoadedServiceTemplates)).Throttle(new TimeSpan(0, 0, 0, 0, 250))
-            //    .Select(lsts =>
-            //    {
-            //        var clientContext = ContextManager.GetContext<Client>();
-            //        return clientContext == null ? null : clientContext.ServiceTemplates.Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ClientDefined)
-            //            .OrderBy(st => st.Name).AsEnumerable();
-            //    }).Where(sts => sts != null);
-
-            //_serviceTemplatesForClient = serviceTemplatesForClient.ToProperty(this, x => x.ServiceTemplatesForClient, new ObservableCollection<ServiceTemplate>());
-
-            //#endregion
+            SetupDataLoading();
 
             //#region Setup DomainCollectionView
 
@@ -242,12 +88,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             //    CollectionViewObservable.OnNext(serviceProviderContextDCV);
             //});
 
-
-            ////Whenever the DCV changes, sort by Name
-            //this.CollectionViewObservable.Subscribe(dcv => ((ICollectionView) dcv).SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending)));
-
-            //#endregion
-
             //#region IAddToDeleteFromSource<ServiceTemplate> Implementation
 
             ////TODO Optimization
@@ -268,6 +108,35 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //#endregion
         }
+
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
+        private void SetupDataLoading()
+        {
+            //Force load the entities when in a related types view
+            //this is because VDCV will only normally load when a virtual item is loaded onto the screen
+            //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
+            SetupContextDataLoading(roleId => Context.GetServiceTemplatesForServiceProviderQuery(roleId),
+                                    new[]
+                                        {
+                                            new ContextRelationshipFilter
+                                                {
+                                                    EntityMember = "PartyId",
+                                                    FilterValueGenerator = v => ((Client) v).Id,
+                                                    RelatedContextType = typeof (Client)
+                                                },
+                                                  new ContextRelationshipFilter
+                                                {
+                                                    EntityMember = "RegionId",
+                                                    FilterValueGenerator = v => ((Region) v).Id,
+                                                    RelatedContextType = typeof (Region)
+                                                }
+                                        }, true);
+
+        }
+
+        #endregion
 
         #region Logic
 
