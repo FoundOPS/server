@@ -2125,6 +2125,9 @@ GO
 
 GO
 
+IF OBJECT_ID(N'[dbo].[DeleteBasicPartyBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].DeleteBasicPartyBasedOnId
+GO
 --This procedure deletes a Business Account
 CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 		(@providerId uniqueidentifier)
@@ -2158,7 +2161,9 @@ GO
 
 USE Core
 GO
-
+IF OBJECT_ID(N'[dbo].[DeleteBusinessAccountBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].DeleteBusinessAccountBasedOnId
+GO
 --This procedure deletes a Business Account
 CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		(@providerId uniqueidentifier)
@@ -2213,6 +2218,9 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 
 GO
 
+IF OBJECT_ID(N'[dbo].[DeleteClientBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].DeleteClientBasedOnId
+GO
 --This procedure deletes a Business Account
 CREATE PROCEDURE dbo.DeleteClientBasedOnId
 		(@clientId uniqueidentifier)
@@ -2245,6 +2253,9 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 
 GO
 
+IF OBJECT_ID(N'[dbo].[DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
+GO
 CREATE PROCEDURE dbo.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
 		(@parentTemplateId uniqueidentifier)
 	AS
@@ -2320,6 +2331,9 @@ CREATE PROCEDURE dbo.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
 
 GO
 
+IF OBJECT_ID(N'[dbo].[DeleteServiceTemplatesAndChildrenBasedOnContextId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].[DeleteServiceTemplatesAndChildrenBasedOnContextId]
+GO
 --This procedure deletes all service templates and child service templates
 CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId
 		(@serviceProviderId uniqueidentifier,
@@ -2418,6 +2432,9 @@ CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId
 GO
 
 --This procedure deletes a User Account
+IF OBJECT_ID(N'[dbo].[DeleteUserAccountBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].[DeleteUserAccountBasedOnId]
+GO
 CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 		(@providerId uniqueidentifier)
 
@@ -2968,6 +2985,9 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF OBJECT_ID(N'[dbo].[GetServicesForToday]', N'FN') IS NOT NULL
+DROP FUNCTION [dbo].[GetServicesForToday]
+GO
 /****************************************************************************************************************************************************
 * FUNCTION GetServicesForToday will take the context provided and find all the services that are scheduled for that day
 ** Input Parameters **
@@ -3129,7 +3149,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 USE Core;
 GO
-
+IF OBJECT_ID(N'[dbo].[GetServicesBasedOnProvider]', N'FN') IS NOT NULL
+DROP FUNCTION [dbo].[GetServicesBasedOnProvider]
+GO
    /****************************************************************************************************************************************************
 	* FUNCTION GetServicesBasedOnProvider will take the context provided and find all the service dates
 	* for RecurringServices and existing Services with that context. The function will return past, future or both past and future Services.
@@ -3151,7 +3173,7 @@ GO
 	* {B30A43AD-655A-449C-BD4E-951F8F988718} |                                        | 1/1/2012 <-- Existing service
 	* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | {FC222C74-EFEA-4B45-93FB-B042E6D6DB0D} | 1/2/2012 <-- Existing service with a RecurringService parent **
 	***************************************************************************************************************************************************/
-    ALTER FUNCTION [dbo].[GetServicesBasedOnProvider]
+    CREATE FUNCTION [dbo].[GetServicesBasedOnProvider]
     (@serviceProviderIdContext uniqueidentifier,
     @clientIdContext uniqueidentifier,
     @recurringServiceIdContext uniqueidentifier,
