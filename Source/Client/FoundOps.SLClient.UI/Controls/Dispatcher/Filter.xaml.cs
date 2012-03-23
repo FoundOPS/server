@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
@@ -18,57 +20,33 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             InitializeComponent();
         }
 
-        private RoutesVM RoutesVM
-        {
-            get { return (RoutesVM) this.DataContext; }
-        }
 
         //Manually handle RouteType checked
         private void RouteTypeCheckBoxChecked(object sender, RoutedEventArgs e)
         {
-            var routeTypeToAdd = (string)((CheckBox)sender).DataContext;
-
-            if (routeTypeToAdd == null)
-                return;
-            
-            if (!RoutesVM.SelectedRouteTypes.Any(c => c == routeTypeToAdd))
-                RoutesVM.SelectedRouteTypes.Add(routeTypeToAdd);
+            var serviceTemplate = ((ServiceTemplate) ((Telerik.Windows.Controls.HeaderedItemsControl)(((Telerik.Windows.RadRoutedEventArgs)(e)).OriginalSource)).Header);
+            VM.DispatcherFilter.SelectedRouteTypes.Add(serviceTemplate.Name);
         }
 
         //Manually handle RouteType unchecked
         private void RouteTypeCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
-            var routeTypeToRemove = (string)((CheckBox)sender).DataContext;
-
-            if (routeTypeToRemove == null)
-                return;
-
-            if (this.RoutesVM.SelectedRouteTypes.Any(c => c == routeTypeToRemove))
-                RoutesVM.SelectedRouteTypes.Remove(routeTypeToRemove);
+            var serviceTemplate = ((ServiceTemplate)((Telerik.Windows.Controls.HeaderedItemsControl)(((Telerik.Windows.RadRoutedEventArgs)(e)).OriginalSource)).Header);
+            VM.DispatcherFilter.SelectedRouteTypes.Remove(serviceTemplate.Name);
         }
 
         //Manually handle Region checked
         private void RegionsCheckBoxChecked(object sender, RoutedEventArgs e)
         {
-            var regionToAdd = (string)((CheckBox)sender).DataContext;
-
-            if (regionToAdd == null)
-                return;
-
-            if (!RoutesVM.SelectedRegions.Any(c => c == regionToAdd))
-                RoutesVM.SelectedRegions.Add(regionToAdd);
+            var region = ((Region)((Telerik.Windows.Controls.HeaderedItemsControl)(((Telerik.Windows.RadRoutedEventArgs)(e)).OriginalSource)).Header);
+            VM.DispatcherFilter.SelectedRegions.Remove(region.Name);
         }
 
         //Manually handle Region unchecked
         private void RegionsCheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
-            var regionToRemove = (string)((CheckBox)sender).DataContext;
-
-            if (regionToRemove == null)
-                return;
-
-            if (this.RoutesVM.SelectedRegions.Any(c => c == regionToRemove))
-                RoutesVM.SelectedRegions.Remove(regionToRemove);
+            var region = ((Region)((Telerik.Windows.Controls.HeaderedItemsControl)(((Telerik.Windows.RadRoutedEventArgs)(e)).OriginalSource)).Header);
+            VM.DispatcherFilter.SelectedRegions.Remove(region.Name);
         }
     }
 }
