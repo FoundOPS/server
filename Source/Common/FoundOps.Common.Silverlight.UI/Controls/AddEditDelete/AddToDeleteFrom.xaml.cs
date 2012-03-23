@@ -66,12 +66,6 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         Func<string, T> CreateNewItem { get; }
 
         /// <summary>
-        /// An optional comparer of source and destination items. 
-        /// It will affect which existing items show up as available options.
-        /// </summary>
-        IEqualityComparer<object> CustomComparer { get; }
-
-        /// <summary>
         /// The member path to be used for searching and displaying existing items.
         /// </summary>
         string MemberPath { get; }

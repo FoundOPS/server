@@ -23,8 +23,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public Func<string, ServiceTemplate> CreateNewItem { get; private set; }
 
-        public IEqualityComparer<object> CustomComparer { get; set; }
-
         public string MemberPath { get; private set; }
 
         /// <summary>
@@ -79,33 +77,17 @@ namespace FoundOps.SLClient.UI.ViewModels
                                     return newServiceTemplate;
                                 };
 
-            //TODO Make the comparer gets used by the SearchSuggestionsHelper
-            CustomComparer = new ServiceTemplateIsAncestorOrDescendent();
-
             ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
-                                            {
-                                                //Filter the suggestions based on the current BusinessAccount context
-                                                var businessAccountContext =
-                                                    ContextManager.GetContext<BusinessAccount>();
+            {
+                //If there is no service provider context return nothing
+                var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
+                if (businessAccountContext == null || businessAccountContext.Id == BusinessAccountsConstants.FoundOpsId)
+                    return;
 
-                                                //If there is no context return nothing
-                                                if (businessAccountContext == null) return;
-
-                                                //You will only add new service templates to FoundOPS. This methods is used for adding existing service templates.
-                                                //So if the current account is FoundOPS return nothing.
-                                                if (businessAccountContext.Id == BusinessAccountsConstants.FoundOpsId)
-                                                    return;
-
-                                                //Search the FoundOPS ServiceTemplates
-                                                SearchSuggestionsHelper(autoCompleteBox, () =>
-                                                                                         Manager.Data.Context.
-                                                                                             SearchServiceTemplatesForServiceProviderQuery
-                                                                                             (Manager.Context.RoleId,
-                                                                                              searchText,
-                                                                                              (int)
-                                                                                              ServiceTemplateLevel.
-                                                                                                  FoundOpsDefined));
-                                            };
+                //Search the FoundOPS ServiceTemplates
+                SearchSuggestionsHelper(autoCompleteBox, () =>
+                     Manager.Data.Context.SearchServiceTemplatesForServiceProviderQuery(Manager.Context.RoleId, businessAccountContext.Id, searchText));
+            };
 
             #endregion
         }

@@ -4,7 +4,6 @@ using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
 
@@ -17,9 +16,6 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class VehiclesVM : InfiniteAccordionVM<Vehicle>, IAddToDeleteFromSource<Vehicle>
     {
         #region Implementation of IAddToDeleteFromSource
-
-        //Want to use the default comparer. So this does not need to be set.
-        public IEqualityComparer<object> CustomComparer { get; set; }
 
         public string MemberPath { get { return "VehicleId"; } }
 

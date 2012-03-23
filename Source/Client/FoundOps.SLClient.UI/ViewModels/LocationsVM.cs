@@ -73,9 +73,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public Func<string, Location> CreateNewItem { get; private set; }
 
-        //There is none required
-        public IEqualityComparer<object> CustomComparer { get; set; }
-
         public string MemberPath { get; private set; }
 
         /// <summary>

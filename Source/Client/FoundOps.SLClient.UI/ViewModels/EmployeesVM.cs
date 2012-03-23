@@ -23,9 +23,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Implementation of IAddToDeleteFromSource
 
-        //Want to use the default comparer. So this does not need to be set.
-        public IEqualityComparer<object> CustomComparer { get; set; }
-
         public string MemberPath { get { return "DisplayName"; } }
 
         /// <summary>

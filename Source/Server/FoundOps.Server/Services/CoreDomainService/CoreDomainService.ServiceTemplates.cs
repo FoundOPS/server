@@ -168,19 +168,26 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
-        /// Searches the ServiceTemplates the current role has access to by the searchText.
+        /// Searches the FoundOPS ServiceTemplates the current role's ServiceProvider does not have yet.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
+        /// <param name="serviceProviderId">The service provider you are searching templates for.</param>
         /// <param name="searchText">The search text.</param>
-        /// <param name="serviceTemplateLevel">(Optional/recommended) The service template level to filter by.</param>
-        public IQueryable<ServiceTemplate> SearchServiceTemplatesForServiceProvider(Guid roleId, string searchText, int? serviceTemplateLevel)
+        public IQueryable<ServiceTemplate> SearchServiceTemplatesForServiceProvider(Guid roleId, Guid serviceProviderId, string searchText)
         {
-            var serviceTemplates = GetServiceTemplatesForServiceProvider(roleId, serviceTemplateLevel);
+            var foundOpsServiceTemplates = GetServiceTemplatesForServiceProvider(roleId, (int)ServiceTemplateLevel.FoundOpsDefined);
 
             if (!String.IsNullOrEmpty(searchText))
-                serviceTemplates = serviceTemplates.Where(st => st.Name.StartsWith(searchText));
+                foundOpsServiceTemplates = foundOpsServiceTemplates.Where(st => st.Name.StartsWith(searchText));
 
-            return serviceTemplates.OrderBy(st => st.Name);
+            var existingChildren = GetServiceTemplatesForServiceProvider(roleId, (int)ServiceTemplateLevel.ServiceProviderDefined)
+                .Where(sp => sp.OwnerServiceProviderId == serviceProviderId);
+
+            //Remove existing children service templates
+            foundOpsServiceTemplates = foundOpsServiceTemplates.Where(foundOpsTemplate =>
+                !existingChildren.Any(ec => ec.OwnerServiceTemplateId == foundOpsTemplate.Id));
+
+            return foundOpsServiceTemplates.OrderBy(st => st.Name);
         }
 
         /// <summary>
