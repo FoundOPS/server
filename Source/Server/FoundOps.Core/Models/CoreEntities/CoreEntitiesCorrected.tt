@@ -6,6 +6,7 @@
 <#@ import namespace="System.Collections.Generic" #> 
 <#@ output extension=".edmx.sql" #>
 <#@ template language="C#" #>
+<# var files = Directory.GetFiles(Host.ResolvePath("SQL"), "*.sql"); #>
 <#
     string absolutePath = Host.ResolvePath("CoreEntities.edmx.sql");
     string contents = File.ReadAllText(absolutePath);
@@ -401,9 +402,40 @@ ADD CONSTRAINT [FK_ClientLocation]
         ([Id])
     ON DELETE SET NULL ON UPDATE NO ACTION;");
 	
+	oldTextArray.Add(@"IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[PartiesWithName]', 'U') IS NOT NULL
+    DROP TABLE [CoreEntitiesStoreContainer].[PartiesWithName];");
+
+	newTextArray.Add(@"");
+
+	oldTextArray.Add(@"-- Creating table 'PartiesWithNames'
+CREATE TABLE [dbo].[PartiesWithNames] (
+    [Id] uniqueidentifier  NOT NULL,
+    [ChildName] nvarchar(max)  NULL
+);
+GO
+");
+
+	newTextArray.Add(@"");
+
+	oldTextArray.Add(@"-- Creating primary key on [Id] in table 'PartiesWithNames'
+ALTER TABLE [dbo].[PartiesWithNames]
+ADD CONSTRAINT [PK_PartiesWithNames]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO");
+
+	newTextArray.Add(@"");
+
 	contents = ReplaceTextBlock(contents, oldTextArray, newTextArray);
-	//var newContent = contents.Replace(oldText, newText);
 	
+
+	//Adds all sql files in the SQL folder to the end of the edmx.sql file so they will get added to the database on a CCDAPDD
+	foreach (string filename in files)
+	{
+		string fileContents = File.ReadAllText(filename);
+	
+		contents = contents + "\r\n\r\n" + "GO\r\n\r\n" + fileContents;
+	}
+
     this.Write(contents);	
 #>
 	<#+

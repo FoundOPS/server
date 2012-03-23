@@ -1,39 +1,4 @@
-4. Create PartiesWithName view
-
-Delete
-IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[PartiesWithName]', 'U') IS NOT NULL
-    DROP TABLE [CoreEntitiesStoreContainer].[PartiesWithName];
-GO
-
-and Delete
--- Creating table 'PartiesWithNames'
-CREATE TABLE [dbo].[PartiesWithNames] (
-    [Id] uniqueidentifier  NOT NULL,
-    [ChildName] nvarchar(max)  NULL
-);
-GO
-
-and Delete
--- Creating primary key on [Id] in table 'PartiesWithNames'
-ALTER TABLE [dbo].[PartiesWithNames]
-ADD CONSTRAINT [PK_PartiesWithNames]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
-and Add
-CREATE VIEW [dbo].[PartiesWithName]
-AS
-SELECT        dbo.Parties.Id, ISNULL(dbo.Parties_Person.LastName, '') + ' ' +  ISNULL(dbo.Parties_Person.FirstName, '') +' ' +  ISNULL(dbo.Parties_Person.MiddleInitial, '')  AS 'ChildName'
-FROM            dbo.Parties INNER JOIN
-                         dbo.Parties_Person ON dbo.Parties.Id = dbo.Parties_Person.Id
-UNION
-SELECT        dbo.Parties.Id, dbo.Parties_Business.Name AS 'ChildName'
-FROM            dbo.Parties INNER JOIN
-                         dbo.Parties_Business ON dbo.Parties.Id = dbo.Parties_Business.Id
-
-GO
-
-5. After generating database from model need to fix the PartiesWithNames view in the CoreEntities.edmx
+1. After generating database from model need to fix the PartiesWithNames view in the CoreEntities.edmx
 
 Replace
     <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />

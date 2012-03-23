@@ -212,17 +212,18 @@
     <Content Include="Models\CoreEntities\SQL\DeleteClientBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId.sql" />
-    <Content Include="Models\CoreEntities\SQL\DeleteFields.sql" />
+    <Content Include="Models\CoreEntities\Extensions\SQL Tests\DeleteFields.sql" />
     <Content Include="Models\CoreEntities\SQL\GetNextOccurence.sql" />
     <Content Include="Models\CoreEntities\SQL\GetPreviousOccurance.sql" />
     <Content Include="Models\CoreEntities\SQL\GetServiceForToday.sql" />
     <Content Include="Models\CoreEntities\SQL\ManualDatabaseChanges.txt" />
-    <Content Include="Models\CoreEntities\SQL\TestFunctionForRecurringServices.sql" />
-    <Content Include="Models\CoreEntities\SQL\SchedulerTests.sql" />
+    <Content Include="Models\CoreEntities\Extensions\SQL Tests\TestFunctionForRecurringServices.sql" />
+    <Content Include="Models\CoreEntities\Extensions\SQL Tests\SchedulerTests.sql" />
+    <Content Include="Models\CoreEntities\SQL\PartiesWithName.sql" />
     <Content Include="Models\CoreEntities\SQL\SchedulerSubFunctions.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteUserAccountBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\GetServicesFunction.sql" />
-    <Content Include="Models\CoreEntities\SQL\UserAccountBasedOnId.sql" />
+    <Content Include="Models\CoreEntities\SQL\ServiceTemplatesWithVendorId.sql" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\CoreEntities\CoreEntities.edmx">

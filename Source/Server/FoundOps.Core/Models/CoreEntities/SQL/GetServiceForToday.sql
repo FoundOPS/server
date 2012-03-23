@@ -2,6 +2,9 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF OBJECT_ID(N'[dbo].[GetServicesForToday]', N'FN') IS NOT NULL
+DROP FUNCTION [dbo].[GetServicesForToday]
+GO
 /****************************************************************************************************************************************************
 * FUNCTION GetServicesForToday will take the context provided and find all the services that are scheduled for that day
 ** Input Parameters **

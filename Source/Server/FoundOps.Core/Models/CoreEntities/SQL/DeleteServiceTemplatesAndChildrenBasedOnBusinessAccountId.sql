@@ -1,4 +1,7 @@
-﻿--This procedure deletes all service templates and child service templates
+﻿IF OBJECT_ID(N'[dbo].[DeleteServiceTemplatesAndChildrenBasedOnContextId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].[DeleteServiceTemplatesAndChildrenBasedOnContextId]
+GO
+--This procedure deletes all service templates and child service templates
 CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId
 		(@serviceProviderId uniqueidentifier,
 		@ownerClientId uniqueidentifier)

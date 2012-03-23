@@ -30,6 +30,10 @@ namespace FoundOps.Server.Controllers
         [AddTestUsersThenAuthorize]
         public ActionResult Silverlight()
         {
+#if DEBUG
+            var random = new Random();
+            var version = random.Next(10000).ToString();
+#else
             var request = (HttpWebRequest)WebRequest.Create("http://fstore.blob.core.windows.net/xaps/version.txt");
 
             // *** Retrieve request info headers
@@ -39,6 +43,7 @@ namespace FoundOps.Server.Controllers
             var version = stream.ReadToEnd();
             response.Close();
             stream.Close();
+#endif
 
             //Must cast the string as an object so it uses the correct overloaded method
             return View((object)version);
