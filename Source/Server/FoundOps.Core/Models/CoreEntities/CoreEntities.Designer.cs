@@ -641,6 +641,22 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
         private ObjectSet<PartyWithName> _PartiesWithNames;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ServiceTemplateWithVendorId> ServiceTemplateWithVendorIds
+        {
+            get
+            {
+                if ((_ServiceTemplateWithVendorIds == null))
+                {
+                    _ServiceTemplateWithVendorIds = base.CreateObjectSet<ServiceTemplateWithVendorId>("ServiceTemplateWithVendorIds");
+                }
+                return _ServiceTemplateWithVendorIds;
+            }
+        }
+        private ObjectSet<ServiceTemplateWithVendorId> _ServiceTemplateWithVendorIds;
 
         #endregion
 
@@ -900,6 +916,14 @@ namespace FoundOps.Core.Models.CoreEntities
         public void AddToPartiesWithNames(PartyWithName partyWithName)
         {
             base.AddObject("PartiesWithNames", partyWithName);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ServiceTemplateWithVendorIds EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToServiceTemplateWithVendorIds(ServiceTemplateWithVendorId serviceTemplateWithVendorId)
+        {
+            base.AddObject("ServiceTemplateWithVendorIds", serviceTemplateWithVendorId);
         }
 
         #endregion
@@ -10123,6 +10147,92 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="ServiceTemplateWithVendorId")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ServiceTemplateWithVendorId : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ServiceTemplateWithVendorId object.
+        /// </summary>
+        /// <param name="serviceTemplateId">Initial value of the ServiceTemplateId property.</param>
+        /// <param name="vendorId">Initial value of the VendorId property.</param>
+        public static ServiceTemplateWithVendorId CreateServiceTemplateWithVendorId(global::System.Guid serviceTemplateId, global::System.Guid vendorId)
+        {
+            ServiceTemplateWithVendorId serviceTemplateWithVendorId = new ServiceTemplateWithVendorId();
+            serviceTemplateWithVendorId.ServiceTemplateId = serviceTemplateId;
+            serviceTemplateWithVendorId.VendorId = vendorId;
+            return serviceTemplateWithVendorId;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ServiceTemplateId
+        {
+            get
+            {
+                return _ServiceTemplateId;
+            }
+            set
+            {
+                if (_ServiceTemplateId != value)
+                {
+                    OnServiceTemplateIdChanging(value);
+                    ReportPropertyChanging("ServiceTemplateId");
+                    _ServiceTemplateId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ServiceTemplateId");
+                    OnServiceTemplateIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _ServiceTemplateId;
+        partial void OnServiceTemplateIdChanging(global::System.Guid value);
+        partial void OnServiceTemplateIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid VendorId
+        {
+            get
+            {
+                return _VendorId;
+            }
+            set
+            {
+                if (_VendorId != value)
+                {
+                    OnVendorIdChanging(value);
+                    ReportPropertyChanging("VendorId");
+                    _VendorId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("VendorId");
+                    OnVendorIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _VendorId;
+        partial void OnVendorIdChanging(global::System.Guid value);
+        partial void OnVendorIdChanged();
+
+        #endregion
+
+    
     }
     
     /// <summary>

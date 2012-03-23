@@ -402,8 +402,11 @@ ADD CONSTRAINT [FK_ClientLocation]
         ([Id])
     ON DELETE SET NULL ON UPDATE NO ACTION;");
 	
+	//26. Remove generated PartiesWithName table (it is created as a View)
+
 	oldTextArray.Add(@"IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[PartiesWithName]', 'U') IS NOT NULL
-    DROP TABLE [CoreEntitiesStoreContainer].[PartiesWithName];");
+    DROP TABLE [CoreEntitiesStoreContainer].[PartiesWithName];
+GO");
 
 	newTextArray.Add(@"");
 
@@ -412,8 +415,7 @@ CREATE TABLE [dbo].[PartiesWithNames] (
     [Id] uniqueidentifier  NOT NULL,
     [ChildName] nvarchar(max)  NULL
 );
-GO
-");
+GO");
 
 	newTextArray.Add(@"");
 
@@ -421,6 +423,31 @@ GO
 ALTER TABLE [dbo].[PartiesWithNames]
 ADD CONSTRAINT [PK_PartiesWithNames]
     PRIMARY KEY CLUSTERED ([Id] ASC);
+GO");
+
+	newTextArray.Add(@"");
+
+	//26. Remove generated ServiceTemplatesWithVendorId table (it is created as a View)
+
+	oldTextArray.Add(@"IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId]', 'U') IS NOT NULL
+    DROP TABLE [CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId];
+GO");
+
+	newTextArray.Add(@"");
+
+	oldTextArray.Add(@"-- Creating table 'ServiceTemplateWithVendorIds'
+CREATE TABLE [dbo].[ServiceTemplateWithVendorIds] (
+    [ServiceTemplateId] uniqueidentifier  NOT NULL,
+    [VendorId] uniqueidentifier  NOT NULL
+);
+GO");
+
+	newTextArray.Add(@"");
+
+	oldTextArray.Add(@"-- Creating primary key on [ServiceTemplateId], [VendorId] in table 'ServiceTemplateWithVendorIds'
+ALTER TABLE [dbo].[ServiceTemplateWithVendorIds]
+ADD CONSTRAINT [PK_ServiceTemplateWithVendorIds]
+    PRIMARY KEY CLUSTERED ([ServiceTemplateId], [VendorId] ASC);
 GO");
 
 	newTextArray.Add(@"");

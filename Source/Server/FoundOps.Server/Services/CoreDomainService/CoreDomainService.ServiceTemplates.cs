@@ -143,37 +143,24 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            IQueryable<ServiceTemplate> serviceTemplatesForServiceProvider = this.ObjectContext.ServiceTemplates;
+            IQueryable<ServiceTemplate> serviceTemplatesToReturn = this.ObjectContext.ServiceTemplates;
 
             //Filter by serviceTemplateLevel if it is not null
             if (serviceTemplateLevel != null)
-                serviceTemplatesForServiceProvider = serviceTemplatesForServiceProvider.Where(st => st.LevelInt == serviceTemplateLevel);
+                serviceTemplatesToReturn = serviceTemplatesToReturn.Where(st => st.LevelInt == serviceTemplateLevel);
 
-            //TODO below, using view
-            ////If the current role is FoundOPS, filter by what service templates can be accessed
-            //if (businessForRole.Id != BusinessAccountsConstants.FoundOpsId)
-            //{
-            //    //TODO for optimization/before network. Setup new View, ParentVendorId based off associations below
-            //    //TODO Replace below with serviceTemplatesForServiceProvider.Where(st => st.ParentVendorId == businessForRole.Id );
-            //    serviceTemplatesForServiceProvider =
-            //        from client in this.ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id)
-            //        from recurringService in this.ObjectContext.RecurringServices
-            //        .Where(rs=> this.ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id).Any(c=>rs.ClientId == c.Id))
-            //        from service in this.ObjectContext.Services.Where(sp=>sp.ServiceProviderId == businessForRole.Id)
-            //        from serviceTemplate in serviceTemplatesForServiceProvider
-            //                                       .Where(st =>
-            //                                               //ServiceTemplateLevel = ServiceProviderDefined
-            //                                               st.OwnerServiceProviderId == businessForRole.Id ||
-            //                                               //ServiceTemplateLevel = ClientDefined
-            //                                               st.OwnerClientId == client.Id ||
-            //                                               //ServiceTemplateLevel = RecurringServiceDefined
-            //                                               st.Id == recurringService.Id ||
-            //                                               //ServiceTemplateLevel = ServiceDefined
-            //                                               st.Id == service.Id)
-            //        select serviceTemplate;
-            //}
+            //If the current role is FoundOPS, filter by what service templates can be accessed
+            if (businessForRole.Id != BusinessAccountsConstants.FoundOpsId)
+            {
+                //Filter by the service templates for the service provider (Vendor)
+                serviceTemplatesToReturn = from serviceTemplate in serviceTemplatesToReturn
+                                           join stv in ObjectContext.ServiceTemplateWithVendorIds
+                                               on serviceTemplate.Id equals stv.ServiceTemplateId
+                                           where stv.VendorId == businessForRole.Id
+                                           select serviceTemplate;
+            }
 
-            return serviceTemplatesForServiceProvider.OrderBy(st => st.Name);
+            return serviceTemplatesToReturn.OrderBy(st => st.Name);
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-1. After generating database from model need to fix the PartiesWithNames view in the CoreEntities.edmx
+1. After generating database from model need to fix the PartiesWithName view in the CoreEntities.edmx
 
 Replace
     <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />
@@ -48,3 +48,54 @@ with
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+
+2. After generating database from model need to fix the ServiceTemplatesWithVendorId view in the CoreEntities.edmx
+
+Replace
+    <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.Store.ServiceTemplateWithVendorIds" store:Type="Tables" Schema="dbo" />
+with
+          <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId">
+            <DefiningQuery>SELECT 
+      [ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId], 
+      [ServiceTemplatesWithVendorId].[VendorId] AS [VendorId]
+      FROM [dbo].[ServiceTemplatesWithVendorId] AS [ServiceTemplatesWithVendorId]</DefiningQuery>
+          </EntitySet>
+Replace
+  <EntityType Name="ServiceTemplateWithVendorIds">
+    <Key>
+      <PropertyRef Name="ServiceTemplateId" />
+      <PropertyRef Name="VendorId" />
+    </Key>
+    <Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+with
+        <EntityType Name="ServiceTemplatesWithVendorId">
+          <Key>
+            <PropertyRef Name="ServiceTemplateId" />
+            <PropertyRef Name="VendorId" />
+          </Key>
+          <Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+
+Leave Alone <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.ServiceTemplateWithVendorId" />
+
+Replace
+    <EntitySetMapping Name="ServiceTemplateWithVendorIds">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.ServiceTemplateWithVendorId)">
+        <MappingFragment StoreEntitySet="ServiceTemplateWithVendorIds">
+          <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+with
+          <EntitySetMapping Name="ServiceTemplateWithVendorIds">
+            <EntityTypeMapping TypeName="CoreEntities.ServiceTemplateWithVendorId">
+              <MappingFragment StoreEntitySet="ServiceTemplatesWithVendorId">
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
