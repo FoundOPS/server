@@ -79,6 +79,17 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
+        /// Gets the FieldsVM.
+        /// </summary>
+        public static DispatcherFilterVM DispatcherFilter
+        {
+            get
+            {
+                return (DispatcherFilterVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("DispatcherFilterVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
         /// Gets the ImportDataVM.
         /// </summary>
         public static ImportDataVM ImportData

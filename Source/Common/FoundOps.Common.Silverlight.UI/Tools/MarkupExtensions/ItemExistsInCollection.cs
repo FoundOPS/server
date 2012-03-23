@@ -6,6 +6,9 @@ using System.Collections.Specialized;
 
 namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 {
+    /// <summary>
+    /// This checks if the item exists in the collection.
+    /// </summary>
     public class ItemExistsInCollection : UpdatableMarkupExtension<object>
     {
         #region Item Dependency Property

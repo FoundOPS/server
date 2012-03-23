@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows.Data;
 using System.Globalization;
 using System.Collections.Generic;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.UI.Converters
@@ -23,11 +25,14 @@ namespace FoundOps.SLClient.UI.Converters
         /// <returns></returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var serviceType = values[0] as string;
+            var serviceType = "";
+            var serviceTemplateType = (ServiceTemplate)values[0];
+            if (serviceTemplateType != null)
+                serviceType = serviceTemplateType.Name;
             var selectedRegions = values[1] as IEnumerable<string>;
-            var routesVM = (RoutesVM)values[2];
-            var routesDCV = routesVM.Collection;
-            var selectedRouteTypes = routesVM.SelectedRouteTypes;
+            var dispatcherFilterVM = (DispatcherFilterVM)values[2];
+            var routesDCV = VM.Routes.Collection;
+            var selectedRouteTypes = dispatcherFilterVM.SelectedRouteTypes;
 
             //If the variables have not propogated yet, return nothing
             if (serviceType == null || routesDCV == null || selectedRegions == null)
@@ -40,7 +45,7 @@ namespace FoundOps.SLClient.UI.Converters
             var filteredRoutes = routesDCV.Where(route => route.RouteType == serviceType);
 
             //Apply the Regions filter only if there are unselected Regions
-            if (routesVM.SelectedRegions.Count < routesVM.Regions.Count)
+            if (dispatcherFilterVM.SelectedRegions.Count < dispatcherFilterVM.LoadedServiceProviderRegions.Count)
                 filteredRoutes =
                     filteredRoutes.Where(filteredRoute =>
                         {
