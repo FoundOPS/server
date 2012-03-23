@@ -1,13 +1,12 @@
-using FoundOps.SLClient.UI.Tools;
 using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
@@ -89,7 +88,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         Action<ServiceTemplate> IAddNewExisting<ServiceTemplate>.AddExistingItem { get { return AddExistingItemServiceTemplate; } }
 
         /// <summary>
-        /// An action to remove a ServiceTemplate from the current BusinessAccount.
+        /// NOT POSSIBLE
         /// </summary>
         public Func<ServiceTemplate> RemoveItemServiceTemplate { get; private set; }
         Func<ServiceTemplate> IRemove<ServiceTemplate>.RemoveItem { get { return RemoveItemServiceTemplate; } }
@@ -197,41 +196,31 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Implementation of IAddNewExisting<ServiceTemplate> & IRemoveDelete<ServiceTemplate>
 
-            //TODO Optimization
-            //AddNewItemServiceTemplate = name => VM.ServiceTemplates.CreateNewItem(name);
+            //Used in the FoundOPS admin console to add a new FoundOPS service template
+            AddNewItemServiceTemplate = name => VM.ServiceTemplates.CreateNewItem(name);
 
-            AddExistingItemServiceTemplate = existingItem =>
-            {
-                var serviceTemplateChild = existingItem.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
-                ((BusinessAccount)SelectedEntity).ServiceTemplates.Add(serviceTemplateChild);
-            };
+            //Used in the Service Providers admin console to add an existing (create a child) FoundOPS service template
+            AddExistingItemServiceTemplate = foundOPSServiceTemplate =>
+                VM.ServiceTemplates.CreateChildServiceTemplate(foundOPSServiceTemplate);
 
-            RemoveItemServiceTemplate = () =>
-            {
-                var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
-                if (selectedServiceTemplate != null)
-                    ((BusinessAccount)this.SelectedEntity).ServiceTemplates.Remove(selectedServiceTemplate);
-
-                return selectedServiceTemplate;
-
-                //MessageBox.Show("You cannot remove FoundOPS ServiceTemplates manually yet.");
-                //return null;
-            };
+            RemoveItemServiceTemplate = () => { throw new Exception("Cannot remove service templates. Can only delete them."); };
 
             DeleteItemServiceTemplate = () =>
             {
-                //Add logic to remove a Service template here
-                var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
-                if (selectedServiceTemplate != null)
-                    VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
+                //TODO Call a function on the domain service
+                //Refresh when complete
 
-                return selectedServiceTemplate;
+                //var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
+                //if (selectedServiceTemplate != null)
+                //    VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
 
-                //MessageBox.Show("You cannot delete FoundOPS ServiceTemplates manually yet.");
-                //return null;
+                //return selectedServiceTemplate;
+
+                return null;
             };
 
             #endregion
+
             #region Implementation of IAddNewExisting<UserAccount> & IRemoveDelete<UserAccount>
 
             AddNewItemUserAccount = name =>
@@ -296,7 +285,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         /// <summary>
-        /// Before deleting, make the user verify a string.
+        /// Before deleting make the user verify a string.
         /// </summary>
         /// <param name="checkCompleted">The action to call after checking.</param>
         protected override void CheckDelete(Action<bool> checkCompleted)

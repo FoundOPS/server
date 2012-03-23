@@ -106,6 +106,9 @@ namespace FoundOps.SLClient.Data.ViewModels
             get { return _selectedEntity.Value; }
             set
             {
+                if (_preventNullSelection && value ==null)
+                    return;
+
                 if (_disableSelectedEntity) return;
 
                 _oldValue = SelectedEntity;
@@ -175,13 +178,15 @@ namespace FoundOps.SLClient.Data.ViewModels
         //Locals
 
         private readonly bool _preventChangingSelectionWhenChanges;
+        private readonly bool _preventNullSelection;
 
         /// <summary>
         /// A base class for a type of Entity that has a collection and one selected item.
         /// Contains standard logic for saving, discarding changes, and adding and removing items.
         /// </summary>
         /// <param name="preventChangingSelectionWhenChanges">Whether or not to prevent changing the selected entity when the DomainContext has changes.</param>
-        protected CoreEntityCollectionVM(bool preventChangingSelectionWhenChanges)
+        /// <param name="preventNullSelection">Do not allow the SelectedEntity to become null</param>
+        protected CoreEntityCollectionVM(bool preventChangingSelectionWhenChanges = true, bool preventNullSelection = false)
         {
             //Setup SelectedEntity property
             _selectedEntity = SelectedEntityObservable.ToProperty(this, x => x.SelectedEntity);
@@ -204,6 +209,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             CollectionViewObservable.Cast<ICollectionView>().ToProperty(this, x => x.CollectionView);
 
             _preventChangingSelectionWhenChanges = preventChangingSelectionWhenChanges;
+            _preventNullSelection = preventNullSelection;
 
             #region Register Commands
 

@@ -109,14 +109,13 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock TextWrapping="Wrap" Text="Service Templates" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
-                            <!--TODO Optimization-->
-                            <!--<AddEditDelete:AddToDeleteFrom Grid.Column="1" DeleteMode="DeletePrompt" Label="Service Templates" 
+                            <AddEditDelete:AddToDeleteFrom Grid.Column="1" DeleteMode="DeletePrompt" Label="Service Templates" 
                                                            SourceType="{MarkupExtensions:Static MemberType=CoreEntities1:ServiceTemplate}"
                                                            ItemToRemoveDisplayMember="{Binding SelectedEntity.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name, Source={Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
                                                            AddMode="{Tools1:GetContextObservableValue Converter={StaticResource ServiceTemplateAddModeConverter}, ContextType=CoreEntities1:BusinessAccount}" 
                                                            IsDeleteEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
                                                            Source="{Tools:GetVM Type=CoreEntities:ServiceTemplatesVM}" Destination="{Binding}"
-                                                           DestinationItemsSource="{Binding ServiceTemplatesDestinationItemsSource}" />-->
+                                                           DestinationItemsSource="{Binding ServiceTemplatesDestinationItemsSource}" />
                         </Grid>
                     </toolkit:Expander.Header>
                     <ServiceTemplate1:ServiceTemplatesGrid/>

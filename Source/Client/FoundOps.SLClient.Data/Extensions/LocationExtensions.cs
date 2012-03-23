@@ -16,20 +16,20 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #region Implementation of ILoadDetails
 
-        private bool _detailsLoading;
+        private bool _detailsLoaded;
         /// <summary>
-        /// Gets or sets a value indicating whether [details loading].
+        /// Gets or sets a value indicating whether [details loaded].
         /// </summary>
         /// <value>
         ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
         /// </value>
-        public bool DetailsLoading
+        public bool DetailsLoaded
         {
-            get { return _detailsLoading; }
+            get { return _detailsLoaded; }
             set
             {
-                _detailsLoading = value;
-                this.RaisePropertyChanged("DetailsLoading");
+                _detailsLoaded = value;
+                this.RaisePropertyChanged("DetailsLoaded");
             }
         }
 

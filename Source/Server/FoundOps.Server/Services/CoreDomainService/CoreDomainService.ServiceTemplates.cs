@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Data;
-using System.ServiceModel.DomainServices.Server;
-using FoundOps.Common.NET;
+﻿using FoundOps.Common.NET;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.Server.Authentication;
-using FoundOps.Core.Models.CoreEntities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Data;
 using System.ServiceModel.DomainServices.EntityFramework;
 
 namespace FoundOps.Server.Services.CoreDomainService
@@ -139,6 +137,11 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region ServiceTemplate
 
+        /// <summary>
+        /// Gets the ServiceTemplates the current role has access to.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="serviceTemplateLevel">(Optional/recommended) The service template level to filter by.</param>
         public IQueryable<ServiceTemplate> GetServiceTemplatesForServiceProvider(Guid roleId, int? serviceTemplateLevel)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
@@ -160,7 +163,24 @@ namespace FoundOps.Server.Services.CoreDomainService
                                            select serviceTemplate;
             }
 
+            //TODO? Limit by 1000
             return serviceTemplatesToReturn.OrderBy(st => st.Name);
+        }
+
+        /// <summary>
+        /// Searches the ServiceTemplates the current role has access to by the searchText.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="serviceTemplateLevel">(Optional/recommended) The service template level to filter by.</param>
+        public IQueryable<ServiceTemplate> SearchServiceTemplatesForServiceProvider(Guid roleId, string searchText, int? serviceTemplateLevel)
+        {
+            var serviceTemplates = GetServiceTemplatesForServiceProvider(roleId, serviceTemplateLevel);
+
+            if (!String.IsNullOrEmpty(searchText))
+                serviceTemplates = serviceTemplates.Where(st => st.Name.StartsWith(searchText));
+
+            return serviceTemplates.OrderBy(st => st.Name);
         }
 
         /// <summary>
@@ -193,6 +213,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceTemplate"></param>
         public void DeleteServiceTemplate(ServiceTemplate serviceTemplate)
         {
+            //TODO cannot delete if it has children
             //Stored procedure that will find all the children of this ServiceTemplate
             //Then it will delete all of them
             //Cascades will take care of all associations

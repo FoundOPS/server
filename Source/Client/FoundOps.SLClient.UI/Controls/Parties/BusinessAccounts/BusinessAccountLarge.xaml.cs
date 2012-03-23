@@ -35,7 +35,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts
             if (serviceProvider == null)
                 return AddMode.None;
 
-            return serviceProvider.Id == BusinessAccountsDesignData.FoundOps.Id ? AddMode.Add : AddMode.AddNewExisting;
+            return serviceProvider.Id == BusinessAccountsDesignData.FoundOps.Id ? AddMode.Add : AddMode.AddExisting;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

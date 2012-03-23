@@ -3,11 +3,11 @@
     public interface ILoadDetails
     {
         /// <summary>
-        /// Gets or sets a value indicating whether [details loading].
+        /// Gets or sets a value indicating whether [details are loaded].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
+        ///   <c>true</c> if [details are loaded]; otherwise, <c>false</c>.
         /// </value>
-        bool DetailsLoading { get; set; }
+        bool DetailsLoaded { get; set; }
     }
 }

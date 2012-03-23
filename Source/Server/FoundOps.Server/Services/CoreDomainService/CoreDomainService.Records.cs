@@ -245,8 +245,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <summary>
         /// Gets the Employees the current role has access to.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
+        /// <param name="roleId">The current role id.</param>
         public IQueryable<Employee> GetEmployeesForRole(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);

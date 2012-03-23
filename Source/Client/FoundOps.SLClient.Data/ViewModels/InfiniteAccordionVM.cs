@@ -96,8 +96,9 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         /// <param name="manyRelationships">(Optional) The relationships where this is the * end of a 1 to * relationship. Ex. LocationVM  = { Client, Region }</param>
         /// <param name="preventChangingSelectionWhenChanges">Whether or not to prevent changing the selected entity when the DomainContext has changes.</param>
-        protected InfiniteAccordionVM(IEnumerable<Type> manyRelationships = null, bool preventChangingSelectionWhenChanges = true)
-            : base(preventChangingSelectionWhenChanges)
+        /// <param name="preventNullSelection">Prevents SelectedEntity from being set to null</param>
+        protected InfiniteAccordionVM(IEnumerable<Type> manyRelationships = null, bool preventChangingSelectionWhenChanges = true, bool preventNullSelection = false)
+            : base(preventChangingSelectionWhenChanges, preventNullSelection)
         {
             ManyRelationships = manyRelationships;
 
@@ -276,8 +277,15 @@ namespace FoundOps.SLClient.Data.ViewModels
                 if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
                     detailsLoadOperation.Cancel();
 
-                ((ILoadDetails)selectedEntity).DetailsLoading = true;
-                detailsLoadOperation = Context.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoading = false, null);
+                //Do not try to load details for an entity that does not exist yet.
+                if (selectedEntity.EntityState == EntityState.New)
+                {
+                    ((ILoadDetails)selectedEntity).DetailsLoaded = true;
+                    return;
+                }
+
+                ((ILoadDetails)selectedEntity).DetailsLoaded = false;
+                detailsLoadOperation = Context.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
             });
         }
 

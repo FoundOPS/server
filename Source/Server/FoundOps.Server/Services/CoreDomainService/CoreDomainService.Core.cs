@@ -584,7 +584,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="searchText">The search text.</param>
-        /// <returns></returns>
         public IQueryable<Party> SearchUserAccountsForRole(Guid roleId, string searchText)
         {
             var userAccounts = GetUserAccounts(roleId, Guid.Empty).OfType<UserAccount>();

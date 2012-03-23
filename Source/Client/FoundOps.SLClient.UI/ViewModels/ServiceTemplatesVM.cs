@@ -1,6 +1,7 @@
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
@@ -29,10 +30,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions
-        {
-            get { return null; }
-        }
+        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
 
@@ -45,8 +43,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public ServiceTemplatesVM()
-            : base(null, //<-- TODO when setting up data loading
-                false)
+            : base(new[] { typeof(BusinessAccount), typeof(Client) }, true, true)
         {
             SetupDataLoading();
 
@@ -54,22 +51,61 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             MemberPath = "Name";
 
+            //In the Administrative Console, creating a new FoundOPS template
             CreateNewItem = name =>
-            {
-                NavigateToThis();
-                var newServiceTemplate = CreateNewServiceTemplate(null, name);
-                SelectedEntity = newServiceTemplate;
-                return newServiceTemplate;
-            };
+                                {
+                                    NavigateToThis();
+
+                                    if (string.IsNullOrEmpty(name))
+                                        name = "New Service";
+
+                                    //Find if the BusinessAccount context is FoundOPS
+                                    var serviceProvider = ContextManager.GetContext<BusinessAccount>();
+                                    if (serviceProvider == null ||
+                                        serviceProvider.Id != BusinessAccountsDesignData.FoundOps.Id)
+                                        throw new NotImplementedException(
+                                            "New service templates should inherit from a FoundOPS template.");
+
+                                    var newServiceTemplate = new ServiceTemplate
+                                                                 {
+                                                                     ServiceTemplateLevel =
+                                                                         ServiceTemplateLevel.FoundOpsDefined,
+                                                                     Name = name
+                                                                 };
+                                    serviceProvider.ServiceTemplates.Add(newServiceTemplate);
+
+                                    SelectedEntity = newServiceTemplate;
+
+                                    return newServiceTemplate;
+                                };
 
             //TODO Make the comparer gets used by the SearchSuggestionsHelper
             CustomComparer = new ServiceTemplateIsAncestorOrDescendent();
 
-            //ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
-            //{
-            //    //TODO Add Context
-            //    SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.Context.SearchServiceTemplatesForRole(Manager.Context.RoleId, searchText));
-            //};
+            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
+                                            {
+                                                //Filter the suggestions based on the current BusinessAccount context
+                                                var businessAccountContext =
+                                                    ContextManager.GetContext<BusinessAccount>();
+
+                                                //If there is no context return nothing
+                                                if (businessAccountContext == null) return;
+
+                                                //You will only add new service templates to FoundOPS. This methods is used for adding existing service templates.
+                                                //So if the current account is FoundOPS return nothing.
+                                                if (businessAccountContext.Id == BusinessAccountsConstants.FoundOpsId)
+                                                    return;
+
+                                                //Search the FoundOPS ServiceTemplates
+                                                SearchSuggestionsHelper(autoCompleteBox, () =>
+                                                                                         Manager.Data.Context.
+                                                                                             SearchServiceTemplatesForServiceProviderQuery
+                                                                                             (Manager.Context.RoleId,
+                                                                                              searchText,
+                                                                                              (int)
+                                                                                              ServiceTemplateLevel.
+                                                                                                  FoundOpsDefined));
+                                            };
 
             #endregion
         }
@@ -85,16 +121,19 @@ namespace FoundOps.SLClient.UI.ViewModels
                                             var serviceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined;
 
                                             var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
-                                            if(businessAccountContext!=null && businessAccountContext.Id != BusinessAccountsConstants.FoundOpsId)
+                                            if (businessAccountContext != null &&
+                                                businessAccountContext.Id != BusinessAccountsConstants.FoundOpsId)
                                                 serviceTemplateLevel = ServiceTemplateLevel.ServiceProviderDefined;
 
                                             var clientContext = ContextManager.GetContext<Client>();
                                             if (clientContext != null)
                                                 serviceTemplateLevel = ServiceTemplateLevel.ClientDefined;
 
-                                            return Context.GetServiceTemplatesForServiceProviderQuery(roleId, (int)serviceTemplateLevel);
+                                            return Context.GetServiceTemplatesForServiceProviderQuery(roleId,
+                                                                                                      (int)
+                                                                                                      serviceTemplateLevel);
                                         },
-                                        new[]
+                                    new[]
                                         {
                                             new ContextRelationshipFilter
                                                 {
@@ -102,7 +141,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                                     FilterValueGenerator = v => ((Client) v).Id,
                                                     RelatedContextType = typeof (Client)
                                                 },
-                                                  new ContextRelationshipFilter
+                                            new ContextRelationshipFilter
                                                 {
                                                     EntityMember = "OwnerServiceProviderId",
                                                     FilterValueGenerator = v => ((BusinessAccount) v).Id,
@@ -110,13 +149,14 @@ namespace FoundOps.SLClient.UI.ViewModels
                                                 }
                                         });
 
-            SetupDetailsLoading(selectedEntity => Context.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+            SetupDetailsLoading(
+                selectedEntity =>
+                Context.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
         #endregion
 
         #region Logic
-
 
         public override void DeleteEntity(ServiceTemplate entityToDelete)
         {
@@ -128,67 +168,89 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         protected override ServiceTemplate AddNewEntity(object commandParameter)
         {
-            //Reuse CreateNewServiceTemplate logic
-            return CreateNewServiceTemplate((ServiceTemplate)commandParameter);
-        }
+            var parentServiceTemplate = commandParameter as ServiceTemplate;
 
-        //TODO: If a parent existed before, then was deleted, now being added again: Figure out if you can reconnect children to parent ServiceTemplate 
-        private ServiceTemplate CreateNewServiceTemplate(ServiceTemplate parentServiceTemplate, string name = "New Service")
-        {
-            if (string.IsNullOrEmpty(name))
-                name = "New Service";
+            //Creating a new service template (on the FoundOPS level)
+            if (parentServiceTemplate == null)
+                return CreateNewItem(null);
 
-            //Find if there is a recurring service context
-            var recurringServiceContext = ContextManager.GetContext<RecurringService>();
-
-            //Setup RecurringServiceDefined ServiceTemplate
-            if (recurringServiceContext != null)
-            {
-                var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
-                serviceTemplateChild.Id = recurringServiceContext.Id;
-                recurringServiceContext.ServiceTemplate = serviceTemplateChild;
-
-                ////To raise selectServiceTemplateObservable changed
-                //this.LoadedServiceTemplates.Add(serviceTemplateChild);
-
-                return serviceTemplateChild;
-            }
-
-            //Find if there is a client context
-            var clientContext = ContextManager.GetContext<Client>();
-
-            //Setup ClientDefined ServiceTemplate
-            if (clientContext != null)
-            {
-                var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
-                serviceTemplateChild.OwnerClient = clientContext;
-
-                ////To raise selectServiceTemplateObservable changed
-                //this.LoadedServiceTemplates.Add(serviceTemplateChild);
-
-                return serviceTemplateChild;
-            }
-
-            //(In Administrative Console) Find if there is a BusinessAccount context
-            var serviceProvider = ContextManager.GetContext<BusinessAccount>();
-            if (serviceProvider != null)
-            {
-                if (serviceProvider.Id == BusinessAccountsDesignData.FoundOps.Id)
-                {
-                    //If FoundOPS: create a FoundOPS defined template
-                    var newServiceTemplate = new ServiceTemplate { ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined, Name = name };
-                    serviceProvider.ServiceTemplates.Add(newServiceTemplate);
-
-                    ////To raise selectServiceTemplateObservable changed
-                    //this.LoadedServiceTemplates.Add(newServiceTemplate);
-
-                    return newServiceTemplate;
-                }
-
-                throw new NotImplementedException("New service templates should inherit from a FoundOPS template.");
-            }
+            //Reuse CreateChildServiceTemplate logic
+            CreateChildServiceTemplate((ServiceTemplate)commandParameter,
+                                       newServiceTemplate => SelectedEntity = newServiceTemplate);
 
             return null;
+        }
+
+        /// <summary>
+        /// Creates a child of the ServiceTemplate.
+        /// </summary>
+        /// <param name="parentServiceTemplate">The parentServiceTemplate.</param>
+        /// <param name="callback">An optional callback.</param>
+        /// <param name="name"></param>
+        public void CreateChildServiceTemplate(ServiceTemplate parentServiceTemplate, Action<ServiceTemplate> callback = null, string name = null)
+        {
+            if (parentServiceTemplate == null)
+                throw new Exception("Cannot create a child service template without a parent");
+
+            //When this is completed it will call this method
+            Action<ServiceTemplate> completed = childServiceTemplate =>
+            {
+                NavigateToThis();
+                SelectedEntity = childServiceTemplate;
+                if (callback != null)
+                    callback(childServiceTemplate);
+            };
+
+            //Make sure this is in a proper context to be creating a service template
+
+            //Find if there is a RecurringService, Client, or ServiceProvider context
+            var recurringServiceContext = ContextManager.GetContext<RecurringService>();
+            var clientContext = ContextManager.GetContext<Client>();
+            var serviceProviderContext = ContextManager.GetContext<BusinessAccount>();
+
+            if (recurringServiceContext == null && clientContext == null && serviceProviderContext == null)
+                throw new Exception("Cannot create Service Template outside of a context.");
+
+            //Load the parent's ServiceTemplate's details, then create the child
+            Context.Load(Context.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, parentServiceTemplate.Id),
+            loadOp =>
+            {
+                if (loadOp.HasError)
+                    throw new Exception("Could not create Service Template. Please try again.");
+
+                parentServiceTemplate.DetailsLoaded = true;
+
+                //Setup RecurringServiceDefined ServiceTemplate
+                if (recurringServiceContext != null)
+                {
+                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
+                    serviceTemplateChild.Id = recurringServiceContext.Id;
+                    recurringServiceContext.ServiceTemplate = serviceTemplateChild;
+
+                    completed(serviceTemplateChild);
+                    return;
+                }
+
+                //Setup ClientDefined ServiceTemplate
+                if (clientContext != null)
+                {
+                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
+                    serviceTemplateChild.OwnerClient = clientContext;
+                    completed(serviceTemplateChild);
+                    return;
+                }
+
+                //Setup ServiceProvider ServiceTemplate
+                if (serviceProviderContext != null)
+                {
+                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
+                    serviceTemplateChild.OwnerServiceProvider = serviceProviderContext;
+                    completed(serviceTemplateChild);
+                    return;
+                }
+
+                throw new Exception("Could not create Service Template. Please try again.");
+            }, null);
         }
 
         #endregion

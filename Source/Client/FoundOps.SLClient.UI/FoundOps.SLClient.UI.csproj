@@ -984,6 +984,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\DataSources\FoundOps.Server.Services.CoreDomainService.CoreDomainContext.datasource" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj">
@@ -1004,9 +1005,7 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\DataSources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

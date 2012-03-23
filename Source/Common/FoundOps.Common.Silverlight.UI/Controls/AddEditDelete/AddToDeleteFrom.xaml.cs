@@ -20,6 +20,10 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         Add,
         /// <summary>
+        /// Displays the Add Existing menu
+        /// </summary>
+        AddExisting,
+        /// <summary>
         /// Displays the Add New/Add Existing menu
         /// </summary>
         AddNewExisting
@@ -469,10 +473,9 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
                                                    : Visibility.Visible;
 
             //Set the AddDelete's AddDeleteMode
-            c.AddDelete.AddDeleteMode = addMode != AddMode.AddNewExisting
-                                            ? AddDeleteMode.AddDelete
-                                            : AddDeleteMode.AddCustomTemplateDelete;
-
+            c.AddDelete.AddDeleteMode = addMode == AddMode.AddExisting || addMode == AddMode.AddNewExisting
+                                            ? AddDeleteMode.AddCustomTemplateDelete
+                                            : AddDeleteMode.AddDelete;
         }
 
         #endregion

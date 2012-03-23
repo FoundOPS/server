@@ -34,7 +34,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource EmployeeBrush}" 
-                                  IsEnabled="{Binding DetailsLoading, Converter={StaticResource NotExistsBoolConverter}}">
+                                  IsEnabled="{Binding DetailsLoaded}">
                     <toolkit:Expander.Header>
                         <TextBlock Text="Photo" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource EmployeeBrush}" />
                     </toolkit:Expander.Header>
@@ -91,7 +91,7 @@
                         </Telerik:RadComboBox>-->
                     </Grid>
                 </toolkit:Expander>
-                <ContactInfo:ContactInfoEdit x:Name="contactInfoEdit1" IsEnabled="{Binding DataContext.SelectedEntity.DetailsLoading, ElementName=myEmployeeLarge, Converter={StaticResource NotExistsBoolConverter}}"
+                <ContactInfo:ContactInfoEdit x:Name="contactInfoEdit1" IsEnabled="{Binding DataContext.SelectedEntity.DetailsLoaded, ElementName=myEmployeeLarge}"
                                              ContactInfoVM="{Binding DataContext.SelectedEmployeePersonVM.ContactInfoVM, ElementName=myEmployeeLarge}"/>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource EmployeeBrush}">
                     <toolkit:Expander.Header>
@@ -118,7 +118,7 @@
                 <!--Only visible if role has permission to see clients assigned to them (salesperson) and filter to show their clients-->
                 <Dispatcher:RoutesLogGrid MaxHeight="150"/>
                 <!--Only show for if role has permission to be routes (technician/driver, operations manager) -->
-                <UserAccounts:UserAccountLinkLarge IsEnabled="{Binding DataContext.SelectedEntity.DetailsLoading, ElementName=myEmployeeLarge, Converter={StaticResource NotExistsBoolConverter}}"
+                <UserAccounts:UserAccountLinkLarge IsEnabled="{Binding DataContext.SelectedEntity.DetailsLoaded, ElementName=myEmployeeLarge}"
                                                    SelectedUserAccount="{Binding DataContext.SelectedEntity.LinkedUserAccount, ElementName=myEmployeeLarge, Mode=TwoWay}"/>
             </StackPanel>
         </ScrollViewer>
