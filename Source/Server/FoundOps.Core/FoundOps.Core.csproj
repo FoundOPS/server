@@ -219,9 +219,11 @@
     <Content Include="Models\CoreEntities\SQL\ManualDatabaseChanges.txt" />
     <Content Include="Models\CoreEntities\Extensions\SQL Tests\TestFunctionForRecurringServices.sql" />
     <Content Include="Models\CoreEntities\Extensions\SQL Tests\SchedulerTests.sql" />
+    <Content Include="Models\CoreEntities\SQL\PartiesWithName.sql" />
     <Content Include="Models\CoreEntities\SQL\SchedulerSubFunctions.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteUserAccountBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\GetServicesFunction.sql" />
+    <Content Include="Models\CoreEntities\SQL\ServiceTemplatesWithVendorId.sql" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\CoreEntities\CoreEntities.edmx">
