@@ -73,7 +73,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         string MemberPath { get; }
 
         /// <summary>
-        /// A method to update the ExistingItemsSource with suggestions remotely loaded.
+        /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
         Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; }
     }

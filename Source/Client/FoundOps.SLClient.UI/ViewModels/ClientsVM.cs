@@ -33,7 +33,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public PartyVM SelectedClientOwnedBusinessVM { get { return _selectedClientOwnedBusinessVM.Value; } }
 
         /// <summary>
-        /// A method to update the ExistingItemsSource with suggestions remotely loaded.
+        /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
         public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
@@ -198,8 +198,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 CanAddSubject.OnNext(false);
 
                 //Load the service templates
-                var serviceTemplatesQuery = Context.GetServiceTemplatesForServiceProviderQuery(ContextManager.RoleId)
-                    .Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined);
+                var serviceTemplatesQuery = Context.GetServiceTemplatesForServiceProviderQuery(ContextManager.RoleId, (int)ServiceTemplateLevel.ServiceProviderDefined);
 
                 Context.Load(serviceTemplatesQuery, lo =>
                 {

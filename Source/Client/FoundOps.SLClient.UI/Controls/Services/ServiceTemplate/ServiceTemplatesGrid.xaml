@@ -5,7 +5,7 @@
     mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
     <Grid x:Name="LayoutRoot" Background="White">
         <telerik:RadGridView x:Name="ServiceTemplatesRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True" 
-            RowIndicatorVisibility="Collapsed" ShowColumnHeaders="False" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}">
+            RowIndicatorVisibility="Collapsed" ShowColumnHeaders="False" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
             <telerik:RadGridView.Columns>
                 <telerik:GridViewDataColumn Width="*">
                     <telerik:GridViewDataColumn.CellTemplate>

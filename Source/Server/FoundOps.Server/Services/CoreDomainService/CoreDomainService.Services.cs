@@ -88,7 +88,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #endregion
 
-        #region RecurringService
+        #region RecurringService  //TODO Optimize
 
         public IEnumerable<RecurringService> GetRecurringServicesForServiceProvider(Guid roleId)
         {

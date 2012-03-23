@@ -201,6 +201,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             //Setup CollectionView property, set an initial ObservableCollection (many VMs expect the CollectionView source to be an ObservableCollection)
             _collectionView = CollectionViewObservable.ToProperty(this, x => x.EditableCollectionView, new QueryableCollectionView(new ObservableCollection<TEntity>()));
+            CollectionViewObservable.Cast<ICollectionView>().ToProperty(this, x => x.CollectionView);
 
             _preventChangingSelectionWhenChanges = preventChangingSelectionWhenChanges;
 

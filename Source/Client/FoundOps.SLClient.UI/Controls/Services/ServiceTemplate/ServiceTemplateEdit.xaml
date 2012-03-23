@@ -41,6 +41,6 @@
             </toolkit:Expander.Header>
             <CustomFields1:FieldsDefineGrid/>
         </toolkit:Expander>
-        <Invoices:InvoiceDetails/>
+        <!--<Invoices:InvoiceDetails/>-->
     </StackPanel>
 </UserControl>

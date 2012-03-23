@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using System.Reactive.Linq;
-using System.Collections.Generic;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
+﻿using FoundOps.Common.Silverlight.Services;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Common.Silverlight.Services;
 using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -49,7 +48,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             this.SelectedEntityObservable.Where(se => se != null)
                 .Select(selectedField => !selectedField.Required).Subscribe(CanDeleteSubject);
 
-            //Whenever the ServiceTemplateContext changes
+            //Whenever the ServiceTemplateContext changes or the details are loaded
             //a) update the Fields DCV
             //b) Enable the Destination field option 
             //   if the current ServiceTemplate is a FoundOPS level or ServiceProvider level service template

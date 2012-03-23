@@ -297,6 +297,8 @@ namespace FoundOps.SLClient.Data.ViewModels
                                 {
                                     if (loadOperation.IsCanceled || loadOperation.HasError) return;
 
+                                    //TODO: Filter the Entities by the CustomComparer and the Destination ItemSource
+
                                     autoCompleteBox.ItemsSource = loadOperation.Entities;
                                     autoCompleteBox.PopulateComplete();
                                 }, null);

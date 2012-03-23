@@ -29,7 +29,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public string MemberPath { get { return "DisplayName"; } }
 
         /// <summary>
-        /// A method to update the ExistingItemsSource with suggestions remotely loaded.
+        /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
         public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
