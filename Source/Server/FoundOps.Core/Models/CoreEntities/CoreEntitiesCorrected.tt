@@ -427,17 +427,6 @@ GO");
 
 	contents = ReplaceTextBlock(contents, oldTextArray, newTextArray);
 	
-	contents = contents + "\r\n\r\n" + @"CREATE VIEW [dbo].[PartiesWithName]
-AS
-SELECT        dbo.Parties.Id, ISNULL(dbo.Parties_Person.LastName, '') + ' ' +  ISNULL(dbo.Parties_Person.FirstName, '') +' ' +  ISNULL(dbo.Parties_Person.MiddleInitial, '')  AS 'ChildName'
-FROM            dbo.Parties INNER JOIN
-                         dbo.Parties_Person ON dbo.Parties.Id = dbo.Parties_Person.Id
-UNION
-SELECT        dbo.Parties.Id, dbo.Parties_Business.Name AS 'ChildName'
-FROM            dbo.Parties INNER JOIN
-                         dbo.Parties_Business ON dbo.Parties.Id = dbo.Parties_Business.Id
-
-GO";
 
 	//Adds all sql files in the SQL folder to the end of the edmx.sql file so they will get added to the database on a CCDAPDD
 	foreach (string filename in files)

@@ -2111,18 +2111,6 @@ GO
 -- Script has ended
 -- --------------------------------------------------
 
-CREATE VIEW [dbo].[PartiesWithName]
-AS
-SELECT        dbo.Parties.Id, ISNULL(dbo.Parties_Person.LastName, '') + ' ' +  ISNULL(dbo.Parties_Person.FirstName, '') +' ' +  ISNULL(dbo.Parties_Person.MiddleInitial, '')  AS 'ChildName'
-FROM            dbo.Parties INNER JOIN
-                         dbo.Parties_Person ON dbo.Parties.Id = dbo.Parties_Person.Id
-UNION
-SELECT        dbo.Parties.Id, dbo.Parties_Business.Name AS 'ChildName'
-FROM            dbo.Parties INNER JOIN
-                         dbo.Parties_Business ON dbo.Parties.Id = dbo.Parties_Business.Id
-
-GO
-
 GO
 
 IF OBJECT_ID(N'[dbo].[DeleteBasicPartyBasedOnId]', N'FN') IS NOT NULL
@@ -3590,6 +3578,20 @@ GO
 
 GO
 
+CREATE VIEW [dbo].[PartiesWithName]
+AS
+SELECT        dbo.Parties.Id, ISNULL(dbo.Parties_Person.LastName, '') + ' ' +  ISNULL(dbo.Parties_Person.FirstName, '') +' ' +  ISNULL(dbo.Parties_Person.MiddleInitial, '')  AS 'ChildName'
+FROM            dbo.Parties INNER JOIN
+                         dbo.Parties_Person ON dbo.Parties.Id = dbo.Parties_Person.Id
+UNION
+SELECT        dbo.Parties.Id, dbo.Parties_Business.Name AS 'ChildName'
+FROM            dbo.Parties INNER JOIN
+                         dbo.Parties_Business ON dbo.Parties.Id = dbo.Parties_Business.Id
+
+GO
+
+GO
+
 Create FUNCTION [dbo].[GetFirstDayOfMonth]
     (@Date datetime)       
     returns Datetime       
@@ -3653,4 +3655,26 @@ Create FUNCTION [dbo].[GetNextDayInMonth]
 		if @endAfterTime is not null and @TimeOccur > @endAfterTime
 			return null
 		return @TempDate
-    end	
+    end
+
+GO
+
+CREATE VIEW [dbo].[ServiceTemplatesWithVendorId]
+as
+SELECT ServiceTemplates.Id as 'ServiceTemplateId', Parties_BusinessAccount.Id as 'VendorId'
+FROM ServiceTemplates, Parties_BusinessAccount
+WHERE ServiceTemplates.OwnerServiceProviderId = Parties_BusinessAccount.Id
+UNION ALL
+SELECT ServiceTemplates.Id as 'ServiceTemplateId', Clients.VendorId as 'VendorId'
+FROM ServiceTemplates, Clients
+WHERE Clients.Id = ServiceTemplates.OwnerClientId
+UNION ALL
+SELECT ServiceTemplates.Id as 'ServiceTemplateId', Services.ServiceProviderId as 'VendorId'
+FROM ServiceTemplates, Services
+WHERE ServiceTemplates.Id = Services.Id
+UNION ALL
+SELECT ServiceTemplates.Id as 'ServiceTemplateId', Clients.VendorId as 'VendorId'
+FROM ServiceTemplates, RecurringServices, Clients
+WHERE ServiceTemplates.Id = RecurringServices.Id AND RecurringServices.ClientId = Clients.Id
+
+GO	
