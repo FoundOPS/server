@@ -313,19 +313,6 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Service Templates" Margin="5,3,5,3" FontSize="13" Foreground="White" />
-                                    <!--AddDeleteMode within FoundOPS context: AddDelete, all other serviceproviders: AddItemDelete  -->
-                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
-                                                             AddItemCommand="{Binding AddCommand, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}" 
-                                                             DeleteCommand="{Binding DeleteCommand, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
-                                                             CommandParameter="{Binding SelectedEntity, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}" 
-                                                             ItemsSource="{Binding AdditionalServiceTemplatesForServiceProvider, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
-                                                             AddDeleteMode="{Tools:GetContextObservableValue Converter={StaticResource ServiceTemplatesAddDeleteModeConverter}, ContextType=CoreEntities1:BusinessAccount}">
-                                        <AddEditDelete:AddDelete.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Name}"/>
-                                            </DataTemplate>
-                                        </AddEditDelete:AddDelete.ItemTemplate>
-                                    </AddEditDelete:AddDelete>
                                 </Grid>
                             </Border>
                             <ServiceTemplate1:ServiceTemplatesGrid x:Name="ServiceTemplatesGrid" IsMainGrid="True" Grid.Row="1" />
