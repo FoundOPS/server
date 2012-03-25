@@ -18,9 +18,11 @@ namespace FoundOps.SLClient.Data.Services
     [Export]
     public class ContextManager : ReactiveObject
     {
-        #region Current Account and Role Properties
+        #region Public Properties
 
-        readonly ObservableAsPropertyHelper<Guid> _roleId;
+        #region Role
+
+        ObservableAsPropertyHelper<Guid> _roleId;
         /// <summary>
         /// Gets the current roleId.
         /// </summary>
@@ -41,26 +43,16 @@ namespace FoundOps.SLClient.Data.Services
         /// </summary>
         public IObserver<Guid> RoleIdObserver { get { return _roleIdObserver; } }
 
-        /// <summary>
-        /// An observable Party of the current OwnerAccount
-        /// </summary>
-        public IObservable<Party> OwnerAccountObservable { get; private set; }
+        #endregion
 
-        readonly ObservableAsPropertyHelper<Party> _ownerAccount;
-        /// <summary>
-        /// Gets the current owner account.
-        /// </summary>
-        public Party OwnerAccount
-        {
-            get { return _ownerAccount.Value; }
-        }
+        #region UserAccount
 
         /// <summary>
         /// An observable of the current UserAccount
         /// </summary>
         public IObservable<UserAccount> UserAccountObservable { get; private set; }
 
-        readonly ObservableAsPropertyHelper<UserAccount> _userAccount;
+        ObservableAsPropertyHelper<UserAccount> _userAccount;
         /// <summary>
         /// Gets the current user account.
         /// </summary>
@@ -68,6 +60,35 @@ namespace FoundOps.SLClient.Data.Services
         {
             get { return _userAccount.Value; }
         }
+
+        #endregion
+
+        #region Current Role's OwnerAccount (ServiceProvider)
+
+        /// <summary>
+        /// An observable Party of the current OwnerAccount
+        /// </summary>
+        public IObservable<Party> OwnerAccountObservable { get; private set; }
+
+        ObservableAsPropertyHelper<Party> _ownerAccount;
+        /// <summary>
+        /// Gets the current owner account.
+        /// </summary>
+        public Party OwnerAccount { get { return _ownerAccount.Value; } }
+
+        private readonly Subject<IEnumerable<ServiceTemplate>> _currentServiceTemplatesSubject = new Subject<IEnumerable<ServiceTemplate>>();
+        ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _currentServiceTemplates;
+        /// <summary>
+        /// Contains the current ServiceProvider's ServiceTemplates
+        /// </summary>
+        public IEnumerable<ServiceTemplate> CurrentServiceTemplates { get { return _currentServiceTemplates.Value; } }
+
+        private readonly BehaviorSubject<bool> _serviceTemplatesLoading = new BehaviorSubject<bool>(false);
+        /// <summary>
+        /// Pushes when the ServiceProvider's ServiceTemplates are loading.
+        /// </summary>
+        public IObservable<bool> ServiceTemplatesLoading { get { return _serviceTemplatesLoading.AsObservable(); } }
+
         #endregion
 
         #region Infinite Accordion
@@ -127,54 +148,17 @@ namespace FoundOps.SLClient.Data.Services
 
         #endregion
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextManager"/> class.
         /// </summary>
         [ImportingConstructor]
         public ContextManager()
         {
-            #region Current Account and Role Properties
-
-            //TODO Clear entity sets whenever Roles change
-            ////Whenever a role id changes, clear the Context
-            //((Subject<Guid>)RoleIdObserver).DistinctUntilChanged().Subscribe(_ =>
-            //{
-            //    foreach (var entitySet in Manager.Data.Context.EntityContainer.EntitySets)
-            //    {
-            //        if (entitySet == Manager.Data.Context.Roles || entitySet == Manager.Data.Context.Blocks
-            //            || entitySet == Manager.Data.Context.Parties)
-            //            continue;
-
-            //        //entitySet.Clear();
-            //    }
-
-            //   Clear parties that are not UserAccounts...
-            //    //Manager.Data.Context.DetachEntities()
-            //    //Manager.Data.Context.Parties.OfType<UserAccount>()
-            //});
-
-            //Subcribe _roleIdObservable to the distinct RoleIdObserver changes
-            ((Subject<Guid>)RoleIdObserver).DistinctUntilChanged()
-                .Throttle(TimeSpan.FromSeconds(1)) //Thottle for 1 second to allow controls to unload
-                .Subscribe(_roleIdObservable);
-
-            _roleId = RoleIdObservable.ToProperty(this, x => x.RoleId);
-
-            OwnerAccountObservable = new BehaviorSubject<Party>(null);
-            _ownerAccount = OwnerAccountObservable.ToProperty(this, x => x.OwnerAccount);
-
-            UserAccountObservable = new BehaviorSubject<UserAccount>(null);
-            _userAccount = UserAccountObservable.ToProperty(this, x => x.UserAccount);
-
-            //Load the current user account
-            //Wait 200 milliseconds so MEF can resolve the classes (or else a circular dependency error will be thrown)
-            Observable.Interval(TimeSpan.FromMilliseconds(200)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
-            Manager.Data.GetCurrentUserAccount(userAccount => ((BehaviorSubject<UserAccount>)UserAccountObservable).OnNext(userAccount)));
-
-            //Whenever the RoleId changes load the OwnerAccount
-            RoleIdObservable.Subscribe(roleId => Manager.Data.GetCurrentParty(roleId, account => ((BehaviorSubject<Party>)OwnerAccountObservable).OnNext(account)));
-
-            #endregion
+            SetupCurrentAccountRoleProperties();
 
             #region Infinite Accordion
 
@@ -231,7 +215,76 @@ namespace FoundOps.SLClient.Data.Services
             });
         }
 
-        //Logic
+        private void SetupCurrentAccountRoleProperties()
+        {
+            //Subcribe _roleIdObservable to the distinct RoleIdObserver changes
+            ((Subject<Guid>)RoleIdObserver).DistinctUntilChanged().Subscribe(_roleIdObservable);
+
+            _roleId = RoleIdObservable.ToProperty(this, x => x.RoleId);
+
+            OwnerAccountObservable = new BehaviorSubject<Party>(null);
+            _ownerAccount = OwnerAccountObservable.ToProperty(this, x => x.OwnerAccount);
+
+            UserAccountObservable = new BehaviorSubject<UserAccount>(null);
+            _userAccount = UserAccountObservable.ToProperty(this, x => x.UserAccount);
+
+            //Load the current user account
+            //Wait 200 milliseconds so MEF can resolve the Manager.Data class (or else a circular dependency error will be thrown)
+            Observable.Interval(TimeSpan.FromMilliseconds(200)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
+            Manager.Data.GetCurrentUserAccount(userAccount => ((BehaviorSubject<UserAccount>)UserAccountObservable).OnNext(userAccount)));
+
+            _currentServiceTemplates = _currentServiceTemplatesSubject.ToProperty(this, x => x.CurrentServiceTemplates);
+
+            //Whenever the RoleId changes
+            //a) load the OwnerAccount of the Role (usually a ServiceProvider)
+            //b) load the ServiceProvider's ServiceTemplates
+            RoleIdObservable.Subscribe(roleId =>
+            {
+                //a) load the OwnerAccount of the Role (usually a ServiceProvider)
+                Manager.Data.GetCurrentParty(roleId, account => ((BehaviorSubject<Party>)OwnerAccountObservable).OnNext(account));
+
+                //b) load the ServiceProvider's ServiceTemplates
+                _serviceTemplatesLoading.OnNext(true);
+                var serviceTemplatesQuery = Manager.CoreDomainContext.GetServiceProviderServiceTemplatesQuery(roleId);
+
+                Manager.CoreDomainContext.Load(serviceTemplatesQuery, lo =>
+                {
+                    if (lo.HasError)
+                        throw new Exception("Please reload the page");
+
+                    //The query includes the details
+                    foreach (var st in lo.Entities)
+                        st.DetailsLoaded = true;
+
+                    _currentServiceTemplatesSubject.OnNext(lo.Entities);
+
+                    _serviceTemplatesLoading.OnNext(false);
+                }, null);
+            });
+
+            #region TODO Clear entity sets whenever Roles change
+            ////Whenever a role id changes, clear the Context
+            //((Subject<Guid>)RoleIdObserver).DistinctUntilChanged().Subscribe(_ =>
+            //{
+            //    foreach (var entitySet in Manager.Data.Context.EntityContainer.EntitySets)
+            //    {
+            //        if (entitySet == Manager.Data.Context.Roles || entitySet == Manager.Data.Context.Blocks
+            //            || entitySet == Manager.Data.Context.Parties)
+            //            continue;
+
+            //        //entitySet.Clear();
+            //    }
+
+            //   Clear parties that are not UserAccounts...
+            //    //Manager.Data.Context.DetachEntities()
+            //    //Manager.Data.Context.Parties.OfType<UserAccount>()
+            //});
+            #endregion
+        }
+
+        #endregion
+
+        #region Logic
 
         #region Infinite Accordion
 
@@ -264,6 +317,8 @@ namespace FoundOps.SLClient.Data.Services
             //Only return the Distinct changes
             return clientContextSubject.DistinctUntilChanged().AsObservable();
         }
+
+        #endregion
 
         #endregion
     }

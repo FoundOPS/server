@@ -23,7 +23,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <param name="callback">The callback.</param>
         public void LoadSingle<TEntity>(EntityQuery<TEntity> query, Action<TEntity> callback) where TEntity : Entity
         {
-            Context.Load(query, loadOperation =>
+            DomainContext.Load(query, loadOperation =>
             {
                 if (loadOperation.HasError) return; //TODO Setup error callback
                 callback(loadOperation.Entities.FirstOrDefault());
@@ -38,7 +38,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <param name="callback">The callback.</param>
         public void LoadCollection<TEntity>(EntityQuery<TEntity> query, Action<IEnumerable<TEntity>> callback) where TEntity : Entity
         {
-            Context.Load(query, loadOperation =>
+            DomainContext.Load(query, loadOperation =>
             {
                 if (loadOperation.HasError) return; //TODO Setup error callback
                 callback(loadOperation.Entities);
@@ -56,7 +56,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <param name="getCurrentPartyCallback">The get current party callback.</param>
         public void GetCurrentParty(Guid roleId, Action<Party> getCurrentPartyCallback)
         {
-            LoadSingle(Context.PartyForRoleQuery(roleId), getCurrentPartyCallback);
+            LoadSingle(DomainContext.PartyForRoleQuery(roleId), getCurrentPartyCallback);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <param name="getCurrentUserAccountCallback">The get current user account callback.</param>
         public void GetCurrentUserAccount(Action<UserAccount> getCurrentUserAccountCallback)
         {
-            LoadSingle(Context.CurrentUserAccountQuery(), getCurrentUserAccountCallback);
+            LoadSingle(DomainContext.CurrentUserAccountQuery(), getCurrentUserAccountCallback);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <param name="userState">State of the user.</param>
         public void TryGeocode(string searchText, Action<IEnumerable<GeocoderResult>, object> geocoderResultsCallback, object userState = null)
         {
-            Context.TryGeocode(searchText, callback => geocoderResultsCallback(callback.Value, userState), userState);
+            DomainContext.TryGeocode(searchText, callback => geocoderResultsCallback(callback.Value, userState), userState);
         }
 
         /// <summary>
@@ -85,8 +85,8 @@ namespace FoundOps.SLClient.Data.Services
         /// <param name="getPublicBlocksCallback">The get public blocks callback.</param>
         public void GetPublicBlocks(Action<ObservableCollection<Block>> getPublicBlocksCallback)
         {
-            var query = Context.GetPublicBlocksQuery();
-            Context.Load(query, loadOperation =>
+            var query = DomainContext.GetPublicBlocksQuery();
+            DomainContext.Load(query, loadOperation =>
             {
                 if (!loadOperation.HasError)
                 {

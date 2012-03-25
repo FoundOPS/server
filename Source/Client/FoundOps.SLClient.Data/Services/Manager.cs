@@ -1,4 +1,5 @@
-﻿using MEFedMVVM.ViewModelLocator;
+﻿using FoundOps.Server.Services.CoreDomainService;
+using MEFedMVVM.ViewModelLocator;
 
 namespace FoundOps.SLClient.Data.Services
 {
@@ -30,6 +31,19 @@ namespace FoundOps.SLClient.Data.Services
             {
                 return _dataManager ??
                        (_dataManager = ViewModelRepository.Instance.Resolver.Container.GetExportedValue<DataManager>());
+            }
+        }
+
+        private static CoreDomainContext _coreDomainContext;
+        /// <summary>
+        /// Gets the CoreDomainContext.
+        /// </summary>
+        public static CoreDomainContext CoreDomainContext
+        {
+            get
+            {
+                return _coreDomainContext ??
+                       (_coreDomainContext = ViewModelRepository.Instance.Resolver.Container.GetExportedValue<CoreDomainContext>());
             }
         }
     }

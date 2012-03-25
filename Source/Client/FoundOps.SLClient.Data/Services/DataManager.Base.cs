@@ -43,7 +43,7 @@ namespace FoundOps.SLClient.Data.Services
         /// <summary>
         /// The CoreDomainContext
         /// </summary>
-        public CoreDomainContext Context
+        public CoreDomainContext DomainContext
         {
             get { return _coreDomainContext; }
         }
@@ -128,8 +128,8 @@ namespace FoundOps.SLClient.Data.Services
             //Keep track of domain context changes and domain context is submitting every quarter second (and update this public properties)
             Observable.Interval(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
             {
-                DomainContextHasChanges = this.Context.HasChanges;
-                DomainContextIsSubmitting = this.Context.IsSubmitting;
+                DomainContextHasChanges = this.DomainContext.HasChanges;
+                DomainContextIsSubmitting = this.DomainContext.IsSubmitting;
             });
 
             SetupConsolidatedSubmit();
@@ -145,7 +145,7 @@ namespace FoundOps.SLClient.Data.Services
         {
             foreach (var entity in entitiesToRemove.ToArray())
             {
-                var entitySet = Context.EntityContainer.GetEntitySet(entity.GetType());
+                var entitySet = DomainContext.EntityContainer.GetEntitySet(entity.GetType());
                 var entitySetContainsEntity = entitySet.Cast<object>().Any(e => e == entity);
                 if (entitySetContainsEntity)
                     entitySet.Remove(entity);
@@ -160,7 +160,7 @@ namespace FoundOps.SLClient.Data.Services
         {
             foreach (var entity in entitiesToDetach.ToArray())
             {
-                var entitySet = Context.EntityContainer.GetEntitySet(entity.GetType());
+                var entitySet = DomainContext.EntityContainer.GetEntitySet(entity.GetType());
                 var entitySetContainsEntity = entitySet.Cast<object>().Any(e => e == entity);
                 if (entitySetContainsEntity)
                     entitySet.Detach(entity);

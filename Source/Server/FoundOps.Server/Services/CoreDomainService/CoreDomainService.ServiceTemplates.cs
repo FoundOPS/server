@@ -156,15 +156,41 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole.Id != BusinessAccountsConstants.FoundOpsId)
             {
                 //Filter by the service templates for the service provider (Vendor)
-                serviceTemplatesToReturn = from serviceTemplate in serviceTemplatesToReturn
-                                           join stv in ObjectContext.ServiceTemplateWithVendorIds
-                                               on serviceTemplate.Id equals stv.ServiceTemplateId
-                                           where stv.VendorId == businessForRole.Id
-                                           select serviceTemplate;
+                serviceTemplatesToReturn = (from serviceTemplate in serviceTemplatesToReturn
+                                            join stv in ObjectContext.ServiceTemplateWithVendorIds
+                                                on serviceTemplate.Id equals stv.ServiceTemplateId
+                                            where stv.VendorId == businessForRole.Id
+                                            select serviceTemplate).Distinct();
             }
 
             //TODO? Limit by 1000
             return serviceTemplatesToReturn.OrderBy(st => st.Name);
+        }
+
+        /// <summary>
+        /// Gets the current ServiceProvider's ServiceProvider level ServiceTemplates and details.
+        /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        public IEnumerable<ServiceTemplate> GetServiceProviderServiceTemplates(Guid roleId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            //Filter by the service templates for the service provider (Vendor)
+            var serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
+                                                   join stv in ObjectContext.ServiceTemplateWithVendorIds
+                                                       on serviceTemplate.Id equals stv.ServiceTemplateId
+                                                   where stv.VendorId == businessForRole.Id
+                                                   select serviceTemplate).Distinct();
+
+            //Force load the details
+            var templatesWithDetails=
+                (from serviceTemplate in serviceProviderTemplates
+                from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
+
+            return templatesWithDetails.Select(t=>t.serviceTemplate).OrderBy(st => st.Name);
         }
 
         /// <summary>

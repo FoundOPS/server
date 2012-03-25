@@ -86,7 +86,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 //Search the FoundOPS ServiceTemplates
                 SearchSuggestionsHelper(autoCompleteBox, () =>
-                     Manager.Data.Context.SearchServiceTemplatesForServiceProviderQuery(Manager.Context.RoleId, businessAccountContext.Id, searchText));
+                     Manager.Data.DomainContext.SearchServiceTemplatesForServiceProviderQuery(Manager.Context.RoleId, businessAccountContext.Id, searchText));
             };
 
             #endregion
@@ -100,20 +100,23 @@ namespace FoundOps.SLClient.UI.ViewModels
             SetupContextDataLoading(roleId =>
                                         {
                                             //Only load service templates of the current level
-                                            var serviceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined;
 
-                                            var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
-                                            if (businessAccountContext != null &&
-                                                businessAccountContext.Id != BusinessAccountsConstants.FoundOpsId)
-                                                serviceTemplateLevel = ServiceTemplateLevel.ServiceProviderDefined;
-
+                                            //If there is a client context, load the Client service templates
                                             var clientContext = ContextManager.GetContext<Client>();
                                             if (clientContext != null)
-                                                serviceTemplateLevel = ServiceTemplateLevel.ClientDefined;
+                                                return Context.GetServiceTemplatesForServiceProviderQuery(roleId, (int)ServiceTemplateLevel.ClientDefined);
 
-                                            return Context.GetServiceTemplatesForServiceProviderQuery(roleId,
-                                                                                                      (int)
-                                                                                                      serviceTemplateLevel);
+                                            var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
+                                            //If the current role is not a FoundOPS role do not load anything
+                                            //because the current ServiceProvider's service templates are automatically loaded
+                                            if (businessAccountContext == null || ContextManager.OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
+                                                return null;
+
+                                            var serviceTemplateLevel = businessAccountContext.Id == BusinessAccountsConstants.FoundOpsId
+                                                                           ? (int)ServiceTemplateLevel.FoundOpsDefined
+                                                                           : (int)ServiceTemplateLevel.ServiceProviderDefined;
+
+                                            return Context.GetServiceTemplatesForServiceProviderQuery(roleId, serviceTemplateLevel);
                                         },
                                     new[]
                                         {
@@ -131,9 +134,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                                                 }
                                         });
 
-            SetupDetailsLoading(
-                selectedEntity =>
-                Context.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+            SetupDetailsLoading(selectedEntity =>
+                                Context.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
         #endregion
@@ -157,8 +159,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return CreateNewItem(null);
 
             //Reuse CreateChildServiceTemplate logic
-            CreateChildServiceTemplate((ServiceTemplate)commandParameter,
-                                       newServiceTemplate => SelectedEntity = newServiceTemplate);
+            CreateChildServiceTemplate((ServiceTemplate)commandParameter, newServiceTemplate => SelectedEntity = newServiceTemplate);
 
             return null;
         }
