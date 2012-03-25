@@ -87,9 +87,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 #region load the service templates required for adding new Clients
 
                 //Load the service templates
-                var serviceTemplatesQuery = Manager.Data.Context.GetServiceTemplatesForServiceProviderQuery(Manager.Context.RoleId, (int)ServiceTemplateLevel.ServiceProviderDefined);
+                var serviceTemplatesQuery = Manager.Data.DomainContext.GetServiceTemplatesForServiceProviderQuery(Manager.Context.RoleId, (int)ServiceTemplateLevel.ServiceProviderDefined);
 
-                Manager.Data.Context.Load(serviceTemplatesQuery, lo =>
+                Manager.Data.DomainContext.Load(serviceTemplatesQuery, lo =>
                 {
                     LoadedServiceTemplates = new ObservableCollection<ServiceTemplate>(lo.Entities);
 
@@ -105,9 +105,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             var enteredDispatcher = MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher"));
             enteredDispatcher.ObserveOnDispatcher().Subscribe(_ =>
             {
-                var regionsQuery = Manager.Data.Context.GetRegionsForServiceProviderQuery(Manager.Context.RoleId);
+                var regionsQuery = Manager.Data.DomainContext.GetRegionsForServiceProviderQuery(Manager.Context.RoleId);
 
-                Manager.Data.Context.Load(regionsQuery, lo =>
+                Manager.Data.DomainContext.Load(regionsQuery, lo =>
                 {
                     LoadedRegions = new ObservableCollection<Region>(lo.Entities);
                 }, null);

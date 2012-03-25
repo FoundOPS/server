@@ -79,7 +79,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public ContactInfoVM(ContactInfoType contactInfoType, EntityCollection<ContactInfo> contactInfoSet)
         {
             //Update the ContactInfoDataService whenever the LocationsContactInfoDataService or the PartyContactInfoDataService changes
-            Manager.Data.Context.FromAnyPropertyChanged()
+            Manager.Data.DomainContext.FromAnyPropertyChanged()
                 .Where(pce => pce.PropertyName == "LocationsContactInfoDataService" || pce.PropertyName == "PartyContactInfoDataService")
                 .AsGeneric().AndNow().SubscribeOnDispatcher().Subscribe(_ =>
                 {
@@ -87,10 +87,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                         switch (contactInfoType)
                         {
                             case ContactInfoType.Locations:
-                                ContactInfoDataService = Manager.Data.Context.LocationsContactInfoDataService(Manager.Context.OwnerAccount.Id);
+                                ContactInfoDataService = Manager.Data.DomainContext.LocationsContactInfoDataService(Manager.Context.OwnerAccount.Id);
                                 break;
                             case ContactInfoType.OwnedParties:
-                                ContactInfoDataService = Manager.Data.Context.PartyContactInfoDataService(Manager.Context.OwnerAccount.Id);
+                                ContactInfoDataService = Manager.Data.DomainContext.PartyContactInfoDataService(Manager.Context.OwnerAccount.Id);
                                 break;
                         }
                 });

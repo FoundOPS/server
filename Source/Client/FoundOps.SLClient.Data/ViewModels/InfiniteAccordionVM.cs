@@ -300,7 +300,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
                 _lastSuggestionQuery.Cancel();
 
-            _lastSuggestionQuery = Manager.Data.Context.Load(searchQueryFunction().Take(10),
+            _lastSuggestionQuery = Manager.Data.DomainContext.Load(searchQueryFunction().Take(10),
                                 loadOperation =>
                                 {
                                     if (loadOperation.IsCanceled || loadOperation.HasError) return;

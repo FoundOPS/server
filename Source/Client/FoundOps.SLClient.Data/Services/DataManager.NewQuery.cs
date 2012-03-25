@@ -146,7 +146,7 @@ namespace FoundOps.SLClient.Data.Services
                 {
                     countLoading.OnNext(true);
                     Debug.WriteLine(typeof(TEntity) + " Count filter change");
-                    Context.CountAsync(filteredQuery, contextOrFiltersChanged)
+                    DomainContext.CountAsync(filteredQuery, contextOrFiltersChanged)
                         .ContinueWith(task =>
                         {
                             if (!task.IsCanceled)
@@ -163,7 +163,7 @@ namespace FoundOps.SLClient.Data.Services
                     //Load the first items after a filter change
                     loadingAfterFilterChange.OnNext(true);
 
-                    Context.LoadAsync(filteredQuery.Sort(view.SortDescriptors).Take(view.LoadSize), contextOrFiltersChanged)
+                    DomainContext.LoadAsync(filteredQuery.Sort(view.SortDescriptors).Take(view.LoadSize), contextOrFiltersChanged)
                         .ContinueWith(task =>
                         {
                             if (!task.IsCanceled)
@@ -209,7 +209,7 @@ namespace FoundOps.SLClient.Data.Services
                 loadingVirtualItems.OnNext(true);
 
                 //Cancel whenever the context or filters changed
-                Context.LoadAsync(itemsToLoad, contextOrFiltersChanged)
+                DomainContext.LoadAsync(itemsToLoad, contextOrFiltersChanged)
                     .ContinueWith(task =>
                     {
                         if (!task.IsCanceled)

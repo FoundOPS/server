@@ -47,7 +47,7 @@ namespace FoundOps.SLClient.Data.ViewModels
         {
             get
             {
-                return Manager.Data.Context;
+                return Manager.Data.DomainContext;
             }
         }
 

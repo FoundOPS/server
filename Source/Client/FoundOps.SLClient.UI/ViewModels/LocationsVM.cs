@@ -155,7 +155,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             };
 
             ManuallyUpdateSuggestions = (searchText, autoCompleteBox) => 
-                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.Context.SearchLocationsForRoleQuery(Manager.Context.RoleId, searchText));
+                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchLocationsForRoleQuery(Manager.Context.RoleId, searchText));
 
             #endregion
         }

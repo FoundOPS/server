@@ -1,4 +1,3 @@
-using System.Windows.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
@@ -8,12 +7,12 @@ using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.ServiceModel.DomainServices.Client;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -95,15 +94,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        #region Private Properties and Variables
-
-        /// <summary>
-        /// Contains the current service provider's service templates
-        /// </summary>
-        private IEnumerable<ServiceTemplate> _loadedServiceProviderServiceTemplates;
-
-        #endregion
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientsVM"/> class.
         /// </summary>
@@ -136,7 +126,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
-                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.Context.SearchClientsForRoleQuery(Manager.Context.RoleId, searchText));
+                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchClientsForRoleQuery(Manager.Context.RoleId, searchText));
 
             #region Implementation of IAddToDeleteFromDestination<Location>
 
@@ -189,31 +179,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             SetupTopEntityDataLoading(roleId => Context.GetClientsForRoleQuery(ContextManager.RoleId));
 
-            //Whenever the RoleId updates load the service templates required for adding new Clients
-            ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
-            {
-                #region load the service templates required for adding new Clients
-
-                //Service templates are required for adding. So disable CanAdd until they are loaded.
-                CanAddSubject.OnNext(false);
-
-                //Load the service templates
-                var serviceTemplatesQuery = Context.GetServiceTemplatesForServiceProviderQuery(ContextManager.RoleId, (int)ServiceTemplateLevel.ServiceProviderDefined);
-
-                Context.Load(serviceTemplatesQuery, lo =>
-                {
-                    _loadedServiceProviderServiceTemplates = lo.Entities;
-
-                    //After Service templates are loaded, enable CanAdd.
-                    CanAddSubject.OnNext(true);
-                }, null);
-
-                #endregion
-            });
-
             //Whenever the client changes load the contact info
             SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Subscribe(selectedClient =>
                 Context.Load(Context.GetContactInfoSetQuery().Where(c => c.PartyId == selectedClient.Id)));
+
+            //Service templates are required for adding. So disable CanAdd until they are loaded.
+            ContextManager.ServiceTemplatesLoading.Select(loading => !loading).Subscribe(CanAddSubject);
         }
 
         #region Logic
@@ -248,14 +219,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             };
             newClient.OwnedParty.Locations.Add(defaultLocation);
 
-            this.RaisePropertyChanged("ClientsView");
-
-            var availableServicesForServiceProvider = _loadedServiceProviderServiceTemplates.Where(st =>
-                    st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined &&
-                    st.OwnerServiceProviderId == ContextManager.OwnerAccount.Id).ToArray();
-
             //Add every available service to the client by default
-            foreach (var serviceTemplate in availableServicesForServiceProvider)
+            foreach (var serviceTemplate in ContextManager.CurrentServiceTemplates)
             {
                 var availableServiceTemplate = serviceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
                 newClient.ServiceTemplates.Add(availableServiceTemplate);
@@ -267,10 +232,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 newClient.OwnedParty.OwnedLocations.Add(currentLocation);
         }
 
-        //TODO remove when DBOptimization is merged
         protected override void OnDeleteEntity(Client entityToDelete)
         {
-            //Remove Client's EntityGraphToRemove
+            //TODO remove Client's EntityGraphToRemove when DBOptimization is merged
             var clientEntitiesToRemove = entityToDelete.EntityGraphToRemove;
             DataManager.RemoveEntities(clientEntitiesToRemove);
 

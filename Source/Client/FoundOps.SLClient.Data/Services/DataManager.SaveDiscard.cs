@@ -64,7 +64,7 @@ namespace FoundOps.SLClient.Data.Services
             var dequeuedObservables = _nextSubmitOperationsQueue.ToArray();
             _nextSubmitOperationsQueue.Clear();
 
-            var changes = this.Context.EntityContainer.GetChanges();
+            var changes = this.DomainContext.EntityContainer.GetChanges();
 
             //Cancel changes on generated route tasks
             foreach (var generatedRouteTask in changes.OfType<RouteTask>().Where(rt => rt.GeneratedOnServer))
@@ -89,7 +89,7 @@ namespace FoundOps.SLClient.Data.Services
             }
 
             //Perform a submit operation for the dequeued submit operation observables
-            _currentSubmitOperation = this.Context.SubmitChanges(
+            _currentSubmitOperation = this.DomainContext.SubmitChanges(
                 submitOperationCallback =>
                 {
                     //Log error
@@ -102,7 +102,7 @@ namespace FoundOps.SLClient.Data.Services
                         wc.Headers["Content-type"] = "application/x-www-form-urlencoded";
                         wc.UploadStringAsync(new Uri(errorUrl), parameters);
 
-                        Context.RejectChanges();
+                        DomainContext.RejectChanges();
 
                         //Setup the ErrorWindow prompt
                         var errorWindow = new ErrorWindow();
@@ -155,7 +155,7 @@ namespace FoundOps.SLClient.Data.Services
                 return;
 
             //If there are no changes, call Cancelled
-            var changes = this.Context.EntityContainer.GetChanges();
+            var changes = this.DomainContext.EntityContainer.GetChanges();
             if (!changes.Any())
             {
                 //Dequeue Actions
@@ -212,7 +212,7 @@ namespace FoundOps.SLClient.Data.Services
 
                 //call RejectChanges if any dequeuedAction does not have a customDiscardAction
                 if (dequeuedActions.Any(a => a.Item4 == null))
-                    Context.RejectChanges();
+                    DomainContext.RejectChanges();
 
                 //call each afterDiscard action
                 foreach (var actionTuple in dequeuedActions.Where(actionTuple => actionTuple.Item5 != null))

@@ -219,11 +219,14 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         /// </summary>
         private void UpdateVirtualItemCount()
         {
+            var query = _loadItemsQuery();
+            if (query == null) return;
+
             //Cancel any previous loads when reloading the VirtualItemCount
             _cancelAllLoads.OnNext(true);
 
             //Filter the query with the FilterDescriptors and SortDescriptors
-            var filteredQuery = _loadItemsQuery().Where(this.FilterDescriptors).Sort(this.SortDescriptors);
+            var filteredQuery = query.Where(this.FilterDescriptors).Sort(this.SortDescriptors);
 
             Debug.WriteLine(typeof(TEntity) + " load count");
 
@@ -252,11 +255,14 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         /// <param name="numberOfItemsToLoad">The number of items to load.</param>
         private void LoadItems(int startIndex, int numberOfItemsToLoad)
         {
+            var query = _loadItemsQuery();
+            if (query == null) return;
+
             LoadingVirtualItems = true;
 
             //Filter the query with the FilterDescriptors and SortDescriptors
             //Limit the query based on the startIndex and the numberOfItemsToLoad
-            var filteredLimitedQuery = _loadItemsQuery().Where(this.FilterDescriptors).Sort(this.SortDescriptors)
+            var filteredLimitedQuery = query.Where(this.FilterDescriptors).Sort(this.SortDescriptors)
                 .Skip(startIndex).Take(numberOfItemsToLoad);
 
             Debug.WriteLine(typeof(TEntity) + " virtual load " + startIndex + " to " + (startIndex + numberOfItemsToLoad));
