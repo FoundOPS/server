@@ -1,13 +1,15 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.Filter" x:Name="myFilter"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation"
-             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools"
-             xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300" 
              ViewModelLocator:ViewModelLocator.SharedViewModel="DispatcherFilterVM">
     <UserControl.Resources>
-        <Controls:HierarchicalDataTemplate x:Key="TreeViewItemTemplate">
-            <TextBlock Text="{Binding Name}" />
+        <Controls:ContainerBindingCollection x:Key="BindingsCollection">
+            <Controls:ContainerBinding PropertyName="IsChecked" Binding="{Binding IsSelected, Mode=TwoWay}" />
+        </Controls:ContainerBindingCollection>
+        <Controls:HierarchicalDataTemplate x:Key="TreeViewItemTemplate" Controls:ContainerBinding.ContainerBindings="{StaticResource BindingsCollection}">
+          <TextBlock Text="{Binding ServiceTemplate.Name}" />
         </Controls:HierarchicalDataTemplate>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">
@@ -17,15 +19,11 @@
                     <TextBlock Text="Route Capabilities" Margin="5,3" />
                 </telerik:RadPanelBarItem.Header>
                 <Grid Background="White">
-                <telerik:RadTreeView x:Name="RouteCapabilitiesTreeView" ItemsOptionListType="CheckList" 
-                                     IsOptionElementsEnabled="True" 
-                                     ItemsSource="{Binding LoadedServiceProviderServiceTemplates}" 
-                                     ItemTemplate="{StaticResource TreeViewItemTemplate}"
-                                     Checked="RouteTypeCheckBoxChecked"
-                                     Unchecked="RouteTypeCheckBoxUnchecked"/>
+                <telerik:RadTreeView x:Name="RouteCapabilitiesTreeView" ItemsOptionListType="CheckList" IsOptionElementsEnabled="True"
+                                     ItemsSource="{Binding ServiceTemplateOptions}" ItemTemplate="{StaticResource TreeViewItemTemplate}" />
                 </Grid>
             </telerik:RadPanelBarItem>
-            <telerik:RadPanelBarItem IsExpanded="True">
+            <!--<telerik:RadPanelBarItem IsExpanded="True">
                 <telerik:RadPanelBarItem.Header>
                     <TextBlock Text="Regions" Margin="5,3" />
                 </telerik:RadPanelBarItem.Header>
@@ -37,7 +35,7 @@
                                      Checked="RegionsCheckBoxChecked"
                                      Unchecked="RegionsCheckBoxUnchecked"/>
                 </Grid>
-            </telerik:RadPanelBarItem>
+            </telerik:RadPanelBarItem>-->
         </telerik:RadPanelBar>
     </Grid>
 </UserControl>

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Reactive.Linq;
-using FoundOps.Common.Tools;
-using FoundOps.SLClient.Data.Models;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.ViewModels;
+﻿using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Models;
+using FoundOps.SLClient.Data.ViewModels;
+using System;
+using System.Reactive.Linq;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -25,7 +24,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteManifestVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         public RouteManifestVM()
         {
             //Setup the RouteManifestSettings based on the OwnerAccount

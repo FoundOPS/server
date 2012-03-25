@@ -45,7 +45,7 @@ namespace FoundOps.SLClient.UI.Converters
             var filteredRoutes = routesDCV.Where(route => route.RouteType == serviceType);
 
             //Apply the Regions filter only if there are unselected Regions
-            if (dispatcherFilterVM.SelectedRegions.Count < dispatcherFilterVM.LoadedServiceProviderRegions.Count)
+            if (dispatcherFilterVM.SelectedRegions.Count < dispatcherFilterVM.LoadedRegions.Count)
                 filteredRoutes =
                     filteredRoutes.Where(filteredRoute =>
                         {

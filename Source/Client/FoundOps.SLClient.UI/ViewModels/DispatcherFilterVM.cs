@@ -1,13 +1,14 @@
-﻿using System;
-using FoundOps.Common.Silverlight.MVVM.Messages;
+﻿using FoundOps.Common.Silverlight.MVVM.Messages;
+using FoundOps.Common.Silverlight.MVVM.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Reactive.Linq;
-using ReactiveUI;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -19,33 +20,39 @@ namespace FoundOps.SLClient.UI.ViewModels
     {
         #region Public Properties
 
-        private ObservableCollection<ServiceTemplate> _loadedServiceProviderServiceTemplates;
+        private ObservableCollection<ServiceTemplate> _loadedServiceTemplates;
         /// <summary>
         /// Collection of loaded ServiceTemplates for the ServiceProvider.
         /// </summary>
-        public ObservableCollection<ServiceTemplate> LoadedServiceProviderServiceTemplates
+        public ObservableCollection<ServiceTemplate> LoadedServiceTemplates
         {
-            get { return _loadedServiceProviderServiceTemplates; }
+            get { return _loadedServiceTemplates; }
             private set
             {
-                _loadedServiceProviderServiceTemplates = value;
-                this.RaisePropertyChanged("LoadedServiceProviderServiceTemplates");
+                _loadedServiceTemplates = value;
+                this.RaisePropertyChanged("LoadedServiceTemplates");
             }
         }
 
-        private ObservableCollection<Region> _loadedServiceProviderRegions;
+        private ObservableCollection<Region> _loadedRegions;
         /// <summary>
         /// Collection of loaded Regions for the ServiceProvider.
         /// </summary>
-        public ObservableCollection<Region> LoadedServiceProviderRegions
+        public ObservableCollection<Region> LoadedRegions
         {
-            get { return _loadedServiceProviderRegions; }
+            get { return _loadedRegions; }
             private set
             {
-                _loadedServiceProviderRegions = value;
-                this.RaisePropertyChanged("LoadedServiceProviderRegions");
+                _loadedRegions = value;
+                this.RaisePropertyChanged("LoadedRegions");
             }
         }
+
+        private readonly ObservableCollection<ServiceTemplateOption> _serviceTemplateOptions = new ObservableCollection<ServiceTemplateOption>();
+        /// <summary>
+        /// Collection of loaded Regions for the ServiceProvider.
+        /// </summary>
+        public ObservableCollection<ServiceTemplateOption> ServiceTemplateOptions { get { return _serviceTemplateOptions; } }
 
         private readonly ObservableCollection<string> _selectedRegions = new ObservableCollection<string>();
         /// <summary>
@@ -59,20 +66,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public ObservableCollection<string> SelectedRouteTypes { get { return _selectedRouteTypes; } }
 
-        private readonly ObservableAsPropertyHelper<int> _forceFilterCountUpdate;
-
-        /// <summary>
-        /// Used to force the bindings on the Dispatching filter counts. 
-        /// </summary>
-        public int ForceFilterCountUpdate { get { return _forceFilterCountUpdate.Value; } }
-
-
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientsVM"/> class.
+        /// Initializes a new instance of the <see cref="DispatcherFilterVM"/> class.
         /// </summary>
         [ImportingConstructor]
         public DispatcherFilterVM()
@@ -92,7 +91,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 Manager.Data.Context.Load(serviceTemplatesQuery, lo =>
                 {
-                    LoadedServiceProviderServiceTemplates = new ObservableCollection<ServiceTemplate>(lo.Entities);
+                    LoadedServiceTemplates = new ObservableCollection<ServiceTemplate>(lo.Entities);
+
+                    ServiceTemplateOptions.Clear();
+                    foreach (var serviceTemplate in LoadedServiceTemplates)
+                        ServiceTemplateOptions.Add(new ServiceTemplateOption(serviceTemplate));
                 }, null);
 
                 #endregion
@@ -106,9 +109,52 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 Manager.Data.Context.Load(regionsQuery, lo =>
                 {
-                    LoadedServiceProviderRegions = new ObservableCollection<Region>(lo.Entities);
+                    LoadedRegions = new ObservableCollection<Region>(lo.Entities);
                 }, null);
             });
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// An option to select or not select a ServiceTemplate.
+    /// </summary>
+    public class ServiceTemplateOption : ThreadableNotifiableObject
+    {
+        #region Public Properties
+
+        private readonly ServiceTemplate _serviceTemplate;
+        /// <summary>
+        /// Gets the selected regions of routes to display.
+        /// </summary>
+        public ServiceTemplate ServiceTemplate { get { return _serviceTemplate; } }
+
+        private bool _isSelected = true;
+        /// <summary>
+        /// Whether or not this is selected.
+        /// </summary>
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                this.RaisePropertyChanged("IsSelected");
+            }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceTemplateOption"/> class.
+        /// </summary>
+        /// <param name="serviceTemplate">The service template.</param>
+        public ServiceTemplateOption(ServiceTemplate serviceTemplate)
+        {
+            _serviceTemplate = serviceTemplate;
         }
 
         #endregion
