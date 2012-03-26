@@ -9,7 +9,7 @@
             <Controls:ContainerBinding PropertyName="IsChecked" Binding="{Binding IsSelected, Mode=TwoWay}" />
         </Controls:ContainerBindingCollection>
         <Controls:HierarchicalDataTemplate x:Key="TreeViewItemTemplate" Controls:ContainerBinding.ContainerBindings="{StaticResource BindingsCollection}">
-          <TextBlock Text="{Binding ServiceTemplate.Name}" />
+          <TextBlock Text="{Binding Entity.Name}" />
         </Controls:HierarchicalDataTemplate>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">
@@ -23,19 +23,15 @@
                                      ItemsSource="{Binding ServiceTemplateOptions}" ItemTemplate="{StaticResource TreeViewItemTemplate}" />
                 </Grid>
             </telerik:RadPanelBarItem>
-            <!--<telerik:RadPanelBarItem IsExpanded="True">
+            <telerik:RadPanelBarItem IsExpanded="True">
                 <telerik:RadPanelBarItem.Header>
                     <TextBlock Text="Regions" Margin="5,3" />
                 </telerik:RadPanelBarItem.Header>
                 <Grid Background="White">
-                    <telerik:RadTreeView x:Name="RegionsTreeView" ItemsOptionListType="CheckList" 
-                                     IsOptionElementsEnabled="True" 
-                                     ItemsSource="{Binding LoadedServiceProviderRegions}" 
-                                     ItemTemplate="{StaticResource TreeViewItemTemplate}"
-                                     Checked="RegionsCheckBoxChecked"
-                                     Unchecked="RegionsCheckBoxUnchecked"/>
+                    <telerik:RadTreeView x:Name="RegionsTreeView" ItemsOptionListType="CheckList" IsOptionElementsEnabled="True" 
+                                     ItemsSource="{Binding RegionOptions}" ItemTemplate="{StaticResource TreeViewItemTemplate}"/>
                 </Grid>
-            </telerik:RadPanelBarItem>-->
+            </telerik:RadPanelBarItem>
         </telerik:RadPanelBar>
     </Grid>
 </UserControl>

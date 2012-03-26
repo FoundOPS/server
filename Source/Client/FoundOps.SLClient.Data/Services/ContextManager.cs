@@ -77,6 +77,11 @@ namespace FoundOps.SLClient.Data.Services
         public Party OwnerAccount { get { return _ownerAccount.Value; } }
 
         private readonly Subject<IEnumerable<ServiceTemplate>> _currentServiceTemplatesSubject = new Subject<IEnumerable<ServiceTemplate>>();
+        /// <summary>
+        /// Pushes the current ServiceProvider's ServiceTemplates
+        /// </summary>
+        public IObservable<IEnumerable<ServiceTemplate>> CurrentServiceTemplatesObservable { get { return _currentServiceTemplatesSubject.AsObservable(); } }
+
         ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _currentServiceTemplates;
         /// <summary>
         /// Contains the current ServiceProvider's ServiceTemplates

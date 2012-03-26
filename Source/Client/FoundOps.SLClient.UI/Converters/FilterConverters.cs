@@ -32,31 +32,31 @@ namespace FoundOps.SLClient.UI.Converters
             var selectedRegions = values[1] as IEnumerable<string>;
             var dispatcherFilterVM = (DispatcherFilterVM)values[2];
             var routesDCV = VM.Routes.Collection;
-            var selectedRouteTypes = dispatcherFilterVM.SelectedRouteTypes;
+            //var selectedRouteTypes = dispatcherFilterVM.SelectedRouteTypes;
 
             //If the variables have not propogated yet, return nothing
             if (serviceType == null || routesDCV == null || selectedRegions == null)
                 return "";
 
-            if (!selectedRouteTypes.Contains(serviceType))
-                return String.Format("{0}", serviceType);
+            //if (!selectedRouteTypes.Contains(serviceType))
+            //    return String.Format("{0}", serviceType);
 
             //Filter by ServiceType
             var filteredRoutes = routesDCV.Where(route => route.RouteType == serviceType);
 
-            //Apply the Regions filter only if there are unselected Regions
-            if (dispatcherFilterVM.SelectedRegions.Count < dispatcherFilterVM.LoadedRegions.Count)
-                filteredRoutes =
-                    filteredRoutes.Where(filteredRoute =>
-                        {
-                            //Select the Route's Regions 
-                            var routesRegions =
-                                filteredRoute.RouteDestinations.Where(rd => rd != null && rd.Location != null && rd.Location.Region != null)
-                                    .Select(rd => rd.Location.Region.Name).Distinct().ToArray();
+            ////Apply the Regions filter only if there are unselected Regions
+            //if (dispatcherFilterVM.SelectedRegions.Count < dispatcherFilterVM.LoadedRegions.Count)
+            //    filteredRoutes =
+            //        filteredRoutes.Where(filteredRoute =>
+            //            {
+            //                //Select the Route's Regions 
+            //                var routesRegions =
+            //                    filteredRoute.RouteDestinations.Where(rd => rd != null && rd.Location != null && rd.Location.Region != null)
+            //                        .Select(rd => rd.Location.Region.Name).Distinct().ToArray();
 
-                            //Check if any of the Route's Regions are part of the SelectedRegions
-                            return routesRegions.Any(rr => selectedRegions.Any(sr => sr == rr));
-                        });
+            //                //Check if any of the Route's Regions are part of the SelectedRegions
+            //                return routesRegions.Any(rr => selectedRegions.Any(sr => sr == rr));
+            //            });
 
             int count = filteredRoutes.SelectMany(route => route.RouteDestinations).Sum(destination => destination.RouteTasks.Count(task => task.Name == serviceType));
 
