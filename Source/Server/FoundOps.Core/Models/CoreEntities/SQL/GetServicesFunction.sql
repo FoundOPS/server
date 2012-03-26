@@ -175,7 +175,7 @@ GO
 	--Here we will take the Recurring Services that are in @TempGenServiceTableWithNextOccurrence and find all occurrences in date order until
 	--we get to the number specified by @numberOfOccurrences
 	--We will also do the same thing with @TempGenServiceTableWithPreviousOccurrence except in reverse date order
-
+	
 	DECLARE @minVal date
 	DECLARE @lastDateToLookFor date
 	DECLARE @firstDateToLookFor date
@@ -242,6 +242,7 @@ GO
 		UPDATE	@TempGenServiceTableWithPreviousOccurrence
 		SET		PreviousDate = (SELECT dbo.GetPreviousOccurrence(@NextDay, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
 		FROM	@TempGenServiceTableWithPreviousOccurrence
+		WHERE	PreviousDate = @minVal
 
 		--If any of those Services updated above do not have a previous occurrence, they will be deleted from the table
 		DELETE FROM @TempGenServiceTableWithPreviousOccurrence
@@ -273,8 +274,7 @@ GO
 		BEGIN
 				BREAK
 		END
-	
-		
+
 		--Inserts all Services with the lowest date to @NextRecurringServiceOccurrenceTable
 		INSERT INTO @NextRecurringServiceOccurrenceTable
 		SELECT	Id, NextDate
@@ -285,7 +285,8 @@ GO
 		UPDATE	@TempGenServiceTableWithNextOccurrence
 		SET		NextDate = (SELECT dbo.GetNextOccurence(@NextDay, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
 		FROM	@TempGenServiceTableWithNextOccurrence
-		
+		WHERE	NextDate = @minVal
+
 		--If any of those Services updated above do not have a next occurrence, they will be deleted from the table
 		DELETE FROM @TempGenServiceTableWithNextOccurrence
 		WHERE	NextDate IS NULL
@@ -298,8 +299,6 @@ GO
 	
 	SET		@lastDateToLookFor = (SELECT MAX(OccurDate) FROM @NextRecurringServiceOccurrenceTable)
 	SET		@firstDateToLookFor = (SELECT MIN(OccurDate) FROM @PreviousRecurringServiceOccurrenceTable)
-	
-	
 	-----------------------------------------------------------------------
 	--Here we will add Existing Services to the table of their own
 
