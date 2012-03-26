@@ -1,34 +1,52 @@
-/****** Object:  UserDefinedFunction [dbo].[GetServicesForToday]    Script Date: 3/26/2012 12:48:23 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 USE Core;
 GO
-/****************************************************************************************************************************************************
-* FUNCTION GetServicesForToday will take the context provided and find all the services that are scheduled for that day
-** Input Parameters **
-* @serviceProviderIdContext - The BusinessAccount context
-* @firstDateToLookForServices - The reference date to look for services
-** Output Parameters: **
-* @ServicesTableToReturn - Ex. below
-* RecurringServiceId                     | ServiceId                              | OccurDate
-* -----------------------------------------------------------------------------------------
-* {036BD670-39A5-478F-BFA3-AD312E3F7F47} |                                        | 1/1/2012 <-- Generated service
-* {B30A43AD-655A-449C-BD4E-951F8F988718} |                                        | 1/1/2012 <-- Existing service
-* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | {FC222C74-EFEA-4B45-93FB-B042E6D6DB0D} | 1/2/2012 <-- Existing service with a RecurringService parent **
-***************************************************************************************************************************************************/
-ALTER FUNCTION [dbo].[GetServicesForToday]
-(@serviceProviderIdContext uniqueidentifier,
-@serviceDate date)
-RETURNS @ServicesTableToReturn TABLE
-(
-	RecurringServiceId uniqueidentifier,
-	ServiceId uniqueidentifier,
-	OccurDate date
-) 
-AS
-BEGIN
+IF OBJECT_ID(N'[dbo].[GetServicesBasedOnProvider]', N'FN') IS NOT NULL
+DROP FUNCTION [dbo].[GetServicesBasedOnProvider]
+GO
+   /****************************************************************************************************************************************************
+	* FUNCTION GetServicesBasedOnProvider will take the context provided and find all the service dates
+	* for RecurringServices and existing Services with that context. The function will return past, future or both past and future Services.
+	* For RecurringServices, if there are existing services for dates it will return those. Otherwise it will generate a date for the instances.
+	* You can distinguish generated services because they will not have a ServiceId *
+	** Input Parameters **
+	* @serviceProviderIdContext - The BusinessAccount context or NULL 
+	* @clientIdContext - The Client context or NULL 
+	* @recurringServiceIdContext - The RecurringService context or NULL
+	* @firstDateToLookForServices - The reference date to look for services before or after. Also known as the onOrBeforeDate and the onOrAfterDate
+	* @numberOfOccurrences - The number of occurrences to return
+	* @getPrevious - If set to 1, this will return previous services
+	* @getNext - If set to 1, this will return future services
+	** Output Parameters: **
+	* @ServicesTableToReturn - Ex. below
+	* RecurringServiceId                     | ServiceId                              | OccurDate
+	* -----------------------------------------------------------------------------------------
+	* {036BD670-39A5-478F-BFA3-AD312E3F7F47} |                                        | 1/1/2012 <-- Generated service
+	* {B30A43AD-655A-449C-BD4E-951F8F988718} |                                        | 1/1/2012 <-- Existing service
+	* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | {FC222C74-EFEA-4B45-93FB-B042E6D6DB0D} | 1/2/2012 <-- Existing service with a RecurringService parent **
+	***************************************************************************************************************************************************/
+    CREATE FUNCTION [dbo].[GetServicesBasedOnProvider]
+    (@serviceProviderIdContext uniqueidentifier,
+    @clientIdContext uniqueidentifier,
+    @recurringServiceIdContext uniqueidentifier,
+    @firstDateToLookForServices date,
+    @numberOfOccurrences int,
+	@getPrevious bit,
+	@getNext bit)
+	--TODO RENAME TempTable to ...
+	--TempTable is where we will put all the Services and their corresponding dates
+	RETURNS @ServicesTableToReturn TABLE
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date
+	)
+
+    AS       
+    BEGIN  
 
 	--Stores the Recurring Services that are associated with the lowest context provided
 	DECLARE @TempGenServiceTable TABLE
@@ -94,16 +112,6 @@ BEGIN
 
 	IF @getNext = 1
 	BEGIN
-		--Stores all the Recurring Services from @TempGenServiceTable and their next occurrence date
-		DECLARE @TempNextDateTable TABLE
-		(Id uniqueidentifier,
-		NextDate date)
-
-		--Takes the Table formed above and will find the next occurrence for all those recurring services
-		INSERT INTO @TempNextDateTable (Id, NextDate)
-		SELECT Id, dbo.GetNextOccurence(@firstDateToLookForServices, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt)
-		FROM   @TempGenServiceTable
-
 		--This table is simply the result of merging @TempGenServiceTable and @TempNextDateTable
 		DECLARE @TempGenServiceTableWithNextOccurrence TABLE
 		(Id uniqueidentifier,
@@ -116,11 +124,13 @@ BEGIN
 		 NextDate date)
 	 
 		--Merges @TempGenServiceTable amd @TempNextDateTable created above based on their Id into @TempGenServiceTableWithNextOccurrence
-		INSERT INTO @TempGenServiceTableWithNextOccurrence (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate, NextDate)
-		SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate, t2.NextDate
+		INSERT INTO @TempGenServiceTableWithNextOccurrence (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate)
+		SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate
 		FROM	@TempGenServiceTable t1
-		FULL JOIN @TempNextDateTable t2
-		ON t1.Id =t2.Id
+
+		UPDATE @TempGenServiceTableWithNextOccurrence
+		SET NextDate = (SELECT dbo.GetNextOccurence(@firstDateToLookForServices, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
+		FROM @TempGenServiceTableWithNextOccurrence
 
 		--Remove any rows that do not have a NextOccurrence past or on the OnOrAfterDate
 		DELETE FROM @TempGenServiceTableWithNextOccurrence
@@ -129,23 +139,13 @@ BEGIN
 
 	IF @getPrevious = 1
 	BEGIN
-		--Stores all the Recurring Services from @TempGenServiceTable and their previous occurrence date
-		DECLARE @TempPreviousDateTable TABLE
-		(Id uniqueidentifier,
-		PreviousDate date)
-
 		--Subtracts one day to @firstDateToLookForServices if you are looking for both Next and Previous
 		--If we were to omit this, the GetPreviousOccurrence and GetNextOccurrence functions
 		--would both include the original @firstDateToLookForServices
 		--Thus throwing off the output of this function
 		IF @getNext = 1 AND @getPrevious = 1
 			SET @firstDateToLookForServices = DATEADD (day, -1, @firstDateToLookForServices)
-
-		--Takes the Table formed above and will find the previous occurrence for all those recurring services
-		INSERT INTO @TempPreviousDateTable (Id, PreviousDate)
-		SELECT Id, dbo.GetPreviousOccurrence(@firstDateToLookForServices, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt)
-		FROM   @TempGenServiceTable
-
+		
 		--This table is simply the result of merging @TempGenServiceTable and @TempPreviousDateTable
 		DECLARE @TempGenServiceTableWithPreviousOccurrence TABLE
 		(Id uniqueidentifier,
@@ -158,16 +158,19 @@ BEGIN
 		 PreviousDate date)
 	
 		--Merges @TempGenServiceTable amd @TempPreviousDateTable created above based on their Id into @TempGenServiceTableWithNextOccurrence
-		INSERT INTO @TempGenServiceTableWithPreviousOccurrence (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate, PreviousDate)
-		SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate, t2.PreviousDate
+		INSERT INTO @TempGenServiceTableWithPreviousOccurrence (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate)
+		SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate
 		FROM	@TempGenServiceTable t1
-		FULL JOIN @TempPreviousDateTable t2
-		ON t1.Id =t2.Id
+
+		UPDATE @TempGenServiceTableWithPreviousOccurrence
+		SET PreviousDate = (SELECT dbo.GetPreviousOccurrence(@firstDateToLookForServices, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
+		FROM @TempGenServiceTableWithPreviousOccurrence
 
 		--Remove any rows that do not have a PreviousOccurrence on or before the OnOrBeforeDate
 		DELETE FROM @TempGenServiceTableWithPreviousOccurrence
 		WHERE PreviousDate IS NULL
 	END
+
 	------------------------------------------------------------------
 	--Here we will take the Recurring Services that are in @TempGenServiceTableWithNextOccurrence and find all occurrences in date order until
 	--we get to the number specified by @numberOfOccurrences
@@ -277,12 +280,12 @@ BEGIN
 		SELECT	Id, NextDate
 		FROM	@TempGenServiceTableWithNextOccurrence
 		WHERE	NextDate = @minVal
-		
+
 		--Updates all Services that were just put into a new table to show their next occurrence date
 		UPDATE	@TempGenServiceTableWithNextOccurrence
 		SET		NextDate = (SELECT dbo.GetNextOccurence(@NextDay, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
 		FROM	@TempGenServiceTableWithNextOccurrence
-
+		
 		--If any of those Services updated above do not have a next occurrence, they will be deleted from the table
 		DELETE FROM @TempGenServiceTableWithNextOccurrence
 		WHERE	NextDate IS NULL
@@ -441,6 +444,5 @@ BEGIN
 	FROM @TempTable
 	ORDER BY OccurDate ASC
 
-RETURN 
-END
-
+	RETURN
+	END

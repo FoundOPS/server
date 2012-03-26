@@ -62,18 +62,6 @@ BEGIN
 		)
 	)
 
-	--Stores all the Recurring Services from @TempGenServiceTable and their next occurrence date
-	DECLARE @TempNextDateTable TABLE
-	(Id uniqueidentifier,
-	NextDate date)
-
-	--Takes the Table formed above and will find the next occurrence for all those recurring services
-	INSERT INTO @TempNextDateTable (Id, NextDate)
-	SELECT Id, dbo.GetNextOccurence(@serviceDate, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt)
-	FROM   @TempGenServiceTable
-
-	--SELECT * FROM @TempNextDateTable
-
 	--This table is simply the result of merging @TempGenServiceTable and @TempNextDateTable
 	DECLARE @TempGenServiceTableWithNextOccurrence TABLE
 	(Id uniqueidentifier,
@@ -86,17 +74,17 @@ BEGIN
 	 NextDate date)
 	
 	--Merges @TempGenServiceTable amd @TempNextDateTable created above based on their Id into @TempGenServiceTableWithNextOccurrence
-	INSERT INTO @TempGenServiceTableWithNextOccurrence (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate, NextDate)
-	SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate, t2.NextDate
+	INSERT INTO @TempGenServiceTableWithNextOccurrence (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate)
+	SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate
 	FROM	@TempGenServiceTable t1
-	FULL JOIN @TempNextDateTable t2
-	ON t1.Id =t2.Id
+
+	UPDATE @TempGenServiceTableWithNextOccurrence
+	SET NextDate = (SELECT dbo.GetNextOccurence(@serviceDate, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
+	FROM @TempGenServiceTableWithNextOccurrence
 
 	--Remove any rows that do not have a NextOccurrence past or on the OnOrAfterDate
 	DELETE FROM @TempGenServiceTableWithNextOccurrence
 	WHERE NextDate IS NULL OR NextDate > @serviceDate
-
-	--SELECT * FROM @TempGenServiceTableWithNextOccurrence
 
 	--This table will store all Existing Services after to the OnOrAfterDate
 	DECLARE @TempNextExistingServiceTable TABLE
