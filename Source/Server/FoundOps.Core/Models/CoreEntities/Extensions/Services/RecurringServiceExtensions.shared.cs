@@ -3,7 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 using FoundOps.Common.Composite.Entities;
 
+//This is a partial class, must be in the same namespace so disable warning
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     //Not sure what this is used for [Field("PartyToService", "Client")]
     public partial class RecurringService : IEntityDefaultCreation, ICompositeRaiseEntityPropertyChanged

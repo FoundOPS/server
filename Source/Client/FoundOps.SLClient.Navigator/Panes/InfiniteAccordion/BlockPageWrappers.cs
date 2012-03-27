@@ -84,7 +84,7 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
     {
         [ImportingConstructor]
         public ServicesMainPage(Blocks managerBlocks)
-            : base(managerBlocks, typeof(Service))
+            : base(managerBlocks, typeof(ServiceHolder))
         {
         }
     }

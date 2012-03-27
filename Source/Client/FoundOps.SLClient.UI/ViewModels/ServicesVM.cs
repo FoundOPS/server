@@ -1,20 +1,14 @@
-﻿using System;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Tools;
-using ReactiveUI;
-using System.Linq;
-using System.Threading;
+﻿using System.ComponentModel;
 using System.Reactive.Linq;
-using System.ComponentModel;
-using System.Collections.Generic;
-using FoundOps.SLClient.UI.Tools;
-using MEFedMVVM.ViewModelLocator;
-using System.Collections.ObjectModel;
-using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
+using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Services;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+using System;
+using System.ComponentModel.Composition;
+using System.Linq;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -22,37 +16,25 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Loads, displays (and generates) services based on context. Allows adding/deleting of services.
     /// </summary>
     [ExportViewModel("ServicesVM")]
-    public class ServicesVM : InfiniteAccordionVM<Service>
+    public class ServicesVM : InfiniteAccordionVM<ServiceHolder>
     {
-        #region Locals
+        //private bool _contextChanged;
+        //private bool ContextChanged
+        //{
+        //    get { return _contextChanged; }
+        //    set
+        //    {
+        //        _contextChanged = value;
+        //        if (!_contextChanged) return;
 
-        private bool _contextChanged;
-        private bool ContextChanged
-        {
-            get { return _contextChanged; }
-            set
-            {
-                _contextChanged = value;
-                if (!_contextChanged) return;
+        //        //Reset conditions
+        //        _canMoveBackward = true;
+        //        _canMoveForward = true;
 
-                //Reset conditions
-                _canMoveBackward = true;
-                _canMoveForward = true;
-
-                //Update the visible services
-                _updateVisibleServicesTimer.Change(1000, Timeout.Infinite);
-
-                //This started loading
-                IsLoadingSubject.OnNext(true);
-            }
-        }
-
-        private readonly ObservableCollection<Service> _visibleServices = new ObservableCollection<Service>();
-        private readonly Timer _updateVisibleServicesTimer;
-        private IEnumerable<Service> _existingServices;
-        private IEnumerable<RecurringService> _recurringServices;
-
-        #endregion
+        //        //This started loading
+        //        IsLoadingSubject.OnNext(true);
+        //    }
+        //}
 
         #region Constructor
 
@@ -62,134 +44,162 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public ServicesVM()
         {
-            //It doesn't seem to need it on this VM
-            KeepTrackLastSelectedEntity = false;
-
-            //Instantiate the DomainCollectionView wrapping _visibleServices
-            CollectionViewObservable.OnNext(new DomainCollectionViewFactory<Service>(_visibleServices).View);
-
-            //Setup Filters
-            CollectionView.SortDescriptions.Add(new SortDescription("ServiceDate", ListSortDirection.Ascending));
-            CollectionView.SortDescriptions.Add(new SortDescription("ServiceType", ListSortDirection.Ascending));
-            CollectionView.SortDescriptions.Add(new SortDescription("Client.DisplayName", ListSortDirection.Ascending));
-
-            _updateVisibleServicesTimer = new Timer(cbk =>
-            {
-                //If this is still loading data wait to update
-                if (_servicesOrRecurringServicesLoading)
-                    _updateVisibleServicesTimer.Change(1000, Timeout.Infinite);
-                else
-                    CurrentDispatcher.BeginInvoke(UpdateVisibleServices);
-            }, null, Timeout.Infinite, Timeout.Infinite);
-
+            ////It doesn't seem to need it on this VM
+            //KeepTrackLastSelectedEntity = false;
             SetupDataLoading();
 
             TrackContext();
         }
 
-        //Keeps track if services or recurring services is loading
-        private bool _servicesOrRecurringServicesLoading = true;
+        #region Data Loading
 
         private void SetupDataLoading()
         {
-            //TODO Optimization
-            ////This will always start as loading (until services are generated)
-            //IsLoadingSubject.OnNext(true);
+            //Initially load ServiceHolders for today
+            IsLoadingSubject.OnNext(true);
 
-            ////Load services
-            //var servicesLoading = DataManager.Subscribe<Service>(DataManager.Query.Services, ObservationState, entities => _existingServices = entities);
+            ContextManager.RoleIdObservable.Subscribe(roleId =>
+                this.DataManager.LoadCollection(ServiceHolderQueryForContext(DateTime.Now, true, true),
+                loadedServiceHolders =>
+                {
+                    IsLoadingSubject.OnNext(false);
+                    CollectionViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(loadedServiceHolders).View);
+                }));
 
-            ////Load recurring services
-            //var recurringServicesLoading = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, entities => _recurringServices = entities);
+            //Setup Filters whenever the CollectionViewObservable updates
+            CollectionViewObservable.Subscribe(cvo =>
+            {
+                CollectionView.SortDescriptions.Add(new SortDescription("OccurDate", ListSortDirection.Ascending));
+                //CollectionView.SortDescriptions.Add(new SortDescription("ServiceName", ListSortDirection.Ascending));
+                //CollectionView.SortDescriptions.Add(new SortDescription("Client.DisplayName", ListSortDirection.Ascending));
+            });
 
-            ////This is loading whenever services is loading or recurring services is loading
-            //var loadingData = servicesLoading.CombineLatest(recurringServicesLoading).Select(loadingTuple => loadingTuple.Item1 || loadingTuple.Item2);
+            ////Instantiate the DomainCollectionView wrapping _visibleServices
+            //CollectionViewObservable.OnNext(new DomainCollectionViewFactory<Service>(_visibleServices).View);
 
-            ////The first load on any entitylist is empty
-            //loadingData.Skip(2).SubscribeOnDispatcher().Subscribe(l => _servicesOrRecurringServicesLoading = l);
 
-            ////Whenever loadingData publishes update IsLoadingSubject
-            ////Only choose the true statements (it does not stop loading until the services are generated)
-            //loadingData.Skip(2).Where(isLoading => isLoading).Subscribe(IsLoadingSubject);
 
-            ////When everything is loaded update the visible services
-            //loadingData.Where(isLoading => !isLoading).Throttle(TimeSpan.FromMilliseconds(300)) //Throttle to allow associations to settle
-            //    .ObserveOnDispatcher().Subscribe(isLoading =>
-            //    {
-            //        if (_existingServices != null && _recurringServices != null)
-            //            UpdateVisibleServices();
-            //    });
+            //var canSaveDiscard = this.WhenAny(x => x.SelectedEntity, x => x.SelectedEntity.ServiceIsNew,
+            //                                   x => x.SelectedEntity.ServiceHasChanges, (selectedEntity, serviceIsNew, serviceHasChanges) =>
+            //                                       selectedEntity.Value != null && (serviceIsNew.Value || serviceHasChanges.Value));
 
-            var canSaveDiscard = this.WhenAny(x => x.SelectedEntity, x => x.SelectedEntity.ServiceIsNew,
-                                               x => x.SelectedEntity.ServiceHasChanges,
-                                               (selectedEntity, serviceIsNew, serviceHasChanges) => selectedEntity.Value != null && (serviceIsNew.Value || serviceHasChanges.Value));
-
-            CanSaveObservable = canSaveDiscard;
-            CanDiscardObservable = canSaveDiscard;
+            //CanSaveObservable = canSaveDiscard;
+            //CanDiscardObservable = canSaveDiscard;
         }
+
+        /// <summary>
+        /// Returns a ServiceHolderQuery for the current infinite accordion context.
+        /// </summary>
+        /// <param name="seedDate">The date to start generating ServiceHolders from.</param>
+        /// <param name="getPrevious">Return all the services from at least one date before the seed date (if there are any).</param>
+        /// <param name="getNext">Return all the services from at least one date after the seed date (if there are any).</param>
+        private EntityQuery<ServiceHolder> ServiceHolderQueryForContext(DateTime seedDate, bool getPrevious, bool getNext)
+        {
+            var recurringServiceContext = ContextManager.GetContext<RecurringService>();
+            var clientContext = ContextManager.GetContext<Client>();
+
+            //Setup the contexts
+            Guid? recurringServiceContextId = null;
+            Guid? clientContextId = null;
+
+            //Try to get a recurring service context first because it is the most specific
+            if (recurringServiceContext != null)
+                recurringServiceContextId = recurringServiceContext.Id;
+            else if (clientContext != null) //If there is none try to get a client context
+                clientContextId = clientContext.Id;
+
+            var minimumOccurrencesToLoad = recurringServiceContext != null || clientContext != null
+                                            ? 20 //If there is a context load at least 20 service holders
+                                            : 200; //otherwise load at least 200 service holders
+
+            //TODO: Find the current date
+
+            return this.DomainContext.GetServiceHoldersQuery(ContextManager.RoleId, recurringServiceContextId, clientContextId,
+                seedDate, minimumOccurrencesToLoad, getPrevious, getNext);
+        }
+
+        #endregion
 
         private void TrackContext()
         {
-            //Whenever this becomes DetailsView: update the generated services (so there are enough) and track the SelectedEntity
-            this.ContextManager.CurrentContextProviderObservable
-                .Where(contextProvider => contextProvider == this) //When this is in details view
-                .SubscribeOnDispatcher().Subscribe(_ =>
-            {
-                var selectedEntity = this.SelectedEntity;
-                //update the generated services
-                ContextChanged = true;
-                TrackSelectedEntity();
-            });
+            //Whenever this becomes DetailsView:
+            //a) update the generated services so there are enough 
+            //b) track the SelectedEntity
+            this.ContextManager.CurrentContextProviderObservable.DistinctUntilChanged()
+                .Where(contextProvider => contextProvider == this).SubscribeOnDispatcher().Subscribe(_ =>
+                {
+                    var selectedEntity = SelectedEntity;
+                    //a) update the generated services so there are enough
+                    //Initially load ServiceHolders for today
+                    IsLoadingSubject.OnNext(true);
+                    this.DataManager.LoadCollection(ServiceHolderQueryForContext(DateTime.Now, true, true), loadedServiceHolders =>
+                    {
+                        IsLoadingSubject.OnNext(false);
+                        CollectionViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(loadedServiceHolders).View);
+                        SelectedEntity = Collection.FirstOrDefault(sh => sh.Equals(selectedEntity));
+                    });
 
-            var clientContextSubject = ContextManager.GetContextObservable<Client>();
-            var locationContextObservable = ContextManager.GetContextObservable<Location>();
-            var recurringServiceContextObservable = ContextManager.GetContextObservable<RecurringService>();
+                    //b) track the SelectedEntity
+                    //TrackSelectedEntity();
+                });
 
-            //Whenever one of the specific context changes, update ContextChanged
-            clientContextSubject.AsGeneric()
-            .Merge(locationContextObservable.AsGeneric())
-            .Merge(recurringServiceContextObservable.AsGeneric())
-            .SubscribeOnDispatcher().Subscribe(_ => ContextChanged = true);
 
-            //Regenerate the Services when the current RecurringServiceContext.Repeat changes
-            recurringServiceContextObservable.WhereNotNull().SelectLatest(rs => rs.RepeatChangedObservable())
-                .Subscribe(_ => ContextChanged = true);
+
+            //var clientContextSubject = ContextManager.GetContextObservable<Client>();
+            //var locationContextObservable = ContextManager.GetContextObservable<Location>();
+            //var recurringServiceContextObservable = ContextManager.GetContextObservable<RecurringService>();
+
+            ////Whenever one of the specific context changes, update ContextChanged
+            //clientContextSubject.AsGeneric()
+            //.Merge(locationContextObservable.AsGeneric())
+            //.Merge(recurringServiceContextObservable.AsGeneric())
+            //.SubscribeOnDispatcher().Subscribe(_ => ContextChanged = true);
+
+            ////Regenerate the Services when the current RecurringServiceContext.Repeat changes
+            //recurringServiceContextObservable.WhereNotNull().SelectLatest(rs => rs.RepeatChangedObservable())
+            //    .Subscribe(_ => ContextChanged = true);
         }
 
         #endregion
 
         #region Logic
 
+        #region Helper Methods
+
+
+
+        #endregion
+
         #region Add Delete Entities
 
-        protected override Service AddNewEntity(object commandParameter)
-        {
-            var newService = base.AddNewEntity(commandParameter);
+        //protected override Service AddNewEntity(object commandParameter)
+        //{
+        //    var newService = base.AddNewEntity(commandParameter);
 
-            //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)
-            var parentServiceTemplate = (ServiceTemplate)commandParameter;
+        //    //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)
+        //    var parentServiceTemplate = (ServiceTemplate)commandParameter;
 
-            //Make a ServiceDefined ServiceTemplate child from the parentServiceTemplate
-            var childServiceTemplate = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
+        //    //Make a ServiceDefined ServiceTemplate child from the parentServiceTemplate
+        //    var childServiceTemplate = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
 
-            //Set the new service's service template
-            newService.ServiceTemplate = childServiceTemplate;
+        //    //Set the new service's service template
+        //    newService.ServiceTemplate = childServiceTemplate;
 
-            newService.ServiceProvider = (BusinessAccount)this.ContextManager.OwnerAccount;
+        //    newService.ServiceProvider = (BusinessAccount)this.ContextManager.OwnerAccount;
 
-            return newService;
-        }
+        //    return newService;
+        //}
 
-        protected override void OnAddEntity(Service newEntity)
-        {
-            newEntity.ServiceIsNew = true;
+        //protected override void OnAddEntity(Service newEntity)
+        //{
+        //    newEntity.ServiceIsNew = true;
 
-            var clientContext = ContextManager.GetContext<Client>();
-            if (clientContext != null)
-                newEntity.Client = clientContext;
+        //    var clientContext = ContextManager.GetContext<Client>();
+        //    if (clientContext != null)
+        //        newEntity.Client = clientContext;
 
-            newEntity.TrackChanges();
-        }
+        //    newEntity.TrackChanges();
+        //}
 
         protected override void EntityAdded()
         {
@@ -202,28 +212,28 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        protected override void OnDeleteEntity(Service entityToDelete)
-        {
-            //Must do this manually because even though it is removed fromt the DCV, the DCV is not backed by a EntityList
-            if (!entityToDelete.Generated)
-                Context.Services.Remove(entityToDelete);
+        //protected override void OnDeleteEntity(Service entityToDelete)
+        //{
+        //    //Must do this manually because even though it is removed fromt the DCV, the DCV is not backed by a EntityList
+        //    if (!entityToDelete.Generated)
+        //        DomainContext.Services.Remove(entityToDelete);
 
-            //If the entityToDelete has a ParentRecurringService
-            //add it's ServiceDate to the ParentRecurringService's ExcludedDates so that it does not get regenerated)
-            if (entityToDelete.RecurringServiceParent != null)
-            {
-                var newExcludedDates = entityToDelete.RecurringServiceParent.ExcludedDates.ToList();
-                newExcludedDates.Add(entityToDelete.ServiceDate);
-                entityToDelete.RecurringServiceParent.ExcludedDates = newExcludedDates;
-            }
-        }
+        //    //If the entityToDelete has a ParentRecurringService
+        //    //add it's ServiceDate to the ParentRecurringService's ExcludedDates so that it does not get regenerated)
+        //    if (entityToDelete.RecurringServiceParent != null)
+        //    {
+        //        var newExcludedDates = entityToDelete.RecurringServiceParent.ExcludedDates.ToList();
+        //        newExcludedDates.Add(entityToDelete.ServiceDate);
+        //        entityToDelete.RecurringServiceParent.ExcludedDates = newExcludedDates;
+        //    }
+        //}
 
         #endregion
 
         protected override bool BeforeSaveCommand()
         {
             foreach (var service in
-                this.Context.EntityContainer.GetChanges().OfType<Service>().Where(service => service.ServiceHasChanges))
+                this.DomainContext.EntityContainer.GetChanges().OfType<Service>().Where(service => service.ServiceHasChanges))
             {
                 //After saving an entity is no longer new, generated, nor has changes. So change these properties, then save
                 service.ServiceIsNew = false;
@@ -234,18 +244,18 @@ namespace FoundOps.SLClient.UI.ViewModels
             return true;
         }
 
-        protected override bool DomainContextHasRelatedChanges()
-        {
-            //If the current service has changes or is new then there are related changes
-            return SelectedEntity != null && (SelectedEntity.ServiceIsNew || SelectedEntity.ServiceHasChanges);
-        }
+        //protected override bool DomainContextHasRelatedChanges()
+        //{
+        //    //If the current service has changes or is new then there are related changes
+        //    return SelectedEntity != null && (SelectedEntity.ServiceIsNew || SelectedEntity.ServiceHasChanges);
+        //}
 
         #region Generate Services
 
         private void DetachGeneratedServices()
         {
             //Detach all generated services' graph's entities
-            var entitiesToDetach = Context.Services.Where(s => s.Generated).SelectMany(s => s.EntityGraph);
+            var entitiesToDetach = DomainContext.Services.Where(s => s.Generated).SelectMany(s => s.EntityGraph);
 
             DataManager.DetachEntities(entitiesToDetach);
         }
@@ -255,107 +265,107 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void UpdateVisibleServices()
         {
-            //Check if the current context should show services
-            if (DataManager.ContextManager.CurrentContextProvider == null)
-                return;
-            var mainViewObjectType = DataManager.ContextManager.CurrentContextProvider.ObjectTypeProvided;
-            if (mainViewObjectType != typeof(Service) && mainViewObjectType != typeof(Client) && mainViewObjectType != typeof(RecurringService)
-                && mainViewObjectType != typeof(Region) && mainViewObjectType != typeof(Location))
-                return; //Should not generate services if not necessary
+            ////Check if the current context should show services
+            //if (DataManager.ContextManager.CurrentContextProvider == null)
+            //    return;
+            //var mainViewObjectType = DataManager.ContextManager.CurrentContextProvider.ObjectTypeProvided;
+            //if (mainViewObjectType != typeof(Service) && mainViewObjectType != typeof(Client) && mainViewObjectType != typeof(RecurringService)
+            //    && mainViewObjectType != typeof(Region) && mainViewObjectType != typeof(Location))
+            //    return; //Should not generate services if not necessary
 
-            var startTime = DateTime.Now;
+            //var startTime = DateTime.Now;
 
-            //Clear the selection before updating the services
-            DirectSetSelectedEntity(null);
+            ////Clear the selection before updating the services
+            //DirectSetSelectedEntity(null);
 
-            Service selectedEntity = null;
+            //Service selectedEntity = null;
 
-            //Generate Services depending on a couple conditions:
-            //Condition A: There are no services or the context has changed and we need to regenerate all the services (around today)
-            //Condition B: There are services and we need to generate services in the past (from the first generated service)
-            //Condition C: There are services and we need to generate services in the future (from the last generated service)
+            ////Generate Services depending on a couple conditions:
+            ////Condition A: There are no services or the context has changed and we need to regenerate all the services (around today)
+            ////Condition B: There are services and we need to generate services in the past (from the first generated service)
+            ////Condition C: There are services and we need to generate services in the future (from the last generated service)
 
-            //Condition A: There are no services or the context has changed and we need to regenerate all the services (around today)
-            if (!_visibleServices.Any() || ContextChanged) { } //Keep selectedEntity null
-            //Condition B: There are services and we need to generate services in the past (from the first generated service)
-            else if (_pushBackwardSwitch)
-                selectedEntity = CollectionView.Cast<Service>().First();
-            //Condition C: There are services and we need to generate services in the future (from the last generated service))
-            else if (_pushForwardSwitch)
-                selectedEntity = CollectionView.Cast<Service>().Last();
+            ////Condition A: There are no services or the context has changed and we need to regenerate all the services (around today)
+            //if (!_visibleServices.Any() || ContextChanged) { } //Keep selectedEntity null
+            ////Condition B: There are services and we need to generate services in the past (from the first generated service)
+            //else if (_pushBackwardSwitch)
+            //    selectedEntity = CollectionView.Cast<Service>().First();
+            ////Condition C: There are services and we need to generate services in the future (from the last generated service))
+            //else if (_pushForwardSwitch)
+            //    selectedEntity = CollectionView.Cast<Service>().Last();
 
-            int pageSize;
+            //int pageSize;
 
-            if (IsInDetailsView)
-            {
-                //If Services is in DetailsView and
-                //a) has no Context: generate 150
-                //b) has a Context: generate 75
-                pageSize = ContextManager.CurrentContext.Count == 0 ? 150 : 75;
-            }
-            else
-                pageSize = 10; //If it is not in DetailsView, generate 10
+            //if (IsInDetailsView)
+            //{
+            //    //If Services is in DetailsView and
+            //    //a) has no Context: generate 150
+            //    //b) has a Context: generate 75
+            //    pageSize = ContextManager.CurrentContext.Count == 0 ? 150 : 75;
+            //}
+            //else
+            //    pageSize = 10; //If it is not in DetailsView, generate 10
 
-            //Clear the services
-            _visibleServices.Clear();
+            ////Clear the services
+            //_visibleServices.Clear();
 
-            //Generate services from results
+            ////Generate services from results
 
-            var serviceGenerationResult = ServiceGenerator.GenerateServiceTuples(selectedEntity, _existingServices,
-                                                                       _recurringServices.Where(rs => rs.Repeat != null), ContextManager.GetContext<Client>(),
-                                                                       ContextManager.GetContext<Location>(), ContextManager.GetContext<RecurringService>(),
-                                                                       pageSize);
+            //var serviceGenerationResult = ServiceGenerator.GenerateServiceTuples(selectedEntity, _existingServices,
+            //                                                           _recurringServices.Where(rs => rs.Repeat != null), ContextManager.GetContext<Client>(),
+            //                                                           ContextManager.GetContext<Location>(), ContextManager.GetContext<RecurringService>(),
+            //                                                           pageSize);
 
-            _canMoveBackward = serviceGenerationResult.CanMoveBackward;
-            _canMoveForward = serviceGenerationResult.CanMoveForward;
+            //_canMoveBackward = serviceGenerationResult.CanMoveBackward;
+            //_canMoveForward = serviceGenerationResult.CanMoveForward;
 
-            //Add the proper services
-            foreach (var serviceTuple in serviceGenerationResult.ServicesTuples)
-            {
-                serviceTuple.GenerateService();
-                _visibleServices.Add(serviceTuple.Service);
-            }
+            ////Add the proper services
+            //foreach (var serviceTuple in serviceGenerationResult.ServicesTuples)
+            //{
+            //    serviceTuple.GenerateService();
+            //    _visibleServices.Add(serviceTuple.Service);
+            //}
 
-            DetachGeneratedServices();
+            //DetachGeneratedServices();
 
-            //Select the corresponding selectedEntity
-            if (selectedEntity == null)
-                selectedEntity = CollectionView.Cast<Service>().FirstOrDefault(s => s != null && s.ServiceDate >= DateTime.Now.Date);
-            else if (selectedEntity.Generated)
-                selectedEntity = CollectionView.Cast<Service>().FirstOrDefault(s => s != null && s.ServiceDate == selectedEntity.ServiceDate && s.RecurringServiceId == selectedEntity.RecurringServiceId);
+            ////Select the corresponding selectedEntity
+            //if (selectedEntity == null)
+            //    selectedEntity = CollectionView.Cast<Service>().FirstOrDefault(s => s != null && s.ServiceDate >= DateTime.Now.Date);
+            //else if (selectedEntity.Generated)
+            //    selectedEntity = CollectionView.Cast<Service>().FirstOrDefault(s => s != null && s.ServiceDate == selectedEntity.ServiceDate && s.RecurringServiceId == selectedEntity.RecurringServiceId);
 
-            SelectedEntity = selectedEntity;
+            //SelectedEntity = selectedEntity;
 
-            //Clear the context change after generating services
-            ContextChanged = false;
+            ////Clear the context change after generating services
+            //ContextChanged = false;
 
-            _lastServiceGeneration = DateTime.Now;
+            //_lastServiceGeneration = DateTime.Now;
 
-            //Clear the switches
-            _pushBackwardSwitch = false;
-            _pushForwardSwitch = false;
+            ////Clear the switches
+            //_pushBackwardSwitch = false;
+            //_pushForwardSwitch = false;
 
-            //This is no longer loading, if everything is loaded and this just finished generating
-            if (!_servicesOrRecurringServicesLoading)
-                IsLoadingSubject.OnNext(false);
+            ////This is no longer loading, if everything is loaded and this just finished generating
+            //if (!ServicesOrRecurringServicesLoading)
+            //    IsLoadingSubject.OnNext(false);
         }
 
         private bool _canMoveBackward;
         private bool _pushBackwardSwitch;
         internal bool PushBackGeneratedServices()
         {
-            //If this cannot move backwards, or if the last service generation was within 2 seconds return false
-            //This is to give ServicesGrid some time to move the selection to the middle
-            if (!_canMoveBackward || (DateTime.Now - _lastServiceGeneration) < TimeSpan.FromSeconds(2))
-                return false;
+            ////If this cannot move backwards, or if the last service generation was within 2 seconds return false
+            ////This is to give ServicesGrid some time to move the selection to the middle
+            //if (!_canMoveBackward || (DateTime.Now - _lastServiceGeneration) < TimeSpan.FromSeconds(2))
+            //    return false;
 
-            _canMoveBackward = false; //Prevent double tripping
-            _pushBackwardSwitch = true;
+            //_canMoveBackward = false; //Prevent double tripping
+            //_pushBackwardSwitch = true;
 
-            //This started loading
-            IsLoadingSubject.OnNext(true);
+            ////This started loading
+            //IsLoadingSubject.OnNext(true);
 
-            _updateVisibleServicesTimer.Change(250, Timeout.Infinite);
+            //_updateVisibleServicesTimer.Change(250, Timeout.Infinite);
 
             return true;
         }
@@ -364,129 +374,129 @@ namespace FoundOps.SLClient.UI.ViewModels
         private bool _pushForwardSwitch;
         internal bool PushForwardGeneratedServices()
         {
-            //If this cannot move forwards, or if the last service generation was within 2 seconds return false
-            //This is to give ServicesGrid some time to move the selection to the middle
-            if (!_canMoveForward || (DateTime.Now - _lastServiceGeneration) < TimeSpan.FromSeconds(2))
-                return false;
+            //    //If this cannot move forwards, or if the last service generation was within 2 seconds return false
+            //    //This is to give ServicesGrid some time to move the selection to the middle
+            //    if (!_canMoveForward || (DateTime.Now - _lastServiceGeneration) < TimeSpan.FromSeconds(2))
+            //        return false;
 
-            _canMoveForward = false; //Prevent double tripping
-            _pushForwardSwitch = true;
+            //    _canMoveForward = false; //Prevent double tripping
+            //    _pushForwardSwitch = true;
 
-            //This started loading
-            IsLoadingSubject.OnNext(true);
-            _updateVisibleServicesTimer.Change(250, Timeout.Infinite);
+            //    //This started loading
+            //    IsLoadingSubject.OnNext(true);
+            //    _updateVisibleServicesTimer.Change(250, Timeout.Infinite);
 
             return true;
         }
 
         #endregion
 
-        public override void OnNavigateFrom()
-        {
-            //If the current service does not have changes and is not new and there are no related changes: discard changes
-            if (!DomainContextHasRelatedChanges())
-            {
-                //This will allow it to be removed
-                if (SelectedEntity != null)
-                    SelectedEntity.Generated = false;
+        //public override void OnNavigateFrom()
+        //{
+        //    //If the current service does not have changes and is not new and there are no related changes: discard changes
+        //    if (!DomainContextHasRelatedChanges())
+        //    {
+        //        //This will allow it to be removed
+        //        if (SelectedEntity != null)
+        //            SelectedEntity.Generated = false;
 
-                this.DiscardCommand.Execute(null);
-            }
-        }
+        //        this.DiscardCommand.Execute(null);
+        //    }
+        //}
 
         #region Save Discard
 
-        protected override bool BeforeDiscardCommand()
-        {
-            if (SelectedEntity == null) return true;
+        //protected override bool BeforeDiscardCommand()
+        //{
+        //    if (SelectedEntity == null) return true;
 
-            //If it is a generated Service: regenerating the ServiceTemplate should discard the changes
-            if (SelectedEntity.Generated)
-                RegenerateSelectedEntityServiceTemplate();
+        //    //If it is a generated Service: regenerating the ServiceTemplate should discard the changes
+        //    if (SelectedEntity.Generated)
+        //        RegenerateSelectedEntityServiceTemplate();
 
-            return !SelectedEntity.Generated;
-        }
+        //    return !SelectedEntity.Generated;
+        //}
 
-        /// <summary>
-        /// Regenerates the selected entity's service template.
-        /// </summary>
-        private void RegenerateSelectedEntityServiceTemplate()
-        {
-            var selectedEntity = SelectedEntity;
+        ///// <summary>
+        ///// Regenerates the selected entity's service template.
+        ///// </summary>
+        //private void RegenerateSelectedEntityServiceTemplate()
+        //{
+        //    var selectedEntity = SelectedEntity;
 
-            //Detach entities
-            DetachGeneratedServices();
+        //    //Detach entities
+        //    DetachGeneratedServices();
 
-            //Regenerate the SelectedEntity's ServiceTemplate (to clear changes)
-            selectedEntity.ServiceTemplate = selectedEntity.RecurringServiceParent.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
+        //    //Regenerate the SelectedEntity's ServiceTemplate (to clear changes)
+        //    selectedEntity.ServiceTemplate = selectedEntity.RecurringServiceParent.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
 
-            //Reselect the SelectedEntity
-            SelectedEntity = selectedEntity;
+        //    //Reselect the SelectedEntity
+        //    SelectedEntity = selectedEntity;
 
-            //Clear the tracked property's changes
-            SelectedEntity.ServiceHasChanges = false;
-        }
+        //    //Clear the tracked property's changes
+        //    SelectedEntity.ServiceHasChanges = false;
+        //}
 
         protected override void OnDiscard()
         {
-            if (SelectedEntity != null)
-            {
-                //Clear the tracked property's changes
-                SelectedEntity.ServiceHasChanges = false;
+            //if (SelectedEntity != null)
+            //{
+            //    //Clear the tracked property's changes
+            //    SelectedEntity.ServiceHasChanges = false;
 
-                if (SelectedEntity.ServiceIsNew)
-                {
-                    _visibleServices.Remove(SelectedEntity);
-                    DirectSetSelectedEntity(null);
-                    CollectionView.MoveCurrentTo(null);
-                }
-            }
+            //    if (SelectedEntity.ServiceIsNew)
+            //    {
+            //        _visibleServices.Remove(SelectedEntity);
+            //        DirectSetSelectedEntity(null);
+            //        CollectionView.MoveCurrentTo(null);
+            //    }
+            //}
 
-            base.OnDiscard();
+            //base.OnDiscard();
         }
 
         #endregion
 
         #region Selection
 
-        protected override bool BeforeSelectedEntityChanges(Service oldValue, Service newValue)
-        {
-            if (!IsInDetailsView)
-                return true;
+        //protected override bool BeforeSelectedEntityChanges(Service oldValue, Service newValue)
+        //{
+        //    if (!IsInDetailsView)
+        //        return true;
 
-            //Discard changes if the old selected service does not have any changes
-            if (oldValue != null && !oldValue.ServiceHasChanges)
-                this.DiscardCommand.Execute(null);
+        //    //Discard changes if the old selected service does not have any changes
+        //    if (oldValue != null && !oldValue.ServiceHasChanges)
+        //        this.DiscardCommand.Execute(null);
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        protected override void OnSelectedEntityChanged(Service oldValue, Service newValue)
-        {
-            if (!IsInDetailsView) return;
+        //protected override void OnSelectedEntityChanged(Service oldValue, Service newValue)
+        //{
+        //    if (!IsInDetailsView) return;
 
-            //Only track changes/add the selected generated service to the Context if the ServicesVM is in the DetailsView
-            //This will prevent unwanted changes being made
+        //    //Only track changes/add the selected generated service to the Context if the ServicesVM is in the DetailsView
+        //    //This will prevent unwanted changes being made
 
-            DetachGeneratedServices();
-            TrackSelectedEntity();
-        }
+        //    DetachGeneratedServices();
+        //    TrackSelectedEntity();
+        //}
 
-        //Track the selected service's changes/add it to the DomainContext if it is generated
-        private void TrackSelectedEntity()
-        {
-            if (SelectedEntity == null) return;
+        ////Track the selected service's changes/add it to the DomainContext if it is generated
+        //private void TrackSelectedEntity()
+        //{
+        //    if (SelectedEntity == null) return;
 
-            if (SelectedEntity.Generated)
-                this.Context.Services.Add(SelectedEntity);
+        //    if (SelectedEntity.Generated)
+        //        this.DomainContext.Services.Add(SelectedEntity);
 
-            //If the SelectedEntity is Generated and does not have changes, regenerate the ServiceTemplate
-            if (SelectedEntity.Generated && !SelectedEntity.HasChanges)
-                RegenerateSelectedEntityServiceTemplate();
+        //    //If the SelectedEntity is Generated and does not have changes, regenerate the ServiceTemplate
+        //    if (SelectedEntity.Generated && !SelectedEntity.HasChanges)
+        //        RegenerateSelectedEntityServiceTemplate();
 
-            SelectedEntity.TrackChanges();
-            SelectedEntity.ServiceHasChanges = false;
-        }
+        //    SelectedEntity.TrackChanges();
+        //    SelectedEntity.ServiceHasChanges = false;
+        //}
 
         #endregion
 

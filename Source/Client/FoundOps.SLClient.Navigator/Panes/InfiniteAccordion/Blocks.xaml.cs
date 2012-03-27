@@ -48,7 +48,7 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
             else if (navigateToUriString.Contains("Regions"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Region).ToString();
             else if (navigateToUriString.Contains("Services"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Service).ToString();
+                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(ServiceHolder).ToString();
             else if (navigateToUriString.Contains("Vehicles"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Vehicle).ToString();
             else if (navigateToUriString.Contains("VehicleMaintenance"))

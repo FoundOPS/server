@@ -263,7 +263,7 @@
                         <RecurringServices:RecurringServiceSmall />
                     </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
-                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Service">
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.ServiceHolder">
                     <InfiniteAccordion:ThirdsListDetails.List>
                         <!--Use grid to limit height of RadGridView so scroller will work-->
                         <Grid>
@@ -434,7 +434,7 @@
                         <TextBlock Text="{Binding Name}" Foreground="White" />
                     </InfiniteAccordion:ContextBorder.HeaderContent>
                 </InfiniteAccordion:ContextBorder>
-                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Service" BorderBrush="{StaticResource ServiceBrush}" DeleteButtonVisibility="Collapsed">
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.ServiceHolder" BorderBrush="{StaticResource ServiceBrush}" DeleteButtonVisibility="Collapsed">
                     <InfiniteAccordion:ContextBorder.HeaderContent>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding AccountToService.DisplayName}" Foreground="White" />

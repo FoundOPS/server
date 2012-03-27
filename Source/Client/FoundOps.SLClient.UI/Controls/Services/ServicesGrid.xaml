@@ -9,7 +9,7 @@
     </UserControl.Resources>
     <Grid>
         <telerik:RadGridView x:Name="ServicesRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False"
-            RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}" RowStyleSelector="{StaticResource ServiceStyleSelector}" 
+            RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding CollectionView}" RowStyleSelector="{StaticResource ServiceStyleSelector}" 
                             IsFilteringAllowed="False" EnableRowVirtualization="True" SelectionMode="Single" SelectionUnit="FullRow">
             <telerik:RadGridView.Columns>
                 <!--For Design mode you must remove the DataMemberBindings and uncomment the CellTemplates-->
@@ -27,7 +27,7 @@
                     </DataTemplate>
                 </telerik:GridViewColumn.CellTemplate>-->
                 </telerik:GridViewDataColumn>
-                <telerik:GridViewDataColumn Header="Service Date" Width="*" UniqueName="DateColumn" DataMemberBinding="{Binding ServiceDate}" DataFormatString="{}{0:MM/dd/yyyy' 'ddd}" IsFilterable="True">
+                <telerik:GridViewDataColumn Header="Service Date" Width="*" UniqueName="DateColumn" DataMemberBinding="{Binding OccurDate}" DataFormatString="{}{0:MM/dd/yyyy' 'ddd}" IsFilterable="True">
                     <!--<telerik:GridViewColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding ServiceDate, StringFormat=\{0:d\}}"/>

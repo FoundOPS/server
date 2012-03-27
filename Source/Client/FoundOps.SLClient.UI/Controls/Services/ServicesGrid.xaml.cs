@@ -65,8 +65,8 @@ namespace FoundOps.SLClient.UI.Controls.Services
             VM.Services.SelectedEntityObservable.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
                 .Subscribe(ScrollToMiddle);
 
-            //Listen to the latest selected service's service date changes
-            VM.Services.SelectedEntityObservable.WhereNotNull().SelectLatest(service => Observable2.FromPropertyChangedPattern(service, x => x.ServiceDate))
+            //Listen to the latest selected service's occur date changes
+            VM.Services.SelectedEntityObservable.WhereNotNull().SelectLatest(service => Observable2.FromPropertyChangedPattern(service, x => x.OccurDate))
                 //Wait until the RadGridView SelectedItem updates
                 .Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher()
                 .Subscribe(e =>
@@ -165,7 +165,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
             var style = new Style(typeof(GridViewRow));
             if (item == null)
                 return style;
-            var serviceDate = ((Service)item).ServiceDate;
+            var serviceDate = ((ServiceHolder)item).OccurDate;
 
             //If the service is in the past it should be grey.
             if (serviceDate < DateTime.Now.Date)
