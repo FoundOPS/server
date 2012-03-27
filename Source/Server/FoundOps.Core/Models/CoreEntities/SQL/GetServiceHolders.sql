@@ -42,7 +42,8 @@ GO
 	(
 		RecurringServiceId uniqueidentifier,
 		ServiceId uniqueidentifier,
-		OccurDate date
+		OccurDate date,
+		ServiceName nvarchar(max)
 	)
 
     AS       
@@ -461,13 +462,11 @@ GO
 	)
 
 	--Filtered down from the table above so that only the correct number of Services is returned from the function
-	SET ROWCOUNT @numberOfOccurrences
-	INSERT INTO @holderTable
+	INSERT TOP(@numberOfOccurrences) INTO @holderTable
 	SELECT * FROM @TempTable
 	EXCEPT
 	SELECT * FROM @DuplicateIdTable
 	ORDER BY OccurDate ASC
-	SET ROWCOUNT 0
 
 	Declare @lastDate date
 
