@@ -111,12 +111,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             SetupContextDataLoading(roleId =>
                                         {
                                             var businessAccountContext = this.ContextManager.GetContext<BusinessAccount>();
-                                            return Context.GetUserAccountsQuery(roleId, businessAccountContext != null ? businessAccountContext.Id : Guid.Empty);
+                                            return DomainContext.GetUserAccountsQuery(roleId, businessAccountContext != null ? businessAccountContext.Id : Guid.Empty);
                                         }, null, false, VirtualItemCountLoadBehavior.LoadAfterManyRelationContextChanges);
 
 
             //Whenever the user account changes load the details
-            SetupDetailsLoading(selectedEntity => Context.GetUserAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+            SetupDetailsLoading(selectedEntity => DomainContext.GetUserAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
 
                 //Add the new entity to the Context so it gets tracked/saved
-                Context.Parties.Add(newUserAccount);
+                DomainContext.Parties.Add(newUserAccount);
 
                 //Add the current user to the Administrator role of the ServiceProvider
                 var serviceProviderContext = ContextManager.GetContext<BusinessAccount>();

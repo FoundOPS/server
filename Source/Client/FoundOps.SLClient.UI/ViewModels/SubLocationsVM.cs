@@ -153,7 +153,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         //instead of just being removed from the _selectedLocation.SubLocationsListWrapper
         public override void DeleteEntity(SubLocation entityToDelete)
         {
-            this.Context.SubLocations.Remove(entityToDelete);
+            this.DomainContext.SubLocations.Remove(entityToDelete);
         }
 
         protected override void OnAddEntity(SubLocation newSubLocation)

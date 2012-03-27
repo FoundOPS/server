@@ -858,7 +858,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             foreach (var routeTask in routeDestination.RouteTasks)
                 routeTask.RemoveRouteDestination();
 
-            this.Context.RouteDestinations.Remove(routeDestination);
+            this.DomainContext.RouteDestinations.Remove(routeDestination);
         }
 
         #endregion
@@ -924,8 +924,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 //TODO: Check if this is needed
                 //Add the routeTask back to the EntitySet (if it is not generated)
-                if (!routeTask.GeneratedOnServer && !this.Context.RouteTasks.Contains(routeTask))
-                    this.Context.RouteTasks.Add(routeTask);
+                if (!routeTask.GeneratedOnServer && !this.DomainContext.RouteTasks.Contains(routeTask))
+                    this.DomainContext.RouteTasks.Add(routeTask);
             }
 
         }

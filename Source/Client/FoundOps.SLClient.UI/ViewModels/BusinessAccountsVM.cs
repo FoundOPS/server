@@ -258,10 +258,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            SetupTopEntityDataLoading(roleId => Context.GetBusinessAccountsForRoleQuery(ContextManager.RoleId));
+            SetupTopEntityDataLoading(roleId => DomainContext.GetBusinessAccountsForRoleQuery(ContextManager.RoleId));
 
             //Whenever the business account changes load the details
-            SetupDetailsLoading(selectedEntity => Context.GetBusinessAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+            SetupDetailsLoading(selectedEntity => DomainContext.GetBusinessAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
         #region Logic
@@ -279,7 +279,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 role.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
             //Add the entity to the EntitySet so it is tracked by the DomainContext
-            this.Context.Parties.Add(newBusinessAccount);
+            this.DomainContext.Parties.Add(newBusinessAccount);
 
             return newBusinessAccount;
         }

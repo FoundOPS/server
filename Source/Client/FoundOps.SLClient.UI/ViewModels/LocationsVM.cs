@@ -149,7 +149,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 newLocation.RaiseValidationErrors();
 
                 //Add the entity to the EntitySet so it is tracked by the DomainContext
-                Context.Locations.Add(newLocation);
+                DomainContext.Locations.Add(newLocation);
 
                 return newLocation;
             };
@@ -168,7 +168,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Force load the entities when in a related types view
             //this is because VDCV will only normally load when a virtual item is loaded onto the screen
             //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
-            SetupContextDataLoading(roleId => Context.GetLocationsToAdministerForRoleQuery(roleId),
+            SetupContextDataLoading(roleId => DomainContext.GetLocationsToAdministerForRoleQuery(roleId),
                                     new[]
                                         {
                                             new ContextRelationshipFilter
@@ -187,7 +187,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
 
             //Whenever the location changes load the location details
-            SetupDetailsLoading(selectedEntity => Context.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+            SetupDetailsLoading(selectedEntity => DomainContext.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
         #region Export to CSV
@@ -204,7 +204,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             var regionContext = ContextManager.GetContext<Region>();
 
             //Load the CSV
-            Context.GetLocationsCSVForRole(ContextManager.RoleId, clientContext != null ? clientContext.Id : new Guid(), regionContext != null ? regionContext.Id : new Guid(),
+            DomainContext.GetLocationsCSVForRole(ContextManager.RoleId, clientContext != null ? clientContext.Id : new Guid(), regionContext != null ? regionContext.Id : new Guid(),
                 loadedCSV => csvLoadedObservable.OnNext(loadedCSV.Value), null);
 
             var fileName = String.Format("LocationsExport {0}.csv", DateTime.Now.ToString("MM'-'dd'-'yyyy"));

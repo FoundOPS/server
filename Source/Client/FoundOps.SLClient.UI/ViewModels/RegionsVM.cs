@@ -31,7 +31,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public RegionsVM()
         {
             //Setup data loading
-            SetupTopEntityDataLoading(roleId => Context.GetRegionsForServiceProviderQuery(ContextManager.RoleId));
+            SetupTopEntityDataLoading(roleId => DomainContext.GetRegionsForServiceProviderQuery(ContextManager.RoleId));
 
             ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
               SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchRegionsForRoleQuery(Manager.Context.RoleId, searchText));
