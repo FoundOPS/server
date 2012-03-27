@@ -66,7 +66,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Order by OccurDate and Service Name for UI
             //Order by ServiceId and RecurringServiceId to ensure they are always returned in the same order
-            return ObjectContext.GetServicesBasedOnProvider(serviceProviderContextId, clientContextId, recurringServiceContextId,
+            return ObjectContext.GetServiceHolders(serviceProviderContextId, clientContextId, recurringServiceContextId,
                 seedDate, numberOfOccurrences, getPrevious, getNext)
                 .OrderBy(sh=>sh.OccurDate).ThenBy(sh=>sh.ServiceId).ThenBy(sh=>sh.RecurringServiceId)
                 .AsQueryable();

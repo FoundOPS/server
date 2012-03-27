@@ -365,10 +365,10 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
-        <Function Name="GetServicesBasedOnProvider" IsComposable="false">
+        <Function Name="GetServiceHolders" IsComposable="false">
           <CommandText>
-            SELECT RecurringServiceId, ServiceId, OccurDate
-            FROM dbo.GetServicesBasedOnProvider(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @firstDateToLookForServices, @numberOfOccurrences, @getPrevious, @getNext)
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
+            FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @firstDateToLookForServices, @numberOfOccurrences, @getPrevious, @getNext)
           </CommandText>
           <Parameter Name="serviceProviderIdContext"
                      Mode="In"
@@ -2136,7 +2136,7 @@
             <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.ServiceTemplateWithVendorId" />
-          <FunctionImport Name="GetServicesBasedOnProvider" ReturnType="Collection(CoreEntities.GeneratedOrExistingServices)">
+          <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
             <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
             <Parameter Name="recurringServiceIdContext" Mode="In" Type="Guid" />
@@ -3395,10 +3395,11 @@
           <Property Type="Guid" Name="ServiceTemplateId" Nullable="false" />
           <Property Type="Guid" Name="VendorId" Nullable="false" />
         </EntityType>
-        <ComplexType Name="GeneratedOrExistingServices" >
-          <Property Type="Guid" Name="RecurringServiceId" Nullable="false" />
-          <Property Type="Guid" Name="ServiceId" Nullable="false" />
+        <ComplexType Name="ServiceHolder" >
+          <Property Type="Guid" Name="RecurringServiceId" Nullable="true" />
+          <Property Type="Guid" Name="ServiceId" Nullable="true" />
           <Property Type="DateTime" Name="OccurDate" Nullable="false" />
+          <Property Type="String" Name="ServiceName" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3922,12 +3923,13 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetServicesBasedOnProvider" FunctionName="CoreEntities.Store.GetServicesBasedOnProvider">
+          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.GeneratedOrExistingServices">
+              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
                 <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
