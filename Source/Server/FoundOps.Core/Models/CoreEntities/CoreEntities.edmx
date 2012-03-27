@@ -365,6 +365,33 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
+        <Function Name="GetServicesBasedOnProvider" IsComposable="false">
+          <CommandText>
+            SELECT RecurringServiceId, ServiceId, OccurDate
+            FROM dbo.GetServicesBasedOnProvider(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @firstDateToLookForServices, @numberOfOccurrences, @getPrevious, @getNext)
+          </CommandText>
+          <Parameter Name="serviceProviderIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="clientIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="recurringServiceIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="firstDateToLookForServices"
+                     Mode="In"
+                     Type="datetime"/>
+          <Parameter Name="numberOfOccurrences"
+                     Mode="In"
+                     Type="int"/>
+          <Parameter Name="getPrevious"
+                     Mode="In"
+                     Type="bit"/>
+          <Parameter Name="getNext"
+                     Mode="In"
+                     Type="bit"/>
+        </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />
@@ -2109,6 +2136,15 @@
             <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.ServiceTemplateWithVendorId" />
+          <FunctionImport Name="GetServicesBasedOnProvider" ReturnType="Collection(CoreEntities.GeneratedOrExistingServices)">
+            <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="recurringServiceIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="firstDateToLookForServices" Mode="In" Type="DateTime" />
+            <Parameter Name="numberOfOccurrences" Mode="In" Type="Int32" />
+            <Parameter Name="getPrevious" Mode="In" Type="Boolean" />
+            <Parameter Name="getNext" Mode="In" Type="Boolean" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Block">
           <Key>
@@ -3359,6 +3395,11 @@
           <Property Type="Guid" Name="ServiceTemplateId" Nullable="false" />
           <Property Type="Guid" Name="VendorId" Nullable="false" />
         </EntityType>
+        <ComplexType Name="GeneratedOrExistingServices" >
+          <Property Type="Guid" Name="RecurringServiceId" Nullable="false" />
+          <Property Type="Guid" Name="ServiceId" Nullable="false" />
+          <Property Type="DateTime" Name="OccurDate" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3881,6 +3922,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetServicesBasedOnProvider" FunctionName="CoreEntities.Store.GetServicesBasedOnProvider">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.GeneratedOrExistingServices">
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

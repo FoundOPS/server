@@ -986,6 +986,91 @@ namespace FoundOps.Core.Models.CoreEntities
     
             return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
+        /// <param name="clientIdContext">No Metadata Documentation available.</param>
+        /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
+        /// <param name="firstDateToLookForServices">No Metadata Documentation available.</param>
+        /// <param name="numberOfOccurrences">No Metadata Documentation available.</param>
+        /// <param name="getPrevious">No Metadata Documentation available.</param>
+        /// <param name="getNext">No Metadata Documentation available.</param>
+        public ObjectResult<GeneratedOrExistingServices> GetServicesBasedOnProvider(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> firstDateToLookForServices, Nullable<global::System.Int32> numberOfOccurrences, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
+        {
+            ObjectParameter serviceProviderIdContextParameter;
+            if (serviceProviderIdContext.HasValue)
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
+            }
+            else
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter clientIdContextParameter;
+            if (clientIdContext.HasValue)
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", clientIdContext);
+            }
+            else
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter recurringServiceIdContextParameter;
+            if (recurringServiceIdContext.HasValue)
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", recurringServiceIdContext);
+            }
+            else
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter firstDateToLookForServicesParameter;
+            if (firstDateToLookForServices.HasValue)
+            {
+                firstDateToLookForServicesParameter = new ObjectParameter("firstDateToLookForServices", firstDateToLookForServices);
+            }
+            else
+            {
+                firstDateToLookForServicesParameter = new ObjectParameter("firstDateToLookForServices", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter numberOfOccurrencesParameter;
+            if (numberOfOccurrences.HasValue)
+            {
+                numberOfOccurrencesParameter = new ObjectParameter("numberOfOccurrences", numberOfOccurrences);
+            }
+            else
+            {
+                numberOfOccurrencesParameter = new ObjectParameter("numberOfOccurrences", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter getPreviousParameter;
+            if (getPrevious.HasValue)
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", getPrevious);
+            }
+            else
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter getNextParameter;
+            if (getNext.HasValue)
+            {
+                getNextParameter = new ObjectParameter("getNext", getNext);
+            }
+            else
+            {
+                getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
+            }
+    
+            return base.ExecuteFunction<GeneratedOrExistingServices>("GetServicesBasedOnProvider", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateToLookForServicesParameter, numberOfOccurrencesParameter, getPreviousParameter, getNextParameter);
+        }
 
         #endregion
 
@@ -11966,6 +12051,115 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
             }
         }
+
+        #endregion
+
+    }
+
+    #endregion
+
+    #region ComplexTypes
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="GeneratedOrExistingServices")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class GeneratedOrExistingServices : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new GeneratedOrExistingServices object.
+        /// </summary>
+        /// <param name="recurringServiceId">Initial value of the RecurringServiceId property.</param>
+        /// <param name="serviceId">Initial value of the ServiceId property.</param>
+        /// <param name="occurDate">Initial value of the OccurDate property.</param>
+        public static GeneratedOrExistingServices CreateGeneratedOrExistingServices(global::System.Guid recurringServiceId, global::System.Guid serviceId, global::System.DateTime occurDate)
+        {
+            GeneratedOrExistingServices generatedOrExistingServices = new GeneratedOrExistingServices();
+            generatedOrExistingServices.RecurringServiceId = recurringServiceId;
+            generatedOrExistingServices.ServiceId = serviceId;
+            generatedOrExistingServices.OccurDate = occurDate;
+            return generatedOrExistingServices;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid RecurringServiceId
+        {
+            get
+            {
+                return _RecurringServiceId;
+            }
+            set
+            {
+                OnRecurringServiceIdChanging(value);
+                ReportPropertyChanging("RecurringServiceId");
+                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RecurringServiceId");
+                OnRecurringServiceIdChanged();
+            }
+        }
+        private global::System.Guid _RecurringServiceId;
+        partial void OnRecurringServiceIdChanging(global::System.Guid value);
+        partial void OnRecurringServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ServiceId
+        {
+            get
+            {
+                return _ServiceId;
+            }
+            set
+            {
+                OnServiceIdChanging(value);
+                ReportPropertyChanging("ServiceId");
+                _ServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ServiceId");
+                OnServiceIdChanged();
+            }
+        }
+        private global::System.Guid _ServiceId;
+        partial void OnServiceIdChanging(global::System.Guid value);
+        partial void OnServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime OccurDate
+        {
+            get
+            {
+                return _OccurDate;
+            }
+            set
+            {
+                OnOccurDateChanging(value);
+                ReportPropertyChanging("OccurDate");
+                _OccurDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OccurDate");
+                OnOccurDateChanged();
+            }
+        }
+        private global::System.DateTime _OccurDate;
+        partial void OnOccurDateChanging(global::System.DateTime value);
+        partial void OnOccurDateChanged();
 
         #endregion
 
