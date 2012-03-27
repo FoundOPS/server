@@ -34,7 +34,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public VehiclesVM()
         {
-            SetupTopEntityDataLoading(roleId => Context.GetVehiclesForPartyQuery(roleId));
+            SetupTopEntityDataLoading(roleId => DomainContext.GetVehiclesForPartyQuery(roleId));
 
             #region Implementation of IAddToDeleteFromSource<Employee>
 
@@ -44,7 +44,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var newVehicle = new Vehicle { VehicleId = vehicleId, OwnerParty = ContextManager.OwnerAccount };
 
                 //Add the entity to the EntitySet so it is tracked by the DomainContext
-                Context.Vehicles.Add(newVehicle);
+                DomainContext.Vehicles.Add(newVehicle);
                 this.QueryableCollectionView.AddNew(newVehicle);
 
                 return newVehicle;

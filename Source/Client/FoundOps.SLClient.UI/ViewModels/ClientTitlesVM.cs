@@ -26,7 +26,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public IEnumerable<string> DistinctTitles
         {
-            get { return Context.ClientTitles.Select(t => t.Title).Distinct().OrderBy(t => t); }
+            get { return DomainContext.ClientTitles.Select(t => t.Title).Distinct().OrderBy(t => t); }
         }
 
         //Local
@@ -98,7 +98,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public void DeleteClientTitleInCreation()
         {
-            this.Context.ClientTitles.Remove(ClientTitleInCreation);
+            this.DomainContext.ClientTitles.Remove(ClientTitleInCreation);
             ClientTitleInCreation = null;
         }
 

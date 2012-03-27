@@ -45,7 +45,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            SetupContextDataLoading(roleId => Context.GetContactsForRoleQuery(roleId),
+            SetupContextDataLoading(roleId => DomainContext.GetContactsForRoleQuery(roleId),
                                     new[]
                                         {
                                             new ContextRelationshipFilter
@@ -58,7 +58,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Whenever the contact changes load the contact info
             SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Subscribe(selectedContact =>
-                Context.Load(Context.GetContactInfoSetQuery().Where(c => c.PartyId == selectedContact.Id)));
+                DomainContext.Load(DomainContext.GetContactInfoSetQuery().Where(c => c.PartyId == selectedContact.Id)));
         }
 
         #region Logic

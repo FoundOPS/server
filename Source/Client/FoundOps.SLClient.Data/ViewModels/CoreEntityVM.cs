@@ -43,7 +43,7 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <summary>
         /// Gets the CoreDomainContext.
         /// </summary>
-        public CoreDomainContext Context
+        public CoreDomainContext DomainContext
         {
             get
             {
@@ -106,7 +106,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             DiscardCommand.Subscribe(param =>
             {
                 if (!BeforeDiscardCommand()) return;
-                Context.RejectChanges();
+                DomainContext.RejectChanges();
                 OnDiscard();
                 _discardObservable.OnNext(true);
             });

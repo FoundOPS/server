@@ -103,7 +103,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                 //If the Entity is new delete it
                 if (entityToRemove.EntityState == EntityState.New)
-                    Context.EntityContainer.GetEntitySet(typeof(TEntity)).Remove(entityToRemove);
+                    DomainContext.EntityContainer.GetEntitySet(typeof(TEntity)).Remove(entityToRemove);
             });
 
             #endregion

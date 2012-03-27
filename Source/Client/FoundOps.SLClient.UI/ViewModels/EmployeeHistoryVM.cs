@@ -28,7 +28,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            SetupContextDataLoading(roleId => Context.GetEmployeeHistoryEntriesForRoleQuery(roleId),
+            SetupContextDataLoading(roleId => DomainContext.GetEmployeeHistoryEntriesForRoleQuery(roleId),
                                     new[]
                                         {
                                             new ContextRelationshipFilter

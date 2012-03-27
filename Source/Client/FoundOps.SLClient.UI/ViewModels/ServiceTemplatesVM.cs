@@ -104,7 +104,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                             //If there is a client context, load the Client service templates
                                             var clientContext = ContextManager.GetContext<Client>();
                                             if (clientContext != null)
-                                                return Context.GetServiceTemplatesForServiceProviderQuery(roleId, (int)ServiceTemplateLevel.ClientDefined);
+                                                return DomainContext.GetServiceTemplatesForServiceProviderQuery(roleId, (int)ServiceTemplateLevel.ClientDefined);
 
                                             var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
                                             //If the current role is not a FoundOPS role do not load anything
@@ -116,7 +116,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                                                            ? (int)ServiceTemplateLevel.FoundOpsDefined
                                                                            : (int)ServiceTemplateLevel.ServiceProviderDefined;
 
-                                            return Context.GetServiceTemplatesForServiceProviderQuery(roleId, serviceTemplateLevel);
+                                            return DomainContext.GetServiceTemplatesForServiceProviderQuery(roleId, serviceTemplateLevel);
                                         },
                                     new[]
                                         {
@@ -135,7 +135,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                         });
 
             SetupDetailsLoading(selectedEntity =>
-                                Context.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+                                DomainContext.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
         #endregion
@@ -195,7 +195,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 throw new Exception("Cannot create Service Template outside of a context.");
 
             //Load the parent's ServiceTemplate's details, then create the child
-            Context.Load(Context.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, parentServiceTemplate.Id),
+            DomainContext.Load(DomainContext.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, parentServiceTemplate.Id),
             loadOp =>
             {
                 if (loadOp.HasError)

@@ -70,7 +70,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 ((BusinessAccount)ContextManager.OwnerAccount).Employees.Add(newEmployee);
 
                 //Add the new entity to the EntitySet so it is tracked by the DomainContext
-                Context.Employees.Add(newEmployee);
+                DomainContext.Employees.Add(newEmployee);
 
                 return newEmployee;
             };
@@ -86,9 +86,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            SetupTopEntityDataLoading(roleId => Context.GetEmployeesForRoleQuery(roleId));
+            SetupTopEntityDataLoading(roleId => DomainContext.GetEmployeesForRoleQuery(roleId));
 
-            SetupDetailsLoading(selectedEntity => Context.GetEmployeeDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+            SetupDetailsLoading(selectedEntity => DomainContext.GetEmployeeDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
         #endregion

@@ -81,7 +81,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Make sure the recurring service is removed from the Context
             //Instead of it being removed from the Client (the backing DCV)
-            Context.RecurringServices.Remove(entityToDelete);
+            DomainContext.RecurringServices.Remove(entityToDelete);
         }
 
         #endregion

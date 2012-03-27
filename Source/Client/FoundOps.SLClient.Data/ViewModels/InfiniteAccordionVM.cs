@@ -175,7 +175,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                                             select contextObservable.DistinctUntilChanged().ObserveOnDispatcher()).Merge().AsGeneric();
                 }
 
-                QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TEntity>(Context, () => entityQuery(roleId), loadVirtualItemCount, forceFirstLoad);
+                QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TEntity>(DomainContext, () => entityQuery(roleId), loadVirtualItemCount, forceFirstLoad);
 
                 _contextRelationshipFiltersSubscription = AddContextRelationshipFiltersHelper(contextRelationshipFilters, QueryableCollectionView, ContextManager);
 
@@ -255,7 +255,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                 //Load the VirtualItemCount immediately after creation (and automatically whenever a filter or sort changes)
                 var loadVirtualItemCount = new BehaviorSubject<bool>(true);
 
-                QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TEntity>(Context, () => entityQuery(roleId), loadVirtualItemCount);
+                QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TEntity>(DomainContext, () => entityQuery(roleId), loadVirtualItemCount);
 
                 //TODO Subscribe the loading subject to when the count is loading
                 //result.CountLoading.Subscribe(IsLoadingSubject);
@@ -285,7 +285,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                 }
 
                 ((ILoadDetails)selectedEntity).DetailsLoaded = false;
-                detailsLoadOperation = Context.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
+                detailsLoadOperation = DomainContext.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
             });
         }
 
@@ -326,7 +326,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             var newEntity = (TEntity)this.QueryableCollectionView.AddNew();
 
             //Add the entity to the EntitySet so it is tracked by the DomainContext
-            Context.EntityContainer.GetEntitySet(typeof(TEntity)).Add(newEntity);
+            DomainContext.EntityContainer.GetEntitySet(typeof(TEntity)).Add(newEntity);
 
             return newEntity;
         }
@@ -341,7 +341,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             QueryableCollectionView.Remove(entityToDelete);
 
             //Remove the entity from the EntitySet (so it is deleted by the DomainContext)
-            Context.EntityContainer.GetEntitySet(typeof(TEntity)).Remove(entityToDelete);
+            DomainContext.EntityContainer.GetEntitySet(typeof(TEntity)).Remove(entityToDelete);
 
             base.DeleteEntity(entityToDelete);
         }

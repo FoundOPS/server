@@ -322,9 +322,9 @@ namespace FoundOps.SLClient.Data.ViewModels
         protected virtual bool DomainContextHasRelatedChanges()
         {
             return
-                (Context.EntityContainer.GetChanges().AddedEntities.Contains(SelectedEntity) ||
-                 Context.EntityContainer.GetChanges().ModifiedEntities.Count > 0 ||
-                 Context.EntityContainer.GetChanges().RemovedEntities.Count > 0);
+                (DomainContext.EntityContainer.GetChanges().AddedEntities.Contains(SelectedEntity) ||
+                 DomainContext.EntityContainer.GetChanges().ModifiedEntities.Count > 0 ||
+                 DomainContext.EntityContainer.GetChanges().RemovedEntities.Count > 0);
         }
 
         // IPreventNavigationFrom

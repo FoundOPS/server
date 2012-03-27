@@ -28,7 +28,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                             var vehicleContext = ContextManager.GetContext<Vehicle>();
                                             var vehicleContextId = vehicleContext != null ? vehicleContext.Id : Guid.Empty;
 
-                                            return Context.GetRouteLogForServiceProviderQuery(roleId, employeeContextId, vehicleContextId);
+                                            return DomainContext.GetRouteLogForServiceProviderQuery(roleId, employeeContextId, vehicleContextId);
                                         }, null, false, VirtualItemCountLoadBehavior.LoadAfterManyRelationContextChanges);
         }
 

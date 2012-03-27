@@ -140,7 +140,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Setup the ServiceTemplate Context
             serviceTemplateContext.Fields.Add(fieldToAdd);
-            this.Context.Fields.Add(fieldToAdd);
+            this.DomainContext.Fields.Add(fieldToAdd);
 
             return fieldToAdd;
         }

@@ -177,11 +177,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            SetupTopEntityDataLoading(roleId => Context.GetClientsForRoleQuery(ContextManager.RoleId));
+            SetupTopEntityDataLoading(roleId => DomainContext.GetClientsForRoleQuery(ContextManager.RoleId));
 
             //Whenever the client changes load the contact info
             SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Subscribe(selectedClient =>
-                Context.Load(Context.GetContactInfoSetQuery().Where(c => c.PartyId == selectedClient.Id)));
+                DomainContext.Load(DomainContext.GetContactInfoSetQuery().Where(c => c.PartyId == selectedClient.Id)));
 
             //Service templates are required for adding. So disable CanAdd until they are loaded.
             ContextManager.ServiceTemplatesLoading.Select(loading => !loading).Subscribe(CanAddSubject);
@@ -199,7 +199,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override Client AddNewEntity(object commandParameter)
         {
             var newClient = (Client)this.QueryableCollectionView.AddNew();
-            Context.Clients.Add(newClient);
+            DomainContext.Clients.Add(newClient);
             return newClient;
         }
 

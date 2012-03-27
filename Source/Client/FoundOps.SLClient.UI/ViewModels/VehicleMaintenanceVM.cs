@@ -37,7 +37,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
-            SetupContextDataLoading(roleId => Context.GetVehicleMaintenanceLogForPartyQuery(roleId),
+            SetupContextDataLoading(roleId => DomainContext.GetVehicleMaintenanceLogForPartyQuery(roleId),
                                     new[]
                                         {
                                             new ContextRelationshipFilter
