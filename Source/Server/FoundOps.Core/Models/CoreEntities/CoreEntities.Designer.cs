@@ -997,7 +997,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="numberOfOccurrences">No Metadata Documentation available.</param>
         /// <param name="getPrevious">No Metadata Documentation available.</param>
         /// <param name="getNext">No Metadata Documentation available.</param>
-        public ObjectResult<GeneratedOrExistingServices> GetServicesBasedOnProvider(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> firstDateToLookForServices, Nullable<global::System.Int32> numberOfOccurrences, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
+        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> firstDateToLookForServices, Nullable<global::System.Int32> numberOfOccurrences, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
         {
             ObjectParameter serviceProviderIdContextParameter;
             if (serviceProviderIdContext.HasValue)
@@ -1069,7 +1069,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
             }
     
-            return base.ExecuteFunction<GeneratedOrExistingServices>("GetServicesBasedOnProvider", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateToLookForServicesParameter, numberOfOccurrencesParameter, getPreviousParameter, getNextParameter);
+            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateToLookForServicesParameter, numberOfOccurrencesParameter, getPreviousParameter, getNextParameter);
         }
 
         #endregion
@@ -12063,26 +12063,22 @@ namespace FoundOps.Core.Models.CoreEntities
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="GeneratedOrExistingServices")]
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="ServiceHolder")]
     [DataContractAttribute(IsReference=true)]
     [Serializable()]
-    public partial class GeneratedOrExistingServices : ComplexObject
+    public partial class ServiceHolder : ComplexObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new GeneratedOrExistingServices object.
+        /// Create a new ServiceHolder object.
         /// </summary>
-        /// <param name="recurringServiceId">Initial value of the RecurringServiceId property.</param>
-        /// <param name="serviceId">Initial value of the ServiceId property.</param>
         /// <param name="occurDate">Initial value of the OccurDate property.</param>
-        public static GeneratedOrExistingServices CreateGeneratedOrExistingServices(global::System.Guid recurringServiceId, global::System.Guid serviceId, global::System.DateTime occurDate)
+        public static ServiceHolder CreateServiceHolder(global::System.DateTime occurDate)
         {
-            GeneratedOrExistingServices generatedOrExistingServices = new GeneratedOrExistingServices();
-            generatedOrExistingServices.RecurringServiceId = recurringServiceId;
-            generatedOrExistingServices.ServiceId = serviceId;
-            generatedOrExistingServices.OccurDate = occurDate;
-            return generatedOrExistingServices;
+            ServiceHolder serviceHolder = new ServiceHolder();
+            serviceHolder.OccurDate = occurDate;
+            return serviceHolder;
         }
 
         #endregion
@@ -12092,9 +12088,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Guid RecurringServiceId
+        public Nullable<global::System.Guid> RecurringServiceId
         {
             get
             {
@@ -12109,16 +12105,16 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnRecurringServiceIdChanged();
             }
         }
-        private global::System.Guid _RecurringServiceId;
-        partial void OnRecurringServiceIdChanging(global::System.Guid value);
+        private Nullable<global::System.Guid> _RecurringServiceId;
+        partial void OnRecurringServiceIdChanging(Nullable<global::System.Guid> value);
         partial void OnRecurringServiceIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Guid ServiceId
+        public Nullable<global::System.Guid> ServiceId
         {
             get
             {
@@ -12133,8 +12129,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnServiceIdChanged();
             }
         }
-        private global::System.Guid _ServiceId;
-        partial void OnServiceIdChanging(global::System.Guid value);
+        private Nullable<global::System.Guid> _ServiceId;
+        partial void OnServiceIdChanging(Nullable<global::System.Guid> value);
         partial void OnServiceIdChanged();
     
         /// <summary>
@@ -12160,6 +12156,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.DateTime _OccurDate;
         partial void OnOccurDateChanging(global::System.DateTime value);
         partial void OnOccurDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ServiceName
+        {
+            get
+            {
+                return _ServiceName;
+            }
+            set
+            {
+                OnServiceNameChanging(value);
+                ReportPropertyChanging("ServiceName");
+                _ServiceName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ServiceName");
+                OnServiceNameChanged();
+            }
+        }
+        private global::System.String _ServiceName;
+        partial void OnServiceNameChanging(global::System.String value);
+        partial void OnServiceNameChanged();
 
         #endregion
 

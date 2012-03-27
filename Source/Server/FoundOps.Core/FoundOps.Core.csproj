@@ -223,7 +223,7 @@
     <Content Include="Models\CoreEntities\SQL\PartiesWithName.sql" />
     <Content Include="Models\CoreEntities\SQL\SchedulerSubFunctions.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteUserAccountBasedOnId.sql" />
-    <Content Include="Models\CoreEntities\SQL\GetServicesFunction.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetServiceHolders.sql" />
     <Content Include="Models\CoreEntities\SQL\ServiceTemplatesWithVendorId.sql" />
   </ItemGroup>
   <ItemGroup>
