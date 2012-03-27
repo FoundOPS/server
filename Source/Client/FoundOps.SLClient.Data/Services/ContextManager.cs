@@ -223,7 +223,9 @@ namespace FoundOps.SLClient.Data.Services
         private void SetupCurrentAccountRoleProperties()
         {
             //Subcribe _roleIdObservable to the distinct RoleIdObserver changes
-            ((Subject<Guid>)RoleIdObserver).DistinctUntilChanged().Subscribe(_roleIdObservable);
+            //Throttle for .1 seconds so the controls can unload and their ObservationState can be reset to Suspended
+            ((Subject<Guid>)RoleIdObserver).DistinctUntilChanged().Throttle(TimeSpan.FromSeconds(.1))
+                .Subscribe(_roleIdObservable);
 
             _roleId = RoleIdObservable.ToProperty(this, x => x.RoleId);
 

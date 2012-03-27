@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System.Diagnostics;
 using System.Reactive.Linq;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
-using ReactiveUI;
 using System;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -44,7 +43,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public ServicesVM()
         {
-            ////It doesn't seem to need it on this VM
+            //It doesn't seem to need it on this VM
             //KeepTrackLastSelectedEntity = false;
             SetupDataLoading();
 
@@ -58,26 +57,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Initially load ServiceHolders for today
             IsLoadingSubject.OnNext(true);
 
-            ContextManager.RoleIdObservable.Subscribe(roleId =>
+            //Whenever the RoleId changes and this is visible, load the ServiceHolders
+            SetupExecuteObservable().Subscribe(roleId =>
                 this.DataManager.LoadCollection(ServiceHolderQueryForContext(DateTime.Now, true, true),
                 loadedServiceHolders =>
                 {
                     IsLoadingSubject.OnNext(false);
                     CollectionViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(loadedServiceHolders).View);
                 }));
-
-            //Setup Filters whenever the CollectionViewObservable updates
-            CollectionViewObservable.Subscribe(cvo =>
-            {
-                CollectionView.SortDescriptions.Add(new SortDescription("OccurDate", ListSortDirection.Ascending));
-                //CollectionView.SortDescriptions.Add(new SortDescription("ServiceName", ListSortDirection.Ascending));
-                //CollectionView.SortDescriptions.Add(new SortDescription("Client.DisplayName", ListSortDirection.Ascending));
-            });
-
-            ////Instantiate the DomainCollectionView wrapping _visibleServices
-            //CollectionViewObservable.OnNext(new DomainCollectionViewFactory<Service>(_visibleServices).View);
-
-
 
             //var canSaveDiscard = this.WhenAny(x => x.SelectedEntity, x => x.SelectedEntity.ServiceIsNew,
             //                                   x => x.SelectedEntity.ServiceHasChanges, (selectedEntity, serviceIsNew, serviceHasChanges) =>
@@ -352,7 +339,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private bool _canMoveBackward;
         private bool _pushBackwardSwitch;
-        internal bool PushBackGeneratedServices()
+        /// <summary>
+        /// A method to load the previous day of services.
+        /// </summary>
+        internal void PushBackServices(Action completeCallback)
         {
             ////If this cannot move backwards, or if the last service generation was within 2 seconds return false
             ////This is to give ServicesGrid some time to move the selection to the middle
@@ -367,12 +357,15 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //_updateVisibleServicesTimer.Change(250, Timeout.Infinite);
 
-            return true;
+            completeCallback();
         }
 
         private bool _canMoveForward;
         private bool _pushForwardSwitch;
-        internal bool PushForwardGeneratedServices()
+        /// <summary>
+        /// A method to load the next day of services.
+        /// </summary>
+        internal void PushForwardServices(Action completeCallback)
         {
             //    //If this cannot move forwards, or if the last service generation was within 2 seconds return false
             //    //This is to give ServicesGrid some time to move the selection to the middle
@@ -386,7 +379,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //    IsLoadingSubject.OnNext(true);
             //    _updateVisibleServicesTimer.Change(250, Timeout.Infinite);
 
-            return true;
+            completeCallback();
         }
 
         #endregion

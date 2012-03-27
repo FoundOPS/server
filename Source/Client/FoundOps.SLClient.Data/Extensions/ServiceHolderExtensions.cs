@@ -1,15 +1,84 @@
-﻿using System.Linq;
-using System.ServiceModel.DomainServices.Client;
-using RiaServicesContrib;
-using FoundOps.Common.Silverlight.Interfaces;
+﻿using FoundOps.Common.Silverlight.Interfaces;
+using FoundOps.Common.Silverlight.UI.Interfaces;
+using FoundOps.SLClient.Data.Services;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class ServiceHolder : IRaiseValidationErrors, IReject
+    public partial class ServiceHolder : ILoadDetails, IRaiseValidationErrors, IReject
     {
+        #region Public Properties
+
+        #region Implementation of ILoadDetails
+
+        private bool _detailsLoaded;
+        /// <summary>
+        /// Gets or sets a value indicating whether [details loaded].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DetailsLoaded
+        {
+            get { return _detailsLoaded; }
+            set
+            {
+                _detailsLoaded = value;
+                this.RaisePropertyChanged("DetailsLoaded");
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// The loaded or generated service.
+        /// </summary>
+        public Service Service { get; set; }
+
+        #endregion
+
+        #region Logic
+
+        #region Public
+
+        /// <summary>
+        /// Raise validation errors for this entity.
+        /// </summary>
+        public void RaiseValidationErrors()
+        {
+            this.BeginEdit();
+            this.EndEdit();
+        }
+
+        /// <summary>
+        /// Rejects the changes of this individual entity.
+        /// </summary>
+        public void Reject()
+        {
+            this.RejectChanges();
+        }
+
+        /// <summary>
+        /// Load or generate the Service.
+        /// </summary>
+        public void LoadDetails()
+        {
+            if (ServiceId != null)
+            {
+                Manager.Data.LoadSingle(Manager.CoreDomainContext.GetServiceDetails());
+            }
+
+        }
+
+        #endregion
+
+        #endregion
+
+
+        #region Service Changes logic
+
         //private bool _trackingChanges;
 
         //private bool _serviceHasChanges;
@@ -87,15 +156,6 @@ namespace FoundOps.Core.Models.CoreEntities
         //    }
         //}
 
-        public void RaiseValidationErrors()
-        {
-            this.BeginEdit();
-            this.EndEdit();
-        }
-
-        public void Reject()
-        {
-            this.RejectChanges();
-        }
+        #endregion
     }
 }

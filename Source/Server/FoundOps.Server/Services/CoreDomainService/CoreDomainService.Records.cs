@@ -240,7 +240,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #endregion
 
-        #region Employees
+        #region Employee
 
         /// <summary>
         /// Gets the Employees the current role has access to.

@@ -72,6 +72,26 @@ namespace FoundOps.Server.Services.CoreDomainService
                 .AsQueryable();
         }
 
+        /// <summary>
+        /// Gets the service details.
+        /// It includes the Client and ServiceTemplate.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="serviceId">The service id.</param>
+        public Location GetServiceDetailsForRole(Guid roleId, Guid serviceId)
+        {
+            //Load the ServiceTemplate for the Service
+            GetServiceTemplateDetailsForRole(roleId, serviceId);
+
+            var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
+
+            var location = ObjectContext.Locations.Where(l => l.Id == locationId && l.OwnerPartyId == partyForRole.Id)
+                .Include("Party.ClientOwner").Include("Region").Include("SubLocations").Include("ContactInfoSet").FirstOrDefault();
+
+            return location;
+        }
+
+
         public IEnumerable<Service> GetServicesForRole(Guid roleId)
         {
             return GetExistingServicesForRole(roleId, Guid.Empty, Guid.Empty, Guid.Empty);
