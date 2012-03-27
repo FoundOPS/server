@@ -368,7 +368,7 @@
         <Function Name="GetServiceHolders" IsComposable="false">
           <CommandText>
             SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
-            FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @firstDateToLookForServices, @numberOfOccurrences, @getPrevious, @getNext)
+            FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
           </CommandText>
           <Parameter Name="serviceProviderIdContext"
                      Mode="In"
@@ -379,10 +379,10 @@
           <Parameter Name="recurringServiceIdContext"
                      Mode="In"
                      Type="uniqueidentifier"/>
-          <Parameter Name="firstDateToLookForServices"
+          <Parameter Name="seedDate"
                      Mode="In"
                      Type="datetime"/>
-          <Parameter Name="numberOfOccurrences"
+          <Parameter Name="frontBackMinimum"
                      Mode="In"
                      Type="int"/>
           <Parameter Name="getPrevious"
