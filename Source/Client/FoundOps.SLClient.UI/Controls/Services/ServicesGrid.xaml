@@ -9,7 +9,7 @@
         <Services1:ServiceStyleSelector x:Key="ServiceStyleSelector" />
     </UserControl.Resources>
     <Grid>
-        <telerik:RadGridView x:Name="ServicesRadGridView" AutoGenerateColumns="False" CanUserSortColumns="False" EnableRowVirtualization="True" 
+        <telerik:RadGridView x:Name="ServicesRadGridView" AutoGenerateColumns="False" CanUserSortColumns="False"
                              IsReadOnly="True" IsFilteringAllowed="False"  RowIndicatorVisibility="Collapsed" ShowGroupPanel="False"
                              SelectionMode="Single" SelectionUnit="FullRow" RowStyleSelector="{StaticResource ServiceStyleSelector}"
                              SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding CollectionView}">

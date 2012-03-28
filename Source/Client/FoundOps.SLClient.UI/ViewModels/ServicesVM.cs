@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
-using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
@@ -23,6 +21,14 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("ServicesVM")]
     public class ServicesVM : InfiniteAccordionVM<ServiceHolder>
     {
+        #region Public Properties
+
+        /// <summary>
+        /// The last loaded time.
+        /// </summary>
+        public DateTime LastLoad { get; private set; }
+
+        #endregion
         //private bool _contextChanged;
         //private bool ContextChanged
         //{
@@ -53,7 +59,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //KeepTrackLastSelectedEntity = false;
             SetupDataLoading();
 
-            TrackContext();
+            //TrackContext();
         }
 
         #region Data Loading
@@ -64,11 +70,41 @@ namespace FoundOps.SLClient.UI.ViewModels
         readonly Subject<bool> _cancelLastDetailsLoad = new Subject<bool>();
         private void SetupDataLoading()
         {
-            //Initially load ServiceHolders for today
-            IsLoadingSubject.OnNext(true);
+            //Load the ServiceHolders whenever
+            //a) the RoleId changes and this is visible 
+            //b) the ClosestContext changes
+            //c) whenever this becomes the DetailsView (so there are enough)
+            SetupExecuteObservable().AsGeneric()
+                //Skip the first closest context because it is null
+            .Merge(ContextManager.ClosestContextContextObservable(new[] { typeof(RecurringService), typeof(Client) }).Skip(1).AsGeneric())
+            .Merge(this.ContextManager.CurrentContextProviderObservable.DistinctUntilChanged().Where(contextProvider => contextProvider == this).AsGeneric())
+            .ObserveOnDispatcher()
+            .Subscribe(roleId => LoadServiceHolders(ServiceHoldersLoad.InitialLoad));
 
-            //Whenever the RoleId changes and this is visible load the ServiceHolders
-            SetupExecuteObservable().ObserveOnDispatcher().Subscribe(roleId => LoadServiceHolders(ServiceHoldersLoad.InitialLoad, null));
+            ////Whenever this becomes DetailsView:
+            ////a) update the generated services so there are enough 
+            ////b) track the SelectedEntity
+            //this.ContextManager.CurrentContextProviderObservable.DistinctUntilChanged()
+            //    .Where(contextProvider => contextProvider == this).SubscribeOnDispatcher().Subscribe(_ =>
+            //    {
+            //        var selectedEntity = SelectedEntity;
+            //        //a) update the generated services so there are enough
+            //        //Initially load ServiceHolders for today
+            //        IsLoadingSubject.OnNext(true);
+            //        this.DataManager.LoadCollection(ServiceHolderQueryForContext(DateTime.Now, true, true), loadedServiceHolders =>
+            //        {
+            //            IsLoadingSubject.OnNext(false);
+            //            CollectionViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(loadedServiceHolders).View);
+            //            SelectedEntity = Collection.FirstOrDefault(sh => sh.Equals(selectedEntity));
+            //        });
+
+            //        //b) track the SelectedEntity
+            //        //TrackSelectedEntity();
+            //    });
+
+            ////Regenerate the Services when the current RecurringServiceContext.Repeat changes
+            //recurringServiceContextObservable.WhereNotNull().SelectLatest(rs => rs.RepeatChangedObservable())
+            //    .Subscribe(_ => ContextChanged = true);
 
             SelectedEntityObservable.Where(se => se != null).Subscribe(selectedEntity => selectedEntity.LoadDetails(_cancelLastDetailsLoad));
 
@@ -84,16 +120,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Whenever this is pushed, the last ServiceHolders load should cancel
         /// </summary>
         readonly Subject<bool> _cancelLastServiceHoldersLoad = new Subject<bool>();
-
-        /// <summary>
-        /// The last loaded seed date.
-        /// </summary>
-        private DateTime _lastSeedDate = DateTime.Now;
-
-        /// <summary>
-        /// The last load type.
-        /// </summary>
-        private ServiceHoldersLoad _lastLoadType = ServiceHoldersLoad.InitialLoad;
 
         /// <summary>
         /// This is the first available service date for the current context.
@@ -140,19 +166,15 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        //True when a load is in progres
-        private bool _loadingServiceHolders;
-
         /// <summary>
         /// Loads the ServiceHolders based on the current context.
         /// </summary>
         /// <param name="loadType">The type of load to perform</param>
         /// <param name="completedCallback">Called when the load is completed.</param>
-        private void LoadServiceHolders(ServiceHoldersLoad loadType, Action<IEnumerable<ServiceHolder>> completedCallback)
+        private void LoadServiceHolders(ServiceHoldersLoad loadType, Action<IEnumerable<ServiceHolder>> completedCallback = null)
         {
             //Cancel the last service holders load if it is still running
             _cancelLastServiceHoldersLoad.OnNext(true);
-            _loadingServiceHolders = true;
 
             //Notify this is loading
             IsLoadingSubject.OnNext(true);
@@ -170,7 +192,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                         var earliestServiceHolder = Collection.FirstOrDefault();
 
                         if (earliestServiceHolder != null)
-                            seedDate = earliestServiceHolder.OccurDate.AddDays(-1);
+                            seedDate = earliestServiceHolder.OccurDate;
                     }
                     break;
                 //If this is moving forwards set the seed date to the latest occur date of the collection
@@ -202,22 +224,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             else if (clientContext != null) //If there is none try to get a client context
                 clientContextId = clientContext.Id;
 
-            var minimumOccurrencesToLoad = recurringServiceContext != null || clientContext != null
-                                            ? 20 //If there is a context load at least 20 service holders on the front/back/both
-                                            : 100; //otherwise load at least 100 service holders on the front/back/both
-
             #endregion
 
-            //Load ServiceHolders previous to the seedDate
-            //It will return at least the minimumOccurrencesToLoad previous to the seedDate (or as many as there are)
-            var getPrevious = loadType == ServiceHoldersLoad.Backwards || loadType == ServiceHoldersLoad.InitialLoad;
+            //This is not in details view load at least 100 service holders on the front/back
+            //Otherwise load at least 10 on the front/back
+            var minimumOccurrencesToLoad = IsInDetailsView ? 100 : 10;
 
-            //Load ServiceHolders after the first date on or after the seedDate
-            //It will return at least the minimumOccurrencesToLoad after the first date on or after the seedDate (or as many as there are)
-            var getNext = loadType == ServiceHoldersLoad.Forwards || loadType == ServiceHoldersLoad.InitialLoad;
-
-            var query = this.DomainContext.GetServiceHoldersQuery(ContextManager.RoleId, recurringServiceContextId, clientContextId,
-                seedDate, minimumOccurrencesToLoad, getPrevious, getNext);
+            var query = this.DomainContext.GetServiceHoldersQuery(ContextManager.RoleId, clientContextId, recurringServiceContextId,
+                seedDate, minimumOccurrencesToLoad, true, true);
 
             #endregion
 
@@ -227,10 +241,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             .ContinueWith(task =>
             {
                 if (task.IsCanceled || !task.Result.Any())
+                {
+                    IsLoadingSubject.OnNext(false);
                     return;
-
-                _lastSeedDate = seedDate;
-                _lastLoadType = loadType;
+                }
 
                 var earliest = task.Result.FirstOrDefault();
                 var latest = task.Result.LastOrDefault();
@@ -271,9 +285,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 #endregion
 
                 var itemsBeforeSeed = task.Result.Count(sh => sh.OccurDate < seedDate);
-                var itemsAfterClosestOnOrAfterSeed = 0;
-                if (closestOnOrAfterSeed != null)
-                    itemsAfterClosestOnOrAfterSeed = task.Result.Count(sh => sh.OccurDate > closestOnOrAfterSeed.OccurDate);
+                var itemsAfterClosestOnOrAfterSeed = task.Result.Count(sh => sh.OccurDate > seedDate);
 
                 //Check the results against the minimumOccurrencesToLoad 
                 //to determine if this can push further back or forward
@@ -313,12 +325,12 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Update the CollectionViewObservable with the new loaded ServiceHolders
                 CollectionViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(task.Result).View);
 
-                //Notify this has completed.
+                LastLoad = DateTime.Now;
+
+                //Notify this has completed
                 IsLoadingSubject.OnNext(false);
-                _loadingServiceHolders = false;
                 if (completedCallback != null)
                     completedCallback(task.Result);
-
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             #endregion
@@ -327,88 +339,54 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// A method to load the previous day of services.
         /// </summary>
-        /// <param name="completedCallback">Called when the load is completed.</param>
-        internal void PushBackServices(Action completedCallback)
+        internal void PushBackServices()
         {
             //Return if this cannot move backwards or if this is loading ServiceHolders
-            if (!CanMoveBackward || _loadingServiceHolders)
-            {
-                if (completedCallback != null)
-                    completedCallback();
-
+            if (!CanMoveBackward || IsLoading)
                 return;
-            }
 
-            LoadServiceHolders(ServiceHoldersLoad.Backwards, loaded =>
-            {
-                if (completedCallback != null)
-                    completedCallback();
-            });
+            LoadServiceHolders(ServiceHoldersLoad.Backwards);
         }
 
         /// <summary>
         /// A method to load the next day of services.
         /// </summary>
-        /// <param name="completedCallback">Called when the load is completed.</param>
-        internal void PushForwardServices(Action completedCallback)
+        internal void PushForwardServices()
         {
             //Return if this cannot move forwards or if this is loading ServiceHolders
-            if (!CanMoveForward || _loadingServiceHolders)
-            {
-                if (completedCallback != null)
-                    completedCallback();
-
+            if (!CanMoveForward || IsLoading)
                 return;
-            }
 
-            LoadServiceHolders(ServiceHoldersLoad.Forwards, loaded =>
-            {
-                if (completedCallback != null)
-                    completedCallback();
-            });
+            LoadServiceHolders(ServiceHoldersLoad.Forwards);
         }
 
         #endregion
 
-        private void TrackContext()
-        {
-            ////Whenever this becomes DetailsView:
-            ////a) update the generated services so there are enough 
-            ////b) track the SelectedEntity
-            //this.ContextManager.CurrentContextProviderObservable.DistinctUntilChanged()
-            //    .Where(contextProvider => contextProvider == this).SubscribeOnDispatcher().Subscribe(_ =>
-            //    {
-            //        var selectedEntity = SelectedEntity;
-            //        //a) update the generated services so there are enough
-            //        //Initially load ServiceHolders for today
-            //        IsLoadingSubject.OnNext(true);
-            //        this.DataManager.LoadCollection(ServiceHolderQueryForContext(DateTime.Now, true, true), loadedServiceHolders =>
-            //        {
-            //            IsLoadingSubject.OnNext(false);
-            //            CollectionViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(loadedServiceHolders).View);
-            //            SelectedEntity = Collection.FirstOrDefault(sh => sh.Equals(selectedEntity));
-            //        });
+        //private void TrackContext()
+        //{
+        //    ////Whenever this becomes DetailsView:
+        //    ////a) update the generated services so there are enough 
+        //    ////b) track the SelectedEntity
+        //    //this.ContextManager.CurrentContextProviderObservable.DistinctUntilChanged()
+        //    //    .Where(contextProvider => contextProvider == this).SubscribeOnDispatcher().Subscribe(_ =>
+        //    //    {
+        //    //        var selectedEntity = SelectedEntity;
+        //    //        //a) update the generated services so there are enough
+        //    //        //Initially load ServiceHolders for today
+        //    //        IsLoadingSubject.OnNext(true);
+        //    //        this.DataManager.LoadCollection(ServiceHolderQueryForContext(DateTime.Now, true, true), loadedServiceHolders =>
+        //    //        {
+        //    //            IsLoadingSubject.OnNext(false);
+        //    //            CollectionViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(loadedServiceHolders).View);
+        //    //            SelectedEntity = Collection.FirstOrDefault(sh => sh.Equals(selectedEntity));
+        //    //        });
 
-            //        //b) track the SelectedEntity
-            //        //TrackSelectedEntity();
-            //    });
+        //    //        //b) track the SelectedEntity
+        //    //        //TrackSelectedEntity();
+        //    //    });
+        //}
 
 
-
-            //var clientContextSubject = ContextManager.GetContextObservable<Client>();
-            //var locationContextObservable = ContextManager.GetContextObservable<Location>();
-            //var recurringServiceContextObservable = ContextManager.GetContextObservable<RecurringService>();
-
-            ////Whenever one of the specific context changes, update ContextChanged
-            //clientContextSubject.AsGeneric()
-            //.Merge(locationContextObservable.AsGeneric())
-            //.Merge(recurringServiceContextObservable.AsGeneric())
-            //.SubscribeOnDispatcher().Subscribe(_ => ContextChanged = true);
-
-            ////Regenerate the Services when the current RecurringServiceContext.Repeat changes
-            //recurringServiceContextObservable.WhereNotNull().SelectLatest(rs => rs.RepeatChangedObservable())
-            //    .Subscribe(_ => ContextChanged = true);
-        }
 
         #endregion
 

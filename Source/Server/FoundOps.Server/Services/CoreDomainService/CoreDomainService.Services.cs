@@ -1,4 +1,5 @@
-﻿using FoundOps.Core.Models.CoreEntities;
+﻿using System.Data.Entity;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.Server.Authentication;
 using System;
@@ -74,7 +75,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         /// <summary>
         /// Gets the service details.
-        /// It includes the Client and the ServiceTemplate and Fields.
+        /// It includes the Client/Client.OwnedParty and the ServiceTemplate and Fields.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="serviceId">The service id.</param>
@@ -82,7 +83,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var service = this.ObjectContext.Services.Include("Client")
+            var service = this.ObjectContext.Services.Include(s => s.Client.OwnedParty)
                 .FirstOrDefault(s => s.Id == serviceId && s.ServiceProviderId == businessForRole.Id);
 
             //Load the ServiceTemplate for the Service
@@ -167,23 +168,24 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// Gets the RecurringServices for the roleId.
         /// </summary>
         /// <param name="roleId">The role to determine the business account from.</param>
-        public IEnumerable<RecurringService> GetRecurringServicesForServiceProviderOptimized(Guid roleId)
+        public IQueryable<RecurringService> GetRecurringServicesForServiceProviderOptimized(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var recurringServices = this.ObjectContext.RecurringServices.Include("Client").Where(v => v.Client.VendorId == businessForRole.Id);
+            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.VendorId == businessForRole.Id);
             return recurringServices;
         }
 
         /// <summary>
         /// Gets the RecurringService details.
-        /// It includes the Client and the ServiceTemplate and Fields.
+        /// It includes the Client/Client.OwnedParty and the ServiceTemplate and Fields.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="recurringServiceId">The recurring service id.</param>
         public RecurringService GetRecurringServiceDetailsForRole(Guid roleId, Guid recurringServiceId)
         {
-            var recurringService = GetRecurringServicesForServiceProviderOptimized(roleId).FirstOrDefault(rs => rs.Id == recurringServiceId);
+            var recurringService = GetRecurringServicesForServiceProviderOptimized(roleId).Include(c => c.Client.OwnedParty)
+                .FirstOrDefault(rs => rs.Id == recurringServiceId);
 
             //Load the ServiceTemplate for the RecurringService
             GetServiceTemplateDetailsForRole(roleId, recurringServiceId);

@@ -116,18 +116,6 @@ namespace FoundOps.SLClient.Data.Services
         /// </value>
         public ObservableCollection<object> CurrentContext { get { return _currentContext.Value; } set { _currentContextSubject.OnNext(value); } }
 
-        /// <summary>
-        /// Gets the closest context of the types in order of the CurrentContextProvider.SelectedContext, then the last CurrentContext.
-        /// </summary>
-        /// <param name="types">The different types.</param>
-        public object ClosestContext(IEnumerable<Type> types)
-        {
-            if (CurrentContextProvider != null && CurrentContextProvider.SelectedContext != null
-                && types.Contains(CurrentContextProvider.SelectedContext.GetType()))
-                return CurrentContextProvider.SelectedContext;
-
-            return CurrentContext.LastOrDefault(context => types.Contains(context.GetType()));
-        }
 
         private readonly Subject<IProvideContext> _currentContextProviderSubject = new Subject<IProvideContext>();
         /// <summary>
@@ -323,6 +311,30 @@ namespace FoundOps.SLClient.Data.Services
             ContextChangedObservable.Throttle(new TimeSpan(0, 0, 0, 0, 250)).Subscribe(_ => clientContextSubject.OnNext(GetContext<T>()));
             //Only return the Distinct changes
             return clientContextSubject.DistinctUntilChanged().AsObservable();
+        }
+
+        /// <summary>
+        /// Gets the closest context of the types in order of the CurrentContextProvider.SelectedContext, then the last CurrentContext.
+        /// </summary>
+        /// <param name="types">The different types.</param>
+        public object ClosestContext(IEnumerable<Type> types)
+        {
+            if (CurrentContextProvider != null && CurrentContextProvider.SelectedContext != null
+                && types.Contains(CurrentContextProvider.SelectedContext.GetType()))
+                return CurrentContextProvider.SelectedContext;
+
+            return CurrentContext.LastOrDefault(context => types.Contains(context.GetType()));
+        }
+
+        /// <summary>
+        /// An observable which publishes whenever the closest context changes. Throttled every 250 milliseconds.
+        /// Gets the closest context of the types in order of the CurrentContextProvider.SelectedContext, then the last CurrentContext.
+        /// </summary>
+        public IObservable<object> ClosestContextContextObservable(IEnumerable<Type> types)
+        {
+            var closestContextSubject = new Subject<object>();
+            ContextChangedObservable.Throttle(new TimeSpan(0, 0, 0, 0, 250)).Subscribe(_ => closestContextSubject.OnNext(ClosestContext(types)));
+            return closestContextSubject.DistinctUntilChanged().AsObservable();
         }
 
         #endregion

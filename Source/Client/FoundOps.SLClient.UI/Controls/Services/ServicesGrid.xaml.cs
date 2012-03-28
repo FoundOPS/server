@@ -1,16 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
-using FoundOps.Common.Tools;
-using Telerik.Windows;
-using System.Windows.Media;
+﻿using FoundOps.Common.Tools;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
-using FoundOps.Core.Models.CoreEntities;
 using ItemsControlExtensions = FoundOps.Common.Silverlight.Tools.ItemsControlExtensions;
+using System;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Controls;
+using System.Windows;
+using System.Windows.Media;
+using Telerik.Windows;
 using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.GridView;
 
@@ -57,18 +56,16 @@ namespace FoundOps.SLClient.UI.Controls.Services
                         VM.Services.MoveToDetailsView.Execute(null);
                 }), true);
 
-
-            ////Whenever the selected ServiceHolder changes scroll it to the middle
-            ////Throttle by half a second so the grid can load
-            //VM.Services.SelectedEntityObservable.Throttle(TimeSpan.FromMilliseconds(500))
-            //    .ObserveOnDispatcher().Subscribe(ScrollToMiddle);
-
-            ////Whenever the RadGridView loads rows, make sure the SelectedEntity is in the middle
-            //ServicesRadGridView.RowLoaded += (s, e) =>
-            //{
-            //    if (_lastItemScrolledTo != VM.Services.SelectedEntity) 
-            //        ScrollToMiddle(VM.Services.SelectedEntity);
-            //};
+            //Scroll the SelectedEntity to the middle
+            //check whenever the RadGridView loads rows
+            //and when the selected ServiceHolder changes
+            Observable.FromEventPattern<EventHandler<RowLoadedEventArgs>, RowLoadedEventArgs>(h =>
+            ServicesRadGridView.RowLoaded += h, h => ServicesRadGridView.RowLoaded -= h).AsGeneric()
+            .Merge(VM.Services.SelectedEntityObservable.AsGeneric())
+            //Throttle so it is not called to often
+            .Throttle(TimeSpan.FromMilliseconds(200))
+            .SubscribeOnDispatcher().Select(_ => VM.Services.SelectedEntity)
+            .ObserveOnDispatcher().Subscribe(ScrollToMiddle);
 
             ////Listen to the latest selected service's occur date changes
             //VM.Services.SelectedEntityObservable.WhereNotNull().SelectLatest(service => Observable2.FromPropertyChangedPattern(service, x => x.OccurDate))
@@ -119,11 +116,6 @@ namespace FoundOps.SLClient.UI.Controls.Services
         }
 
         /// <summary>
-        //Wait to listen for scroll changes until last set of ServiceHolders is loaded.
-        /// </summary>
-        private bool _waitForLoad;
-
-        /// <summary>
         /// Setup the ServicesRadGridViewScrollViewer listener when nearing the beginning or end 
         /// of the scroll viewer to push the ServicesVM back or forward to show more items
         /// </summary>
@@ -131,13 +123,10 @@ namespace FoundOps.SLClient.UI.Controls.Services
         {
             ServicesRadGridViewScrollViewer.ScrollChanged += (s, args) =>
             {
-                //Wait to listen for scroll changes until last set of ServiceHolders is loaded
-                if (_waitForLoad)
+                //Only allow push forward or back if the ServicesVM is not loading and
+                //the last load was .5 second ago (allow time for the RadGridView to update)
+                if (VM.Services.IsLoading || DateTime.Now - VM.Services.LastLoad < TimeSpan.FromSeconds(.5))
                     return;
-
-                ////Only allow push forward or back after the current service has been scrolled to
-                //if (_lastItemScrolledTo != VM.Services.SelectedEntity)
-                //    return;
 
                 //Scrolled to the top
                 if (args.VerticalChange < 0 && ScrollBarPosition == ScrollBarPosition.Top)
@@ -147,8 +136,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
                     {
                         if (ScrollBarPosition != ScrollBarPosition.Top) return;
 
-                        _waitForLoad = true;
-                        VM.Services.PushBackServices(() => _waitForLoad = false);
+                        VM.Services.PushBackServices();
                         //Debug.WriteLine("Scroll to Top");
                     });
                 }
@@ -161,8 +149,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
                     {
                         if (ScrollBarPosition != ScrollBarPosition.Bottom) return;
 
-                        _waitForLoad = true;
-                        VM.Services.PushForwardServices(() => _waitForLoad = false);
+                        VM.Services.PushForwardServices();
                         //Debug.WriteLine("Scroll to Bottom");
                     });
                 }
@@ -172,7 +159,9 @@ namespace FoundOps.SLClient.UI.Controls.Services
         private object _lastItemScrolledTo;
         private void ScrollToMiddle(object item)
         {
-            if (item == null) return;
+            if (item == null || _lastItemScrolledTo == item) return;
+
+            _lastItemScrolledTo = item;
 
             //ScrollIntoViewAsync to scroll the selected item to the top
             ServicesRadGridView.ScrollIntoViewAsync(item, r =>
