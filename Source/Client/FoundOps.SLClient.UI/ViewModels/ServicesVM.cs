@@ -250,11 +250,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var latest = task.Result.LastOrDefault();
                 var closestBeforeSeed = task.Result.LastOrDefault(sh => sh.OccurDate < seedDate);
                 var closestOnOrAfterSeed = task.Result.FirstOrDefault(sh => sh.OccurDate >= seedDate);
-                ServiceHolder closestAfterSeed = null;
-                if (closestOnOrAfterSeed != null)
-                    closestAfterSeed = task.Result.FirstOrDefault(sh => sh.OccurDate > closestOnOrAfterSeed.OccurDate);
 
                 #region Select the closest ServiceHolder for the query
+
+
 
                 switch (loadType)
                 {
@@ -275,10 +274,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //Otherwise try to select the closest ServiceHolder on or after the seed date
                     //Otherwise try to select the closest ServiceHolder before the seed date
                     case ServiceHoldersLoad.Forwards:
-                        if (closestOnOrAfterSeed != null)
-                            SelectedEntity = closestAfterSeed ?? closestOnOrAfterSeed;
-                        else
-                            SelectedEntity = closestBeforeSeed;
+                        SelectedEntity = closestOnOrAfterSeed ?? closestBeforeSeed;
                         break;
                 }
 

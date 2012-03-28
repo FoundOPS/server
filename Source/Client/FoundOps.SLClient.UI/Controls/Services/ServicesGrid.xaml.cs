@@ -57,13 +57,13 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 }), true);
 
             //Scroll the SelectedEntity to the middle
-            //check whenever the RadGridView loads rows
-            //and when the selected ServiceHolder changes
-            Observable.FromEventPattern<EventHandler<RowLoadedEventArgs>, RowLoadedEventArgs>(h =>
-            ServicesRadGridView.RowLoaded += h, h => ServicesRadGridView.RowLoaded -= h).AsGeneric()
+            //a) after the ServicesRadGridView's data is loaded
+            //b) when the selected ServiceHolder changes
+            Observable.FromEventPattern<EventHandler<EventArgs>, EventArgs>(h =>
+            ServicesRadGridView.DataLoaded += h, h => ServicesRadGridView.DataLoaded -= h).AsGeneric()
             .Merge(VM.Services.SelectedEntityObservable.AsGeneric())
             //Throttle so it is not called to often
-            .Throttle(TimeSpan.FromMilliseconds(200))
+            .Throttle(TimeSpan.FromMilliseconds(250))
             .SubscribeOnDispatcher().Select(_ => VM.Services.SelectedEntity)
             .ObserveOnDispatcher().Subscribe(ScrollToMiddle);
 
@@ -80,9 +80,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
             //    });
         }
 
-        #region Logic
-
-        #region Setup Scrolling
+        #region Scrolling Logic
 
         private GridViewScrollViewer _servicesRadGridViewScrollViewer;
         private GridViewScrollViewer ServicesRadGridViewScrollViewer
@@ -115,6 +113,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
             }
         }
 
+        private bool _scrollHandled = true;
         /// <summary>
         /// Setup the ServicesRadGridViewScrollViewer listener when nearing the beginning or end 
         /// of the scroll viewer to push the ServicesVM back or forward to show more items
@@ -123,9 +122,12 @@ namespace FoundOps.SLClient.UI.Controls.Services
         {
             ServicesRadGridViewScrollViewer.ScrollChanged += (s, args) =>
             {
-                //Only allow push forward or back if the ServicesVM is not loading and
-                //the last load was .5 second ago (allow time for the RadGridView to update)
-                if (VM.Services.IsLoading || DateTime.Now - VM.Services.LastLoad < TimeSpan.FromSeconds(.5))
+                _scrollHandled = false;
+                //Only allow push forward or back if all of the conditions are satisfied
+                //a) this control is not automatically scrolling an item to the middle
+                //b) the ServicesVM is not loading
+                //c) the last load was 1 second ago (allow time for the RadGridView to update)
+                if (_forceScrolling || VM.Services.IsLoading || DateTime.Now - VM.Services.LastLoad < TimeSpan.FromSeconds(1))
                     return;
 
                 //Scrolled to the top
@@ -156,25 +158,32 @@ namespace FoundOps.SLClient.UI.Controls.Services
             };
         }
 
-        private object _lastItemScrolledTo;
+        //Keep track of when this control is force scrolling an item into the middle
+        //to prevent triggering PushBackServices & PushForwardServices
+        private bool _forceScrolling;
         private void ScrollToMiddle(object item)
         {
-            if (item == null || _lastItemScrolledTo == item) return;
-
-            _lastItemScrolledTo = item;
+            if (item == null) return;
+            _forceScrolling = true;
 
             //ScrollIntoViewAsync to scroll the selected item to the top
             ServicesRadGridView.ScrollIntoViewAsync(item, r =>
             {
                 //Find the container
                 var container = ServicesRadGridView.ItemContainerGenerator.ContainerFromItem(item) as UIElement;
-                if (container == null) return;
-
+                if (container == null)
+                {
+                    _forceScrolling = false;
+                    return;
+                }
                 //Now find the middle, and scroll to it
                 //Compute the center point of the container relative to the scrollInfo 
                 Size size = container.RenderSize;
-                if (size.Width == 0 && size.Height == 0)
+                if (Math.Abs(size.Width - 0) < 1 && Math.Abs(size.Height - 0) < 1)
+                {
+                    _forceScrolling = false;
                     return;
+                }
                 Point center = container.TransformToVisual(ServicesRadGridViewScrollViewer).Transform(new Point(size.Width / 2, size.Height / 2));
                 center.Y += ServicesRadGridViewScrollViewer.VerticalOffset;
                 center.X += ServicesRadGridViewScrollViewer.HorizontalOffset;
@@ -189,11 +198,9 @@ namespace FoundOps.SLClient.UI.Controls.Services
                     row.Focus();
                 }
 
-                _lastItemScrolledTo = item;
+                _forceScrolling = false;
             });
         }
-
-        #endregion
 
         #endregion
     }
