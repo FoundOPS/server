@@ -156,8 +156,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var serviceProviderContextId = businessForRole.Id;
-
+            var serviceProviderContextId = businessForRole.Id; 
+ 
             return ObjectContext.GetUnroutedServicesForDate(serviceProviderContextId, serviceDate).AsQueryable();
         }
 

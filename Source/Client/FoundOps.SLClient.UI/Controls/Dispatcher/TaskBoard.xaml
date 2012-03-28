@@ -1,14 +1,14 @@
-﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard" x:Name="myJobBoard"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
-    xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" 
-    xmlns:telerikDragDrop="clr-namespace:Telerik.Windows.Controls.DragDrop;assembly=Telerik.Windows.Controls" xmlns:telerikGridElements="clr-namespace:Telerik.Windows.Controls.GridView;assembly=Telerik.Windows.Controls.GridView" 
-    xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" xmlns:Dispatcher1="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher" 
-    mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM" d:DesignWidth="400">
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.TaskBoard" x:Name="myJobBoard" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
+             xmlns:telerikDragDrop="clr-namespace:Telerik.Windows.Controls.DragDrop;assembly=Telerik.Windows.Controls" xmlns:telerikGridElements="clr-namespace:Telerik.Windows.Controls.GridView;assembly=Telerik.Windows.Controls.GridView"
+             xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="TaskBoardVM" d:DesignWidth="400">
     <Controls1:RadBusyIndicator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BusyContent="Loading Tasks" IsBusy="{Binding TasksLoading}">
         <Grid x:Name="LayoutRoot" Background="White">
-            <telerik:RadGridView x:Name="TaskBoardRadGridView" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" ItemsSource="{Binding UnroutedTasks}"
-                             SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Multiple" telerikDragDrop:RadDragAndDropManager.AllowDrag="True">
+            <telerik:RadGridView x:Name="TaskBoardRadGridView" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" IsFilteringAllowed="False"
+                                 SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Multiple" 
+                                 telerikDragDrop:RadDragAndDropManager.AllowDrag="True" ItemsSource="{Binding CollectionView}">
                 <telerik:RadGridView.RowStyle>
                     <Style TargetType="telerikGridElements:GridViewRow" x:Name="GridDragStyle">
                         <Setter Property="telerikDragDrop:RadDragAndDropManager.AllowDrag" Value="True"/>
@@ -16,49 +16,49 @@
                     </Style>
                 </telerik:RadGridView.RowStyle>
                 <telerik:RadGridView.Columns>
-                    <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}" IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}">
+                    <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding ServiceName}"> <!-- IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}"-->
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding ServiceName}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>
                         <telerik:GridViewDataColumn.CellEditTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding Name, Mode=TwoWay}"/>
+                                <TextBox Text="{Binding ServiceName, Mode=TwoWay}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellEditTemplate>
                     </telerik:GridViewDataColumn>
                     <!--<telerik:GridViewDataColumn Header="Region"/>-->
                     <!--Location Name-->
-                    <telerik:GridViewDataColumn Header="Location" DataMemberBinding="{Binding Location.Name}" IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}">
+                    <telerik:GridViewDataColumn Header="Location" DataMemberBinding="{Binding LocationName}"> <!--IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}"-->
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Location.Name}"/>
+                                <TextBlock Text="{Binding LocationName}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>
-                        <telerik:GridViewDataColumn.CellEditTemplate>
+                        <!--<telerik:GridViewDataColumn.CellEditTemplate>
                             <DataTemplate>
                                 <Controls:RadComboBox IsEditable="True" DisplayMemberPath="Name" SelectedItem="{Binding Location, Mode=TwoWay}" 
                                                       ItemsSource="{Binding LocationsVM.DomainCollectionView, RelativeSource={RelativeSource AncestorType=Dispatcher1:TaskBoard}}"/>
                             </DataTemplate>
-                        </telerik:GridViewDataColumn.CellEditTemplate>
+                        </telerik:GridViewDataColumn.CellEditTemplate>-->
                     </telerik:GridViewDataColumn>
                     <!--Region Name-->
-                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding Location.Region.Name}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding RegionName}" IsReadOnly="True"/>
                     <!--Location Address-->
-                    <telerik:GridViewDataColumn Header="Address" IsReadOnly="True" DataMemberBinding="{Binding Location.AddressLineOne}"/>
-                    <telerik:GridViewDataColumn Header="Client" SortMemberPath="Client.DisplayName" IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}" Width="*">
+                    <telerik:GridViewDataColumn Header="Address" IsReadOnly="True" DataMemberBinding="{Binding AddressLine}"/>
+                    <telerik:GridViewDataColumn Header="Client" SortMemberPath="ClientName" > <!--IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}" Width="*"-->
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Client.DisplayName}"/>
+                                <TextBlock Text="{Binding ClientName}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>
-                        <telerik:GridViewDataColumn.CellEditTemplate>
+                        <!--<telerik:GridViewDataColumn.CellEditTemplate>
                             <DataTemplate>
                                 <Controls:RadComboBox IsEditable="True" DisplayMemberPath="DisplayName" SelectedItem="{Binding Client, Mode=TwoWay}"
                                                       ItemsSource="{Binding ClientsVM.DomainCollectionView, RelativeSource={RelativeSource AncestorType=Dispatcher1:TaskBoard}}"/>
                             </DataTemplate>
-                        </telerik:GridViewDataColumn.CellEditTemplate>
+                        </telerik:GridViewDataColumn.CellEditTemplate>-->
                     </telerik:GridViewDataColumn>
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>

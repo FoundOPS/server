@@ -183,6 +183,17 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
+        /// Gets the TaskBoardVM.
+        /// </summary>
+        public static TaskBoardVM TaskBoard
+        {
+            get
+            {
+                return (TaskBoardVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("TaskBoardVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
         /// Gets the UserAccountsVM.
         /// </summary>
         public static UserAccountsVM UserAccounts

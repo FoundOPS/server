@@ -2,11 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation"
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
-             xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300" 
+             xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             xmlns:Converters="clr-namespace:FoundOps.SLClient.UI.Converters" mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300" 
              ViewModelLocator:ViewModelLocator.SharedViewModel="DispatcherFilterVM">
     <UserControl.Resources>
+        <Converters:CheckStateConverter x:Key="CheckStateConverter" />
         <Controls:ContainerBindingCollection x:Key="BindingsCollection">
-            <Controls:ContainerBinding PropertyName="IsChecked" Binding="{Binding IsSelected, Mode=TwoWay}" />
+            <Controls:ContainerBinding PropertyName="CheckState" Binding="{Binding IsSelected, Mode=TwoWay, Converter={StaticResource CheckStateConverter}}" />
         </Controls:ContainerBindingCollection>
         <Controls:HierarchicalDataTemplate x:Key="TreeViewItemTemplate" Controls:ContainerBinding.ContainerBindings="{StaticResource BindingsCollection}">
           <TextBlock Text="{Binding Entity.Name}" />
@@ -20,6 +22,7 @@
                 </telerik:RadPanelBarItem.Header>
                 <Grid Background="White">
                 <telerik:RadTreeView x:Name="RouteCapabilitiesTreeView" ItemsOptionListType="CheckList" IsOptionElementsEnabled="True"
+                                     Checked="RouteCapabilitiesTreeViewChecked" Unchecked="RouteCapabilitiesTreeViewUnchecked"
                                      ItemsSource="{Binding ServiceTemplateOptions}" ItemTemplate="{StaticResource TreeViewItemTemplate}" />
                 </Grid>
             </telerik:RadPanelBarItem>
@@ -28,8 +31,9 @@
                     <TextBlock Text="Regions" Margin="5,3" />
                 </telerik:RadPanelBarItem.Header>
                 <Grid Background="White">
-                    <telerik:RadTreeView x:Name="RegionsTreeView" ItemsOptionListType="CheckList" IsOptionElementsEnabled="True" 
-                                     ItemsSource="{Binding RegionOptions}" ItemTemplate="{StaticResource TreeViewItemTemplate}"/>
+                    <telerik:RadTreeView x:Name="RegionsTreeView" ItemsOptionListType="CheckList" IsOptionElementsEnabled="True"
+                                         Checked="RegionsTreeViewChecked" Unchecked="RegionsTreeViewUnchecked"
+                                         ItemsSource="{Binding RegionOptions}" ItemTemplate="{StaticResource TreeViewItemTemplate}"/>
                 </Grid>
             </telerik:RadPanelBarItem>
         </telerik:RadPanelBar>

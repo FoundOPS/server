@@ -394,7 +394,7 @@
         </Function>
         <Function Name="GetUnroutedServicesForDate" IsComposable="false">
           <CommandText>
-            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, AddressLine, Latitude, Longitude
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, LocationName, AddressLine, Latitude, Longitude
             FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
           </CommandText>
           <Parameter Name="serviceProviderContext"
@@ -3418,7 +3418,7 @@
           <Property Type="String" Name="ServiceName" Nullable="true" />
         </ComplexType>
         <ComplexType Name="TaskHolder" >
-          <Property Type="Guid" Name="ServiceTemplateId" Nullable="true" />
+          <Property Type="Guid" Name="RecurringServiceId" Nullable="true" />
           <Property Type="Guid" Name="ServiceId" Nullable="true" />
           <Property Type="String" Name="ServiceName" Nullable="true" />
           <Property Type="String" Name="ClientName" Nullable="true" />
@@ -3426,6 +3426,8 @@
           <Property Type="String" Name="AddressLine" Nullable="true" />
           <Property Type="Decimal" Name="Latitude" Nullable="true" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" />
+          <Property Type="DateTime" Name="OccurDate" Nullable="false" />
+          <Property Type="String" Name="LocationName" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3962,7 +3964,7 @@
           <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
-                <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
@@ -3970,6 +3972,8 @@
                 <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -1,14 +1,32 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Data;
-using System.Globalization;
-using System.Collections.Generic;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Automation;
+using System.Windows.Data;
+using System.Globalization;
 
 namespace FoundOps.SLClient.UI.Converters
 {
+    /// <summary>
+    /// Convert from true or false to a ToggleState
+    /// </summary>
+    public class CheckStateConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var result = (bool)value;
+            return result ? ToggleState.On : ToggleState.Off;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var state = (ToggleState)value;
+            return state == ToggleState.On;
+        }
+    }
+
     /// <summary>
     /// Allows the Filter to display the number of Route Tasks that fall under each ServiceType.
     /// Only RouteTasks from Routes with a SelectedRegion are counted.

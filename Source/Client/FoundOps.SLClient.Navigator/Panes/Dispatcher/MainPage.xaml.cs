@@ -74,13 +74,13 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             this.DependentWhenVisible(RoutesVM);
             this.DependentWhenVisible(RegionsVM);
 
-            RadDragAndDropManager.AddDragQueryHandler(this.TaskBoard, OnDragQuery);
-            RadDragAndDropManager.AddDropQueryHandler(this.TaskBoard, OnDropQuery);
-            RadDragAndDropManager.AddDragInfoHandler(this.TaskBoard, OnDragInfo);
-            RadDragAndDropManager.AddDropInfoHandler(this.TaskBoard, OnDropInfo);
+            //RadDragAndDropManager.AddDragQueryHandler(this.TaskBoard, OnDragQuery);
+            //RadDragAndDropManager.AddDropQueryHandler(this.TaskBoard, OnDropQuery);
+            //RadDragAndDropManager.AddDragInfoHandler(this.TaskBoard, OnDragInfo);
+            //RadDragAndDropManager.AddDropInfoHandler(this.TaskBoard, OnDropInfo);
 
-            RadDragAndDropManager.SetAllowDrag(this.TaskBoard, true);
-            RadDragAndDropManager.SetAllowDrop(this.TaskBoard, true);
+            //RadDragAndDropManager.SetAllowDrag(this.TaskBoard, true);
+            //RadDragAndDropManager.SetAllowDrop(this.TaskBoard, true);
 
             //Whenever a route, route destination, or task is selected select the appropriate details pane
             this.RoutesVM.FromAnyPropertyChanged()

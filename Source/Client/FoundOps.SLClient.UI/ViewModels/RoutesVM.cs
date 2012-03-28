@@ -337,31 +337,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        private readonly Subject<RouteTask> _selectedTaskSubject = new Subject<RouteTask>();
-        private readonly ObservableAsPropertyHelper<RouteTask> _selectedTask;
-        /// <summary>
-        /// The first selected task in the list of selected items. 
-        /// The list is either from the task board or route tree view, depending on what was selected last.
-        /// </summary>
-        public RouteTask SelectedTask { get { return _selectedTask.Value; } set { _selectedTaskSubject.OnNext(value); } }
-
-        private IEnumerable<RouteTask> _selectedTaskBoardTasks;
-
-        ///<summary>
-        /// The selected route tasks in the task board.
-        ///</summary>
-        public IEnumerable<RouteTask> SelectedTaskBoardTasks
-        {
-            get { return _selectedTaskBoardTasks; }
-            set
-            {
-                _selectedTaskBoardTasks = value;
-                this.RaisePropertyChanged("SelectedTaskBoardTasks");
-
-                SelectedTask = SelectedTaskBoardTasks == null ? null : SelectedTaskBoardTasks.FirstOrDefault();
-            }
-        }
-
         #endregion
 
         #region Sub ViewModels
@@ -520,7 +495,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             #region Setup SelectedItems properties
 
             _selectedRouteDestination = _selectedRouteDestinationSubject.ToProperty(this, x => x.SelectedRouteDestination);
-            _selectedTask = _selectedTaskSubject.ToProperty(this, x => x.SelectedTask);
+            
 
             #endregion
 
@@ -758,9 +733,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             //    (ownerAccount, tasksLoading) => ownerAccount.Value != null && !tasksLoading.Value));
 
             //DeleteRouteTask can delete whenever the SelectedTask != null
-            DeleteRouteTask = new ReactiveCommand(this.WhenAny(x => x.SelectedTask, st => st.Value != null));
+            //DeleteRouteTask = new ReactiveCommand(this.WhenAny(x => x.SelectedTask, st => st.Value != null));
             //DeleteRouteTasks can delete whenever SelectedTaskBoardTasks has at least 1 route task
-            DeleteRouteTasks = new ReactiveCommand(this.WhenAny(x => x.SelectedTaskBoardTasks, sts => sts.Value != null && sts.Value.Count() > 0));
+            //DeleteRouteTasks = new ReactiveCommand(this.WhenAny(x => VM.TaskBoard.SelectedTasks, sts => sts.Value != null && sts.Value.Any()));
 
             ////Setup AddRouteTask command
             //AddRouteTask.SubscribeOnDispatcher().Subscribe(_ =>

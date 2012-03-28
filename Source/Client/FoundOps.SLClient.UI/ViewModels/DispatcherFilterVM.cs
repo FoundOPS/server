@@ -1,6 +1,9 @@
-﻿using System.ServiceModel.DomainServices.Client;
+﻿using System.Linq;
+using System.Reactive.Subjects;
+using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.MVVM.Models;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
@@ -47,6 +50,19 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public ObservableCollection<EntityOption> RegionOptions { get { return _regionOptions; } }
 
+        private readonly Subject<bool> _filterUpdatedSubject = new Subject<bool>();
+        /// <summary>
+        /// An observable that pushes whenever the filter is updated.
+        /// </summary>
+        public IObservable<bool> FilterUpdatedObservable
+        {
+            get
+            {
+                //Throttle by 250 milliseconds to prevent duplicates
+                return _filterUpdatedSubject.Throttle(TimeSpan.FromMilliseconds(250)).AsObservable();
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -90,6 +106,35 @@ namespace FoundOps.SLClient.UI.ViewModels
                                                 null);
             });
         }
+
+        #endregion
+
+        #region Logic
+
+        #region Public
+
+        /// <summary>
+        /// Returns whether the taskHolder is included in the current filter.
+        /// </summary>
+        /// <param name="taskHolder">The taskHolder to check.</param>
+        /// <returns></returns>
+        public bool TaskHolderIncludedInFilter(TaskHolder taskHolder)
+        {
+            var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate) option.Entity).Name  == taskHolder.ServiceName);
+            var meetsRegionsFilter = RegionOptions.Any(option => option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName);
+
+            return meetsRouteTypeFilter && meetsRegionsFilter;
+        }
+
+        /// <summary>
+        /// Used to manually trigger the filter updated.
+        /// </summary>
+        public void TriggerFilterUpdated()
+        {
+            _filterUpdatedSubject.OnNext(true);
+        }
+
+        #endregion
 
         #endregion
     }

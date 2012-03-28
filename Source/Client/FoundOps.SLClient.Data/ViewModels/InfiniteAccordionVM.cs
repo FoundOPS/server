@@ -98,7 +98,7 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <param name="preventChangingSelectionWhenChanges">Whether or not to prevent changing the selected entity when the DomainContext has changes.</param>
         /// <param name="preventNullSelection">Prevents SelectedEntity from being set to null</param>
         protected InfiniteAccordionVM(IEnumerable<Type> manyRelationships = null, bool preventChangingSelectionWhenChanges = true, bool preventNullSelection = false)
-            : base(preventChangingSelectionWhenChanges, preventNullSelection)
+            : base(preventChangingSelectionWhenChanges, preventNullSelection, true)
         {
             ManyRelationships = manyRelationships;
 

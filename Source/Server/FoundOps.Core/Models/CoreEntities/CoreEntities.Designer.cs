@@ -12223,6 +12223,21 @@ namespace FoundOps.Core.Models.CoreEntities
     [Serializable()]
     public partial class TaskHolder : ComplexObject
     {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new TaskHolder object.
+        /// </summary>
+        /// <param name="occurDate">Initial value of the OccurDate property.</param>
+        public static TaskHolder CreateTaskHolder(global::System.DateTime occurDate)
+        {
+            TaskHolder taskHolder = new TaskHolder();
+            taskHolder.OccurDate = occurDate;
+            return taskHolder;
+        }
+
+        #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -12230,24 +12245,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Guid> ServiceTemplateId
+        public Nullable<global::System.Guid> RecurringServiceId
         {
             get
             {
-                return _ServiceTemplateId;
+                return _RecurringServiceId;
             }
             set
             {
-                OnServiceTemplateIdChanging(value);
-                ReportPropertyChanging("ServiceTemplateId");
-                _ServiceTemplateId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ServiceTemplateId");
-                OnServiceTemplateIdChanged();
+                OnRecurringServiceIdChanging(value);
+                ReportPropertyChanging("RecurringServiceId");
+                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RecurringServiceId");
+                OnRecurringServiceIdChanged();
             }
         }
-        private Nullable<global::System.Guid> _ServiceTemplateId;
-        partial void OnServiceTemplateIdChanging(Nullable<global::System.Guid> value);
-        partial void OnServiceTemplateIdChanged();
+        private Nullable<global::System.Guid> _RecurringServiceId;
+        partial void OnRecurringServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnRecurringServiceIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12416,6 +12431,54 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Decimal> _Longitude;
         partial void OnLongitudeChanging(Nullable<global::System.Decimal> value);
         partial void OnLongitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime OccurDate
+        {
+            get
+            {
+                return _OccurDate;
+            }
+            set
+            {
+                OnOccurDateChanging(value);
+                ReportPropertyChanging("OccurDate");
+                _OccurDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OccurDate");
+                OnOccurDateChanged();
+            }
+        }
+        private global::System.DateTime _OccurDate;
+        partial void OnOccurDateChanging(global::System.DateTime value);
+        partial void OnOccurDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LocationName
+        {
+            get
+            {
+                return _LocationName;
+            }
+            set
+            {
+                OnLocationNameChanging(value);
+                ReportPropertyChanging("LocationName");
+                _LocationName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LocationName");
+                OnLocationNameChanged();
+            }
+        }
+        private global::System.String _LocationName;
+        partial void OnLocationNameChanging(global::System.String value);
+        partial void OnLocationNameChanged();
 
         #endregion
 
