@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using RiaServicesContrib;
+using System.Linq;
 using System.ServiceModel.DomainServices.Client;
-using RiaServicesContrib;
 using FoundOps.Common.Silverlight.Interfaces;
 
 //Partial class must be part of same namespace
@@ -11,7 +11,6 @@ namespace FoundOps.Core.Models.CoreEntities
     public partial class Service : IRaiseValidationErrors, IReject
     {
         private bool _trackingChanges;
-
 
         private bool _serviceHasChanges;
         /// <summary>

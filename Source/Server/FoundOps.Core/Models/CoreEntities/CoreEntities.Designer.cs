@@ -993,11 +993,11 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
-        /// <param name="firstDateToLookForServices">No Metadata Documentation available.</param>
-        /// <param name="numberOfOccurrences">No Metadata Documentation available.</param>
+        /// <param name="seedDate">No Metadata Documentation available.</param>
+        /// <param name="frontBackMinimum">No Metadata Documentation available.</param>
         /// <param name="getPrevious">No Metadata Documentation available.</param>
         /// <param name="getNext">No Metadata Documentation available.</param>
-        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> firstDateToLookForServices, Nullable<global::System.Int32> numberOfOccurrences, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
+        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> seedDate, Nullable<global::System.Int32> frontBackMinimum, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
         {
             ObjectParameter serviceProviderIdContextParameter;
             if (serviceProviderIdContext.HasValue)
@@ -1029,24 +1029,24 @@ namespace FoundOps.Core.Models.CoreEntities
                 recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
             }
     
-            ObjectParameter firstDateToLookForServicesParameter;
-            if (firstDateToLookForServices.HasValue)
+            ObjectParameter seedDateParameter;
+            if (seedDate.HasValue)
             {
-                firstDateToLookForServicesParameter = new ObjectParameter("firstDateToLookForServices", firstDateToLookForServices);
+                seedDateParameter = new ObjectParameter("seedDate", seedDate);
             }
             else
             {
-                firstDateToLookForServicesParameter = new ObjectParameter("firstDateToLookForServices", typeof(global::System.DateTime));
+                seedDateParameter = new ObjectParameter("seedDate", typeof(global::System.DateTime));
             }
     
-            ObjectParameter numberOfOccurrencesParameter;
-            if (numberOfOccurrences.HasValue)
+            ObjectParameter frontBackMinimumParameter;
+            if (frontBackMinimum.HasValue)
             {
-                numberOfOccurrencesParameter = new ObjectParameter("numberOfOccurrences", numberOfOccurrences);
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", frontBackMinimum);
             }
             else
             {
-                numberOfOccurrencesParameter = new ObjectParameter("numberOfOccurrences", typeof(global::System.Int32));
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", typeof(global::System.Int32));
             }
     
             ObjectParameter getPreviousParameter;
@@ -1069,7 +1069,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
             }
     
-            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateToLookForServicesParameter, numberOfOccurrencesParameter, getPreviousParameter, getNextParameter);
+            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter);
         }
 
         #endregion

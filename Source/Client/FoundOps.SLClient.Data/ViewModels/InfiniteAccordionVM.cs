@@ -117,7 +117,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                                });
         }
 
-        #region CoreEntityCollectionInfiniteAccordionVM's Logic
+        #region InfiniteAccordionVM's Logic
 
         #region Data Loading
 

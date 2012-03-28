@@ -5,7 +5,6 @@ using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
 
@@ -144,10 +143,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public override void DeleteEntity(ServiceTemplate entityToDelete)
         {
-            //TODO Check Deletes are possible
-            var entityCollection = new List<ServiceTemplate> { entityToDelete };
-
-            DataManager.RemoveEntities(entityCollection);
+            DomainContext.ServiceTemplates.Remove(entityToDelete);
         }
 
         protected override ServiceTemplate AddNewEntity(object commandParameter)

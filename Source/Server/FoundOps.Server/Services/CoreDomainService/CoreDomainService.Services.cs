@@ -68,8 +68,27 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Order by ServiceId and RecurringServiceId to ensure they are always returned in the same order
             return ObjectContext.GetServiceHolders(serviceProviderContextId, clientContextId, recurringServiceContextId,
                 seedDate, numberOfOccurrences, getPrevious, getNext)
-                .OrderBy(sh=>sh.OccurDate).ThenBy(sh=>sh.ServiceId).ThenBy(sh=>sh.RecurringServiceId)
+                .OrderBy(sh => sh.OccurDate).ThenBy(sh => sh.ServiceName).ThenBy(sh => sh.ServiceId).ThenBy(sh => sh.RecurringServiceId)
                 .AsQueryable();
+        }
+
+        /// <summary>
+        /// Gets the service details.
+        /// It includes the Client and the ServiceTemplate and Fields.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="serviceId">The service id.</param>
+        public Service GetServiceDetailsForRole(Guid roleId, Guid serviceId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            var service = this.ObjectContext.Services.Include("Client")
+                .FirstOrDefault(s => s.Id == serviceId && s.ServiceProviderId == businessForRole.Id);
+
+            //Load the ServiceTemplate for the Service
+            GetServiceTemplateDetailsForRole(roleId, serviceId);
+
+            return service;
         }
 
         public IEnumerable<Service> GetServicesForRole(Guid roleId)
@@ -142,8 +161,12 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #endregion
 
-        #region RecurringService  //TODO Optimize
+        #region RecurringService Optimized
 
+        /// <summary>
+        /// Gets the RecurringServices for the roleId.
+        /// </summary>
+        /// <param name="roleId">The role to determine the business account from.</param>
         public IEnumerable<RecurringService> GetRecurringServicesForServiceProviderOptimized(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
@@ -151,6 +174,26 @@ namespace FoundOps.Server.Services.CoreDomainService
             var recurringServices = this.ObjectContext.RecurringServices.Include("Client").Where(v => v.Client.VendorId == businessForRole.Id);
             return recurringServices;
         }
+
+        /// <summary>
+        /// Gets the RecurringService details.
+        /// It includes the Client and the ServiceTemplate and Fields.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="recurringServiceId">The recurring service id.</param>
+        public RecurringService GetRecurringServiceDetailsForRole(Guid roleId, Guid recurringServiceId)
+        {
+            var recurringService = GetRecurringServicesForServiceProviderOptimized(roleId).FirstOrDefault(rs => rs.Id == recurringServiceId);
+
+            //Load the ServiceTemplate for the RecurringService
+            GetServiceTemplateDetailsForRole(roleId, recurringServiceId);
+
+            return recurringService;
+        }
+
+        #endregion
+
+        #region RecurringService  //TODO Optimize then Delete
 
         public IEnumerable<RecurringService> GetRecurringServicesForServiceProvider(Guid roleId)
         {
