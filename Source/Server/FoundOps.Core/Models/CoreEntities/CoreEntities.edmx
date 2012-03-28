@@ -2140,8 +2140,8 @@
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
             <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
             <Parameter Name="recurringServiceIdContext" Mode="In" Type="Guid" />
-            <Parameter Name="firstDateToLookForServices" Mode="In" Type="DateTime" />
-            <Parameter Name="numberOfOccurrences" Mode="In" Type="Int32" />
+            <Parameter Name="seedDate" Mode="In" Type="DateTime" />
+            <Parameter Name="frontBackMinimum" Mode="In" Type="Int32" />
             <Parameter Name="getPrevious" Mode="In" Type="Boolean" />
             <Parameter Name="getNext" Mode="In" Type="Boolean" />
           </FunctionImport>

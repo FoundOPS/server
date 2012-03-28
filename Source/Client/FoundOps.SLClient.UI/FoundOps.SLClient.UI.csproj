@@ -377,9 +377,6 @@
     <Compile Include="Controls\Locations\LocationLinkSmall.xaml.cs">
       <DependentUpon>LocationLinkSmall.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Locations\LocationLinkLarge.xaml.cs">
-      <DependentUpon>LocationLinkLarge.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Locations\LocationEdit.xaml.cs">
       <DependentUpon>LocationEdit.xaml</DependentUpon>
     </Compile>
@@ -794,10 +791,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Locations\LocationLinkSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Locations\LocationLinkLarge.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

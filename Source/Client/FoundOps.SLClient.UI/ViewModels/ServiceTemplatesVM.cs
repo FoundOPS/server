@@ -5,7 +5,6 @@ using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
 

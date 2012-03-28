@@ -60,7 +60,8 @@ namespace FoundOps.SLClient.UI.Controls.Services
 
 
             //Whenever the selected ServiceHolder changes scroll it to the middle
-            VM.Services.SelectedEntityObservable.Throttle(TimeSpan.FromMilliseconds(250))
+            //Throttle by half a second so the grid can load
+            VM.Services.SelectedEntityObservable.Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOnDispatcher().Subscribe(ScrollToMiddle);
 
             ////Whenever the RadGridView loads rows, make sure the SelectedEntity is in the middle
@@ -135,9 +136,9 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 if (_waitForLoad)
                     return;
 
-                //Only allow push forward or back after the current service has been scrolled to
-                if (_lastItemScrolledTo != VM.Services.SelectedEntity)
-                    return;
+                ////Only allow push forward or back after the current service has been scrolled to
+                //if (_lastItemScrolledTo != VM.Services.SelectedEntity)
+                //    return;
 
                 //Scrolled to the top
                 if (args.VerticalChange < 0 && ScrollBarPosition == ScrollBarPosition.Top)
