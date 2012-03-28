@@ -155,9 +155,14 @@ GO
 		FROM @NextGenServices t1
 		WHERE t1.NextDate = @seedDate
 
+		UPDATE @NextGenServices
+		SET NextDate = (SELECT dbo.GetNextOccurence(DATEADD(day, 1, @seedDate), StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
+		FROM @NextGenServices
+		WHERE NextDate = @seedDate
+
 		--Remove any rows that do not have a NextOccurrence past or on the OnOrAfterDate
 		DELETE FROM @NextGenServices
-		WHERE NextDate IS NULL OR NextDate = @seedDate
+		WHERE NextDate IS NULL
 
 	END
 ------------------------------------------------------------------------------------------------------------------------------------------
@@ -205,9 +210,14 @@ GO
 			FROM @PreviousGenServices t1
 			WHERE t1.PreviousDate = @seedDate
 
+			UPDATE @PreviousGenServices
+			SET PreviousDate = (SELECT dbo.GetNextOccurence(DATEADD(day, -1, @seedDate), StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
+			FROM @PreviousGenServices
+			WHERE PreviousDate = @seedDate
+
 			--Remove any rows that do not have a NextOccurrence past or on the OnOrAfterDate
 			DELETE FROM @PreviousGenServices
-			WHERE PreviousDate IS NULL OR PreviousDate = @seedDate
+			WHERE PreviousDate IS NULL
 		END
 		ELSE
 		--Remove any rows that do not have a PreviousOccurrence on or before the OnOrBeforeDate
