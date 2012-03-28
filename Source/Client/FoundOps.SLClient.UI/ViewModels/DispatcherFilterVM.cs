@@ -78,8 +78,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 var regionsQuery = Manager.Data.DomainContext.GetRegionsForServiceProviderQuery(Manager.Context.RoleId);
                 Manager.Data.DomainContext.Load(regionsQuery,
-                                                lo => 
-                                                { 
+                                                lo =>
+                                                {
                                                     LoadedRegions = new ObservableCollection<Region>(lo.Entities);
 
                                                     RegionOptions.Clear();

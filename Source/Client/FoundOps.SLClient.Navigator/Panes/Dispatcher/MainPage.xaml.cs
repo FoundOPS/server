@@ -70,6 +70,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             //set the click event for the reset button in DispatcherToolBar
             this.DispatcherToolBar.ResetLayoutButton.Click += ResetLayoutButtonClick;
 
+            this.DependentWhenVisible(VM.DispatcherFilter);
             this.DependentWhenVisible(RoutesVM);
             this.DependentWhenVisible(RegionsVM);
 

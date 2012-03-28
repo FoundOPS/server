@@ -392,6 +392,18 @@
                      Mode="In"
                      Type="bit"/>
         </Function>
+        <Function Name="GetUnroutedServicesForDate" IsComposable="false">
+          <CommandText>
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, AddressLine, Latitude, Longitude
+            FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
+          </CommandText>
+          <Parameter Name="serviceProviderContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="serviceDate"
+                     Mode="In"
+                     Type="datetime"/>
+        </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />
@@ -2145,6 +2157,10 @@
             <Parameter Name="getPrevious" Mode="In" Type="Boolean" />
             <Parameter Name="getNext" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
+            <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
+            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Block">
           <Key>
@@ -3401,6 +3417,16 @@
           <Property Type="DateTime" Name="OccurDate" Nullable="false" />
           <Property Type="String" Name="ServiceName" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="TaskHolder" >
+          <Property Type="Guid" Name="ServiceTemplateId" Nullable="true" />
+          <Property Type="Guid" Name="ServiceId" Nullable="true" />
+          <Property Type="String" Name="ServiceName" Nullable="true" />
+          <Property Type="String" Name="ClientName" Nullable="true" />
+          <Property Type="String" Name="RegionName" Nullable="true" />
+          <Property Type="String" Name="AddressLine" Nullable="true" />
+          <Property Type="Decimal" Name="Latitude" Nullable="true" />
+          <Property Type="Decimal" Name="Longitude" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3930,6 +3956,20 @@
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
                 <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
+                <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

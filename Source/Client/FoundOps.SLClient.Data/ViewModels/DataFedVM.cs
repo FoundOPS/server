@@ -118,29 +118,6 @@ namespace FoundOps.SLClient.Data.ViewModels
             dependentFrameworkElement.Unloaded += (s, e) => ControlsThatCurrentlyRequireThisVM.Remove(dependentFrameworkElement);
         }
 
-        /// <summary>
-        /// Whenever this ViewModel's ObservationState is Active, subscribe.
-        /// </summary>
-        public IDisposable SubscribeWhenActive<TSource>(IObservable<TSource> source, Action<TSource> onNext)
-        {
-            //Subscribe observeWhenActive to the source whenever this is Active
-            var observeWhenActive = new Subject<TSource>();
-
-            var serialDisposable = new SerialDisposable();
-            this.ObservationState.Subscribe(state =>
-            {
-                //Subscribe observeWhenActive to the source whenever this is Active
-                if (state == Common.Models.ObservationState.Active)
-                    serialDisposable.Disposable = source.Subscribe(observeWhenActive);
-                //Dispose whenever InActive
-                else if (!serialDisposable.IsDisposed)
-                    serialDisposable.Dispose();
-            });
-
-            //Subscribe the onNext to observeWhenActive
-            return observeWhenActive.Subscribe(onNext);
-        }
-
         #endregion
 
         #region Protected

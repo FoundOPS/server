@@ -544,6 +544,7 @@
     <Compile Include="ViewModels\RoutesDragDropVM.cs" />
     <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />
     <Compile Include="ViewModels\SearchVM.cs" />
+    <Compile Include="ViewModels\TaskBoardVM.cs" />
     <Compile Include="ViewModels\UserAccountSettingsVM.cs" />
     <Compile Include="ViewModels\UserAccountsVM.cs" />
     <Compile Include="ViewModels\RegionsVM.cs" />

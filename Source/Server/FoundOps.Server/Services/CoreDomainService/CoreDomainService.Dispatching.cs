@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Composite;
+﻿using System.ServiceModel.DomainServices.Server;
+using FoundOps.Common.Composite;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
@@ -150,6 +151,15 @@ namespace FoundOps.Server.Services.CoreDomainService
         #endregion
 
         #region RouteTask
+        [Query]
+        public IQueryable<TaskHolder>  GetUnroutedServices (Guid roleId, DateTime serviceDate) 
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            var serviceProviderContextId = businessForRole.Id;
+
+            return ObjectContext.GetUnroutedServicesForDate(serviceProviderContextId, serviceDate).AsQueryable();
+        }
 
         private static IEnumerable<RouteTask> GenerateRouteTasksFromServices(IEnumerable<Service> services, BusinessAccount businessAccount)
         {
