@@ -9,7 +9,6 @@ using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using ItemsControlExtensions = FoundOps.Common.Silverlight.Tools.ItemsControlExtensions;
-using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Windows.Controls;
 using Telerik.Windows.Controls;
@@ -59,10 +58,10 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 }), true);
 
 
-            //Whenever the selected ServiceHolder changes scroll it to the middle
-            //Throttle by half a second so the grid can load
-            VM.Services.SelectedEntityObservable.Throttle(TimeSpan.FromMilliseconds(500))
-                .ObserveOnDispatcher().Subscribe(ScrollToMiddle);
+            ////Whenever the selected ServiceHolder changes scroll it to the middle
+            ////Throttle by half a second so the grid can load
+            //VM.Services.SelectedEntityObservable.Throttle(TimeSpan.FromMilliseconds(500))
+            //    .ObserveOnDispatcher().Subscribe(ScrollToMiddle);
 
             ////Whenever the RadGridView loads rows, make sure the SelectedEntity is in the middle
             //ServicesRadGridView.RowLoaded += (s, e) =>
@@ -125,11 +124,11 @@ namespace FoundOps.SLClient.UI.Controls.Services
         private bool _waitForLoad;
 
         /// <summary>
-        /// Setup the 
+        /// Setup the ServicesRadGridViewScrollViewer listener when nearing the beginning or end 
+        /// of the scroll viewer to push the ServicesVM back or forward to show more items
         /// </summary>
         private void ServicesGridLoaded(object sender, RoutedEventArgs e)
         {
-            //If nearing the beginning or end of the scroll viewer push the ServicesVM back or forward to show more items
             ServicesRadGridViewScrollViewer.ScrollChanged += (s, args) =>
             {
                 //Wait to listen for scroll changes until last set of ServiceHolders is loaded
@@ -170,22 +169,20 @@ namespace FoundOps.SLClient.UI.Controls.Services
             };
         }
 
-
         private object _lastItemScrolledTo;
         private void ScrollToMiddle(object item)
         {
             if (item == null) return;
 
             //ScrollIntoViewAsync to scroll the selected item to the top
-            ServicesRadGridView.ScrollIntoViewAsync(item, (callback) =>
+            ServicesRadGridView.ScrollIntoViewAsync(item, r =>
             {
-                //Now find and scroll to the middle
-
-                // Find the container 
+                //Find the container
                 var container = ServicesRadGridView.ItemContainerGenerator.ContainerFromItem(item) as UIElement;
                 if (container == null) return;
 
-                // Compute the center point of the container relative to the scrollInfo 
+                //Now find the middle, and scroll to it
+                //Compute the center point of the container relative to the scrollInfo 
                 Size size = container.RenderSize;
                 if (size.Width == 0 && size.Height == 0)
                     return;
@@ -194,6 +191,14 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 center.X += ServicesRadGridViewScrollViewer.HorizontalOffset;
 
                 ServicesRadGridViewScrollViewer.ScrollToVerticalOffset(ItemsControlExtensions.CenteringOffset(center.Y, ServicesRadGridViewScrollViewer.ViewportHeight, ServicesRadGridViewScrollViewer.ExtentHeight));
+
+                //Focus on the row
+                var row = r as GridViewRow;
+                if (row != null)
+                {
+                    row.IsCurrent = true;
+                    row.Focus();
+                }
 
                 _lastItemScrolledTo = item;
             });

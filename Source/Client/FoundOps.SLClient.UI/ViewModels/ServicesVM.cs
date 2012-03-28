@@ -41,12 +41,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         //    }
         //}
 
-        #region Private Properties
-
-        private bool CanMoveForward { get; set; }
-
-        #endregion
-
         #region Constructor
 
         /// <summary>
@@ -91,13 +85,60 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         readonly Subject<bool> _cancelLastServiceHoldersLoad = new Subject<bool>();
 
-        //A switch for whether this can move backward or not
+        /// <summary>
+        /// The last loaded seed date.
+        /// </summary>
+        private DateTime _lastSeedDate = DateTime.Now;
+
+        /// <summary>
+        /// The last load type.
+        /// </summary>
+        private ServiceHoldersLoad _lastLoadType = ServiceHoldersLoad.InitialLoad;
+
+        /// <summary>
+        /// This is the first available service date for the current context.
+        /// It will be set after an initial load or when moving backwards if the number of serviceholders 
+        /// before the seed date is less than the minimumOccurrencesToLoad.
+        /// </summary>
+        private DateTime? _firstAvailableServiceDate;
+
+        /// <summary>
+        /// This is the last available service date for the current context.
+        /// It will be set after an initial load or when moving forwards if the number of serviceholders 
+        /// after the first date on or after the seedDate is less than the minimumOccurrencesToLoad.
+        /// </summary>
+        private DateTime? _lastAvailableServiceDate;
+
+        //A switch for whether this can move backward or not. 
+        //This is based off the last seed date and the _firstAvailableServiceDate.
         //Default to false until the initial load
-        private bool _canMoveBackward;
+        private bool CanMoveBackward
+        {
+            get
+            {
+                return
+                    //If the collection has not been loaded or the _firstAvailableServiceDate is null
+                    //the beginning is still unknown so we can move backwards
+                   Collection == null || !_firstAvailableServiceDate.HasValue ||
+                    //otherwise make sure the first loaded element > _firstAvailableServiceDate
+                    (Collection.Any() && Collection.First().OccurDate > _firstAvailableServiceDate.Value);
+            }
+        }
 
         //A switch for whether this can move forward or not
         //Default to false until the initial load
-        private bool _canMoveForward;
+        private bool CanMoveForward
+        {
+            get
+            {
+                return
+                    //If the collection has not been loaded or the _lastAvailableServiceDate is null
+                    //the beginning is still unknown so we can move backwards
+                     Collection == null || !_lastAvailableServiceDate.HasValue ||
+                    //otherwise make sure the last loaded element < _lastAvailableServiceDate
+                      (Collection.Any() && Collection.Last().OccurDate < _lastAvailableServiceDate.Value);
+            }
+        }
 
         //True when a load is in progres
         private bool _loadingServiceHolders;
@@ -105,13 +146,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Loads the ServiceHolders based on the current context.
         /// </summary>
-        /// <param name="serviceHoldersLoad">The type of load to perform</param>
+        /// <param name="loadType">The type of load to perform</param>
         /// <param name="completedCallback">Called when the load is completed.</param>
-        private void LoadServiceHolders(ServiceHoldersLoad serviceHoldersLoad, Action<IEnumerable<ServiceHolder>> completedCallback)
+        private void LoadServiceHolders(ServiceHoldersLoad loadType, Action<IEnumerable<ServiceHolder>> completedCallback)
         {
-            //Cancel teh last service holders load if it is still running
+            //Cancel the last service holders load if it is still running
             _cancelLastServiceHoldersLoad.OnNext(true);
-
             _loadingServiceHolders = true;
 
             //Notify this is loading
@@ -119,8 +159,35 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Setup the query
 
-            //TODO: Find the seed date
+            #region Setup seed date
+
             var seedDate = DateTime.Now.Date;
+            switch (loadType)
+            {
+                //If this is moving backwards set the seed date to the earliest occur date of the collection
+                case ServiceHoldersLoad.Backwards:
+                    {
+                        var earliestServiceHolder = Collection.FirstOrDefault();
+
+                        if (earliestServiceHolder != null)
+                            seedDate = earliestServiceHolder.OccurDate.AddDays(-1);
+                    }
+                    break;
+                //If this is moving forwards set the seed date to the latest occur date of the collection
+                case ServiceHoldersLoad.Forwards:
+                    {
+                        var latestServiceHolder = Collection.LastOrDefault();
+
+                        if (latestServiceHolder != null)
+                            seedDate = latestServiceHolder.OccurDate;
+                    }
+                    break;
+                //If this is the initial load leave the seedDate as today
+            }
+
+            #endregion
+
+            #region Setup contexts
 
             var recurringServiceContext = ContextManager.GetContext<RecurringService>();
             var clientContext = ContextManager.GetContext<Client>();
@@ -139,13 +206,15 @@ namespace FoundOps.SLClient.UI.ViewModels
                                             ? 20 //If there is a context load at least 20 service holders on the front/back/both
                                             : 100; //otherwise load at least 100 service holders on the front/back/both
 
+            #endregion
+
             //Load ServiceHolders previous to the seedDate
             //It will return at least the minimumOccurrencesToLoad previous to the seedDate (or as many as there are)
-            var getPrevious = serviceHoldersLoad == ServiceHoldersLoad.Backwards || serviceHoldersLoad == ServiceHoldersLoad.InitialLoad;
+            var getPrevious = loadType == ServiceHoldersLoad.Backwards || loadType == ServiceHoldersLoad.InitialLoad;
 
             //Load ServiceHolders after the first date on or after the seedDate
             //It will return at least the minimumOccurrencesToLoad after the first date on or after the seedDate (or as many as there are)
-            var getNext = serviceHoldersLoad == ServiceHoldersLoad.Forwards || serviceHoldersLoad == ServiceHoldersLoad.InitialLoad;
+            var getNext = loadType == ServiceHoldersLoad.Forwards || loadType == ServiceHoldersLoad.InitialLoad;
 
             var query = this.DomainContext.GetServiceHoldersQuery(ContextManager.RoleId, recurringServiceContextId, clientContextId,
                 seedDate, minimumOccurrencesToLoad, getPrevious, getNext);
@@ -160,13 +229,20 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (task.IsCanceled || !task.Result.Any())
                     return;
 
+                _lastSeedDate = seedDate;
+                _lastLoadType = loadType;
+
+                var earliest = task.Result.FirstOrDefault();
+                var latest = task.Result.LastOrDefault();
                 var closestBeforeSeed = task.Result.LastOrDefault(sh => sh.OccurDate < seedDate);
                 var closestOnOrAfterSeed = task.Result.FirstOrDefault(sh => sh.OccurDate >= seedDate);
                 ServiceHolder closestAfterSeed = null;
                 if (closestOnOrAfterSeed != null)
                     closestAfterSeed = task.Result.FirstOrDefault(sh => sh.OccurDate > closestOnOrAfterSeed.OccurDate);
 
-                switch (serviceHoldersLoad)
+                #region Select the closest ServiceHolder for the query
+
+                switch (loadType)
                 {
                     //If the load was backwards
                     //Try to select the closest ServiceHolder before the seed date
@@ -192,6 +268,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                         break;
                 }
 
+                #endregion
+
                 var itemsBeforeSeed = task.Result.Count(sh => sh.OccurDate < seedDate);
                 var itemsAfterClosestOnOrAfterSeed = 0;
                 if (closestOnOrAfterSeed != null)
@@ -199,24 +277,36 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 //Check the results against the minimumOccurrencesToLoad 
                 //to determine if this can push further back or forward
-                switch (serviceHoldersLoad)
+                switch (loadType)
                 {
                     //If the load was backwards check the number of services 
                     //before the seed date >= minimumOccurrencesToLoad
                     case ServiceHoldersLoad.Backwards:
-                        _canMoveBackward = itemsBeforeSeed >= minimumOccurrencesToLoad;
+                        if (itemsBeforeSeed < minimumOccurrencesToLoad && earliest != null)
+                            _firstAvailableServiceDate = earliest.OccurDate;
+                        else
+                            _firstAvailableServiceDate = null;
                         break;
                     //If the load was an initial load
                     //Check the number of services before the seed date are >= minimumOccurrencesToLoad
                     //and check the number of services after the closestOnOrAfterSeed date >= minimumOccurrencesToLoad
                     case ServiceHoldersLoad.InitialLoad:
-                        _canMoveBackward = itemsBeforeSeed >= minimumOccurrencesToLoad;
-                        _canMoveForward = itemsAfterClosestOnOrAfterSeed >= minimumOccurrencesToLoad;
+                        if (itemsBeforeSeed < minimumOccurrencesToLoad && earliest != null)
+                            _firstAvailableServiceDate = earliest.OccurDate;
+                        else
+                            _firstAvailableServiceDate = null;
+                        if (itemsAfterClosestOnOrAfterSeed < minimumOccurrencesToLoad && latest != null)
+                            _lastAvailableServiceDate = latest.OccurDate;
+                        else
+                            _lastAvailableServiceDate = null;
                         break;
                     //If the load was forwards check the number of services 
                     //after the closestOnOrAfterSeed date >= minimumOccurrencesToLoad
                     case ServiceHoldersLoad.Forwards:
-                        _canMoveForward = itemsAfterClosestOnOrAfterSeed >= minimumOccurrencesToLoad;
+                        if (itemsAfterClosestOnOrAfterSeed < minimumOccurrencesToLoad && latest != null)
+                            _lastAvailableServiceDate = latest.OccurDate;
+                        else
+                            _lastAvailableServiceDate = null;
                         break;
                 }
 
@@ -241,7 +331,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         internal void PushBackServices(Action completedCallback)
         {
             //Return if this cannot move backwards or if this is loading ServiceHolders
-            if (!_canMoveBackward || _loadingServiceHolders)
+            if (!CanMoveBackward || _loadingServiceHolders)
             {
                 if (completedCallback != null)
                     completedCallback();
@@ -263,7 +353,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         internal void PushForwardServices(Action completedCallback)
         {
             //Return if this cannot move forwards or if this is loading ServiceHolders
-            if (!_canMoveForward || _loadingServiceHolders)
+            if (!CanMoveForward || _loadingServiceHolders)
             {
                 if (completedCallback != null)
                     completedCallback();
