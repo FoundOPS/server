@@ -568,6 +568,39 @@ GO
 
 	DELETE FROM @finalNextServiceTable
 	WHERE OccurDate > @nextLastDate
+	
+------------------------------------------------------------------------------------------------------------------------------------------
+--Finally, we combine the three tables (previous, onSeedDay, next) into one master table
+--This master table is then returned from the function
+------------------------------------------------------------------------------------------------------------------------------------------
+
+	--This table will temporarily store the RecurringServiceId's of all rows that appear more than once in @TempTable
+	DECLARE @SeedDateDuplicateIdTable TABLE
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max)
+	)
+
+	INSERT INTO @SeedDateDuplicateIdTable
+	SELECT t1.RecurringServiceId, t2.ServiceId, t2.OccurDate, t2.ServiceName FROM (SELECT OccurDate, RecurringServiceId, ServiceId FROM @ServicesForToday AS t2 WHERE ServiceId IS NOT NULL GROUP BY OccurDate, RecurringServiceId, ServiceId) t1
+	JOIN @ServicesForToday as t2 on t1.RecurringServiceId = t2.RecurringServiceId AND t1.OccurDate = t2.OccurDate AND t2.ServiceId IS NULL
+
+	DECLARE @seedDateFinalTable TABLE
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max)
+	)	
+
+	--Filtered down from the table above so that only the correct number of Services is returned from the function
+	INSERT INTO @seedDateFinalTable
+	SELECT * FROM @ServicesForToday
+	EXCEPT
+	SELECT * FROM @SeedDateDuplicateIdTable
+	ORDER BY OccurDate ASC
 ------------------------------------------------------------------------------------------------------------------------------------------
 --Finally, we combine the three tables (previous, onSeedDay, next) into one master table
 --This master table is then returned from the function
@@ -576,7 +609,7 @@ GO
 	SELECT * FROM @finalPreviousServiceTable
 
 	INSERT INTO @ServicesTableToReturn
-	SELECT * FROM @ServicesForToday
+	SELECT * FROM @seedDateFinalTable
 
 	INSERT INTO @ServicesTableToReturn
 	SELECT * FROM @finalNextServiceTable

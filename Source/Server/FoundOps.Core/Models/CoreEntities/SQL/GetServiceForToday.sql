@@ -22,11 +22,17 @@ CREATE FUNCTION [dbo].[GetServicesForToday]
 (@serviceProviderIdContext uniqueidentifier,
 @serviceDate date)
 RETURNS @ServicesTableToReturn TABLE
-(
-	RecurringServiceId uniqueidentifier,
-	ServiceId uniqueidentifier,
-	OccurDate date
-) 
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max),
+		ClientName nvarchar(max),
+		RegionName nvarchar(max),
+		AddressLine nvarchar(max),
+		Latitude float,
+		Longitude float
+	) 
 AS
 BEGIN
 
@@ -39,15 +45,16 @@ BEGIN
      FrequencyInt int,
      FrequencyDetailInt int,
      StartDate date,
-	 NextDate date)
+	 NextDate date,
+	 ServiceName nvarchar(max))
 
 
-	INSERT INTO @TempGenServiceTable (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate)
+	INSERT INTO @TempGenServiceTable (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate, ServiceName)
 	--This is a Semi-Join between the Clients table created above and the RecurringServices Table
 	--Semi-Join simply means that it has all the same logic as a normal join, but it doesnt actually join the tables
 	--In this case, it finds all the RecurringServices that correspond to a Client with a vendorId = @serviceProviderIdContext
-	SELECT	* 
-	FROM		Repeats
+	SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate, t2.Name
+	FROM		Repeats t1, ServiceTemplates t2
 	WHERE		EXISTS
 	(
 		SELECT	*
@@ -58,10 +65,11 @@ BEGIN
 		FROM	RecurringServices
 		WHERE	RecurringServices.ClientId = Clients.Id 
 				AND Clients.VendorId = @serviceProviderIdContext 
-				AND RecurringServices.Id = Repeats.Id
+				AND RecurringServices.Id = t1.Id
+				AND RecurringServices.Id = t2.Id
 		)
 	)
-
+	
 	--This table is simply the result of merging @TempGenServiceTable and @TempNextDateTable
 	DECLARE @TempGenServiceTableWithNextOccurrence TABLE
 	(Id uniqueidentifier,
@@ -71,11 +79,12 @@ BEGIN
      FrequencyInt int,
      FrequencyDetailInt int,
      StartDate date,
-	 NextDate date)
+	 NextDate date,
+	 ServiceName nvarchar(max))
 	
 	--Merges @TempGenServiceTable amd @TempNextDateTable created above based on their Id into @TempGenServiceTableWithNextOccurrence
-	INSERT INTO @TempGenServiceTableWithNextOccurrence (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate)
-	SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate
+	INSERT INTO @TempGenServiceTableWithNextOccurrence (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate, ServiceName)
+	SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate, t1.ServiceName
 	FROM	@TempGenServiceTable t1
 
 	UPDATE @TempGenServiceTableWithNextOccurrence
@@ -90,58 +99,137 @@ BEGIN
 	DECLARE @TempNextExistingServiceTable TABLE
 	(ServiceId uniqueidentifier,
 	RecurringServiceId uniqueidentifier,
-	OccurDate date)
+	OccurDate date,
+	ServiceName nvarchar(max))
 
-	INSERT INTO @TempNextExistingServiceTable (ServiceId, RecurringServiceId, OccurDate)
-	SELECT Id, RecurringServiceId, ServiceDate
-	FROM Services
-	WHERE ServiceProviderId = @serviceProviderIdContext AND ServiceDate = @serviceDate
-	ORDER BY ServiceDate
+	--Fills @ServicesForToday will Existing Services on the SeedDate
+	INSERT INTO @TempNextExistingServiceTable (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+		SELECT  t1.RecurringServiceId, t1.Id, t1.ServiceDate, t2.Name
+		FROM	Services t1, ServiceTemplates t2
+		WHERE	t1.ServiceProviderId = @serviceProviderIdContext 
+				AND t1.ServiceDate = @serviceDate
+				AND t1.Id = t2.Id
 
 	--Will store all the Services after the OnOrAfterDate
-	DECLARE @ServicesForDayTable TABLE
+	DECLARE @tempHolderTable TABLE
 	(
 		RecurringServiceId uniqueidentifier,
 		ServiceId uniqueidentifier,
-		OccurDate date
+		OccurDate date,
+		ServiceName nvarchar(max)
 	)
 
 	--Here we add the next occurrences to the final temporary table
-	INSERT INTO @ServicesForDayTable (RecurringServiceId, OccurDate)
-	SELECT Id, NextDate
+	INSERT INTO @tempHolderTable (RecurringServiceId, OccurDate, ServiceName)
+	SELECT Id, NextDate, ServiceName
 	FROM @TempGenServiceTableWithNextOccurrence
 
-	INSERT INTO @ServicesForDayTable (ServiceId, OccurDate)
-	SELECT ServiceId, OccurDate
+	INSERT INTO @tempHolderTable (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
 	FROM @TempNextExistingServiceTable
 
 	--This table will temporarily store the RecurringServiceId's of all rows that appear more than once in @TempTable
 	DECLARE @DuplicateIdTable TABLE
-	(RecurringServiceId uniqueidentifier)
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceDate nvarchar(max)
+	)
 
-	--Add the duplicate Id's to the table created above
 	INSERT INTO @DuplicateIdTable
-	SELECT RecurringServiceId FROM @ServicesForDayTable t1
-	WHERE 1 < 
+	SELECT t1.RecurringServiceId, t2.ServiceId, t2.OccurDate, t2.ServiceName FROM (SELECT OccurDate, RecurringServiceId, ServiceId FROM @tempHolderTable AS t2 WHERE ServiceId IS NOT NULL GROUP BY OccurDate, RecurringServiceId, ServiceId) t1
+	JOIN @tempHolderTable as t2 on t1.RecurringServiceId = t2.RecurringServiceId AND t1.OccurDate = t2.OccurDate AND t2.ServiceId IS NULL
+
+	DECLARE @serviceForDayTable TABLE
 	(
-		SELECT COUNT (*) 
-		FROM @ServicesForDayTable t2
-		WHERE t1.RecurringServiceId = t2.RecurringServiceId
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max)
 	)
 
-	--Delete matching Services between @IdTable and @TempTable. This will delete the Generated Service and will keep the Existing Service
-	DELETE FROM @ServicesForDayTable
+	--Filtered down from the table above so that only the correct number of Services is returned from the function
+	INSERT INTO @serviceForDayTable
+	SELECT * FROM @tempHolderTable
+	EXCEPT
+	SELECT * FROM @DuplicateIdTable
+
+	DECLARE @PreRoutedServices TABLE
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max)
+	)
+
+	INSERT INTO @PreRoutedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+	SELECT t1.RecurringServiceId, t1.ServiceId, t1.OccurDate, t1.ServiceName
+	FROM @serviceForDayTable  t1
 	WHERE EXISTS
-	(
-		SELECT * FROM @DuplicateIdTable t1
-		WHERE	RecurringServiceId = t1.RecurringServiceId
-		AND		ServiceId IS NOT NULL
+	( 
+		SELECT *
+		FROM  RouteTasks
+		WHERE t1.ServiceId = ServiceId
 	)
 
-	INSERT INTO @ServicesTableToReturn
-	SELECT DISTINCT *
-	FROM @ServicesForDayTable
-	ORDER BY OccurDate ASC
+	DECLARE @UnroutedServices TABLE
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max),
+		ClientName nvarchar(max),
+		LocationId uniqueidentifier,
+		RegionName nvarchar(max),
+		AddressLine nvarchar(max),
+		Latitude float,
+		Longitude float
+	) 
+
+	INSERT INTO @UnroutedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+	SELECT * FROM @serviceForDayTable
+	EXCEPT
+	SELECT * FROM @PreRoutedServices
+	
+	UPDATE @UnroutedServices
+	SET LocationId =	(
+							SELECT	LocationId
+							FROM	Fields_LocationField t1
+							WHERE	EXISTS
+							(
+								SELECT	Id
+								FROM	Fields t2
+								WHERE	t2.Id = t1.Id 
+								AND t2.ServiceTemplateId = RecurringServiceId 
+								AND LocationFieldTypeInt = 0
+							)
+						)
+
+	UPDATE @UnroutedServices
+	SET RegionName =	(
+							SELECT	Name
+							FROM	Regions t1
+							WHERE	EXISTS
+							(
+								SELECT	RegionId
+								FROM	Locations t2
+								WHERE	t2.RegionId = t1.Id 
+								AND		LocationId = t2.Id
+							)
+						)
+
+	UPDATE	@UnroutedServices
+	SET		AddressLine = t1.AddressLineOne, 
+			Latitude = t1.Latitude, 
+			Longitude = t1.Longitude,
+			ClientName = t1.Name
+	FROM	Locations t1
+	WHERE	t1.Id = LocationId
+
+
+	INSERT @ServicesTableToReturn (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, AddressLine, Latitude, Longitude)
+	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, AddressLine, Latitude, Longitude FROM @UnroutedServices
 
 RETURN 
 END
