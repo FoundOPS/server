@@ -197,6 +197,19 @@ GO
 		SET PreviousDate = (SELECT dbo.GetPreviousOccurrence(@previousDayToLookForServices, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
 		FROM @PreviousGenServices
 
+		IF @getNext = 0
+		BEGIN
+			--Puts all the Generated Services that occur today in a separate table
+			INSERT INTO @ServicesForToday (RecurringServiceId, OccurDate, ServiceName)
+			SELECT t1.Id, t1.PreviousDate, t1.ServiceName
+			FROM @PreviousGenServices t1
+			WHERE t1.PreviousDate = @seedDate
+
+			--Remove any rows that do not have a NextOccurrence past or on the OnOrAfterDate
+			DELETE FROM @PreviousGenServices
+			WHERE PreviousDate IS NULL OR PreviousDate = @seedDate
+		END
+		ELSE
 		--Remove any rows that do not have a PreviousOccurrence on or before the OnOrBeforeDate
 		DELETE FROM @PreviousGenServices
 		WHERE PreviousDate IS NULL
@@ -245,8 +258,9 @@ GO
 	WHILE	@RowCountForRecurringServiceOccurrenceTable <= @frontBackMinimum
 	BEGIN
 		SET		@minVal = (SELECT MAX(PreviousDate) FROM @PreviousGenServices)
+
 		SET		@NextDay = DATEADD(day, -1, @minVal)
-		
+
 		SET		@RowCountForTempGenServiceTableWithPreviousOccurrence = (SELECT COUNT(*) FROM @PreviousGenServices)
 
 		--Checks to be sure that there are still rows to look at in @NextGenServices
@@ -266,6 +280,9 @@ GO
 		SET		PreviousDate = (SELECT dbo.GetPreviousOccurrence(@NextDay, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
 		FROM	@PreviousGenServices
 		WHERE	PreviousDate = @minVal
+
+		--SELECT * FROM @PreviousGenServices
+		--WHERE PreviousDate = '2-26-2012'
 
 		--If any of those Services updated above do not have a previous occurrence, they will be deleted from the table
 		DELETE FROM @PreviousGenServices
