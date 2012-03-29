@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using FoundOps.Core.Models.CoreEntities.Validation;
 
 // ReSharper disable CheckNamespace
@@ -455,6 +456,22 @@ namespace FoundOps.Core.Models.CoreEntities
 
             [Include]
             public ServiceTemplate ServiceTemplate { get; set; }
+        }
+    }
+
+    [MetadataTypeAttribute(typeof(ServiceHolderMetadata))]
+    public partial class ServiceHolder
+    {
+        internal sealed class ServiceHolderMetadata
+        {
+            // Metadata classes are not meant to be instantiated.
+            private ServiceHolderMetadata()
+            {
+            }
+
+            //No need to do change tracking
+            [RoundtripOriginalAttribute] 
+            public Guid? ServiceId { get; set; }
         }
     }
 

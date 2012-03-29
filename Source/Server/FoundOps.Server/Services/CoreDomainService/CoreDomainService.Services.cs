@@ -21,59 +21,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         #region Service
 
         /// <summary>
-        /// Gets the ServiceHolders based off the current ServiceProvider and optional contexts.
-        /// It will return all the services on the seed date.
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="clientContext">(Optional) If this is the only context set, it will generate ServiceHolders only for this client.</param>
-        /// <param name="recurringServiceContext">(Optional) If this is the only context set, it will generate ServiceHolders only for this RecurringService.</param>
-        /// <param name="seedDate">The date to start generating ServiceHolders from.</param>
-        /// <param name="numberOfOccurrences">The (soft) minimum number of occurrences to return. If there are not enough services it will not meet the minimum.</param>
-        /// <param name="getPrevious">Return all the services from at least one date before the seed date (if there are any).</param>
-        /// <param name="getNext">Return all the services from at least one date after the seed date (if there are any).</param>
-        /// <returns></returns>
-        [Query]
-        public IQueryable<ServiceHolder> GetServiceHolders(Guid roleId, Guid? clientContext, Guid? recurringServiceContext,
-            DateTime seedDate, int numberOfOccurrences, bool getPrevious, bool getNext)
-        {
-            Guid? recurringServiceContextId = null;
-            Guid? clientContextId = null;
-            Guid? serviceProviderContextId = null;
-
-            if (recurringServiceContext.HasValue)
-            {
-                //Check the user has access to the RecurringService
-                if (!GetRecurringServicesForServiceProviderOptimized(roleId).Any(rs => rs.Id == recurringServiceContext))
-                    return null;
-
-                recurringServiceContextId = recurringServiceContext;
-            }
-            else if (clientContext.HasValue)
-            {
-                //Check the user has access to the Client
-                if (!GetClientsForRole(roleId).Any(c => c.Id == clientContext))
-                    return null;
-
-                clientContextId = clientContext;
-            }
-            else
-            {
-                var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-
-                //Because there is no other context, assume the context should be the serviceProvider
-                //The businessForRole returns null if the user does not have access to the ServiceProvider
-                serviceProviderContextId = businessForRole.Id;
-            }
-
-            //Order by OccurDate and Service Name for UI
-            //Order by ServiceId and RecurringServiceId to ensure they are always returned in the same order
-            return ObjectContext.GetServiceHolders(serviceProviderContextId, clientContextId, recurringServiceContextId,
-                seedDate, numberOfOccurrences, getPrevious, getNext)
-                .OrderBy(sh => sh.OccurDate).ThenBy(sh => sh.ServiceName).ThenBy(sh => sh.ServiceId).ThenBy(sh => sh.RecurringServiceId)
-                .AsQueryable();
-        }
-
-        /// <summary>
         /// Gets the service details.
         /// It includes the Client/Client.OwnedParty and the ServiceTemplate and Fields.
         /// </summary>
@@ -158,6 +105,63 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 this.ObjectContext.Services.DeleteObject(service);
             }
+        }
+
+        #endregion
+
+        #region Service Holders
+
+        /// <summary>
+        /// Gets the ServiceHolders based off the current ServiceProvider and optional contexts.
+        /// It will return all the services on the seed date.
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="clientContext">(Optional) If this is the only context set, it will generate ServiceHolders only for this client.</param>
+        /// <param name="recurringServiceContext">(Optional) If this is the only context set, it will generate ServiceHolders only for this RecurringService.</param>
+        /// <param name="seedDate">The date to start generating ServiceHolders from.</param>
+        /// <param name="numberOfOccurrences">The (soft) minimum number of occurrences to return. If there are not enough services it will not meet the minimum.</param>
+        /// <param name="getPrevious">Return all the services from at least one date before the seed date (if there are any).</param>
+        /// <param name="getNext">Return all the services from at least one date after the seed date (if there are any).</param>
+        /// <returns></returns>
+        [Query]
+        public IQueryable<ServiceHolder> GetServiceHolders(Guid roleId, Guid? clientContext, Guid? recurringServiceContext,
+            DateTime seedDate, int numberOfOccurrences, bool getPrevious, bool getNext)
+        {
+            Guid? recurringServiceContextId = null;
+            Guid? clientContextId = null;
+            Guid? serviceProviderContextId = null;
+
+            if (recurringServiceContext.HasValue)
+            {
+                //Check the user has access to the RecurringService
+                if (!GetRecurringServicesForServiceProviderOptimized(roleId).Any(rs => rs.Id == recurringServiceContext))
+                    return null;
+
+                recurringServiceContextId = recurringServiceContext;
+            }
+            else if (clientContext.HasValue)
+            {
+                //Check the user has access to the Client
+                if (!GetClientsForRole(roleId).Any(c => c.Id == clientContext))
+                    return null;
+
+                clientContextId = clientContext;
+            }
+            else
+            {
+                var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+                //Because there is no other context, assume the context should be the serviceProvider
+                //The businessForRole returns null if the user does not have access to the ServiceProvider
+                serviceProviderContextId = businessForRole.Id;
+            }
+
+            //Order by OccurDate and Service Name for UI
+            //Order by ServiceId and RecurringServiceId to ensure they are always returned in the same order
+            return ObjectContext.GetServiceHolders(serviceProviderContextId, clientContextId, recurringServiceContextId,
+                seedDate, numberOfOccurrences, getPrevious, getNext)
+                .OrderBy(sh => sh.OccurDate).ThenBy(sh => sh.ServiceName).ThenBy(sh => sh.ServiceId).ThenBy(sh => sh.RecurringServiceId)
+                .AsQueryable();
         }
 
         #endregion
