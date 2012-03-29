@@ -57,7 +57,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void RegisterCommands()
         {
             AddCommand = new ReactiveCommand();
-            AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).Subscribe(param =>
+            AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(param =>
             {
                 var newOption = new Option();
                 OptionsField.OptionsWrapper.Add(newOption);

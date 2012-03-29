@@ -2,21 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors"
              xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:DynamicallySizedWrapPanel="clr-namespace:FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:DynamicallySizedWrapPanel="clr-namespace:FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d">
+             xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding" mc:Ignorable="d">
     <UserControl.Resources>
-        <Converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter"/>
+        <Converters1:CombineNameValueConverter x:Key="CombineNameValueConverter"/>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
+        <Converters1:ManifestFieldValueConverter x:Key="ManifestFieldValueConverter"/>
         <Converters1:OrderByNameConverter x:Key="OrderByNameConverter"/>
-        <Converters1:NumericFieldToValueFormatConverter x:Key="NumericFieldToValueFormatConverter"/>
-        <Converters1:FieldDefaultValueStringConverter x:Key="FieldDefaultValueStringConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
-                <TextBlock Text="{Binding Name}"/>
-                <TextBlock Text=": " />
-                <StackPanel DataContext="{Binding Options, ConverterParameter=0, Converter={StaticResource ElementFromEnumerableConverter}}">
-                    <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
-                </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245" DataContext="{Binding Options, ConverterParameter=0, Converter={StaticResource ElementFromEnumerableConverter}}">
+                <CheckBox IsChecked="{Binding IsChecked}"/>
+                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                <TextBlock Text="  " />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="CheckListTemplate">
@@ -25,9 +23,10 @@
                 <ItemsControl ItemsSource="{Binding OptionsWrapper}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name}"/>
-                                <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldDefaultValueStringConverter}}" TextDecorations="Underline"/>
+                            <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
+                                <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
+                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                                <TextBlock Text="  " />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -36,13 +35,17 @@
         </DataTemplate>
         <DataTemplate x:Key="ComboBoxTemplate">
             <StackPanel HorizontalAlignment="Left" Width="245">
-                <TextBlock Text="{Binding Name}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                    <TextBlock Text=" (Pick One)"/>
+                </StackPanel>
                 <ItemsControl ItemsSource="{Binding OptionsWrapper}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
+                                <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
                                 <TextBlock Text="{Binding Name}"/>
-                                <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldDefaultValueStringConverter}}" TextDecorations="Underline"/>
+                                <TextBlock Text="  " />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -51,46 +54,73 @@
         </DataTemplate>
         <DataTemplate x:Key="CurrencyTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
-                <TextBlock Text="{Binding Name}"/>
-                <TextBlock Text=": " />
-                <TextBlock Text="{Binding Value, Converter={StaticResource DecimalToCurrencyStringConverter}}" TextDecorations="Underline"/>
+                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                <TextBlock Text=": "/>
+                <TextBlock Text="{Binding ThisField, Converter={StaticResource ManifestFieldValueConverter}}" />
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="NumberPercentageTemplate">
+        <DataTemplate x:Key="NumberTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
-                <TextBlock Text="{Binding Name}"/>
-                <TextBlock Text=": " />
-                <telerik:RadNumericUpDown x:Name="myNumUpDown" Value="{Binding Value}" NumberDecimalDigits="{Binding DecimalPlaces}" IsEditable="False" 
-                                          HorizontalContentAlignment="Left" ValueFormat="{Binding Mask, Converter={StaticResource NumericFieldToValueFormatConverter}}" 
-                                          ShowButtons="False" BorderThickness="0 0 0 1" MaxWidth="80" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                <TextBlock Text=": "/>
+                <TextBlock Text="{Binding ThisField, Converter={StaticResource ManifestFieldValueConverter}}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="PercentageTemplate">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
+                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                <TextBlock Text=": "/>
+                <TextBlock Text="{Binding ThisField, Converter={StaticResource ManifestFieldValueConverter}}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="LocationTemplate">
         </DataTemplate>
-        <DataTemplate x:Key="TextTemplate">
-            <StackPanel Width="245">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock Text="{Binding Name}"/>
-                    <TextBlock Text=": " />
-                </StackPanel>
-                <TextBlock TextWrapping="Wrap" MaxWidth="230" HorizontalAlignment="Left" TextDecorations="Underline"
-                           Text="{Binding ThisField, Converter={StaticResource FieldDefaultValueStringConverter}}"/>
+        <DataTemplate x:Key="TextLargeTemplate">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
+                <TextBlock TextWrapping="Wrap" MaxWidth="225">
+                    <local:BindingUtil.MultiBindings>
+                        <local:MultiBindings>
+                            <local:MultiBinding TargetProperty="Text" Converter="{StaticResource CombineNameValueConverter}">
+                                <local:BindingCollection>
+                                    <Binding Path="Name"/>
+                                    <Binding Path="ThisField"/>
+                                </local:BindingCollection>
+                            </local:MultiBinding>
+                        </local:MultiBindings>
+                    </local:BindingUtil.MultiBindings>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TextSmallTemplate">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
+                <TextBlock TextWrapping="Wrap" MaxWidth="225">
+                    <local:BindingUtil.MultiBindings>
+                        <local:MultiBindings>
+                            <local:MultiBinding TargetProperty="Text" Converter="{StaticResource CombineNameValueConverter}">
+                                <local:BindingCollection>
+                                    <Binding Path="Name"/>
+                                    <Binding Path="ThisField"/>
+                                </local:BindingCollection>
+                            </local:MultiBinding>
+                        </local:MultiBindings>
+                    </local:BindingUtil.MultiBindings>
+                </TextBlock>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="TimeTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
-                <TextBlock Text="{Binding Name}"/>
-                <TextBlock Text=": " />
-                <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldDefaultValueStringConverter}}" TextDecorations="Underline"/>
+                <TextBlock x:Name="NameText" Text="{Binding Name}"/>
+                <TextBlock x:Name="SpacerText" Text=": "/>
+                <TextBlock x:Name="ValueText" Text="{Binding ThisField, Converter={StaticResource ManifestFieldValueConverter}}"/>
             </StackPanel>
         </DataTemplate>
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                    CheckListTemplate="{StaticResource CheckListTemplate}" ComboBoxTemplate="{StaticResource ComboBoxTemplate}" 
-                   CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberPercentageTemplate}" 
-                   PercentageTemplate="{StaticResource NumberPercentageTemplate}" LocationTemplate="{StaticResource LocationTemplate}" 
-                   TextLgTemplate="{StaticResource TextTemplate}" TextSmTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+                   CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberTemplate}" 
+                   PercentageTemplate="{StaticResource PercentageTemplate}" LocationTemplate="{StaticResource LocationTemplate}" 
+                   TextLgTemplate="{StaticResource TextLargeTemplate}" TextSmTemplate="{StaticResource TextSmallTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
     </UserControl.Resources>
-    <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel Width="500" MinHeight="20" NumberOfColumns="2">
+    <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel Width="500" MinHeight="0" NumberOfColumns="2">
         <telerik:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" ItemsSource="{Binding ServiceTemplate.Fields, 
             ElementName=myManifestFields, Converter={StaticResource OrderByNameConverter}}"/>
     </DynamicallySizedWrapPanel:DynamicallySizedWrapPanel>

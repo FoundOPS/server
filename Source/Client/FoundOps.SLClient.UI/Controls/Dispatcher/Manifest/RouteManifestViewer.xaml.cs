@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
-using System.Globalization;
 using System.Reactive.Linq;
 using System.Windows.Media;
 using FoundOps.Common.Tools;
 using System.Windows.Controls;
 using FoundOps.SLClient.UI.Tools;
-using Telerik.Windows.Documents;
-using Telerik.Windows.Documents.DocumentStructure;
 using Telerik.Windows.Documents.UI;
 using Telerik.Windows.Documents.Model;
 using Telerik.Windows.Documents.Layout;
@@ -26,7 +22,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         //Keeps track if the current window is open
         private bool _isOpen;
-        private double _headerHeight;
+        private double _headerPadding;
         private readonly Data.Models.RouteManifestSettings _settings = VM.RouteManifest.RouteManifestSettings;
 
         #endregion
@@ -42,8 +38,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             //a) the SelectedEntity changes
             //b) the RouteManifestSettings properties change
             VM.Routes.SelectedEntityObservable.AsGeneric()
-                .Merge(VM.RouteManifest.RouteManifestSettings.FromAnyPropertyChanged().AsGeneric().Throttle(TimeSpan.FromSeconds(.75)))
-              .Throttle(TimeSpan.FromMilliseconds(200)).ObserveOnDispatcher()
+                .Merge(VM.RouteManifest.RouteManifestSettings.FromAnyPropertyChanged().AsGeneric().Throttle(TimeSpan.FromMilliseconds(100)))
+              .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
                 //Update the Manifest
               .Subscribe(a => UpdateDocument());
 
@@ -64,22 +60,19 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         {
             //Only load the manifest when the current viewer is open
             if (!_isOpen) return;
-
-            var document = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
+            var document = new RadDocument{LayoutMode = DocumentLayoutMode.Paged};
             var mainSection = new Section { FooterBottomMargin = 0, HeaderTopMargin = 0, ActualPageMargin = new Padding(0, 20, 0, 20) };
             var bodyParagraph = new Paragraph();
 
             //If there is a selected route setup the manifest
             if (VM.Routes.SelectedEntity != null)
             {
-                //Keep track of the images loaded
-
                 #region Add the Header
 
                 if (_settings.IsHeaderVisible)
                 {
                     //We only want the header to show up once, so just add it first to the body paragraph.
-                    var manifestHeader = new ManifestHeader { Margin = new Thickness(0, 0, 0, 35) };
+                    var manifestHeader = new ManifestHeader { Margin = new Thickness(0, 0, 0, _headerPadding) };
                     manifestHeader.Measure(new Size(double.MaxValue, double.MaxValue));
 
                     bodyParagraph.Inlines.Add(new InlineUIContainer
@@ -95,32 +88,31 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                     {
                         if (_settings.IsAssignedVehiclesVisible)
                         {
-                            _headerHeight = numVehicles * 16;
+                            _headerPadding = numVehicles * 25;
                         }
                         else if (_settings.IsAssignedTechniciansVisible)
                         {
-                            _headerHeight = numTechnicians * 16;
+                            _headerPadding = numTechnicians * 25;
                         }
                         else
-                            _headerHeight = 0;
+                            _headerPadding = 25;
                     }
                     else
                     {
                         if (_settings.IsAssignedTechniciansVisible)
                         {
-                            _headerHeight = numTechnicians * 16;
+                            _headerPadding = numTechnicians * 25;
                         }
                         else if (_settings.IsAssignedVehiclesVisible)
                         {
-                            _headerHeight = numVehicles * 16;
+                            _headerPadding = numVehicles * 25;
                         }
                         else
-                            _headerHeight = 0;
+                            _headerPadding = 25;
                     }
-                }
-                else
-                {
-                    _headerHeight = 0;
+                    _headerPadding += 25;
+
+                    manifestHeader.Margin = new Thickness(0, 0, 0, _headerPadding);
                 }
 
                 #endregion
@@ -130,15 +122,15 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 if (_settings.IsSummaryVisible)
                 {
                     //We only want the summary to show up once, so just add it first to the body paragraph.
-                    var manifestSummary = new ManifestSummary { Margin = new Thickness(25, _headerHeight, 0, 0) };
+                    var manifestSummary = new ManifestSummary {Margin = new Thickness(25, 0, 0, -50)};
                     manifestSummary.Measure(new Size(double.MaxValue, double.MaxValue));
 
                     bodyParagraph.Inlines.Add(new InlineUIContainer
-                    {
-                        Height = manifestSummary.DesiredSize.Height,
-                        Width = manifestSummary.DesiredSize.Width,
-                        UiElement = manifestSummary
-                    });
+                                                  {
+                                                      Height = manifestSummary.DesiredSize.Height,
+                                                      Width = manifestSummary.DesiredSize.Width,
+                                                      UiElement = manifestSummary
+                                                  });
                 }
 
                 #endregion
@@ -148,8 +140,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 foreach (var routeDestination in VM.Routes.SelectedEntity.RouteDestinationsListWrapper)
                 {
                     var manifestRouteDestination = new ManifestRouteDestination { Margin = new Thickness(25, 2, 0, 10), RouteDestination = routeDestination };
-                    if(routeDestination.OrderInRoute == 1)
-                        manifestRouteDestination = new ManifestRouteDestination { Margin = new Thickness(25, 2, 0, 26), RouteDestination = routeDestination };
                     manifestRouteDestination.Measure(new Size(double.MaxValue, double.MaxValue));
 
                     var container = new InlineUIContainer
@@ -163,9 +153,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 }
 
                 #endregion
-
-                //Fixup the layout in half a second
-                //Observable.Interval(TimeSpan.FromMilliseconds(500)).Take(1).SubscribeOnDispatcher().Subscribe(_ => ManifestRichTextBox.UpdateLayout());
             }
 
             if (_settings.IsFooterVisible)
@@ -178,9 +165,12 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
             //Setup the Document
             document.Sections.Add(mainSection);
-
             ManifestRichTextBox.Document = document;
             ManifestRichTextBox.IsSpellCheckingEnabled = false;
+            ManifestRichTextBox.Width = 870;
+
+            //Fixup the layout
+            //Observable.Interval(TimeSpan.FromMilliseconds(100)).Take(1).SubscribeOnDispatcher().Subscribe(_ => ManifestRichTextBox.UpdateLayout());
         }
 
         #region Add the Footer
@@ -189,32 +179,37 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         {
             var footer = new Footer();
             var footerDoc = new RadDocument();
-
             var footerSection = new Section();
             footerDoc.Sections.Add(footerSection);
-            var cell11Paragraph = new Paragraph();
-            var cell12Paragraph = new Paragraph();
-            var cell13Paragraph = new Paragraph();
+            var cell1Paragraph = new Paragraph();
+            var cell2Paragraph = new Paragraph();
+            var cell3Paragraph = new Paragraph();
 
-            var cell11Span = new Span("Generated By FoundOPS.")
+            var cell1Span = new Span("Generated By FoundOPS.")
             {
                 FontSize = 10,
                 FontFamily = new FontFamily("Century Gothic")
             };
 
-            cell11Paragraph.Inlines.Add(cell11Span);
+            cell1Paragraph.Inlines.Add(cell1Span);
             var table = new Table { Borders = new TableBorders(new Border(BorderStyle.None)) };
             var row1 = new TableRow();
-            var cell11 = new TableCell { Padding = new Padding(35, 0, 0, 0) };
-            cell11.Blocks.Add(cell11Paragraph);
+            var cell1 = new TableCell { Padding = new Padding(35, 0, 0, 0) };
+            cell1.Blocks.Add(cell1Paragraph);
 
-            var cell12Span = new Span(" ");
-            cell12Paragraph.Inlines.Add(cell12Span);
-            var cell12 = new TableCell();
-            cell12.Blocks.Add(cell12Paragraph);
-            cell12.TextAlignment = RadTextAlignment.Center;
+            var cell2Span = new Span
+            {
+                Text =
+                    " ",
+                FontSize = 10,
+                FontFamily = new FontFamily("Century Gothic")
+            };
+            cell2Paragraph.Inlines.Add(cell2Span);
+            var cell2 = new TableCell();
+            cell2.Blocks.Add(cell2Paragraph);
+            cell2.TextAlignment = RadTextAlignment.Center;
 
-            var cell13Span = new Span
+            var cell3Span = new Span
             {
                 Text =
                     _settings.IsCustomMessageVisible
@@ -224,14 +219,14 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 FontFamily = new FontFamily("Century Gothic")
             };
 
-            cell13Paragraph.Inlines.Add(cell13Span);
-            var cell13 = new TableCell { Padding = new Padding(0, 0, 35, 0) };
-            cell13.Blocks.Add(cell13Paragraph);
-            cell13.TextAlignment = RadTextAlignment.Right;
+            cell3Paragraph.Inlines.Add(cell3Span);
+            var cell3 = new TableCell { Padding = new Padding(0, 0, 35, 0) };
+            cell3.Blocks.Add(cell3Paragraph);
+            cell3.TextAlignment = RadTextAlignment.Right;
 
-            row1.Cells.Add(cell11);
-            row1.Cells.Add(cell12);
-            row1.Cells.Add(cell13);
+            row1.Cells.Add(cell1);
+            row1.Cells.Add(cell2);
+            row1.Cells.Add(cell3);
 
             table.Rows.Add(row1);
 

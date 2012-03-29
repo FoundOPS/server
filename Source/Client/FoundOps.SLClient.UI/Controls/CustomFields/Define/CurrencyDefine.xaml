@@ -19,19 +19,12 @@
             <RowDefinition Height="5" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
         <TextBlock Text="Name:" HorizontalAlignment="Right" Grid.Column="1"/>
-        <TextBox Text="{Binding Name, Mode=TwoWay}" Grid.Column="3"/>
-        <!--Bind to field name-->
-
+        <TextBox Text="{Binding Name, Mode=TwoWay}" Grid.Column="3" MaxLength="40"/>
         <TextBlock Text="Tooltip:" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" ToolTipService.ToolTip="This is a tooltip. When the user hovers over the field, whatever helpful information you've inputted here will be displayed in a box like this one."/>
         <TextBox Text="{Binding Tooltip, Mode=TwoWay}" Grid.Column="3" Grid.Row="2"/>
-        <!--Bind to tooltip-->
-
         <TextBlock Text="Default Value:" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="1"/>
         <telerik:RadMaskedCurrencyInput Grid.Column="3" Grid.Row="4" Culture="en-US" TextMode="PlainText" Value="{Binding Value, Mode=TwoWay}"/>
-        <!--bind to default value-->
-        
         <!--Future feature: allow selection of currency type and permitted values-->
     </Grid>
 </UserControl>

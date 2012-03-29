@@ -7,7 +7,7 @@
             <Grid x:Name="ContextContentGrid" />
         </Border>
         <!--Header-->
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,0">
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,5">
             <Button Margin="2,5" Click="RemoveContextClick" Visibility="{Binding DeleteButtonVisibility}">
                 <Image Height="6" Source="/FoundOps.Common.Silverlight;component/Resources/Delete.png" Stretch="Fill" Width="6" />
             </Button>

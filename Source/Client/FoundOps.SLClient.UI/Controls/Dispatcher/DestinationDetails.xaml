@@ -30,11 +30,11 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Location:" HorizontalAlignment="Right"/>
+                <TextBlock Text="Location: " HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding Location.Name}" Grid.Column="1"/>
-                <TextBlock Text="Region:" HorizontalAlignment="Right" Grid.Row="3"/>
+                <TextBlock Text="Region: " HorizontalAlignment="Right" Grid.Row="3"/>
                 <TextBlock Text="{Binding Location.Region.Name}" Foreground="{Binding Location.Region.Color, Converter={StaticResource StringToColorConverter}}" Grid.Row="3" Grid.Column="1"/>
-                <TextBlock Text="Address:" HorizontalAlignment="Right" Grid.Row="4"/>
+                <TextBlock Text="Address: " HorizontalAlignment="Right" Grid.Row="4"/>
                 <StackPanel Grid.Row="4" Grid.Column="1">
                     <TextBlock Text="{Binding Location.AddressLineOne}" />
                     <TextBlock Text="{Binding Location.AddressLineTwo}" />

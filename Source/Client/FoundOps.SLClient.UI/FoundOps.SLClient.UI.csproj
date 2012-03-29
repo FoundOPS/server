@@ -202,17 +202,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomFields\Define\TextLargeDefine.xaml.cs">
+      <DependentUpon>TextLargeDefine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomFields\ManifestFields.xaml.cs">
       <DependentUpon>ManifestFields.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomFields\FieldSmall.xaml.cs">
       <DependentUpon>FieldSmall.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dispatcher\Converters\ManifestConverters.cs" />
     <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
       <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml.cs">
-      <DependentUpon>ManifestFooter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml.cs">
       <DependentUpon>ManifestHeader.xaml</DependentUpon>
@@ -287,8 +288,8 @@
     <Compile Include="Controls\CustomFields\Define\PercentageDefine.xaml.cs">
       <DependentUpon>PercentageDefine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CustomFields\Define\TextDefine.xaml.cs">
-      <DependentUpon>TextDefine.xaml</DependentUpon>
+    <Compile Include="Controls\CustomFields\Define\TextSmallDefine.xaml.cs">
+      <DependentUpon>TextSmallDefine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomFields\Define\TimeDefine.xaml.cs">
       <DependentUpon>TimeDefine.xaml</DependentUpon>
@@ -564,6 +565,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\CustomFields\Define\TextLargeDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\CustomFields\ManifestFields.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -571,10 +576,6 @@
     <Page Include="Controls\CustomFields\FieldSmall.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml">
       <SubType>Designer</SubType>
@@ -676,7 +677,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\CustomFields\Define\TextDefine.xaml">
+    <Page Include="Controls\CustomFields\Define\TextSmallDefine.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -976,6 +977,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\DataSources\FoundOps.Server.Services.CoreDomainService.CoreDomainContext.datasource" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj">

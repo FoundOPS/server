@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
-using Telerik.Windows.Controls;
+using System.Windows.Controls;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 
 // Needs to be in the same namespace, because it is a partial class
@@ -23,6 +23,8 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
             //TODO: Decide on this?
             ////Hide LocationField (for now) from being definable
             //FieldDefineTreeListView.FilterDescriptors.Add(new FilterDescriptor<Field> { FilteringExpression = f => !(f is LocationField) });
+            //var fieldName = this.ServiceTemplate.Fields;
+            //var two = this.ServiceTemplate;
         }
 
         #region ServiceTemplate Dependency Property
@@ -48,4 +50,6 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
 
         #endregion
     }
+
+
 }

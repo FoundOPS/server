@@ -1222,16 +1222,21 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <GridLength x:Key="ExtraLargeLabelColumn">150</GridLength>
     <GridLength x:Key="LargeLabelColumn">125</GridLength>
     <GridLength x:Key="LargeValueColumn">250</GridLength>
     <GridLength x:Key="SmallLabelColumn">125</GridLength>
     <GridLength x:Key="SmallValueColumn">150</GridLength>
+    <GridLength x:Key="ExtraSmallLabelColumn">90</GridLength>
+    <GridLength x:Key="ExtraSmallValueColumn">100</GridLength>
     <GridLength x:Key="DetailRowHeight">2</GridLength>
 	<SolidColorBrush x:Key="PickerBackground_Normal" Color="#FFFFFFFF" />
 	<CornerRadius x:Key="SplitButton_LeftPartCornerRadius">1 0 0 1</CornerRadius>
 	<CornerRadius x:Key="SplitButton_SpanCornerRadius">1</CornerRadius>
 	<telerik:Office_BlackTheme x:Key="Theme" />
 	<SolidColorBrush x:Key="ControlOuterBorder_Focused" Color="#FFFFC92B" />
+    <SolidColorBrush x:Key="ControlOuterBorder_Normal" Color="Transparent" />
+    <SolidColorBrush x:Key="ControlOuterBorder_MouseOver" Color="#FFFFC92B" />
 	<SolidColorBrush x:Key="ControlInnerBorder_Focused" Color="Transparent" />
 	<CornerRadius x:Key="SplitButton_SpanInnerCornerRadius">0</CornerRadius>
 	<CornerRadius x:Key="SplitButton_RightPartCornerRadius">0 1 1 0</CornerRadius>

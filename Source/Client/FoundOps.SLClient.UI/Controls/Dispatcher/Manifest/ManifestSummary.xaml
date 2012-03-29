@@ -8,13 +8,14 @@
                 Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, Converter={StaticResource VisibilityConverter}}">
         <!--Route Summary-->
         <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel HorizontalAlignment="Center" Width="750" NumberOfColumns="3"
-                                                      Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, 
+                     Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, 
             Converter={StaticResource VisibilityConverter}}">
             <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0">
                 <StackPanel Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteSummaryVisible, Converter={StaticResource VisibilityConverter}}">
                     <TextBlock Text="Route Summary" FontWeight="Bold"/>
                     <!--<TextBlock Text="Capabilities: " Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}"/>-->
-                    <ItemsControl Margin="10,0,0,0" ItemsSource="{Binding SelectedEntity.Capabilities}" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}">
+                    <ItemsControl Margin="10,0,0,0" ItemsSource="{Binding SelectedEntity.Capabilities}" 
+                                  Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -44,7 +45,6 @@
                         <TextBlock Text="8:00 Hours"/>
                         <!--Bind to scheduled Duration-->
                     </StackPanel>
-
                     <StackPanel Orientation="Horizontal" Visibility="Collapsed">
                         <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}"-->
                         <TextBlock Text="Estimated Duration: "/>
@@ -60,7 +60,6 @@
                 </StackPanel>
             </StackPanel>
             <!--Destinations Summary-->
-
             <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsDestinationsSummaryVisible, 
                 Converter={StaticResource VisibilityConverter}}">
                 <TextBlock Text="Destinations Summary" FontWeight="Bold"/>
@@ -89,9 +88,7 @@
                     <!--Bind to average distance between stops-->
                 </StackPanel>
             </StackPanel>
-
             <!--Task Summary-->
-
             <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsTaskSummaryVisible, 
                 Converter={StaticResource VisibilityConverter}}">
                 <TextBlock Text="Tasks Summary" FontWeight="Bold"/>
@@ -123,7 +120,7 @@
                 </ItemsControl>
             </StackPanel>
             <!--<Image Margin="4,2" Height="150" Width="150" Source="/FoundOps.Common.Silverlight;component/Resources/ImageToBeBound.png" 
-                                        Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteMapVisible, Converter={StaticResource VisibilityConverter}}" />-->
+                       Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteMapVisible, Converter={StaticResource VisibilityConverter}}" />-->
         </DynamicallySizedWrapPanel:DynamicallySizedWrapPanel>
         <Rectangle Height="2" Fill="Black" Margin="0,5" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, 
             Converter={StaticResource VisibilityConverter}}"/>

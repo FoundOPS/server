@@ -23,8 +23,11 @@
         <DataTemplate x:Key="PercentageTemplate">
             <CustomFields:PercentageDefine NumericField="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Key="TextTemplate">
-            <CustomFields:TextDefine TextBoxField="{Binding}"/>
+        <DataTemplate x:Key="TextLgTemplate">
+            <CustomFields:TextLargeDefine TextBoxField="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="TextSmTemplate">
+            <CustomFields:TextSmallDefine TextBoxField="{Binding}"/>
         </DataTemplate>
         <DataTemplate x:Key="TimeTemplate">
             <CustomFields:TimeDefine DateTimeField="{Binding}"/>
@@ -32,8 +35,8 @@
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                                              CheckListTemplate="{StaticResource OptionsFieldTemplate}" ComboBoxTemplate="{StaticResource OptionsFieldTemplate}" 
                                              CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberTemplate}" 
-                                             PercentageTemplate="{StaticResource PercentageTemplate}" TextSmTemplate="{StaticResource TextTemplate}" 
-                                             TextLgTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+                                             PercentageTemplate="{StaticResource PercentageTemplate}" TextSmTemplate="{StaticResource TextSmTemplate}" 
+                                             TextLgTemplate="{StaticResource TextLgTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
     </UserControl.Resources>
     <telerik:RadTreeListView x:Name="FieldDefineTreeListView"  AutoGenerateColumns="False" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" 
                              RowIndicatorVisibility="Collapsed" SelectionMode="Single" RowDetailsTemplateSelector="{StaticResource FieldDataTemplateSelector}" 
@@ -42,7 +45,7 @@
             <telerik:GridViewDataColumn Header="Type">
                 <telerik:GridViewColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldToTypeStringConverter}}"/>
+                        <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldToTypeStringConverter}}" TextAlignment="Left"/>
                     </DataTemplate>
                 </telerik:GridViewColumn.CellTemplate>
             </telerik:GridViewDataColumn>
