@@ -122,7 +122,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             if (_selectedLocation != null)
             {
-                CollectionViewObservable.OnNext(new DomainCollectionViewFactory<SubLocation>(_selectedLocation.SubLocationsListWrapper).View);
+                ViewObservable.OnNext(new DomainCollectionViewFactory<SubLocation>(_selectedLocation.SubLocationsListWrapper).View);
                 CollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
             }
 

@@ -57,7 +57,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 .Subscribe(serviceTemplateContext =>
                 {
                     //a) update the Fields DCV
-                    CollectionViewObservable.OnNext(serviceTemplateContext != null ?
+                    ViewObservable.OnNext(serviceTemplateContext != null ?
                         DomainCollectionViewFactory<Field>.GetDomainCollectionView(serviceTemplateContext.Fields) : null);
                     //b) Enable the Destination field option 
                     //   if the current ServiceTemplate is a FoundOPS level or ServiceProvider level service template

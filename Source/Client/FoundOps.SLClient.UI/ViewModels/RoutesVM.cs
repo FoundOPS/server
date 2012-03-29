@@ -1,3 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.Services;
@@ -6,6 +10,7 @@ using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 using FoundOps.SLClient.UI.Tools;
@@ -167,8 +172,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="RoutesVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public RoutesVM()
-            : base(false)
+        public RoutesVM() : base(false, false, false) //Do not initialize a default queryable collection view (or else the filter will not work)
         {
             //Setup ObservableAsPropertyHelpers
             _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate, DateTime.Now.Date);
@@ -216,20 +220,22 @@ namespace FoundOps.SLClient.UI.ViewModels
                 .ContinueWith(task =>
                 {
                     if (task.IsCanceled || !task.Result.Any())
+                    {
+                        ViewObservable.OnNext(new DomainCollectionViewFactory<Route>(new ObservableCollection<Route>()).View);
                         return;
-
+                    }
                     //Notify the RoutesVM has completed loading Routes
                     IsLoadingSubject.OnNext(false);
 
                     //Update the CollectionView
-                    CollectionViewObservable.OnNext(new DomainCollectionViewFactory<Route>(task.Result).View);
+                    ViewObservable.OnNext(new DomainCollectionViewFactory<Route>(task.Result).View);
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             });
 
             #endregion
 
             //Hookup the CollectionView Filter whenever the CollectionViewObservable changes
-            CollectionViewObservable.Where(cv => cv != null).DistinctUntilChanged()
+            ViewObservable.Where(cv => cv != null).DistinctUntilChanged()
             .ObserveOnDispatcher().Subscribe(collectionView => UpdateFilter());
 
             //Update the view whenever the filter changes
@@ -251,25 +257,25 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void RegisterCommands()
         {
-            ////Create an observable for when at least 1 route exists
-            //var routesExist = DataManager.GetEntityListObservable<Route>(Query.RoutesForServiceProviderOnDay) //select the routes EntityList observable
-            //    .FromCollectionChangedOrSet() //on collection changed or set
-            //    .Select(routeEntityList => routeEntityList.Any());  // select routes > 0
+            //Create an observable for when at least 1 route exists
+            var routesExist = CollectionViewObservable //select the routes EntityList observable
+                .DistinctUntilChanged() //on collection changed or set
+                .Select(routes => routes.Cast<object>().Any());  // select routes > 0
 
             ////Can calculate routes when there are routes, and when the context is not submitting
-            //var canCalculateRoutes = DataManager.DomainContextIsSubmittingObservable.CombineLatest(routesExist, (isSubmitting, areRoutes) => !isSubmitting && areRoutes);
-            //AutoCalculateRoutes = new ReactiveCommand(canCalculateRoutes);
+            var canCalculateRoutes = DataManager.DomainContextIsSubmittingObservable.CombineLatest(routesExist, (isSubmitting, areRoutes) => !isSubmitting && areRoutes);
+            AutoCalculateRoutes = new ReactiveCommand(canCalculateRoutes);
 
-            ////Populate routes with the UnroutedTasks and refresh the filter counts
-            //AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
-            //{
-            //    //Populate the routes with the unrouted tasks
-            //    var routedTasks = SimpleRouteCalculator.PopulateRoutes(this.UnroutedTasks, CollectionView.Cast<Route>());
+            //Populate routes with the UnroutedTasks and refresh the filter counts
+            AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
+            {
+                //Populate the routes with the unrouted tasks
+                var routedTaskHolders = SimpleRouteCalculator.PopulateRoutes((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, CollectionView.Cast<Route>());
 
-            //    //Remove the routedTasks from the task board
-            //    foreach (var routeTaskToRemove in routedTasks.ToArray())
-            //        UnroutedTasks.Remove(routeTaskToRemove);
-            //});
+                //Remove the routedTasks from the task board
+                foreach (var taskHoldersToRemove in routedTaskHolders.ToArray())
+                    VM.TaskBoard.LoadedTaskHolders.Remove(taskHoldersToRemove);
+            });
 
             ////Allow the user to open the route manifests whenever there is more than one route visible
             //OpenRouteManifests = new ReactiveCommand(_updateFilter.ObserveOnDispatcher().Throttle(new TimeSpan(0, 0, 0, 0, 250)).Select(_ => this.CollectionView.Cast<object>().Any()));

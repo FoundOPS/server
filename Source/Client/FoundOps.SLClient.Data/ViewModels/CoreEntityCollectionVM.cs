@@ -60,15 +60,25 @@ namespace FoundOps.SLClient.Data.ViewModels
         #endregion
 
         /// <summary>
-        /// The CollectionView observable.
+        /// The View observable.
         /// </summary>
-        protected readonly Subject<IEditableCollectionView> CollectionViewObservable = new Subject<IEditableCollectionView>();
-
+        protected readonly Subject<IEditableCollectionView> ViewObservable = new Subject<IEditableCollectionView>();
         private readonly ObservableAsPropertyHelper<IEditableCollectionView> _collectionView;
         /// <summary>
         /// Gets the editable collection view.
         /// </summary>
         public IEditableCollectionView EditableCollectionView { get { return _collectionView.Value; } }
+
+        /// <summary>
+        /// The CollectionView observable.
+        /// </summary>
+        public IObservable<ICollectionView> CollectionViewObservable
+        {
+            get
+            {
+                return ViewObservable.Cast<ICollectionView>();
+            }
+        }
 
         /// <summary>
         /// Gets the collection view.
@@ -212,10 +222,10 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             //Setup CollectionView property, set an initial ObservableCollection (many VMs expect the CollectionView source to be an ObservableCollection)
             _collectionView = initializeDefaultCollectionView
-                                  ? CollectionViewObservable.ToProperty(this, x => x.EditableCollectionView, new QueryableCollectionView(new ObservableCollection<TEntity>()))
-                                  : CollectionViewObservable.ToProperty(this, x => x.EditableCollectionView);
+                                  ? ViewObservable.ToProperty(this, x => x.EditableCollectionView, new QueryableCollectionView(new ObservableCollection<TEntity>()))
+                                  : ViewObservable.ToProperty(this, x => x.EditableCollectionView);
 
-            CollectionViewObservable.Cast<ICollectionView>().ToProperty(this, x => x.CollectionView);
+            ViewObservable.Cast<ICollectionView>().ToProperty(this, x => x.CollectionView);
 
             _preventChangingSelectionWhenChanges = preventChangingSelectionWhenChanges;
             _preventNullSelection = preventNullSelection;

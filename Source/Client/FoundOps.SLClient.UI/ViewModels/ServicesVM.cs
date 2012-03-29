@@ -323,7 +323,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 }
 
                 //Update the CollectionViewObservable with the new loaded ServiceHolders
-                CollectionViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(task.Result).View);
+                ViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(task.Result).View);
 
                 LastLoad = DateTime.Now;
 

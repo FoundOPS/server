@@ -1,5 +1,5 @@
-﻿using System;
-using FoundOps.Common.Silverlight.Interfaces;
+﻿using FoundOps.Common.Silverlight.Interfaces;
+using System;
 using RiaServicesContrib;
 using RiaServicesContrib.DomainServices.Client;
 
@@ -11,14 +11,35 @@ namespace FoundOps.Core.Models.CoreEntities
     public partial class RouteTask : IReject
     {
         /// <summary>
+        /// This is the link to the parent RouteTaskHolder.
+        /// It will have a value if this was recently generated.
+        /// </summary>
+        public TaskHolder ParentRouteTaskHolder { get; set; }
+
+        /// <summary>
         /// Gets the generated service route task parent which cloned this RouteTask.
         /// </summary>
         public RouteTask GeneratedRouteTaskParent { get; private set; }
+
+        /// <summary>
+        /// Returns the LocationName of the current RouteTask
+        /// </summary>
+        public string LocationName
+        {
+            get
+            {
+                if (Location != null)
+                    return Location.Name;
+
+                return ParentRouteTaskHolder != null ? ParentRouteTaskHolder.LocationName : "";
+            }
+        }
 
         partial void OnCreation()
         {
             InitializeHelper();
         }
+
         protected override void OnLoaded(bool isInitialLoad)
         {
             if (isInitialLoad)

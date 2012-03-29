@@ -14,30 +14,36 @@ namespace FoundOps.SLClient.Data.Tools
         /// <summary>
         /// Populates the routes.
         /// </summary>
-        /// <param name="unroutedRouteTasks">The unrouted route tasks.</param>
+        /// <param name="unroutedTaskHolders"> </param>
         /// <param name="routesToPopulate">The routes to populate.</param>
         /// <returns>The tasks put into routes.</returns>
-        public static IEnumerable<RouteTask> PopulateRoutes(IEnumerable<RouteTask> unroutedRouteTasks, IEnumerable<Route> routesToPopulate)
+        public static IEnumerable<TaskHolder> PopulateRoutes(IEnumerable<TaskHolder> unroutedTaskHolders, IEnumerable<Route> routesToPopulate)
         {
-            var routedTasks = new List<RouteTask>();
+            var routedTaskHolders = new List<TaskHolder>();
 
-            //Collection of Unique ServiceTemplate Names (types) from unroutedRouteTasks
-            var distinctRouteTaskServiceTemplates =
-                unroutedRouteTasks.Where(rt => rt.Service != null).Select(rt => rt.Service.ServiceTemplate.Name).Distinct().ToArray();
+            //Organize the unroutedTaskHolders by ServiceTemplateName
 
-            //2D collection of RouteTasks organized by ServiceTemplate Name (only those with a Location and a Service/ServiceTemplate)
-            var routeTaskCollections =
-                distinctRouteTaskServiceTemplates.Select(serviceTemplateName => unroutedRouteTasks.Where(rt => rt.Location != null && rt.Service != null && rt.Service.ServiceTemplate.Name == serviceTemplateName));
+            //a) get a collection of unique ServiceTemplate Names (types) from unroutedTaskHolders
+            var distinctServiceTemplates =
+                unroutedTaskHolders.Where(th => th.ServiceName != null).Select(th => th.ServiceName).Distinct().ToArray();
 
-            //Go through each route tasks service template collection and route them
-            foreach (var routeTaskCollection in routeTaskCollections)
+            //b) organize the unroutedTaskHolders into a 2d collection by ServiceTemplate Name 
+            //   only choose task holders with a LocationId and a ServiceName
+            var routeTaskHolderCollections =
+                distinctServiceTemplates.Select(serviceTemplateName => unroutedTaskHolders.Where(th => th.LocationId != null && th.ServiceName == serviceTemplateName));
+
+            //Go through each routeTaskHolderCollection and route them
+            //(Before routing them, convert them into RouteTasks)
+            foreach (var routeTaskHolderCollection in routeTaskHolderCollections)
             {
-                var serviceType = routeTaskCollection.First().Service.ServiceTemplate.Name;
+                var serviceType = routeTaskHolderCollection.First().ServiceName;
 
-                //Only organize route tasks with lat/longs
-                var unorganizedRouteTasks = routeTaskCollection.Where(rt => rt.Location.TelerikLocation.HasValue).ToList();
+                //Only route tasks with lat/longs
+                var unorganizedTaskHolders = routeTaskHolderCollection.Where(th => th.Longitude.HasValue && th.Latitude.HasValue).ToList();
 
+                //Before being added to this collection, the TaskHolder will be converted to a RouteTask
                 var organizedRouteTasks = new List<RouteTask>();
+
                 var calculator = new OrthodromicDistanceCalculator();
 
                 //TODO: Allow the depot to be set
@@ -52,32 +58,38 @@ namespace FoundOps.SLClient.Data.Tools
                 };
 
                 //Order the unorganized route tasks by location
-                while (unorganizedRouteTasks.Count > 0)
+                while (unorganizedTaskHolders.Count > 0)
                 {
-                    var nextRouteTaskToAdd =
-                        unorganizedRouteTasks.MinBy(
-                            rt => calculator.OrthodromicDistance(lastLatLon, new GeoLocation
-                                                                                 {
-                                                                                     Latitude = Convert.ToDouble(rt.Location.Latitude),
-                                                                                     Longitude = Convert.ToDouble(rt.Location.Longitude)
-                                                                                 }, OrthodromicDistanceCalculator.FormulaType.SphericalLawOfCosinesFormula));
+                    var nextTaskHolderToAdd =
+                        unorganizedTaskHolders.MinBy(
+                            th => calculator.OrthodromicDistance(lastLatLon, new GeoLocation
+                            {
+                                Latitude = Convert.ToDouble(th.Latitude),
+                                Longitude = Convert.ToDouble(th.Longitude)
+                            }, OrthodromicDistanceCalculator.FormulaType.SphericalLawOfCosinesFormula));
 
                     //Add the nextRouteTaskToAdd to the organized list and remove it from the unorganized list
-                    unorganizedRouteTasks.Remove(nextRouteTaskToAdd);
-                    organizedRouteTasks.Add(nextRouteTaskToAdd);
+                    unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
+
+                    var routeTask = TaskHolder.ConvertToRouteTask(nextTaskHolderToAdd);
+
+                    organizedRouteTasks.Add(routeTask);
 
                     lastLatLon = new GeoLocation
                     {
-                        Latitude = Convert.ToDouble(nextRouteTaskToAdd.Location.Latitude),
-                        Longitude = Convert.ToDouble(nextRouteTaskToAdd.Location.Longitude)
+                        Latitude = Convert.ToDouble(nextTaskHolderToAdd.Latitude),
+                        Longitude = Convert.ToDouble(nextTaskHolderToAdd.Longitude)
                     };
                 }
 
-                var routesOfServiceType = routesToPopulate.Where(route => route.RouteType == serviceType);
-                routedTasks.AddRange(PutTasksIntoRoutes(routesOfServiceType, organizedRouteTasks));
+                //Take the organizedRouteTask collection and put it into routes
+                var routedRouteTasks = PutTasksIntoRoutes(routesToPopulate.Where(route => route.RouteType == serviceType), organizedRouteTasks);
+
+                //Return the RouteTaskHolders of the routed RouteTasks
+                routedTaskHolders.AddRange(routedRouteTasks.Select(rt => rt.ParentRouteTaskHolder));
             }
 
-            return routedTasks;
+            return routedTaskHolders;
         }
 
         /// <summary>
@@ -125,8 +137,8 @@ namespace FoundOps.SLClient.Data.Tools
                     var newRouteDestination = new RouteDestination
                     {
                         OrderInRoute = route.RouteDestinations.Count + 1,
-                        Client = routeTask.Client,
-                        Location = routeTask.Location
+                        ClientId = routeTask.ClientId,
+                        LocationId = routeTask.LocationId
                     };
                     newRouteDestination.RouteTasks.Add(routeTask);
 

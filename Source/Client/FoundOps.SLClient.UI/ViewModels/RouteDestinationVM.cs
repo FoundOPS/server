@@ -36,6 +36,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             RouteDestination = routeDestination;
 
+            if (routeDestination == null)
+                return;
+
             //Setup the ContactInfoVMs
             if (RouteDestination.Client != null && RouteDestination.Client.OwnedParty != null)
                 ClientContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, RouteDestination.Client.OwnedParty.ContactInfoSet);

@@ -57,10 +57,10 @@ namespace FoundOps.Server.Services.CoreDomainService
             var routes = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id)
                           .Include("Vehicles").Include("Technicians").Include("RouteDestinations");
 
-            if(vehicleId!=Guid.Empty)
+            if (vehicleId != Guid.Empty)
                 routes = routes.Where(r => r.Vehicles.Any(v => v.Id == vehicleId));
 
-            if(employeeId!=Guid.Empty)
+            if (employeeId != Guid.Empty)
                 routes = routes.Where(r => r.Technicians.Any(t => t.Id == employeeId));
 
             //TODO: optimize this
@@ -104,7 +104,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             this.ObjectContext.DetachExistingAndAttach(route);
 
             route.RouteDestinations.Load();
-            foreach(var routeDestination in route.RouteDestinations.ToArray())
+            foreach (var routeDestination in route.RouteDestinations.ToArray())
                 DeleteRouteDestination(routeDestination);
 
             this.ObjectContext.Routes.DeleteObject(route);
@@ -149,95 +149,20 @@ namespace FoundOps.Server.Services.CoreDomainService
         #endregion
 
         #region RouteTask
+
+        /// <summary>
+        /// Returns the scheduled RouteTasks for the day based on the ServiceProvider that are not in a route.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="serviceDate">The service date.</param>
         [Query]
-        public IQueryable<TaskHolder>  GetUnroutedServices (Guid roleId, DateTime serviceDate) 
+        public IQueryable<TaskHolder> GetUnroutedServices(Guid roleId, DateTime serviceDate)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var serviceProviderContextId = businessForRole.Id; 
- 
-            return ObjectContext.GetUnroutedServicesForDate(serviceProviderContextId, serviceDate).AsQueryable();
-        }
+            var unroutedServicesForDate = ObjectContext.GetUnroutedServicesForDate(businessForRole.Id, serviceDate);
 
-        private static IEnumerable<RouteTask> GenerateRouteTasksFromServices(IEnumerable<Service> services, BusinessAccount businessAccount)
-        {
-            var newRouteTasks = services.Select(service =>
-            {
-                var individualGeneratedRouteTaskForService = new RouteTask
-                {
-                    GeneratedOnServer = true,
-                    Date = service.ServiceDate,
-                    Service = service,
-                    Client = service.Client,
-                    BusinessAccountId = businessAccount.Id,
-                    Name = service.ServiceTemplate.Name,
-                    Location = service.ServiceTemplate.GetDestination()
-                };
-                return individualGeneratedRouteTaskForService;
-            });
-
-            return newRouteTasks;
-        }
-
-        //do logic that gets all the services for the day based on recurring services, then for each create new task. Then do union with what is currently done.
-        public IEnumerable<RouteTask> GetUnroutedRouteTasks(Guid roleId, DateTime selectedDate)
-        {
-            var serviceDate = selectedDate.Date; //Remove time aspect
-
-            var businessAccount = ObjectContext.BusinessAccountOwnerOfRole(roleId);
-
-            //Get all the existing services for the day => later to be unioned with generatedServices
-            var existingServicesQuery = ((ObjectQuery<Service>)this.ObjectContext.Services.Where(service => service.ServiceDate == serviceDate && service.ServiceProviderId == businessAccount.Id))
-                .Include("ServiceTemplate").Include("ServiceTemplate.Fields").Include("RouteTasks").ToList();
-
-            //Force load existingServices' LocationsFields's value (for Destination)
-            (from es in existingServicesQuery
-             join st in this.ObjectContext.ServiceTemplates
-                 on es.Id equals st.Id
-             from f in st.Fields
-             from lf in st.Fields.OfType<LocationField>()
-             select new { st, f, lf.Value })
-            .ToArray();
-
-            IEnumerable<Service> existingServices = existingServicesQuery.ToList();
-
-            var recurringServicesForDate = RecurringServicesForDate(serviceDate, businessAccount);
-
-            //Generate services for the day from RecurringServices for all recurring services without existing services
-            var generatedServices = recurringServicesForDate.Where(rs => existingServices.All(s => s.RecurringServiceId != rs.Id)).Select(rs =>
-            {
-                var individualGeneratedService = new Service
-                {
-                    Generated = true,
-                    Client = rs.Client,
-                    ServiceTemplate = rs.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
-                    ServiceProviderId = businessAccount.Id,
-                    ServiceDate = serviceDate,
-                    RecurringServiceParent = rs
-                };
-                return individualGeneratedService;
-            }).ToList();
-
-            var unroutedExistingServices = existingServices.Where(s => s.RouteTasks.All(rt => rt.RouteDestinationId == null));
-
-            var unroutedServices = unroutedExistingServices.Union(generatedServices);
-
-            //Get the existing unrouted route tasks for the day
-            var existingUnroutedRouteTasks = ((ObjectQuery<RouteTask>)this.ObjectContext.RouteTasks.Where(
-                    routeTask =>
-                    routeTask.BusinessAccountId == businessAccount.Id && routeTask.Date == serviceDate &&
-                    (routeTask.RouteDestinationId == null || routeTask.RouteDestinationId == Guid.Empty))).Include("Client").Include("Location").Include("Service");
-
-            //For each service in unrouted services for the day, create a route task 
-            var generatedRouteTasks = GenerateRouteTasksFromServices(unroutedServices, businessAccount);
-
-            //Remove preexisting route tasks
-            generatedRouteTasks = generatedRouteTasks.Where(rt => !existingUnroutedRouteTasks.Any(unrt => rt.ServiceId == unrt.ServiceId));
-
-            //Combine unroutedRouteTasks and generatedRouteTasksFromRecurringServices
-            var allUnroutedRouteTasks = Enumerable.Union(existingUnroutedRouteTasks, generatedRouteTasks);
-
-            return allUnroutedRouteTasks;
+            return unroutedServicesForDate.AsQueryable();
         }
 
         public void InsertRouteTask(RouteTask routeTask)

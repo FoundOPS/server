@@ -168,6 +168,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="route">The current route.</param>
         public RouteVM(Route route)
         {
+            if (route == null)
+                return;
+
             Route = route;
 
             #region Implementation of IAddToDeleteFromDestination<Employee> and IAddToDeleteFromDestination<Vehicle>

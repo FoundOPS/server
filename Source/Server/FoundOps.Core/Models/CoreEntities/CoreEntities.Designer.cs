@@ -12229,10 +12229,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new TaskHolder object.
         /// </summary>
         /// <param name="occurDate">Initial value of the OccurDate property.</param>
-        public static TaskHolder CreateTaskHolder(global::System.DateTime occurDate)
+        /// <param name="clientId">Initial value of the ClientId property.</param>
+        public static TaskHolder CreateTaskHolder(global::System.DateTime occurDate, global::System.Guid clientId)
         {
             TaskHolder taskHolder = new TaskHolder();
             taskHolder.OccurDate = occurDate;
+            taskHolder.ClientId = clientId;
             return taskHolder;
         }
 
@@ -12479,6 +12481,54 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _LocationName;
         partial void OnLocationNameChanging(global::System.String value);
         partial void OnLocationNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LocationId
+        {
+            get
+            {
+                return _LocationId;
+            }
+            set
+            {
+                OnLocationIdChanging(value);
+                ReportPropertyChanging("LocationId");
+                _LocationId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LocationId");
+                OnLocationIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LocationId;
+        partial void OnLocationIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLocationIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ClientId
+        {
+            get
+            {
+                return _ClientId;
+            }
+            set
+            {
+                OnClientIdChanging(value);
+                ReportPropertyChanging("ClientId");
+                _ClientId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ClientId");
+                OnClientIdChanged();
+            }
+        }
+        private global::System.Guid _ClientId;
+        partial void OnClientIdChanging(global::System.Guid value);
+        partial void OnClientIdChanged();
 
         #endregion
 

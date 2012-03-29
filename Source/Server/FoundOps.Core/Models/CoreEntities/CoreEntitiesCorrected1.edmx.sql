@@ -3669,8 +3669,10 @@ RETURNS @ServicesTableToReturn TABLE
 		OccurDate date,
 		ServiceName nvarchar(max),
 		ClientName nvarchar(max),
+		ClientId uniqueidentifier,
 		RegionName nvarchar(max),
 		LocationName nvarchar(max),
+		LocationId uniqueidentifier,
 		AddressLine nvarchar(max),
 		Latitude decimal(18,8),
 		Longitude decimal(18,8)
@@ -3824,6 +3826,7 @@ BEGIN
 		OccurDate date,
 		ServiceName nvarchar(max),
 		ClientName nvarchar(max),
+		ClientId uniqueidentifier,
 		LocationId uniqueidentifier,
 		RegionName nvarchar(max),
 		LocationName nvarchar(max),
@@ -3868,6 +3871,7 @@ BEGIN
 	UPDATE	@UnroutedServices
 	SET		AddressLine = t1.AddressLineOne, 
 			LocationName = t1.Name,
+			LocationId = t1.Id,
 			Latitude = t1.Latitude, 
 			Longitude = t1.Longitude
 	FROM	Locations t1
@@ -3884,9 +3888,16 @@ BEGIN
 								WHERE	RecurringServiceId = t2.Id AND t2.ClientId = t1.Id
 							)
 							)
+	UPDATE	@UnroutedServices
+	SET		ClientId =		(
+							SELECT	ClientId
+							FROM	RecurringServices t1
+							WHERE	RecurringServiceId = t1.Id
+							)
 
-	INSERT @ServicesTableToReturn (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, LocationName, AddressLine, Latitude, Longitude)
-	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, LocationName, AddressLine, Latitude, Longitude FROM @UnroutedServices
+	INSERT @ServicesTableToReturn (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude)
+	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude FROM @UnroutedServices
+
 RETURN 
 END
 

@@ -394,7 +394,7 @@
         </Function>
         <Function Name="GetUnroutedServicesForDate" IsComposable="false">
           <CommandText>
-            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, LocationName, AddressLine, Latitude, Longitude
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude
             FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
           </CommandText>
           <Parameter Name="serviceProviderContext"
@@ -3428,6 +3428,8 @@
           <Property Type="Decimal" Name="Longitude" Nullable="true" />
           <Property Type="DateTime" Name="OccurDate" Nullable="false" />
           <Property Type="String" Name="LocationName" Nullable="true" />
+          <Property Type="Guid" Name="LocationId" Nullable="true" />
+          <Property Type="Guid" Name="ClientId" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3974,6 +3976,8 @@
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
                 <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

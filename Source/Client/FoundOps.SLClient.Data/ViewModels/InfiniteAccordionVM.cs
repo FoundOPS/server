@@ -34,7 +34,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             protected set
             {
                 _queryableCollectionView = value;
-                CollectionViewObservable.OnNext(value);
+                ViewObservable.OnNext(value);
 
                 //Make sure the SelectedEntity is selected
                 if (value != null)

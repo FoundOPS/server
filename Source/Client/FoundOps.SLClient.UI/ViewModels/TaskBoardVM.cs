@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Silverlight.MVVM.Messages;
+﻿using System.Collections.ObjectModel;
+using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
@@ -51,6 +52,20 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// The loaded task holders.
+        /// </summary>
+        public ObservableCollection<TaskHolder> LoadedTaskHolders
+        {
+            get
+            {
+                if (CollectionView == null)
+                    return new ObservableCollection<TaskHolder>();
+
+                return (ObservableCollection<TaskHolder>)CollectionView.SourceCollection;
+            }
+        }
+
         #endregion
 
         #region Locals
@@ -86,20 +101,20 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 Manager.CoreDomainContext.LoadAsync(DomainContext.GetUnroutedServicesQuery(ContextManager.RoleId, VM.Routes.SelectedDate), _cancelLastTasksLoad).ContinueWith(
                     task =>
-                        {
-                            if(task.IsCanceled || !task.Result.Any())
-                                return;
+                    {
+                        if (task.IsCanceled || !task.Result.Any())
+                            return;
 
-                            //Notify the TaskBoardVM has completed loading TaskHolders
-                            IsLoadingSubject.OnNext(false);
+                        //Notify the TaskBoardVM has completed loading TaskHolders
+                        IsLoadingSubject.OnNext(false);
 
-                            CollectionViewObservable.OnNext(new DomainCollectionViewFactory<TaskHolder>(task.Result).View);
-                        },
+                        ViewObservable.OnNext(new DomainCollectionViewFactory<TaskHolder>(task.Result.ToObservableCollection()).View);
+                    },
                     TaskScheduler.FromCurrentSynchronizationContext());
             });
 
             //Hookup the CollectionView Filter whenever the CollectionViewObservable changes
-            CollectionViewObservable.Where(cv => cv != null).DistinctUntilChanged()
+            ViewObservable.Where(cv => cv != null).DistinctUntilChanged()
             .ObserveOnDispatcher().Subscribe(collectionView => UpdateFilter());
 
             //Update the view whenever the filter changes
