@@ -158,7 +158,13 @@ namespace FoundOps.SLClient.UI.Tools
         /// <summary>
         /// Gets the RouteManifestVM.
         /// </summary>
-        public static RouteManifestVM RouteManifest { get { return Routes.RouteManifestVM; } }
+        public static RouteManifestVM RouteManifest
+        {
+            get
+            {
+                return (RouteManifestVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RouteManifestVM", null, CreationPolicy.Shared).Value;
+            }
+        }
 
         /// <summary>
         /// Gets the ServiceTemplatesVM.
@@ -179,6 +185,17 @@ namespace FoundOps.SLClient.UI.Tools
             get
             {
                 return (ServicesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ServicesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the TaskBoardVM.
+        /// </summary>
+        public static TaskBoardVM TaskBoard
+        {
+            get
+            {
+                return (TaskBoardVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("TaskBoardVM", null, CreationPolicy.Shared).Value;
             }
         }
 

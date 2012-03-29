@@ -80,6 +80,11 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         public IEnumerable<TEntity> Collection { get { return ((ICollectionView)_collectionView.Value).Cast<TEntity>(); } }
 
+        /// <summary>
+        /// Gets the casted source collection.
+        /// </summary>
+        public IEnumerable<TEntity> SourceCollection { get { return ((ICollectionView)_collectionView.Value).SourceCollection.Cast<TEntity>(); } }
+
         #region Selected Entity
 
         readonly Subject<TEntity> _selectedEntityObservable = new Subject<TEntity>(); //The backing SelectedEntityObservable
@@ -106,7 +111,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             get { return _selectedEntity.Value; }
             set
             {
-                if (_preventNullSelection && value ==null)
+                if (_preventNullSelection && value == null)
                     return;
 
                 if (_disableSelectedEntity) return;
@@ -186,7 +191,8 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         /// <param name="preventChangingSelectionWhenChanges">Whether or not to prevent changing the selected entity when the DomainContext has changes.</param>
         /// <param name="preventNullSelection">Do not allow the SelectedEntity to become null</param>
-        protected CoreEntityCollectionVM(bool preventChangingSelectionWhenChanges = true, bool preventNullSelection = false)
+        /// <param name="initializeDefaultCollectionView">Initialize a default QueryableCollectionView for the CollectionView property.</param>
+        protected CoreEntityCollectionVM(bool preventChangingSelectionWhenChanges = true, bool preventNullSelection = false, bool initializeDefaultCollectionView = true)
         {
             //Setup SelectedEntity property
             _selectedEntity = SelectedEntityObservable.ToProperty(this, x => x.SelectedEntity);
@@ -205,7 +211,10 @@ namespace FoundOps.SLClient.Data.ViewModels
                 });
 
             //Setup CollectionView property, set an initial ObservableCollection (many VMs expect the CollectionView source to be an ObservableCollection)
-            _collectionView = CollectionViewObservable.ToProperty(this, x => x.EditableCollectionView, new QueryableCollectionView(new ObservableCollection<TEntity>()));
+            _collectionView = initializeDefaultCollectionView
+                                  ? CollectionViewObservable.ToProperty(this, x => x.EditableCollectionView, new QueryableCollectionView(new ObservableCollection<TEntity>()))
+                                  : CollectionViewObservable.ToProperty(this, x => x.EditableCollectionView);
+
             CollectionViewObservable.Cast<ICollectionView>().ToProperty(this, x => x.CollectionView);
 
             _preventChangingSelectionWhenChanges = preventChangingSelectionWhenChanges;

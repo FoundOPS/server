@@ -3643,11 +3643,11 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF OBJECT_ID(N'[dbo].[GetUnroutedServiceForDate]', N'FN') IS NOT NULL
-DROP FUNCTION [dbo].[GetUnroutedServiceForDate]
+IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
+DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
 GO
 /****************************************************************************************************************************************************
-* FUNCTION GetUnroutedServiceForDate will take the context provided and find all the services that are scheduled for that day
+* FUNCTION GetUnroutedServicesForDate will take the context provided and find all the services that are scheduled for that day
 ** Input Parameters **
 * @serviceProviderIdContext - The BusinessAccount context
 * @firstDateToLookForServices - The reference date to look for services
@@ -3659,7 +3659,7 @@ GO
 * {B30A43AD-655A-449C-BD4E-951F8F988718} |                                        | 1/1/2012 <-- Existing service
 * {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | {FC222C74-EFEA-4B45-93FB-B042E6D6DB0D} | 1/2/2012 <-- Existing service with a RecurringService parent **
 ***************************************************************************************************************************************************/
-CREATE FUNCTION [dbo].[GetUnroutedServiceForDate]
+CREATE FUNCTION [dbo].[GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
 @serviceDate date)
 RETURNS @ServicesTableToReturn TABLE
@@ -3670,9 +3670,10 @@ RETURNS @ServicesTableToReturn TABLE
 		ServiceName nvarchar(max),
 		ClientName nvarchar(max),
 		RegionName nvarchar(max),
+		LocationName nvarchar(max),
 		AddressLine nvarchar(max),
-		Latitude float,
-		Longitude float
+		Latitude decimal(18,8),
+		Longitude decimal(18,8)
 	) 
 AS
 BEGIN
@@ -3778,7 +3779,6 @@ BEGIN
 		ServiceDate nvarchar(max)
 	)
 
-	--Finds duplicate id's between the Existing Services and the RecurringServices
 	INSERT INTO @DuplicateIdTable
 	SELECT t1.RecurringServiceId, t2.ServiceId, t2.OccurDate, t2.ServiceName FROM (SELECT OccurDate, RecurringServiceId, ServiceId FROM @tempHolderTable AS t2 WHERE ServiceId IS NOT NULL GROUP BY OccurDate, RecurringServiceId, ServiceId) t1
 	JOIN @tempHolderTable as t2 on t1.RecurringServiceId = t2.RecurringServiceId AND t1.OccurDate = t2.OccurDate AND t2.ServiceId IS NULL
@@ -3791,7 +3791,7 @@ BEGIN
 		ServiceName nvarchar(max)
 	)
 
-	--Filtered down from the table above so that only non duplicate Services are returned from the function
+	--Filtered down from the table above so that only the correct number of Services is returned from the function
 	INSERT INTO @serviceForDayTable
 	SELECT * FROM @tempHolderTable
 	EXCEPT
@@ -3804,8 +3804,7 @@ BEGIN
 		OccurDate date,
 		ServiceName nvarchar(max)
 	)
-	
-	--Finds all serviecs that have been put into routes already
+
 	INSERT INTO @PreRoutedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
 	SELECT t1.RecurringServiceId, t1.ServiceId, t1.OccurDate, t1.ServiceName
 	FROM @serviceForDayTable  t1
@@ -3816,6 +3815,8 @@ BEGIN
 		WHERE t1.ServiceId = ServiceId
 	)
 
+	
+
 	DECLARE @UnroutedServices TABLE
 	(
 		RecurringServiceId uniqueidentifier,
@@ -3825,20 +3826,17 @@ BEGIN
 		ClientName nvarchar(max),
 		LocationId uniqueidentifier,
 		RegionName nvarchar(max),
+		LocationName nvarchar(max),
 		AddressLine nvarchar(max),
 		Latitude float,
 		Longitude float
 	) 
 
-	--Selects only those services that are on @seedDate and have not yet been put into a Route
 	INSERT INTO @UnroutedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
 	SELECT * FROM @serviceForDayTable
 	EXCEPT
 	SELECT * FROM @PreRoutedServices
 	
-	--TODO:OPTIMIZE THIS SECTION--------------------------------------------------
-	--Semi-Join that will find all LocationId's based on the Services ServiceTemplateId's
-	--UnroutedServices.ServiceTemplateId --> Fields.ServiceTemplateId --> Fields.Id --> Fields_LocationField.Id = UnroutedServices.LocationId
 	UPDATE @UnroutedServices
 	SET LocationId =	(
 							SELECT	LocationId
@@ -3852,10 +3850,7 @@ BEGIN
 								AND LocationFieldTypeInt = 0
 							)
 						)
-	-------------------------------------------------------------------------------
 
-	--Semi-Join that will find all RegionNames based on the Services LocationId
-	--UnroutedServices.LocationId --> Locations.RegionId --> Regions.Name = UnroutedServices.RegionName
 	UPDATE @UnroutedServices
 	SET RegionName =	(
 							SELECT	Name
@@ -3868,19 +3863,30 @@ BEGIN
 								AND		LocationId = t2.Id
 							)
 						)
-	--Finds the Address, Latitude, Longitude and ClientName based on  UnroutedServices.LocationId
+
+
 	UPDATE	@UnroutedServices
 	SET		AddressLine = t1.AddressLineOne, 
+			LocationName = t1.Name,
 			Latitude = t1.Latitude, 
-			Longitude = t1.Longitude,
-			ClientName = t1.Name
+			Longitude = t1.Longitude
 	FROM	Locations t1
 	WHERE	t1.Id = LocationId
 
-	--Inserts all the new data into the final output table
-	INSERT @ServicesTableToReturn (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, AddressLine, Latitude, Longitude)
-	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, AddressLine, Latitude, Longitude FROM @UnroutedServices
+	UPDATE	@UnroutedServices
+	SET		ClientName =	(
+							SELECT t1.Name
+							FROM	Parties_Business t1
+							WHERE	EXISTS
+							(
+								SELECT  ClientId
+								FROM	RecurringServices t2
+								WHERE	RecurringServiceId = t2.Id AND t2.ClientId = t1.Id
+							)
+							)
 
+	INSERT @ServicesTableToReturn (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, LocationName, AddressLine, Latitude, Longitude)
+	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, RegionName, LocationName, AddressLine, Latitude, Longitude FROM @UnroutedServices
 RETURN 
 END
 

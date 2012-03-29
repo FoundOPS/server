@@ -1071,6 +1071,36 @@ namespace FoundOps.Core.Models.CoreEntities
     
             return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+            }
+            else
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+        }
 
         #endregion
 
@@ -12180,6 +12210,275 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _ServiceName;
         partial void OnServiceNameChanging(global::System.String value);
         partial void OnServiceNameChanged();
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="TaskHolder")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class TaskHolder : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new TaskHolder object.
+        /// </summary>
+        /// <param name="occurDate">Initial value of the OccurDate property.</param>
+        public static TaskHolder CreateTaskHolder(global::System.DateTime occurDate)
+        {
+            TaskHolder taskHolder = new TaskHolder();
+            taskHolder.OccurDate = occurDate;
+            return taskHolder;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> RecurringServiceId
+        {
+            get
+            {
+                return _RecurringServiceId;
+            }
+            set
+            {
+                OnRecurringServiceIdChanging(value);
+                ReportPropertyChanging("RecurringServiceId");
+                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RecurringServiceId");
+                OnRecurringServiceIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _RecurringServiceId;
+        partial void OnRecurringServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnRecurringServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> ServiceId
+        {
+            get
+            {
+                return _ServiceId;
+            }
+            set
+            {
+                OnServiceIdChanging(value);
+                ReportPropertyChanging("ServiceId");
+                _ServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ServiceId");
+                OnServiceIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _ServiceId;
+        partial void OnServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ServiceName
+        {
+            get
+            {
+                return _ServiceName;
+            }
+            set
+            {
+                OnServiceNameChanging(value);
+                ReportPropertyChanging("ServiceName");
+                _ServiceName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ServiceName");
+                OnServiceNameChanged();
+            }
+        }
+        private global::System.String _ServiceName;
+        partial void OnServiceNameChanging(global::System.String value);
+        partial void OnServiceNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ClientName
+        {
+            get
+            {
+                return _ClientName;
+            }
+            set
+            {
+                OnClientNameChanging(value);
+                ReportPropertyChanging("ClientName");
+                _ClientName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ClientName");
+                OnClientNameChanged();
+            }
+        }
+        private global::System.String _ClientName;
+        partial void OnClientNameChanging(global::System.String value);
+        partial void OnClientNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String RegionName
+        {
+            get
+            {
+                return _RegionName;
+            }
+            set
+            {
+                OnRegionNameChanging(value);
+                ReportPropertyChanging("RegionName");
+                _RegionName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("RegionName");
+                OnRegionNameChanged();
+            }
+        }
+        private global::System.String _RegionName;
+        partial void OnRegionNameChanging(global::System.String value);
+        partial void OnRegionNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String AddressLine
+        {
+            get
+            {
+                return _AddressLine;
+            }
+            set
+            {
+                OnAddressLineChanging(value);
+                ReportPropertyChanging("AddressLine");
+                _AddressLine = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("AddressLine");
+                OnAddressLineChanged();
+            }
+        }
+        private global::System.String _AddressLine;
+        partial void OnAddressLineChanging(global::System.String value);
+        partial void OnAddressLineChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> Latitude
+        {
+            get
+            {
+                return _Latitude;
+            }
+            set
+            {
+                OnLatitudeChanging(value);
+                ReportPropertyChanging("Latitude");
+                _Latitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Latitude");
+                OnLatitudeChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _Latitude;
+        partial void OnLatitudeChanging(Nullable<global::System.Decimal> value);
+        partial void OnLatitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> Longitude
+        {
+            get
+            {
+                return _Longitude;
+            }
+            set
+            {
+                OnLongitudeChanging(value);
+                ReportPropertyChanging("Longitude");
+                _Longitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Longitude");
+                OnLongitudeChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _Longitude;
+        partial void OnLongitudeChanging(Nullable<global::System.Decimal> value);
+        partial void OnLongitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime OccurDate
+        {
+            get
+            {
+                return _OccurDate;
+            }
+            set
+            {
+                OnOccurDateChanging(value);
+                ReportPropertyChanging("OccurDate");
+                _OccurDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OccurDate");
+                OnOccurDateChanged();
+            }
+        }
+        private global::System.DateTime _OccurDate;
+        partial void OnOccurDateChanging(global::System.DateTime value);
+        partial void OnOccurDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LocationName
+        {
+            get
+            {
+                return _LocationName;
+            }
+            set
+            {
+                OnLocationNameChanging(value);
+                ReportPropertyChanging("LocationName");
+                _LocationName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LocationName");
+                OnLocationNameChanged();
+            }
+        }
+        private global::System.String _LocationName;
+        partial void OnLocationNameChanging(global::System.String value);
+        partial void OnLocationNameChanged();
 
         #endregion
 

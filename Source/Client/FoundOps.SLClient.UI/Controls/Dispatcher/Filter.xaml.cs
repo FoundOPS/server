@@ -1,4 +1,6 @@
-﻿namespace FoundOps.SLClient.UI.Controls.Dispatcher
+﻿using FoundOps.SLClient.UI.Tools;
+
+namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
     /// <summary>
     /// A filter for Dispatching
@@ -11,6 +13,26 @@
         public Filter()
         {
             InitializeComponent();
+        }
+
+        private void RouteCapabilitiesTreeViewChecked(object sender, Telerik.Windows.RadRoutedEventArgs e)
+        {
+            VM.DispatcherFilter.TriggerFilterUpdated();
+        }
+
+        private void RouteCapabilitiesTreeViewUnchecked(object sender, Telerik.Windows.RadRoutedEventArgs e)
+        {
+            VM.DispatcherFilter.TriggerFilterUpdated();
+        }
+
+        private void RegionsTreeViewChecked(object sender, Telerik.Windows.RadRoutedEventArgs e)
+        {
+            VM.DispatcherFilter.TriggerFilterUpdated();
+        }
+
+        private void RegionsTreeViewUnchecked(object sender, Telerik.Windows.RadRoutedEventArgs e)
+        {
+            VM.DispatcherFilter.TriggerFilterUpdated();
         }
     }
 }

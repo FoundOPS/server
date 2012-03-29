@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Windows.Threading;
+using FoundOps.Common.Tools;
 using FoundOps.SLClient.Data.Services;
 using ReactiveUI;
 using System.Windows;
@@ -98,7 +99,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             //Sets up ObservationState to turn Active when there are >0 controls that require this VM 
             //and inactive when there are 0 controls that require this VM
-            Observable.FromEventPattern<NotifyCollectionChangedEventArgs>(ControlsThatCurrentlyRequireThisVM, "CollectionChanged")
+            ControlsThatCurrentlyRequireThisVM.FromCollectionChanged()
             .Select(args => ControlsThatCurrentlyRequireThisVM.Count > 0 ? Common.Models.ObservationState.Active : Common.Models.ObservationState.Suspended)
             .DistinctUntilChanged().Subscribe(state => ObservationState.OnNext(state));
 
@@ -116,29 +117,6 @@ namespace FoundOps.SLClient.Data.ViewModels
         {
             dependentFrameworkElement.Loaded += (s, e) => ControlsThatCurrentlyRequireThisVM.Add(dependentFrameworkElement);
             dependentFrameworkElement.Unloaded += (s, e) => ControlsThatCurrentlyRequireThisVM.Remove(dependentFrameworkElement);
-        }
-
-        /// <summary>
-        /// Whenever this ViewModel's ObservationState is Active, subscribe.
-        /// </summary>
-        public IDisposable SubscribeWhenActive<TSource>(IObservable<TSource> source, Action<TSource> onNext)
-        {
-            //Subscribe observeWhenActive to the source whenever this is Active
-            var observeWhenActive = new Subject<TSource>();
-
-            var serialDisposable = new SerialDisposable();
-            this.ObservationState.Subscribe(state =>
-            {
-                //Subscribe observeWhenActive to the source whenever this is Active
-                if (state == Common.Models.ObservationState.Active)
-                    serialDisposable.Disposable = source.Subscribe(observeWhenActive);
-                //Dispose whenever InActive
-                else if (!serialDisposable.IsDisposed)
-                    serialDisposable.Dispose();
-            });
-
-            //Subscribe the onNext to observeWhenActive
-            return observeWhenActive.Subscribe(onNext);
         }
 
         #endregion

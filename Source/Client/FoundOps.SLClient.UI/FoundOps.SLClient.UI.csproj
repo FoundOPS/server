@@ -540,10 +540,13 @@
     <Compile Include="ViewModels\Interfaces.cs" />
     <Compile Include="ViewModels\PartySettingsVM.cs" />
     <Compile Include="ViewModels\PartyVM.cs" />
+    <Compile Include="ViewModels\RouteDestinationVM.cs" />
     <Compile Include="ViewModels\RouteScheduleVM.cs" />
     <Compile Include="ViewModels\RoutesDragDropVM.cs" />
     <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />
+    <Compile Include="ViewModels\RouteVM.cs" />
     <Compile Include="ViewModels\SearchVM.cs" />
+    <Compile Include="ViewModels\TaskBoardVM.cs" />
     <Compile Include="ViewModels\UserAccountSettingsVM.cs" />
     <Compile Include="ViewModels\UserAccountsVM.cs" />
     <Compile Include="ViewModels\RegionsVM.cs" />
