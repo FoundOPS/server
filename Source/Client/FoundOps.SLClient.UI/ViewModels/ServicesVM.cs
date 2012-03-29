@@ -220,7 +220,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 if (task.IsCanceled || !task.Result.Any())
                 {
-                    CollectionViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(new List<ServiceHolder>()).View);
+                    ViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(new List<ServiceHolder>()).View);
                     IsLoadingSubject.OnNext(false);
                     return;
                 }

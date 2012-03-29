@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
@@ -179,7 +178,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //a) Whenever the current route's technicians or employees changes notify the itemssource updated.
             //  Part of a workaround for the RadGridView displaying incorrect items when an item is removed.
-            _destinationItemsSourcesUpdatedSubscription= Route.Technicians.FromCollectionChangedGeneric().Merge(Route.Vehicles.FromCollectionChangedGeneric())
+            _destinationItemsSourcesUpdatedSubscription = Route.Technicians.FromCollectionChangedGeneric().Merge(Route.Vehicles.FromCollectionChangedGeneric())
                 .Throttle(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
                 {
                     //Notify the DestinationItemsSources changed
@@ -261,7 +260,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public void Dispose()
         {
-            _destinationItemsSourcesUpdatedSubscription.Dispose();
+            if (_destinationItemsSourcesUpdatedSubscription != null)
+                _destinationItemsSourcesUpdatedSubscription.Dispose();
         }
 
         #endregion
