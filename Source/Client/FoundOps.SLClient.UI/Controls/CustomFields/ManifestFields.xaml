@@ -11,8 +11,10 @@
         <Converters1:ManifestFieldValueConverter x:Key="ManifestFieldValueConverter"/>
         <Converters1:OrderByNameConverter x:Key="OrderByNameConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245" DataContext="{Binding Options, ConverterParameter=0, Converter={StaticResource ElementFromEnumerableConverter}}">
-                <CheckBox IsChecked="{Binding IsChecked}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
+                <StackPanel DataContext="{Binding Options, ConverterParameter=0, Converter={StaticResource ElementFromEnumerableConverter}}">
+                    <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
+                </StackPanel>
                 <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
                 <TextBlock Text="  " />
             </StackPanel>
