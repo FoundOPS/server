@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Reactive.Linq;
 using System.Windows.Media;
@@ -25,6 +27,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         private double _headerPadding;
         private readonly Data.Models.RouteManifestSettings _settings = VM.RouteManifest.RouteManifestSettings;
 
+        private readonly ObservableCollection<InlineUIContainer> _routeDestinationUIContainers = new ObservableCollection<InlineUIContainer>();
+
         #endregion
 
         /// <summary>
@@ -49,7 +53,23 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 _isOpen = true;
                 UpdateDocument();
             };
+
             Closed += (s, e) => _isOpen = false;
+
+            //Refresh the InlineUIContainer's sizes after they are added to the visual tree. (This is for ItemsControls)
+            _routeDestinationUIContainers.FromCollectionChanged().Throttle(TimeSpan.FromMilliseconds(500))
+             .ObserveOnDispatcher().Subscribe(_ =>
+             {
+                 foreach(var uiContainer in _routeDestinationUIContainers)
+                 {
+                     //Update the Height and Width
+                     uiContainer.UiElement.Measure(new Size(double.MaxValue, double.MaxValue));
+                     uiContainer.Height = uiContainer.UiElement.DesiredSize.Height;
+                     uiContainer.Width = uiContainer.UiElement.DesiredSize.Width;
+                 }
+
+                 ManifestRichTextBox.UpdateEditorLayout();
+             });
 
             //this.ManifestRichTextBox.CurrentVisiblePageChanged+= Update textbox
         }
@@ -58,9 +78,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         private void UpdateDocument()
         {
+            _routeDestinationUIContainers.Clear();
+
             //Only load the manifest when the current viewer is open
             if (!_isOpen) return;
-            var document = new RadDocument{LayoutMode = DocumentLayoutMode.Paged};
+            var document = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
             var mainSection = new Section { FooterBottomMargin = 0, HeaderTopMargin = 0, ActualPageMargin = new Padding(0, 20, 0, 20) };
             var bodyParagraph = new Paragraph();
 
@@ -75,16 +97,17 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                     var manifestHeader = new ManifestHeader { Margin = new Thickness(0, 0, 0, _headerPadding) };
                     manifestHeader.Measure(new Size(double.MaxValue, double.MaxValue));
 
-                    bodyParagraph.Inlines.Add(new InlineUIContainer
-                    {
-                        Height = manifestHeader.DesiredSize.Height,
-                        Width = manifestHeader.DesiredSize.Width,
-                        UiElement = manifestHeader
-                    });
+                    var header = new InlineUIContainer
+                                     {
+                                         Height = manifestHeader.DesiredSize.Height,
+                                         Width = manifestHeader.DesiredSize.Width,
+                                         UiElement = manifestHeader
+                                     };
+                    bodyParagraph.Inlines.Add(header);
 
                     var numVehicles = VM.Routes.SelectedEntity.Vehicles.Count;
                     var numTechnicians = VM.Routes.SelectedEntity.Technicians.Count;
-                    if(numVehicles >= numTechnicians)
+                    if (numVehicles >= numTechnicians)
                     {
                         if (_settings.IsAssignedVehiclesVisible)
                         {
@@ -122,15 +145,16 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 if (_settings.IsSummaryVisible)
                 {
                     //We only want the summary to show up once, so just add it first to the body paragraph.
-                    var manifestSummary = new ManifestSummary {Margin = new Thickness(25, 0, 0, -50)};
+                    var manifestSummary = new ManifestSummary { Margin = new Thickness(25, 0, 0, -50) };
                     manifestSummary.Measure(new Size(double.MaxValue, double.MaxValue));
 
-                    bodyParagraph.Inlines.Add(new InlineUIContainer
+                    var summary = new InlineUIContainer
                                                   {
                                                       Height = manifestSummary.DesiredSize.Height,
                                                       Width = manifestSummary.DesiredSize.Width,
                                                       UiElement = manifestSummary
-                                                  });
+                                                  };
+                    bodyParagraph.Inlines.Add(summary);
                 }
 
                 #endregion
@@ -142,24 +166,23 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                     var manifestRouteDestination = new ManifestRouteDestination { Margin = new Thickness(25, 2, 0, 10), RouteDestination = routeDestination };
                     manifestRouteDestination.Measure(new Size(double.MaxValue, double.MaxValue));
 
-                    var container = new InlineUIContainer
-                    {
-                        Height = manifestRouteDestination.DesiredSize.Height,
-                        Width = manifestRouteDestination.DesiredSize.Width,
-                        UiElement = manifestRouteDestination
-                    };
+                    var destination = new InlineUIContainer
+                                           {
+                                               Height = manifestRouteDestination.DesiredSize.Height,
+                                               Width = manifestRouteDestination.DesiredSize.Width,
+                                               UiElement = manifestRouteDestination
+                                           };
 
-                    bodyParagraph.Inlines.Add(container);
+                    _routeDestinationUIContainers.Add(destination);
+                    bodyParagraph.Inlines.Add(destination);
                 }
 
                 #endregion
             }
 
             if (_settings.IsFooterVisible)
-            {
                 mainSection.Footers.Default = GetFooterDocument();
-            }
-            
+
             ////Setup the main section
             mainSection.Blocks.Add(bodyParagraph);
 
