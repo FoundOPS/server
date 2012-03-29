@@ -1,12 +1,16 @@
 ﻿using System.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
+using System.Threading.Tasks;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.MVVM.Models;
+using FoundOps.Common.Silverlight.Services;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
@@ -65,6 +69,13 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
+        #region Locals
+
+        // Used to cancel the previous RoutesLoad.
+        private readonly Subject<bool> _cancelLastFilterRegionsLoad = new Subject<bool>();
+
+        #endregion
+
         #region Constructor
 
         /// <summary>
@@ -86,24 +97,29 @@ namespace FoundOps.SLClient.UI.ViewModels
                     ServiceTemplateOptions.Add(new EntityOption(serviceTemplate));
             });
 
-            //Setup an observable for whenever the Dispatcher is entered/reentered
-            var enteredDispatcher = MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher"));
-
             //Load the regions whenever the Dispatcher is entered
-            enteredDispatcher.ObserveOnDispatcher().Subscribe(_ =>
+             MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
+             .ObserveOnDispatcher().Subscribe(_ =>
             {
-                var regionsQuery = Manager.Data.DomainContext.GetRegionsForServiceProviderQuery(Manager.Context.RoleId);
-                Manager.Data.DomainContext.Load(regionsQuery,
-                                                lo =>
-                                                {
-                                                    LoadedRegions = new ObservableCollection<Region>(lo.Entities);
+                _cancelLastFilterRegionsLoad.OnNext(true);
 
-                                                    RegionOptions.Clear();
+                Manager.CoreDomainContext.LoadAsync(Manager.CoreDomainContext.GetRegionsForServiceProviderQuery(Manager.Context.RoleId), _cancelLastFilterRegionsLoad)
+                .ContinueWith(task =>
+                {
+                    if (task.IsCanceled || !task.Result.Any())
+                        return;
 
-                                                    foreach (var region in LoadedRegions)
-                                                        RegionOptions.Add(new EntityOption(region));
-                                                },
-                                                null);
+                    //Notify the RoutesVM has completed loading Routes
+                    IsLoadingSubject.OnNext(false);
+
+                    LoadedRegions = new ObservableCollection<Region>(task.Result);
+
+                    RegionOptions.Clear();
+
+                    foreach (var region in LoadedRegions)
+                        RegionOptions.Add(new EntityOption(region));
+                    
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             });
         }
 
@@ -122,6 +138,22 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate) option.Entity).Name  == taskHolder.ServiceName);
             var meetsRegionsFilter = RegionOptions.Any(option => option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName);
+
+            return meetsRouteTypeFilter && meetsRegionsFilter;
+        }
+
+        /// <summary>
+        /// Returns whether the route is included in the current filter.
+        /// </summary>
+        /// <param name="route">The route to check.</param>
+        /// <returns></returns>
+        public bool RouteIncludedInFilter(Route route)
+        {
+            //Selects all the Region's names from the RouteTasks in the Route
+            var regionsForRoute = route.RouteDestinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.Location.Region.Name));
+
+            var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == route.RouteType);
+            var meetsRegionsFilter = RegionOptions.Any(option => option.IsSelected && regionsForRoute.Contains(((Region)option.Entity).Name));
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
         }

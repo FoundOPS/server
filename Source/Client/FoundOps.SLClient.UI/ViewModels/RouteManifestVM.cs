@@ -2,6 +2,7 @@
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Models;
 using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
 using System;
 using System.Reactive.Linq;
 
@@ -10,6 +11,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// <summary>
     /// Contains the logic for displaying and printing RouteManifests
     /// </summary>
+    [ExportViewModel("RouteManifestVM")]
     public class RouteManifestVM : CoreEntityVM
     {
         #region Public

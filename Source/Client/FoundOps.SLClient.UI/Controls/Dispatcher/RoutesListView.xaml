@@ -86,7 +86,7 @@
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <Grid>
-            <ListBox x:Name="RoutesListBox" ItemTemplate="{StaticResource RouteTemplate}" ItemsSource="{Binding DomainCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemContainerStyle="{StaticResource draggableItemStyle}"
+            <ListBox x:Name="RoutesListBox" ItemTemplate="{StaticResource RouteTemplate}" ItemsSource="{Binding CollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemContainerStyle="{StaticResource draggableItemStyle}"
                  telerikDragDrop:RadDragAndDropManager.AllowDrag="True" Background="Transparent">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

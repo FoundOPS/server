@@ -52,17 +52,17 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             if (routeDestination != null)
                 location = routeDestination.Location;
 
-            //If the 2D Barcode is not going to be displayed call ImageLoaded and hide the BarcodeImage
-            if (!VM.Routes.RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible || 
-                routeDestination == null || location == null || !location.Latitude.HasValue || !location.Longitude.HasValue)
-            {
-                c.BarcodeImage.Visibility = Visibility.Collapsed;
+            ////If the 2D Barcode is not going to be displayed call ImageLoaded and hide the BarcodeImage
+            //if (!VM.Routes.RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible || 
+            //    routeDestination == null || location == null || !location.Latitude.HasValue || !location.Longitude.HasValue)
+            //{
+            //    c.BarcodeImage.Visibility = Visibility.Collapsed;
 
-                if (c.ImageLoaded != null)
-                    c.ImageLoaded(c, null);
-            }
-            else
-            {
+            //    if (c.ImageLoaded != null)
+            //        c.ImageLoaded(c, null);
+            //}
+            //else
+            //{
                 //Load the Image, and raise the ImageLoaded event when it is completed
                 var client = new WebClient();
 
@@ -77,7 +77,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                             if (c.ImageLoaded != null)
                                 c.ImageLoaded(c, null);
                         });
-            }
+            //}
         }
 
         #endregion

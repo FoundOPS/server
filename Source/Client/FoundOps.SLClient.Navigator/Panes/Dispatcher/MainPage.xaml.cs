@@ -347,7 +347,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             DragDropTools.AddRouteTaskToRoute(routeTask, destination, placeInRoute, dropPlacement);
 
             //Remove the RouteTask from the TaskBoard
-            VM.Routes.UnroutedTasks.Remove((RouteTask)draggedItem);
+            //VM.Routes.UnroutedTasks.Remove((RouteTask)draggedItem);
 
         }
 

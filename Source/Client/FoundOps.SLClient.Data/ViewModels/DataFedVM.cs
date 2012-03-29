@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Windows.Threading;
+using FoundOps.Common.Tools;
 using FoundOps.SLClient.Data.Services;
 using ReactiveUI;
 using System.Windows;
@@ -98,7 +99,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             //Sets up ObservationState to turn Active when there are >0 controls that require this VM 
             //and inactive when there are 0 controls that require this VM
-            Observable.FromEventPattern<NotifyCollectionChangedEventArgs>(ControlsThatCurrentlyRequireThisVM, "CollectionChanged")
+            ControlsThatCurrentlyRequireThisVM.FromCollectionChanged()
             .Select(args => ControlsThatCurrentlyRequireThisVM.Count > 0 ? Common.Models.ObservationState.Active : Common.Models.ObservationState.Suspended)
             .DistinctUntilChanged().Subscribe(state => ObservationState.OnNext(state));
 

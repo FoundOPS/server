@@ -158,7 +158,13 @@ namespace FoundOps.SLClient.UI.Tools
         /// <summary>
         /// Gets the RouteManifestVM.
         /// </summary>
-        public static RouteManifestVM RouteManifest { get { return Routes.RouteManifestVM; } }
+        public static RouteManifestVM RouteManifest
+        {
+            get
+            {
+                return (RouteManifestVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RouteManifestVM", null, CreationPolicy.Shared).Value;
+            }
+        }
 
         /// <summary>
         /// Gets the ServiceTemplatesVM.

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using FoundOps.Common.Silverlight.MVVM.Messages;
+﻿using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
@@ -16,6 +15,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using ReactiveUI.Xaml;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -26,22 +26,6 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class TaskBoardVM : CoreEntityCollectionVM<TaskHolder>
     {
         #region Public
-
-        private readonly ObservableAsPropertyHelper<DateTime> _selectedDate;
-        private readonly Subject<DateTime> _selectedDateSubject = new Subject<DateTime>();
-        /// <summary>
-        /// An Observable of the SelectedDate.
-        /// </summary>
-        public IObservable<DateTime> SelectedDateObservable { get { return _selectedDateSubject.AsObservable(); } }
-
-        /// <summary>
-        /// The SelectedDate.
-        /// </summary>
-        public DateTime SelectedDate
-        {
-            get { return _selectedDate.Value; }
-            set { _selectedDateSubject.OnNext(value); }
-        }
 
         private readonly Subject<TaskHolder> _selectedTaskSubject = new Subject<TaskHolder>();
         private readonly ObservableAsPropertyHelper<TaskHolder> _selectedTask;
@@ -71,6 +55,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Locals
 
+        // Used to cancel the previous TasksLoad.
+        private readonly Subject<bool> _cancelLastTasksLoad = new Subject<bool>();
+
         #endregion
 
         #region Constructor
@@ -82,7 +69,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         public TaskBoardVM()
             : base(true, false, false) //Do not initialize a default collection view
         {
-            _selectedDate = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate, DateTime.Now.Date);
             _selectedTask = _selectedTaskSubject.ToProperty(this, x => x.SelectedTask);
             SetupDataLoading();
         }
@@ -93,13 +79,22 @@ namespace FoundOps.SLClient.UI.ViewModels
             //a) the Dispatcher is entered/re-entered
             //b) the SelectedDate changes
             MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
-            .Merge(SelectedDateObservable.AsGeneric())
+            .Merge(VM.Routes.SelectedDateObservable.AsGeneric())
             .ObserveOnDispatcher().Subscribe(_ =>
             {
-                var query = DomainContext.GetUnroutedServicesQuery(ContextManager.RoleId, SelectedDate);
+                _cancelLastTasksLoad.OnNext(true);
 
-                Manager.CoreDomainContext.LoadAsync(query).ContinueWith(
-                    task => CollectionViewObservable.OnNext(new DomainCollectionViewFactory<TaskHolder>(task.Result).View),
+                Manager.CoreDomainContext.LoadAsync(DomainContext.GetUnroutedServicesQuery(ContextManager.RoleId, VM.Routes.SelectedDate), _cancelLastTasksLoad).ContinueWith(
+                    task =>
+                        {
+                            if(task.IsCanceled || !task.Result.Any())
+                                return;
+
+                            //Notify the TaskBoardVM has completed loading TaskHolders
+                            IsLoadingSubject.OnNext(false);
+
+                            CollectionViewObservable.OnNext(new DomainCollectionViewFactory<TaskHolder>(task.Result).View);
+                        },
                     TaskScheduler.FromCurrentSynchronizationContext());
             });
 
