@@ -61,13 +61,15 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         public ContextManager ContextManager { get { return Manager.Context; } }
 
-        private readonly Subject<bool> _discardObservable = new Subject<bool>();
+        //Only to be used if overriding the DiscardCommand
+        protected readonly Subject<bool> DiscardSubject = new Subject<bool>();
+
         /// <summary>
         /// Gets an observable which streams the DateTimes discards are called.
         /// </summary>
         protected IObservable<bool> DiscardObservable
         {
-            get { return _discardObservable.AsObservable(); }
+            get { return DiscardSubject.AsObservable(); }
         }
 
         #endregion
@@ -107,8 +109,8 @@ namespace FoundOps.SLClient.Data.ViewModels
             {
                 if (!BeforeDiscardCommand()) return;
                 DomainContext.RejectChanges();
-                OnDiscard();
-                _discardObservable.OnNext(true);
+                AfterDiscard();
+                DiscardSubject.OnNext(true);
             });
 
             #endregion
@@ -125,9 +127,9 @@ namespace FoundOps.SLClient.Data.ViewModels
         protected virtual bool BeforeDiscardCommand() { return true; }
 
         /// <summary>
-        /// Called when after changes are Discarded.
+        /// Called after changes are Discarded.
         /// </summary>
-        protected virtual void OnDiscard() { }
+        protected virtual void AfterDiscard() { }
 
         private readonly BehaviorSubject<bool> _canSaveObservable = new BehaviorSubject<bool>(true);
         private IDisposable _canSaveDisposable; //Keeps track of the subscription to the last set CanSaveObservable

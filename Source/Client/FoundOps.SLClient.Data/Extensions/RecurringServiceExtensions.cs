@@ -1,17 +1,24 @@
-﻿using System;
-using System.Reactive.Linq;
+﻿using FoundOps.Common.Tools;
+using System;
 using System.ComponentModel;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Tools;
+using System.Reactive.Linq;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class RecurringService
     {
+        /// <summary>
+        /// Generates a Service based off this ServiceTemplate for the specified date.
+        /// </summary>
+        /// <param name="date">The date to generate a service for.</param>
         public Service GenerateServiceOnDate(DateTime date)
         {
             return new Service
             {
+                Generated =  true,
                 ServiceDate = date,
                 ClientId = this.ClientId,
                 Client = this.Client,

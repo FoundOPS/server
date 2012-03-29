@@ -163,9 +163,10 @@
     <Compile Include="Models\CoreEntities\Extensions\Parties\PersonExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountLogEntryExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\RepeatExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Services\ServiceHolder.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Services\RecurringServiceExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Services\ServiceHolder.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Services\ServiceHolder.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Services\RecurringServiceExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceTemplateExtensionMethods.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceTemplateExtensions.shared.cs" />
