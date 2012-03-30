@@ -1,4 +1,4 @@
-﻿// (c) Copyright Microsoft Corporation.
+// (c) Copyright Microsoft Corporation.
 // This source is subject to the Microsoft Public License (Ms-PL).
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
 // All other rights reserved.
@@ -10,8 +10,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Shapes;
-using FoundOps.Common.Silverlight.UI.DynamicallySizedWrapPanel;
 
 namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
 {
@@ -169,8 +167,8 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Almost always set from the CLR property.")]
         private static void OnOrientationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DynamicallySizedWrapPanel source = (DynamicallySizedWrapPanel)d;
-            Orientation value = (Orientation)e.NewValue;
+            var source = (DynamicallySizedWrapPanel)d;
+            var value = (Orientation)e.NewValue;
 
             // Ignore the change if requested
             if (source._ignorePropertyChange)
@@ -187,7 +185,7 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                 source._ignorePropertyChange = true;
                 source.SetValue(OrientationProperty, (Orientation)e.OldValue);
 
-                string message = string.Format(
+                var message = string.Format(
                     CultureInfo.InvariantCulture,
                     "Invalid Orientation value '{0}'.",
                     value);
@@ -217,8 +215,8 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "Almost always set from the CLR property.")]
         private static void OnItemHeightOrWidthPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DynamicallySizedWrapPanel source = (DynamicallySizedWrapPanel)d;
-            double value = (double)e.NewValue;
+            var source = (DynamicallySizedWrapPanel)d;
+            var value = (double)e.NewValue;
 
             // Ignore the change if requested
             if (source._ignorePropertyChange)
@@ -235,7 +233,7 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                 source._ignorePropertyChange = true;
                 source.SetValue(e.Property, (double)e.OldValue);
 
-                string message = string.Format(
+                var message = string.Format(
                     CultureInfo.InvariantCulture,
                    "Invalid length value '{0}'.",
                     value);
@@ -268,16 +266,16 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
             // measured so far, and the maximum size available to fill.  Note
             // that the line might represent a row or a column depending on the
             // orientation.
-            Orientation o = Orientation;
+            var o = Orientation;
             //var lineSize = new OrientedSize(o);
             var totalSize = new OrientedSize(o);
             //var maximumSize = new OrientedSize(o, constraint.Width, constraint.Height);
 
             // Determine the constraints for individual items
-            double itemWidth = ItemWidth;
-            double itemHeight = ItemHeight;
-            bool hasFixedWidth = !itemWidth.IsNaN();
-            bool hasFixedHeight = !itemHeight.IsNaN();
+            var itemWidth = ItemWidth;
+            var itemHeight = ItemHeight;
+            var hasFixedWidth = !itemWidth.IsNaN();
+            var hasFixedHeight = !itemHeight.IsNaN();
             var itemSize = new Size(
                 hasFixedWidth ? itemWidth : constraint.Width,
                 hasFixedHeight ? itemHeight : constraint.Height);
@@ -287,7 +285,7 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
             var numberOfElements = children.Count;
 
             // Measure each of the Children
-            foreach (UIElement element in Children)
+            foreach (var element in Children)
             {
                 // Determine the size of the element
                 element.Measure(itemSize);
@@ -345,25 +343,22 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
 
             #region Standard Deviation Calculator
 
-            var stDev = 0.0;
-
             double totalVariance = 0;
-            int lengthOfArray = 0;
 
-            lengthOfArray = sizeArray.Length;
+            var lengthOfArray = sizeArray.Length;
 
             var dataAverage = averageChildHeight;
 
             totalVariance += sizeArray.Sum(childHeight => Math.Pow(childHeight - dataAverage, 2));
 
-            stDev = lengthOfArray != 0 ? Math.Sqrt(totalVariance / lengthOfArray) : 0;
+            var stDev = lengthOfArray != 0 ? Math.Sqrt(totalVariance / lengthOfArray) : 0;
 
             #endregion
 
             //TODO: Put objects in each column until it surpasses any of the requirements
 
             //The average number of items each column should have
-            int averageElementsPerColumn = numberOfElements / numCols;
+            var averageElementsPerColumn = numberOfElements / numCols;
 
             //Average height for a column
             var averageColumnHeight = totalChildHeight / numCols;
@@ -374,7 +369,7 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
             var maxHeight = 0;
             var tallestColumn = 0;
 
-            for (int i = 0; i < numCols; i++)
+            for (var i = 0; i < numCols; i++)
             {
                 var thisColHeight = 0;
 
@@ -487,25 +482,22 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
 
             #region Standard Deviation Calculator
 
-            var stDev = 0.0;
-
             double totalVariance = 0;
-            int lengthOfArray = 0;
 
-            lengthOfArray = sizeArray.Length;
+            var lengthOfArray = sizeArray.Length;
 
             var dataAverage = averageChildHeight;
 
             totalVariance += sizeArray.Sum(childHeight => Math.Pow(childHeight - dataAverage, 2));
 
-            stDev = lengthOfArray != 0 ? Math.Sqrt(totalVariance / lengthOfArray) : 0;
+            var stDev = lengthOfArray != 0 ? Math.Sqrt(totalVariance / lengthOfArray) : 0;
 
             #endregion
 
             //TODO: Put objects in each column until it surpasses any of the requirements
 
             //The average number of items each column should have
-            int averageElementsPerColumn = numberOfElements / numCols;
+            var averageElementsPerColumn = numberOfElements / numCols;
 
             //Average height for a column
             var averageColumnHeight = totalChildHeight / numCols;
@@ -520,7 +512,7 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
             var maxHeight = 0;
             var tallestColumn = 0;
 
-            for (int i = 0; i < numCols; i++)
+            for (var i = 0; i < numCols; i++)
             {
                 var thisColHeight = 0;
 
@@ -579,14 +571,14 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
             var lineStart = 0;
             var colCount = 0;
 
-            bool firstCol = true;
+            var firstCol = true;
             //Iterate through each column
-            for (int colIndex = 0; colIndex < numCols; colIndex++)
+            for (var colIndex = 0; colIndex < numCols; colIndex++)
             {
                 //Iterate through each element in the column
-                for (int elementIndexToPrint = startOfColumnElementIndex[colIndex]; elementIndexToPrint <= endOfColumnElementIndex[colIndex]; elementIndexToPrint++)
+                for (var elementIndexToPrint = startOfColumnElementIndex[colIndex]; elementIndexToPrint <= endOfColumnElementIndex[colIndex]; elementIndexToPrint++)
                 {
-                    UIElement element = children[elementIndexToPrint];
+                    var element = children[elementIndexToPrint];
 
                     if (Math.Abs(element.DesiredSize.Height - 0.0) <= 0)
                         continue;
@@ -598,7 +590,7 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                         hasFixedHeight ? itemHeight : element.DesiredSize.Height);
 
 
-                    // If this element falls of the edge of the line
+                    // If this element falls off the edge of the line
                     if (elementIndexToPrint == endOfColumnElementIndex[colIndex])
                     {
                         #region use this to print things
@@ -667,32 +659,28 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
         /// </param>
         private void ArrangeLine(int lineStart, int lineEnd, double? directDelta, double colWidth, int colCount)
         {
-            double directOffset = 0.0;
-            Orientation o = Orientation;
-            bool isHorizontal = o == Orientation.Horizontal;
+            var directOffset = 0.0;
+            var o = Orientation;
+            var isHorizontal = o == Orientation.Horizontal;
             var offset = colCount * colWidth;
-            UIElementCollection children = Children;
-            for (int index = lineStart; index < lineEnd; index++)
+            var children = Children;
+            for (var index = lineStart; index < lineEnd; index++)
             {
-                if (index < children.Count)
-                {
-                    // Get the size of the element
-                    UIElement element = children[index];
-                    OrientedSize elementSize = new OrientedSize(o, element.DesiredSize.Width, element.DesiredSize.Height);
+                if (index >= children.Count) continue;
+                // Get the size of the element
+                var element = children[index];
+                var elementSize = new OrientedSize(o, element.DesiredSize.Width, element.DesiredSize.Height);
 
-                    // Determine if we should use the element's desired size or the
-                    // fixed item width or height
-                    double directGrowth = directDelta != null
-                                              ? directDelta.Value
-                                              : elementSize.Direct;
-                    // Arrange the element
-                    Rect bounds;
-                    if (isHorizontal) bounds = new Rect(directOffset, offset, directGrowth, colWidth);
-                    else bounds = new Rect(offset, directOffset, colWidth, directGrowth);
-                    element.Arrange(bounds);
+                // Determine if we should use the element's desired size or the
+                // fixed item width or height
+                var directGrowth = directDelta != null
+                                       ? directDelta.Value
+                                       : elementSize.Direct;
+                // Arrange the element
+                var bounds = isHorizontal ? new Rect(directOffset, offset, directGrowth, colWidth) : new Rect(offset, directOffset, colWidth, directGrowth);
+                element.Arrange(bounds);
 
-                    directOffset += directGrowth;
-                }
+                directOffset += directGrowth;
             }
         }
     }

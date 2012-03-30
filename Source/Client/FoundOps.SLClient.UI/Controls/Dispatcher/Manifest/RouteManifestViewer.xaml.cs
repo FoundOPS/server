@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Reactive.Linq;
@@ -51,13 +50,16 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             Loaded += (s, e) =>
             {
                 _isOpen = true;
-                UpdateDocument();
+
+                //Wait until the popup is shown before updating the document
+                Observable.Interval(TimeSpan.FromMilliseconds(350)).Take(1).ObserveOnDispatcher()
+                .Subscribe(_=> UpdateDocument());
             };
 
             Closed += (s, e) => _isOpen = false;
 
             //Refresh the InlineUIContainer's sizes after they are added to the visual tree. (This is for ItemsControls)
-            _routeDestinationUIContainers.FromCollectionChanged().Throttle(TimeSpan.FromMilliseconds(500))
+            _routeDestinationUIContainers.FromCollectionChanged().Throttle(TimeSpan.FromMilliseconds(100))
              .ObserveOnDispatcher().Subscribe(_ =>
              {
                  foreach(var uiContainer in _routeDestinationUIContainers)
@@ -94,7 +96,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 if (_settings.IsHeaderVisible)
                 {
                     //We only want the header to show up once, so just add it first to the body paragraph.
-                    var manifestHeader = new ManifestHeader { Margin = new Thickness(0, 0, 0, _headerPadding) };
+                    var manifestHeader = new ManifestHeader { Margin = new Thickness(0, 0, 0, 45) };
                     manifestHeader.Measure(new Size(double.MaxValue, double.MaxValue));
 
                     var header = new InlineUIContainer
@@ -104,7 +106,24 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                                          UiElement = manifestHeader
                                      };
                     bodyParagraph.Inlines.Add(header);
+                }
 
+                #endregion
+
+                #region Add the Summary
+
+                if (_settings.IsSummaryVisible)
+                {
+                    //We only want the summary to show up once, so just add it first to the body paragraph.
+                    var manifestSummary = new ManifestSummary { Margin = new Thickness(25, 0, 0, _headerPadding) };
+                    manifestSummary.Measure(new Size(double.MaxValue, double.MaxValue));
+
+                    var summary = new InlineUIContainer
+                                                  {
+                                                      Height = manifestSummary.DesiredSize.Height,
+                                                      Width = manifestSummary.DesiredSize.Width,
+                                                      UiElement = manifestSummary
+                                                  };
                     var numVehicles = VM.Routes.SelectedEntity.Vehicles.Count;
                     var numTechnicians = VM.Routes.SelectedEntity.Technicians.Count;
                     if (numVehicles >= numTechnicians)
@@ -133,27 +152,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                         else
                             _headerPadding = 25;
                     }
-                    _headerPadding += 25;
+                    _headerPadding -= 20;
 
-                    manifestHeader.Margin = new Thickness(0, 0, 0, _headerPadding);
-                }
+                    manifestSummary.Margin = new Thickness(25, 0, 0, _headerPadding);
 
-                #endregion
-
-                #region Add the Summary
-
-                if (_settings.IsSummaryVisible)
-                {
-                    //We only want the summary to show up once, so just add it first to the body paragraph.
-                    var manifestSummary = new ManifestSummary { Margin = new Thickness(25, 0, 0, -50) };
-                    manifestSummary.Measure(new Size(double.MaxValue, double.MaxValue));
-
-                    var summary = new InlineUIContainer
-                                                  {
-                                                      Height = manifestSummary.DesiredSize.Height,
-                                                      Width = manifestSummary.DesiredSize.Width,
-                                                      UiElement = manifestSummary
-                                                  };
                     bodyParagraph.Inlines.Add(summary);
                 }
 
@@ -193,7 +195,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             ManifestRichTextBox.Width = 870;
 
             //Fixup the layout
-            //Observable.Interval(TimeSpan.FromMilliseconds(100)).Take(1).SubscribeOnDispatcher().Subscribe(_ => ManifestRichTextBox.UpdateLayout());
+            Observable.Interval(TimeSpan.FromMilliseconds(100)).Take(1).SubscribeOnDispatcher().Subscribe(_ => ManifestRichTextBox.UpdateEditorLayout());
         }
 
         #region Add the Footer

@@ -13,8 +13,6 @@
             <StackPanel Margin="25,0,0,0" Visibility="{Binding RouteManifestSettings.IsHeaderVisible, Converter={StaticResource VisibilityConverter}}">
                 <CheckBox Content="Route Name" IsChecked="{Binding RouteManifestSettings.IsRouteNameVisible, Mode=TwoWay}"/>
                 <CheckBox Content="Route Date" IsChecked="{Binding RouteManifestSettings.IsRouteDateVisible, Mode=TwoWay}"/>
-                <CheckBox Content="Assigned Vehicle(s)" IsChecked="{Binding RouteManifestSettings.IsAssignedVehiclesVisible, Mode=TwoWay}"/>
-                <CheckBox Content="Assigned Technician(s)" IsChecked="{Binding RouteManifestSettings.IsAssignedTechniciansVisible, Mode=TwoWay}"/>
                 <!--Add back in when feature is supported-->
             </StackPanel>
             <CheckBox Content="Summary" FontWeight="Bold" IsChecked="{Binding RouteManifestSettings.IsSummaryVisible, Mode=TwoWay}"/>
@@ -44,10 +42,14 @@
                     <CheckBox  Content="Average Task Duration" IsChecked="{Binding RouteManifestSettings.IsAverageTaskDurationVisible, Mode=TwoWay}" Visibility="Collapsed"/>
                     <CheckBox  Content="Task Breakdown" IsChecked="{Binding RouteManifestSettings.IsTaskBreakdownVisible, Mode=TwoWay}" Visibility="Collapsed"/>
                 </StackPanel>
+
+                <CheckBox Content="Assigned Vehicle(s)" IsChecked="{Binding RouteManifestSettings.IsAssignedVehiclesVisible, Mode=TwoWay}"/>
+                <CheckBox Content="Assigned Technician(s)" IsChecked="{Binding RouteManifestSettings.IsAssignedTechniciansVisible, Mode=TwoWay}"/>
             </StackPanel>
             <CheckBox Content="Destinations" FontWeight="Bold" IsChecked="{Binding RouteManifestSettings.IsDestinationsVisible, Mode=TwoWay}"/>
             <StackPanel Margin="25,0,0,0" Visibility="{Binding RouteManifestSettings.IsDestinationsVisible, Converter={StaticResource VisibilityConverter}}">
                 <CheckBox Content="Address" IsChecked="{Binding RouteManifestSettings.IsAddressVisible, Mode=TwoWay}"/>
+                <CheckBox Content="2D Barcode" IsChecked="{Binding RouteManifestSettings.Is2DBarcodeVisible, Mode=TwoWay}"/>
                 <CheckBox Content="Contact Information" IsChecked="{Binding RouteManifestSettings.IsContactInfoVisible, Mode=TwoWay}"/>
                 <!--Change the visibility back when it is possible to search Contact Info by Type-->
                 <StackPanel Margin="25,0,0,0" Visibility="Collapsed">
@@ -63,8 +65,8 @@
                 <StackPanel Margin="25,0,0,0" Visibility="Collapsed">
                     <!--"{Binding RouteManifestSettings.IsRouteTasksVisible, Converter={StaticResource VisibilityConverter}}">-->
                     <!--isenabled=false if Route tasks is not checked-->
-                    <CheckBox  Content="Task-Specific Details" IsChecked="{Binding RouteManifestSettings.IsTaskSpecificDetailsVisible, Mode=TwoWay}"/>
-                    <CheckBox  Content="Notes" IsChecked="{Binding RouteManifestSettings.IsNotesVisible, Mode=TwoWay}"/>
+                    <!--<CheckBox  Content="Task-Specific Details" IsChecked="{Binding RouteManifestSettings.IsTaskSpecificDetailsVisible, Mode=TwoWay}"/>
+                    <CheckBox  Content="Notes" IsChecked="{Binding RouteManifestSettings.IsNotesVisible, Mode=TwoWay}"/>-->
                 </StackPanel>
                 <CheckBox Content="Fields" IsChecked="{Binding RouteManifestSettings.IsFieldsVisible, Mode=TwoWay}" Margin="25,0,0,0" 
                           Visibility="{Binding RouteManifestSettings.IsRouteTasksVisible, Converter={StaticResource VisibilityConverter}}"/>
@@ -72,7 +74,6 @@
                 <StackPanel Margin="25,0,0,0" Visibility="{Binding RouteManifestSettings.IsMapVisible, Converter={StaticResource VisibilityConverter}}">
                     <CheckBox Content="SubLocations" IsChecked="{Binding RouteManifestSettings.IsSubLocationsVisible, Mode=TwoWay}"/>
                 </StackPanel>-->
-                <CheckBox Content="2D Barcode" IsChecked="{Binding RouteManifestSettings.Is2DBarcodeVisible, Mode=TwoWay}"/>
                 <!--<CheckBox Content="User Uploaded Images" IsChecked="{Binding RouteManifestSettings.IsUserUploadedImageVisible, Mode=TwoWay}"/>-->
             </StackPanel>
             <!--<CheckBox Content="Transit Between Destinations" FontWeight="Bold" IsChecked="{Binding RouteManifestSettings.IsTransitBetweenDestinationsVisible, Mode=TwoWay}"/>

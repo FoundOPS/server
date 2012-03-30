@@ -7,9 +7,7 @@
     <StackPanel x:Name="SummaryStackPanel" DataContext="{Tools1:GetVM Type=ViewModels:RoutesVM}" 
                 Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, Converter={StaticResource VisibilityConverter}}">
         <!--Route Summary-->
-        <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel HorizontalAlignment="Center" Width="750" NumberOfColumns="3"
-                     Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, 
-            Converter={StaticResource VisibilityConverter}}">
+        <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel HorizontalAlignment="Center" Width="750" NumberOfColumns="3">
             <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0">
                 <StackPanel Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteSummaryVisible, Converter={StaticResource VisibilityConverter}}">
                     <TextBlock Text="Route Summary" FontWeight="Bold"/>
@@ -122,7 +120,33 @@
             <!--<Image Margin="4,2" Height="150" Width="150" Source="/FoundOps.Common.Silverlight;component/Resources/ImageToBeBound.png" 
                        Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteMapVisible, Converter={StaticResource VisibilityConverter}}" />-->
         </DynamicallySizedWrapPanel:DynamicallySizedWrapPanel>
-        <Rectangle Height="2" Fill="Black" Margin="0,5" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, 
-            Converter={StaticResource VisibilityConverter}}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedVehiclesVisible, Converter={StaticResource VisibilityConverter}}">
+                <TextBlock Text="Vehicles" FontWeight="Bold"/>
+                <ItemsControl ItemsSource="{Binding SelectedEntity.Vehicles}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding VehicleId}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedTechniciansVisible, Converter={StaticResource VisibilityConverter}}">
+                <TextBlock Text="Technicians" FontWeight="Bold"/>
+                <ItemsControl ItemsSource="{Binding SelectedEntity.Technicians}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+        <Rectangle Height="2" Fill="Black" Margin="0,5"/>
     </StackPanel>
 </UserControl>
