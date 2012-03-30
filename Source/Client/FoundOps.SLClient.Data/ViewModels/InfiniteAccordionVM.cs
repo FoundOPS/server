@@ -277,15 +277,20 @@ namespace FoundOps.SLClient.Data.ViewModels
                 if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
                     detailsLoadOperation.Cancel();
 
-                //Do not try to load details for an entity that does not exist yet.
+                //Do not try to load details for an entity that does not exist yet
                 if (selectedEntity.EntityState == EntityState.New)
                 {
                     ((ILoadDetails)selectedEntity).DetailsLoaded = true;
                     return;
                 }
 
+                var query = entityQuery(selectedEntity);
+                //If the entityQuery is null return
+                if (query == null)
+                    return;
+
                 ((ILoadDetails)selectedEntity).DetailsLoaded = false;
-                detailsLoadOperation = DomainContext.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
+                detailsLoadOperation = DomainContext.Load(query, loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
             });
         }
 

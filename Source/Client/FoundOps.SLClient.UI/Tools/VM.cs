@@ -244,5 +244,4 @@ namespace FoundOps.SLClient.UI.Tools
             return ViewModelRepository.Instance.Resolver.GetViewModelByContract(viewModelName, null, CreationPolicy.Shared).Value;
         }
     }
-
 }

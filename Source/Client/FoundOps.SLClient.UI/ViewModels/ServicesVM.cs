@@ -1,4 +1,3 @@
-using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
@@ -14,6 +13,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -24,12 +24,16 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("ServicesVM")]
     public class ServicesVM : InfiniteAccordionVM<ServiceHolder>
     {
-        #region Public Properties
+        #region Properties
+
+        #region Public
 
         /// <summary>
         /// The last loaded time.
         /// </summary>
         public DateTime LastLoad { get; private set; }
+
+        #endregion
 
         #endregion
 
@@ -42,7 +46,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         public ServicesVM()
         {
             SetupDataLoading();
-
             //TODO Regenerate the Services when the current RecurringServiceContext.Repeat changes
             //recurringServiceContextObservable.WhereNotNull().SelectLatest(rs => rs.RepeatChangedObservable())
             //    .Subscribe(_ => LoadData);
@@ -410,7 +413,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 _cancelLastDetailsLoad.OnNext(true);
                 SelectedEntity.LoadDetails(_cancelLastDetailsLoad);
             }
-            
+
             //The changes for generated services are not tracked
             //so no need to perform a DomainContext Discard
             return !SelectedEntity.ServiceIsGenerated;
