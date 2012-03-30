@@ -344,6 +344,9 @@
             Executes this instance.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.VisibleRangeSettings.VisibleRange">
+            <Summary>Gets or sets VisibleRange and notifies for changes</Summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.Scheduling.TimeRulerLine.IntervalsProperty">
             <summary>
             Identifies the Intervals dependency property. 
@@ -415,12 +418,6 @@
         <member name="P:Telerik.Windows.Controls.Scheduling.VisibleRange.End">
             <summary>
             Gets or sets the End of the range. This is a dependency property.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.Scheduling.ToolTipManager.DataContextProperty">
-            <summary>
-            Hidden dependency property that enables us to receive notifications when the source data context changes and 
-            needs to be flushed into the context of the tooltip
             </summary>
         </member>
     </members>

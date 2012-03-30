@@ -108,6 +108,26 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Telerik.Windows.Controls.Docking.CloseButtonPosition">
+            <summary>
+            TODO: Update summary.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Docking.CloseButtonPosition.InGroup">
+            <summary>
+            Displays CloseButton in PaneGroup
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Docking.CloseButtonPosition.InPane">
+            <summary>
+            Displays CloseButton in Pane
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Docking.CloseButtonPosition.InPaneAndGroup">
+            <summary>
+            Displays CloseButton in Pane and PaneGroup
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.Docking.ActivePangeChangedEventArgs">
             <summary>
             The event args are used for ActivePangeChanged event.
@@ -520,6 +540,11 @@
             </remarks>
         </member>
         <member name="T:Telerik.Windows.Controls.Docking.DockDecoration">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Docking.DockDecoration.OnApplyTemplate">
             <summary>
             
             </summary>
@@ -1494,6 +1519,11 @@
             Identifies the DocumentsProperty dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadDocking.FloatingWindowStateProperty">
+            <summary> 
+            Identifies the FloatingWindowState dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadDocking.SerializationTagProperty">
             <summary> 
             Identifies the SerializationTag dependency property.
@@ -1549,6 +1579,11 @@
             Identifies the <see>RestrictedAreaMargin</see> Property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadDocking.CloseButtonPositionProperty">
+            <summary>
+            Identifies the <see>CloseButtonPosition</see> Property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadDocking.LastDocumentPaneGroupProperty">
             <summary> 
             Identifies the LastDocumentPaneGroup dependency property.
@@ -1577,6 +1612,16 @@
         <member name="M:Telerik.Windows.Controls.RadDocking.SetFloatingLocation(System.Windows.DependencyObject,System.Windows.Point)">
             <summary>
             Sets the value of FloatingLocation attached property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDocking.GetFloatingWindowState(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of FloatingWindowState attached property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDocking.SetFloatingWindowState(System.Windows.DependencyObject,System.Windows.WindowState)">
+            <summary>
+            Sets the value of FloatingWindowState attached property.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDocking.GetDockState(System.Windows.DependencyObject)">
@@ -1920,6 +1965,11 @@
             Gets or sets the current factory for generating items.
             </summary>
             <value>The current factory for generating items.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDocking.CloseButtonPosition">
+            <summary>
+            Gets or sets the position of the CloseButton.
+            </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadDocking.AllowUnsafeMode">
             <summary>
@@ -2286,6 +2336,11 @@
             Identifies the IsActive property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadPane.ParentDockingProperty">
+            <summary>
+            Identifies the CanUserPin ParentDocking property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadPane.StateChangeEvent">
             <summary>
             Identifies the StateChange routed event.
@@ -2591,6 +2646,11 @@
         <member name="P:Telerik.Windows.Controls.RadPane.PaneGroup">
             <summary>
             Gets the group that owns the pane.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDocumentPane.#cctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadDocumentPane"/> class.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDocumentPane.#ctor">
@@ -3163,6 +3223,18 @@
             </summary>
             <param name="oldContent">The old value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
             <param name="newContent">The new value of the <see cref="P:System.Windows.Controls.ContentControl.Content"/> property.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Docking.ToolWindow.OnLayoutChangeEnded(System.EventArgs)">
+            <summary>
+            Raises the LayoutChangeEnded event of the RadDocking and the WindowBase.
+            </summary>
+            <param name="args">The System.EventArgs instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Docking.ToolWindow.OnLayoutChangeStarted(System.EventArgs)">
+            <summary>
+            Raises the LayoutChangeStarted event of the RadDocking and the WindowBase.
+            </summary>
+            <param name="args">The System.EventArgs instance containing the event data.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.Docking.ToolWindow.CheckCanClose">
             <summary>

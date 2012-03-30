@@ -99,6 +99,46 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.InsertCaptionDialog">
+            <summary>
+            Default InsertCrossReferenceWindow
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.InsertCaptionDialog.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.RadInsertSymbolDialog"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.InsertCaptionDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.InsertCrossReferenceWindow">
+            <summary>
+            Default InsertCrossReferenceWindow
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.InsertCrossReferenceWindow.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.RadInsertSymbolDialog"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.InsertCrossReferenceWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.NewCaptionLabelDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.StyleFormattingProperties.NumberingProperties.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.Styles.StyleListItem.InitializeComponent">
             <summary>
             InitializeComponent
@@ -387,6 +427,11 @@
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.TabStopsPropertiesDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.WatermarkSettingsDialog.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>

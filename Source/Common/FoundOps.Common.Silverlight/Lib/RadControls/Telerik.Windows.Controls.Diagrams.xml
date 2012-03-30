@@ -387,6 +387,35 @@
             Gets the serialization info.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs">
+            <summary>
+            Represents ItemsChanged event args.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.IEnumerable,System.Collections.IEnumerable,System.Collections.Specialized.NotifyCollectionChangedAction)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="newItems">The new items.</param>
+            <param name="oldItems">The old items.</param>
+            <param name="action">The action.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs.NewItems">
+            <summary>
+            The new items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs.OldItems">
+            <summary>
+            The old items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs.Action">
+            <summary>
+            Gets the action.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.Diagrams.DiagramItemsRoutedEventArgs">
             <summary>
             Represents items routed event args.
@@ -438,29 +467,6 @@
             </summary>
             <param name="routedEvent">The routed event.</param>
             <param name="items">The items.</param>
-        </member>
-        <member name="T:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs">
-            <summary>
-            Represents ItemsChanged event args.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.IEnumerable,System.Collections.IEnumerable)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs"/> class.
-            </summary>
-            <param name="routedEvent">The routed event.</param>
-            <param name="newItems">The new items.</param>
-            <param name="oldItems">The old items.</param>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs.NewItems">
-            <summary>
-            The new items.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Diagrams.DiagramItemsChangedEventArgs.OldItems">
-            <summary>
-            The old items.
-            </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Diagrams.ResizeRoutedEventArgs">
             <summary>
@@ -1777,6 +1783,11 @@
             Identifies the IsConnectorsManipulationEnabled dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadDiagram.IsManipulationAdornerVisibleProperty">
+            <summary>
+            Identifies the IsManipulationAdornerVisible dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadDiagram.AllowDeleteProperty">
             <summary>
             Identifies the AllowDelete dependency property.
@@ -1913,17 +1924,21 @@
             <param name="shape">The shape.</param>
             <param name="isUndoable">If set to <c>true</c> the action is undoable.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadDiagram.ZoomIn(System.Double,System.Nullable{System.Windows.Point})">
+        <member name="M:Telerik.Windows.Controls.RadDiagram.ZoomIn(System.Nullable{System.Double},System.Nullable{System.Windows.Point})">
             <summary>
             Zooms in the diagram.
             </summary>
-            <param name="factor">The factor.</param>
-            <param name="targetPoint">To point.</param>
+            <param name="factor">The value by which to change <see cref="P:Telerik.Windows.Controls.RadDiagram.Zoom"/> property.
+            When factor is null, smaller or equal to zero the <see cref="P:Telerik.Windows.Diagrams.Core.DiagramConstants.DefaultZoomFactor"/> value will be used.</param>
+            <param name="targetPoint">The center of the zoom.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadDiagram.ZoomOut(System.Double,System.Nullable{System.Windows.Point})">
+        <member name="M:Telerik.Windows.Controls.RadDiagram.ZoomOut(System.Nullable{System.Double},System.Nullable{System.Windows.Point})">
             <summary>
             Zooms out the diagram.
             </summary>
+            <param name="factor">The value by which to change <see cref="P:Telerik.Windows.Controls.RadDiagram.Zoom"/> property.
+            When factor is null, smaller or equal to zero the <see cref="P:Telerik.Windows.Diagrams.Core.DiagramConstants.DefaultZoomFactor"/> value will be used.</param>
+            <param name="targetPoint">The center of the zoom.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDiagram.Clear">
             <summary>
@@ -1978,11 +1993,12 @@
             </summary>
             <seealso cref="M:Telerik.Windows.Controls.RadDiagram.BeginBatchTransformation"/>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadDiagram.AutoFit(System.Windows.Thickness)">
+        <member name="M:Telerik.Windows.Controls.RadDiagram.AutoFit(System.Windows.Thickness,System.Boolean)">
             <summary>
             Zoom and pans the diagram in such a way that it fits into the currently visible aread of the canvas.
             </summary>
             <param name="margin">The margin to be used as whitespace border around the diagram items.</param>
+            <param name="useAnimation">Determines whether animations should be used.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDiagram.AutoFit">
             <summary>
@@ -2016,6 +2032,16 @@
             Loads the specified serialization string.
             </summary>
             <param name="serializationValue">The serialization value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDiagram.ExportToImage(System.IO.Stream)">
+            <summary>
+            Exports an image of the given element to stream using PngBitmapEncoder.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDiagram.ExportToImage(System.IO.Stream,Telerik.Windows.Media.Imaging.BitmapEncoder)">
+            <summary>
+            Exports an image of the given element to stream using the specified bitmap encoder.
+            </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDiagram.GetConnectionsForShape(Telerik.Windows.Diagrams.Core.IShape)">
             <summary>
@@ -2301,6 +2327,14 @@
               <c>True</c> if manipulation on connectors is enabled; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:Telerik.Windows.Controls.RadDiagram.IsManipulationAdornerVisible">
+            <summary>
+            Gets or sets a value indicating whether the manipulation adorner is visible.
+            </summary>
+            <value>
+              <c>True</c> if the manipulation adorner is visible; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:Telerik.Windows.Controls.RadDiagram.AllowDelete">
             <summary>
             Gets or sets a value indicating whether deleting is allowed.
@@ -2529,34 +2563,6 @@
             Contains state information and event data associated with a routed event.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.RadRoutedEditEventArgs.#ctor">
-            <summary>
-            Initializes a new instance of the RadRoutedEditEventArgs class.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.RadRoutedEditEventArgs.#ctor(Telerik.Windows.RoutedEvent)">
-            <summary>
-            Initializes a new instance of the RadRoutedEditEventArgs class, 
-            using the supplied routed event identifier. 
-            </summary>
-            <param name="routedEvent">
-            The routed event identifier for this instance of the RoutedEventArgs class.
-            </param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.RadRoutedEditEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Object)">
-            <summary>
-            Initializes a new instance of the RadRoutedEditEventArgs class, using 
-            the supplied routed event identifier, and providing the opportunity 
-            to declare a different source for the event. 
-            </summary>
-            <param name="routedEvent">
-            The routed event identifier for this instance of the RoutedEventArgs class.
-            </param>
-            <param name="source">
-            An alternate source that will be reported when the event is handled. 
-            This pre-populates the Source property.
-            </param>
-        </member>
         <member name="M:Telerik.Windows.Controls.Diagrams.RadRoutedEditEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Object,System.Object)">
             <summary>
             Initializes a new instance of the RadRoutedEditEventArgs class, using 
@@ -2577,6 +2583,11 @@
         <member name="P:Telerik.Windows.Controls.Diagrams.RadRoutedEditEventArgs.EditedContent">
             <summary>
             Gets the result of the edit operation. 
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadRoutedEditEventArgs.CommitChanges">
+            <summary>
+            Gets or sets whether the changes should be commited. 
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Diagrams.Primitives.GraphPaper">
@@ -2674,6 +2685,26 @@
         <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.GraphPaper.ResetTheme">
             <summary>
             Resets the theme.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.DiagramTransformationInfo">
+            <summary>
+            Contains encapsulated information about the pan and zoom values.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.DiagramTransformationInfo.PanOffset">
+            <summary>
+            Gets the translate vector.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.DiagramTransformationInfo.ZoomLevel">
+            <summary>
+            Gets the scaling value.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.DiagramTransformationInfo.ZoomCenter">
+            <summary>
+            Get the scaling center point.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Diagrams.GeometryConverter">
@@ -4033,7 +4064,7 @@
         </member>
         <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsSelectedInGroup">
             <summary>
-            Gets or sets a value indicating whether this instance is selected in group.
+            Gets a value indicating whether this instance is selected in group.
             </summary>
             <value>
             	<c>True</c> if this instance is selected in group; otherwise, <c>false</c>.

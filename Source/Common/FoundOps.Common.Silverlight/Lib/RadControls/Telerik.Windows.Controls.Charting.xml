@@ -9012,6 +9012,16 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.AnnotationBase"/> class.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.Charting.AnnotationBase.ConvertYDataUnitsToPhysical(System.Double)">
+            <summary>
+            Converts data to physical unit along the Y-axis.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Charting.AnnotationBase.ConvertXDataUnitsToPhysical(System.Double)">
+            <summary>
+            Converts data to physical unit along the X-axis.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.Charting.AnnotationBase.Update">
             <summary>
             Updates the geometry of the annotation.
@@ -9036,6 +9046,21 @@
         <member name="P:Telerik.Windows.Controls.Charting.AnnotationBase.YAxisName">
             <summary>
             Gets or sets the YAxisName.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Charting.AnnotationBase.ChartArea">
+            <summary>
+            Gets the chart area.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Charting.AnnotationBase.AxisY">
+            <summary>
+            Gets the Y-axis.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Charting.AnnotationBase.AxisX">
+            <summary>
+            Gets the X-axis.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Charting.AnnotationCollection">
@@ -13550,6 +13575,12 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.ChartGroupDescriptor"/> class.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.Charting.ChartGroupDescriptor.#ctor(Telerik.Windows.Data.IGroupDescriptor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.ChartGroupDescriptor"/> class.
+            </summary>
+            <param name="groupDescriptor">The group descriptor.</param>
+        </member>
         <member name="M:Telerik.Windows.Controls.Charting.ChartGroupDescriptor.#ctor(System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.ChartGroupDescriptor"/> class.
@@ -13574,6 +13605,12 @@
             Gets or sets the type of the data member used for grouping.
             </summary>
             <value>The type of the member.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Charting.ChartGroupDescriptor.InnerDescriptor">
+            <summary>
+            Gets the inner descriptor.
+            </summary>
+            <value>The inner descriptor.</value>
         </member>
         <member name="M:Telerik.Windows.Controls.Charting.ChartDayGroupDescriptor.#ctor">
             <summary>
@@ -13601,6 +13638,12 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.ChartFilterDescriptor"/> class.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.Charting.ChartFilterDescriptor.#ctor(Telerik.Windows.Data.IFilterDescriptor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.ChartFilterDescriptor"/> class.
+            </summary>
+            <param name="filterDescriptor">The filter descriptor.</param>
+        </member>
         <member name="M:Telerik.Windows.Controls.Charting.ChartFilterDescriptor.#ctor(System.String,System.Type,Telerik.Windows.Data.FilterOperator,System.Object)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.ChartFilterDescriptor"/> class.
@@ -13609,6 +13652,19 @@
             <param name="type">The member type.</param>
             <param name="filterOperator">The filter operator.</param>
             <param name="value">The value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Charting.ChartFilterDescriptor.CreateFilterExpression(System.Linq.Expressions.Expression)">
+            <summary>
+            Creates a predicate filter expression used for collection filtering.
+            </summary>
+            <param name="instance">The instance expression, which will be used for filtering.</param>
+            <returns>A predicate filter expression.</returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Charting.ChartFilterDescriptor.InnerDescriptor">
+            <summary>
+            Gets the inner descriptor.
+            </summary>
+            <value>The inner descriptor.</value>
         </member>
         <member name="T:Telerik.Windows.Controls.Charting.ChartFilterDescriptorCollection">
             <summary>
@@ -13683,6 +13739,12 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.ChartSortDescriptor"/> class.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.Charting.ChartSortDescriptor.#ctor(Telerik.Windows.Data.ISortDescriptor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.ChartSortDescriptor"/> class.
+            </summary>
+            <param name="sortDescriptor">The sort descriptor.</param>
+        </member>
         <member name="M:Telerik.Windows.Controls.Charting.ChartSortDescriptor.#ctor(System.String,System.ComponentModel.ListSortDirection)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Charting.ChartSortDescriptor"/> class.
@@ -13699,6 +13761,12 @@
             <summary>
             Gets or sets the sort direction for this sort descriptor. If the value is null no sorting will be applied.
             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Charting.ChartSortDescriptor.InnerDescriptor">
+            <summary>
+            Gets the inner descriptor.
+            </summary>
+            <value>The inner descriptor.</value>
         </member>
         <member name="T:Telerik.Windows.Controls.Charting.ChartSortDescriptorCollection">
             <summary>
