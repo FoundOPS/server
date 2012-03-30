@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-using System.ServiceModel.DomainServices.Server;
 
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
@@ -18,12 +17,5 @@ namespace FoundOps.Core.Models.CoreEntities
         [DataMember]
         [Obsolete]
         public Guid Id { get; set; }
-
-        public TaskHolder()
-        {
-            // ReSharper disable CSharpWarnings::CS0612
-            Id = Guid.NewGuid();
-            // ReSharper restore CSharpWarnings::CS0612
-        }
     }
 }

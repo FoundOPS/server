@@ -42,7 +42,7 @@
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
                 <telerik:RadComboBox x:Name="SelectedRouteComboBox" Margin="5,0"  DisplayMemberPath="Name"
                              DataContext="{Tools:GetVM Type=ViewModels:RoutesVM}" SelectedValue="{Binding SelectedEntity, Mode=TwoWay}" 
-                             ItemsSource="{Binding DomainCollectionView}" Height="25"/>
+                             ItemsSource="{Binding CollectionView}" Height="25"/>
                 <telerik:RadButton x:Name="btnPrint" ToolTipService.ToolTip="Print" Content="Print" Style="{StaticResource PanelButtonStyle}" Click="BtnPrint_OnClick" />
                 <Button x:Name="btnSave" Margin="5,3,-4,-5" Height="25" Width="25" ToolTipService.ToolTip="Save" Style="{StaticResource SaveButtonStyle}" Click="SaveButtonClick"/>
                 <!--<Rectangle Style="{StaticResource Separator}"/>

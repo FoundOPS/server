@@ -398,8 +398,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             if (radTreeViewItem != null)
             {
                 //Set the SelectedTask to the last selected RouteTask
-                if (radTreeViewItem.Item is TaskHolder)
-                    VM.TaskBoard.SelectedTask = (TaskHolder)radTreeViewItem.Item;
+                if (radTreeViewItem.Item is RouteTask)
+                    VM.Routes.SelectedRouteTask = (RouteTask)radTreeViewItem.Item;
                 //Set the SelectedRouteDestination to the last selected RouteDestination
                 if (radTreeViewItem.Item is RouteDestination)
                     VM.Routes.SelectedRouteDestination = (RouteDestination)radTreeViewItem.Item;
@@ -411,13 +411,13 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         {
             var radTreeViewItem = e.Source as RadTreeViewItem;
             if (radTreeViewItem == null) return;
-            if (radTreeViewItem.Item is TaskHolder)
+            if (radTreeViewItem.Item is RouteTask)
             {
-                var taskHolder = radTreeViewItem.Item as TaskHolder;
+                var routeTask = radTreeViewItem.Item as RouteTask;
 
-                //If the RouteTask is the SelectedTask and it was unselected, clear SelectedTask
-                if (taskHolder != null && taskHolder == VM.TaskBoard.SelectedTask)
-                    VM.TaskBoard.SelectedTask = null;
+                //If the RouteTask is the routeTask and it was unselected, clear SelectedTask
+                if (routeTask == VM.Routes.SelectedRouteTask)
+                    VM.Routes.SelectedRouteTask = null;
             }
 
             if (radTreeViewItem.Item is RouteDestination)

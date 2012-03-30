@@ -1,31 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.UI.Controls;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 using FoundOps.SLClient.UI.Tools;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
-using Microsoft.Windows.Data.DomainServices;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using RiaServicesContrib;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
-using System.Linq;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -106,6 +103,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Selected Entity's and Sub ViewModels
 
+        /// <summary>
+        /// Gets the RouteManifestVM.
+        /// </summary>
+        public RouteManifestVM RouteManifestVM { get; private set; }
+
         private RouteVM _selectedRouteVM;
         /// <summary>
         /// The SelectedRoute's VM
@@ -152,6 +154,24 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        private readonly Subject<RouteTask> _selectedRouteTaskSubject = new Subject<RouteTask>();
+        private readonly ObservableAsPropertyHelper<RouteTask> _selectedRouteTaskHelper;
+        /// <summary>
+        /// The first selected route destination in route tree view
+        /// </summary>
+        public RouteTask SelectedRouteTask
+        {
+            get { return _selectedRouteTaskHelper.Value; }
+            set
+            {
+                //Set the SelectedRoute to the selected RouteTask's RouteDestination's Route
+                if (value != null && value.RouteDestination.Route != null)
+                    SelectedEntity = value.RouteDestination.Route;
+
+                _selectedRouteTaskSubject.OnNext(value);
+            }
+        }
+
         #endregion
 
         #endregion
@@ -172,11 +192,13 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="RoutesVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public RoutesVM() : base(false, false, false) //Do not initialize a default queryable collection view (or else the filter will not work)
+        public RoutesVM()
+            : base(false, false, false) //Do not initialize a default queryable collection view (or else the filter will not work)
         {
             //Setup ObservableAsPropertyHelpers
             _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate, DateTime.Now.Date);
             _selectedRouteDestinationHelper = _selectedRouteDestinationSubject.ToProperty(this, x => x.SelectedRouteDestination);
+            _selectedRouteTaskHelper = _selectedRouteTaskSubject.ToProperty(this, x => x.SelectedRouteTask);
 
             //Update the SelectedRouteVM whenever the RouteDestination changes
             SelectedEntityObservable.ObserveOnDispatcher().Subscribe(r =>
@@ -186,6 +208,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 this.SelectedRouteVM = new RouteVM(r);
             });
+
+            //Setup the RouteManifestVM
+            RouteManifestVM = new RouteManifestVM();
 
             //Update the SelectedRouteDestinationVM whenever the RouteDestination changes
             _selectedRouteDestinationSubject.ObserveOnDispatcher().Subscribe(rd => this.SelectedRouteDestinationVM = new RouteDestinationVM(rd));
@@ -234,6 +259,36 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
 
+            #region Setup RouteTask details loading
+
+            var cancelLastDetailsLoad = new Subject<bool>();
+            //Whenever the selectedRouteTask changes load the RouteTask's details
+            //a) cancel the last loads
+            //b) load the details
+            _selectedRouteTaskSubject.Where(se => se != null).ObserveOnDispatcher().Subscribe(selectedRouteTask =>
+            {
+                //a) cancel the last loads
+                cancelLastDetailsLoad.OnNext(true);
+
+                //If the RouteTask is not new, use the one GetRouteTaskDetailsQuery method 
+                if (selectedRouteTask.EntityState != EntityState.New)
+                {
+                    DomainContext.LoadAsync(DomainContext.GetRouteTaskDetailsQuery(ContextManager.RoleId, selectedRouteTask.Id), cancelLastDetailsLoad)
+                    .ContinueWith(task =>
+                    {
+                        if (!task.IsCanceled)
+                            selectedRouteTask.DetailsLoaded = true;
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+
+                } //If the RouteTask is new and it has a ParentRouteTaskHolder, load it's ServiceHolder details
+                else if (selectedRouteTask.ParentRouteTaskHolder != null)
+                {
+                    selectedRouteTask.ServiceHolder.LoadDetails(cancelLastDetailsLoad);
+                }
+            });
+
+            #endregion
+
             //Hookup the CollectionView Filter whenever the CollectionViewObservable changes
             ViewObservable.Where(cv => cv != null).DistinctUntilChanged()
             .ObserveOnDispatcher().Subscribe(collectionView => UpdateFilter());
@@ -262,7 +317,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 .DistinctUntilChanged() //on collection changed or set
                 .Select(routes => routes.Cast<object>().Any());  // select routes > 0
 
-            ////Can calculate routes when there are routes, and when the context is not submitting
+            //Can calculate routes when there are routes, and when the context is not submitting
             var canCalculateRoutes = DataManager.DomainContextIsSubmittingObservable.CombineLatest(routesExist, (isSubmitting, areRoutes) => !isSubmitting && areRoutes);
             AutoCalculateRoutes = new ReactiveCommand(canCalculateRoutes);
 
@@ -277,21 +332,21 @@ namespace FoundOps.SLClient.UI.ViewModels
                     VM.TaskBoard.LoadedTaskHolders.Remove(taskHoldersToRemove);
             });
 
-            ////Allow the user to open the route manifests whenever there is more than one route visible
-            //OpenRouteManifests = new ReactiveCommand(_updateFilter.ObserveOnDispatcher().Throttle(new TimeSpan(0, 0, 0, 0, 250)).Select(_ => this.CollectionView.Cast<object>().Any()));
+            //Allow the user to open the route manifests whenever there is one or more route visible
+            OpenRouteManifests = new ReactiveCommand(routesExist);
 
-            //OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
-            //{
-            //    //Setup the route manifest viewer if there is not one yet
-            //    if (_routeManifestViewer == null)
-            //        _routeManifestViewer = new RouteManifestViewer();
+            OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
+            {
+                //Setup the route manifest viewer if there is not one yet
+                if (_routeManifestViewer == null)
+                    _routeManifestViewer = new RouteManifestViewer();
 
-            //    _routeManifestViewer.Show();
+                _routeManifestViewer.Show();
 
-            //    //Whenever the manifests are opened save the Routes
-            //    if (this.SaveCommand.CanExecute(null))
-            //        this.SaveCommand.Execute(null);
-            //});
+                //Whenever the manifests are opened save the Routes
+                if (this.SaveCommand.CanExecute(null))
+                    this.SaveCommand.Execute(null);
+            });
 
             #region Date Modifiers
 
@@ -340,17 +395,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Remove the routeTasks from the deletedRoute (and keep them)
             var routeTasksToKeep =
-                deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks)
-                .Where(rt => !rt.GeneratedOnServer).ToList();
-
-            var generatedRouteTasks = deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks)
-                .Where(rt => rt.GeneratedOnServer).ToArray();
-
-            //Add the generated route task parents back to the task board
-            routeTasksToKeep.AddRange(generatedRouteTasks.Select(rt => rt.GeneratedRouteTaskParent));
-
-            //Delete the generatedRouteTasks
-            DataManager.RemoveEntities(generatedRouteTasks.SelectMany(rt => new EntityGraph<Entity>(rt, rt.EntityGraphWithServiceShape)));
+                deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks).ToList();
 
             //Delete the routeDestinations
             DataManager.RemoveEntities(deletedRoute.RouteDestinations);

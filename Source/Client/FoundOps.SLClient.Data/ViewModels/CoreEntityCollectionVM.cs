@@ -303,6 +303,48 @@ namespace FoundOps.SLClient.Data.ViewModels
             _selectedEntityObservable.OnNext(entity);
         }
 
+        /// <summary>
+        /// Sets up data loading of the SelectedEntity's details.
+        /// TEntity must implement ILoadDetails.
+        /// </summary>
+        /// <param name="entityQuery">An action which is passed the selected entity and should return the entity query to load data with.</param>
+        protected void SetupDetailsLoading(Func<TEntity, EntityQuery<TEntity>> entityQuery)
+        {
+            SetupDetailsLoading(entityQuery, SelectedEntityObservable);
+        }
+
+        /// <summary>
+        /// Sets up data loading of an entities details when it is pushed. It will cancel the last details load when a new item is pushed.
+        /// T must implement ILoadDetails.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="entityQuery">An action which is passed the selected entity and should return the entity query to load data with.</param>
+        /// <param name="entitiesObservable">An observable of T entities to load details from.</param>
+        protected void SetupDetailsLoading<T>(Func<T, EntityQuery<T>> entityQuery, IObservable<T> entitiesObservable) where T : Entity
+        {
+            LoadOperation<T> detailsLoadOperation = null;
+            //Whenever the entity changes
+            //a) cancel the last load
+            //b) load the details
+            entitiesObservable.Where(se => se != null).Subscribe(selectedEntity =>
+            {
+                //a) cancel the last load
+                if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
+                    detailsLoadOperation.Cancel();
+
+                //Do not try to load details for an entity that does not exist yet.
+                if (selectedEntity.EntityState == EntityState.New)
+                {
+                    ((ILoadDetails)selectedEntity).DetailsLoaded = true;
+                    return;
+                }
+
+                //b) load the details
+                ((ILoadDetails)selectedEntity).DetailsLoaded = false;
+                detailsLoadOperation = DomainContext.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
+            });
+        }
+
         #region Methods to Override
 
         #region Methods w Initial Logic

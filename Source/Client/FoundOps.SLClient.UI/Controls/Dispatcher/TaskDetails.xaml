@@ -7,7 +7,7 @@
     <UserControl.Resources>
         <Converters:EstimatedLengthConverter x:Key="EstimatedLengthConverter"/>
     </UserControl.Resources>
-    <ScrollViewer x:Name="LayoutRoot" DataContext="{Binding SelectedTask}">
+    <ScrollViewer x:Name="LayoutRoot" DataContext="{Binding SelectedRouteTask}">
         <StackPanel>
             <TextBlock Text="{Binding Client.OwnedParty.DisplayName}" FontWeight="Bold" TextAlignment="Center" />
             <Grid HorizontalAlignment="Center">

@@ -90,7 +90,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
-            //Load the ServiceHolders whenever
+            //Load the TaskHolders whenever
             //a) the Dispatcher is entered/re-entered
             //b) the SelectedDate changes
             MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()

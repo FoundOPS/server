@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.SLClient.Data.Services;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
@@ -7,20 +8,29 @@ namespace FoundOps.Core.Models.CoreEntities
 {
     public partial class TaskHolder
     {
-        public static RouteTask ConvertToRouteTask(TaskHolder taskholder)
+        #region Public Methods
+
+        /// <summary>
+        /// Takes a TaskHolder and creates a RouteTask.
+        /// </summary>
+        /// <param name="taskHolder">The parent taskHolder</param>
+        /// <returns>The new RouteTask.</returns>
+        public static RouteTask ConvertToRouteTask(TaskHolder taskHolder)
         {
             var routedTask = new RouteTask
             {
                 Id = Guid.NewGuid(),
-                ClientId = taskholder.ClientId,
-                Date = taskholder.OccurDate,
-                LocationId = taskholder.LocationId,
-                Name = taskholder.ServiceName,
-                ParentRouteTaskHolder = taskholder,
-                ServiceId = taskholder.ServiceId
+                ClientId = taskHolder.ClientId,
+                Date = taskHolder.OccurDate,
+                LocationId = taskHolder.LocationId,
+                Name = taskHolder.ServiceName,
+                ParentRouteTaskHolder = taskHolder,
+                ServiceId = taskHolder.ServiceId
             };
 
             return routedTask;
         }
+
+        #endregion
     }
 }

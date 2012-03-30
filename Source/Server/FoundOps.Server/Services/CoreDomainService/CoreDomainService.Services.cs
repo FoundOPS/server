@@ -164,6 +164,14 @@ namespace FoundOps.Server.Services.CoreDomainService
                 .AsQueryable();
         }
 
+        /// <summary>
+        /// An empty method to allow creating ServiceHolders on the client.
+        /// </summary>
+        public void InsertServiceHolder(ServiceHolder serviceHolder)
+        {
+            throw new Exception("Cannot save ServiceHolders in the database.");
+        }
+
         #endregion
 
         #region RecurringService Optimized

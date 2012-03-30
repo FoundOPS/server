@@ -262,33 +262,6 @@ namespace FoundOps.SLClient.Data.ViewModels
             });
         }
 
-        /// <summary>
-        /// Sets up data loading of an entities details when it is selected.
-        /// TEntity must implement ILoadDetails.
-        /// </summary>
-        /// <param name="entityQuery">An action which is passed the selected entity and should return the entity query to load data with.</param>
-        protected void SetupDetailsLoading(Func<TEntity, EntityQuery<TEntity>> entityQuery)
-        {
-            LoadOperation<TEntity> detailsLoadOperation = null;
-            //Whenever the selected entity changes load the details
-            SelectedEntityObservable.Where(se => se != null).Subscribe(selectedEntity =>
-            {
-                //Cancel the last load
-                if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
-                    detailsLoadOperation.Cancel();
-
-                //Do not try to load details for an entity that does not exist yet.
-                if (selectedEntity.EntityState == EntityState.New)
-                {
-                    ((ILoadDetails)selectedEntity).DetailsLoaded = true;
-                    return;
-                }
-
-                ((ILoadDetails)selectedEntity).DetailsLoaded = false;
-                detailsLoadOperation = DomainContext.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
-            });
-        }
-
         private LoadOperation<TEntity> _lastSuggestionQuery;
         /// <summary>
         /// Sets up the search suggestions for an AutoCompleteBox.

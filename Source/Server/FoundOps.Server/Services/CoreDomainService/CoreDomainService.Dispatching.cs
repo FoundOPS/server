@@ -165,6 +165,25 @@ namespace FoundOps.Server.Services.CoreDomainService
             return unroutedServicesForDate.AsQueryable();
         }
 
+        /// <summary>
+        /// Gets the route task details.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="routeTaskId">The route task id.</param>
+        public RouteTask GetRouteTaskDetails(Guid roleId, Guid routeTaskId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            var routeTask = ObjectContext.RouteTasks.Where(rt => rt.BusinessAccountId == businessForRole.Id && rt.Id == routeTaskId)
+                .Include("Client").Include("Client.OwnedParty").Include("Location").Include("Service").FirstOrDefault();
+
+            //Load the ServiceTemplate for the Service
+            if (routeTask.ServiceId.HasValue)
+                GetServiceTemplateDetailsForRole(businessForRole.Id, routeTask.ServiceId.Value);
+
+            return routeTask;
+        }
+
         public void InsertRouteTask(RouteTask routeTask)
         {
             routeTask.Date = routeTask.Date.Date; //Remove any time
