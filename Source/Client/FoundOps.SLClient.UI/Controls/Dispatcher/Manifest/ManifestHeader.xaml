@@ -20,30 +20,13 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="1" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold" Text="{Binding SelectedEntity.Name}" 
                    Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteNameVisible, Converter={StaticResource VisibilityConverter}}"/>
-            <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="0,5" Height="2" Fill="Black" 
-                       Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteNameVisible, Converter={StaticResource VisibilityConverter}}"/>
-            <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Text="{Binding SelectedEntity.Date, Converter={StaticResource DateTimeToLongDateConverter}}"
+            <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Text="{Binding SelectedEntity.Date, Converter={StaticResource DateTimeToLongDateConverter}}"
                                    Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteDateVisible, Converter={StaticResource VisibilityConverter}}"/>
-            <ItemsControl Grid.Row="3" Grid.Column="1" ItemsSource="{Binding SelectedEntity.Vehicles}"
-                                      Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedVehiclesVisible, Converter={StaticResource VisibilityConverter}}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding VehicleId}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <ItemsControl Grid.Row="3" Grid.Column="2" ItemsSource="{Binding SelectedEntity.Technicians}"
-                      Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedTechniciansVisible, Converter={StaticResource VisibilityConverter}}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding DisplayName}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <Rectangle Grid.Row="2" Grid.ColumnSpan="3" Margin="0,5" Height="2" Fill="Black" 
+                       Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteNameVisible, Converter={StaticResource VisibilityConverter}}"/>
         </Grid>
     </StackPanel>
 </UserControl>

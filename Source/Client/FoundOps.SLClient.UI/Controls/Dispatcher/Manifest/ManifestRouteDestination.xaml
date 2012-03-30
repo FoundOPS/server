@@ -80,7 +80,10 @@
                         <TextBlock Text="{Binding Location.ZipCode}"/>
                     </StackPanel>
                 </StackPanel>
-                <!--Bind itemsource to route destinations's client contact Info-->
+                <Grid Width="245" Height="120" HorizontalAlignment="Left" Visibility="{Binding RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible, 
+                    Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
+                    <Image x:Name="BarcodeImage" Height="120" Width="120" Stretch="UniformToFill"/>
+                </Grid>
                 <StackPanel x:Name="ContactInfoElement" Width="245" Margin="4,2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsContactInfoVisible, 
                     Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
                     <TextBlock Text="Contact Information" FontWeight="Bold"/>
@@ -171,8 +174,6 @@
                                                 </ItemsControl>
                                             </StackPanel>
                                         </StackPanel>-->
-                <Image x:Name="BarcodeImage" Margin="2" Height="120" Width="120" Stretch="UniformToFill" Visibility="{Binding RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible, 
-                    Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}"/>
                 <!--<StackPanel x:Name="UserUploadedImageElement" Width="245" Margin="4,2">
                                             <Image Margin="4,2" Height="110" Width="120" Source="/FoundOps.Common.Silverlight;component/Resources/ImageToBeBound.png"/>
                                         </StackPanel>-->
