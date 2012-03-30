@@ -3,9 +3,9 @@ using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Framework.Views.Controls.CustomFields
 {
-    public partial class TextDefine
+    public partial class TextLargeDefine
     {
-        public TextDefine()
+        public TextLargeDefine()
         {
             InitializeComponent();
         }
@@ -28,7 +28,7 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
             DependencyProperty.Register(
                 "TextBoxField",
                 typeof (TextBoxField),
-                typeof (TextDefine),
+                typeof(TextLargeDefine),
                 new PropertyMetadata(null));
 
         #endregion

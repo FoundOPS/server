@@ -1,11 +1,11 @@
-﻿<UserControl x:Name="myRecurringServiceLarge" x:Class="FoundOps.SLClient.UI.Controls.Services.RecurringServices.RecurringServiceLarge"
+<UserControl x:Name="myRecurringServiceLarge" x:Class="FoundOps.SLClient.UI.Controls.Services.RecurringServices.RecurringServiceLarge"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
-             xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
-             xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI" xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit"
-             xmlns:Controls1="clr-namespace:FoundOps.SLClient.UI.Controls" 
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="RecurringServicesVM" >
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:my="clr-namespace:FoundOps.Framework.Views.Controls" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
+             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
+             xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI" xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit"
+             xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Controls1="clr-namespace:FoundOps.SLClient.UI.Controls" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="RecurringServicesVM" >
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -41,7 +41,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Service Details" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}"/>
-                            <Controls:EditButton Click="EditServiceTemplateButtonClick" Grid.Column="1"/>
+                            <!--<Controls:EditButton Click="EditServiceTemplateButtonClick" Grid.Column="1"/>-->
                         </Grid>
                     </toolkit:Expander.Header>
                     <StackPanel>
@@ -53,11 +53,13 @@
                                 <ColumnDefinition Width="{StaticResource LargeValueColumn}"/>
                             </Grid.ColumnDefinitions>
                             <!--Import the ServiceTemplatesVM for the code behind-->
-                            <StackPanel x:Name="ServiceTemplateStackPanel" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0" ViewModelLocator:ViewModelLocator.SharedViewModel="ServiceTemplatesVM"/>
+                            <StackPanel x:Name="ServiceTemplateStackPanel" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0" 
+                                        ViewModelLocator:ViewModelLocator.SharedViewModel="ServiceTemplatesVM"/>
                         </Grid>
                     </StackPanel>
                 </toolkit:Expander>
-                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ServiceBrush}" IsEnabled="{Binding DataContext.IsLoading, ElementName=ServicesGrid, Converter={StaticResource NotExistsBoolConverter}}">
+                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ServiceBrush}" 
+                                  IsEnabled="{Binding DataContext.IsLoading, ElementName=ServicesGrid, Converter={StaticResource NotExistsBoolConverter}}">
                     <toolkit:Expander.Header>
                         <TextBlock Text="Service Occurences" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}"/>
                     </toolkit:Expander.Header>

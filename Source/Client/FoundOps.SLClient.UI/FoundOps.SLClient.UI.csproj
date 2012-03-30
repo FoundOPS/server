@@ -89,14 +89,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AsyncCtpLibrary_Silverlight5">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\AsyncCtpLibrary_Silverlight5.dll</HintPath>
-    </Reference>
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
-    </Reference>
-    <Reference Include="Kent.Boogaart.HelperTrinity, Version=1.4.0.0, Culture=neutral, PublicKeyToken=cc96fa93a217f7a1, processorArchitecture=MSIL">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.HelperTrinity.dll</HintPath>
     </Reference>
     <Reference Include="Kent.Boogaart.KBCsv, Version=1.3.0.0, Culture=neutral, PublicKeyToken=cc96fa93a217f7a1, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
@@ -208,17 +202,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomFields\Define\TextLargeDefine.xaml.cs">
+      <DependentUpon>TextLargeDefine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomFields\ManifestFields.xaml.cs">
       <DependentUpon>ManifestFields.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomFields\FieldSmall.xaml.cs">
       <DependentUpon>FieldSmall.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dispatcher\Converters\ManifestConverters.cs" />
     <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
       <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml.cs">
-      <DependentUpon>ManifestFooter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml.cs">
       <DependentUpon>ManifestHeader.xaml</DependentUpon>
@@ -293,8 +288,8 @@
     <Compile Include="Controls\CustomFields\Define\PercentageDefine.xaml.cs">
       <DependentUpon>PercentageDefine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CustomFields\Define\TextDefine.xaml.cs">
-      <DependentUpon>TextDefine.xaml</DependentUpon>
+    <Compile Include="Controls\CustomFields\Define\TextSmallDefine.xaml.cs">
+      <DependentUpon>TextSmallDefine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomFields\Define\TimeDefine.xaml.cs">
       <DependentUpon>TimeDefine.xaml</DependentUpon>
@@ -573,6 +568,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\CustomFields\Define\TextLargeDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\CustomFields\ManifestFields.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -580,10 +579,6 @@
     <Page Include="Controls\CustomFields\FieldSmall.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml">
       <SubType>Designer</SubType>
@@ -685,7 +680,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\CustomFields\Define\TextDefine.xaml">
+    <Page Include="Controls\CustomFields\Define\TextSmallDefine.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

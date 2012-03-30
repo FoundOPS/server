@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
         
         <TextBlock Text="Name:" HorizontalAlignment="Right" Grid.Column="1"/>
-        <TextBox Grid.Column="3"/>
+        <TextBox Grid.Column="3" MaxLength="40"/>
         <!--Bind to field name-->
 
         <TextBlock Text="Tooltip:" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" ToolTipService.ToolTip="This is a tooltip. When the user hovers over the field, whatever helpful information you've inputted here will be displayed in a box like this one."/>

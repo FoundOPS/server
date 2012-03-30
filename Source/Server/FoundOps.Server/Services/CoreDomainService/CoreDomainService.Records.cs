@@ -686,19 +686,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         public IEnumerable<GeocoderResult> TryGeocode(string searchText)
         {
             //TODO: Also include Factual.com local business data
-            IEnumerable<GeocoderResult> results = null;
-
-            YahooPlaceFinder.TryGeocode(searchText, geocodingCompleteCallback =>
-                                                        {
-                                                            results = geocodingCompleteCallback;
-                                                        });
-
-            while (results == null)
-            {
-                Thread.Sleep(500);
-            }
-
-            return results;
+            return YahooPlaceFinder.TryGeocode(searchText);
         }
 
         #region Vehicle

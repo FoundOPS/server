@@ -1,4 +1,4 @@
-﻿using System.ServiceModel.DomainServices.Server;
+using System.ServiceModel.DomainServices.Server;
 using FoundOps.Common.Composite;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;

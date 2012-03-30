@@ -3,14 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
              xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
-    <Grid x:Name="LayoutRoot" Background="White" Margin="0,0,0,5" HorizontalAlignment="Center" DataContext="{Binding LocationField, ElementName=myLocationFieldEdit}">
+    <Grid x:Name="LayoutRoot" Margin="0,0,0,5" HorizontalAlignment="Center" DataContext="{Binding LocationField, ElementName=myLocationFieldEdit}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+            <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+            <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
+            <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
             <TextBlock Text=":" />
         </StackPanel>
         <!--Disable the Location combobox if it is a generated service. TODO: Change this if LocationField has other types than just Destination-->

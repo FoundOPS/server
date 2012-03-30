@@ -63,9 +63,7 @@
                 <TextBlock x:Name="tbPagesCount" Margin="2" VerticalAlignment="Center"/>-->
             </StackPanel>
         </Border>
-
         <telerik:RadRichTextBox x:Name="ManifestRichTextBox" Grid.Row="1" Grid.RowSpan="2" IsReadOnly="True" />
-
         <Dispatcher:RouteManifestOptions Grid.Column="1" Grid.RowSpan="2"/>
     </Grid>
 </Controls:ChildWindow>

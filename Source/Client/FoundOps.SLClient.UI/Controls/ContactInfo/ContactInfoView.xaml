@@ -8,7 +8,7 @@
         <DataTemplate x:Key="ContactInfoTemplate">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Type}"/>
-                <TextBlock Text=" "/>
+                <TextBlock Text=": "/>
                 <TextBlock Text="{Binding Label}"/>
                 <TextBlock Text=" "/>
                 <TextBlock Text="{Binding Data}"/>

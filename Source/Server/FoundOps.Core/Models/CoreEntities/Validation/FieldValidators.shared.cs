@@ -13,46 +13,43 @@ namespace FoundOps.Core.Models.CoreEntities.Validation
             if(maximum < minimum)
                 return new ValidationResult(String.Format("The Maximum must be greater than or equal to the minimum ({0})", minimum), new[] { "Maximum", "Minimum" });
 
-            if (value.HasValue)
-            {
-                if (value < minimum)
-                    return new ValidationResult(String.Format("The Value must be greater than or equal to the minimum ({0})", minimum), new[] { "Value", "Minimum" });
+            if (value < minimum)
+                return new ValidationResult(String.Format("The Value must be greater than or equal to the minimum ({0})", minimum), new[] { "Value", "Minimum" });
 
-                if (value > maximum)
-                    return new ValidationResult(String.Format("The Value must be less than or equal to the maximum ({0})", maximum), new[] { "Value", "Maximum" });
-            }
+            if (value > maximum)
+                return new ValidationResult(String.Format("The Value must be less than or equal to the maximum ({0})", maximum), new[] { "Value", "Maximum" });
 
             return ValidationResult.Success;
         }
 
-        public static ValidationResult IsValueValid(decimal value, ValidationContext validationContext)
+        public static ValidationResult IsValueValid(decimal? value, ValidationContext validationContext)
         {
-            if (validationContext == null)
+            if (validationContext == null || value == null)
                 return ValidationResult.Success;
 
             var numericField = (NumericField) validationContext.ObjectInstance;
 
-            return IsValueValidHelper((decimal?)value, numericField.Minimum, numericField.Maximum, numericField);
+            return IsValueValidHelper((decimal)value, numericField.Minimum, numericField.Maximum, numericField);
         }
 
-        public static ValidationResult IsValueWithinMinimum(decimal minimum, ValidationContext validationContext)
+        public static ValidationResult IsValueWithinMinimum(decimal? minimum, ValidationContext validationContext)
         {
-            if (validationContext == null)
+            if (validationContext == null || minimum == null)
                 return ValidationResult.Success;
 
             var numericField = (NumericField)validationContext.ObjectInstance;
 
-            return IsValueValidHelper(numericField.Value, minimum, numericField.Maximum, numericField);
+            return IsValueValidHelper(numericField.Value, (decimal)minimum, numericField.Maximum, numericField);
         }
 
-        public static ValidationResult IsValueWithinMaximum(decimal maximum, ValidationContext validationContext)
+        public static ValidationResult IsValueWithinMaximum(decimal? maximum, ValidationContext validationContext)
         {
-            if (validationContext == null)
+            if (validationContext == null || maximum == null)
                 return ValidationResult.Success;
 
             var numericField = (NumericField)validationContext.ObjectInstance;
 
-            return IsValueValidHelper(numericField.Value, numericField.Minimum, maximum, numericField);
+            return IsValueValidHelper(numericField.Value, numericField.Minimum, (decimal)maximum, numericField);
         }
 
         private static ValidationResult IsTimeValueValidHelper(DateTime? value, DateTime earliest, DateTime latest, DateTimeField dateTimeField)
@@ -71,7 +68,7 @@ namespace FoundOps.Core.Models.CoreEntities.Validation
 
         public static ValidationResult IsTimeValueValid(DateTime? value, ValidationContext validationContext)
         {
-            if (validationContext == null)
+            if (validationContext == null || value == null)
                 return ValidationResult.Success;
 
             var dateTimeField = (DateTimeField)validationContext.ObjectInstance;
@@ -79,24 +76,24 @@ namespace FoundOps.Core.Models.CoreEntities.Validation
             return IsTimeValueValidHelper(value, dateTimeField.Earliest, dateTimeField.Latest, dateTimeField);
         }
 
-        public static ValidationResult IsTimeValueWithinEarliest(DateTime earliest, ValidationContext validationContext)
+        public static ValidationResult IsTimeValueWithinEarliest(DateTime? earliest, ValidationContext validationContext)
         {
-            if (validationContext == null)
+            if (validationContext == null || earliest == null)
                 return ValidationResult.Success;
 
             var dateTimeField = (DateTimeField)validationContext.ObjectInstance;
 
-            return IsTimeValueValidHelper(dateTimeField.Value, earliest, dateTimeField.Latest, dateTimeField);
+            return IsTimeValueValidHelper(dateTimeField.Value, (DateTime)earliest, dateTimeField.Latest, dateTimeField);
         }
 
-        public static ValidationResult IsTimeValueWithinLatest(DateTime latest, ValidationContext validationContext)
+        public static ValidationResult IsTimeValueWithinLatest(DateTime? latest, ValidationContext validationContext)
         {
-            if (validationContext == null)
+            if (validationContext == null || latest == null)
                 return ValidationResult.Success;
 
             var dateTimeField = (DateTimeField)validationContext.ObjectInstance;
 
-            return IsTimeValueValidHelper(dateTimeField.Value, dateTimeField.Earliest, latest, dateTimeField);
+            return IsTimeValueValidHelper(dateTimeField.Value, dateTimeField.Earliest, (DateTime)latest, dateTimeField);
         }
     }
 }

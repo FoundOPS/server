@@ -22,7 +22,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" Text="{Binding SelectedEntity.Name}" 
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold" Text="{Binding SelectedEntity.Name}" 
                    Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteNameVisible, Converter={StaticResource VisibilityConverter}}"/>
             <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Margin="0,5" Height="2" Fill="Black" 
                        Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteNameVisible, Converter={StaticResource VisibilityConverter}}"/>

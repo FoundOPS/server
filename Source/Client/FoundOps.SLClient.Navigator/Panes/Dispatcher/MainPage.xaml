@@ -51,7 +51,7 @@
                     </telerik:RadPane>
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>
-            <telerik:RadSplitContainer InitialPosition="DockedRight" Orientation="Horizontal" Width="220">
+            <telerik:RadSplitContainer InitialPosition="DockedRight" Orientation="Horizontal" Width="240">
                 <telerik:RadPaneGroup x:Name="DetailsPaneGroup" IsEnabled="True" TabStripPlacement="Top" TabOrientation="Horizontal">
                     <telerik:RadPane x:Name="RouteDetailsPane" telerik:RadDocking.SerializationTag="Route" Header="Route" ContextMenuTemplate="{x:Null}" CanUserClose="False"
                                          IsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}}">

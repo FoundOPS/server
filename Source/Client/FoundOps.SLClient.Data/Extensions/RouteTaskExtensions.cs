@@ -1,4 +1,4 @@
-﻿using FoundOps.Common.Silverlight.Interfaces;
+using FoundOps.Common.Silverlight.Interfaces;
 using System;
 using RiaServicesContrib;
 using RiaServicesContrib.DomainServices.Client;

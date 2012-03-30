@@ -1,4 +1,4 @@
-﻿using System.ServiceModel.DomainServices.Client;
+using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;

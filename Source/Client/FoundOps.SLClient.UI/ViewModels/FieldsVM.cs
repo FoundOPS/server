@@ -1,4 +1,4 @@
-﻿using FoundOps.Common.Silverlight.Services;
+using FoundOps.Common.Silverlight.Services;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.SLClient.Data.ViewModels;

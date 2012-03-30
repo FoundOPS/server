@@ -257,6 +257,13 @@ namespace FoundOps.Server.Services.CoreDomainService
                                                    from lf in st.Fields.OfType<LocationField>()
                                                    select new { st, f, lf.Value }).ToArray();
 
+            var serviceTemplatesOptions = (from rs in recurringServicesForBusinessAccount
+                                           join st in this.ObjectContext.ServiceTemplates
+                                               on rs.Id equals st.Id
+                                           from f in st.Fields
+                                           from of in st.Fields.OfType<OptionsField>()
+                                           select new { st, f, of.Options }).ToArray();
+
             //Force Load ServiceTemplate.Invoice
             //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
             this.ObjectContext.Invoices.Join(recurringServicesForBusinessAccount.Select(rs => rs.ServiceTemplate), i => i.Id, st => st.Id, (i, st) => i).ToArray();

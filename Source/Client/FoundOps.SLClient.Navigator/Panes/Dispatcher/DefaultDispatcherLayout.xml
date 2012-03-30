@@ -19,7 +19,7 @@
         </RadPaneGroup>
       </Items>
     </RadSplitContainer>
-    <RadSplitContainer Dock="DockedRight" Width="220" Orientation="Horizontal">
+    <RadSplitContainer Dock="DockedRight" Width="240" Orientation="Horizontal">
       <Items>
         <RadPaneGroup SelectedIndex="0">
           <Items>
