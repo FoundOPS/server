@@ -1,4 +1,10 @@
+using System.Collections.Generic;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Common.Silverlight.UI.Interfaces;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.SLClient.Data.Services;
@@ -7,6 +13,7 @@ using MEFedMVVM.ViewModelLocator;
 using System;
 using System.ComponentModel.Composition;
 using System.Windows.Controls;
+using ReactiveUI;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -17,6 +24,15 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class ServiceTemplatesVM : InfiniteAccordionVM<ServiceTemplate>, IAddToDeleteFromSource<ServiceTemplate>
     {
         #region Public Properties
+
+        private readonly Subject<IEnumerable<ServiceTemplate>> _serviceTemplatesForContext = new Subject<IEnumerable<ServiceTemplate>>();
+        private ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _serviceTemplatesForContextHelper;
+        /// <summary>
+        /// This is for use by the ServiceProvider blocks. The QueryableCollectionView is used by the FoundOPS admin console.
+        /// In the future these VMs should probably be split up.
+        /// This will return the ClientContext's ServiceTemplates or the ServiceProvider's ServiceTemplates.
+        /// </summary>
+        public IEnumerable<ServiceTemplate> ServiceTemplatesForContext { get { return _serviceTemplatesForContextHelper.Value; } }
 
         #region Implementation of IAddToDeleteFromSource<ServiceTemplate>
 
@@ -60,15 +76,13 @@ namespace FoundOps.SLClient.UI.ViewModels
                                     var serviceProvider = ContextManager.GetContext<BusinessAccount>();
                                     if (serviceProvider == null ||
                                         serviceProvider.Id != BusinessAccountsDesignData.FoundOps.Id)
-                                        throw new NotImplementedException(
-                                            "New service templates should inherit from a FoundOPS template.");
+                                        throw new NotImplementedException("New service templates should inherit from a FoundOPS template.");
 
                                     var newServiceTemplate = new ServiceTemplate
-                                                                 {
-                                                                     ServiceTemplateLevel =
-                                                                         ServiceTemplateLevel.FoundOpsDefined,
-                                                                     Name = name
-                                                                 };
+                                    {
+                                        ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined,
+                                        Name = name
+                                    };
                                     serviceProvider.ServiceTemplates.Add(newServiceTemplate);
 
                                     SelectedEntity = newServiceTemplate;
@@ -96,45 +110,83 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
+            #region Setup ServiceProvider users data loading
+
+            //Setup the _serviceTemplatesForContextHelper. Set the initial value to the ServiceProvider's ServiceTemplates
+            _serviceTemplatesForContextHelper = _serviceTemplatesForContext.ToProperty(this, x => x.ServiceTemplatesForContext, ContextManager.CurrentServiceTemplates);
+
+            //The ServiceTemplatesForContext will either be the ClientContext.ServiceTemplates or the current ServiceProvider's ServiceTemplates
+
+            //Update when the ServiceProvider's ServiceTemplates are loaded and when the ClientContext changes
+            //a) if there is no ClientContext, push the ServiceProvider's SerivceTemplates
+            //b) if there is a ClientContext, push the ClientContext's ServiceTemplates
+            ContextManager.CurrentServiceTemplatesObservable.AsGeneric()
+            .Merge(ContextManager.GetContextObservable<Client>().AsGeneric())
+                //Throttle to allow time for the values to propogate
+            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
+            .Subscribe(_ =>
+            {
+                var clientContext = ContextManager.GetContext<Client>();
+                _serviceTemplatesForContext.OnNext(clientContext == null ? ContextManager.CurrentServiceTemplates : clientContext.ServiceTemplates);
+            });
+
+            LoadOperation<ServiceTemplate> clientServiceTemplatesLoadOperation = null;
+            //Whenever the ClientContext changes load the it's ServiceTemplates with details
+            ContextManager.GetContextObservable<Client>().Where(c => c != null).Subscribe(client =>
+            {
+                //Cancel the last load
+                if (clientServiceTemplatesLoadOperation != null && clientServiceTemplatesLoadOperation.CanCancel)
+                    clientServiceTemplatesLoadOperation.Cancel();
+
+                //Do not try to load ServiceTemplates for a Client that does not exist yet
+                if (client.EntityState == EntityState.New)
+                    return;
+
+                var query = DomainContext.GetClientServiceTemplatesQuery(ContextManager.RoleId, client.Id);
+                clientServiceTemplatesLoadOperation = DomainContext.Load(query);
+            });
+
+            #endregion
+
+            #region Setup Admin Console data loading
+
             SetupContextDataLoading(roleId =>
-                                        {
-                                            //Only load service templates of the current level
+            {
+                //Only load service templates of the current level
 
-                                            //If there is a client context, load the Client service templates
-                                            var clientContext = ContextManager.GetContext<Client>();
-                                            if (clientContext != null)
-                                                return DomainContext.GetServiceTemplatesForServiceProviderQuery(roleId, (int)ServiceTemplateLevel.ClientDefined);
+                var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
+                //If the current role is not a FoundOPS role do not load anything
+                //because the current ServiceProvider's service templates are automatically loaded
+                if (businessAccountContext == null || ContextManager.OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
+                    return null;
 
-                                            var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
-                                            //If the current role is not a FoundOPS role do not load anything
-                                            //because the current ServiceProvider's service templates are automatically loaded
-                                            if (businessAccountContext == null || ContextManager.OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
-                                                return null;
+                var serviceTemplateLevel = businessAccountContext.Id == BusinessAccountsConstants.FoundOpsId
+                                               ? (int)ServiceTemplateLevel.FoundOpsDefined
+                                               : (int)ServiceTemplateLevel.ServiceProviderDefined;
 
-                                            var serviceTemplateLevel = businessAccountContext.Id == BusinessAccountsConstants.FoundOpsId
-                                                                           ? (int)ServiceTemplateLevel.FoundOpsDefined
-                                                                           : (int)ServiceTemplateLevel.ServiceProviderDefined;
-
-                                            return DomainContext.GetServiceTemplatesForServiceProviderQuery(roleId, serviceTemplateLevel);
-                                        },
-                                    new[]
-                                        {
-                                            new ContextRelationshipFilter
-                                                {
-                                                    EntityMember = "OwnerClientId",
-                                                    FilterValueGenerator = v => ((Client) v).Id,
-                                                    RelatedContextType = typeof (Client)
-                                                },
-                                            new ContextRelationshipFilter
-                                                {
-                                                    EntityMember = "OwnerServiceProviderId",
-                                                    FilterValueGenerator = v => ((BusinessAccount) v).Id,
-                                                    RelatedContextType = typeof (BusinessAccount)
-                                                }
-                                        });
+                return DomainContext.GetServiceTemplatesForServiceProviderQuery(roleId, serviceTemplateLevel);
+            },
+            new[]{
+                new ContextRelationshipFilter
+                {
+                    EntityMember = "OwnerServiceProviderId",
+                    FilterValueGenerator = v => ((BusinessAccount) v).Id,
+                    RelatedContextType = typeof (BusinessAccount)
+               }});
 
             SetupDetailsLoading(selectedEntity =>
-                                DomainContext.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+            {
+                var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
+                //If the current role is not a FoundOPS role do not load anything
+                //because the current ServiceProvider's service templates are automatically loaded
+                if (businessAccountContext == null ||
+                    ContextManager.OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
+                    return null;
+
+                return DomainContext.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id);
+            });
+
+            #endregion
         }
 
         #endregion

@@ -17,7 +17,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="Service Occurences" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
                     <AddEditDelete:AddDelete Grid.Column="1" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" AddDeleteMode="AddItemDelete"
-                                        ItemsSource="{Binding ServiceTemplatesForClient, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}" Margin="0,0,0,0">
+                                        ItemsSource="{Binding ServiceTemplatesForContext, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}" Margin="0,0,0,0">
                         <AddEditDelete:AddDelete.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>

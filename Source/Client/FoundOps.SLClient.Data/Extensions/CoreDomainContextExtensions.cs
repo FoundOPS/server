@@ -28,6 +28,11 @@ namespace FoundOps.Server.Services.CoreDomainService
 
     public partial class CoreDomainContext
     {
+        /// <summary>
+        /// Called when changes are rejected.
+        /// </summary>
+        public event EventHandler ChangesRejected;
+
         private readonly List<string> _contactInfoTypes = new List<string> { "Phone Number", "Email Address", "Website", "Fax Number", "Other" };
 
         partial void OnCreated()
@@ -56,6 +61,9 @@ namespace FoundOps.Server.Services.CoreDomainService
                 FileManager.DeleteFile(file.PartyId, file.Id);
 
             base.RejectChanges();
+
+            if (ChangesRejected != null)
+                ChangesRejected(this, new EventArgs());
         }
 
         /// <summary>

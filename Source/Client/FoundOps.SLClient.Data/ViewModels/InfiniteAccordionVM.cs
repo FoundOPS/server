@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Silverlight.UI.Tools;

@@ -18,24 +18,6 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         #region Public Properties
 
-        private bool _hasChanges;
-        /// <summary>
-        /// Used for manual tracking of changes.
-        /// This is used because we need to detached generated services from the DomainContext.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [service has changes]; otherwise, <c>false</c>.
-        /// </value>
-        public new bool HasChanges
-        {
-            get { return _hasChanges; }
-            set
-            {
-                _hasChanges = value;
-                this.RaisePropertyChanged("HasChanges");
-            }
-        }
-
         #region Implementation of ILoadDetails
 
         private bool _detailsLoaded;
@@ -84,6 +66,13 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
+        /// <summary>
+        /// If this is a generated service and this is selected
+        /// when changes are rejected this will reload the details.
+        /// NOTE: Must keep this updated to prevent unnecessary data loading.
+        /// </summary>
+        public bool IsSelected { get; set; }
+
         #endregion
 
         #region Locals
@@ -92,7 +81,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// The existing or generated service's entity graph.
         /// It is stored as a local property so the PropertyChanged event can be unhandled.
         /// </summary>
-        private EntityGraph<Entity> _entityGraph = null;
+        private EntityGraph<Entity> _entityGraph;
+
+        /// <summary>
+        /// Used to cancel the last reload details query.
+        /// </summary>
+        private Subject<bool> _cancelLastReloadDetails; 
 
         #endregion
 
@@ -109,15 +103,19 @@ namespace FoundOps.Core.Models.CoreEntities
             DetailsLoaded = false;
 
             //If there is a service already
-            //a) clear the entity graph PropertyChanged handlers
-            //b) clear HasChanges
-            //c) clear the Service before reloading
+            //a) clear the GeneratedService handlers
+            //b) clear the Service before reloading
             if (Service != null)
             {
-                if (_entityGraph != null)
-                    _entityGraph.PropertyChanged -= CheckHasDataMemberChanges;
+                if (ServiceIsGenerated)
+                {
+                    Service.PropertyChanged -= OnSaveConvertToExistingService;
+                    Manager.CoreDomainContext.ChangesRejected -= OnRejectChangedReloadDetails;
+                    if (_entityGraph != null)
+                        _entityGraph.PropertyChanged -= IfChangesAddToDomainContext;
+                }
 
-                HasChanges = false;
+
                 Service = null;
             }
 
@@ -131,8 +129,6 @@ namespace FoundOps.Core.Models.CoreEntities
                     Service = task.Result.First();
 
                     _entityGraph = this.Service.EntityGraph();
-                    _entityGraph.PropertyChanged += CheckHasDataMemberChanges;
-
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
             else if (RecurringServiceId.HasValue)
@@ -154,38 +150,67 @@ namespace FoundOps.Core.Models.CoreEntities
                     Manager.Data.DetachEntities(_entityGraph);
 
                     //Track the generated service's entity changes manually because it is detached
-                    _entityGraph.PropertyChanged += CheckHasDataMemberChanges;
+                    _entityGraph.PropertyChanged += IfChangesAddToDomainContext;
+                    generatedService.PropertyChanged += OnSaveConvertToExistingService;
+                    Manager.CoreDomainContext.ChangesRejected += OnRejectChangedReloadDetails;
 
                     Service = generatedService;
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
 
-        /// <summary>
-        /// A method to call if the generated service was added to the database.
-        /// It will change this from being a GeneratedService to an ExistingService
-        /// by setting the ExistingServiceId and clearing HasChanges
-        /// </summary>
-        public void ConvertToExistingService()
-        {
-            this.ExistingServiceId = this.Service.Id;
-            HasChanges = false;
-        }
-
         #endregion
 
-        #region Private Methods
+        #region Private Methods for GeneratedServices
 
         /// <summary>
-        /// Check if the property that is changing is a DataMember, if not do not consider it as a change.
+        /// If this is a generated service when there are changes add this back to the DomainContext.
         /// (Cannot make a lambda, because those cannot be unhandled)
         /// </summary>
-        private void CheckHasDataMemberChanges(object sender, PropertyChangedEventArgs e)
+        private void IfChangesAddToDomainContext(object sender, PropertyChangedEventArgs e)
         {
+            // Check if the property that is changing is a DataMember if not do not consider it as a change.
             if (!sender.GetType().GetProperties().Any(pi => pi.Name == e.PropertyName && pi.IsDefined(typeof(System.Runtime.Serialization.DataMemberAttribute), true)))
                 return;
 
-            HasChanges = true;
+            //Since there are changes, add this back to the DomainContext
+            if (ServiceIsGenerated)
+                Manager.CoreDomainContext.Services.Add(Service);
+        }
+
+        /// <summary>
+        /// If the generated service was added to the database. (The EntityState is now Unmodified).
+        /// change this from being a GeneratedService to an ExistingService
+        /// </summary>
+        private void OnSaveConvertToExistingService(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "EntityState" || ((Service)sender).EntityState != EntityState.Unmodified)
+                return;
+
+            //Update ExistingServiceId to the (now saved) Service.Id
+            this.ExistingServiceId = this.Service.Id;
+
+            //No longer need to listen to the EntityGraph PropertyChanged
+            if (_entityGraph != null)
+                _entityGraph.PropertyChanged -= IfChangesAddToDomainContext;
+        }
+
+        /// <summary>
+        /// If this is a generated service, when changes are rejected reload the details.
+        /// </summary>
+        private void OnRejectChangedReloadDetails(object sender, EventArgs e)
+        {
+            if (!ServiceIsGenerated || !IsSelected)
+                return;
+
+            //Regenerate the Service on RejectChanges in case the generated service was part of the DomainContext 
+            //and had its info cleared as part of the RejectChanges
+
+            if (_cancelLastReloadDetails == null)
+                _cancelLastReloadDetails = new Subject<bool>();
+            _cancelLastReloadDetails.OnNext(true);
+            
+            LoadDetails(_cancelLastReloadDetails);
         }
 
         #endregion

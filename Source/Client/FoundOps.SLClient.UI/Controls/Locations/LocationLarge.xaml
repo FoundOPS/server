@@ -53,7 +53,7 @@
                 </my1:ClientLinkLarge>
                 <Regions1:RegionLinkLarge IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SelectedRegion="{Binding SelectedEntity.Region, Mode=TwoWay, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <Locations1:SubLocations IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SubLocationsVM="{Binding SelectedSubLocationsVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}"/>
-                <toolkit:Expander Margin="5" IsExpanded="True" 
+                <!--<toolkit:Expander Margin="5" IsExpanded="True" 
                                   BorderBrush="{StaticResource ServiceBrush}" Foreground="{StaticResource ServiceBrush}" Style="{StaticResource ExpanderStyle}"
                                   IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
                     <toolkit:Expander.Header>
@@ -62,7 +62,7 @@
                         </StackPanel>
                     </toolkit:Expander.Header>
                     <Services:ServicesGrid x:Name="ServicesGrid" IsMainGrid="False" />
-                </toolkit:Expander>
+                </toolkit:Expander>-->
             </StackPanel>
         </ScrollViewer>
     </Grid>

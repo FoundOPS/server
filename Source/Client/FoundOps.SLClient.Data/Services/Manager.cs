@@ -1,4 +1,6 @@
-﻿using FoundOps.Server.Services.CoreDomainService;
+﻿using System;
+using System.Windows.Markup;
+using FoundOps.Server.Services.CoreDomainService;
 using MEFedMVVM.ViewModelLocator;
 
 namespace FoundOps.SLClient.Data.Services
@@ -45,6 +47,17 @@ namespace FoundOps.SLClient.Data.Services
                 return _coreDomainContext ??
                        (_coreDomainContext = ViewModelRepository.Instance.Resolver.Container.GetExportedValue<CoreDomainContext>());
             }
+        }
+    }
+
+    /// <summary>
+    /// Gets the ContextManager.
+    /// </summary>
+    public class GetContextManager : MarkupExtension
+    {
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return Manager.Context;
         }
     }
 }
