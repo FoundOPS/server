@@ -49,30 +49,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             //TODO Regenerate the Services when the current RecurringServiceContext.Repeat changes
             //recurringServiceContextObservable.WhereNotNull().SelectLatest(rs => rs.RepeatChangedObservable())
             //    .Subscribe(_ => LoadData);
-
-            #region Override the SaveCommand and DiscardCommand
-
-            var canSaveDiscard = this.WhenAny(x => x.SelectedEntity, x => x.SelectedEntity.HasChanges, (selectedEntity, hasChanges) =>
-                                                   selectedEntity.Value != null && hasChanges.Value);
-
-            SaveCommand = new ReactiveCommand(canSaveDiscard);
-            SaveCommand.Subscribe(param =>
-            {
-                if (!BeforeSaveCommand()) return;
-
-                DataManager.EnqueueSubmitOperation(OnSave);
-            });
-
-            DiscardCommand = new ReactiveCommand(canSaveDiscard);
-            DiscardCommand.Subscribe(param =>
-            {
-                if (!BeforeDiscardCommand()) return;
-                DomainContext.RejectChanges();
-                AfterDiscard();
-                DiscardSubject.OnNext(true);
-            });
-
-            #endregion
         }
 
         #region Data Loading
@@ -402,69 +378,18 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        protected override bool BeforeDiscardCommand()
+        /// <summary>
+        /// Must update IsSelected on the ServiceHolders to prevent unnecessary data from loading.
+        /// </summary>
+        protected override bool BeforeSelectedEntityChanges(ServiceHolder oldValue, ServiceHolder newValue)
         {
-            if (SelectedEntity == null) return true;
+            if (oldValue != null)
+                oldValue.IsSelected = false;
 
-            //If it is a generated Service, reload the details
-            //Regenerating the ServiceTemplate should discard the changes
-            if (SelectedEntity.ServiceIsGenerated)
-            {
-                _cancelLastDetailsLoad.OnNext(true);
-                SelectedEntity.LoadDetails(_cancelLastDetailsLoad);
-            }
+            if (newValue != null)
+                newValue.IsSelected = true;
 
-            //The changes for generated services are not tracked
-            //so no need to perform a DomainContext Discard
-            return !SelectedEntity.ServiceIsGenerated;
-        }
-
-        protected override void AfterDiscard()
-        {
-            //Existing services no longer use standard change tracking
-            //so update the HasChanges to false after a discard
-            if (SelectedEntity != null)
-                SelectedEntity.HasChanges = false;
-        }
-
-        protected override bool BeforeSaveCommand()
-        {
-            //Add the detached generated service to the context before saving
-            if (SelectedEntity.ServiceIsGenerated)
-                DomainContext.Services.Add(SelectedEntity.Service);
-
-            return base.BeforeAdd();
-        }
-
-        protected override bool DomainContextHasRelatedChanges()
-        {
-            //Return whether or not the current serviceholder has changes
-            return SelectedEntity != null && SelectedEntity.HasChanges;
-        }
-
-        protected override void OnSave(SubmitOperation submitOperation)
-        {
-            //If there was an issue or if this was cancelled
-            //a) detach any GeneratedServices
-            //b) reload the selected entity's details
-            if (submitOperation.HasError || submitOperation.IsCanceled)
-            {
-                //a) detach any GeneratedServices
-                this.DataManager.DetachEntities(submitOperation.ChangeSet.AddedEntities.OfType<Service>().SelectMany(s => s.EntityGraph()));
-
-                //b) reload the selected entity's details
-                if (SelectedEntity != null)
-                    SelectedEntity.LoadDetails(_cancelLastDetailsLoad);
-            }
-            else
-            {
-                //If a generated service was added succesfully update the ServiceHolder
-                //No need to detach it because it is now an existing service
-                foreach (var addedGeneratedService in submitOperation.ChangeSet.AddedEntities.OfType<Service>())
-                    addedGeneratedService.ParentServiceHolder.ConvertToExistingService();
-            }
-
-            base.OnSave(submitOperation);
+            return true;
         }
 
         #endregion
