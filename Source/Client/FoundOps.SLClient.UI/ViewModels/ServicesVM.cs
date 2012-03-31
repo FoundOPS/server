@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
@@ -15,6 +16,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
+using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -49,6 +51,15 @@ namespace FoundOps.SLClient.UI.ViewModels
             //TODO Regenerate the Services when the current RecurringServiceContext.Repeat changes
             //recurringServiceContextObservable.WhereNotNull().SelectLatest(rs => rs.RepeatChangedObservable())
             //    .Subscribe(_ => LoadData);
+
+            //Remove any non added new Services from the collection when RejectChanges is called
+            DomainContext.ChangesRejected += (s, e) =>
+            {
+                if (Collection == null)
+                    return;
+
+                ((ObservableCollection<ServiceHolder>)SourceCollection).RemoveAll(sh => sh.ServiceIsNew && sh.Service.EntityState == EntityState.Detached);
+            };
         }
 
         #region Data Loading
@@ -275,7 +286,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 }
 
                 //Update the CollectionViewObservable with the new loaded ServiceHolders
-                ViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(task.Result).View);
+                ViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(task.Result.ToObservableCollection()).View);
 
                 LastLoad = DateTime.Now;
 
@@ -322,23 +333,35 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Add Delete Entities
 
-        //protected override Service AddNewEntity(object commandParameter)
-        //{
-        //    var newService = base.AddNewEntity(commandParameter);
+        protected override ServiceHolder AddNewEntity(object commandParameter)
+        {
+            if (Collection == null)
+                return null;
 
-        //    //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)
-        //    var parentServiceTemplate = (ServiceTemplate)commandParameter;
+            var newService = new Service { ServiceDate = DateTime.Now };
 
-        //    //Make a ServiceDefined ServiceTemplate child from the parentServiceTemplate
-        //    var childServiceTemplate = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
+            //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)
+            var parentServiceTemplate = (ServiceTemplate)commandParameter;
 
-        //    //Set the new service's service template
-        //    newService.ServiceTemplate = childServiceTemplate;
+            //Make a ServiceDefined ServiceTemplate child from the parentServiceTemplate
+            var childServiceTemplate = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
 
-        //    newService.ServiceProvider = (BusinessAccount)this.ContextManager.OwnerAccount;
+            //Set the new service's service template
+            newService.ServiceTemplate = childServiceTemplate;
 
-        //    return newService;
-        //}
+            newService.ServiceProvider = (BusinessAccount)this.ContextManager.OwnerAccount;
+
+            //Add the new service to a service holder
+            var serviceHolder = new ServiceHolder(newService);
+
+            //TODO: Find the proper place to insert the new ServiceHolder
+            //TODO move when occure date changes
+            ((ObservableCollection<ServiceHolder>)SourceCollection).Add(serviceHolder);
+
+            DomainContext.Services.Add(newService);
+
+            return serviceHolder;
+        }
 
         //protected override void OnAddEntity(Service newEntity)
         //{

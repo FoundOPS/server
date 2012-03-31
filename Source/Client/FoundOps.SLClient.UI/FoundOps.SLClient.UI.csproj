@@ -456,9 +456,6 @@
     <Compile Include="Controls\Services\ServiceLarge.xaml.cs">
       <DependentUpon>ServiceLarge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Services\ServiceOccurencesLink.xaml.cs">
-      <DependentUpon>ServiceOccurencesLink.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Services\ServicesGrid.xaml.cs">
       <DependentUpon>ServicesGrid.xaml</DependentUpon>
     </Compile>
@@ -470,9 +467,6 @@
     </Compile>
     <Compile Include="Controls\Services\ServiceTemplate\ServiceTemplatesGrid.xaml.cs">
       <DependentUpon>ServiceTemplatesGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Services\ServiceTemplate\ServiceTemplatesLink.xaml.cs">
-      <DependentUpon>ServiceTemplatesLink.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Parties\BusinessAccounts\BusinessAccountSettings.xaml.cs">
       <DependentUpon>BusinessAccountSettings.xaml</DependentUpon>
@@ -904,10 +898,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Services\ServiceOccurencesLink.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\Services\ServicesGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -921,10 +911,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Services\ServiceTemplate\ServiceTemplatesGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Services\ServiceTemplate\ServiceTemplatesLink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

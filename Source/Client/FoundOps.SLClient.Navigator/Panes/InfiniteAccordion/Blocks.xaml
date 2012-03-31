@@ -279,7 +279,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Services" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForServiceProvider, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}">
+                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForContext, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}">
                                         <AddEditDelete:AddDelete.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Name}"/>

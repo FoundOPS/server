@@ -441,7 +441,6 @@ namespace FoundOps.Core.Models.CoreEntities
     [MetadataTypeAttribute(typeof(ServiceMetadata))]
     public partial class Service
     {
-
         internal sealed class ServiceMetadata
         {
             // Metadata classes are not meant to be instantiated.
@@ -449,7 +448,8 @@ namespace FoundOps.Core.Models.CoreEntities
             {
             }
 
-            //[RequiredGuid(ErrorMessage = "You must select a client for the service")]
+            [Required(ErrorMessage = "The Client is required")]
+            public Guid ClientId { get; set; }
 
             [Include]
             public RecurringService RecurringServiceParent { get; set; }

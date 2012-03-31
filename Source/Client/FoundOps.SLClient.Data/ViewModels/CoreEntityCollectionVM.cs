@@ -339,9 +339,13 @@ namespace FoundOps.SLClient.Data.ViewModels
                     return;
                 }
 
+                var query = entityQuery(selectedEntity);
+                if (query == null)
+                    return;
+
                 //b) load the details
                 ((ILoadDetails)selectedEntity).DetailsLoaded = false;
-                detailsLoadOperation = DomainContext.Load(entityQuery(selectedEntity), loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
+                detailsLoadOperation = DomainContext.Load(query, loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
             });
         }
 

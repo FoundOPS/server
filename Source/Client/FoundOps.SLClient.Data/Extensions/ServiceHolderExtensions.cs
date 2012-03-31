@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Interfaces;
@@ -67,6 +68,17 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         /// <summary>
+        /// Whether or not this Service is new (and not generated from a ServiceHolder).
+        /// </summary>
+        public bool ServiceIsNew
+        {
+            get
+            {
+                return !ExistingServiceId.HasValue && !RecurringServiceId.HasValue;
+            }
+        }
+
+        /// <summary>
         /// If this is a generated service and this is selected
         /// when changes are rejected this will reload the details.
         /// NOTE: Must keep this updated to prevent unnecessary data loading.
@@ -86,7 +98,32 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Used to cancel the last reload details query.
         /// </summary>
-        private Subject<bool> _cancelLastReloadDetails; 
+        private Subject<bool> _cancelLastReloadDetails;
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Use this constructor to create a new Service from the passed Service.
+        /// </summary>
+        public ServiceHolder(Service newService)
+        {
+            Service = newService;
+            OccurDate = newService.ServiceDate;
+
+            //Keep the OccurDate updated with the ServiceDate
+            Observable2.FromPropertyChangedPattern(newService, x => x.ServiceDate).ObserveOnDispatcher()
+                .Subscribe(newDate => OccurDate = newDate);
+
+            //The details will already be loaded from the newService
+            DetailsLoaded = true;
+
+            //When this is saved, convert it to an existing service
+            newService.PropertyChanged += OnSaveConvertToExistingService;
+
+            Service.RaiseValidationErrors();
+        }
 
         #endregion
 
@@ -100,13 +137,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="cancelDetailsLoad">An observable when pushed should cancel the details load.</param>
         public void LoadDetails(Subject<bool> cancelDetailsLoad)
         {
+            //If this is a new service return (the details are already loaded)
+            if(!ServiceId.HasValue && !RecurringServiceId.HasValue)
+                return;
+
             DetailsLoaded = false;
 
-            //If there is a service already
-            //a) clear the GeneratedService handlers
-            //b) clear the Service before reloading
             if (Service != null)
             {
+                //a) clear the old GeneratedService handlers
                 if (ServiceIsGenerated)
                 {
                     Service.PropertyChanged -= OnSaveConvertToExistingService;
@@ -115,9 +154,13 @@ namespace FoundOps.Core.Models.CoreEntities
                         _entityGraph.PropertyChanged -= IfChangesAddToDomainContext;
                 }
 
-
+                //b) clear the Service before reloading
                 Service = null;
             }
+
+            //Reload or regenerate the Service
+
+            #region Load Existing Service details
 
             if (ExistingServiceId.HasValue)
             {
@@ -131,6 +174,10 @@ namespace FoundOps.Core.Models.CoreEntities
                     _entityGraph = this.Service.EntityGraph();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
+
+            #endregion
+
+            #region Regenerate service
             else if (RecurringServiceId.HasValue)
             {
                 Manager.CoreDomainContext.LoadAsync(Manager.CoreDomainContext.GetRecurringServiceDetailsForRoleQuery(Manager.Context.RoleId, RecurringServiceId.Value), cancelDetailsLoad)
@@ -157,6 +204,7 @@ namespace FoundOps.Core.Models.CoreEntities
                     Service = generatedService;
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
+            #endregion
         }
 
         #endregion
@@ -190,7 +238,7 @@ namespace FoundOps.Core.Models.CoreEntities
             //Update ExistingServiceId to the (now saved) Service.Id
             this.ExistingServiceId = this.Service.Id;
 
-            //No longer need to listen to the EntityGraph PropertyChanged
+            //No longer need to listen to the EntityGraph PropertyChanged (for generated services)
             if (_entityGraph != null)
                 _entityGraph.PropertyChanged -= IfChangesAddToDomainContext;
         }
@@ -209,7 +257,7 @@ namespace FoundOps.Core.Models.CoreEntities
             if (_cancelLastReloadDetails == null)
                 _cancelLastReloadDetails = new Subject<bool>();
             _cancelLastReloadDetails.OnNext(true);
-            
+
             LoadDetails(_cancelLastReloadDetails);
         }
 

@@ -12,7 +12,7 @@
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Converters2="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:Converters3="clr-namespace:FoundOps.SLClient.UI.Converters;assembly=FoundOps.SLClient.Data"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+             xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services" mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
             <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
             <!--IMPORTANT: DO NOT REMOVE "xmls:ViewModels". It is needed for GetVM-->
     <UserControl.Resources>
@@ -106,8 +106,47 @@
                     </Grid>
                 </toolkit:Expander>
                 <RecurringServices:RecurringServicesLinkLarge />
-                <my:ServiceOccurencesLink />
-                <ServiceTemplate:ServiceTemplatesLink />
+                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource ServiceBrush}"
+                        BorderBrush="{StaticResource ServiceBrush}">
+                    <toolkit:Expander.Header>
+                        <Grid ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Service Occurences" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
+                            <AddEditDelete:AddDelete Grid.Column="1" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" AddDeleteMode="AddItemDelete" 
+                                                     ItemsSource="{Binding ServiceTemplatesForContext, Source={Tools1:GetVM Type=ViewModels:ServiceTemplatesVM}}" Margin="0,0,0,0">
+                                <AddEditDelete:AddDelete.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </AddEditDelete:AddDelete.ItemTemplate>
+                            </AddEditDelete:AddDelete>
+                        </Grid>
+                    </toolkit:Expander.Header>
+                    <Services:ServicesGrid IsMainGrid="False" MaxHeight="150" />
+                </toolkit:Expander>
+                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ServiceBrush}">
+                    <toolkit:Expander.Header>
+                        <Grid ViewModelLocator:ViewModelLocator.SharedViewModel="ServiceTemplatesVM">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Available Services" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
+                            <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForContext}">
+                                <AddEditDelete:AddDelete.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </AddEditDelete:AddDelete.ItemTemplate>
+                            </AddEditDelete:AddDelete>
+                        </Grid>
+                    </toolkit:Expander.Header>
+                    <ServiceTemplate:ServiceTemplatesGrid />
+                </toolkit:Expander>
             </StackPanel>
         </ScrollViewer>
     </Grid>

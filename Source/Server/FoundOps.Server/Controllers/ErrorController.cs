@@ -7,6 +7,8 @@ namespace FoundOps.Server.Controllers
 {
     public class ErrorController : Controller
     {
+        readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+
         /// <summary>
         /// This is fired when the site gets a bad URL
         /// </summary>
@@ -20,13 +22,11 @@ namespace FoundOps.Server.Controllers
         [Authorize]
         public void SaveChangesError(Guid roleId, string errorString, string innerException)
         {
-            var container = new CoreEntitiesContainer();
-            
             //Current user logged in (email)
             var currentUser = AuthenticationLogic.CurrentUserAccountsEmailAddress();
 
             //Business account Name
-            var businessAccount = container.BusinessAccountOwnerOfRole(roleId).Name;
+            var businessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId).Name;
 
             var newError = new Error
                                {
@@ -39,9 +39,9 @@ namespace FoundOps.Server.Controllers
                                };
 
 
-            container.Errors.AddObject(newError);
+            _coreEntitiesContainer.Errors.AddObject(newError);
 
-            container.SaveChanges();
+            _coreEntitiesContainer.SaveChanges();
         }
     }
 }

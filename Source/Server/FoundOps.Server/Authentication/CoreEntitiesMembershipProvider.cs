@@ -8,38 +8,36 @@ namespace FoundOps.Server.Authentication
 {
     public class CoreEntitiesMembershipProvider : MembershipProvider
     {
+        readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+
         #region Overrides of MembershipProvider
 
         public override MembershipUser CreateUser(string username, string password, string email, string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
         {
-           throw new NotImplementedException("Create user is done another");
+            throw new NotImplementedException("Create user is done another");
         }
 
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
         {
-            var container = new CoreEntitiesContainer();
-
-            var user = AuthenticationLogic.GetUserAccount(container, username);
+            var user = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
 
             if (!ValidateUser(username, oldPassword) || user == null)
                 return false;
 
             user.PasswordHash = EncryptionTools.Hash(newPassword);
             user.UserAccountLog.Add(new UserAccountLogEntry
-                                        {
-                                            UserAccountLogType = UserAccountLogType.PasswordChange,
-                                            TimeStamp = DateTime.Now
-                                        });
-            container.SaveChanges();
+            {
+                UserAccountLogType = UserAccountLogType.PasswordChange,
+                TimeStamp = DateTime.Now
+            });
+            _coreEntitiesContainer.SaveChanges();
 
             return true;
         }
 
-
         internal void ChangePassword(string username, string temporaryPassword)
         {
-            var container = new CoreEntitiesContainer();
-            var user = AuthenticationLogic.GetUserAccount(container, username);
+            var user = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
             user.PasswordHash = EncryptionTools.Hash(temporaryPassword);
             user.UserAccountLog.Add(new UserAccountLogEntry
             {
@@ -47,13 +45,12 @@ namespace FoundOps.Server.Authentication
                 TimeStamp = DateTime.Now
             });
 
-            container.SaveChanges();
+            _coreEntitiesContainer.SaveChanges();
         }
 
         public override bool ValidateUser(string username, string password)
         {
-            var coreEntitiesContainer = new CoreEntitiesContainer();
-            var userParty = AuthenticationLogic.GetUserAccount(coreEntitiesContainer, username);
+            var userParty = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
 
             if (userParty == null || userParty.PasswordHash == null)
                 return false;
@@ -67,17 +64,15 @@ namespace FoundOps.Server.Authentication
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
         {
-            var coreEntitiesContainer = new CoreEntitiesContainer();
             var userPartyId = (Guid)providerUserKey;
 
-            var userParty = AuthenticationLogic.GetUserAccount(coreEntitiesContainer, userPartyId);
+            var userParty = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, userPartyId);
             return userParty != null ? userParty.MembershipUser() : null;
         }
 
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
-            var coreEntitiesContainer = new CoreEntitiesContainer();
-            var userParty = AuthenticationLogic.GetUserAccount(coreEntitiesContainer, username);
+            var userParty = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
             return userParty != null ? userParty.MembershipUser() : null;
         }
 
@@ -88,13 +83,12 @@ namespace FoundOps.Server.Authentication
 
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
         {
-            var coreEntitiesContainer = new CoreEntitiesContainer();
-            var userParty = AuthenticationLogic.GetUserAccount(coreEntitiesContainer, username);
+            var userParty = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
             if (userParty == null)
                 return false;
 
-            coreEntitiesContainer.Parties.DeleteObject(userParty);
-            coreEntitiesContainer.SaveChanges();
+            _coreEntitiesContainer.Parties.DeleteObject(userParty);
+            _coreEntitiesContainer.SaveChanges();
 
             return true;
         }
@@ -178,8 +172,7 @@ namespace FoundOps.Server.Authentication
         }
         public override string GetPassword(string username, string answer)
         {
-            var coreEntitiesContainer = new CoreEntitiesContainer();
-            var userParty = AuthenticationLogic.GetUserAccount(coreEntitiesContainer, username);
+            var userParty = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
             return userParty.PasswordHash;
         }
         public override string ResetPassword(string username, string answer)
