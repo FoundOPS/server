@@ -3758,7 +3758,7 @@ BEGIN
 
 	--Remove any rows that do not have a NextOccurrence past or on the OnOrAfterDate
 	DELETE FROM @TempGenServiceTableWithNextOccurrence
-	WHERE NextDate IS NULL OR NextDate > @serviceDate
+	WHERE NextDate IS NULL OR NextDate <> @serviceDate
 
 	--This table will store all Existing Services after to the OnOrAfterDate
 	DECLARE @TempNextExistingServiceTable TABLE
@@ -3767,7 +3767,7 @@ BEGIN
 	OccurDate date,
 	ServiceName nvarchar(max))
 
-	--Fills @ServicesForToday will Existing Services on the SeedDate
+	--Fills @ServicesForToday with Existing Services on the SeedDate
 	INSERT INTO @TempNextExistingServiceTable (RecurringServiceId, ServiceId, OccurDate, ServiceName)
 		SELECT  t1.RecurringServiceId, t1.Id, t1.ServiceDate, t2.Name
 		FROM	Services t1, ServiceTemplates t2
@@ -3828,17 +3828,25 @@ BEGIN
 		ServiceName nvarchar(max)
 	)
 
+	--Selects all those RouteTasks that are in a RouteDestination that is in a Route that is on the specified day
 	INSERT INTO @PreRoutedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
 	SELECT t1.RecurringServiceId, t1.ServiceId, t1.OccurDate, t1.ServiceName
 	FROM @serviceForDayTable  t1
 	WHERE EXISTS
 	( 
 		SELECT *
-		FROM  RouteTasks
-		WHERE t1.ServiceId = ServiceId
+		FROM  RouteTasks t2
+		WHERE EXISTS
+		(
+			SELECT *
+			FROM RouteDestinations t3
+			WHERE EXISTS
+			(
+				SELECT * FROM Routes t4
+				WHERE t3.RouteId = t4.Id AND t2.RouteDestinationId = t3.Id AND t1.RecurringServiceId = RecurringServiceId AND t4.Date = @serviceDate
+			)
+		)
 	)
-
-	
 
 	DECLARE @UnroutedServices TABLE
 	(
@@ -3860,7 +3868,7 @@ BEGIN
 	SELECT * FROM @serviceForDayTable
 	EXCEPT
 	SELECT * FROM @PreRoutedServices
-	
+
 	UPDATE @UnroutedServices
 	SET LocationId =	(
 							SELECT	LocationId
