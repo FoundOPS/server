@@ -41,7 +41,16 @@ namespace FoundOps.Server.Services.CoreDomainService
                 .Include("RouteDestinations").Include("RouteDestinations.Location").Include("RouteDestinations.RouteTasks");
 
             return routes;
+        }
 
+        public Route GetRouteDetails(Guid roleId, Guid routeId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            var route = ObjectContext.Routes.Where(r => r.OwnerBusinessAccount.Id == businessForRole.Id && r.Id == routeId)
+                .Include("Vehicles").Include("Technicians").Include("Technicians.OwnedPerson").FirstOrDefault();
+
+            return route;
         }
 
         /// <summary>
@@ -119,6 +128,21 @@ namespace FoundOps.Server.Services.CoreDomainService
             return this.ObjectContext.RouteDestinations;
         }
 
+        /// <summary>
+        /// Gets the RouteDestinations Details
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="destinationId">The destination id.</param>
+        public RouteDestination GetRouteDestinationDetails(Guid roleId, Guid destinationId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            var routeDestination = ObjectContext.RouteDestinations.Where(rd => rd.RouteTasks.FirstOrDefault().BusinessAccountId == businessForRole.Id && rd.Id == destinationId)
+                .Include("Client.OwnedParty.ContactInfoSet").FirstOrDefault();
+
+            return routeDestination;
+        }
+
         public void InsertRouteDestination(RouteDestination routeDestination)
         {
             if ((routeDestination.EntityState != EntityState.Detached))
@@ -175,11 +199,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var routeTask = ObjectContext.RouteTasks.Where(rt => rt.BusinessAccountId == businessForRole.Id && rt.Id == routeTaskId)
-                .Include("Client").Include("Client.OwnedParty").Include("Location").Include("Service").FirstOrDefault();
+                .Include("Client").Include("Client.OwnedParty").Include("Client.OwnedParty.ContactInfoSet").Include("Location").Include("Service").FirstOrDefault();
 
             //Load the ServiceTemplate for the Service
             if (routeTask.ServiceId.HasValue)
-                GetServiceTemplateDetailsForRole(businessForRole.Id, routeTask.ServiceId.Value);
+                GetServiceTemplateDetailsForRole(roleId, routeTask.ServiceId.Value);
 
             return routeTask;
         }

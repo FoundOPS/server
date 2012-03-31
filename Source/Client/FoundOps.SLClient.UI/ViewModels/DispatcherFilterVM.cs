@@ -98,29 +98,29 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Load the regions whenever the Dispatcher is entered
-             MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
-             .ObserveOnDispatcher().Subscribe(_ =>
-            {
-                _cancelLastFilterRegionsLoad.OnNext(true);
+            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
+            .ObserveOnDispatcher().Subscribe(_ =>
+           {
+               _cancelLastFilterRegionsLoad.OnNext(true);
 
-                Manager.CoreDomainContext.LoadAsync(Manager.CoreDomainContext.GetRegionsForServiceProviderQuery(Manager.Context.RoleId), _cancelLastFilterRegionsLoad)
-                .ContinueWith(task =>
-                {
-                    if (task.IsCanceled || !task.Result.Any())
-                        return;
+               Manager.CoreDomainContext.LoadAsync(Manager.CoreDomainContext.GetRegionsForServiceProviderQuery(Manager.Context.RoleId), _cancelLastFilterRegionsLoad)
+               .ContinueWith(task =>
+               {
+                   if (task.IsCanceled || !task.Result.Any())
+                       return;
 
-                    //Notify the RoutesVM has completed loading Routes
-                    IsLoadingSubject.OnNext(false);
+                   //Notify the RoutesVM has completed loading Routes
+                   IsLoadingSubject.OnNext(false);
 
-                    LoadedRegions = new ObservableCollection<Region>(task.Result);
+                   LoadedRegions = new ObservableCollection<Region>(task.Result);
 
-                    RegionOptions.Clear();
+                   RegionOptions.Clear();
 
-                    foreach (var region in LoadedRegions)
-                        RegionOptions.Add(new EntityOption(region));
-                    
-                }, TaskScheduler.FromCurrentSynchronizationContext());
-            });
+                   foreach (var region in LoadedRegions)
+                       RegionOptions.Add(new EntityOption(region));
+
+               }, TaskScheduler.FromCurrentSynchronizationContext());
+           });
         }
 
         #endregion
@@ -136,7 +136,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <returns></returns>
         public bool TaskHolderIncludedInFilter(TaskHolder taskHolder)
         {
-            var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate) option.Entity).Name  == taskHolder.ServiceName);
+            var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == taskHolder.ServiceName);
             var meetsRegionsFilter = RegionOptions.Any(option => option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName);
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
@@ -150,10 +150,13 @@ namespace FoundOps.SLClient.UI.ViewModels
         public bool RouteIncludedInFilter(Route route)
         {
             //Selects all the Region's names from the RouteTasks in the Route
-            var regionsForRoute = route.RouteDestinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.Location.Region.Name));
+            var regionsForRoute = route.RouteDestinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.Location.Region.Name)).ToArray();
 
             var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == route.RouteType);
-            var meetsRegionsFilter = RegionOptions.Any(option => option.IsSelected && regionsForRoute.Contains(((Region)option.Entity).Name));
+
+            //Only filter by region if there are locations or locations with regions in the route
+            var meetsRegionsFilter = !regionsForRoute.Any() 
+                || RegionOptions.Any(option => option.IsSelected && regionsForRoute.Contains(((Region)option.Entity).Name));
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
         }

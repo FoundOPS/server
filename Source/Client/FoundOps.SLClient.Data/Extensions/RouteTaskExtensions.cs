@@ -1,5 +1,4 @@
 using FoundOps.Common.Silverlight.Interfaces;
-using System;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.SLClient.Data.Services;
 
@@ -10,6 +9,8 @@ namespace FoundOps.Core.Models.CoreEntities
 {
     public partial class RouteTask : IReject, ILoadDetails
     {
+        #region Public Properties
+
         #region Implementation of ILoadDetails
 
         private bool _detailsLoaded;
@@ -31,14 +32,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Public Properties
-
-        /// <summary>
-        /// Gets the generated service route task parent which cloned this RouteTask.
-        /// </summary>
-        [Obsolete("Delete before optimization push")]
-        public RouteTask GeneratedRouteTaskParent { get; private set; }
-
         /// <summary>
         /// Returns the LocationName of the current RouteTask
         /// </summary>
@@ -53,11 +46,26 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
+        private TaskHolder _parentRouteTaskHolder;
         /// <summary>
         /// This is the link to the parent RouteTaskHolder.
         /// It will have a value if this was recently generated.
         /// </summary>
-        public TaskHolder ParentRouteTaskHolder { get; set; }
+        public TaskHolder ParentRouteTaskHolder
+        {
+            get { return _parentRouteTaskHolder; }
+            set
+            {
+                _parentRouteTaskHolder = value;
+                if (ParentRouteTaskHolder == null)
+                {
+                    ServiceHolder = null;
+                    return;
+                }
+
+                ServiceHolder = new ServiceHolder { ExistingServiceId = ParentRouteTaskHolder.ServiceId, OccurDate = ParentRouteTaskHolder.OccurDate, RecurringServiceId = ParentRouteTaskHolder.RecurringServiceId };
+            }
+        }
 
         private ServiceHolder _serviceHolder;
         /// <summary>
@@ -76,32 +84,6 @@ namespace FoundOps.Core.Models.CoreEntities
         #endregion
 
         #region Logic
-
-        #region Overridden Methods
-
-        partial void OnDateChanged()
-        {
-            SetupServiceHolder();
-            ServiceHolder.OccurDate = Date;
-        }
-
-        partial void OnServiceIdChanged()
-        {
-            SetupServiceHolder();
-            ServiceHolder.RecurringServiceId = Service.ServiceProviderId;
-            ServiceHolder.ServiceId = ServiceId;
-        }
-
-        private void SetupServiceHolder()
-        {
-            if (ServiceHolder != null) return;
-
-
-            ServiceHolder = new ServiceHolder { ExistingServiceId = ServiceId, OccurDate = Date, RecurringServiceId = Service == null ? null : Service.RecurringServiceId};
-            Manager.Data.DetachEntities(new[] { ServiceHolder });
-        }
-
-        #endregion
 
         ///<summary>
         /// Remove this RouteTask from it's route destination.

@@ -1,8 +1,9 @@
+using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.UI.Controls;
@@ -12,9 +13,9 @@ using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 using FoundOps.SLClient.UI.Tools;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
+using Microsoft.Windows.Data.DomainServices;
 using ReactiveUI;
 using ReactiveUI.Xaml;
-using RiaServicesContrib;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -89,6 +90,18 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
+        private readonly ObservableAsPropertyHelper<bool> _manifestOpenHelper;
+        private readonly Subject<bool> _manifestOpenSubject = new Subject<bool>();
+        /// <summary>
+        /// An Observable determining when the manifest is open or closed.
+        /// </summary>
+        public IObservable<bool> ManifestOpenObservable { get { return _manifestOpenSubject.AsObservable(); } }
+
+        /// <summary>
+        /// The SelectedDate.
+        /// </summary>
+        public bool ManifestOpen { get { return _manifestOpenHelper.Value; } set { _manifestOpenSubject.OnNext(value); } }
+
         private readonly ObservableAsPropertyHelper<DateTime> _selectedDateHelper;
         private readonly Subject<DateTime> _selectedDateSubject = new Subject<DateTime>();
         /// <summary>
@@ -101,12 +114,32 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public DateTime SelectedDate { get { return _selectedDateHelper.Value; } set { _selectedDateSubject.OnNext(value); } }
 
-        #region Selected Entity's and Sub ViewModels
+        /// <summary>
+        /// For backwards compatibility
+        /// </summary>
+        public RouteManifestVM RouteManifestVM { get { return VM.RouteManifest; } }
+
+        private readonly ObservableAsPropertyHelper<IEnumerable<string>> _routeTypesHelper;
+        /// <summary>
+        /// The Route Types observable from DispatcherFilterVM
+        /// </summary>
+        public IObservable<IEnumerable<string>> RouteTypesObservable
+        {
+            get
+            {
+                //Whenever the ServiceTemplateOptions changes, push the RouteTypes collection
+                return VM.DispatcherFilter.ServiceTemplateOptions.FromCollectionChanged().Select(e => e.Sender)
+                       .Cast<ObservableCollection<EntityOption>>().Throttle(TimeSpan.FromMilliseconds(100))
+                       .Select(collection => collection.Select(o => ((ServiceTemplate)o.Entity).Name));
+            }
+        }
 
         /// <summary>
-        /// Gets the RouteManifestVM.
+        /// The Route Types
         /// </summary>
-        public RouteManifestVM RouteManifestVM { get; private set; }
+        public IEnumerable<string> RouteTypes { get { return _routeTypesHelper.Value; } }
+
+        #region Selected Entity's and Sub ViewModels
 
         private RouteVM _selectedRouteVM;
         /// <summary>
@@ -196,9 +229,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             : base(false, false, false) //Do not initialize a default queryable collection view (or else the filter will not work)
         {
             //Setup ObservableAsPropertyHelpers
+            _manifestOpenHelper = _manifestOpenSubject.ToProperty(this, x => x.ManifestOpen);
             _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate, DateTime.Now.Date);
             _selectedRouteDestinationHelper = _selectedRouteDestinationSubject.ToProperty(this, x => x.SelectedRouteDestination);
             _selectedRouteTaskHelper = _selectedRouteTaskSubject.ToProperty(this, x => x.SelectedRouteTask);
+            _routeTypesHelper = RouteTypesObservable.ToProperty(this, x => x.RouteTypes);
 
             //Update the SelectedRouteVM whenever the RouteDestination changes
             SelectedEntityObservable.ObserveOnDispatcher().Subscribe(r =>
@@ -208,9 +243,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 this.SelectedRouteVM = new RouteVM(r);
             });
-
-            //Setup the RouteManifestVM
-            RouteManifestVM = new RouteManifestVM();
 
             //Update the SelectedRouteDestinationVM whenever the RouteDestination changes
             _selectedRouteDestinationSubject.ObserveOnDispatcher().Subscribe(rd => this.SelectedRouteDestinationVM = new RouteDestinationVM(rd));
@@ -253,9 +285,15 @@ namespace FoundOps.SLClient.UI.ViewModels
                     IsLoadingSubject.OnNext(false);
 
                     //Update the CollectionView
-                    ViewObservable.OnNext(new DomainCollectionViewFactory<Route>(task.Result).View);
+                    ViewObservable.OnNext(new DomainCollectionViewFactory<Route>(new EntityList<Route>(DomainContext.Routes, task.Result)).View);
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             });
+
+            #region Load Route Details
+
+            SetupDetailsLoading(selectedEntity => DomainContext.GetRouteDetailsQuery(ContextManager.RoleId, selectedEntity.Id));
+
+            #endregion
 
             #endregion
 
@@ -270,6 +308,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //a) cancel the last loads
                 cancelLastDetailsLoad.OnNext(true);
 
+                selectedRouteTask.DetailsLoaded = false;
+
                 //If the RouteTask is not new, use the one GetRouteTaskDetailsQuery method 
                 if (selectedRouteTask.EntityState != EntityState.New)
                 {
@@ -283,24 +323,67 @@ namespace FoundOps.SLClient.UI.ViewModels
                 } //If the RouteTask is new and it has a ParentRouteTaskHolder, load it's ServiceHolder details
                 else if (selectedRouteTask.ParentRouteTaskHolder != null)
                 {
-                    selectedRouteTask.ServiceHolder.LoadDetails(cancelLastDetailsLoad);
+                    selectedRouteTask.DetailsLoaded = false;
+                    selectedRouteTask.ServiceHolder.LoadDetails(cancelLastDetailsLoad, () => selectedRouteTask.DetailsLoaded = true);
                 }
             });
 
             #endregion
 
-            //Hookup the CollectionView Filter whenever the CollectionViewObservable changes
-            ViewObservable.Where(cv => cv != null).DistinctUntilChanged()
-            .ObserveOnDispatcher().Subscribe(collectionView => UpdateFilter());
+            #region Setup RouteDestinations details loading
 
-            //Update the view whenever the filter changes
-            VM.DispatcherFilter.FilterUpdatedObservable.ObserveOnDispatcher().Subscribe(_ =>
+            //Whenever the selectedRouteDestination changes load the RouteDestination's details
+            //a) cancel the last loads
+            //b) load the details
+            _selectedRouteDestinationSubject.Where(se => se != null).ObserveOnDispatcher().Subscribe(selectedRouteDestination =>
+            {
+                //a) cancel the last loads
+                cancelLastDetailsLoad.OnNext(true);
+                selectedRouteDestination.DetailsLoaded = false;
+
+                DomainContext.LoadAsync(DomainContext.GetRouteDestinationDetailsQuery(ContextManager.RoleId, selectedRouteDestination.Id), cancelLastDetailsLoad)
+                .ContinueWith(task =>
+                {
+                    if (!task.IsCanceled)
+                        selectedRouteDestination.DetailsLoaded = true;
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            });
+
+            #endregion
+
+            #region Setup Manifest Details Loading
+
+            //Load the Route's ServiceTemplates and Fields
+            ManifestOpenObservable.CombineLatest(SelectedEntityObservable)
+                //Where the manifest is open and the SelectedEntity != null
+                .Where(vals => vals.Item1 && vals.Item2 != null)
+                .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
+                    DomainContext.LoadAsync(DomainContext.GetRouteServiceTemplatesQuery(ContextManager.RoleId, SelectedEntity.Id))
+                        //Update the RouteManifestViewer after the ServiceTemplate details has loaded
+                        .ContinueWith(task =>
+                        {
+                            if (!task.IsCanceled && _routeManifestViewer != null)
+                                _routeManifestViewer.UpdateDocument();
+                        }, TaskScheduler.FromCurrentSynchronizationContext()));
+
+            #endregion
+
+            //Update the filter whenever
+            //a) the filter changes
+            //b) the SourceCollection (an ObservableCollection) changes or the CollectionView is set
+            VM.DispatcherFilter.FilterUpdatedObservable.AsGeneric().Merge(
+            ViewObservable.DistinctUntilChanged().Where(cv => cv != null).Select(cv => (ObservableCollection<Route>)((ICollectionView)cv).SourceCollection).FromCollectionChangedOrSet().AsGeneric())
+           .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
+           .Subscribe(_ =>
             {
                 if (CollectionView == null) return;
                 UpdateFilter();
             });
         }
 
+        /// <summary>
+        /// Updates the filtered Routes
+        /// </summary>
         private void UpdateFilter()
         {
             CollectionView.Filter = null;
@@ -377,14 +460,30 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 return false;
             }
+
+            var firstAvailableRouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).FirstOrDefault();
+            if (firstAvailableRouteType == null)
+            {
+                MessageBox.Show("You must first select a route type in the Route Capabilities Filter before adding a new route.", "Oh no!", MessageBoxButton.OK);
+                return false;
+            }
+
             return true;
         }
 
-        protected override void OnAddEntity(Route newRoute)
+        protected override Route AddNewEntity(object commandParameter)
         {
-            newRoute.Date = SelectedDate;
-            newRoute.OwnerBusinessAccount = (BusinessAccount)ContextManager.OwnerAccount;
-            newRoute.RouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).FirstOrDefault();
+            var newRoute = new Route
+            {
+                Id = Guid.NewGuid(),
+                Date = SelectedDate,
+                OwnerBusinessAccount = (BusinessAccount)ContextManager.OwnerAccount,
+                RouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).First()
+            };
+
+            ((ObservableCollection<Route>)SourceCollection).Add(newRoute);
+
+            return newRoute;
         }
 
         /// <summary>
@@ -393,6 +492,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="deletedRoute">The deleted route.</param>
         protected override void OnDeleteEntity(Route deletedRoute)
         {
+            //Remove the Employees and Vehicles
+            foreach (var employee in deletedRoute.Technicians.ToArray())
+                deletedRoute.Technicians.Remove(employee);
+            foreach (var vehicle in deletedRoute.Vehicles.ToArray())
+                deletedRoute.Vehicles.Remove(vehicle);
+
             //Remove the routeTasks from the deletedRoute (and keep them)
             var routeTasksToKeep =
                 deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks).ToList();

@@ -20,6 +20,7 @@ namespace FoundOps.Core.Models.CoreEntities
             var routedTask = new RouteTask
             {
                 Id = Guid.NewGuid(),
+                BusinessAccountId =  Manager.Context.OwnerAccount.Id,
                 ClientId = taskHolder.ClientId,
                 Date = taskHolder.OccurDate,
                 LocationId = taskHolder.LocationId,

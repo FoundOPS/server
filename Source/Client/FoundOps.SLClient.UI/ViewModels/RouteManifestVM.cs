@@ -16,10 +16,19 @@ namespace FoundOps.SLClient.UI.ViewModels
     {
         #region Public
 
+        private RouteManifestSettings _routeManifestSettings;
         /// <summary>
         /// Gets the route manifest settings.
         /// </summary>
-        public RouteManifestSettings RouteManifestSettings { get; private set; }
+        public RouteManifestSettings RouteManifestSettings
+        {
+            get { return _routeManifestSettings; }
+            private set
+            {
+                _routeManifestSettings = value;
+                this.RaisePropertyChanged("RouteManifestSettings");
+            }
+        }
 
         #endregion
 
@@ -30,7 +39,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Setup the RouteManifestSettings based on the OwnerAccount
             ContextManager.OwnerAccountObservable.Select(oa => oa as BusinessAccount).Where(ba => ba != null)
-                .Subscribe(currentBusinessAccount =>
+            .Subscribe(currentBusinessAccount =>
             {
                 //Setup the currentBusinessAccount's RouteManifestSettings if there are none
                 if (currentBusinessAccount.RouteManifestSettings == null)

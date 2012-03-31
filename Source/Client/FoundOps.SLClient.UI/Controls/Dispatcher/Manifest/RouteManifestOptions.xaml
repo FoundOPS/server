@@ -1,8 +1,8 @@
 <UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.RouteManifestOptions" x:Name="myRouteManifestOptions"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" mc:Ignorable="d">
-    <Grid x:Name="LayoutRoot" Margin="5,0,0,0" DataContext="{Binding RouteManifestVM, Source={Tools:GetVM Type=ViewModels:RoutesVM}}">
+             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" mc:Ignorable="d">
+    <Grid x:Name="LayoutRoot" Margin="5,0,0,0" ViewModelLocator:ViewModelLocator.SharedViewModel="RouteManifestVM">
         <StackPanel>
             <StackPanel Orientation="Horizontal" Visibility="Collapsed">
                 <!--Add back in when feature is supported-->

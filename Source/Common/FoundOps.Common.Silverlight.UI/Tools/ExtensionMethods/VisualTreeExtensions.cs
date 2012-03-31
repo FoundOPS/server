@@ -6,34 +6,166 @@ namespace FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods
 {
     public static class VisualTreeExtensions
     {
-        //Example usage ItemsControl control = ((DependencyObject)sender).Ancestors().TypeOf<ItemsControl>().FirstOrDefault();
-
-        public static IEnumerable<DependencyObject> Ancestors(this DependencyObject root)
+        /// <summary>
+        /// Gets children, children's children, etc. from 
+        /// the visual tree that match the specified type
+        /// </summary>
+        public static List<T> GetDescendants<T>(this DependencyObject parent)
+            where T : UIElement
         {
-            DependencyObject current = VisualTreeHelper.GetParent(root);
-            while (current != null)
+            List<T> children = new List<T>();
+
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+
+            if (count > 0)
             {
-                yield return current;
-                current = VisualTreeHelper.GetParent(current);
+                for (int i = 0; i < count; i++)
+                {
+                    UIElement child = (UIElement)VisualTreeHelper.GetChild(parent, i);
+
+                    if (child is T)
+                    {
+                        children.Add((T)child);
+                    }
+
+                    children.AddRange(child.GetDescendants<T>());
+                }
+                return children;
+            }
+            else
+            {
+                return new List<T> { };
             }
         }
 
-        public static IEnumerable<DependencyObject> Children(this DependencyObject root)
+        /// <summary>
+        /// Gets children, children's children, etc. from 
+        /// the visual tree that match the specified type and elementName
+        /// </summary>
+        public static List<T> GetDescendants<T>(this DependencyObject parent, string elementName)
+            where T : UIElement
         {
-            var children = new List<DependencyObject>();
+            List<T> children = new List<T>();
 
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(root); i++)
+            int count = VisualTreeHelper.GetChildrenCount(parent);
+
+            if (count > 0)
             {
-                var child = VisualTreeHelper.GetChild(root, 0);
-                children.Add(child);
-                
-                if (child != null)
+                for (int i = 0; i < count; i++)
                 {
-                    children.AddRange(child.Children());
+                    UIElement child = (UIElement)VisualTreeHelper.GetChild(parent, i);
+
+                    if (child is T && (child is FrameworkElement)
+                        && (child as FrameworkElement).Name == elementName)
+                    {
+                        children.Add((T)child);
+                    }
+
+                    children.AddRange(child.GetDescendants<T>(elementName));
+                }
+                return children;
+            }
+            else
+            {
+                return new List<T> { };
+            }
+        }
+
+        /// <summary>
+        /// Gets the first child, child's child, etc. 
+        /// from the visual tree that matches the specified type
+        /// </summary>
+        public static T GetDescendant<T>(this DependencyObject parent)
+            where T : UIElement
+        {
+            List<T> descendants = parent.GetDescendants<T>();
+
+            if (descendants.Count > 0)
+            {
+                return descendants[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the first child, child's child, etc. from 
+        /// the visual tree that matches the specified type and elementName
+        /// </summary>
+        public static T GetDescendant<T>(this DependencyObject parent, string elementName)
+            where T : UIElement
+        {
+            List<T> descendants = parent.GetDescendants<T>(elementName);
+
+            if (descendants.Count > 0)
+            {
+                return descendants[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the first parent, parent's parent, etc. from the 
+        /// visual tree that matches the specified type
+        /// </summary>
+        public static T GetAntecedent<T>(this DependencyObject root)
+            where T : UIElement
+        {
+            if (root == null)
+            {
+                return null;
+            }
+            if (root is T)
+            {
+                return (T)root;
+            }
+            else
+            {
+                DependencyObject parent = VisualTreeHelper.GetParent(root);
+                if (parent == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return parent.GetAntecedent<T>();
                 }
             }
+        }
 
-            return children;
+        /// <summary>
+        /// Gets the first parent, parent's parent, etc. from the 
+        /// visual tree that matches the specified type and elementName
+        /// </summary>
+        public static T GetAntecedent<T>(this DependencyObject root, string elementName)
+            where T : UIElement
+        {
+            if (root == null)
+            {
+                return null;
+            }
+            if (root is T && (root is FrameworkElement)
+                && (root as FrameworkElement).Name == elementName)
+            {
+                return (T)root;
+            }
+            else
+            {
+                DependencyObject parent = VisualTreeHelper.GetParent(root);
+                if (parent == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return parent.GetAntecedent<T>(elementName);
+                }
+            }
         }
     }
 }

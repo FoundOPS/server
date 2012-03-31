@@ -98,7 +98,8 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Load or generate the Service.
         /// </summary>
         /// <param name="cancelDetailsLoad">An observable when pushed should cancel the details load.</param>
-        public void LoadDetails(Subject<bool> cancelDetailsLoad)
+        /// <param name="loadedCallback">(Optional) A callback to call when the details are loaded.</param>
+        public void LoadDetails(Subject<bool> cancelDetailsLoad, Action loadedCallback = null)
         {
             DetailsLoaded = false;
 
@@ -129,6 +130,9 @@ namespace FoundOps.Core.Models.CoreEntities
                     Service = task.Result.First();
 
                     _entityGraph = this.Service.EntityGraph();
+
+                    if (loadedCallback != null)
+                        loadedCallback();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
             else if (RecurringServiceId.HasValue)
@@ -155,6 +159,9 @@ namespace FoundOps.Core.Models.CoreEntities
                     Manager.CoreDomainContext.ChangesRejected += OnRejectChangedReloadDetails;
 
                     Service = generatedService;
+
+                    if (loadedCallback != null)
+                        loadedCallback();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }

@@ -84,7 +84,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             //Whenever a route, route destination, or task is selected select the appropriate details pane
             this.RoutesVM.FromAnyPropertyChanged()
-                .Where(e => e.PropertyName == "SelectedEntity" || e.PropertyName == "SelectedRouteDestination" || e.PropertyName == "SelectedTask")
+                .Where(e => e.PropertyName == "SelectedEntity" || e.PropertyName == "SelectedRouteDestination" || e.PropertyName == "SelectedRouteTask")
                 .Throttle(new TimeSpan(0, 0, 0, 0, 250)).ObserveOnDispatcher()
                 .Subscribe(pe =>
                 {
@@ -100,7 +100,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                             TaskDetailsPane.IsSelected = false;
                             DestinationDetailsPane.IsSelected = true;
                             break;
-                        case "SelectedTask":
+                        case "SelectedRouteTask":
                             RouteDetailsPane.IsSelected = false;
                             DestinationDetailsPane.IsSelected = false;
                             TaskDetailsPane.IsSelected = true;
@@ -120,18 +120,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             //    return;
             //
             //TrackEventAction.Track("RoutePanes", "RoutePanesSelectionChanged", mainGroup.SelectedPane.ToString());
-        }
-
-        private void AddNewRouteTaskButtonClick(object sender, RoutedEventArgs e)
-        {
-            //Analytics - Track when a new route task is created
-            Analytics.AddNewRouteTask();
-        }
-
-        private void DeleteRouteTaskButtonClick(object sender, RoutedEventArgs e)
-        {
-            //Analytics - Track when a route task is deleted
-            Analytics.DeleteRouteTask();
         }
 
         #endregion

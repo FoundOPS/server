@@ -197,8 +197,11 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return newEmployee;
             };
 
-            AddExistingItemEmployee = existingItem => Route.Technicians.Add(existingItem);
-
+            AddExistingItemEmployee = existingItem =>
+            {
+                if (!Route.Technicians.Contains(existingItem))
+                    Route.Technicians.Add(existingItem);
+            };
             RemoveItemEmployee = () =>
             {
                 var employeeToRemove = SelectedEmployee;
@@ -233,7 +236,11 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return newVehicle;
             };
 
-            AddExistingItemVehicle = existingItem => Route.Vehicles.Add(existingItem);
+            AddExistingItemVehicle = existingItem =>
+            {
+                if (!Route.Vehicles.Contains(existingItem))
+                    Route.Vehicles.Add(existingItem);
+            };
 
             RemoveItemVehicle = () =>
             {

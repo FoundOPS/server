@@ -102,7 +102,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 Manager.CoreDomainContext.LoadAsync(DomainContext.GetUnroutedServicesQuery(ContextManager.RoleId, VM.Routes.SelectedDate), _cancelLastTasksLoad).ContinueWith(
                     task =>
                     {
-                        if (task.IsCanceled || !task.Result.Any())
+                        if (task.IsCanceled)
                             return;
 
                         //Notify the TaskBoardVM has completed loading TaskHolders
