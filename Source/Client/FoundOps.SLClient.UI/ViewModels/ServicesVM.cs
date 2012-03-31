@@ -52,7 +52,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //    .Subscribe(_ => LoadData);
 
             //Remove any non added new Services from the collection when RejectChanges is called
-            DomainContext.ChangesRejected += (s, e) =>
+            DomainContext.ChangesRejected += (s, ra, rm) =>
             {
                 if (SourceCollection as ObservableCollection<ServiceHolder> == null)
                     return;

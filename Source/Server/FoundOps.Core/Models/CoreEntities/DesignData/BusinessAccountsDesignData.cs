@@ -31,19 +31,22 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             GotGrease = new BusinessAccount
             {
                 Name = "GotGrease?",
-                QuickBooksEnabled = true
+                QuickBooksEnabled = true,
+                MaxRoutes = 10
             };
 
             ABCouriers = new BusinessAccount
             {
                 Name = "AB Couriers",
-                QuickBooksEnabled = true
+                QuickBooksEnabled = true,
+                MaxRoutes = 10
             };
 
             OrenKosherSteakhouse = new BusinessAccount
             {
                 Name = "Oren's Kosher Steakhouse",
-                QuickBooksEnabled = true
+                QuickBooksEnabled = true,
+                MaxRoutes = 10
             };
 
             DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, OrenKosherSteakhouse };

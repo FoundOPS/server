@@ -1,6 +1,7 @@
 using FoundOps.Common.Silverlight.MVVM.VMs;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Interfaces;
+using FoundOps.Common.Tools;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using System;
@@ -94,6 +95,20 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// Gets the casted source collection.
         /// </summary>
         public IEnumerable<TEntity> SourceCollection { get { return ((ICollectionView)_collectionView.Value).SourceCollection.Cast<TEntity>(); } }
+
+        /// <summary>
+        /// An observable that pushes whenever the CollectionView is changed or set.
+        /// NOTE: This will only work if the SourceCollection is an ObservableCollection.
+        /// </summary>
+        public IObservable<bool> SourceCollectionChangedOrSet
+        {
+            get
+            {
+                return ViewObservable.DistinctUntilChanged().WhereNotNull()
+                    .Select(cv => ((ICollectionView)cv).SourceCollection as ObservableCollection<TEntity>).WhereNotNull()
+                    .FromCollectionChangedOrSet().AsGeneric();
+            }
+        }
 
         #region Selected Entity
 
@@ -237,8 +252,8 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             //can add when: not loading && OwnerAccount != null && DomainCollectionView != null && CanAdd
             var canAddCommand = this.WhenAny(x => x.IsLoading, x => x.ContextManager.OwnerAccount, x => x.EditableCollectionView, x => x.CanAdd,
-                                             (isLoading, ownerAccount, domainCollectionView, canAdd) =>
-                                                 !isLoading.Value && ownerAccount.Value != null && domainCollectionView.Value != null && canAdd.Value);
+                                             (isLoading, ownerAccount, collectionView, canAdd) =>
+                                                 !isLoading.Value && ownerAccount.Value != null && collectionView.Value != null && canAdd.Value);
 
             AddCommand = new ReactiveCommand(canAddCommand);
 

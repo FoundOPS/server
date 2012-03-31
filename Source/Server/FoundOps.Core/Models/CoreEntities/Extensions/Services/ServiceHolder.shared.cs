@@ -6,12 +6,22 @@ using FoundOps.Common.Composite.Entities;
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class ServiceHolder : IEntityDefaultCreation
+    public partial class ServiceHolder : ICompositeRaiseEntityPropertyChanged, IEntityDefaultCreation
     {
+        private Guid? _existingServiceId;
+
         /// <summary>
         /// The ExistingServiceId. (Used instead of ServiceId so change tracking does not kick in).
         /// </summary>
-        public Guid? ExistingServiceId { get; set; }
+        public Guid? ExistingServiceId
+        {
+            get { return _existingServiceId; }
+            set
+            {
+                _existingServiceId = value;
+                CompositeRaiseEntityPropertyChanged("ExistingServiceId");
+            }
+        }
 
         #region Implementation of IEntityDefaultCreation
 
@@ -38,6 +48,21 @@ namespace FoundOps.Core.Models.CoreEntities
 
         partial void OnCreation(); //For Extensions on Silverlight Side
 
+        #endregion
+
+        #region Implementation of ICompositeRaiseEntityPropertyChanged
+
+#if SILVERLIGHT
+        public void CompositeRaiseEntityPropertyChanged(string propertyName)
+        {
+            OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+#else
+        public void CompositeRaiseEntityPropertyChanged(string propertyName)
+        {
+            OnPropertyChanged(propertyName);
+        }
+#endif
         #endregion
 
         #region Overriden Methods

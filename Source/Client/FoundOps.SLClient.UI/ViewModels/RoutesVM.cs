@@ -276,13 +276,18 @@ namespace FoundOps.SLClient.UI.ViewModels
                 DomainContext.LoadAsync(DomainContext.GetRoutesForServiceProviderOnDayQuery(ContextManager.RoleId, SelectedDate), _cancelLastRoutesLoad)
                 .ContinueWith(task =>
                 {
+                    //Notify the RoutesVM has completed loading Routes
+                    IsLoadingSubject.OnNext(false);
+
                     if (task.IsCanceled || !task.Result.Any())
                     {
                         ViewObservable.OnNext(new DomainCollectionViewFactory<Route>(new ObservableCollection<Route>()).View);
                         return;
                     }
-                    //Notify the RoutesVM has completed loading Routes
-                    IsLoadingSubject.OnNext(false);
+
+                    //Setup RouteTaskHolders for existing RouteTasks
+                    foreach (var routeTask in task.Result.SelectMany(r => r.RouteDestinations.SelectMany(rd => rd.RouteTasks)))
+                        routeTask.SetupTaskHolder();
 
                     //Update the CollectionView
                     ViewObservable.OnNext(new DomainCollectionViewFactory<Route>(new EntityList<Route>(DomainContext.Routes, task.Result)).View);
@@ -308,24 +313,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //a) cancel the last loads
                 cancelLastDetailsLoad.OnNext(true);
 
+                //Load the RouteTask's ServiceHolder details
                 selectedRouteTask.DetailsLoaded = false;
-
-                //If the RouteTask is not new, use the one GetRouteTaskDetailsQuery method 
-                if (selectedRouteTask.EntityState != EntityState.New)
-                {
-                    DomainContext.LoadAsync(DomainContext.GetRouteTaskDetailsQuery(ContextManager.RoleId, selectedRouteTask.Id), cancelLastDetailsLoad)
-                    .ContinueWith(task =>
-                    {
-                        if (!task.IsCanceled)
-                            selectedRouteTask.DetailsLoaded = true;
-                    }, TaskScheduler.FromCurrentSynchronizationContext());
-
-                } //If the RouteTask is new and it has a ParentRouteTaskHolder, load it's ServiceHolder details
-                else if (selectedRouteTask.ParentRouteTaskHolder != null)
-                {
-                    selectedRouteTask.DetailsLoaded = false;
-                    selectedRouteTask.ServiceHolder.LoadDetails(cancelLastDetailsLoad, () => selectedRouteTask.DetailsLoaded = true);
-                }
+                selectedRouteTask.ParentRouteTaskHolder.ServiceHolder.LoadDetails(cancelLastDetailsLoad, () => selectedRouteTask.DetailsLoaded = true);
             });
 
             #endregion
@@ -371,8 +361,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Update the filter whenever
             //a) the filter changes
             //b) the SourceCollection (an ObservableCollection) changes or the CollectionView is set
-            VM.DispatcherFilter.FilterUpdatedObservable.AsGeneric().Merge(
-            ViewObservable.DistinctUntilChanged().Where(cv => cv != null).Select(cv => (ObservableCollection<Route>)((ICollectionView)cv).SourceCollection).FromCollectionChangedOrSet().AsGeneric())
+
+            VM.DispatcherFilter.FilterUpdatedObservable.AsGeneric()
+           .Merge(SourceCollectionChangedOrSet)
            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
            .Subscribe(_ =>
             {
@@ -398,7 +389,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Create an observable for when at least 1 route exists
             var routesExist = CollectionViewObservable //select the routes EntityList observable
                 .DistinctUntilChanged() //on collection changed or set
-                .Select(routes => routes.Cast<object>().Any());  // select routes > 0
+                .Select(routes => routes.Cast<object>().Any()) // select routes > 0
+                .Merge(SourceCollectionChangedOrSet);
 
             //Can calculate routes when there are routes, and when the context is not submitting
             var canCalculateRoutes = DataManager.DomainContextIsSubmittingObservable.CombineLatest(routesExist, (isSubmitting, areRoutes) => !isSubmitting && areRoutes);
@@ -412,7 +404,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 //Remove the routedTasks from the task board
                 foreach (var taskHoldersToRemove in routedTaskHolders.ToArray())
-                    VM.TaskBoard.LoadedTaskHolders.Remove(taskHoldersToRemove);
+                    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHoldersToRemove);
             });
 
             //Allow the user to open the route manifests whenever there is one or more route visible
@@ -439,7 +431,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #endregion
         }
-
 
         #endregion
 
@@ -498,28 +489,21 @@ namespace FoundOps.SLClient.UI.ViewModels
             foreach (var vehicle in deletedRoute.Vehicles.ToArray())
                 deletedRoute.Vehicles.Remove(vehicle);
 
-            //Remove the routeTasks from the deletedRoute (and keep them)
-            var routeTasksToKeep =
-                deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks).ToList();
+            //Add the TaskHolders back to the task board
+            var tasksForTaskBoard = deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks).ToArray();
 
-            //Delete the routeDestinations
-            DataManager.RemoveEntities(deletedRoute.RouteDestinations);
-
-            //Add the route tasks to keep back to the task board
-            foreach (var routeTask in routeTasksToKeep)
+            //Add the task holders to keep back to the task board
+            foreach (var routeTask in tasksForTaskBoard)
             {
-                //Clear RouteDestination reference
-                routeTask.RouteDestinationId = null;
+                //Get the ParentRouteTaskHolder
+                var taskHolder = routeTask.ParentRouteTaskHolder;
 
-                //TODO?
-                ////Add the routeTask back to LoadedRouteTasks
-                //if (!this.LoadedRouteTasks.Contains(routeTask))
-                //    LoadedRouteTasks.Add(routeTask);
-                ////Add the routeTask back to the EntitySet (if it is not generated)
-                //if (!routeTask.GeneratedOnServer && !this.DomainContext.RouteTasks.Contains(routeTask))
-                //    this.DomainContext.RouteTasks.Add(routeTask);
+                //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
+                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);
             }
 
+            //Delete the Route, RouteDestinations, and RouteTasks
+            DataManager.RemoveEntities(new Entity[] { deletedRoute }.Union(deletedRoute.RouteDestinations).Union(tasksForTaskBoard).ToArray());
         }
 
         #endregion

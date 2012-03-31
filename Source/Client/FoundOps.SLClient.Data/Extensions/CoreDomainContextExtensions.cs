@@ -29,9 +29,18 @@ namespace FoundOps.Server.Services.CoreDomainService
     public partial class CoreDomainContext
     {
         /// <summary>
+        /// An event handler for the ChangedRejected event.
+        /// </summary>
+        /// <param name="sender">The DomainContext that rejected changes.</param>
+        /// <param name="rejectedAddedEntities">The rejected added entities.</param>
+        /// <param name="rejectedModifiedEntities">The rejected modified entities.</param>
+        /// <returns></returns>
+        public delegate void ChangesRejectedHandler(DomainContext sender, Entity[] rejectedAddedEntities, Entity[] rejectedModifiedEntities);
+
+        /// <summary>
         /// Called when changes are rejected.
         /// </summary>
-        public event EventHandler ChangesRejected;
+        public event ChangesRejectedHandler ChangesRejected;
 
         private readonly List<string> _contactInfoTypes = new List<string> { "Phone Number", "Email Address", "Website", "Fax Number", "Other" };
 
@@ -52,10 +61,15 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         public new void RejectChanges()
         {
+            var changes = this.EntityContainer.GetChanges();
+
+            var addedEntities = changes.AddedEntities.ToArray();
+            var modifiedEntities = changes.ModifiedEntities.ToArray();
+
             //https://github.com/FoundOPS/FoundOPS/wiki/Files
             //Remove inserted files from cloud storage that are now going to be removed
             var filesToRemove =
-                this.EntityContainer.GetChanges().Where(c => c as File != null && c.EntityState == EntityState.New).Cast<File>();
+                changes.Where(c => c as File != null && c.EntityState == EntityState.New).Cast<File>();
 
             foreach (var file in filesToRemove)
                 FileManager.DeleteFile(file.PartyId, file.Id);
@@ -63,7 +77,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             base.RejectChanges();
 
             if (ChangesRejected != null)
-                ChangesRejected(this, new EventArgs());
+                ChangesRejected(this, addedEntities, modifiedEntities);
         }
 
         /// <summary>
