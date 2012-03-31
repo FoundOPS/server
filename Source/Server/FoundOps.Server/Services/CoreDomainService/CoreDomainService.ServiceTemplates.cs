@@ -1,3 +1,4 @@
+using System.Data.Entity;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -168,6 +169,27 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
+        /// Get the route's RouteTask.Service.ServiceTemplates and Fields.
+        /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="routeId">The route id.</param>
+        public IQueryable<ServiceTemplate> GetRouteServiceTemplates(Guid roleId, Guid routeId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            var serviceTemplateIds = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Id == routeId).Include("RouteDestinations.RouteTasks")
+                                     .SelectMany(r => r.RouteDestinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.ServiceId))).Where(sid => sid != null).Select(sid => sid.Value).ToArray();
+
+            var templatesWithDetails = from serviceTemplate in GetServiceTemplatesForServiceProvider(roleId, (int)ServiceTemplateLevel.ServiceDefined).Where(st => serviceTemplateIds.Contains(st.Id))
+                                       from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                                       from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                                       select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
+
+            return templatesWithDetails.Select(t => t.serviceTemplate).OrderBy(st => st.Name);
+        }
+
+        /// <summary>
         /// Gets the current ServiceProvider's ServiceProvider level ServiceTemplates and details.
         /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
         /// </summary>
@@ -178,19 +200,19 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Filter by the service templates for the service provider (Vendor)
             var serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
-                                                   join stv in ObjectContext.ServiceTemplateWithVendorIds
-                                                       on serviceTemplate.Id equals stv.ServiceTemplateId
-                                                   where stv.VendorId == businessForRole.Id
-                                                   select serviceTemplate).Distinct();
+                                            join stv in ObjectContext.ServiceTemplateWithVendorIds
+                                                on serviceTemplate.Id equals stv.ServiceTemplateId
+                                            where stv.VendorId == businessForRole.Id
+                                            select serviceTemplate).Distinct();
 
             //Force load the details
-            var templatesWithDetails=
+            var templatesWithDetails =
                 (from serviceTemplate in serviceProviderTemplates
-                from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
+                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
 
-            return templatesWithDetails.Select(t=>t.serviceTemplate).OrderBy(st => st.Name);
+            return templatesWithDetails.Select(t => t.serviceTemplate).OrderBy(st => st.Name);
         }
 
         /// <summary>

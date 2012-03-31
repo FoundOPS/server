@@ -1,4 +1,6 @@
-﻿using FoundOps.Core.Models.CoreEntities;
+﻿using System;
+using System.Reactive.Linq;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.SLClient.Data.ViewModels;
 
@@ -16,15 +18,35 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Public Properties
 
+
+
+        private ContactInfoVM _clientContactInfoVM;
         /// <summary>
         /// Gets the ContactInfoVM for the selected route destination's client.
         /// </summary>
-        public ContactInfoVM ClientContactInfoVM { get; set; }
+        public ContactInfoVM ClientContactInfoVM
+        {
+            get { return _clientContactInfoVM; }
+            set
+            {
+                _clientContactInfoVM = value;
+                this.RaisePropertyChanged("ClientContactInfoVM");
+            }
+        }
 
+        private ContactInfoVM _locationContactInfoVM;
         /// <summary>
         /// Gets the ContactInfoVM for the location.
         /// </summary>
-        public ContactInfoVM LocationContactInfoVM { get; set; }
+        public ContactInfoVM LocationContactInfoVM
+        {
+            get { return _locationContactInfoVM; }
+            set
+            {
+                _locationContactInfoVM = value;
+                this.RaisePropertyChanged("LocationContactInfoVM");
+            }
+        }
 
         #endregion
 
@@ -39,12 +61,15 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (routeDestination == null)
                 return;
 
-            //Setup the ContactInfoVMs
-            if (RouteDestination.Client != null && RouteDestination.Client.OwnedParty != null)
-                ClientContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, RouteDestination.Client.OwnedParty.ContactInfoSet);
+            //Whenever the Client changes, update the ClientContactInfoVM
+            Observable2.FromPropertyChangedPattern(RouteDestination, r => r.Client)
+                .ObserveOnDispatcher().Where(client => client != null && client.OwnedParty != null).Subscribe(client =>
+                    ClientContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, client.OwnedParty.ContactInfoSet));
 
-            if (RouteDestination.Location != null)
-            LocationContactInfoVM = new ContactInfoVM(ContactInfoType.Locations, RouteDestination.Location.ContactInfoSet);
+            //Whenever the Location changes, update the LocationContactInfoVM
+            Observable2.FromPropertyChangedPattern(RouteDestination, r => r.Location)
+                .ObserveOnDispatcher().Where(loc => loc != null).Subscribe(loc =>
+                    LocationContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, loc.ContactInfoSet));
         }
     }
 }

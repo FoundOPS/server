@@ -155,6 +155,7 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
+        private static RouteManifestVM _routeManifestVM;
         /// <summary>
         /// Gets the RouteManifestVM.
         /// </summary>
@@ -162,7 +163,8 @@ namespace FoundOps.SLClient.UI.Tools
         {
             get
             {
-                return (RouteManifestVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RouteManifestVM", null, CreationPolicy.Shared).Value;
+                return _routeManifestVM ??
+                       (_routeManifestVM = (RouteManifestVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RouteManifestVM", null, CreationPolicy.Shared).Value);
             }
         }
 

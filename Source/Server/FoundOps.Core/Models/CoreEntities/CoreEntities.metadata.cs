@@ -411,6 +411,7 @@ namespace FoundOps.Core.Models.CoreEntities
             [Include]
             public EntityCollection<RouteTask> RouteTasks { get; set; }
 
+            [Include]
             public Client Client { get; set; }
         }
     }

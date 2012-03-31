@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Globalization;
 using System.Windows.Input;
+using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
+using FoundOps.Common.Tools;
 using Telerik.Windows.Controls;
 using FoundOps.SLClient.UI.Tools;
 using System.Collections.Generic;
@@ -41,6 +44,15 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             //Adds the Mouse Click event to the possible events because for some reason the one provided does not work as it should
             //For more info: http://en.csharp-online.net/WPF_Concepts%E2%80%94Routed_Events_in_Action
             this.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(RoutesListBox_MouseLeftButtonDown), true);
+
+            //Whenever the selected route changes, clear the treeview selection for other routes
+            Observable2.FromPropertyChangedPattern(VM.Routes, x => x.SelectedEntity).Where(se=> se != null)
+            .ObserveOnDispatcher().Subscribe(selectedRoute =>
+            {
+                var routeTreeViewsToUnselect = RoutesListBox.GetDescendants<RadTreeView>().Where(rtv => ((Route)rtv.DataContext).Id != selectedRoute.Id);
+                foreach (var routeTreeViewToUnselect in routeTreeViewsToUnselect)
+                    routeTreeViewToUnselect.SelectedItems.Clear();
+            });
         }
 
         #region Logic
@@ -397,7 +409,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
             if (radTreeViewItem != null)
             {
-                //Set the SelectedTask to the last selected RouteTask
+                //Set the SelectedRouteTask to the last selected RouteTask
                 if (radTreeViewItem.Item is RouteTask)
                     VM.Routes.SelectedRouteTask = (RouteTask)radTreeViewItem.Item;
                 //Set the SelectedRouteDestination to the last selected RouteDestination
@@ -415,7 +427,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             {
                 var routeTask = radTreeViewItem.Item as RouteTask;
 
-                //If the RouteTask is the routeTask and it was unselected, clear SelectedTask
+                //If the RouteTask is the routeTask and it was unselected, clear SelectedRouteTask
                 if (routeTask == VM.Routes.SelectedRouteTask)
                     VM.Routes.SelectedRouteTask = null;
             }
@@ -467,14 +479,14 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             //Checks to be sure that the click happened on a route
             var border = e.OriginalSource as Border;
 
-            if(border == null)
+            if (border == null)
                 return;
 
             //Further checks to be sure that the click happened on a click
             var route = (border).DataContext as Route;
 
             //Sets the SelectedEntity to the route that was clicked on
-            if(route != null)
+            if (route != null)
                 VM.Routes.SelectedEntity = route;
         }
 

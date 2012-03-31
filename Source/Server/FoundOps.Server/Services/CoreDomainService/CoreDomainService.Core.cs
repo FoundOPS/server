@@ -1,7 +1,6 @@
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
-using FoundOps.Core.Models.QuickBooks;
 using FoundOps.Server.Authentication;
 using FoundOps.Server.Controllers;
 using System;

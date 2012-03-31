@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Windows.Media;
 using FoundOps.Common.Tools;
 using System.Windows.Controls;
+using FoundOps.SLClient.Data.Models;
 using FoundOps.SLClient.UI.Tools;
 using Telerik.Windows.Documents.UI;
 using Telerik.Windows.Documents.Model;
@@ -21,10 +22,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
     {
         #region Locals
 
-        //Keeps track if the current window is open
-        private bool _isOpen;
         private double _headerPadding;
-        private readonly Data.Models.RouteManifestSettings _settings = VM.RouteManifest.RouteManifestSettings;
+
+        private RouteManifestSettings Settings { get { return VM.RouteManifest.RouteManifestSettings; } }
 
         private readonly ObservableCollection<InlineUIContainer> _routeDestinationUIContainers = new ObservableCollection<InlineUIContainer>();
 
@@ -38,31 +38,30 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             InitializeComponent();
 
             //Update the Manifest when
-            //a) the SelectedEntity changes
-            //b) the RouteManifestSettings properties change
-            VM.Routes.SelectedEntityObservable.AsGeneric()
-                .Merge(VM.RouteManifest.RouteManifestSettings.FromAnyPropertyChanged().AsGeneric().Throttle(TimeSpan.FromMilliseconds(100)))
-              .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
+            //a) the RouteManifestSettings properties change
+            //b) the SelectedEntity changes
+            Settings.FromAnyPropertyChanged().AsGeneric()
+            .Merge(VM.Routes.SelectedEntityObservable.AsGeneric())
+            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
                 //Update the Manifest
-              .Subscribe(a => UpdateDocument());
+            .Subscribe(a => UpdateDocument());
 
             //Update the manifest when this is opened
             Loaded += (s, e) =>
             {
-                _isOpen = true;
-
+                VM.Routes.ManifestOpen = true;
                 //Wait until the popup is shown before updating the document
                 Observable.Interval(TimeSpan.FromMilliseconds(350)).Take(1).ObserveOnDispatcher()
-                .Subscribe(_=> UpdateDocument());
+                .Subscribe(_ => UpdateDocument());
             };
 
-            Closed += (s, e) => _isOpen = false;
+            Closed += (s, e) => VM.Routes.ManifestOpen = false;
 
             //Refresh the InlineUIContainer's sizes after they are added to the visual tree. (This is for ItemsControls)
             _routeDestinationUIContainers.FromCollectionChanged().Throttle(TimeSpan.FromMilliseconds(100))
              .ObserveOnDispatcher().Subscribe(_ =>
              {
-                 foreach(var uiContainer in _routeDestinationUIContainers)
+                 foreach (var uiContainer in _routeDestinationUIContainers)
                  {
                      //Update the Height and Width
                      uiContainer.UiElement.Measure(new Size(double.MaxValue, double.MaxValue));
@@ -78,12 +77,15 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         #region Logic
 
-        private void UpdateDocument()
+        /// <summary>
+        /// Updates the document.
+        /// </summary>
+        public void UpdateDocument()
         {
             _routeDestinationUIContainers.Clear();
 
             //Only load the manifest when the current viewer is open
-            if (!_isOpen) return;
+            if (!VM.Routes.ManifestOpen) return;
             var document = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
             var mainSection = new Section { FooterBottomMargin = 0, HeaderTopMargin = 0, ActualPageMargin = new Padding(0, 20, 0, 20) };
             var bodyParagraph = new Paragraph();
@@ -93,7 +95,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             {
                 #region Add the Header
 
-                if (_settings.IsHeaderVisible)
+                if (Settings.IsHeaderVisible)
                 {
                     //We only want the header to show up once, so just add it first to the body paragraph.
                     var manifestHeader = new ManifestHeader { Margin = new Thickness(0, 0, 0, 45) };
@@ -112,7 +114,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
                 #region Add the Summary
 
-                if (_settings.IsSummaryVisible)
+                if (Settings.IsSummaryVisible)
                 {
                     //We only want the summary to show up once, so just add it first to the body paragraph.
                     var manifestSummary = new ManifestSummary { Margin = new Thickness(25, 0, 0, _headerPadding) };
@@ -128,11 +130,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                     var numTechnicians = VM.Routes.SelectedEntity.Technicians.Count;
                     if (numVehicles >= numTechnicians)
                     {
-                        if (_settings.IsAssignedVehiclesVisible)
+                        if (Settings.IsAssignedVehiclesVisible)
                         {
                             _headerPadding = numVehicles * 25;
                         }
-                        else if (_settings.IsAssignedTechniciansVisible)
+                        else if (Settings.IsAssignedTechniciansVisible)
                         {
                             _headerPadding = numTechnicians * 25;
                         }
@@ -141,11 +143,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                     }
                     else
                     {
-                        if (_settings.IsAssignedTechniciansVisible)
+                        if (Settings.IsAssignedTechniciansVisible)
                         {
                             _headerPadding = numTechnicians * 25;
                         }
-                        else if (_settings.IsAssignedVehiclesVisible)
+                        else if (Settings.IsAssignedVehiclesVisible)
                         {
                             _headerPadding = numVehicles * 25;
                         }
@@ -182,7 +184,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 #endregion
             }
 
-            if (_settings.IsFooterVisible)
+            if (Settings.IsFooterVisible)
                 mainSection.Footers.Default = GetFooterDocument();
 
             ////Setup the main section
@@ -195,8 +197,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             ManifestRichTextBox.Width = 870;
 
             //Fixup the layout
-            Observable.Interval(TimeSpan.FromMilliseconds(100)).Take(1).SubscribeOnDispatcher().Subscribe(_ => ManifestRichTextBox.UpdateEditorLayout());
+            Observable.Interval(TimeSpan.FromMilliseconds(100)).Take(1).ObserveOnDispatcher().Subscribe(_ => ManifestRichTextBox.UpdateEditorLayout());
         }
+
+        #region Private Methods
 
         #region Add the Footer
 
@@ -237,7 +241,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             var cell3Span = new Span
             {
                 Text =
-                    _settings.IsCustomMessageVisible
+                    Settings.IsCustomMessageVisible
                         ? VM.RouteManifest.RouteManifestSettings.CustomMessage
                         : " ",
                 FontSize = 10,
@@ -264,17 +268,83 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         #endregion
 
-        private void MyRouteManifestViewerClosed(object sender, EventArgs e)
+        private void BtnPrint_OnClick(object sender, RoutedEventArgs e)
         {
-            //On closing the manifest: update and save the route manifest settings
-            VM.RouteManifest.UpdateSaveRouteManifestSettings();
-        }
+            ManifestRichTextBox.Print(GetFileName(), PrintMode.Native);
 
-        #endregion
+            #region Analytics
+
+            //get current time
+            var currentTimeOfDay = DateTime.Now.ToShortTimeString();
+
+            //check for route manifest options
+            if (Settings.IsHeaderVisible)
+            {
+                Data.Services.Analytics.Header();
+                if (Settings.IsRouteNameVisible)
+                    Data.Services.Analytics.RouteName();
+                if (Settings.IsRouteDateVisible)
+                    Data.Services.Analytics.RouteDate();
+                if (Settings.IsAssignedVehiclesVisible)
+                    Data.Services.Analytics.AssignedVehicles();
+            }
+
+            if (Settings.IsSummaryVisible)
+            {
+                Data.Services.Analytics.Summary();
+                if (Settings.IsRouteSummaryVisible)
+                    Data.Services.Analytics.RouteSummary();
+                if (Settings.IsScheduledStartTimeVisible)
+                    Data.Services.Analytics.StartTime();
+                if (Settings.IsScheduledEndTimeVisible)
+                    Data.Services.Analytics.EndTime();
+                if (Settings.IsDestinationsSummaryVisible)
+                    Data.Services.Analytics.DestinationsSummary();
+                if (Settings.IsNumberofDestinationsVisible)
+                    Data.Services.Analytics.NumberofDestinations();
+                if (Settings.IsTaskSummaryVisible)
+                    Data.Services.Analytics.TaskSummary();
+                if (Settings.IsNumberOfTasksVisible)
+                    Data.Services.Analytics.NumberOfTasks();
+            }
+
+            if (Settings.IsDestinationsVisible)
+            {
+                Data.Services.Analytics.Destinations();
+                if (Settings.IsAddressVisible)
+                    Data.Services.Analytics.Address();
+                if (Settings.IsContactInfoVisible)
+                    Data.Services.Analytics.ContactInfo();
+                if (Settings.IsRouteTasksVisible)
+                    Data.Services.Analytics.RouteTasks();
+                if (Settings.Is2DBarcodeVisible)
+                    Data.Services.Analytics.Barcode();
+            }
+
+            if (Settings.IsFooterVisible)
+            {
+                Data.Services.Analytics.Footer();
+                if (Settings.IsPageNumbersVisible)
+                    Data.Services.Analytics.PageNumbers();
+                if (Settings.IsCustomMessageVisible)
+                    Data.Services.Analytics.CustomMessage();
+            }
+
+            //Analytics - Track when manifests are printed
+            Data.Services.Analytics.RouteManifestPrinted(currentTimeOfDay);
+
+            #endregion
+        }
 
         private string GetFileName()
         {
             return String.Format("{0} Manifest", VM.Routes.SelectedEntity != null ? VM.Routes.SelectedEntity.Name : "");
+        }
+
+        private void MyRouteManifestViewerClosed(object sender, EventArgs e)
+        {
+            //On closing the manifest: update and save the route manifest settings
+            VM.RouteManifest.UpdateSaveRouteManifestSettings();
         }
 
         private void SaveButtonClick(object sender, RoutedEventArgs e)
@@ -292,72 +362,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 provider.Export(ManifestRichTextBox.Document, output);
         }
 
-        private void BtnPrint_OnClick(object sender, RoutedEventArgs e)
-        {
-            ManifestRichTextBox.Print(GetFileName(), PrintMode.Native);
+        #endregion
 
-            #region Analytics
-
-            //get current time
-            var currentTimeOfDay = DateTime.Now.ToShortTimeString();
-
-            //check for route manifest options
-            if (_settings.IsHeaderVisible)
-            {
-                Data.Services.Analytics.Header();
-                if (_settings.IsRouteNameVisible)
-                    Data.Services.Analytics.RouteName();
-                if (_settings.IsRouteDateVisible)
-                    Data.Services.Analytics.RouteDate();
-                if (_settings.IsAssignedVehiclesVisible)
-                    Data.Services.Analytics.AssignedVehicles();
-            }
-
-            if (_settings.IsSummaryVisible)
-            {
-                Data.Services.Analytics.Summary();
-                if (_settings.IsRouteSummaryVisible)
-                    Data.Services.Analytics.RouteSummary();
-                if (_settings.IsScheduledStartTimeVisible)
-                    Data.Services.Analytics.StartTime();
-                if (_settings.IsScheduledEndTimeVisible)
-                    Data.Services.Analytics.EndTime();
-                if (_settings.IsDestinationsSummaryVisible)
-                    Data.Services.Analytics.DestinationsSummary();
-                if (_settings.IsNumberofDestinationsVisible)
-                    Data.Services.Analytics.NumberofDestinations();
-                if (_settings.IsTaskSummaryVisible)
-                    Data.Services.Analytics.TaskSummary();
-                if (_settings.IsNumberOfTasksVisible)
-                    Data.Services.Analytics.NumberOfTasks();
-            }
-
-            if (_settings.IsDestinationsVisible)
-            {
-                Data.Services.Analytics.Destinations();
-                if (_settings.IsAddressVisible)
-                    Data.Services.Analytics.Address();
-                if (_settings.IsContactInfoVisible)
-                    Data.Services.Analytics.ContactInfo();
-                if (_settings.IsRouteTasksVisible)
-                    Data.Services.Analytics.RouteTasks();
-                if (_settings.Is2DBarcodeVisible)
-                    Data.Services.Analytics.Barcode();
-            }
-
-            if (_settings.IsFooterVisible)
-            {
-                Data.Services.Analytics.Footer();
-                if (_settings.IsPageNumbersVisible)
-                    Data.Services.Analytics.PageNumbers();
-                if (_settings.IsCustomMessageVisible)
-                    Data.Services.Analytics.CustomMessage();
-            }
-
-            //Analytics - Track when manifests are printed
-            Data.Services.Analytics.RouteManifestPrinted(currentTimeOfDay);
-
-            #endregion
-        }
+        #endregion
     }
 }

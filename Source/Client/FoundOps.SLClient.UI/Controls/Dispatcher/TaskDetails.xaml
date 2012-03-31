@@ -10,7 +10,7 @@
     <ScrollViewer x:Name="LayoutRoot" DataContext="{Binding SelectedRouteTask}">
         <StackPanel>
             <TextBlock Text="{Binding Client.OwnedParty.DisplayName}" FontWeight="Bold" TextAlignment="Center" />
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Center" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}" />
                     <ColumnDefinition Width="5" />
@@ -23,7 +23,7 @@
                 <Controls:RadNumericUpDown Grid.Column="2" Value="{Binding EstimatedDuration, Mode=TwoWay, Converter={StaticResource EstimatedLengthConverter}}" 
                                            Minimum="0" NumberDecimalDigits="0" Margin="0,2,0,0" />
             </Grid>
-            <CustomFields:FieldSmall Margin="0,5,0,0" ServiceTemplate="{Binding Service.ServiceTemplate}"/>
+            <CustomFields:FieldSmall Margin="0,5,0,0" ServiceTemplate="{Binding ServiceHolder.Service.ServiceTemplate}"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

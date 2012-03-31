@@ -10,6 +10,8 @@ namespace FoundOps.Core.Models.CoreEntities
 {
     public partial class RouteDestination : IEntityDefaultCreation, ICompositeRaiseEntityPropertyChanged
     {
+        #region Public Properties
+
         #region Implementation of IEntityDefaultCreation
 
 #if SILVERLIGHT
@@ -138,5 +140,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 return this.RouteTasks.Aggregate(endTime, (current, routeTask) => current + routeTask.EstimatedDuration);
             }
         }
+
+        #endregion
     }
 }
