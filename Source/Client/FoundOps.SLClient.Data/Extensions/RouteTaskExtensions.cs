@@ -1,6 +1,5 @@
 using FoundOps.Common.Silverlight.Interfaces;
 using FoundOps.Common.Silverlight.UI.Interfaces;
-using FoundOps.SLClient.Data.Services;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
@@ -57,33 +56,49 @@ namespace FoundOps.Core.Models.CoreEntities
             set
             {
                 _parentRouteTaskHolder = value;
-                if (ParentRouteTaskHolder == null)
-                {
-                    ServiceHolder = null;
-                    return;
-                }
-
-                ServiceHolder = new ServiceHolder { ExistingServiceId = ParentRouteTaskHolder.ServiceId, OccurDate = ParentRouteTaskHolder.OccurDate, RecurringServiceId = ParentRouteTaskHolder.RecurringServiceId };
-            }
-        }
-
-        private ServiceHolder _serviceHolder;
-        /// <summary>
-        /// The ServiceHolder.
-        /// </summary>
-        public ServiceHolder ServiceHolder
-        {
-            get { return _serviceHolder; }
-            set
-            {
-                _serviceHolder = value;
-                this.RaisePropertyChanged("ServiceHolder");
+                this.RaisePropertyChanged("TaskHolder");
             }
         }
 
         #endregion
 
         #region Logic
+
+        /// <summary>
+        /// Sets up the ParentRouteTask holder if there is not one yet.
+        /// This is used when loading existing RouteTasks.
+        /// </summary>
+        public void SetupTaskHolder()
+        {
+            if (this.ParentRouteTaskHolder != null)
+                return;
+
+            var taskHolder = new TaskHolder
+            {
+                ClientId = ClientId,
+                OccurDate = Date,
+                LocationId = Location.Id,
+                LocationName = LocationName,
+                ServiceName = Name,
+                ServiceId = ServiceId,
+                RecurringServiceId = RecurringServiceId
+            };
+
+            if (Client != null)
+                taskHolder.ClientName = Client.DisplayName;
+
+            if (Location != null)
+            {
+                if (Location.Region != null)
+                    taskHolder.RegionName = Location.Region.Name;
+
+                taskHolder.AddressLine = Location.AddressLineOne;
+                taskHolder.Latitude = Location.Latitude;
+                taskHolder.Longitude = Location.Longitude;
+            }
+
+            ParentRouteTaskHolder = taskHolder;
+        }
 
         ///<summary>
         /// Remove this RouteTask from it's route destination.

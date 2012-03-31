@@ -124,7 +124,7 @@
                             <DataTemplate>
                                 <StackPanel >
                                     <TextBlock Text="{Binding Name}"/>
-                                    <CustomFields:ManifestFields Margin="15,0,0,0" ServiceTemplate="{Binding ServiceHolder.Service.ServiceTemplate}" 
+                                    <CustomFields:ManifestFields Margin="15,0,0,0" ServiceTemplate="{Binding ParentRouteTaskHolder.ServiceHolder.Service.ServiceTemplate}" 
                                         Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsFieldsVisible, Converter={StaticResource VisibilityConverter}, 
                                         Source={Tools1:GetVM Type=ViewModels:RoutesVM}}"/>
                                 </StackPanel>

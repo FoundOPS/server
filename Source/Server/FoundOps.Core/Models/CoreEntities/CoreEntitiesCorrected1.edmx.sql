@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/23/2012 12:44:49
+-- Date Created: 03/31/2012 15:11:39
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -729,7 +729,8 @@ CREATE TABLE [dbo].[RouteTasks] (
     [Name] nvarchar(max)  NOT NULL,
     [ReadyToInvoice] bit  NULL,
     [Date] datetime  NOT NULL,
-    [OrderInRouteDestination] int  NOT NULL
+    [OrderInRouteDestination] int  NOT NULL,
+    [RecurringServiceId] uniqueidentifier  NULL
 );
 GO
 
@@ -2013,13 +2014,27 @@ ON [dbo].[Clients]
     ([DefaultBillingLocationId]);
 GO
 
+-- Creating foreign key on [RecurringServiceId] in table 'RouteTasks'
+ALTER TABLE [dbo].[RouteTasks]
+ADD CONSTRAINT [FK_RouteTaskRecurringService]
+    FOREIGN KEY ([RecurringServiceId])
+    REFERENCES [dbo].[RecurringServices]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskRecurringService'
+CREATE INDEX [IX_FK_RouteTaskRecurringService]
+ON [dbo].[RouteTasks]
+    ([RecurringServiceId]);
+GO
+
 -- Creating foreign key on [Id] in table 'Parties_Business'
 ALTER TABLE [dbo].[Parties_Business]
 ADD CONSTRAINT [FK_Business_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'
@@ -2028,7 +2043,7 @@ ADD CONSTRAINT [FK_BusinessAccount_inherits_Business]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Business]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Person'
@@ -2037,7 +2052,7 @@ ADD CONSTRAINT [FK_Person_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_UserAccount'
@@ -2046,7 +2061,7 @@ ADD CONSTRAINT [FK_UserAccount_inherits_Person]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Person]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_OptionsField'
@@ -2057,6 +2072,7 @@ ADD CONSTRAINT [FK_OptionsField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
+GO
 
 -- Creating foreign key on [Id] in table 'Fields_LocationField'
 ALTER TABLE [dbo].[Fields_LocationField]
@@ -2066,6 +2082,7 @@ ADD CONSTRAINT [FK_LocationField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
+GO
 
 -- Creating foreign key on [Id] in table 'Files_PartyImage'
 ALTER TABLE [dbo].[Files_PartyImage]
@@ -2073,7 +2090,7 @@ ADD CONSTRAINT [FK_PartyImage_inherits_File]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Files]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_TextBoxField'
@@ -2084,6 +2101,7 @@ ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
+GO
 
 -- Creating foreign key on [Id] in table 'Fields_NumericField'
 ALTER TABLE [dbo].[Fields_NumericField]
@@ -2092,6 +2110,7 @@ ADD CONSTRAINT [FK_NumericField_inherits_Field]
     REFERENCES [dbo].[Fields]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_DateTimeField'
@@ -2102,6 +2121,7 @@ ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
+GO
 
 -- Creating foreign key on [Id] in table 'Options_LocationOption'
 ALTER TABLE [dbo].[Options_LocationOption]
@@ -2110,6 +2130,7 @@ ADD CONSTRAINT [FK_LocationOption_inherits_Option]
     REFERENCES [dbo].[Options]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 GO
 
 -- --------------------------------------------------

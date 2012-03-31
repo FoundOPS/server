@@ -38,7 +38,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var routes =
                 ((ObjectQuery<Route>)this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Date == routesDateOnly))
-                .Include("RouteDestinations").Include("RouteDestinations.Location").Include("RouteDestinations.RouteTasks");
+                .Include("RouteDestinations").Include("RouteDestinations.Location").Include("RouteDestinations.RouteTasks").Include("RouteDestinations.RouteTasks.Client");
 
             return routes;
         }

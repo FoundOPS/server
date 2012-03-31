@@ -150,12 +150,13 @@ namespace FoundOps.SLClient.UI.ViewModels
         public bool RouteIncludedInFilter(Route route)
         {
             //Selects all the Region's names from the RouteTasks in the Route
-            var regionsForRoute = route.RouteDestinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.Location.Region.Name)).ToArray();
+            var regionsForRoute = route.RouteDestinations.SelectMany(rd => rd.RouteTasks.Where(rt => rt.Location != null && rt.Location.Region != null)
+                .Select(rt => rt.Location.Region.Name)).ToArray();
 
             var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == route.RouteType);
 
             //Only filter by region if there are locations or locations with regions in the route
-            var meetsRegionsFilter = !regionsForRoute.Any() 
+            var meetsRegionsFilter = !regionsForRoute.Any()
                 || RegionOptions.Any(option => option.IsSelected && regionsForRoute.Contains(((Region)option.Entity).Name));
 
             return meetsRouteTypeFilter && meetsRegionsFilter;

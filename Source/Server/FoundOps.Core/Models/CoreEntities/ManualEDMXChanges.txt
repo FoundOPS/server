@@ -28,7 +28,7 @@ with
     <Property Name="ChildName" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
 
-Leave Alone <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.PartyWithName" />
+DO NOT CHANGE : <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.PartyWithName" />
 
 Replace
     <EntitySetMapping Name="PartiesWithNames">
@@ -79,7 +79,7 @@ with
           <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
 
-Leave Alone <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.ServiceTemplateWithVendorId" />
+DO NOT CHANGE: <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.ServiceTemplateWithVendorId" />
 
 Replace
     <EntitySetMapping Name="ServiceTemplateWithVendorIds">
@@ -100,4 +100,77 @@ with
             </EntityTypeMapping>
           </EntitySetMapping>
 
-3. TBD check Function for GetServicesForProvider from last one is the same
+3. Add Functions back
+
+Add after </EntityContainer>
+
+        <Function Name="GetServiceHolders" IsComposable="false">
+          <CommandText>
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
+            FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
+          </CommandText>
+          <Parameter Name="serviceProviderIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="clientIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="recurringServiceIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="seedDate"
+                     Mode="In"
+                     Type="datetime"/>
+          <Parameter Name="frontBackMinimum"
+                     Mode="In"
+                     Type="int"/>
+          <Parameter Name="getPrevious"
+                     Mode="In"
+                     Type="bit"/>
+          <Parameter Name="getNext"
+                     Mode="In"
+                     Type="bit"/>
+        </Function>
+        <Function Name="GetUnroutedServicesForDate" IsComposable="false">
+          <CommandText>
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude
+            FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
+          </CommandText>
+          <Parameter Name="serviceProviderContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="serviceDate"
+                     Mode="In"
+                     Type="datetime"/>
+        </Function>
+
+Add before </EntityContainerMapping>
+
+          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>

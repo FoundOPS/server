@@ -46,7 +46,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             this.AddHandler(MouseLeftButtonDownEvent, new MouseButtonEventHandler(RoutesListBox_MouseLeftButtonDown), true);
 
             //Whenever the selected route changes, clear the treeview selection for other routes
-            Observable2.FromPropertyChangedPattern(VM.Routes, x => x.SelectedEntity).Where(se=> se != null)
+            Observable2.FromPropertyChangedPattern(VM.Routes, x => x.SelectedEntity).Where(se => se != null)
             .ObserveOnDispatcher().Subscribe(selectedRoute =>
             {
                 var routeTreeViewsToUnselect = RoutesListBox.GetDescendants<RadTreeView>().Where(rtv => ((Route)rtv.DataContext).Id != selectedRoute.Id);

@@ -85,7 +85,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             //Whenever a route, route destination, or task is selected select the appropriate details pane
             this.RoutesVM.FromAnyPropertyChanged()
                 .Where(e => e.PropertyName == "SelectedEntity" || e.PropertyName == "SelectedRouteDestination" || e.PropertyName == "SelectedRouteTask")
-                .Throttle(new TimeSpan(0, 0, 0, 0, 250)).ObserveOnDispatcher()
+                .Throttle(new TimeSpan(0, 0, 0, 0, 300)).ObserveOnDispatcher()
                 .Subscribe(pe =>
                 {
                     switch (pe.PropertyName)
@@ -96,14 +96,32 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                             RouteDetailsPane.IsSelected = true;
                             break;
                         case "SelectedRouteDestination":
-                            RouteDetailsPane.IsSelected = false;
                             TaskDetailsPane.IsSelected = false;
-                            DestinationDetailsPane.IsSelected = true;
+
+                            if (VM.Routes.SelectedRouteDestination == null)
+                            {
+                                RouteDetailsPane.IsSelected = true;
+                                DestinationDetailsPane.IsSelected = false;
+                            }
+                            else
+                            {
+                                RouteDetailsPane.IsSelected = false;
+                                DestinationDetailsPane.IsSelected = true;
+                            }
                             break;
                         case "SelectedRouteTask":
-                            RouteDetailsPane.IsSelected = false;
                             DestinationDetailsPane.IsSelected = false;
-                            TaskDetailsPane.IsSelected = true;
+
+                            if (VM.Routes.SelectedRouteTask == null)
+                            {
+                                RouteDetailsPane.IsSelected = true;
+                                TaskDetailsPane.IsSelected = false;
+                            }
+                            else
+                            {
+                                RouteDetailsPane.IsSelected = false;
+                                TaskDetailsPane.IsSelected = true;
+                            }
                             break;
                     }
                 });

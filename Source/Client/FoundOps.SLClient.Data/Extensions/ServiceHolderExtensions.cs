@@ -205,7 +205,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// If this is a generated service, when changes are rejected reload the details.
         /// </summary>
-        private void OnRejectChangedReloadDetails(object sender, EventArgs e)
+        private void OnRejectChangedReloadDetails(DomainContext sender, Entity[] rejectedaddedentities, Entity[] rejectedmodifiedentities)
         {
             if (!ServiceIsGenerated || !IsSelected)
                 return;

@@ -17,6 +17,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using ReactiveUI.Xaml;
+using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -90,6 +91,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
+            #region Load Tasks
+
             //Load the TaskHolders whenever
             //a) the Dispatcher is entered/re-entered
             //b) the SelectedDate changes
@@ -108,10 +111,24 @@ namespace FoundOps.SLClient.UI.ViewModels
                         //Notify the TaskBoardVM has completed loading TaskHolders
                         IsLoadingSubject.OnNext(false);
 
+                        //Detach all TaskHolders so that changes are not tracked
+                        DataManager.DetachEntities(task.Result.ToArray());
+
                         ViewObservable.OnNext(new DomainCollectionViewFactory<TaskHolder>(task.Result.ToObservableCollection()).View);
                     },
                     TaskScheduler.FromCurrentSynchronizationContext());
             });
+
+            //Listen to RejectChanges and put any new RouteTasks back into the TaskBoard
+            DomainContext.ChangesRejected += (sender, rejectedAddedEntities, rejectedModifiedEntities) =>
+            {
+                var tasksToReturnToTaskBoard = rejectedAddedEntities.OfType<RouteTask>();
+                ((ObservableCollection<TaskHolder>)SourceCollection).AddRange(tasksToReturnToTaskBoard.Select(rt => rt.ParentRouteTaskHolder));
+            };
+
+            #endregion
+
+            #region Setup Filter
 
             //Hookup the CollectionView Filter whenever the CollectionViewObservable changes
             ViewObservable.Where(cv => cv != null).DistinctUntilChanged()
@@ -123,6 +140,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (CollectionView == null) return;
                 UpdateFilter();
             });
+
+            #endregion
         }
 
         /// <summary>
