@@ -47,8 +47,8 @@ namespace FoundOps.SLClient.UI.Controls.Services.ServiceTemplate
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs e)
         {
-            //TODO: Should there be conditions?
-            if (!IsMainGrid)
+            //Only move to details view if this is in the admin console (there is a BusinessAccount context)
+            if (Manager.Context.GetContext<BusinessAccount>() != null && !IsMainGrid)
                 VM.ServiceTemplates.MoveToDetailsView.Execute(null);
         }
     }

@@ -94,7 +94,7 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <summary>
         /// Gets the casted source collection.
         /// </summary>
-        public IEnumerable<TEntity> SourceCollection { get { return ((ICollectionView)_collectionView.Value).SourceCollection.Cast<TEntity>(); } }
+        public IEnumerable<TEntity> SourceCollection { get { return (IEnumerable<TEntity>) ((ICollectionView)_collectionView.Value).SourceCollection; } }
 
         /// <summary>
         /// An observable that pushes whenever the CollectionView is changed or set.

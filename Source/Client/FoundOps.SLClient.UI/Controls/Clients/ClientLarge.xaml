@@ -13,8 +13,8 @@
              xmlns:Converters2="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:Converters3="clr-namespace:FoundOps.SLClient.UI.Converters;assembly=FoundOps.SLClient.Data"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
              xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services" mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
-            <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
-            <!--IMPORTANT: DO NOT REMOVE "xmls:ViewModels". It is needed for GetVM-->
+    <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
+    <!--IMPORTANT: DO NOT REMOVE "xmls:ViewModels". It is needed for GetVM-->
     <UserControl.Resources>
         <Converters3:ClientTitleConverter x:Key="ClientTitleConverter" />
         <Converters2:LocationTitleConverter x:Key="LocationTitleConverter" />
@@ -135,8 +135,9 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Available Services" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
-                            <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForContext}">
+                            <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" IsEnabled="{Binding ClientServiceTemplatesLoading, Converter={StaticResource NotExistsBoolConverter}}" 
+                                                     AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" 
+                                                     CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding AdditionalServiceTemplatesForClient}">
                                 <AddEditDelete:AddDelete.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Name}"/>

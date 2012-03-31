@@ -131,17 +131,16 @@ namespace FoundOps.Core.Models.CoreEntities
     }
 
     /// <summary>
-    /// Compares two service templates to see if one is an ancestor of the other.
     /// </summary>
-    public class ServiceTemplateIsAncestorOrDescendent : IEqualityComparer<object>
+    public static class ServiceTemplateHelpers
     {
-        #region Implementation of IEqualityComparer<in ServiceTemplate>
-
-        bool IEqualityComparer<object>.Equals(object serviceTemplateA, object serviceTemplateB)
+        /// <summary>
+        /// Compares two service templates to see if one is an ancestor of the other.
+        /// </summary>
+        /// <param name="a">One service template to compare.</param>
+        /// <param name="b">The other service template to compare.</param>
+        public static bool ServiceTemplateIsAncestorOrDescendent(ServiceTemplate a, ServiceTemplate b)
         {
-            var a = (ServiceTemplate)serviceTemplateA;
-            var b = (ServiceTemplate)serviceTemplateB;
-
             //Climb the parents of x and see if an ancestor is y
             var currentServiceTemplate = a;
             while (currentServiceTemplate != null)
@@ -164,14 +163,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
             return false;
         }
-
-        int IEqualityComparer<object>.GetHashCode(object obj)
-        {
-            var serviceTemplate = (ServiceTemplate)obj;
-            return obj.GetHashCode();
-        }
-
-        #endregion
     }
 }
 
