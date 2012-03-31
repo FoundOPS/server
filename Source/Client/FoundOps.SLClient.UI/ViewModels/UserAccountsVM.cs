@@ -41,7 +41,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// A method to update the ExistingItemsSource with UserAccount suggestions remotely loaded.
         /// </summary>
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
 
@@ -144,8 +144,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return newUserAccount;
             };
 
-            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
-              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchUserAccountsForRoleQuery(Manager.Context.RoleId, searchText));
+            ManuallyUpdateSuggestions = autoCompleteBox =>
+              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchUserAccountsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
         }
 
         #endregion

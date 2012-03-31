@@ -47,7 +47,8 @@
                         <Edit:FieldsEditGrid ServiceTemplate="{Binding DataContext.SelectedEntity.Service.ServiceTemplate, ElementName=myServiceLarge}" IsGeneratedService="{Binding DataContext.SelectedEntity.Service.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"/>
                     </StackPanel>
                 </toolkit:Expander>
-                <my3:ClientLinkLarge SelectedClient="{Binding DataContext.SelectedEntity.Service.Client, ElementName=myServiceLarge, Mode=TwoWay}" IsReadOnly="{Binding DataContext.SelectedEntity.Service.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"/>
+                <my3:ClientLinkLarge IsReadOnly="{Binding DataContext.SelectedEntity.Service.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"
+                                     SelectedClient="{Binding DataContext.SelectedEntity.Service.Client, ElementName=myServiceLarge, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

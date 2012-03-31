@@ -18,6 +18,12 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
+        #region Constructor
+
+
+
+        #endregion
+
         #region Logic
 
         #region Public Methods

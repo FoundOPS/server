@@ -73,7 +73,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// <summary>
         /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
-        Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; }
+        Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; }
     }
 
     #region Destination interfaces
@@ -638,7 +638,12 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
             if (Source == null || Source.ManuallyUpdateSuggestions == null) return;
 
             e.Cancel = true;
-            Source.ManuallyUpdateSuggestions(((AutoCompleteBox)sender).SearchText, (AutoCompleteBox)sender);
+            Source.ManuallyUpdateSuggestions((AutoCompleteBox)sender);
+        }
+
+        private void AutoCompleteBoxOnGotFocus(object sender, RoutedEventArgs e)
+        {
+            ((AutoCompleteBox) sender).IsDropDownOpen = true;
         }
     }
 }

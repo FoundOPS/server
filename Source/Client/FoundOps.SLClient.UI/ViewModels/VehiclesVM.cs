@@ -24,7 +24,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public Func<string, Vehicle> CreateNewItem { get; private set; }
 
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
 
@@ -50,8 +50,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return newVehicle;
             };
 
-            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
-                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchVehiclesForRoleQuery(Manager.Context.RoleId, searchText));
+            ManuallyUpdateSuggestions = autoCompleteBox =>
+                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchVehiclesForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
 
             #endregion
         }

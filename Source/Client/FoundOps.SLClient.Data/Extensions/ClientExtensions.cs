@@ -55,21 +55,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Logic
-
-        #region Public Methods
-
-        /// <summary>
-        /// Rejects the changes of this individual entity.
-        /// </summary>
-        public void Reject()
-        {
-            this.RejectChanges();
-        }
-
-        #endregion
-
-        #region Overriden Methods
+        #region Constructor / Initialization
 
         partial void OnCreation()
         {
@@ -90,17 +76,19 @@ namespace FoundOps.Core.Models.CoreEntities
                 OwnedPartyOperations();
 
             //Follow OwnedParty changes
-            Observable2.FromPropertyChangedPattern(this, x => x.OwnedParty).ObserveOnDispatcher()
-                .Subscribe(_ => OwnedPartyOperations());
+            Observable2.FromPropertyChangedPattern(this, x => x.OwnedParty)
+                .ObserveOnDispatcher().Subscribe(_ => OwnedPartyOperations());
         }
 
         private void OwnedPartyOperations()
         {
+            //TODO make all disposable
+
             if (this.OwnedParty == null) return;
 
             //Update this DisplayName whenever OwnedParty.DisplayName changes
-            Observable2.FromPropertyChangedPattern(this.OwnedParty, x => x.DisplayName).AsGeneric().ObserveOnDispatcher()
-            .Subscribe(_ => this.CompositeRaiseEntityPropertyChanged("DisplayName"));
+            Observable2.FromPropertyChangedPattern(this.OwnedParty, x => x.DisplayName).DistinctUntilChanged()
+            .ObserveOnDispatcher().Subscribe(_ => this.CompositeRaiseEntityPropertyChanged("DisplayName"));
 
             //Setup DefaultBillingLocation whenever a Location is added to this client's OwnedParty
             this.OwnedParty.Locations.EntityAdded += (s, e) =>
@@ -121,6 +109,45 @@ namespace FoundOps.Core.Models.CoreEntities
                 if (!this.DefaultBillingLocationId.HasValue)
                     this.DefaultBillingLocation = this.OwnedParty.Locations.FirstOrDefault();
             };
+
+            ////TODO: REDO
+            //var rejectionHandled = true;
+            //DomainContext.ChangesRejected += (s, e) => rejectionHandled = false;
+
+            ////Whenever the client name changes update the default location name
+            ////There is a default location as long as there is only one location
+            //SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null)
+            //.SelectLatest(selectedClient => Observable2.FromPropertyChangedPattern(selectedClient, x => x.DisplayName).DistinctUntilChanged())
+            //.Subscribe(displayName =>
+            //{
+            //    //Ignore changes after the DomainContext rejects changes
+            //    if (!rejectionHandled)
+            //    {
+            //        rejectionHandled = true;
+            //        return;
+            //    }
+
+            //    //If the Client only has one location 
+            //    //and if that location had the same name as the client
+            //    //update it's name whenever the client's name changes
+            //    var defaultLocation = SelectedEntity.OwnedParty.Locations.Count == 1 ? SelectedEntity.OwnedParty.Locations.First() : null;
+            //    if (defaultLocation == null) return;
+            //    defaultLocation.Name = displayName;
+            //});
+        }
+
+        #endregion
+
+        #region Logic
+
+        #region Public Methods
+
+        /// <summary>
+        /// Rejects the changes of this individual entity.
+        /// </summary>
+        public void Reject()
+        {
+            this.RejectChanges();
         }
 
         #endregion

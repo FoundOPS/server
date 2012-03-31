@@ -121,8 +121,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
             //When this is saved, convert it to an existing service
             newService.PropertyChanged += OnSaveConvertToExistingService;
-
-            Service.RaiseValidationErrors();
         }
 
         #endregion

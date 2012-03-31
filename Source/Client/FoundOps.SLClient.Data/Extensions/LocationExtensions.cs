@@ -83,6 +83,8 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
+        #region Initialization
+
         partial void OnCreation()
         {
             //Setup IReactiveNotifyPropertyChanged
@@ -100,6 +102,10 @@ namespace FoundOps.Core.Models.CoreEntities
                 SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
         /// Raises the validation errors.
         /// </summary>
@@ -108,6 +114,8 @@ namespace FoundOps.Core.Models.CoreEntities
             this.BeginEdit();
             this.EndEdit();
         }
+
+        #endregion
     }
 }
 

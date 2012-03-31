@@ -1,9 +1,7 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
-using FoundOps.Core.Models.CoreEntities;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.Controls.CustomFields.Edit
 {
@@ -20,6 +18,7 @@ namespace FoundOps.SLClient.UI.Controls.CustomFields.Edit
             InitializeComponent();
 
             this.DependentWhenVisible(VM.Locations);
+            LocationsAutoCompleteBox.HookupSearchSuggestions(VM.Locations.ManuallyUpdateSuggestions);
         }
 
         #region LocationField Dependency Property
@@ -44,13 +43,5 @@ namespace FoundOps.SLClient.UI.Controls.CustomFields.Edit
                 new PropertyMetadata(null));
 
         #endregion
-
-        private void LocationsAutoCompleteBox_OnPopulating(object sender, PopulatingEventArgs e)
-        {
-            //Allow us to wait for the response
-            e.Cancel = true;
-
-            VM.Locations.ManuallyUpdateSuggestions(LocationsAutoCompleteBox.SearchText, LocationsAutoCompleteBox);
-        }
     }
 }

@@ -20,7 +20,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
 
@@ -33,8 +33,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup data loading
             SetupTopEntityDataLoading(roleId => DomainContext.GetRegionsForServiceProviderQuery(ContextManager.RoleId));
 
-            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
-              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchRegionsForRoleQuery(Manager.Context.RoleId, searchText));
+            ManuallyUpdateSuggestions = autoCompleteBox =>
+              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchRegionsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
         }
 
         #region Logic

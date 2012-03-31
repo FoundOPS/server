@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
@@ -6,10 +5,9 @@ using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
-using ReactiveUI;
-using ReactiveUI.Xaml;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
@@ -46,6 +44,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public ServicesVM()
+            : base(null, true, false, false)
         {
             SetupDataLoading();
             //TODO Regenerate the Services when the current RecurringServiceContext.Repeat changes
@@ -55,7 +54,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Remove any non added new Services from the collection when RejectChanges is called
             DomainContext.ChangesRejected += (s, e) =>
             {
-                if (Collection == null)
+                if (SourceCollection as ObservableCollection<ServiceHolder> == null)
                     return;
 
                 ((ObservableCollection<ServiceHolder>)SourceCollection).RemoveAll(sh => sh.ServiceIsNew && sh.Service.EntityState == EntityState.Detached);
@@ -350,6 +349,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             newService.ServiceTemplate = childServiceTemplate;
 
             newService.ServiceProvider = (BusinessAccount)this.ContextManager.OwnerAccount;
+
+            var clientContext = ContextManager.GetContext<Client>();
+            newService.Client = clientContext;
 
             //Add the new service to a service holder
             var serviceHolder = new ServiceHolder(newService);

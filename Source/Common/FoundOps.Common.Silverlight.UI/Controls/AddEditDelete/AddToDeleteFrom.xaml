@@ -15,7 +15,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding Label, Source={MarkupExtensions:RootElement}}" />
                 <sdk:AutoCompleteBox x:Name="AutoCompleteBox" Grid.Row="1" MinWidth="120" MinimumPopulateDelay="200" MinimumPrefixLength="0"
-                                     Populating="AutoCompleteBoxPopulating"
+                                     Populating="AutoCompleteBoxPopulating" GotFocus="AutoCompleteBoxOnGotFocus"
                                      DataContext="{MarkupExtensions:RootElement}" Text="{Binding ExistingItemsComboBoxText, Mode=TwoWay}" 
                                      SelectedItem="{Binding SelectedExistingItem, Mode=TwoWay}" ValueMemberPath="{MarkupExtensions:Resolver Source={Binding Source.MemberPath, Source={MarkupExtensions:RootElement}}}">
                     <sdk:AutoCompleteBox.ItemTemplate>

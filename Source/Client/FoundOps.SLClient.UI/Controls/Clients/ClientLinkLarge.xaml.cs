@@ -19,6 +19,8 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             InitializeComponent();
 
             this.DependentWhenVisible(VM.Clients);
+
+            ClientsAutoCompleteBox.HookupSearchSuggestions(VM.Clients.ManuallyUpdateSuggestions);
         }
 
         #region SelectedClient Dependency Property
@@ -73,13 +75,5 @@ namespace FoundOps.SLClient.UI.Controls.Clients
         }
 
         #endregion
-
-        private void ClientsAutoCompleteBox_OnPopulating(object sender, PopulatingEventArgs e)
-        {
-            //Allow us to wait for the response
-            e.Cancel = true;
-
-            VM.Clients.ManuallyUpdateSuggestions(ClientsAutoCompleteBox.SearchText, ClientsAutoCompleteBox);
-        }
     }
 }

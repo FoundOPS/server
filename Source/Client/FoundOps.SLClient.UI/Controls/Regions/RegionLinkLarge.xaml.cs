@@ -2,7 +2,6 @@ using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Tools;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.Regions
 {
@@ -19,6 +18,7 @@ namespace FoundOps.SLClient.UI.Controls.Regions
             InitializeComponent();
 
             this.DependentWhenVisible(VM.Regions);
+            RegionsAutoCompleteBox.HookupSearchSuggestions(VM.Regions.ManuallyUpdateSuggestions);
         }
 
         #region SelectedRegion Dependency Property
@@ -73,13 +73,5 @@ namespace FoundOps.SLClient.UI.Controls.Regions
         }
 
         #endregion
-
-        private void RegionsAutoCompleteBox_OnPopulating(object sender, PopulatingEventArgs e)
-        {
-            // Allow us to wait for the response
-            e.Cancel = true;
-
-            VM.Regions.ManuallyUpdateSuggestions(RegionsAutoCompleteBox.SearchText, RegionsAutoCompleteBox);
-        }
     }
 }

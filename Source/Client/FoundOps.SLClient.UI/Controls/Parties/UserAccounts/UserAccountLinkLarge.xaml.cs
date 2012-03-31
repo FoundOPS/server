@@ -2,7 +2,6 @@
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Tools;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
 {
@@ -19,6 +18,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
             InitializeComponent();
 
             this.DependentWhenVisible(VM.UserAccounts);
+            UserAccountsAutoCompleteBox.HookupSearchSuggestions(VM.UserAccounts.ManuallyUpdateSuggestions);
         }
 
         #region SelectedUserAccount Dependency Property
@@ -43,12 +43,5 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
                 new PropertyMetadata(null));
 
         #endregion
-
-        private void UserAccountsAutoCompleteBox_OnPopulating(object sender, PopulatingEventArgs e)
-        {
-            // Allow us to wait for the response
-            e.Cancel = true;
-            VM.UserAccounts.ManuallyUpdateSuggestions(UserAccountsAutoCompleteBox.Text, UserAccountsAutoCompleteBox);
-        }
     }
 }

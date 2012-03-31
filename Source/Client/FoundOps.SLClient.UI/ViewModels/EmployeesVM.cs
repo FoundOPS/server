@@ -28,7 +28,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         /// <summary>
         /// A function to create a new item from a string.
@@ -75,8 +75,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return newEmployee;
             };
 
-            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
-              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchEmployeesForRoleQuery(Manager.Context.RoleId, searchText));
+            ManuallyUpdateSuggestions = autoCompleteBox =>
+              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchEmployeesForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
 
             #endregion
         }

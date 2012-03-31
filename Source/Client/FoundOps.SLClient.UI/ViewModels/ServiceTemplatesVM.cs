@@ -43,7 +43,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
 
@@ -90,7 +90,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                     return newServiceTemplate;
                                 };
 
-            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
+            ManuallyUpdateSuggestions = autoCompleteBox =>
             {
                 //If there is no service provider context return nothing
                 var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
@@ -99,7 +99,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 //Search the FoundOPS ServiceTemplates
                 SearchSuggestionsHelper(autoCompleteBox, () =>
-                     Manager.Data.DomainContext.SearchServiceTemplatesForServiceProviderQuery(Manager.Context.RoleId, businessAccountContext.Id, searchText));
+                     Manager.Data.DomainContext.SearchServiceTemplatesForServiceProviderQuery(Manager.Context.RoleId, businessAccountContext.Id, autoCompleteBox.SearchText));
             };
 
             #endregion

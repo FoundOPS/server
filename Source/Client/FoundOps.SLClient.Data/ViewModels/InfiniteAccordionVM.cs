@@ -97,8 +97,9 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <param name="manyRelationships">(Optional) The relationships where this is the * end of a 1 to * relationship. Ex. LocationVM  = { Client, Region }</param>
         /// <param name="preventChangingSelectionWhenChanges">Whether or not to prevent changing the selected entity when the DomainContext has changes.</param>
         /// <param name="preventNullSelection">Prevents SelectedEntity from being set to null</param>
-        protected InfiniteAccordionVM(IEnumerable<Type> manyRelationships = null, bool preventChangingSelectionWhenChanges = true, bool preventNullSelection = false)
-            : base(preventChangingSelectionWhenChanges, preventNullSelection, true)
+        /// <param name="initializeDefaultCollectionView">Initialize a default QueryableCollectionView for the CollectionView property.</param>
+        protected InfiniteAccordionVM(IEnumerable<Type> manyRelationships = null, bool preventChangingSelectionWhenChanges = true, bool preventNullSelection = false, bool initializeDefaultCollectionView =true)
+            : base(preventChangingSelectionWhenChanges, preventNullSelection, initializeDefaultCollectionView)
         {
             ManyRelationships = manyRelationships;
 

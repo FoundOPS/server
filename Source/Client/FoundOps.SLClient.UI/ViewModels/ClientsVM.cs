@@ -1,4 +1,5 @@
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
@@ -34,7 +35,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
-        public Action<string, AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #region Implementation of IAddToDeleteFromDestination
 
@@ -107,26 +108,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty))
                 .ToProperty(this, x => x.SelectedClientOwnedBusinessVM);
 
-            var serialDisposable = new SerialDisposable();
-
-            //Whenever the client name changes update the default location name
-            //There is a default location as long as there is only one location
-            SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Subscribe(selectedClient =>
-            {
-                serialDisposable.Disposable = Observable2.FromPropertyChangedPattern(selectedClient, x => x.DisplayName)
-                    .Subscribe(displayName =>
-                    {
-                        var defaultLocation = selectedClient.OwnedParty.Locations.Count == 1
-                                                  ? selectedClient.OwnedParty.Locations.First()
-                                                  : null;
-
-                        if (defaultLocation == null) return;
-                        defaultLocation.Name = displayName;
-                    });
-            });
-
-            ManuallyUpdateSuggestions = (searchText, autoCompleteBox) =>
-                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchClientsForRoleQuery(Manager.Context.RoleId, searchText));
+            ManuallyUpdateSuggestions = autoCompleteBox =>
+                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchClientsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
 
             #region Implementation of IAddToDeleteFromDestination<Location>
 
@@ -230,15 +213,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             var currentLocation = ContextManager.GetContext<Location>();
             if (currentLocation != null)
                 newClient.OwnedParty.OwnedLocations.Add(currentLocation);
-        }
-
-        protected override void OnDeleteEntity(Client entityToDelete)
-        {
-            //TODO remove Client's EntityGraphToRemove when DBOptimization is merged
-            var clientEntitiesToRemove = entityToDelete.EntityGraphToRemove;
-            DataManager.RemoveEntities(clientEntitiesToRemove);
-
-            QueryableCollectionView.Remove(entityToDelete);
         }
 
         #endregion

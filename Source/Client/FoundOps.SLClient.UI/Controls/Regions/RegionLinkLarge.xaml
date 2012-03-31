@@ -8,8 +8,7 @@
             <toolkit:Expander.Header>
                 <TextBlock Text="Region" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
             </toolkit:Expander.Header>
-            <sdk:AutoCompleteBox x:Name="RegionsAutoCompleteBox"  Margin="5,3,5,3" MinWidth="100" MinimumPopulateDelay="200" MinimumPrefixLength="0"
-                                 ValueMemberPath="Name" Populating="RegionsAutoCompleteBox_OnPopulating"
+            <sdk:AutoCompleteBox x:Name="RegionsAutoCompleteBox"  Margin="5,3,5,3" MinWidth="100" ValueMemberPath="Name"
                                  SelectedItem="{Binding SelectedRegion, Mode=TwoWay, ElementName=myRegionLinkLarge}">
                 <sdk:AutoCompleteBox.ItemTemplate>
                     <DataTemplate>

@@ -11,9 +11,7 @@
                 <TextBlock Text="User Account" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource PermissionBrush}" />
             </toolkit:Expander.Header>
             <sdk:AutoCompleteBox x:Name="UserAccountsAutoCompleteBox" Margin="5,3,5,3" Foreground="Black" MinWidth="100"
-                                 MinimumPopulateDelay="200" MinimumPrefixLength="0" ValueMemberPath="DisplayName" 
-                                 Populating="UserAccountsAutoCompleteBox_OnPopulating" 
-                                 SelectedItem="{Binding SelectedUserAccount, Mode=TwoWay, ElementName=myUserAccountLinkLarge}">
+                                 ValueMemberPath="DisplayName" SelectedItem="{Binding SelectedUserAccount, Mode=TwoWay, ElementName=myUserAccountLinkLarge}">
                 <sdk:AutoCompleteBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding DisplayName}"/>
