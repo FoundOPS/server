@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
+using System.Threading.Tasks;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
-using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -26,13 +28,29 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Public Properties
 
         private readonly Subject<IEnumerable<ServiceTemplate>> _serviceTemplatesForContext = new Subject<IEnumerable<ServiceTemplate>>();
+
         private ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _serviceTemplatesForContextHelper;
+
         /// <summary>
         /// This is for use by the ServiceProvider blocks. The QueryableCollectionView is used by the FoundOPS admin console.
         /// In the future these VMs should probably be split up.
         /// This will return the ClientContext's ServiceTemplates or the ServiceProvider's ServiceTemplates.
         /// </summary>
         public IEnumerable<ServiceTemplate> ServiceTemplatesForContext { get { return _serviceTemplatesForContextHelper.Value; } }
+
+        private ObservableAsPropertyHelper<IEnumerable<ServiceTemplate>> _additionalServiceTemplatesForClientHelper;
+        /// <summary>
+        /// This is for use by the AvailableServices part of Clients. 
+        /// It will return the ServiceProviders ServiceTemplates that the current client context does not have yet.
+        /// </summary>
+        public IEnumerable<ServiceTemplate> AdditionalServiceTemplatesForClient { get { return _additionalServiceTemplatesForClientHelper.Value; } }
+
+        private Subject<bool> _clientServiceTemplatesLoadingSubject = new Subject<bool>();
+        private ObservableAsPropertyHelper<bool> _clientServiceTemplatesLoadingHelper;
+        /// <summary>
+        /// A bool for whether the ClientContext's ServiceTemplates are loading.
+        /// </summary>
+        public bool ClientServiceTemplatesLoading { get { return _clientServiceTemplatesLoadingHelper.Value; } }
 
         #region Implementation of IAddToDeleteFromSource<ServiceTemplate>
 
@@ -56,7 +74,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public ServiceTemplatesVM()
-            : base(new[] { typeof(BusinessAccount), typeof(Client) }, true, true)
+            : base(new[] { typeof(BusinessAccount) }, true, true)
         {
             SetupDataLoading();
 
@@ -130,20 +148,55 @@ namespace FoundOps.SLClient.UI.ViewModels
                 _serviceTemplatesForContext.OnNext(clientContext == null ? ContextManager.CurrentServiceTemplates : clientContext.ServiceTemplates);
             });
 
-            LoadOperation<ServiceTemplate> clientServiceTemplatesLoadOperation = null;
+            //Setup AdditionalServiceTemplatesForClient
+            var additionalServiceTemplatesForClient = ContextManager.GetContextObservable<Client>()
+                .SelectLatest(clientContext =>
+                {
+                    if (clientContext == null)
+                        return Observable.Empty<IEnumerable<ServiceTemplate>>();
+
+                    //Whenever the clientContext's service templates change and when the ServiceProvider's ServiceTemplates change
+                    //update what are the remaining service templates for the client
+                    var updateAdditionalServiceTemplates = clientContext.ServiceTemplates.FromCollectionChangedAndNow().AsGeneric()
+                        .Merge(ContextManager.CurrentServiceTemplatesObservable.AsGeneric()).Throttle(TimeSpan.FromMilliseconds(100))
+                        .ObserveOnDispatcher();
+
+                    return updateAdditionalServiceTemplates.Select(_ =>
+                    {
+                        //Remove already existing ServiceTemplates
+                        var availableServiceTemplatesForClient = ContextManager.CurrentServiceTemplates.Where(spst => !clientContext.ServiceTemplates.Any(cst => cst.OwnerServiceTemplateId == spst.Id));
+
+                        return availableServiceTemplatesForClient.ToArray();
+                    });
+                });
+
+            _additionalServiceTemplatesForClientHelper = additionalServiceTemplatesForClient.ToProperty(this, x => x.AdditionalServiceTemplatesForClient);
+
+
             //Whenever the ClientContext changes load the it's ServiceTemplates with details
-            ContextManager.GetContextObservable<Client>().Where(c => c != null).Subscribe(client =>
+
+            //Setup loading property helper
+            _clientServiceTemplatesLoadingHelper = _clientServiceTemplatesLoadingSubject.ToProperty(this, x => x.ClientServiceTemplatesLoading);
+            var cancelLastClientServiceTemplatesLoad = new Subject<bool>();
+
+            ContextManager.GetContextObservable<Client>().Where(c => c != null).ObserveOnDispatcher().Subscribe(client =>
             {
-                //Cancel the last load
-                if (clientServiceTemplatesLoadOperation != null && clientServiceTemplatesLoadOperation.CanCancel)
-                    clientServiceTemplatesLoadOperation.Cancel();
+                cancelLastClientServiceTemplatesLoad.OnNext(true);
 
                 //Do not try to load ServiceTemplates for a Client that does not exist yet
                 if (client.EntityState == EntityState.New)
                     return;
 
-                var query = DomainContext.GetClientServiceTemplatesQuery(ContextManager.RoleId, client.Id);
-                clientServiceTemplatesLoadOperation = DomainContext.Load(query);
+                //Notify loading
+                _clientServiceTemplatesLoadingSubject.OnNext(true);
+
+                DomainContext.LoadAsync(DomainContext.GetClientServiceTemplatesQuery(ContextManager.RoleId, client.Id), cancelLastClientServiceTemplatesLoad)
+                .ContinueWith(result =>
+                {
+                    if (!result.IsCanceled)
+                        _clientServiceTemplatesLoadingSubject.OnNext(false);
+
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             });
 
             #endregion
@@ -152,14 +205,16 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             SetupContextDataLoading(roleId =>
             {
-                //Only load service templates of the current level
-
-                var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
                 //If the current role is not a FoundOPS role do not load anything
                 //because the current ServiceProvider's service templates are automatically loaded
-                if (businessAccountContext == null || ContextManager.OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
+                if (ContextManager.OwnerAccount == null || ContextManager.OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
                     return null;
 
+                //Only load service templates of the current level
+                var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
+
+                if (businessAccountContext == null)
+                    return null;
                 var serviceTemplateLevel = businessAccountContext.Id == BusinessAccountsConstants.FoundOpsId
                                                ? (int)ServiceTemplateLevel.FoundOpsDefined
                                                : (int)ServiceTemplateLevel.ServiceProviderDefined;
@@ -176,11 +231,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             SetupDetailsLoading(selectedEntity =>
             {
-                var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
                 //If the current role is not a FoundOPS role do not load anything
                 //because the current ServiceProvider's service templates are automatically loaded
-                if (businessAccountContext == null ||
-                    ContextManager.OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
+                if (ContextManager.OwnerAccount == null || ContextManager.OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
                     return null;
 
                 return DomainContext.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id);
@@ -226,7 +279,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             //When this is completed it will call this method
             Action<ServiceTemplate> completed = childServiceTemplate =>
             {
-                NavigateToThis();
+                //If this is in the FoundOPS admin console
+                if (ContextManager.GetContext<BusinessAccount>() != null)
+                    NavigateToThis();
+
                 SelectedEntity = childServiceTemplate;
                 if (callback != null)
                     callback(childServiceTemplate);

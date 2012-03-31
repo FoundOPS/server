@@ -123,7 +123,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             DomainContext.ChangesRejected += (sender, rejectedAddedEntities, rejectedModifiedEntities) =>
             {
                 var tasksToReturnToTaskBoard = rejectedAddedEntities.OfType<RouteTask>();
-                ((ObservableCollection<TaskHolder>)SourceCollection).AddRange(tasksToReturnToTaskBoard.Select(rt => rt.ParentRouteTaskHolder));
+                if (SourceCollection as ObservableCollection<TaskHolder> != null)
+                    ((ObservableCollection<TaskHolder>)SourceCollection).AddRange(tasksToReturnToTaskBoard.Select(rt => rt.ParentRouteTaskHolder));
             };
 
             #endregion

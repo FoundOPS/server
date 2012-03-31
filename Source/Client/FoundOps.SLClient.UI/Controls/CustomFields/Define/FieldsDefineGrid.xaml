@@ -40,7 +40,7 @@
     </UserControl.Resources>
     <telerik:RadTreeListView x:Name="FieldDefineTreeListView"  AutoGenerateColumns="False" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" 
                              RowIndicatorVisibility="Collapsed" SelectionMode="Single" RowDetailsTemplateSelector="{StaticResource FieldDataTemplateSelector}" 
-                             SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}">
+                             SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding CollectionView}">
         <telerik:RadTreeListView.Columns>
             <telerik:GridViewDataColumn Header="Type">
                 <telerik:GridViewColumn.CellTemplate>
