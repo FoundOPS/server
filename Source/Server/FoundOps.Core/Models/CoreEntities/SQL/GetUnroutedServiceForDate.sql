@@ -262,8 +262,117 @@ BEGIN
 							WHERE	RecurringServiceId = t1.Id
 							)
 
-	INSERT @ServicesTableToReturn (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude)
+	DECLARE @ServicesForDateTable TABLE
+		(
+			RecurringServiceId uniqueidentifier,
+			ServiceId uniqueidentifier,
+			OccurDate date,
+			ServiceName nvarchar(max),
+			ClientName nvarchar(max),
+			ClientId uniqueidentifier,
+			RegionName nvarchar(max),
+			LocationName nvarchar(max),
+			LocationId uniqueidentifier,
+			AddressLine nvarchar(max),
+			Latitude decimal(18,8),
+			Longitude decimal(18,8)
+		) 
+
+	--This will be a complete table of all services that should have been scheduled for the date provided
+	--This does not take into account dates that have been excluded
+	INSERT @ServicesForDateTable (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude)
 	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude FROM @UnroutedServices
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--Now that we have all the services that would have been on the date provided, we will take ExcludedDates into account
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	--Table will hold all Ids and ExcludedDatesStrings
+	--Only those RecurringServices that have been scheduled for the date provided and have an ExcludedDatesString will appear
+	DECLARE @RecurringServicesWithExcludedDates TABLE
+	(
+		Id uniqueidentifier,
+		ExcludedDatesString nvarchar(max)
+	)
+
+	INSERT INTO @RecurringServicesWithExcludedDates
+	SELECT t1.Id, t1.ExcludedDatesString FROM RecurringServices t1, @ServicesForDateTable t2
+	WHERE t1.Id = t2.RecurringServiceId AND t1.ExcludedDatesString IS NOT NULL
+
+	DECLARE @RecurringServicesWithExcludedDatesSplit TABLE
+	(
+		Id uniqueidentifier,
+		ExcludedDate nvarchar(max)
+	)
+
+	DECLARE @RowCount int --Row count for @RecurringServicesWithExcludedDates (We delete from this table as we input into @RecurringServicesWithExcludedDatesSplit)
+	DECLARE @RowId  uniqueidentifier --RecurringServiceId of the current row
+	DECLARE @RowExcludedDateString nvarchar(max) --ExcludedDatesString for the current row
+
+	SET @RowCount = (SELECT COUNT(*) FROM @RecurringServicesWithExcludedDates)
+
+	WHILE @RowCount > 0
+	BEGIN 
+		SET @RowId = (SELECT TOP(1) Id FROM @RecurringServicesWithExcludedDates ORDER BY Id) --Find the RowId of the top row sorted by Id
+		SET @RowExcludedDateString = (SELECT ExcludedDatesString FROM @RecurringServicesWithExcludedDates WHERE Id = @RowId) --Find the ExcludedDatesString of the top row found above
+
+		--Converts the ExcludedDateString to a Table(See example below for more information)
+		/****************************************************************************************************************************************************
+		* FUNCTION Split will convert the comma separated string of dates ()
+		** Input Parameters **
+		* @Id - RecurringServiceId
+		* @sInputList - List of delimited ExcludedDates
+		* @sDelimiter - -- Delimiter that separates ExcludedDates
+		** Output Parameters: **
+		*  @List TABLE (Id uniqueidentifier, ExcludedDate VARCHAR(8000)) - Ex. below
+		* Id                                     | ExcludedDate
+		* -----------------------------------------------------------------------------------------
+		* {036BD670-39A5-478F-BFA3-AD312E3F7F47} | 1/1/2012
+		* {B30A43AD-655A-449C-BD4E-951F8F988718} | 1/1/2012
+		* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | 1/2/2012
+		***************************************************************************************************************************************************/
+		INSERT INTO @RecurringServicesWithExcludedDatesSplit
+		SELECT * FROM [dbo].[Split] (
+								@RowId,
+								@RowExcludedDateString,
+								','
+								)
+		
+		--Now that we have converted this row, remove it from @RecurringServicesWithExcludedDates
+		DELETE FROM @RecurringServicesWithExcludedDates
+		WHERE Id = @RowId
+
+		--Reset @RowCount for the loop condition
+		SET @RowCount = (SELECT COUNT(*) FROM @RecurringServicesWithExcludedDates)
+	END
+
+	--Table that will hold all information about Services that have been excluded
+	DECLARE @SevicesThatHaveBeenExcluded TABLE
+		(
+			RecurringServiceId uniqueidentifier,
+			ServiceId uniqueidentifier,
+			OccurDate date,
+			ServiceName nvarchar(max),
+			ClientName nvarchar(max),
+			ClientId uniqueidentifier,
+			RegionName nvarchar(max),
+			LocationName nvarchar(max),
+			LocationId uniqueidentifier,
+			AddressLine nvarchar(max),
+			Latitude decimal(18,8),
+			Longitude decimal(18,8)
+		) 
+
+	--Find all ExcludedServices from @ServicesForDateTable
+	INSERT INTO @SevicesThatHaveBeenExcluded
+	SELECT t1.* FROM @ServicesForDateTable t1, @RecurringServicesWithExcludedDatesSplit t2
+	WHERE t1.RecurringServiceId = t2.Id AND t1.OccurDate = t2.ExcludedDate
+
+	--Add all services that have not been excluded to the output table
+	INSERT INTO @ServicesTableToReturn
+	SELECT * FROM @ServicesForDateTable
+	EXCEPT
+	SELECT * FROM @SevicesThatHaveBeenExcluded
 
 RETURN 
 END
