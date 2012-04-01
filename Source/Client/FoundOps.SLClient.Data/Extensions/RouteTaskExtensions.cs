@@ -76,6 +76,7 @@ namespace FoundOps.Core.Models.CoreEntities
             var taskHolder = new TaskHolder
             {
                 ClientId = ClientId,
+                ChildRouteTask = this,
                 OccurDate = Date,
                 LocationId = Location.Id,
                 LocationName = LocationName,

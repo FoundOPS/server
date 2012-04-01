@@ -71,7 +71,7 @@ namespace FoundOps.SLClient.Data.Tools
                     //Add the nextRouteTaskToAdd to the organized list and remove it from the unorganized list
                     unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
 
-                    var routeTask = TaskHolder.ConvertToRouteTask(nextTaskHolderToAdd);
+                    var routeTask = nextTaskHolderToAdd.ChildRouteTask;
                     organizedRouteTasks.Add(routeTask);
 
                     lastLatLon = new GeoLocation

@@ -52,6 +52,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         /// </summary>
         public struct ErrorConstants
         {
+            public static string CannotDropHere = "Invalid Drop Location";
+
             public const string DifferentService = "Items Selected Have Different Services";
         }
 
@@ -159,7 +161,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (CheckSourceForHeaderCell(e.Options.Source))
                 return;
 
-            var draggedItems = e.Options.Payload as IEnumerable;
+            var draggedTaskHolders = e.Options.Payload as IEnumerable;
+
+            var draggedItems = (from object draggedItem in draggedTaskHolders
+                                select ((TaskHolder)draggedItem).ChildRouteTask).ToList();
 
             if (draggedItems == null) return;
 
@@ -186,7 +191,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                 #endregion
 
-                draggedItems = draggedItems as IEnumerable<object>;
+                //draggedItems = draggedItems as IEnumerable<object>;
 
                 foreach (var draggedItem in draggedItems)
                     AddToRouteRemoveFromTaskBoard(draggedItem, destination, dropPlacement, placeInRoute);
@@ -217,16 +222,17 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             var destination = destinationCheck.DataContext;
 
             //Collection of dragged items
-            var payloadCollection = (IEnumerable<object>)e.Options.Payload;
+            var payloadCollection = ((IEnumerable<object>)e.Options.Payload).Select(o => ((TaskHolder)o).ChildRouteTask).ToArray();
 
             //The first item, used in various checks to be sure that all dragged items have the same service, location, etc.
-            var payloadCheck = (RouteTask)(payloadCollection.FirstOrDefault());
+            var payloadCheck = payloadCollection.First();
+
 
             #region Setting Drag Cue off Different Conditions
 
             #region Check For Multiple Tasks Being Dragged
 
-            var routeTasks = draggedItems.OfType<RouteTask>();
+            var routeTasks = draggedItems.OfType<RouteTask>().ToArray();
 
             if (routeTasks.Count() > 1)
             {
@@ -243,6 +249,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             if (destination == null)
                 return "";
+
+            if (!(destination is Route) && !(destination is RouteDestination) && !(destination is RouteTask))
+                return ErrorConstants.CannotDropHere;
 
             #region Drag Destination is RouteTask
 
