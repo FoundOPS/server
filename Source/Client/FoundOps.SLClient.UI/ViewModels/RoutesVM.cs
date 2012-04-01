@@ -527,6 +527,15 @@ namespace FoundOps.SLClient.UI.ViewModels
             this.DomainContext.RouteDestinations.Remove(routeDestination);
         }
 
+        /// <summary>
+        /// Exposes a method to delete a route task.
+        /// </summary>
+        /// <param name="routeTask">The route task to delete.</param>
+        public void DeleteRouteTask(RouteTask routeTask)
+        {
+            this.DomainContext.RouteTasks.Remove(routeTask);
+        }
+
         #endregion
 
         #endregion
