@@ -26,6 +26,21 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
+        private RouteTask _childRouteTask;
+        /// <summary>
+        /// This is the link to the child RouteTask.
+        /// It will have a value if this was recently generated.
+        /// </summary>
+        public RouteTask ChildRouteTask
+        {
+            get { return _childRouteTask; }
+            set
+            {
+                _childRouteTask = value;
+                this.RaisePropertyChanged("ChildRouteTask");
+            }
+        }
+
         #endregion
 
         //if (ParentRouteTaskHolder == null)
@@ -78,26 +93,24 @@ namespace FoundOps.Core.Models.CoreEntities
         #region Public Methods
 
         /// <summary>
-        /// Takes a TaskHolder and creates a RouteTask.
+        /// Creates the route task.
         /// </summary>
-        /// <param name="taskHolder">The parent taskHolder</param>
-        /// <returns>The new RouteTask.</returns>
-        public static RouteTask ConvertToRouteTask(TaskHolder taskHolder)
+        public void CreateRouteTask()
         {
             var routedTask = new RouteTask
             {
                 Id = Guid.NewGuid(),
                 BusinessAccountId = Manager.Context.OwnerAccount.Id,
-                ClientId = taskHolder.ClientId,
-                Date = taskHolder.OccurDate,
-                LocationId = taskHolder.LocationId,
-                Name = taskHolder.ServiceName,
-                ParentRouteTaskHolder = taskHolder,
-                ServiceId = taskHolder.ServiceId,
-                RecurringServiceId = taskHolder.RecurringServiceId
+                ClientId = ClientId,
+                Date = OccurDate,
+                LocationId = LocationId,
+                Name = ServiceName,
+                ParentRouteTaskHolder = this,
+                ServiceId = ServiceId,
+                RecurringServiceId = RecurringServiceId
             };
 
-            return routedTask;
+            this.ChildRouteTask = routedTask;
         }
 
         #endregion

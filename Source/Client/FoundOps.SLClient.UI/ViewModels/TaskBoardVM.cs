@@ -114,6 +114,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                         //Detach all TaskHolders so that changes are not tracked
                         DataManager.DetachEntities(task.Result.ToArray());
 
+                        foreach (var taskHolder in task.Result.ToArray())
+                            taskHolder.CreateRouteTask();
+
                         ViewObservable.OnNext(new DomainCollectionViewFactory<TaskHolder>(task.Result.ToObservableCollection()).View);
                     },
                     TaskScheduler.FromCurrentSynchronizationContext());

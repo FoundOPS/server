@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
@@ -59,10 +60,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
         private void RouteTreeViewLoaded(object sender, RoutedEventArgs e)
         {
-            //RadDragAndDropManager.AddDragQueryHandler(RoutesListBox, OnDragQuery);
-            //RadDragAndDropManager.AddDropQueryHandler(RoutesListBox, OnDropQuery);
-            //RadDragAndDropManager.AddDragInfoHandler(RoutesListBox, OnDragInfo);
-            //RadDragAndDropManager.AddDragInfoHandler(RoutesListBox, OnDropInfo);
+            RadDragAndDropManager.AddDragQueryHandler(RoutesListBox, OnDragQuery);
+            RadDragAndDropManager.AddDropQueryHandler(RoutesListBox, OnDropQuery);
+            RadDragAndDropManager.AddDragInfoHandler(RoutesListBox, OnDragInfo);
+            RadDragAndDropManager.AddDragInfoHandler(RoutesListBox, OnDropInfo);
         }
 
         /// <summary>
@@ -320,14 +321,14 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// <param name="draggedItem">The dragged item.</param>
         private void AddToTaskBoard(object draggedItem)
         {
-            ////If the draggedItem is a RouteDestination, add all its RouteTasks to the TaskBoard
-            //if (draggedItem is RouteDestination)
-            //    foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
-            //        VM.Routes.UnroutedTasks.Add(task);
+            //If the draggedItem is a RouteDestination, add all its RouteTasks to the TaskBoard
+            if (draggedItem is RouteDestination)
+                foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
+                    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(task.ParentRouteTaskHolder);
 
-            ////Id the draggedItem is a RouteTask, simply add it to the TaskBoard
-            //if (draggedItem is RouteTask)
-            //    VM.Routes.UnroutedTasks.Add((RouteTask)draggedItem);
+            //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
+            if (draggedItem is RouteTask)
+                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(((RouteTask)draggedItem).ParentRouteTaskHolder);
         }
 
         /// <summary>
