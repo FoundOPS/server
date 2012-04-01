@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -74,13 +75,13 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             this.DependentWhenVisible(RoutesVM);
             this.DependentWhenVisible(RegionsVM);
 
-            //RadDragAndDropManager.AddDragQueryHandler(this.TaskBoard, OnDragQuery);
-            //RadDragAndDropManager.AddDropQueryHandler(this.TaskBoard, OnDropQuery);
-            //RadDragAndDropManager.AddDragInfoHandler(this.TaskBoard, OnDragInfo);
-            //RadDragAndDropManager.AddDropInfoHandler(this.TaskBoard, OnDropInfo);
+            RadDragAndDropManager.AddDragQueryHandler(this.TaskBoard, OnDragQuery);
+            RadDragAndDropManager.AddDropQueryHandler(this.TaskBoard, OnDropQuery);
+            RadDragAndDropManager.AddDragInfoHandler(this.TaskBoard, OnDragInfo);
+            RadDragAndDropManager.AddDropInfoHandler(this.TaskBoard, OnDropInfo);
 
-            //RadDragAndDropManager.SetAllowDrag(this.TaskBoard, true);
-            //RadDragAndDropManager.SetAllowDrop(this.TaskBoard, true);
+            RadDragAndDropManager.SetAllowDrag(this.TaskBoard, true);
+            RadDragAndDropManager.SetAllowDrop(this.TaskBoard, true);
 
             //Whenever a route, route destination, or task is selected select the appropriate details pane
             this.RoutesVM.FromAnyPropertyChanged()
@@ -90,6 +91,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 {
                     switch (pe.PropertyName)
                     {
+                        #region Cases
+
                         case "SelectedEntity":
                             DestinationDetailsPane.IsSelected = false;
                             TaskDetailsPane.IsSelected = false;
@@ -123,6 +126,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                                 TaskDetailsPane.IsSelected = true;
                             }
                             break;
+
+                        #endregion
                     }
                 });
         }
@@ -353,7 +358,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             DragDropTools.AddRouteTaskToRoute(routeTask, destination, placeInRoute, dropPlacement);
 
             //Remove the RouteTask from the TaskBoard
-            //VM.Routes.UnroutedTasks.Remove((RouteTask)draggedItem);
+            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(((RouteTask)draggedItem).ParentRouteTaskHolder);
 
         }
 
