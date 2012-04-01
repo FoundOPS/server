@@ -12,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel.DomainServices.Server;
 using System.ServiceModel.DomainServices.EntityFramework;
-using System.Threading;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {

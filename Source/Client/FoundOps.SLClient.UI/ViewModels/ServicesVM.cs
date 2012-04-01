@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
@@ -59,6 +60,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 ((ObservableCollection<ServiceHolder>)SourceCollection).RemoveAll(sh => sh.ServiceIsNew && sh.Service.EntityState == EntityState.Detached);
             };
+
+            //Can only delete if the Details are loaded (because it might need the RecurringService parent)
+            SelectedEntityObservable.WhereNotNull().SelectLatest(se => se.FromPropertyChanged("DetailsLoaded").Select(_ => se.DetailsLoaded)).Subscribe(CanDeleteSubject);
         }
 
         #region Data Loading
@@ -284,8 +288,16 @@ namespace FoundOps.SLClient.UI.ViewModels
                         break;
                 }
 
-                //Update the CollectionViewObservable with the new loaded ServiceHolders
-                ViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(task.Result.ToObservableCollection()).View);
+                //Detach the ServiceHolders so they can be edited
+                DataManager.DetachEntities(task.Result);
+
+                #region Update the CollectionViewObservable with the new loaded ServiceHolders
+
+                var loadedServiceHolders = task.Result.ToObservableCollection();
+
+                ViewObservable.OnNext(new DomainCollectionViewFactory<ServiceHolder>(loadedServiceHolders).View);
+
+                #endregion
 
                 LastLoad = DateTime.Now;
 
@@ -307,6 +319,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (!CanMoveBackward || IsLoading)
                 return;
 
+            //Do not move back or forward if the SelectedEntity has changes 
+            if (SelectedEntity != null && SelectedEntity.HasChanges)
+                return;
+
             LoadServiceHolders(ServiceHoldersLoad.Backwards);
         }
 
@@ -317,6 +333,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Return if this cannot move forwards or if this is loading ServiceHolders
             if (!CanMoveForward || IsLoading)
+                return;
+
+            //Do not move back or forward if the SelectedEntity has changes 
+            if (SelectedEntity != null && SelectedEntity.HasChanges)
                 return;
 
             LoadServiceHolders(ServiceHoldersLoad.Forwards);
@@ -332,12 +352,44 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Add Delete Entities
 
+        /// <summary>
+        /// Cannot add if this has unsaved changes.
+        /// </summary>
+        protected override void CheckAdd(Action<bool> addNewItem)
+        {
+            if (!DomainContextHasRelatedChanges())
+            {
+                addNewItem(true);
+                return;
+            }
+            
+            //Disable selected entity save discard prompts
+            DisableSelectedEntitySaveDiscardCancel = true;
+
+            //After save or discard: checkCompleted(true);
+            Action afterSaveDiscard = () =>
+            {
+                addNewItem(true);
+                DisableSelectedEntitySaveDiscardCancel = false;
+            };
+
+            //Move back to the old value
+            Action moveToOldValue = () =>
+            {
+                ((ICollectionView)EditableCollectionView).MoveCurrentTo(SelectedEntity);
+                addNewItem(false);
+            };
+
+            //Call SaveDiscardCancelPrompt
+            DataManager.SaveDiscardCancelPrompt(afterSave: afterSaveDiscard, afterDiscard: afterSaveDiscard, afterCancel: moveToOldValue);
+        }
+
         protected override ServiceHolder AddNewEntity(object commandParameter)
         {
             if (Collection == null)
                 return null;
 
-            var newService = new Service { ServiceDate = DateTime.Now };
+            var newService = new Service { Id = Guid.NewGuid(), ServiceDate = DateTime.Now };
 
             //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)
             var parentServiceTemplate = (ServiceTemplate)commandParameter;
@@ -355,26 +407,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Add the new service to a service holder
             var serviceHolder = new ServiceHolder(newService);
-
-            //TODO: Find the proper place to insert the new ServiceHolder
-            //TODO move when occure date changes
             ((ObservableCollection<ServiceHolder>)SourceCollection).Add(serviceHolder);
-
-            DomainContext.Services.Add(newService);
 
             return serviceHolder;
         }
-
-        //protected override void OnAddEntity(Service newEntity)
-        //{
-        //    newEntity.ServiceIsNew = true;
-
-        //    var clientContext = ContextManager.GetContext<Client>();
-        //    if (clientContext != null)
-        //        newEntity.Client = clientContext;
-
-        //    newEntity.TrackChanges();
-        //}
 
         protected override void EntityAdded()
         {
@@ -385,21 +421,25 @@ namespace FoundOps.SLClient.UI.ViewModels
                 this.MoveToDetailsView.Execute(null);
         }
 
-        //protected override void OnDeleteEntity(Service entityToDelete)
-        //{
-        //    //Must do this manually because even though it is removed fromt the DCV, the DCV is not backed by a EntityList
-        //    if (!entityToDelete.Generated)
-        //        DomainContext.Services.Remove(entityToDelete);
+        public override void DeleteEntity(ServiceHolder entityToDelete)
+        {
+            //If the entityToDelete has a ParentRecurringService add it's ServiceDate 
+            //to the ParentRecurringService's ExcludedDates so that it does not get regenerated
+            var recurringServiceParent = entityToDelete.Service.RecurringServiceParent;
+            if (recurringServiceParent != null)
+            {
+                var newExcludedDates = recurringServiceParent.ExcludedDates.ToList();
+                newExcludedDates.Add(entityToDelete.OccurDate);
+                recurringServiceParent.ExcludedDates = newExcludedDates;
+            }
 
-        //    //If the entityToDelete has a ParentRecurringService
-        //    //add it's ServiceDate to the ParentRecurringService's ExcludedDates so that it does not get regenerated)
-        //    if (entityToDelete.RecurringServiceParent != null)
-        //    {
-        //        var newExcludedDates = entityToDelete.RecurringServiceParent.ExcludedDates.ToList();
-        //        newExcludedDates.Add(entityToDelete.ServiceDate);
-        //        entityToDelete.RecurringServiceParent.ExcludedDates = newExcludedDates;
-        //    }
-        //}
+            //If the Service is part of the DomainContext, remove it
+            if (DomainContext.Services.Contains(entityToDelete.Service))
+                DomainContext.Services.Remove(entityToDelete.Service);
+
+            //Remove the ServiceHolder from the CollectionView
+            ((ObservableCollection<ServiceHolder>)SourceCollection).Remove(entityToDelete);
+        }
 
         #endregion
 
@@ -415,6 +455,14 @@ namespace FoundOps.SLClient.UI.ViewModels
                 newValue.IsSelected = true;
 
             return true;
+        }
+
+        /// <summary>
+        /// Override DomainContextHasRelatedChanges so it considers the updated HasChanges of the ServiceHolder.
+        /// </summary>
+        protected override bool DomainContextHasRelatedChanges()
+        {
+            return SelectedEntity != null && SelectedEntity.HasChanges;
         }
 
         #endregion

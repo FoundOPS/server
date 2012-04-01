@@ -192,6 +192,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             AddNewItemEmployee = name =>
             {
+                if (Route == null)
+                    return null;
+
                 var newEmployee = VM.Employees.CreateNewItem(name);
                 Route.Technicians.Add(newEmployee);
                 return newEmployee;
@@ -199,11 +202,17 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             AddExistingItemEmployee = existingItem =>
             {
+                if (Route == null)
+                    return;
+
                 if (!Route.Technicians.Contains(existingItem))
                     Route.Technicians.Add(existingItem);
             };
             RemoveItemEmployee = () =>
             {
+                if (Route == null)
+                    return null;
+
                 var employeeToRemove = SelectedEmployee;
 
                 //foreach (Employee t in EmployeesDestinationItemsSource)
@@ -219,6 +228,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             DeleteItemEmployee = () =>
             {
+                if (Route == null)
+                    return null;
+
                 var employeeToDelete = SelectedEmployee;
                 this.Route.Technicians.Remove(employeeToDelete);
                 VM.Employees.DeleteEntity(employeeToDelete);
@@ -231,6 +243,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             AddNewItemVehicle = name =>
             {
+                if (Route == null)
+                    return null;
+
                 var newVehicle = VM.Vehicles.CreateNewItem(name);
                 this.Route.Vehicles.Add(newVehicle);
                 return newVehicle;
@@ -238,12 +253,18 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             AddExistingItemVehicle = existingItem =>
             {
+                if (Route == null)
+                    return;
+
                 if (!Route.Vehicles.Contains(existingItem))
                     Route.Vehicles.Add(existingItem);
             };
 
             RemoveItemVehicle = () =>
             {
+                if (Route == null)
+                    return null;
+
                 var vehicleToRemove = SelectedVehicle;
                 this.Route.Vehicles.Remove(vehicleToRemove);
                 return vehicleToRemove;
@@ -251,6 +272,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             DeleteItemVehicle = () =>
             {
+                if (Route == null)
+                    return null;
+
                 var selectedVehicle = RemoveItemVehicle();
                 this.Route.Vehicles.Remove(selectedVehicle);
                 VM.Vehicles.DeleteEntity(selectedVehicle);

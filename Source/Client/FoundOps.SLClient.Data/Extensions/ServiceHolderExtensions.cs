@@ -63,18 +63,33 @@ namespace FoundOps.Core.Models.CoreEntities
             get
             {
                 //The ExistingServiceId will only have a value when there is an existing service.
-                return !ExistingServiceId.HasValue;
+                return !ExistingServiceId.HasValue && RecurringServiceId.HasValue;
             }
         }
 
         /// <summary>
-        /// Whether or not this Service is new (and not generated from a ServiceHolder).
+        /// Whether or not this Service is new.
+        /// This is only true for new Services that are not generated from a ServiceHolder.
         /// </summary>
         public bool ServiceIsNew
         {
             get
             {
                 return !ExistingServiceId.HasValue && !RecurringServiceId.HasValue;
+            }
+        }
+
+        /// <summary>
+        /// Override HasChanges.
+        /// </summary>
+        public new bool HasChanges
+        {
+            //If the ServiceIsNew or if the Service has changes return true
+            get
+            {
+                return ServiceIsNew ||
+                       (_entityGraph != null &&
+                        _entityGraph.Any(e => e.EntityState == EntityState.Modified || e.EntityState == EntityState.New || e.EntityState == EntityState.Deleted));
             }
         }
 
@@ -111,6 +126,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             Service = newService;
             OccurDate = newService.ServiceDate;
+            ServiceName = newService.ServiceTemplate.Name;
 
             //Keep the OccurDate updated with the ServiceDate
             Observable2.FromPropertyChangedPattern(newService, x => x.ServiceDate).ObserveOnDispatcher()
@@ -137,7 +153,7 @@ namespace FoundOps.Core.Models.CoreEntities
         public void LoadDetails(Subject<bool> cancelDetailsLoad, Action loadedCallback = null)
         {
             //If this is a new service return (the details are already loaded)
-            if(!ServiceId.HasValue && !RecurringServiceId.HasValue)
+            if (ServiceIsNew)
                 return;
 
             DetailsLoaded = false;
@@ -167,10 +183,10 @@ namespace FoundOps.Core.Models.CoreEntities
                 .ContinueWith(task =>
                 {
                     if (task.IsCanceled || !task.Result.Any()) return;
-                    DetailsLoaded = true;
                     Service = task.Result.First();
-
                     _entityGraph = this.Service.EntityGraph();
+
+                    DetailsLoaded = true;
 
                     if (loadedCallback != null)
                         loadedCallback();
@@ -186,7 +202,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 .ContinueWith(task =>
                 {
                     if (task.IsCanceled || !task.Result.Any()) return;
-                    DetailsLoaded = true;
 
                     var recurringServiceToGenerateFrom = task.Result.First();
 
@@ -204,6 +219,7 @@ namespace FoundOps.Core.Models.CoreEntities
                     Manager.CoreDomainContext.ChangesRejected += OnRejectChangedReloadDetails;
 
                     Service = generatedService;
+                    DetailsLoaded = true;
 
                     if (loadedCallback != null)
                         loadedCallback();

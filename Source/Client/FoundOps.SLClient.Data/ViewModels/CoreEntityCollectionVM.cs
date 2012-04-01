@@ -129,9 +129,9 @@ namespace FoundOps.SLClient.Data.ViewModels
         private bool _disableSelectedEntity;
 
         /// <summary>
-        /// Used to disable SaveDiscardCancel
+        /// Used to disable the selected entity changed SaveDiscardCancel prompt.
         /// </summary>
-        public bool DisableSaveDiscardCancel;
+        public bool DisableSelectedEntitySaveDiscardCancel;
 
         private TEntity _oldValue;
         readonly ObservableAsPropertyHelper<TEntity> _selectedEntity;
@@ -155,7 +155,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                 if (!BeforeSelectedEntityChanges(_selectedEntity.Value, value))
                     return;
 
-                if (!DisableSaveDiscardCancel && _preventChangingSelectionWhenChanges)
+                if (!DisableSelectedEntitySaveDiscardCancel && _preventChangingSelectionWhenChanges)
                 {
                     //If there are changes
                     if (value != null && value != _oldValue && SelectedEntity != null && DomainContextHasRelatedChanges())
@@ -165,9 +165,9 @@ namespace FoundOps.SLClient.Data.ViewModels
                         //set the new value
                         Action selectNewValue = () =>
                         {
-                            DisableSaveDiscardCancel = true;
+                            DisableSelectedEntitySaveDiscardCancel = true;
                             SelectedEntity = value;
-                            DisableSaveDiscardCancel = false;
+                            DisableSelectedEntitySaveDiscardCancel = false;
                         };
 
                         Action customDiscardAction = () => this.DiscardCommand.Execute(null);
@@ -264,23 +264,22 @@ namespace FoundOps.SLClient.Data.ViewModels
 
             AddCommand = new ReactiveCommand(canAddCommand);
 
-            AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher()
-                .Subscribe(x =>
-            {
-                var canAdd = BeforeAdd();
-                if (!canAdd)
-                    return;
-                _disableSelectedEntity = true;
-                var newEntity = AddNewEntity(x);
-                if (newEntity == null)
-                    return;
-                IsAddingNew = true;
-                OnAddEntity(newEntity);
-                Commit();
-                EntityAdded();
-                _disableSelectedEntity = false;
-                SelectedEntity = newEntity;
-            });
+            AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(x =>
+                CheckAdd(canAdd =>
+                {
+                    if (!canAdd) return;
+
+                    _disableSelectedEntity = true;
+                    var newEntity = AddNewEntity(x);
+                    if (newEntity == null)
+                        return;
+                    IsAddingNew = true;
+                    OnAddEntity(newEntity);
+                    Commit();
+                    EntityAdded();
+                    _disableSelectedEntity = false;
+                    SelectedEntity = newEntity;
+                }));
 
             //Setup CanDelete property
             _canDelete = CanDeleteSubject.ToProperty(this, x => x.CanDelete);
@@ -298,7 +297,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                     if (!canDelete) return;
 
                     //Disable SaveDiscardCancel until saved
-                    DisableSaveDiscardCancel = true;
+                    DisableSelectedEntitySaveDiscardCancel = true;
 
                     var selectedEntity = this.SelectedEntity;
                     this.SelectedEntity = null;
@@ -388,10 +387,10 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <summary>
         /// Checks if you can delete.
         /// </summary>
-        /// <param name="checkCompleted">Call this action with the result when the check is completed.</param>
-        protected virtual void CheckDelete(Action<bool> checkCompleted)
+        /// <param name="deleteItem">Call this action with the result when the check is completed to delete the item.</param>
+        protected virtual void CheckDelete(Action<bool> deleteItem)
         {
-            checkCompleted(MessageBox.Show("Are you sure you want to delete?", "Delete?", MessageBoxButton.OKCancel) == MessageBoxResult.OK);
+            deleteItem(MessageBox.Show("Are you sure you want to delete?", "Delete?", MessageBoxButton.OKCancel) == MessageBoxResult.OK);
         }
 
         /// <summary>
@@ -451,7 +450,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         protected override void OnSave(SubmitOperation submitOperation)
         {
-            DisableSaveDiscardCancel = false;
+            DisableSelectedEntitySaveDiscardCancel = false;
         }
 
         #endregion //w Initial Logic
@@ -461,21 +460,21 @@ namespace FoundOps.SLClient.Data.ViewModels
         #region Before something happened
 
         /// <summary>
+        /// Checks if you can add.
+        /// </summary>
+        /// <param name="addItem">Call this action with the result when the check is completed to add the item.</param>
+        protected virtual void CheckAdd(Action<bool> addItem)
+        {
+            addItem(true);
+        }
+
+        /// <summary>
         /// Before the selected entity changes.
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
         /// <returns></returns>
         protected virtual bool BeforeSelectedEntityChanges(TEntity oldValue, TEntity newValue) { return true; }
-
-        /// <summary>
-        /// Called before an entity is added.
-        /// </summary>
-        /// <returns>Whether to continue adding a new entity.</returns>
-        protected virtual bool BeforeAdd()
-        {
-            return true;
-        }
 
         #endregion
 

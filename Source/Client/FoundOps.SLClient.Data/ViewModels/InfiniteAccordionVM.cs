@@ -114,7 +114,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             this.ContextManager.CurrentContextProviderObservable.Select(contextProvider => contextProvider != this).SubscribeOnDispatcher()
                 .Subscribe(disableSaveDiscardCancel =>
                                {
-                                   DisableSaveDiscardCancel = disableSaveDiscardCancel;
+                                   DisableSelectedEntitySaveDiscardCancel = disableSaveDiscardCancel;
                                });
         }
 

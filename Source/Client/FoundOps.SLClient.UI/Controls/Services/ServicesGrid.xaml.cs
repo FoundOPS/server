@@ -1,7 +1,12 @@
-﻿using FoundOps.Common.Tools;
+﻿using System.ComponentModel;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Shapes;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
+using Telerik.Windows.Data;
 using ItemsControlExtensions = FoundOps.Common.Silverlight.Tools.ItemsControlExtensions;
 using System;
 using System.Linq;
@@ -46,7 +51,11 @@ namespace FoundOps.SLClient.UI.Controls.Services
         public ServicesGrid()
         {
             InitializeComponent();
+
             this.DependentWhenVisible(VM.Services);
+
+            //Initialize SortDescriptors
+            SortGrid();
 
             //On double click move the infinite accordion to the Services details view
             ServicesRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent,
@@ -62,22 +71,33 @@ namespace FoundOps.SLClient.UI.Controls.Services
             Observable.FromEventPattern<EventHandler<EventArgs>, EventArgs>(h =>
             ServicesRadGridView.DataLoaded += h, h => ServicesRadGridView.DataLoaded -= h).AsGeneric()
             .Merge(VM.Services.SelectedEntityObservable.AsGeneric())
-            //Throttle so it is not called to often
+                //Throttle so it is not called to often
             .Throttle(TimeSpan.FromMilliseconds(250))
             .SubscribeOnDispatcher().Select(_ => VM.Services.SelectedEntity)
             .ObserveOnDispatcher().Subscribe(ScrollToMiddle);
 
-            ////Listen to the latest selected service's occur date changes
-            //VM.Services.SelectedEntityObservable.WhereNotNull().SelectLatest(service => Observable2.FromPropertyChangedPattern(service, x => x.OccurDate))
-            //    //Wait until the RadGridView SelectedItem updates
-            //    .Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher()
-            //    .Subscribe(e =>
-            //    {
-            //        //resort the grid and put the service in the middle
-            //        ServicesRadGridView.SortDescriptors.Clear();
-            //        ServicesRadGridView.SortDescriptors.Add(new ColumnSortDescriptor { Column = ServicesRadGridView.Columns["DateColumn"], SortDirection = ListSortDirection.Ascending });
-            //        ScrollToMiddle(VM.Services.SelectedEntity);
-            //    });
+            //Resort the grid and put the service in the middle whenever
+            //a) the SelectedEntity's OccurDate is changed
+            VM.Services.SelectedEntityObservable.WhereNotNull().SelectLatest(service => Observable2.FromPropertyChangedPattern(service, x => x.OccurDate))
+                //Throttle to prevent refreshing to often
+                .Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher()
+                .Subscribe(e =>
+                {
+                    SortGrid();
+                    ScrollToMiddle(VM.Services.SelectedEntity);
+                });
+        }
+
+        /// <summary>
+        /// Refreshes the Grid's SortDescriptors
+        /// </summary>
+        private void SortGrid()
+        {
+            ServicesRadGridView.SortDescriptors.Clear();
+            ServicesRadGridView.SortDescriptors.Add(new SortDescriptor { Member = "OccurDate", SortDirection = ListSortDirection.Ascending });
+            ServicesRadGridView.SortDescriptors.Add(new SortDescriptor { Member = "ServiceName", SortDirection = ListSortDirection.Ascending });
+            ServicesRadGridView.SortDescriptors.Add(new SortDescriptor { Member = "ServiceId", SortDirection = ListSortDirection.Ascending });
+            ServicesRadGridView.SortDescriptors.Add(new SortDescriptor { Member = "RecurringServiceId", SortDirection = ListSortDirection.Ascending });
         }
 
         #region Scrolling Logic
@@ -90,6 +110,16 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 return _servicesRadGridViewScrollViewer ??
                        (_servicesRadGridViewScrollViewer = ServicesRadGridView.ChildrenOfType<GridViewScrollViewer>().First());
             }
+        }
+
+        /// <summary>
+        /// Fixes scroll stuck bug.
+        /// </summary>
+        private void ClearScrollBarFocus()
+        {
+            var thumbs = ServicesRadGridViewScrollViewer.ChildrenOfType<Thumb>();
+            foreach (var thumb in thumbs)
+                thumb.CancelDrag();
         }
 
         /// <summary>
@@ -113,16 +143,20 @@ namespace FoundOps.SLClient.UI.Controls.Services
             }
         }
 
-        private bool _scrollHandled = true;
+        //Prevent hooking up to ScrollChanged more than once
+        private bool _setupScrollChanged;
         /// <summary>
         /// Setup the ServicesRadGridViewScrollViewer listener when nearing the beginning or end 
         /// of the scroll viewer to push the ServicesVM back or forward to show more items
         /// </summary>
         private void ServicesGridLoaded(object sender, RoutedEventArgs e)
         {
+            if (_setupScrollChanged)
+                return;
+
+            _setupScrollChanged = true;
             ServicesRadGridViewScrollViewer.ScrollChanged += (s, args) =>
             {
-                _scrollHandled = false;
                 //Only allow push forward or back if all of the conditions are satisfied
                 //a) this control is not automatically scrolling an item to the middle
                 //b) the ServicesVM is not loading
@@ -138,6 +172,9 @@ namespace FoundOps.SLClient.UI.Controls.Services
                     {
                         if (ScrollBarPosition != ScrollBarPosition.Top) return;
 
+                        //Clear the scroll focus (to prevent getting stuck) and push back services
+                        ClearScrollBarFocus();
+
                         VM.Services.PushBackServices();
                         //Debug.WriteLine("Scroll to Top");
                     });
@@ -150,6 +187,9 @@ namespace FoundOps.SLClient.UI.Controls.Services
                     Observable.Interval(TimeSpan.FromMilliseconds(.5)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
                     {
                         if (ScrollBarPosition != ScrollBarPosition.Bottom) return;
+
+                        //Clear the scroll focus (to prevent getting stuck) and push forward services
+                        ClearScrollBarFocus();
 
                         VM.Services.PushForwardServices();
                         //Debug.WriteLine("Scroll to Bottom");

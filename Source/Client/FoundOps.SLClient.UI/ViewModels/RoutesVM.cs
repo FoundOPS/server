@@ -438,7 +438,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Protected
 
-        protected override bool BeforeAdd()
+        /// <summary>
+        /// Before add make the account has enough routes.
+        /// </summary>
+        /// <param name="checkCompleted">The action to call after checking.</param>
+        protected override void CheckAdd(Action<bool> checkCompleted)
         {
             if (((BusinessAccount)ContextManager.OwnerAccount).MaxRoutes <= CollectionView.Cast<object>().Count())
             {
@@ -449,17 +453,17 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 tooManyRoutes.Show();
 
-                return false;
+                checkCompleted(false);
             }
 
             var firstAvailableRouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).FirstOrDefault();
             if (firstAvailableRouteType == null)
             {
                 MessageBox.Show("You must first select a route type in the Route Capabilities Filter before adding a new route.", "Oh no!", MessageBoxButton.OK);
-                return false;
+                checkCompleted(false);
             }
 
-            return true;
+            checkCompleted(true);
         }
 
         protected override Route AddNewEntity(object commandParameter)
