@@ -72,6 +72,17 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void InsertService(Service service)
         {
+            //If the service being inserted has a RecurringServiceId
+            //Find any RouteTasks that have the same RecurringServiceId and Date
+            //Update the ServiceId on the RouteTask with the Id of the newly created Service
+            if(service.RecurringServiceId != null)
+            {
+                var routeTasks = this.ObjectContext.RouteTasks.Where(rt => rt.RecurringServiceId == service.RecurringServiceId && rt.Date == service.ServiceDate).ToArray();
+
+                foreach (var routeTask in routeTasks)
+                    routeTask.ServiceId = service.Id;
+            }
+
             if ((service.EntityState != EntityState.Detached))
             {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(service, EntityState.Added);
