@@ -299,9 +299,6 @@ BEGIN
 		--Reset @RowCount for the loop condition
 		SET @RowCount = (SELECT COUNT(*) FROM @RecurringServicesWithExcludedDates)
 	END
-------------------------------------------------------------------------------------------------------------------------------------------
-
---SELECT * FROM @RecurringServicesWithExcludedDatesSplit
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 --Here we will take the Recurring Services that are in @NextGenServices and find all occurrences in date order until
@@ -318,7 +315,23 @@ BEGIN
 	DECLARE @RowCountForTempGenServiceTableWithPreviousOccurrence int
 	DECLARE @remainingNumberOfServicesToFind int
 
-	--Table to temporarily store all the Recurring Services dates in the future
+	--Table to temporarily store all the Recurring Services dates in the future, deleted after each iteration of the loop
+	DECLARE @TempNextRecurringServiceOccurrenceTable TABLE
+	(
+		RecurringServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max)
+	)
+
+	--Table to temporarily store all the Recurring Services dates in the past, deleted after each iteration of the loop
+	DECLARE @TempPreviousRecurringServiceOccurrenceTable TABLE
+	(
+		RecurringServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max)
+	)
+
+	--Collection of all services that were temporarily stored in @TempNextRecurringServiceOccurrenceTable
 	DECLARE @NextRecurringServiceOccurrenceTable TABLE
 	(
 		RecurringServiceId uniqueidentifier,
@@ -326,7 +339,7 @@ BEGIN
 		ServiceName nvarchar(max)
 	)
 
-	--Table to temporarily store all the Recurring Services dates in the past
+	--Collection of all services that were temporarily stored in @TempPreviousRecurringServiceOccurrenceTable
 	DECLARE @PreviousRecurringServiceOccurrenceTable TABLE
 	(
 		RecurringServiceId uniqueidentifier,
@@ -358,11 +371,51 @@ BEGIN
 				BREAK
 		END
 		
+		DECLARE @TempPreviousShouldAddTable TABLE
+		(
+			RecurringServiceId uniqueidentifier,
+			OccurDate date,
+			ServiceName nvarchar(max)
+		)
+
 		--Inserts all Services with the lowest date to @PreviousRecurringServiceOccurrenceTable
-		INSERT INTO @PreviousRecurringServiceOccurrenceTable
+		INSERT INTO @TempPreviousRecurringServiceOccurrenceTable
 		SELECT DISTINCT	t1.Id, t1.PreviousDate, t1.ServiceName
 		FROM	@PreviousGenServices t1
 		WHERE	t1.PreviousDate = @minVal
+
+		--Will hold all the services that need to be removed from the final list based on the RecurringService's ExcludedDates
+		DECLARE @PreviousServicesToRemove TABLE
+		(
+				RecurringServiceId uniqueidentifier,
+				OccurDate date,
+				ServiceName nvarchar(max)
+		)
+
+		--Inserts all Services that need to be removed to @PreviousServicesToRemove
+		INSERT INTO @PreviousServicesToRemove
+		SELECT DISTINCT * FROM @TempPreviousShouldAddTable t3
+		WHERE EXISTS
+		(
+			SELECT DISTINCT t1.Id
+			FROM @RecurringServicesWithExcludedDatesSplit t1
+			WHERE EXISTS
+			(
+				SELECT DISTINCT t2.RecurringServiceId
+				FROM @TempPreviousShouldAddTable t2
+				WHERE (t1.Id = t2.RecurringServiceId AND t1.ExcludedDate = t2.OccurDate)
+			) AND t1.ExcludedDate = t3.OccurDate AND t1.Id = t3.RecurringServiceId
+		) 
+
+		--Takes all ExcludedDate services out of the list of Next Services to return
+		INSERT INTO @TempPreviousRecurringServiceOccurrenceTable
+		SELECT DISTINCT * FROM @TempPreviousShouldAddTable
+		EXCEPT
+		SELECT DISTINCT * FROM @PreviousServicesToRemove
+
+		--Add the temporary list of @TempPreviousRecurringServiceOccurrenceTable to the final list of @PreviousRecurringServiceOccurrenceTable
+		INSERT INTO @PreviousRecurringServiceOccurrenceTable
+		SELECT DISTINCT * FROM @TempPreviousRecurringServiceOccurrenceTable
 
 		--Updates all Services that were just put into a new table to show their previous occurrence date
 		UPDATE	@PreviousGenServices
@@ -376,6 +429,10 @@ BEGIN
 
 		--Sets up row count so that when the loop returns to the top, we will know if there are any rows remaining
 		SET		@RowCountForRecurringServiceOccurrenceTable = (SELECT COUNT(*) FROM @PreviousRecurringServiceOccurrenceTable)
+
+		DELETE FROM @PreviousServicesToRemove
+		DELETE FROM @TempPreviousShouldAddTable
+		DELETE FROM @TempPreviousRecurringServiceOccurrenceTable
 	END
 	END
 
@@ -391,6 +448,7 @@ BEGIN
 	--Will loop until it fills in remaining number of Services to get to @numberOfOccurrences
 	WHILE	@RowCountForRecurringServiceOccurrenceTable <= @frontBackMinimum
 	BEGIN
+
 		SET		@minVal = (SELECT MIN(NextDate) FROM @NextGenServices)
 		SET		@NextDay = DATEADD(day, 1, @minVal)
 
@@ -402,11 +460,51 @@ BEGIN
 			BREAK
 		END
 
-		--Inserts all  Services with the lowest date to @NextRecurringServiceOccurrenceTable
-		INSERT INTO @NextRecurringServiceOccurrenceTable
+		DECLARE @TempNextShouldAddTable TABLE
+		(
+			RecurringServiceId uniqueidentifier,
+			OccurDate date,
+			ServiceName nvarchar(max)
+		)
+
+		--Inserts all  Services with the lowest date to @TempNextShouldAddTable
+		INSERT INTO @TempNextShouldAddTable
 		SELECT DISTINCT	t1.Id, t1.NextDate, t1.ServiceName
 		FROM	@NextGenServices t1
 		WHERE	NextDate = @minVal 
+
+		--Will hold all the services that need to be removed from the final list based on the RecurringService's ExcludedDates
+		DECLARE @NextServicesToRemove TABLE
+		(
+				RecurringServiceId uniqueidentifier,
+				OccurDate date,
+				ServiceName nvarchar(max)
+		)
+
+		--Inserts all Services that need to be removed to @NextServicesToRemove
+		INSERT INTO @NextServicesToRemove
+		SELECT DISTINCT * FROM @TempNextShouldAddTable t3
+		WHERE EXISTS
+		(
+			SELECT DISTINCT t1.Id
+			FROM @RecurringServicesWithExcludedDatesSplit t1
+			WHERE EXISTS
+			(
+				SELECT DISTINCT t2.RecurringServiceId
+				FROM @TempNextShouldAddTable t2
+				WHERE (t1.Id = t2.RecurringServiceId AND t1.ExcludedDate = t2.OccurDate)
+			) AND t1.ExcludedDate = t3.OccurDate AND t1.Id = t3.RecurringServiceId
+		)
+
+		--Takes all ExcludedDate services out of the list of Next Services to return
+		INSERT INTO @TempNextRecurringServiceOccurrenceTable
+		SELECT DISTINCT * FROM @TempNextShouldAddTable
+		EXCEPT
+		SELECT DISTINCT * FROM @NextServicesToRemove
+
+		--Add the temporary list of @TempNextRecurringServiceOccurrenceTable to the final list of @NextRecurringServiceOccurrenceTable
+		INSERT INTO @NextRecurringServiceOccurrenceTable
+		SELECT DISTINCT * FROM @TempNextRecurringServiceOccurrenceTable
 
 		--Updates all Services that were just put into a new table to show their next occurrence date
 		UPDATE	@NextGenServices
@@ -420,29 +518,12 @@ BEGIN
 
 		--Sets up row count so that when the loop returns to the top, we will know if there are any rows remaining
 		SET		@RowCountForRecurringServiceOccurrenceTable = (SELECT COUNT(*) FROM @NextRecurringServiceOccurrenceTable)
-
+		
+		DELETE FROM @NextServicesToRemove
+		DELETE FROM @TempNextShouldAddTable
+		DELETE FROM @TempNextRecurringServiceOccurrenceTable
 	END
 	END
-
-	DELETE FROM @PreviousRecurringServiceOccurrenceTable
-	WHERE RecurringServiceId = (SELECT t1.Id
-	FROM @RecurringServicesWithExcludedDatesSplit t1
-	WHERE EXISTS
-				(
-					SELECT t2.RecurringServiceId
-					FROM @PreviousRecurringServiceOccurrenceTable t2
-					WHERE (t1.Id = t2.RecurringServiceId AND t1.ExcludedDate = t2.OccurDate)
-				))
-
-	DELETE FROM @NextRecurringServiceOccurrenceTable
-	WHERE RecurringServiceId = (SELECT t1.Id
-	FROM @RecurringServicesWithExcludedDatesSplit t1
-	WHERE EXISTS
-				(
-					SELECT t2.RecurringServiceId
-					FROM @NextRecurringServiceOccurrenceTable t2
-					WHERE (t1.Id = t2.RecurringServiceId AND t1.ExcludedDate = t2.OccurDate)
-				))
 
 	SET		@lastDateToLookFor = (SELECT MAX(OccurDate) FROM @NextRecurringServiceOccurrenceTable)
 	SET		@firstDateToLookFor = (SELECT MIN(OccurDate) FROM @PreviousRecurringServiceOccurrenceTable)
