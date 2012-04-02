@@ -3,7 +3,6 @@ using System.Reactive.Linq;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Interfaces;
-using FoundOps.Common.Tools;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel;
 using System.Linq;
@@ -164,6 +163,13 @@ namespace FoundOps.Core.Models.CoreEntities
             Observable2.FromPropertyChangedPattern(this, x => x.OccurDate).Throttle(TimeSpan.FromMilliseconds(100))
             .ObserveOnDispatcher().Subscribe(_ =>
             {
+                //If there is a time associated with the OccurDate, clear it
+                if (this.OccurDate != this.OccurDate.Date)
+                {
+                    this.OccurDate = this.OccurDate.Date;
+                    return;
+                }
+
                 //Prevent changes when the details are not loaded
                 if (!DetailsLoaded)
                     return;

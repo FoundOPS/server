@@ -274,7 +274,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
             var style = new Style(typeof(GridViewRow));
             if (item == null)
                 return style;
-            var serviceDate = ((ServiceHolder)item).OccurDate;
+            var serviceDate = ((ServiceHolder)item).OccurDate.Date;
 
             //If the service is in the past it should be grey.
             if (serviceDate < DateTime.Now.Date)
