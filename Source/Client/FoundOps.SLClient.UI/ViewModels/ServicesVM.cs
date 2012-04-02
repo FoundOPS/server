@@ -362,7 +362,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 addNewItem(true);
                 return;
             }
-            
+
             //Disable selected entity save discard prompts
             DisableSelectedEntitySaveDiscardCancel = true;
 
@@ -389,7 +389,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (Collection == null)
                 return null;
 
-            var newService = new Service { Id = Guid.NewGuid(), ServiceDate = DateTime.Now };
+            var newService = new Service { Id = Guid.NewGuid(), ServiceDate = DateTime.Now.Date };
 
             //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)
             var parentServiceTemplate = (ServiceTemplate)commandParameter;
