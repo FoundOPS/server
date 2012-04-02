@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
@@ -24,6 +21,8 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -272,6 +271,10 @@ namespace FoundOps.SLClient.UI.ViewModels
                 _cancelLastRoutesLoad.OnNext(true);
                 //Notify the RoutesVM is loading Routes
                 IsLoadingSubject.OnNext(true);
+
+                //Detach the current routes so there is a fresh load
+                if (SourceCollection != null)
+                    this.DataManager.DetachEntities(SourceCollection.SelectMany(r => r.EntityGraphToDetach));
 
                 DomainContext.LoadAsync(DomainContext.GetRoutesForServiceProviderOnDayQuery(ContextManager.RoleId, SelectedDate), _cancelLastRoutesLoad)
                 .ContinueWith(task =>

@@ -167,9 +167,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="route">The current route.</param>
         public RouteVM(Route route)
         {
-            if (route == null)
-                return;
-
             Route = route;
 
             #region Implementation of IAddToDeleteFromDestination<Employee> and IAddToDeleteFromDestination<Vehicle>
@@ -178,13 +175,14 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //a) Whenever the current route's technicians or employees changes notify the itemssource updated.
             //  Part of a workaround for the RadGridView displaying incorrect items when an item is removed.
-            _destinationItemsSourcesUpdatedSubscription = Route.Technicians.FromCollectionChangedGeneric().Merge(Route.Vehicles.FromCollectionChangedGeneric())
-                .Throttle(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
-                {
-                    //Notify the DestinationItemsSources changed
-                    this.RaisePropertyChanged("EmployeesDestinationItemsSource");
-                    this.RaisePropertyChanged("VehiclesDestinationItemsSource");
-                });
+            if (Route != null)
+                _destinationItemsSourcesUpdatedSubscription = Route.Technicians.FromCollectionChangedGeneric().Merge(Route.Vehicles.FromCollectionChangedGeneric())
+                    .Throttle(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
+                    {
+                        //Notify the DestinationItemsSources changed
+                        this.RaisePropertyChanged("EmployeesDestinationItemsSource");
+                        this.RaisePropertyChanged("VehiclesDestinationItemsSource");
+                    });
 
             #endregion
 

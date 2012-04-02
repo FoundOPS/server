@@ -324,7 +324,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             var employees = GetEmployeesForRole(roleId);
 
             if (!String.IsNullOrEmpty(searchText))
-                employees = employees.Where(e => e.OwnedPerson.FirstName.StartsWith(searchText) || e.OwnedPerson.LastName.StartsWith(searchText));
+                employees = employees.Where(e =>
+                    e.OwnedPerson.FirstName.StartsWith(searchText) || e.OwnedPerson.LastName.StartsWith(searchText) 
+                    || (e.OwnedPerson.FirstName + " " + e.OwnedPerson.LastName).Contains(searchText));
 
             return employees.OrderBy(e => e.OwnedPerson.LastName + " " + e.OwnedPerson.FirstName);
         }

@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.Server.Authentication;
@@ -129,15 +130,16 @@ namespace FoundOps.Server.Services.CoreDomainService
                 //Remove the RouteTask from the RouteDestination
                 if (routeDestination != null)
                 {
+                    routeDestination.RouteTasks.Load();
                     routeTask.RouteDestination = null;
 
-                    //If the RouteDestination only had one RouteTask in it, delete it
-                    if (routeDestination.RouteTasks.Count <= 0)
-                        this.ObjectContext.RouteDestinations.DeleteObject(routeDestination);
+                    //If the RouteDestination has no remaining tasks, delete it
+                    if (routeDestination.RouteTasks.Count == 0)
+                       DeleteRouteDestination(routeDestination);
                 }
 
                 //Delete the route task
-                this.ObjectContext.RouteTasks.DeleteObject(routeTask);
+                this.ObjectContext.DetachExistingAndAttach(routeTask);
             }
         }
 

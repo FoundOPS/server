@@ -5,8 +5,7 @@
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
-             xmlns:Controls2="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
+             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" xmlns:Controls2="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
              ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM" d:DesignWidth="230" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters:DateTimeOfTodayToTimeSpanConverter x:Key="DateTimeOfTodayToTimeSpanConverter"/>
@@ -49,7 +48,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Employees" />
-                <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Employees" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools:GetVM Type=ViewModels:EmployeesVM}}" 
+                <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Employees"
                                    SourceType="{MarkupExtensions:Static MemberType=CoreEntities:Employee}"
                                    ItemToRemoveDisplayMember="{Binding SelectedRouteVM.SelectedEmployee.OwnedPerson.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name}"
                                    IsDeleteEnabled="{Binding SelectedRouteVM.SelectedEmployee, Converter={StaticResource ExistsBoolConverter}}"
@@ -73,7 +72,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Vehicles" />
-                <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Vehicles" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools:GetVM Type=ViewModels:EmployeesVM}}"
+                <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Vehicles"
                                    SourceType="{MarkupExtensions:Static MemberType=CoreEntities:Vehicle}"
                                    ItemToRemoveDisplayMember="{Binding SelectedRouteVM.SelectedVehicle.VehicleId}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name}"
                                    IsDeleteEnabled="{Binding SelectedRouteVM.SelectedVehicle, Converter={StaticResource ExistsBoolConverter}}"

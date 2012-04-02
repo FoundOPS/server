@@ -46,35 +46,34 @@
                                     <Controls1:HierarchicalDataTemplate>
                                         <TextBlock Text="{Binding Name}" Width="150">
                                         <!--MultiBinding to set the Opacity of the TextBlock which uses the RouteTasksOpacityConverter to determine if the task should be greyed out or not-->
-                                        <SLMultiBinding:BindingUtil.MultiBindings>
+                                        <!--<SLMultiBinding:BindingUtil.MultiBindings>
                                             <SLMultiBinding:MultiBindings>
                                                 <SLMultiBinding:MultiBinding TargetProperty="Opacity" Converter="{StaticResource RouteTasksOpacityConverter}">
                                                     <SLMultiBinding:BindingCollection>
                                                         <Binding />
                                                         <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                                        <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" /> <!--For updates-->
+                                                        <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" /> //For updates
                                                     </SLMultiBinding:BindingCollection>
                                                 </SLMultiBinding:MultiBinding>
                                             </SLMultiBinding:MultiBindings>
-                                        </SLMultiBinding:BindingUtil.MultiBindings>
+                                        </SLMultiBinding:BindingUtil.MultiBindings>-->
                                         </TextBlock>
                                     </Controls1:HierarchicalDataTemplate>
                                 </Controls1:HierarchicalDataTemplate.ItemTemplate>
                                 <!--Bind the Background of the grid below to the color of the region where the destination is located-->
                                 <Grid Background="{Binding Location.Region.Color, Converter={StaticResource StringToColorConverter}}">
-                                    <SLMultiBinding:BindingUtil.MultiBindings>
+                                    <!--MultiBinding to set the Opacity of the TextBlock which uses the RouteDestinationsOpacityConverter to determine if the destination should be greyed out or not-->
+                                    <!--<SLMultiBinding:BindingUtil.MultiBindings>
                                         <SLMultiBinding:MultiBindings>
-                                            <!--MultiBinding to set the Opacity of the TextBlock which uses the RouteDestinationsOpacityConverter to determine if the destination should be greyed out or not-->
                                             <SLMultiBinding:MultiBinding TargetProperty="Opacity" Converter="{StaticResource RouteDestinationsOpacityConverter}">
                                                 <SLMultiBinding:BindingCollection>
                                                     <Binding />
                                                     <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                                    <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                                    <!--For updates-->
+                                                    <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" /> //For updates
                                                 </SLMultiBinding:BindingCollection>
                                             </SLMultiBinding:MultiBinding>
                                         </SLMultiBinding:MultiBindings>
-                                    </SLMultiBinding:BindingUtil.MultiBindings>
+                                    </SLMultiBinding:BindingUtil.MultiBindings>-->
                                     <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Name}" Width="165"/>
                                 </Grid>
                             </Controls1:HierarchicalDataTemplate>

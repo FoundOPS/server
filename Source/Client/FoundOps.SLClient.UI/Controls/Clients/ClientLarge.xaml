@@ -72,13 +72,13 @@
                     </Grid>
                 </toolkit:Expander>
                 <ContactInfo:ContactInfoEdit ContactInfoVM="{Binding SelectedClientOwnedBusinessVM.ContactInfoVM}" />
-                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource EmployeeBrush}" 
+                <!--<toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource EmployeeBrush}" 
                                   BorderBrush="{StaticResource EmployeeBrush}" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools1:GetVM Type=ViewModels:ContactsVM}}">
                     <toolkit:Expander.Header>
                         <TextBlock Text="Contacts" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource EmployeeBrush}" />
                     </toolkit:Expander.Header>
                     <Contacts:ContactsGrid x:Name="ContactsGrid" />
-                </toolkit:Expander>
+                </toolkit:Expander>-->
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource LocationBrush}" 
                                   BorderBrush="{StaticResource LocationBrush}" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools1:GetVM Type=ViewModels:LocationsVM}}">
                     <toolkit:Expander.Header>
