@@ -227,6 +227,7 @@
     <Content Include="Models\CoreEntities\SQL\DeleteUserAccountBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\GetServiceHolders.sql" />
     <Content Include="Models\CoreEntities\SQL\ServiceTemplatesWithVendorId.sql" />
+    <Content Include="Models\CoreEntities\SQL\Split.sql" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\CoreEntities\CoreEntities.edmx">

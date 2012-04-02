@@ -236,7 +236,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             if (routeTasks.Count() > 1)
             {
-                var services = routeTasks.Select(rt => rt.Service).Where(s => s != null).Distinct();
+                var services = routeTasks.Select(rt => rt.ParentRouteTaskHolder.ServiceName).Where(n => n != null).Distinct();
 
                 if (services.Count() > 1)
                     return ErrorConstants.DifferentService;

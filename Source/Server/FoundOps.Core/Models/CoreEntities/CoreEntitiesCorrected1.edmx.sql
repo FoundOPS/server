@@ -3012,56 +3012,54 @@ GO
 
 GO
 
+USE [Core]
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetServiceHolders]    Script Date: 4/1/2012 6:01:39 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-USE Core;
-GO
-IF OBJECT_ID(N'[dbo].[GetServiceHolders]', N'FN') IS NOT NULL
-DROP FUNCTION [dbo].[GetServiceHolders]
-GO
-   /****************************************************************************************************************************************************
-	* FUNCTION will take the context provided and find all the service dates
-	* for RecurringServices and existing Services with that context. The function will return past, future or both past and future Services.
-	* For RecurringServices, if there are existing services for dates it will return those. Otherwise it will generate a date for the instances.
-	* You can distinguish generated services because they will not have a ServiceId *
-	** Input Parameters **
-	* @serviceProviderIdContext - The BusinessAccount context or NULL 
-	* @clientIdContext - The Client context or NULL 
-	* @recurringServiceIdContext - The RecurringService context or NULL
-	* @seedDate - The reference date to look for services before or after. Also known as the onOrBeforeDate and the onOrAfterDate
-	* @numberOfOccurrences - The number of occurrences to return
-	* @getPrevious - If set to 1, this will return previous services
-	* @getNext - If set to 1, this will return future services
-	** Output Parameters: **
-	* @ServicesTableToReturn - Ex. below
-	* RecurringServiceId                     | ServiceId                              | OccurDate
-	* -----------------------------------------------------------------------------------------
-	* {036BD670-39A5-478F-BFA3-AD312E3F7F47} |                                        | 1/1/2012 <-- Generated service
-	* {B30A43AD-655A-449C-BD4E-951F8F988718} |                                        | 1/1/2012 <-- Existing service
-	* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | {FC222C74-EFEA-4B45-93FB-B042E6D6DB0D} | 1/2/2012 <-- Existing service with a RecurringService parent **
-	***************************************************************************************************************************************************/
-    CREATE FUNCTION [dbo].[GetServiceHolders]
-    (@serviceProviderIdContext uniqueidentifier,
-    @clientIdContext uniqueidentifier,
-    @recurringServiceIdContext uniqueidentifier,
-    @seedDate date,
-    @frontBackMinimum int,
-	@getPrevious bit,
-	@getNext bit)
-	--TODO RENAME TempTable to ...
-	--TempTable is where we will put all the Services and their corresponding dates
-	RETURNS @ServicesTableToReturn TABLE
-	(
-		RecurringServiceId uniqueidentifier,
-		ServiceId uniqueidentifier,
-		OccurDate date,
-		ServiceName nvarchar(max)
-	)
+/****************************************************************************************************************************************************
+* FUNCTION will take the context provided and find all the service dates
+* for RecurringServices and existing Services with that context. The function will return past, future or both past and future Services.
+* For RecurringServices, if there are existing services for dates it will return those. Otherwise it will generate a date for the instances.
+* You can distinguish generated services because they will not have a ServiceId *
+** Input Parameters **
+* @serviceProviderIdContext - The BusinessAccount context or NULL 
+* @clientIdContext - The Client context or NULL 
+* @recurringServiceIdContext - The RecurringService context or NULL
+* @seedDate - The reference date to look for services before or after. Also known as the onOrBeforeDate and the onOrAfterDate
+* @numberOfOccurrences - The number of occurrences to return
+* @getPrevious - If set to 1, this will return previous services
+* @getNext - If set to 1, this will return future services
+** Output Parameters: **
+* @ServicesTableToReturn - Ex. below
+* RecurringServiceId                     | ServiceId                              | OccurDate
+* -----------------------------------------------------------------------------------------
+* {036BD670-39A5-478F-BFA3-AD312E3F7F47} |                                        | 1/1/2012 <-- Generated service
+* {B30A43AD-655A-449C-BD4E-951F8F988718} |                                        | 1/1/2012 <-- Existing service
+* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | {FC222C74-EFEA-4B45-93FB-B042E6D6DB0D} | 1/2/2012 <-- Existing service with a RecurringService parent **
+***************************************************************************************************************************************************/
+CREATE FUNCTION [dbo].[GetServiceHolders]
+(@serviceProviderIdContext uniqueidentifier,
+@clientIdContext uniqueidentifier,
+@recurringServiceIdContext uniqueidentifier,
+@seedDate date,
+@frontBackMinimum int,
+@getPrevious bit,
+@getNext bit)
+--TODO RENAME TempTable to ...
+--TempTable is where we will put all the Services and their corresponding dates
+RETURNS @ServicesTableToReturn TABLE
+(
+	RecurringServiceId uniqueidentifier,
+	ServiceId uniqueidentifier,
+	OccurDate date,
+	ServiceName nvarchar(max)
+)
 
-    AS       
-    BEGIN  
+AS       
+BEGIN  
 
 	--Stores the Recurring Services that are associated with the lowest context provided
 	DECLARE @TempGenServiceTable TABLE
@@ -3239,6 +3237,87 @@ GO
 		WHERE PreviousDate IS NULL
 	END
 ------------------------------------------------------------------------------------------------------------------------------------------
+	DECLARE @CombinedGenServices TABLE
+		(Id uniqueidentifier,
+		 EndDate date,
+		 EndAfterTimes int,
+		 RepeatEveryTimes int,
+		 FrequencyInt int,
+		 FrequencyDetailInt int,
+		 StartDate date,
+		 OccurDate date,
+		 ServiceName nvarchar(max))
+
+	INSERT INTO @CombinedGenServices (Id, OccurDate, ServiceName)
+	SELECT Id, PreviousDate, ServiceName  FROM @PreviousGenServices
+	
+	INSERT INTO @CombinedGenServices (Id, OccurDate, ServiceName)
+	SELECT Id, NextDate, ServiceName  FROM @NextGenServices
+
+	--Table will hold all Ids and ExcludedDatesStrings
+	--Only those RecurringServices that have been scheduled for the date provided and have an ExcludedDatesString will appear
+	DECLARE @RecurringServicesWithExcludedDates TABLE
+	(
+		Id uniqueidentifier,
+		ExcludedDatesString nvarchar(max)
+	)
+
+	INSERT INTO @RecurringServicesWithExcludedDates
+	SELECT DISTINCT t1.Id, t1.ExcludedDatesString FROM RecurringServices t1, @CombinedGenServices t2
+	WHERE t1.Id = t2.Id AND t1.ExcludedDatesString IS NOT NULL	
+
+	DECLARE @RecurringServicesWithExcludedDatesSplit TABLE
+	(
+		Id uniqueidentifier,
+		ExcludedDate nvarchar(max)
+	)
+
+	DECLARE @RowCount int --Row count for @RecurringServicesWithExcludedDates (We delete from this table as we input into @RecurringServicesWithExcludedDatesSplit)
+	DECLARE @RowId  uniqueidentifier --RecurringServiceId of the current row
+	DECLARE @RowExcludedDateString nvarchar(max) --ExcludedDatesString for the current row
+
+	SET @RowCount = (SELECT COUNT(*) FROM @RecurringServicesWithExcludedDates)
+
+	WHILE @RowCount > 0
+	BEGIN 
+		SET @RowId = (SELECT TOP(1) Id FROM @RecurringServicesWithExcludedDates ORDER BY Id) --Find the RowId of the top row sorted by Id
+
+		SET @RowExcludedDateString = (SELECT ExcludedDatesString FROM @RecurringServicesWithExcludedDates WHERE Id = @RowId) --Find the ExcludedDatesString of the top row found above
+
+		--Converts the ExcludedDateString to a Table(See example below for more information)
+		/****************************************************************************************************************************************************
+		* FUNCTION Split will convert the comma separated string of dates ()
+		** Input Parameters **
+		* @Id - RecurringServiceId
+		* @sInputList - List of delimited ExcludedDates
+		* @sDelimiter - -- Delimiter that separates ExcludedDates
+		** Output Parameters: **
+		*  @List TABLE (Id uniqueidentifier, ExcludedDate VARCHAR(8000)) - Ex. below
+		* Id                                     | ExcludedDate
+		* -----------------------------------------------------------------------------------------
+		* {036BD670-39A5-478F-BFA3-AD312E3F7F47} | 1/1/2012
+		* {B30A43AD-655A-449C-BD4E-951F8F988718} | 1/1/2012
+		* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | 1/2/2012
+		***************************************************************************************************************************************************/
+		INSERT INTO @RecurringServicesWithExcludedDatesSplit
+		SELECT * FROM [dbo].[Split] (
+								@RowId,
+								@RowExcludedDateString,
+								','
+								)
+		
+		--Now that we have converted this row, remove it from @RecurringServicesWithExcludedDates
+		DELETE FROM @RecurringServicesWithExcludedDates
+		WHERE Id = @RowId
+
+		--Reset @RowCount for the loop condition
+		SET @RowCount = (SELECT COUNT(*) FROM @RecurringServicesWithExcludedDates)
+	END
+------------------------------------------------------------------------------------------------------------------------------------------
+
+--SELECT * FROM @RecurringServicesWithExcludedDatesSplit
+
+------------------------------------------------------------------------------------------------------------------------------------------
 --Here we will take the Recurring Services that are in @NextGenServices and find all occurrences in date order until
 --we get to the number specified by @frontBackMinimum in the future
 --We will also do the same thing with @PreviousGenServices except in reverse date order
@@ -3295,18 +3374,15 @@ GO
 		
 		--Inserts all Services with the lowest date to @PreviousRecurringServiceOccurrenceTable
 		INSERT INTO @PreviousRecurringServiceOccurrenceTable
-		SELECT	Id, PreviousDate, ServiceName
-		FROM	@PreviousGenServices
-		WHERE	PreviousDate = @minVal
+		SELECT DISTINCT	t1.Id, t1.PreviousDate, t1.ServiceName
+		FROM	@PreviousGenServices t1
+		WHERE	t1.PreviousDate = @minVal
 
 		--Updates all Services that were just put into a new table to show their previous occurrence date
 		UPDATE	@PreviousGenServices
 		SET		PreviousDate = (SELECT dbo.GetPreviousOccurrence(@NextDay, StartDate,  EndDate, EndAfterTimes, FrequencyInt, RepeatEveryTimes, FrequencyDetailInt))
 		FROM	@PreviousGenServices
 		WHERE	PreviousDate = @minVal
-
-		--SELECT * FROM @PreviousGenServices
-		--WHERE PreviousDate = '2-26-2012'
 
 		--If any of those Services updated above do not have a previous occurrence, they will be deleted from the table
 		DELETE FROM @PreviousGenServices
@@ -3342,9 +3418,9 @@ GO
 
 		--Inserts all  Services with the lowest date to @NextRecurringServiceOccurrenceTable
 		INSERT INTO @NextRecurringServiceOccurrenceTable
-		SELECT	Id, NextDate, ServiceName
-		FROM	@NextGenServices
-		WHERE	NextDate = @minVal
+		SELECT DISTINCT	t1.Id, t1.NextDate, t1.ServiceName
+		FROM	@NextGenServices t1
+		WHERE	NextDate = @minVal 
 
 		--Updates all Services that were just put into a new table to show their next occurrence date
 		UPDATE	@NextGenServices
@@ -3361,10 +3437,56 @@ GO
 
 	END
 	END
-	
+
+	DELETE FROM @PreviousRecurringServiceOccurrenceTable
+	WHERE RecurringServiceId = (SELECT t1.Id
+	FROM @RecurringServicesWithExcludedDatesSplit t1
+	WHERE EXISTS
+				(
+					SELECT t2.RecurringServiceId
+					FROM @PreviousRecurringServiceOccurrenceTable t2
+					WHERE (t1.Id = t2.RecurringServiceId AND t1.ExcludedDate = t2.OccurDate)
+				))
+
+	DELETE FROM @NextRecurringServiceOccurrenceTable
+	WHERE RecurringServiceId = (SELECT t1.Id
+	FROM @RecurringServicesWithExcludedDatesSplit t1
+	WHERE EXISTS
+				(
+					SELECT t2.RecurringServiceId
+					FROM @NextRecurringServiceOccurrenceTable t2
+					WHERE (t1.Id = t2.RecurringServiceId AND t1.ExcludedDate = t2.OccurDate)
+				))
+
 	SET		@lastDateToLookFor = (SELECT MAX(OccurDate) FROM @NextRecurringServiceOccurrenceTable)
 	SET		@firstDateToLookFor = (SELECT MIN(OccurDate) FROM @PreviousRecurringServiceOccurrenceTable)
+------------------------------------------------------------------------------------------------------------------------------------------
+--Remove all ExcludedDates where the date is @seedDate
+------------------------------------------------------------------------------------------------------------------------------------------
+	DECLARE @ServicesForTodayExcluded TABLE
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max)
+	)
 
+	INSERT INTO @ServicesForTodayExcluded
+	SELECT t1.* FROM @ServicesForToday t1, @RecurringServicesWithExcludedDatesSplit t2
+	WHERE t1.RecurringServiceId = t2.Id AND t1.OccurDate = t2.ExcludedDate
+
+	DECLARE @ServicesForTodayWithoutExcluded TABLE
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max)
+	)
+
+	INSERT INTO @ServicesForTodayWithoutExcluded
+	SELECT * FROM @ServicesForToday
+	EXCEPT
+	SELECT * FROM @ServicesForTodayExcluded
 ------------------------------------------------------------------------------------------------------------------------------------------
 --Here we will add Existing Services to tables of their own
 --Just as in the RecurringServiceTables, we will have separate tables for Previous, Next, and SeedDate
@@ -3406,8 +3528,8 @@ GO
 				AND t1.ServiceDate BETWEEN @dayAfterSeedDate AND @lastDateToLookFor
 				AND t1.Id = t2.Id
 
-		--Fills @ServicesForToday will Existing Services on the SeedDate
-		INSERT INTO @ServicesForToday (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+		--Fills @ServicesForTodayWithoutExcluded will Existing Services on the SeedDate
+		INSERT INTO @ServicesForTodayWithoutExcluded (RecurringServiceId, ServiceId, OccurDate, ServiceName)
 		SELECT  t1.RecurringServiceId, t1.Id, t1.ServiceDate, t2.Name
 		FROM	Services t1, ServiceTemplates t2
 		WHERE	t1.RecurringServiceId = @recurringServiceIdContext 
@@ -3433,8 +3555,8 @@ GO
 				AND t1.ServiceDate BETWEEN @dayAfterSeedDate AND @lastDateToLookFor
 				AND t1.Id = t2.Id
 
-		--Fills @ServicesForToday will Existing Services on the SeedDate
-		INSERT INTO @ServicesForToday (ServiceId, RecurringServiceId, OccurDate, ServiceName)
+		--Fills @ServicesForTodayWithoutExcluded will Existing Services on the SeedDate
+		INSERT INTO @ServicesForTodayWithoutExcluded (ServiceId, RecurringServiceId, OccurDate, ServiceName)
 		SELECT  t1.Id, t1.RecurringServiceId, t1.ServiceDate, t2.Name
 		FROM	Services t1, ServiceTemplates t2
 		WHERE	t1.ClientId = @clientIdContext 
@@ -3460,8 +3582,8 @@ GO
 				AND t1.ServiceDate BETWEEN @dayAfterSeedDate AND @lastDateToLookFor
 				AND t1.Id = t2.Id
 	
-		--Fills @ServicesForToday will Existing Services on the SeedDate
-		INSERT INTO @ServicesForToday (ServiceId, RecurringServiceId, OccurDate, ServiceName)
+		--Fills @ServicesForTodayWithoutExcluded will Existing Services on the SeedDate
+		INSERT INTO @ServicesForTodayWithoutExcluded (ServiceId, RecurringServiceId, OccurDate, ServiceName)
 		SELECT  t1.Id, t1.RecurringServiceId, t1.ServiceDate, t2.Name
 		FROM	Services t1, ServiceTemplates t2
 		WHERE	t1.ServiceProviderId = @serviceProviderIdContext 
@@ -3553,6 +3675,7 @@ GO
 		OccurDate date,
 		ServiceName nvarchar(max)
 	)
+
 	--Here we add the next occurrences to the final temporary table
 	INSERT INTO @CombinedNextServices (RecurringServiceId, OccurDate, ServiceName)
 	SELECT RecurringServiceId, OccurDate, ServiceName
@@ -3614,7 +3737,6 @@ GO
 --Finally, we combine the three tables (previous, onSeedDay, next) into one master table
 --This master table is then returned from the function
 ------------------------------------------------------------------------------------------------------------------------------------------
-
 	--This table will temporarily store the RecurringServiceId's of all rows that appear more than once in @TempTable
 	DECLARE @SeedDateDuplicateIdTable TABLE
 	(
@@ -3625,8 +3747,8 @@ GO
 	)
 
 	INSERT INTO @SeedDateDuplicateIdTable
-	SELECT t1.RecurringServiceId, t2.ServiceId, t2.OccurDate, t2.ServiceName FROM (SELECT OccurDate, RecurringServiceId, ServiceId FROM @ServicesForToday AS t2 WHERE ServiceId IS NOT NULL GROUP BY OccurDate, RecurringServiceId, ServiceId) t1
-	JOIN @ServicesForToday as t2 on t1.RecurringServiceId = t2.RecurringServiceId AND t1.OccurDate = t2.OccurDate AND t2.ServiceId IS NULL
+	SELECT t1.RecurringServiceId, t2.ServiceId, t2.OccurDate, t2.ServiceName FROM (SELECT OccurDate, RecurringServiceId, ServiceId FROM @ServicesForTodayWithoutExcluded AS t2 WHERE ServiceId IS NOT NULL GROUP BY OccurDate, RecurringServiceId, ServiceId) t1
+	JOIN @ServicesForTodayWithoutExcluded as t2 on t1.RecurringServiceId = t2.RecurringServiceId AND t1.OccurDate = t2.OccurDate AND t2.ServiceId IS NULL
 
 	DECLARE @seedDateFinalTable TABLE
 	(
@@ -3638,10 +3760,11 @@ GO
 
 	--Filtered down from the table above so that only the correct number of Services is returned from the function
 	INSERT INTO @seedDateFinalTable
-	SELECT * FROM @ServicesForToday
+	SELECT * FROM @ServicesForTodayWithoutExcluded
 	EXCEPT
 	SELECT * FROM @SeedDateDuplicateIdTable
 	ORDER BY OccurDate ASC
+
 ------------------------------------------------------------------------------------------------------------------------------------------
 --Finally, we combine the three tables (previous, onSeedDay, next) into one master table
 --This master table is then returned from the function
@@ -3655,8 +3778,10 @@ GO
 	INSERT INTO @ServicesTableToReturn
 	SELECT * FROM @finalNextServiceTable
 
-	RETURN
-	END
+RETURN
+END
+
+
 
 GO
 
@@ -3924,8 +4049,117 @@ BEGIN
 							WHERE	RecurringServiceId = t1.Id
 							)
 
-	INSERT @ServicesTableToReturn (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude)
+	DECLARE @ServicesForDateTable TABLE
+		(
+			RecurringServiceId uniqueidentifier,
+			ServiceId uniqueidentifier,
+			OccurDate date,
+			ServiceName nvarchar(max),
+			ClientName nvarchar(max),
+			ClientId uniqueidentifier,
+			RegionName nvarchar(max),
+			LocationName nvarchar(max),
+			LocationId uniqueidentifier,
+			AddressLine nvarchar(max),
+			Latitude decimal(18,8),
+			Longitude decimal(18,8)
+		) 
+
+	--This will be a complete table of all services that should have been scheduled for the date provided
+	--This does not take into account dates that have been excluded
+	INSERT @ServicesForDateTable (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude)
 	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude FROM @UnroutedServices
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--Now that we have all the services that would have been on the date provided, we will take ExcludedDates into account
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	--Table will hold all Ids and ExcludedDatesStrings
+	--Only those RecurringServices that have been scheduled for the date provided and have an ExcludedDatesString will appear
+	DECLARE @RecurringServicesWithExcludedDates TABLE
+	(
+		Id uniqueidentifier,
+		ExcludedDatesString nvarchar(max)
+	)
+
+	INSERT INTO @RecurringServicesWithExcludedDates
+	SELECT t1.Id, t1.ExcludedDatesString FROM RecurringServices t1, @ServicesForDateTable t2
+	WHERE t1.Id = t2.RecurringServiceId AND t1.ExcludedDatesString IS NOT NULL
+
+	DECLARE @RecurringServicesWithExcludedDatesSplit TABLE
+	(
+		Id uniqueidentifier,
+		ExcludedDate nvarchar(max)
+	)
+
+	DECLARE @RowCount int --Row count for @RecurringServicesWithExcludedDates (We delete from this table as we input into @RecurringServicesWithExcludedDatesSplit)
+	DECLARE @RowId  uniqueidentifier --RecurringServiceId of the current row
+	DECLARE @RowExcludedDateString nvarchar(max) --ExcludedDatesString for the current row
+
+	SET @RowCount = (SELECT COUNT(*) FROM @RecurringServicesWithExcludedDates)
+
+	WHILE @RowCount > 0
+	BEGIN 
+		SET @RowId = (SELECT TOP(1) Id FROM @RecurringServicesWithExcludedDates ORDER BY Id) --Find the RowId of the top row sorted by Id
+		SET @RowExcludedDateString = (SELECT ExcludedDatesString FROM @RecurringServicesWithExcludedDates WHERE Id = @RowId) --Find the ExcludedDatesString of the top row found above
+
+		--Converts the ExcludedDateString to a Table(See example below for more information)
+		/****************************************************************************************************************************************************
+		* FUNCTION Split will convert the comma separated string of dates ()
+		** Input Parameters **
+		* @Id - RecurringServiceId
+		* @sInputList - List of delimited ExcludedDates
+		* @sDelimiter - -- Delimiter that separates ExcludedDates
+		** Output Parameters: **
+		*  @List TABLE (Id uniqueidentifier, ExcludedDate VARCHAR(8000)) - Ex. below
+		* Id                                     | ExcludedDate
+		* -----------------------------------------------------------------------------------------
+		* {036BD670-39A5-478F-BFA3-AD312E3F7F47} | 1/1/2012
+		* {B30A43AD-655A-449C-BD4E-951F8F988718} | 1/1/2012
+		* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | 1/2/2012
+		***************************************************************************************************************************************************/
+		INSERT INTO @RecurringServicesWithExcludedDatesSplit
+		SELECT * FROM [dbo].[Split] (
+								@RowId,
+								@RowExcludedDateString,
+								','
+								)
+		
+		--Now that we have converted this row, remove it from @RecurringServicesWithExcludedDates
+		DELETE FROM @RecurringServicesWithExcludedDates
+		WHERE Id = @RowId
+
+		--Reset @RowCount for the loop condition
+		SET @RowCount = (SELECT COUNT(*) FROM @RecurringServicesWithExcludedDates)
+	END
+
+	--Table that will hold all information about Services that have been excluded
+	DECLARE @SevicesThatHaveBeenExcluded TABLE
+		(
+			RecurringServiceId uniqueidentifier,
+			ServiceId uniqueidentifier,
+			OccurDate date,
+			ServiceName nvarchar(max),
+			ClientName nvarchar(max),
+			ClientId uniqueidentifier,
+			RegionName nvarchar(max),
+			LocationName nvarchar(max),
+			LocationId uniqueidentifier,
+			AddressLine nvarchar(max),
+			Latitude decimal(18,8),
+			Longitude decimal(18,8)
+		) 
+
+	--Find all ExcludedServices from @ServicesForDateTable
+	INSERT INTO @SevicesThatHaveBeenExcluded
+	SELECT t1.* FROM @ServicesForDateTable t1, @RecurringServicesWithExcludedDatesSplit t2
+	WHERE t1.RecurringServiceId = t2.Id AND t1.OccurDate = t2.ExcludedDate
+
+	--Add all services that have not been excluded to the output table
+	INSERT INTO @ServicesTableToReturn
+	SELECT * FROM @ServicesForDateTable
+	EXCEPT
+	SELECT * FROM @SevicesThatHaveBeenExcluded
 
 RETURN 
 END
@@ -4061,4 +4295,60 @@ SELECT ServiceTemplates.Id as 'ServiceTemplateId', Clients.VendorId as 'VendorId
 FROM ServiceTemplates, RecurringServices, Clients
 WHERE ServiceTemplates.Id = RecurringServices.Id AND RecurringServices.ClientId = Clients.Id
 
-GO	
+GO
+
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF OBJECT_ID(N'[dbo].[Split]', N'FN') IS NOT NULL
+DROP FUNCTION [dbo].[Split]
+GO
+/****************************************************************************************************************************************************
+		* FUNCTION Split will convert the comma separated string of dates ()
+		** Input Parameters **
+		* @Id - RecurringServiceId
+		* @sInputList - List of delimited ExcludedDates
+		* @sDelimiter - -- Delimiter that separates ExcludedDates
+		** Output Parameters: **
+		*  @List TABLE (Id uniqueidentifier, ExcludedDate VARCHAR(8000)) - Ex. below
+		* Id                                     | ExcludedDate
+		* -----------------------------------------------------------------------------------------
+		* {036BD670-39A5-478F-BFA3-AD312E3F7F47} | 1/1/2012
+		* {B30A43AD-655A-449C-BD4E-951F8F988718} | 1/1/2012
+		* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | 1/2/2012
+		***************************************************************************************************************************************************/
+CREATE FUNCTION dbo.Split(
+	@Id			uniqueidentifier --RecurringServiceId
+  , @sInputList VARCHAR(8000) -- List of delimited ExcludedDates
+  , @sDelimiter VARCHAR(8000) = ',' -- Delimiter that separates ExcludedDates
+) RETURNS @List TABLE (Id uniqueidentifier, ExcludedDate VARCHAR(8000))
+
+BEGIN
+DECLARE @sItem VARCHAR(8000)
+WHILE CHARINDEX(@sDelimiter,@sInputList,0) <> 0
+ BEGIN
+ SELECT
+  @sItem=RTRIM(LTRIM(SUBSTRING(@sInputList,1,CHARINDEX(@sDelimiter,@sInputList,0)-1))),
+  @sInputList=RTRIM(LTRIM(SUBSTRING(@sInputList,CHARINDEX(@sDelimiter,@sInputList,0)+LEN(@sDelimiter),LEN(@sInputList))))
+ 
+ IF LEN(@sItem) > 0
+ BEGIN
+  INSERT INTO @List (ExcludedDate) SELECT @sItem
+
+  UPDATE @List
+  SET Id = @Id
+ END
+ END
+
+IF LEN(@sInputList) > 0
+BEGIN
+ INSERT INTO @List (ExcludedDate) SELECT @sInputList -- Put the last ExcludedDate in
+
+ UPDATE @List
+ SET Id = @Id	
+END
+RETURN
+END	

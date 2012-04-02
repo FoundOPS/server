@@ -328,7 +328,40 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
             //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
             if (draggedItem is RouteTask)
+            {
+                var oldRouteTask = ((RouteTask) draggedItem);
+
+                //Create a new RouteTask to be saved as the ChildRouteTask of the TaskHolder
+                var newRouteTask = new RouteTask
+                                       {
+                                           Id = Guid.NewGuid(),
+                                           BusinessAccountId = oldRouteTask.BusinessAccountId,
+                                           Client = oldRouteTask.Client,
+                                           ClientId = oldRouteTask.ClientId,
+                                           Date = oldRouteTask.Date,
+                                           EstimatedDuration = oldRouteTask.EstimatedDuration,
+                                           Location = oldRouteTask.Location,
+                                           LocationId = oldRouteTask.LocationId,
+                                           Name = oldRouteTask.Name,
+                                           OwnerBusinessAccount = oldRouteTask.OwnerBusinessAccount,
+                                           ParentRecurringService = oldRouteTask.ParentRecurringService,
+                                           ParentRouteTaskHolder = oldRouteTask.ParentRouteTaskHolder,
+                                           ReadyToInvoice = false,
+                                           RecurringServiceId = oldRouteTask.RecurringServiceId,
+                                           RouteDestination = null,
+                                           RouteDestinationId = null,
+                                           Service = oldRouteTask.Service,
+                                           ServiceId = oldRouteTask.ServiceId
+                                       };
+
+
+                var taskHolder = ((RouteTask) draggedItem).ParentRouteTaskHolder;
+
+                taskHolder.ChildRouteTask = null;
+                taskHolder.ChildRouteTask = newRouteTask;
+
                 ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(((RouteTask)draggedItem).ParentRouteTaskHolder);
+            }
         }
 
         /// <summary>
@@ -350,6 +383,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 //if the old route destination has 0 tasks, delete it
                 if (oldRouteDestination.RouteTasks.Count == 0)
                     VM.Routes.DeleteRouteDestination(oldRouteDestination);
+
+                VM.Routes.DeleteRouteTask((RouteTask)draggedItem);
 
             }
         }
