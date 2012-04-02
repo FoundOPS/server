@@ -32,6 +32,8 @@ namespace FoundOps.Common.Silverlight.Converters
 
     public class DateTimeOfTodayToTimeSpanConverter : IValueConverter
     {
+        #region Implementation of IValueConverter
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var dateTime = (DateTime)value;
@@ -43,12 +45,13 @@ namespace FoundOps.Common.Silverlight.Converters
             var timeSpan = (TimeSpan)value;
             return DateTime.Today.SetTime(timeSpan.Hours, timeSpan.Minutes);
         }
+
+        #endregion
     }
 
     public class DateTimeToLongDateConverter : IValueConverter
     {
-
-        #region IValueConverter Members
+        #region Implementation of IValueConverter
 
         //Called when binding from an object property to a control property
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -68,6 +71,8 @@ namespace FoundOps.Common.Silverlight.Converters
 
     public class DateTimeFormatConverter : IValueConverter
     {
+        #region Implementation of IValueConverter
+
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (parameter != null)
@@ -87,6 +92,8 @@ namespace FoundOps.Common.Silverlight.Converters
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 
 
@@ -95,8 +102,7 @@ namespace FoundOps.Common.Silverlight.Converters
     /// </summary>
     public class DateTimeWithTodaysDateConverter : IValueConverter
     {
-
-        #region IValueConverter Members
+        #region Implementation of IValueConverter
 
         //Called when binding from an object property to a control property
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -124,4 +130,25 @@ namespace FoundOps.Common.Silverlight.Converters
         #endregion
     }
 
+    public class CheckIfDateIsBeforeTodayConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var dateTime = (DateTime)value;
+
+            if (dateTime.Date < DateTime.Now.Date)
+                return false;
+
+            return true;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }
