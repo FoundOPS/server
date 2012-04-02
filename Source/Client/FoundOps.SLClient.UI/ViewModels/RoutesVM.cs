@@ -343,18 +343,33 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Setup Manifest Details Loading
 
+            var cancelLoadDetails = new Subject<bool>();
+
             //Load the Route's ServiceTemplates and Fields
             ManifestOpenObservable.CombineLatest(SelectedEntityObservable)
                 //Where the manifest is open and the SelectedEntity != null
                 .Where(vals => vals.Item1 && vals.Item2 != null)
                 .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
-                    DomainContext.LoadAsync(DomainContext.GetRouteServiceTemplatesQuery(ContextManager.RoleId, SelectedEntity.Id))
-                        //Update the RouteManifestViewer after the ServiceTemplate details has loaded
-                        .ContinueWith(task =>
-                        {
-                            if (!task.IsCanceled && _routeManifestViewer != null)
-                                _routeManifestViewer.UpdateDocument();
-                        }, TaskScheduler.FromCurrentSynchronizationContext()));
+                    {
+                        cancelLoadDetails.OnNext(true);
+
+                        //Load the Clients/ContactInfoSet of the RouteTasks
+                        var clientsWithContactInfoQuery = DomainContext.GetClientsWithContactInfoSetQuery(ContextManager.RoleId, 
+                            SelectedEntity.RouteDestinations.Where(rd=>rd.ClientId.HasValue).Select(rd=>rd.ClientId.Value));
+
+                        DomainContext.LoadAsync(clientsWithContactInfoQuery, cancelLoadDetails);
+                      
+                        //Load the Locations/ContactInfoSet of the RouteTasks
+                        var locationsWithContactInfoQuery = DomainContext.GetLocationsWithContactInfoSetQuery(ContextManager.RoleId,
+                            SelectedEntity.RouteDestinations.Where(rd => rd.LocationId.HasValue).Select(rd => rd.LocationId.Value));
+
+                        DomainContext.LoadAsync(locationsWithContactInfoQuery, cancelLoadDetails);
+
+                        //Load the Fields info of the RouteTasks
+                        foreach (var serviceHolder in SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ParentRouteTaskHolder)
+                            .Where(rth => rth != null && rth.ServiceHolder != null).Select(rth => rth.ServiceHolder))
+                            serviceHolder.LoadDetails(cancelLoadDetails);
+                    });
 
             #endregion
 

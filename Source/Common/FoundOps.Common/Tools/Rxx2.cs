@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Browser;
 using System.Reactive;
@@ -243,6 +245,103 @@ namespace FoundOps.Common.Tools
         public static IObservable<TSource> WhereNotNull<TSource>(this IObservable<TSource> source) where TSource : class
         {
             return source.Where(obj => obj != null);
+        }
+
+        public static IObservable<IList<TSource>> CombineLatest<TSource>(this IEnumerable<IObservable<TSource>> sources)
+        {
+            return Observable.Create<IList<TSource>>(
+                observer =>
+                {
+                    object gate = new object();
+                    var disposables = new CompositeDisposable();
+                    var list = new List<TSource>();
+                    var hasValueFlags = new List<bool>();
+                    var actionSubscriptions = 0;
+                    bool hasSources, hasValueFromEach = false;
+
+                    using (var e = sources.GetEnumerator())
+                    {
+                        bool subscribing = hasSources = e.MoveNext();
+
+                        while (subscribing)
+                        {
+                            var source = e.Current;
+                            int index;
+
+                            lock (gate)
+                            {
+                                actionSubscriptions++;
+
+                                list.Add(default(TSource));
+                                hasValueFlags.Add(false);
+
+                                index = list.Count - 1;
+
+                                subscribing = e.MoveNext();
+                            }
+
+                            disposables.Add(
+                                source.Subscribe(
+                                    value =>
+                                    {
+                                        IList<TSource> snapshot;
+
+                                        lock (gate)
+                                        {
+                                            list[index] = value;
+
+                                            if (!hasValueFromEach)
+                                            {
+                                                hasValueFlags[index] = true;
+
+                                                if (!subscribing)
+                                                {
+                                                    hasValueFromEach = hasValueFlags.All(b => b);
+                                                }
+                                            }
+
+                                            if (subscribing || !hasValueFromEach)
+                                            {
+                                                snapshot = null;
+                                            }
+                                            else
+                                            {
+                                                snapshot = list.ToList().AsReadOnly();
+                                            }
+                                        }
+
+                                        if (snapshot != null)
+                                        {
+                                            observer.OnNext(snapshot);
+                                        }
+                                    },
+                                    observer.OnError,
+                                    () =>
+                                    {
+                                        bool completeNow;
+
+                                        lock (gate)
+                                        {
+                                            actionSubscriptions--;
+
+                                            completeNow = actionSubscriptions == 0 && !subscribing;
+                                        }
+
+                                        if (completeNow)
+                                        {
+                                            observer.OnCompleted();
+                                        }
+                                    }));
+                        }
+                    }
+
+                    if (!hasSources)
+                    {
+                        observer.OnCompleted();
+                    }
+
+                    return disposables;
+                });
         }
     }
 }

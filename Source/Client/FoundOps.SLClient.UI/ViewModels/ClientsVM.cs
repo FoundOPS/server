@@ -1,5 +1,4 @@
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
-using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
@@ -9,8 +8,6 @@ using ReactiveUI;
 using System;
 using System.Collections;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.ServiceModel.DomainServices.Client;
 using System.Windows.Controls;

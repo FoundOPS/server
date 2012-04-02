@@ -1,12 +1,12 @@
+using FoundOps.Common.Tools;
+using FoundOps.SLClient.Data.Models;
+using FoundOps.SLClient.UI.Tools;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Windows;
 using System.Reactive.Linq;
 using System.Windows.Media;
-using FoundOps.Common.Tools;
 using System.Windows.Controls;
-using FoundOps.SLClient.Data.Models;
-using FoundOps.SLClient.UI.Tools;
 using Telerik.Windows.Documents.UI;
 using Telerik.Windows.Documents.Model;
 using Telerik.Windows.Documents.Layout;
@@ -26,7 +26,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         private RouteManifestSettings Settings { get { return VM.RouteManifest.RouteManifestSettings; } }
 
-        private readonly ObservableCollection<InlineUIContainer> _routeDestinationUIContainers = new ObservableCollection<InlineUIContainer>();
+        /// <summary>
+        /// The updateSizeSubscription to dispose.
+        /// </summary>
+        private IDisposable _updateSizeSubscription;
 
         #endregion
 
@@ -56,23 +59,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             };
 
             Closed += (s, e) => VM.Routes.ManifestOpen = false;
-
-            //Refresh the InlineUIContainer's sizes after they are added to the visual tree. (This is for ItemsControls)
-            _routeDestinationUIContainers.FromCollectionChanged().Throttle(TimeSpan.FromMilliseconds(100))
-             .ObserveOnDispatcher().Subscribe(_ =>
-             {
-                 foreach (var uiContainer in _routeDestinationUIContainers)
-                 {
-                     //Update the Height and Width
-                     uiContainer.UiElement.Measure(new Size(double.MaxValue, double.MaxValue));
-                     uiContainer.Height = uiContainer.UiElement.DesiredSize.Height;
-                     uiContainer.Width = uiContainer.UiElement.DesiredSize.Width;
-                 }
-
-                 ManifestRichTextBox.UpdateEditorLayout();
-             });
-
-            //this.ManifestRichTextBox.CurrentVisiblePageChanged+= Update textbox
         }
 
         #region Logic
@@ -82,7 +68,12 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         /// </summary>
         public void UpdateDocument()
         {
-            _routeDestinationUIContainers.Clear();
+            //Dispose the _updateSizeSubscription
+            if (_updateSizeSubscription != null)
+            {
+                _updateSizeSubscription.Dispose();
+                _updateSizeSubscription = null;
+            }
 
             //Only load the manifest when the current viewer is open
             if (!VM.Routes.ManifestOpen) return;
@@ -165,21 +156,48 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
                 #region Add the RouteDestinations
 
+                //Keep a list of size changed observables
+                var uiElementSizeChangedObservables = new List<IObservable<InlineUIContainer>>();
+
                 foreach (var routeDestination in VM.Routes.SelectedEntity.RouteDestinationsListWrapper)
                 {
                     var manifestRouteDestination = new ManifestRouteDestination { Margin = new Thickness(25, 2, 0, 10), RouteDestination = routeDestination };
                     manifestRouteDestination.Measure(new Size(double.MaxValue, double.MaxValue));
 
                     var destination = new InlineUIContainer
-                                           {
-                                               Height = manifestRouteDestination.DesiredSize.Height,
-                                               Width = manifestRouteDestination.DesiredSize.Width,
-                                               UiElement = manifestRouteDestination
-                                           };
+                    {
+                        Height = manifestRouteDestination.DesiredSize.Height,
+                        Width = manifestRouteDestination.DesiredSize.Width,
+                        UiElement = manifestRouteDestination
+                    };
 
-                    _routeDestinationUIContainers.Add(destination);
+                    //Track the UiElement's size changed event
+                    uiElementSizeChangedObservables.Add(Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(h => manifestRouteDestination.SizeChanged += h,
+                          h => manifestRouteDestination.SizeChanged -= h).Select(e => destination));
+
                     bodyParagraph.Inlines.Add(destination);
                 }
+
+                //Buffer UIElements size changes for a second
+                //Then update the RichTextBox
+                _updateSizeSubscription = uiElementSizeChangedObservables.Merge().Buffer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
+                    .Subscribe(containersToUpdate =>
+                    {
+                        foreach (var container in containersToUpdate)
+                        {
+                            var uiElement = container.UiElement;
+                            var desiredHeight = uiElement.DesiredSize.Height;
+
+                            if (desiredHeight > 0 && container.Height != desiredHeight)
+                                container.Height = desiredHeight;
+                        }
+
+                        try
+                        {
+                            ManifestRichTextBox.UpdateEditorLayout();
+                        }
+                        catch {} //Ignore problems. An exception will occur when RichTextBox tries to print
+                    });
 
                 #endregion
             }
@@ -195,9 +213,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             ManifestRichTextBox.Document = document;
             ManifestRichTextBox.IsSpellCheckingEnabled = false;
             ManifestRichTextBox.Width = 870;
-
-            //Fixup the layout
-            Observable.Interval(TimeSpan.FromMilliseconds(100)).Take(1).ObserveOnDispatcher().Subscribe(_ => ManifestRichTextBox.UpdateEditorLayout());
         }
 
         #region Private Methods

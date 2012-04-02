@@ -169,27 +169,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
-        /// Get the route's RouteTask.Service.ServiceTemplates and Fields.
-        /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
-        /// </summary>
-        /// <param name="roleId">The current role id.</param>
-        /// <param name="routeId">The route id.</param>
-        public IQueryable<ServiceTemplate> GetRouteServiceTemplates(Guid roleId, Guid routeId)
-        {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-
-            var serviceTemplateIds = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Id == routeId).Include("RouteDestinations.RouteTasks")
-                                     .SelectMany(r => r.RouteDestinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.ServiceId))).Where(sid => sid != null).Select(sid => sid.Value).ToArray();
-
-            var templatesWithDetails = from serviceTemplate in GetServiceTemplatesForServiceProvider(roleId, (int)ServiceTemplateLevel.ServiceDefined).Where(st => serviceTemplateIds.Contains(st.Id))
-                                       from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                                       from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                                       select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
-
-            return templatesWithDetails.Select(t => t.serviceTemplate).OrderBy(st => st.Name);
-        }
-
-        /// <summary>
         /// Gets the current ServiceProvider's ServiceProvider level ServiceTemplates and details.
         /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
         /// </summary>
@@ -280,14 +259,14 @@ namespace FoundOps.Server.Services.CoreDomainService
                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
 
-            var serviceTemplateWithDetails = serviceTemplateTuples.First().serviceTemplate;
+
+            var serviceTemplateTuple = serviceTemplateTuples.FirstOrDefault();
+            return serviceTemplateTuple == null ? null : serviceTemplateTuple.serviceTemplate;
 
             //TODO w QuickBooks
             ////Force load Invoices
             ////Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
             //this.ObjectContext.Invoices.Join(serviceTemplatesForServiceProvider, i => i.Id, st => st.Id, (i, st) => i).ToArray();
-
-            return serviceTemplateWithDetails;
         }
 
         /// <summary>

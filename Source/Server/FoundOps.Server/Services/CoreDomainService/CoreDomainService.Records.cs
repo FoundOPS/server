@@ -56,6 +56,18 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
+        /// Returns the clients for the current role.
+        /// It also includes the Client.OwnedParty and Client.OwnedParty.ContactInfoSet
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="clientsIds">The ids of the Clients to load.</param>
+        public IQueryable<Client> GetClientsWithContactInfoSet(Guid roleId, IEnumerable<Guid> clientsIds)
+        {
+            var clients = GetClientsForRole(roleId).Where(c => clientsIds.Contains(c.Id)).Include(c => c.OwnedParty.ContactInfoSet);
+            return clients;
+        }
+
+        /// <summary>
         /// Searches the clients for the current role. Uses a StartsWith search mode.
         /// </summary>
         /// <param name="roleId">The role id.</param>
@@ -417,6 +429,18 @@ namespace FoundOps.Server.Services.CoreDomainService
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
             var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id).OrderBy(l => l.Name);
+            return locations;
+        }
+
+        /// <summary>
+        /// Gets the locations for  role's business account.
+        /// It also includes the ContactInfoSet.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="locationsIds">The ids of the Locations to load.</param>
+        public IQueryable<Location> GetLocationsWithContactInfoSet(Guid roleId, IEnumerable<Guid> locationsIds)
+        {
+            var locations = GetLocationsToAdministerForRole(roleId).Where(l => locationsIds.Contains(l.Id)).Include(l => l.ContactInfoSet);
             return locations;
         }
 

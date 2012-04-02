@@ -375,7 +375,8 @@ namespace FoundOps.SLClient.Data.ViewModels
             //TODO Fix adding to work properly
 
             //Add the added entities to the VirtualItemCount
-            ExtendedVirtualQueryableCollectionView.VirtualItemCount += submitOperation.ChangeSet.AddedEntities.OfType<TEntity>().Count();
+            if (ExtendedVirtualQueryableCollectionView != null)
+                ExtendedVirtualQueryableCollectionView.VirtualItemCount += submitOperation.ChangeSet.AddedEntities.OfType<TEntity>().Count();
 
             base.OnSave(submitOperation);
         }

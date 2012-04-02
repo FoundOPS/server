@@ -62,20 +62,27 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             //}
             //else
             //{
-                //Load the Image, and raise the ImageLoaded event when it is completed
-                var client = new WebClient();
+            //Load the Image, and raise the ImageLoaded event when it is completed
+            var client = new WebClient();
 
-                var urlConverter = new LocationToUrlConverter();
-                client.OpenReadObservable((Uri)urlConverter.Convert(location, null, null, null)).ObserveOnDispatcher()
-                    .Subscribe(
-                        stream =>
-                        {
-                            var image = new BitmapImage();
-                            image.SetSource(stream);
-                            c.BarcodeImage.Source = image;
-                            if (c.ImageLoaded != null)
-                                c.ImageLoaded(c, null);
-                        });
+            var urlConverter = new LocationToUrlConverter();
+            if (location == null)
+            {
+                if (c.ImageLoaded != null)
+                    c.ImageLoaded(c, null);
+                return;
+            }
+
+            client.OpenReadObservable((Uri)urlConverter.Convert(location, null, null, null)).ObserveOnDispatcher()
+                .Subscribe(
+                    stream =>
+                    {
+                        var image = new BitmapImage();
+                        image.SetSource(stream);
+                        c.BarcodeImage.Source = image;
+                        if (c.ImageLoaded != null)
+                            c.ImageLoaded(c, null);
+                    });
             //}
         }
 

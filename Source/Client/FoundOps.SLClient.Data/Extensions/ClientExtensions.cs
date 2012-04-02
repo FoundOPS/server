@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.Interfaces;
+using FoundOps.Common.Silverlight.UI.Interfaces;
+using System;
 using System.Linq;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.UI.Interfaces;
 using RiaServicesContrib;
 using System.Reactive.Linq;
-using FoundOps.Common.Silverlight.Interfaces;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
@@ -53,7 +53,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
-
 
         #region Locals
 
