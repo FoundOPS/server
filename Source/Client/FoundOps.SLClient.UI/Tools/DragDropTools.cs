@@ -103,9 +103,8 @@ namespace FoundOps.SLClient.UI.Tools
             var newDestination = new RouteDestination
             {
                 Id = Guid.NewGuid(),
-                Location = routeTask.Location,
-                Client = routeTask.Client,
-
+                LocationId =  routeTask.LocationId,
+                ClientId = routeTask.ClientId
             };
 
             //Add the tasks to the destination

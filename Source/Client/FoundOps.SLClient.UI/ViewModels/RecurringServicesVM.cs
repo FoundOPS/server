@@ -34,8 +34,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             clientContext.ObserveOnDispatcher().Subscribe(client =>
             {
                 if (client != null)
-                    ViewObservable.OnNext(
-                        DomainCollectionViewFactory<ServiceTemplate>.GetDomainCollectionView(client.RecurringServices));
+                    ViewObservable.OnNext(DomainCollectionViewFactory<ServiceTemplate>.GetDomainCollectionView(client.RecurringServices));
             });
         }
 
