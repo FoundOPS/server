@@ -292,7 +292,7 @@
                         </Grid>
                     </InfiniteAccordion:ThirdsListDetails.List>
                     <InfiniteAccordion:ThirdsListDetails.Details>
-                        <my:ServiceLarge />
+                        <Services:ServiceLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
                     <InfiniteAccordion:ThirdsListDetails.Summary>
                         <my:ServiceSmall />

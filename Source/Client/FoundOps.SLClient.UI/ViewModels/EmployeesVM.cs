@@ -1,12 +1,10 @@
-﻿using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+﻿using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Reactive.Linq;
 using System.Windows.Controls;

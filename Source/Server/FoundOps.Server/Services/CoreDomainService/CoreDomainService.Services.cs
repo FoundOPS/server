@@ -72,6 +72,11 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void InsertService(Service service)
         {
+            //TODO
+            //Need to distinguish if the date changed, or if part of the service template changed
+            //If the date changed delete future route tasks
+            //If the destination of the service template changed, delete future route tasks
+
             //If the service is associated with a RouteTask that is in a route today or in the future, delete that RouteTask
             //It can only be associated to a RouteTask if it has a RecurringServiceParent
             if (service.RecurringServiceId != null && service.ServiceDate >= DateTime.Now.Date)

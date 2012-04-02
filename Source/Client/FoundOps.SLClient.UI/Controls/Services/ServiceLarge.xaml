@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.Services.ServiceLarge" x:Name="myServiceLarge"
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Services.ServiceLarge" x:Name="myServiceLarge"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
@@ -49,10 +49,10 @@
                             <TextBlock Text="Date:" Grid.Row="1" Foreground="Black" HorizontalAlignment="Right" Margin="0,2,0,0"/>
                             <telerik:RadDatePicker Grid.Row="1" Grid.Column="2" InputMode="DatePicker" SelectedValue="{Binding SelectedEntity.OccurDate, Mode=TwoWay}" IsEnabled="{Binding SelectedEntity.OccurDate, Converter={StaticResource CheckIfDateIsBeforeTodayConverter}}"/>
                         </Grid>
-                        <Edit:FieldsEditGrid ServiceTemplate="{Binding DataContext.SelectedEntity.Service.ServiceTemplate, ElementName=myServiceLarge}" IsGeneratedService="{Binding DataContext.SelectedEntity.Service.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"/>
+                        <Edit:FieldsEditGrid ServiceTemplate="{Binding DataContext.SelectedEntity.Service.ServiceTemplate, ElementName=myServiceLarge}" IsGeneratedService="{Binding DataContext.SelectedEntity.Service.RecurringServiceId, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"/>
                     </StackPanel>
                 </toolkit:Expander>
-                <my3:ClientLinkLarge IsReadOnly="{Binding DataContext.SelectedEntity.Service.RecurringServiceParent, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"
+                <my3:ClientLinkLarge IsReadOnly="{Binding DataContext.SelectedEntity.Service.RecurringServiceId, ElementName=myServiceLarge, Converter={StaticResource ExistsBoolConverter}}"
                                      SelectedClient="{Binding DataContext.SelectedEntity.Service.Client, ElementName=myServiceLarge, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}"/>
             </StackPanel>
         </ScrollViewer>
