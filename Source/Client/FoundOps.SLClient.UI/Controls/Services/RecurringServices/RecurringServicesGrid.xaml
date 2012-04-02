@@ -9,7 +9,7 @@
         <Converters:RepeatDescriptionConverter x:Key="RepeatDescriptionConverter" />
     </UserControl.Resources>
     <telerik:RadGridView x:Name="RecurringServiceRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
-            RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}">
+            RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Frequency" Width="Auto">
                 <telerik:GridViewDataColumn.CellTemplate>
