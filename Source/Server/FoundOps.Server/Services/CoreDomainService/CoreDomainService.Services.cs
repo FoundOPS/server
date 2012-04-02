@@ -71,8 +71,16 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void InsertService(Service service)
         {
-            DeleteFutureRouteTasksIfExist(service);
-            
+            //If the service is associated with a RouteTask that is in a route today or in the future, delete that RouteTask
+            //It can only be associated to a RouteTask if it has a RecurringServiceParent
+            if (service.RecurringServiceId != null && service.ServiceDate >= DateTime.Now.Date)
+            {
+                var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt =>
+                    rt.RecurringServiceId == service.RecurringServiceId && rt.Date == service.ServiceDate).ToArray();
+
+                DeleteRouteTasks(routeTasksToDelete);
+            }
+
             if ((service.EntityState != EntityState.Detached))
             {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(service, EntityState.Added);
@@ -88,46 +96,48 @@ namespace FoundOps.Server.Services.CoreDomainService
             var originalService = ChangeSet.GetOriginal(currentService);
 
             //If the original date was prior to today, throw an exception
-            if(originalService.ServiceDate < DateTime.Now.Date)
+            if (originalService.ServiceDate < DateTime.Now.Date)
                 throw new Exception("Cannot change the date of a Service in the past.");
 
-            DeleteFutureRouteTasksIfExist(currentService);
+            //Delete any associated route tasks (today/in the future) if the service date changed
+            if (originalService.ServiceDate != currentService.ServiceDate)
+            {
+                var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt =>
+                    rt.ServiceId == currentService.Id || (rt.RecurringServiceId == originalService.RecurringServiceId && rt.Date == originalService.ServiceDate)).ToArray();
+
+                DeleteRouteTasks(routeTasksToDelete);
+            }
 
             this.ObjectContext.Services.AttachAsModified(currentService);
         }
 
         /// <summary>
-        /// Checks if the service being inserted/updated has a RouteTask associated with it
-        /// Checks if the associated RouteTask's RouteDestination for other RouteTasks
-        /// If the RouteDestination had no other RouteTasks, delete it
-        /// Deletes the future route tasks if exist.
+        /// Goes through each routeTask and removes it from route destinations
+        /// Delete any route destinations without remaining tasks.
         /// </summary>
-        /// <param name="service">The service.</param>
-        private void DeleteFutureRouteTasksIfExist(Service service)
+        /// <param name="routeTasksToDelete"></param>
+        private void DeleteRouteTasks(RouteTask[] routeTasksToDelete)
         {
-            //If the service is associated with a RouteTask that is in a route in the future, delete that RouteTask
-            var routeTasks = this.ObjectContext.RouteTasks.Where(rt => rt.ServiceId == service.Id).ToArray();
-
             //If no RouteTasks exist, return
-            if (!routeTasks.Any()) return;
+            if (!routeTasksToDelete.Any()) return;
 
-            foreach (var routeTask in routeTasks)
+            foreach (var routeTask in routeTasksToDelete)
             {
+                routeTask.RouteDestinationReference.Load();
                 var routeDestination = routeTask.RouteDestination;
 
+                //Remove the RouteTask from the RouteDestination
                 if (routeDestination != null)
                 {
-                    //Remove the RouteTask from the RouteDestination
                     routeTask.RouteDestination = null;
-                    routeTask.RouteDestinationId = null;
 
                     //If the RouteDestination only had one RouteTask in it, delete it
                     if (routeDestination.RouteTasks.Count <= 0)
                         this.ObjectContext.RouteDestinations.DeleteObject(routeDestination);
-
-                    //Delete the 
-                    this.ObjectContext.RouteTasks.DeleteObject(routeTask);
                 }
+
+                //Delete the route task
+                this.ObjectContext.RouteTasks.DeleteObject(routeTask);
             }
         }
 
@@ -141,6 +151,11 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             if (service.ServiceTemplate != null)
                 this.DeleteServiceTemplate(service.ServiceTemplate);
+
+            var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt =>
+                 rt.ServiceId == service.Id || (rt.RecurringServiceId == service.RecurringServiceId && rt.Date == service.ServiceDate)).ToArray();
+
+            DeleteRouteTasks(routeTasksToDelete);
 
             if ((service.EntityState != EntityState.Detached))
             {
@@ -289,42 +304,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             return recurringServicesToReturn;
         }
 
-        private IEnumerable<RecurringService> RecurringServicesForDate(DateTime selectedDate, BusinessAccount businessAccount)
-        {
-            var recurringServicesForBusinessAccount =
-                (from client in this.ObjectContext.Clients.Where(c => c.VendorId == businessAccount.Id)
-                 from recurringService in this.ObjectContext.RecurringServices.Where(rs => rs.ClientId == client.Id)
-                 select recurringService);
-
-            //Force load Repeats
-            recurringServicesForBusinessAccount.Select(rs => rs.Repeat).ToArray();
-
-            //Force load Clients
-            recurringServicesForBusinessAccount.Select(rs => rs.Client).ToArray();
-
-            //Force Load ServiceTemplates.Fields (for MakeChild), and LocationsFields (for Destination)
-            var serviceTemplatesAndDestinations = (from rs in recurringServicesForBusinessAccount
-                                                   join st in this.ObjectContext.ServiceTemplates
-                                                       on rs.Id equals st.Id
-                                                   from f in st.Fields
-                                                   from lf in st.Fields.OfType<LocationField>()
-                                                   select new { st, f, lf.Value }).ToArray();
-
-            var serviceTemplatesOptions = (from rs in recurringServicesForBusinessAccount
-                                           join st in this.ObjectContext.ServiceTemplates
-                                               on rs.Id equals st.Id
-                                           from f in st.Fields
-                                           from of in st.Fields.OfType<OptionsField>()
-                                           select new { st, f, of.Options }).ToArray();
-
-            //Force Load ServiceTemplate.Invoice
-            //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            this.ObjectContext.Invoices.Join(recurringServicesForBusinessAccount.Select(rs => rs.ServiceTemplate), i => i.Id, st => st.Id, (i, st) => i).ToArray();
-
-            //Filter only recurring services on date (and not excluded on that date)
-            return recurringServicesForBusinessAccount.ToList().Where(rs => !rs.ExcludedDates.Contains(selectedDate) && rs.Repeat.NextRepeatDateOnOrAfterDate(selectedDate.Date) == selectedDate.Date);
-        }
-
         public void InsertRecurringService(RecurringService recurringService)
         {
             if ((recurringService.EntityState != EntityState.Detached))
@@ -339,11 +318,23 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateRecurringService(RecurringService currentRecurringService)
         {
+            //If there is a newly added excluded date today or in the future. Remove any associated route tasks for that date
+            var originalRecurringService = ChangeSet.GetOriginal(currentRecurringService);
+            var newlyAddedFutureDatesToExclude = currentRecurringService.ExcludedDates.Except(originalRecurringService.ExcludedDates).Where(d => d >= DateTime.Now.Date).ToArray();
+            if (newlyAddedFutureDatesToExclude.Any())
+            {
+                var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt => 
+                    rt.RecurringServiceId == currentRecurringService.Id && newlyAddedFutureDatesToExclude.Contains(rt.Date)).ToArray();
+
+                DeleteRouteTasks(routeTasksToDelete);
+            }
+
             this.ObjectContext.RecurringServices.AttachAsModified(currentRecurringService);
         }
 
         public void DeleteRecurringService(RecurringService recurringService)
         {
+            //TODO delete all RouteTasks and RouteDestinations associated
             if ((recurringService.EntityState == EntityState.Detached))
                 this.ObjectContext.RecurringServices.Attach(recurringService);
 
