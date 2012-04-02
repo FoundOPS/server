@@ -407,10 +407,11 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         protected virtual bool DomainContextHasRelatedChanges()
         {
+            var changeSet = DomainContext.GetChangeSet();
+
             return
-                (DomainContext.EntityContainer.GetChanges().AddedEntities.Contains(SelectedEntity) ||
-                 DomainContext.EntityContainer.GetChanges().ModifiedEntities.Count > 0 ||
-                 DomainContext.EntityContainer.GetChanges().RemovedEntities.Count > 0);
+                (changeSet.AddedEntities.Contains(SelectedEntity) ||
+                 changeSet.ModifiedEntities.Count > 0 || changeSet.RemovedEntities.Count > 0);
         }
 
         // IPreventNavigationFrom

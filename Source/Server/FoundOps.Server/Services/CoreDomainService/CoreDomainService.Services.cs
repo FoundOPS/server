@@ -71,6 +71,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void InsertService(Service service)
         {
+            DeleteFutureRouteTasksIfExist(service);
+            
             if ((service.EntityState != EntityState.Detached))
             {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(service, EntityState.Added);
@@ -83,7 +85,50 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateService(Service currentService)
         {
+            var originalService = ChangeSet.GetOriginal(currentService);
+
+            //If the original date was prior to today, throw an exception
+            if(originalService.ServiceDate < DateTime.Now.Date)
+                throw new Exception("Cannot change the date of a Service in the past.");
+
+            DeleteFutureRouteTasksIfExist(currentService);
+
             this.ObjectContext.Services.AttachAsModified(currentService);
+        }
+
+        /// <summary>
+        /// Checks if the service being inserted/updated has a RouteTask associated with it
+        /// Checks if the associated RouteTask's RouteDestination for other RouteTasks
+        /// If the RouteDestination had no other RouteTasks, delete it
+        /// Deletes the future route tasks if exist.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        private void DeleteFutureRouteTasksIfExist(Service service)
+        {
+            //If the service is associated with a RouteTask that is in a route in the future, delete that RouteTask
+            var routeTasks = this.ObjectContext.RouteTasks.Where(rt => rt.ServiceId == service.Id).ToArray();
+
+            //If no RouteTasks exist, return
+            if (!routeTasks.Any()) return;
+
+            foreach (var routeTask in routeTasks)
+            {
+                var routeDestination = routeTask.RouteDestination;
+
+                if (routeDestination != null)
+                {
+                    //Remove the RouteTask from the RouteDestination
+                    routeTask.RouteDestination = null;
+                    routeTask.RouteDestinationId = null;
+
+                    //If the RouteDestination only had one RouteTask in it, delete it
+                    if (routeDestination.RouteTasks.Count <= 0)
+                        this.ObjectContext.RouteDestinations.DeleteObject(routeDestination);
+
+                    //Delete the 
+                    this.ObjectContext.RouteTasks.DeleteObject(routeTask);
+                }
+            }
         }
 
         public void DeleteService(Service service)

@@ -61,7 +61,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         public new void RejectChanges()
         {
-            var changes = this.EntityContainer.GetChanges();
+            var changes = GetChangeSet();
 
             var addedEntities = changes.AddedEntities.ToArray();
             var modifiedEntities = changes.ModifiedEntities.ToArray();
@@ -78,6 +78,15 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             if (ChangesRejected != null)
                 ChangesRejected(this, addedEntities, modifiedEntities);
+        }
+
+        /// <summary>
+        /// Returns the ChangeSet
+        /// </summary>
+        public EntityChangeSet GetChangeSet()
+        {
+            var changes = this.EntityContainer.GetChanges();
+            return changes;
         }
 
         /// <summary>

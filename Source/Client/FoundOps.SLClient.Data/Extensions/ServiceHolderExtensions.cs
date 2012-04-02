@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Interfaces;
+using FoundOps.Common.Tools;
 using FoundOps.SLClient.Data.Services;
 using System.ComponentModel;
 using System.Linq;
@@ -115,9 +116,92 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         private Subject<bool> _cancelLastReloadDetails;
 
+        /// <summary>
+        /// Store the original occur date in case reject changes is called.
+        /// </summary>
+        private DateTime _originalOccurDate;
+
+        private IDisposable _serviceSubscription;
+
         #endregion
 
         #region Constructor
+
+        #region Initialization
+
+        partial void OnCreation()
+        {
+            InitializeHelper();
+        }
+
+        protected override void OnLoaded(bool isInitialLoad)
+        {
+            if (isInitialLoad)
+                InitializeHelper();
+
+            base.OnLoaded(isInitialLoad);
+        }
+
+        private void InitializeHelper()
+        {
+            _originalOccurDate = OccurDate;
+
+            //Follow OwnedParty changes
+            Observable2.FromPropertyChangedPattern(this, x => x.Service).ObserveOnDispatcher()
+            .Subscribe(_ =>
+            {
+                //Clear the last subscriptions and handlers
+                ClearSubscriptionsHandlers();
+
+                if (this.Service == null) return;
+
+                //Update this DisplayName whenever OwnedParty.DisplayName changes
+                _serviceSubscription = Observable2.FromPropertyChangedPattern(this.Service, x => x.ServiceDate).DistinctUntilChanged()
+                 .ObserveOnDispatcher().Subscribe(__ => this.CompositeRaiseEntityPropertyChanged("ServiceDate"));
+            });
+
+            //Follow property changes and update the Service
+            Observable2.FromPropertyChangedPattern(this, x => x.OccurDate).Throttle(TimeSpan.FromMilliseconds(100))
+            .ObserveOnDispatcher().Subscribe(_ =>
+            {
+                //Prevent changes when the details are not loaded
+                if (!DetailsLoaded)
+                    return;
+
+                //Service will only be null while reloading details. This SHOULD only happen in the OnRejectChangedReloadDetails method when the OccurDate is set
+                if (Service == null)
+                    return;
+
+                //If the RecurringServiceParent is not null, update its ExcludedDates to exclude the old ServiceDate and include the new ServiceDate
+                if (Service.RecurringServiceParent != null)
+                {
+                    var newExcludedDatesList = Service.RecurringServiceParent.ExcludedDates.ToList();
+
+                    //If the old ServiceDate does not equal the OccurDate, exclude it from the RecurringService
+                    if (Service.ServiceDate != OccurDate)
+                        newExcludedDatesList.Add(Service.ServiceDate.Date);
+
+                    //Remove the new Occur date from the ExcludedDates
+                    newExcludedDatesList.RemoveAll(ed => ed.Date == OccurDate);
+
+                    Service.RecurringServiceParent.ExcludedDates = newExcludedDatesList;
+                }
+
+                //Update the ServiceDate
+                Service.ServiceDate = this.OccurDate;
+            });
+        }
+
+        private void ClearSubscriptionsHandlers()
+        {
+            if (_serviceSubscription != null)
+            {
+                _serviceSubscription.Dispose();
+                _serviceSubscription = null;
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Use this constructor to create a new Service from the passed Service.
@@ -127,10 +211,6 @@ namespace FoundOps.Core.Models.CoreEntities
             Service = newService;
             OccurDate = newService.ServiceDate;
             ServiceName = newService.ServiceTemplate.Name;
-
-            //Keep the OccurDate updated with the ServiceDate
-            Observable2.FromPropertyChangedPattern(newService, x => x.ServiceDate).ObserveOnDispatcher()
-                .Subscribe(newDate => OccurDate = newDate);
 
             //The details will already be loaded from the newService
             DetailsLoaded = true;
@@ -187,7 +267,6 @@ namespace FoundOps.Core.Models.CoreEntities
                     _entityGraph = this.Service.EntityGraph();
 
                     DetailsLoaded = true;
-
                     if (loadedCallback != null)
                         loadedCallback();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -271,6 +350,9 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             if (!ServiceIsGenerated || !IsSelected)
                 return;
+
+            //Reset OccurDate to originalOccurDate
+            OccurDate = _originalOccurDate;
 
             //Regenerate the Service on RejectChanges in case the generated service was part of the DomainContext 
             //and had its info cleared as part of the RejectChanges

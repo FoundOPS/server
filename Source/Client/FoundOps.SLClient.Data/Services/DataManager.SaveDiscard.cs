@@ -64,7 +64,7 @@ namespace FoundOps.SLClient.Data.Services
             var dequeuedObservables = _nextSubmitOperationsQueue.ToArray();
             _nextSubmitOperationsQueue.Clear();
 
-            var changes = this.DomainContext.EntityContainer.GetChanges();
+            var changes = this.DomainContext.GetChangeSet();
 
             //Perform a submit operation for the dequeued submit operation observables
             _currentSubmitOperation = this.DomainContext.SubmitChanges(
@@ -133,7 +133,7 @@ namespace FoundOps.SLClient.Data.Services
                 return;
 
             //If there are no changes, call Cancelled
-            var changes = this.DomainContext.EntityContainer.GetChanges();
+            var changes = this.DomainContext.GetChangeSet();
             if (!changes.Any())
             {
                 //Dequeue Actions

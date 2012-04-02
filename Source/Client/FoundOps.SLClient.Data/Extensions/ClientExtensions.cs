@@ -2,6 +2,7 @@
 using System.Linq;
 using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.UI.Interfaces;
+using FoundOps.SLClient.Data.Services;
 using RiaServicesContrib;
 using System.Reactive.Linq;
 using FoundOps.Common.Silverlight.Interfaces;
@@ -54,7 +55,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-
         #region Locals
 
         //Keep track of when this has been initialized so it only happens once
@@ -70,6 +70,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             InitializeHelper();
         }
+
         protected override void OnLoaded(bool isInitialLoad)
         {
             if (isInitialLoad)
@@ -90,6 +91,14 @@ namespace FoundOps.Core.Models.CoreEntities
             Observable2.FromPropertyChangedPattern(this, x => x.OwnedParty).ObserveOnDispatcher()
                 .Subscribe(_ => OwnedPartyOperations());
 
+            Observable2.FromPropertyChangedPattern(this, x => x.DisplayName).ObserveOnDispatcher()
+                .Subscribe(displayName =>
+                               {
+                                   var defaultLocation = this.OwnedParty.Locations.Count == 1 ? this.OwnedParty.Locations.First() : null;
+                                   if (defaultLocation == null) return;
+                                   defaultLocation.Name = displayName;
+                               });
+
             _initialized = true;
         }
 
@@ -109,31 +118,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
             //Setup DefaultBillingLocation whenever a Location is removed from this client's OwnedParty
             this.OwnedParty.Locations.EntityRemoved += LocationsEntityRemoved;
-
-            ////TODO: REDO
-            //var rejectionHandled = true;
-            //DomainContext.ChangesRejected += (s, e) => rejectionHandled = false;
-
-            ////Whenever the client name changes update the default location name
-            ////There is a default location as long as there is only one location
-            //SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null)
-            //.SelectLatest(selectedClient => Observable2.FromPropertyChangedPattern(selectedClient, x => x.DisplayName).DistinctUntilChanged())
-            //.Subscribe(displayName =>
-            //{
-            //    //Ignore changes after the DomainContext rejects changes
-            //    if (!rejectionHandled)
-            //    {
-            //        rejectionHandled = true;
-            //        return;
-            //    }
-
-            //    //If the Client only has one location 
-            //    //and if that location had the same name as the client
-            //    //update it's name whenever the client's name changes
-            //    var defaultLocation = SelectedEntity.OwnedParty.Locations.Count == 1 ? SelectedEntity.OwnedParty.Locations.First() : null;
-            //    if (defaultLocation == null) return;
-            //    defaultLocation.Name = displayName;
-            //});
         }
 
         private void ClearSubscriptionsHandlers()
