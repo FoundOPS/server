@@ -13,7 +13,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the Vehicles
     /// </summary>
     [ExportViewModel("VehiclesVM")]
-    public class VehiclesVM : InfiniteAccordionVM<Vehicle>, IAddToDeleteFromSource<Vehicle>
+    public class VehiclesVM : InfiniteAccordionVM<Vehicle, Vehicle>, IAddToDeleteFromSource<Vehicle>
     {
         #region Implementation of IAddToDeleteFromSource
 

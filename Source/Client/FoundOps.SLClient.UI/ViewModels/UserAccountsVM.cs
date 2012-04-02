@@ -16,7 +16,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the UserAccounts
     /// </summary>
     [ExportViewModel("UserAccountsVM")]
-    public class UserAccountsVM : InfiniteAccordionVM<Party>, //Base class is Party because DomainCollectionView does not work well with inheritance
+    public class UserAccountsVM : InfiniteAccordionVM<Party, UserAccount>, //Base class is Party because DomainCollectionView does not work well with inheritance
         IAddToDeleteFromSource<Party> //Base class is Party because loadedUserAccounts is EntityList<Party>
     {
         #region Public Properties

@@ -303,7 +303,6 @@
     <Compile Include="Models\RouteManifestSettings.cs" />
     <Compile Include="Services\ContextManager.cs" />
     <Compile Include="Services\DataManager.Base.cs" />
-    <Compile Include="Services\DataManager.NewQuery.cs" />
     <Compile Include="Services\DataManager.OldQuery.cs" />
     <Compile Include="Services\DataManager.SaveDiscard.cs" />
     <Compile Include="Services\IContactInfoDataService.cs" />

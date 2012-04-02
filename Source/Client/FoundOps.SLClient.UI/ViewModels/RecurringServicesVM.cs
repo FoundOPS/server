@@ -5,7 +5,6 @@ using System.Windows;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
@@ -16,7 +15,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying RecurringServices
     /// </summary>
     [ExportViewModel("RecurringServicesVM")]
-    public class RecurringServicesVM : InfiniteAccordionVM<RecurringService>
+    public class RecurringServicesVM : InfiniteAccordionVM<RecurringService, RecurringService>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RecurringServicesVM"/> class.

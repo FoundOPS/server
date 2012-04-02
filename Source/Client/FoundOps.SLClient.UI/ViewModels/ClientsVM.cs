@@ -21,7 +21,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Clients
     ///</summary>
     [ExportViewModel("ClientsVM")]
-    public class ClientsVM : InfiniteAccordionVM<Client>,
+    public class ClientsVM : InfiniteAccordionVM<Client, Client>,
         IAddToDeleteFromDestination<Location>, IAddNewExisting<Location>, IRemoveDelete<Location>
     {
         #region Public
@@ -172,22 +172,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Logic
 
-        #region TODO Replace base with QueryableCollectionView and this logic
-
-        /// <summary>
-        /// The method called for the AddCommand to create an entity. Defaults to DomainCollectionView.AddNew()
-        /// </summary>
-        /// <param name="commandParameter">The command parameter.</param>
-        /// <returns>The entity to add.</returns>
-        protected override Client AddNewEntity(object commandParameter)
-        {
-            var newClient = (Client)this.QueryableCollectionView.AddNew();
-            DomainContext.Clients.Add(newClient);
-            return newClient;
-        }
-
-        #endregion
-
         protected override void OnAddEntity(Client newClient)
         {
             newClient.OwnedParty = new Business { Name = "" };
@@ -202,6 +186,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             };
             newClient.OwnedParty.Locations.Add(defaultLocation);
 
+            newClient.DefaultBillingLocation = defaultLocation;
+
             //Add every available service to the client by default
             foreach (var serviceTemplate in ContextManager.CurrentServiceTemplates)
             {
@@ -213,6 +199,13 @@ namespace FoundOps.SLClient.UI.ViewModels
             var currentLocation = ContextManager.GetContext<Location>();
             if (currentLocation != null)
                 newClient.OwnedParty.OwnedLocations.Add(currentLocation);
+        }
+
+        protected override void OnDeleteEntity(Client entityToDelete)
+        {
+            //Detach the entity graph related to the client 
+            //they will be deleted in Client's delete method of the DomainService
+            DataManager.DetachEntities(entityToDelete.EntityGraphToRemove);
         }
 
         #endregion

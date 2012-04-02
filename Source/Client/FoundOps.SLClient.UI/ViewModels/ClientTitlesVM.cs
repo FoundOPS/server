@@ -17,7 +17,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A VM which manages Contact's ClientTitles
     /// </summary>
     [ExportViewModel("ClientTitlesVM")]
-    public class ClientTitlesVM : InfiniteAccordionVM<ClientTitle>
+    public class ClientTitlesVM : InfiniteAccordionVM<ClientTitle, ClientTitle>
     {
         //Public
 

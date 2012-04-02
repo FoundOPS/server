@@ -13,7 +13,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Contacts
     /// </summary>
     [ExportViewModel("ContactsVM")]
-    public class ContactsVM : InfiniteAccordionVM<Contact>
+    public class ContactsVM : InfiniteAccordionVM<Contact, Contact>
     {
         #region Public
 

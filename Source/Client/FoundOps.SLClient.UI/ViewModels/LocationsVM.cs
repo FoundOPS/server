@@ -18,7 +18,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Locations
     /// </summary>
     [ExportViewModel("LocationsVM")]
-    public class LocationsVM : InfiniteAccordionVM<Location>, IAddToDeleteFromSource<Location>
+    public class LocationsVM : InfiniteAccordionVM<Location, Location>, IAddToDeleteFromSource<Location>
     {
         #region Public Properties
 

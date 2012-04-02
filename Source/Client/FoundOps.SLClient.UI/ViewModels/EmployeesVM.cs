@@ -17,7 +17,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Employees
     /// </summary>
     [ExportViewModel("EmployeesVM")]
-    public class EmployeesVM : InfiniteAccordionVM<Employee>, IAddToDeleteFromSource<Employee>
+    public class EmployeesVM : InfiniteAccordionVM<Employee, Employee>, IAddToDeleteFromSource<Employee>
     {
         #region Public Properties
 

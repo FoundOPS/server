@@ -16,7 +16,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Fields
     /// </summary>
     [ExportViewModel("FieldsVM")]
-    public class FieldsVM : InfiniteAccordionVM<Field>
+    public class FieldsVM : InfiniteAccordionVM<Field, Field>
     {
         # region Public Properties
 

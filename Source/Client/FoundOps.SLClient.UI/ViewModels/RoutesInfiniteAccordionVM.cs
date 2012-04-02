@@ -10,7 +10,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Displays the proper routes depending on the context.
     /// </summary>
     [ExportViewModel("RoutesInfiniteAccordionVM")]
-    public class RoutesInfiniteAccordionVM : InfiniteAccordionVM<Route>
+    public class RoutesInfiniteAccordionVM : InfiniteAccordionVM<Route, Route>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutesInfiniteAccordionVM"/> class.

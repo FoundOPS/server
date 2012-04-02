@@ -17,7 +17,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for adding, editing, and removing BusinessAccounts in the admin console.
     /// </summary>
     [ExportViewModel("BusinessAccountsVM")]
-    public class BusinessAccountsVM : InfiniteAccordionVM<Party>, //Base class is Party instead of BusinessAccount because DomainCollectionView does not work well with inheritance
+    public class BusinessAccountsVM : InfiniteAccordionVM<Party, BusinessAccount>,
         IAddToDeleteFromDestination<UserAccount>, IAddNewExisting<UserAccount>, IRemoveDelete<UserAccount>,
         IAddToDeleteFromDestination<ServiceTemplate>, IAddNewExisting<ServiceTemplate>, IRemoveDelete<ServiceTemplate>
     {
@@ -127,14 +127,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         Func<UserAccount> IRemoveDelete<UserAccount>.DeleteItem { get { return DeleteItemUserAccount; } }
 
         #endregion
-
-        /// <summary>
-        /// Gets the object type provided (for the InfiniteAccordion). Overriden because base class is Party.
-        /// </summary>
-        public override Type ObjectTypeProvided
-        {
-            get { return typeof(BusinessAccount); }
-        }
 
         private ContactInfoVM _selectedEntityContactInfoVM;
         /// <summary>

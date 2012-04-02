@@ -13,7 +13,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Regions
     /// </summary>
     [ExportViewModel("RegionsVM")]
-    public class RegionsVM : InfiniteAccordionVM<Region>
+    public class RegionsVM : InfiniteAccordionVM<Region, Region>
     {
         #region Public Properties
 

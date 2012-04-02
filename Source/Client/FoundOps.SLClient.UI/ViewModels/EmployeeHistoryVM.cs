@@ -11,7 +11,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying EmployeeHistory
     /// </summary>
     [ExportViewModel("EmployeeHistoryVM")]
-    public class EmployeeHistoryVM : InfiniteAccordionVM<EmployeeHistoryEntry>
+    public class EmployeeHistoryVM : InfiniteAccordionVM<EmployeeHistoryEntry, EmployeeHistoryEntry>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeHistoryVM"/> class.

@@ -23,7 +23,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model to manage adding, modifying, and deleting ServiceTemplates.
     /// </summary>
     [ExportViewModel("ServiceTemplatesVM")]
-    public class ServiceTemplatesVM : InfiniteAccordionVM<ServiceTemplate>, IAddToDeleteFromSource<ServiceTemplate>
+    public class ServiceTemplatesVM : InfiniteAccordionVM<ServiceTemplate, ServiceTemplate>, IAddToDeleteFromSource<ServiceTemplate>
     {
         #region Public Properties
 
@@ -163,6 +163,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                     return updateAdditionalServiceTemplates.Select(_ =>
                     {
+                        if (ContextManager.CurrentServiceTemplates == null)
+                            return new ServiceTemplate[] { };
+
                         //Remove already existing ServiceTemplates
                         var availableServiceTemplatesForClient = ContextManager.CurrentServiceTemplates.Where(spst => !clientContext.ServiceTemplates.Any(cst => cst.OwnerServiceTemplateId == spst.Id));
 

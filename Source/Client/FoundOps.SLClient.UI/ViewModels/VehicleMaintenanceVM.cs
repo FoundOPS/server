@@ -12,7 +12,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the VehicleMaintenanceLogEntries
     ///</summary>
     [ExportViewModel("VehicleMaintenanceVM")]
-    public class VehicleMaintenanceVM : InfiniteAccordionVM<VehicleMaintenanceLogEntry>
+    public class VehicleMaintenanceVM : InfiniteAccordionVM<VehicleMaintenanceLogEntry, VehicleMaintenanceLogEntry>
     {
         //Public Properties
         public RelayCommand AddLineItemCommand { get; private set; }

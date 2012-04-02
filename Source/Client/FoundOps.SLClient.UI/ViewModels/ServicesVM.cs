@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
@@ -9,6 +8,7 @@ using MEFedMVVM.ViewModelLocator;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
@@ -23,7 +23,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Loads, displays (and generates) services based on context. Allows adding/deleting of services.
     /// </summary>
     [ExportViewModel("ServicesVM")]
-    public class ServicesVM : InfiniteAccordionVM<ServiceHolder>
+    public class ServicesVM : InfiniteAccordionVM<ServiceHolder, ServiceHolder>
     {
         #region Properties
 
