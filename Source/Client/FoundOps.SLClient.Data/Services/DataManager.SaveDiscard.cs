@@ -23,7 +23,7 @@ namespace FoundOps.SLClient.Data.Services
         #region Public Events
 
         /// <summary>
-        /// The event handler delefate for the ChangesSaved event.
+        /// The event handler delegate for the ChangesSaved event.
         /// </summary>
         /// <param name="submitOperation"></param>
         public delegate void ChangesSavedHandler(SubmitOperation submitOperation);
@@ -32,6 +32,12 @@ namespace FoundOps.SLClient.Data.Services
         /// An event triggered when changes are saved.
         /// </summary>
         public event ChangesSavedHandler ChangesSaved;
+
+        private readonly Subject<bool> _rejectChangesDueToErrorSubject= new Subject<bool>(); 
+        /// <summary>
+        /// Pushes whenever rejects changes is called due to an error.
+        /// </summary>
+        public IObservable<bool> RejectChangesDueToError { get { return _rejectChangesDueToErrorSubject; } } 
 
         #endregion
 
@@ -96,6 +102,7 @@ namespace FoundOps.SLClient.Data.Services
                         wc.UploadStringAsync(new Uri(errorUrl), parameters);
 
                         DomainContext.RejectChanges();
+                        _rejectChangesDueToErrorSubject.OnNext(true);
 
                         //Setup the ErrorWindow prompt
                         var errorWindow = new ErrorWindow();

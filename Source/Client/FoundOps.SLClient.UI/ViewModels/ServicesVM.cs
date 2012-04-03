@@ -53,13 +53,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             //    .Subscribe(_ => LoadData);
 
             //Remove any non added new Services from the collection when RejectChanges is called
-            DomainContext.ChangesRejected += (s, ra, rm) =>
+            DomainContext.ChangesRejectedObservable.ObserveOnDispatcher().Subscribe(e =>
             {
                 if (SourceCollection as ObservableCollection<ServiceHolder> == null)
                     return;
-
                 ((ObservableCollection<ServiceHolder>)SourceCollection).RemoveAll(sh => sh.ServiceIsNew && sh.Service.EntityState == EntityState.Detached);
-            };
+            });
 
             //Can only delete if the Details are loaded (because it might need the RecurringService parent)
             SelectedEntityObservable.WhereNotNull().SelectLatest(se => se.FromPropertyChanged("DetailsLoaded").Select(_ => se.DetailsLoaded)).Subscribe(CanDeleteSubject);

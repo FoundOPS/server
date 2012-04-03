@@ -33,7 +33,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" />
                     <Controls2:RadTreeView x:Name="RouteTreeView" Loaded="RouteTreeViewLoaded" 
-                                           Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding RouteDestinationsListWrapper}" 
+                                           Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding RouteDestinationsListWrapper}" 
                                            IsDragDropEnabled="True" Background="Transparent" Selected="RouteTreeViewSelected" Unselected="RouteTreeViewUnselected"
                                            Width="200" IsDropPreviewLineEnabled="True" IsDragPreviewEnabled="True" PreviewDragEnded="RouteTreeViewPreviewDragEnded">
                         <!-- IsDragTooltipEnabled="True" IsDropPreviewLineEnabled="True"-->

@@ -99,6 +99,8 @@ namespace FoundOps.SLClient.UI.Tools
                 return;
             }
 
+            routeTask.RemoveRouteDestination();
+
             //Create new destination
             var newDestination = new RouteDestination
             {

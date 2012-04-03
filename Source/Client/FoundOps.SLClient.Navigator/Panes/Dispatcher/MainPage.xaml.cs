@@ -7,6 +7,7 @@ using System.Collections;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
 using System.Windows.Controls;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
@@ -198,6 +199,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             }
 
             e.Handled = true;
+
+            VM.Routes.DispatcherSave();
         }
 
 
@@ -297,7 +300,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 var dragActionString = ((String)((TreeViewDragCue)e.Options.DragCue).DragActionContent);
 
                 //Checks to see if the dragged locations match the destinations location. Also makes sure that you are trying to drop in the destination before throwing an error.
-                if (((payloadCheck.Location != ((RouteDestination)destination).Location)) && dragActionString != null && dragActionString.Contains("in"))
+                if (((payloadCheck.LocationId != ((RouteDestination)destination).LocationId)) && dragActionString != null && dragActionString.Contains("in"))
                     return CommonErrorConstants.InvalidLocation;
             }
 

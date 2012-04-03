@@ -264,6 +264,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
             .Merge(SelectedDateObservable.AsGeneric())
             .Merge(DiscardObservable.AsGeneric())
+            .Merge(DataManager.RejectChangesDueToError)
             .Throttle(TimeSpan.FromMilliseconds(250))
             .ObserveOnDispatcher().Subscribe(_ =>
             {
@@ -537,10 +538,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="routeDestination">The route destination to delete.</param>
         public void DeleteRouteDestination(RouteDestination routeDestination)
         {
-            //Clear references to the RouteDestination
-            foreach (var routeTask in routeDestination.RouteTasks)
-                routeTask.RemoveRouteDestination();
-
             this.DomainContext.RouteDestinations.Remove(routeDestination);
         }
 
@@ -551,6 +548,14 @@ namespace FoundOps.SLClient.UI.ViewModels
         public void DeleteRouteTask(RouteTask routeTask)
         {
             this.DomainContext.RouteTasks.Remove(routeTask);
+        }
+
+        /// <summary>
+        /// Saves Drag and Drop.
+        /// </summary>
+        public void DispatcherSave()
+        {
+            DataManager.EnqueueSubmitOperation();
         }
 
         #endregion

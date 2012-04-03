@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using FoundOps.Server.Services.CoreDomainService;
 using RiaServicesContrib;
 
 //Partial class must be part of same namespace
@@ -352,7 +353,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// If this is a generated service, when changes are rejected reload the details.
         /// </summary>
-        private void OnRejectChangedReloadDetails(DomainContext sender, Entity[] rejectedaddedentities, Entity[] rejectedmodifiedentities)
+        private void OnRejectChangedReloadDetails(ChangedRejectedEventArgs e)
         {
             if (!ServiceIsGenerated || !IsSelected)
                 return;

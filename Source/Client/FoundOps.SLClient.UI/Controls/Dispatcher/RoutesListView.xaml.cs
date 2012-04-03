@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.ServiceModel.DomainServices.Client;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,6 +10,7 @@ using System.Globalization;
 using System.Windows.Input;
 using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
+using FoundOps.SLClient.Data.Services;
 using Telerik.Windows.Controls;
 using FoundOps.SLClient.UI.Tools;
 using System.Collections.Generic;
@@ -93,6 +95,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                 var placeInRoute = DragDropTools.GetDropPlacement(destination, dropPlacement);
 
+
                 #region Modify placeInRoute
 
                 if (placeInRoute > 0)
@@ -103,10 +106,29 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                 #endregion
 
-                //Go in reverse to preserve the order that the objects were previously ins
+                //if(((RouteDestination)((RouteTask)draggedItems.FirstOrDefault())).RouteTasks.Count == 1)
+                //if(e.Options.Destination is TaskBoard)
+                //{
+                //    var destinations = draggedItems.OfType<RouteDestination>().ToArray();
+                //    var routeTasks = draggedItems.OfType<RouteTask>().ToArray();
+                //    var taskHolders = routeTasks.Select(rt => rt.ParentRouteTaskHolder);
+
+                //    var allTaskHoldersToAdd = taskHolders.Union(destinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.ParentRouteTaskHolder)));
+
+                //    //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
+                //    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).AddRange(allTaskHoldersToAdd);
+
+                //    //Delete the Route, RouteDestinations, and RouteTasks
+                //    foreach (var routeDestination in destinations)
+                //        VM.Routes.DeleteRouteDestination(routeDestination);
+                //    foreach (var routeTask in routeTasks)
+                //        VM.Routes.DeleteRouteTask(routeTask);
+                //}
+                //else
+                //{
+                //Go in reverse to preserve the order that the objects were previously in
                 foreach (var draggedItem in draggedItems.Reverse())
                 {
-
                     if (e.Options.Destination is TaskBoard)
                     {
                         AddToTaskBoard(draggedItem);
@@ -117,9 +139,12 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                         AddToRoute(draggedItem, destination, placeInRoute, dropPlacement);
                     }
                 }
+                //}
             }
 
             e.Handled = true;
+
+            VM.Routes.DispatcherSave();
         }
 
         #region Methods used in OnDropInfo
@@ -324,44 +349,50 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             //If the draggedItem is a RouteDestination, add all its RouteTasks to the TaskBoard
             if (draggedItem is RouteDestination)
                 foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
-                    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(task.ParentRouteTaskHolder);
+                    CreateNewRouteTaskAndAddToTaskBoard(task);
 
             //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
             if (draggedItem is RouteTask)
+                CreateNewRouteTaskAndAddToTaskBoard(((RouteTask)draggedItem));
+        }
+
+        private void CreateNewRouteTaskAndAddToTaskBoard(RouteTask routeTask)
+        {
+            var oldRouteTask = routeTask;
+
+            //Create a new RouteTask to be saved as the ChildRouteTask of the TaskHolder
+            var newRouteTask = new RouteTask
             {
-                var oldRouteTask = ((RouteTask) draggedItem);
+                Id = Guid.NewGuid(),
+                BusinessAccountId = oldRouteTask.BusinessAccountId,
+                Client = oldRouteTask.Client,
+                ClientId = oldRouteTask.ClientId,
+                Date = oldRouteTask.Date,
+                EstimatedDuration = oldRouteTask.EstimatedDuration,
+                Location = oldRouteTask.Location,
+                LocationId = oldRouteTask.LocationId,
+                Name = oldRouteTask.Name,
+                OwnerBusinessAccount = oldRouteTask.OwnerBusinessAccount,
+                ParentRecurringService = oldRouteTask.ParentRecurringService,
+                ParentRouteTaskHolder = oldRouteTask.ParentRouteTaskHolder,
+                ReadyToInvoice = false,
+                RecurringServiceId = oldRouteTask.RecurringServiceId,
+                RouteDestination = null,
+                RouteDestinationId = null,
+                Service = oldRouteTask.Service,
+                ServiceId = oldRouteTask.ServiceId
+            };
 
-                //Create a new RouteTask to be saved as the ChildRouteTask of the TaskHolder
-                var newRouteTask = new RouteTask
-                                       {
-                                           Id = Guid.NewGuid(),
-                                           BusinessAccountId = oldRouteTask.BusinessAccountId,
-                                           Client = oldRouteTask.Client,
-                                           ClientId = oldRouteTask.ClientId,
-                                           Date = oldRouteTask.Date,
-                                           EstimatedDuration = oldRouteTask.EstimatedDuration,
-                                           Location = oldRouteTask.Location,
-                                           LocationId = oldRouteTask.LocationId,
-                                           Name = oldRouteTask.Name,
-                                           OwnerBusinessAccount = oldRouteTask.OwnerBusinessAccount,
-                                           ParentRecurringService = oldRouteTask.ParentRecurringService,
-                                           ParentRouteTaskHolder = oldRouteTask.ParentRouteTaskHolder,
-                                           ReadyToInvoice = false,
-                                           RecurringServiceId = oldRouteTask.RecurringServiceId,
-                                           RouteDestination = null,
-                                           RouteDestinationId = null,
-                                           Service = oldRouteTask.Service,
-                                           ServiceId = oldRouteTask.ServiceId
-                                       };
+            VM.Routes.DeleteRouteTask(oldRouteTask);
 
+            var taskHolder = routeTask.ParentRouteTaskHolder;
 
-                var taskHolder = ((RouteTask) draggedItem).ParentRouteTaskHolder;
+            taskHolder.ChildRouteTask = null;
+            taskHolder.ChildRouteTask = newRouteTask;
 
-                taskHolder.ChildRouteTask = null;
-                taskHolder.ChildRouteTask = newRouteTask;
+            Manager.Data.DetachEntities(new [] {newRouteTask});
 
-                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(((RouteTask)draggedItem).ParentRouteTaskHolder);
-            }
+            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(routeTask.ParentRouteTaskHolder);
         }
 
         /// <summary>
@@ -383,9 +414,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 //if the old route destination has 0 tasks, delete it
                 if (oldRouteDestination.RouteTasks.Count == 0)
                     VM.Routes.DeleteRouteDestination(oldRouteDestination);
-
-                VM.Routes.DeleteRouteTask((RouteTask)draggedItem);
-
             }
         }
 
@@ -416,12 +444,19 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             var routeTask = draggedItem as RouteTask;
             if (routeTask != null)
             {
-                //if the old route destination only has this one task delete it
+                //if the old route destination only has this one task, move the whole RouteDestination instead of the RouteTask
                 if (routeTask.RouteDestination.RouteTasks.Count == 1)
-                    VM.Routes.DeleteRouteDestination(routeTask.RouteDestination);
-
+                {
+                    if (destination is Route && dropPlacement == DropPlacement.After)
+                        ((Route)destination).RouteDestinationsListWrapper.Add(routeTask.RouteDestination);
+                    else if (destination is Route)
+                        ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, routeTask.RouteDestination);
+                }
                 //This will check the destination and call the correct method to add the RouteTask to the appropriate place
-                DragDropTools.AddRouteTaskToRoute(routeTask, destination, placeInRoute, dropPlacement);
+                else
+                {
+                    DragDropTools.AddRouteTaskToRoute(routeTask, destination, placeInRoute, dropPlacement);
+                }
             }
         }
 

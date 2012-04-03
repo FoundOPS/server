@@ -141,11 +141,12 @@ namespace FoundOps.SLClient.Data.ViewModels
                                });
 
             //When rejecting changes, if the entity is detached. Clear the SelectedEntity
-            this.DomainContext.ChangesRejected += (sender, rejectedAddedEntities, rejectedModifiedEntities) =>
+            this.DomainContext.ChangesRejectedObservable.ObserveOnDispatcher().Subscribe(args =>
             {
-                if (SelectedEntity != null && rejectedAddedEntities.Contains(SelectedEntity))
+                if (SelectedEntity != null && args.RejectedAddedEntities.Contains(SelectedEntity))
                     SelectedEntity = null;
-            };
+            });
+
 
             //TODO FIX ADDING NEW ENTITIES then remove workaround
             this.DataManager.ChangesSaved += submitOperation =>

@@ -1,4 +1,6 @@
-﻿using FoundOps.Common.Silverlight.Tools;
+﻿using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Context.Services.Interface;
 using System;
@@ -26,21 +28,57 @@ namespace FoundOps.Server.Services.CoreDomainService
         OwnedParties
     }
 
+    /// <summary>
+    /// The changes rejected event.
+    /// </summary>
+    public class ChangedRejectedEventArgs
+    {
+        /// <summary>
+        /// The DomainContext sender.
+        /// </summary>
+        public DomainContext Sender { get; private set; }
+
+        /// <summary>
+        /// The rejected added entities.
+        /// </summary>
+        public Entity[] RejectedAddedEntities { get; private set; }
+
+        /// <summary>
+        /// The rejected modified entities.
+        /// </summary>
+        public Entity[] RejectedModifiedEntities { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChangedRejectedEventArgs"/> class.
+        /// </summary>
+        /// <param name="sender">The DomainContext that rejected changes.</param>
+        /// <param name="rejectedAddedEntities">The rejected added entities.</param>
+        /// <param name="rejectedModifiedEntities">The rejected modified entities.</param>
+        public ChangedRejectedEventArgs(DomainContext sender, Entity[] rejectedAddedEntities, Entity[] rejectedModifiedEntities)
+        {
+            Sender = sender;
+            RejectedAddedEntities = rejectedAddedEntities;
+            RejectedModifiedEntities = rejectedModifiedEntities;
+        }
+    }
+
     public partial class CoreDomainContext
     {
         /// <summary>
         /// An event handler for the ChangedRejected event.
         /// </summary>
-        /// <param name="sender">The DomainContext that rejected changes.</param>
-        /// <param name="rejectedAddedEntities">The rejected added entities.</param>
-        /// <param name="rejectedModifiedEntities">The rejected modified entities.</param>
-        /// <returns></returns>
-        public delegate void ChangesRejectedHandler(DomainContext sender, Entity[] rejectedAddedEntities, Entity[] rejectedModifiedEntities);
+        public delegate void ChangesRejectedHandler(ChangedRejectedEventArgs changedRejectedEventArgs);
 
         /// <summary>
         /// Called when changes are rejected.
         /// </summary>
         public event ChangesRejectedHandler ChangesRejected;
+
+        private readonly Subject<ChangedRejectedEventArgs> _changesRejectedSubject = new Subject<ChangedRejectedEventArgs>();
+        /// <summary>
+        /// Pushes whenever the changes are rejected.
+        /// </summary>
+        public IObservable<ChangedRejectedEventArgs> ChangesRejectedObservable { get { return _changesRejectedSubject.AsObservable(); } }
 
         private readonly List<string> _contactInfoTypes = new List<string> { "Phone Number", "Email Address", "Website", "Fax Number", "Other" };
 
@@ -63,8 +101,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var changes = GetChangeSet();
 
-            var addedEntities = changes.AddedEntities.ToArray();
-            var modifiedEntities = changes.ModifiedEntities.ToArray();
+            var changesRejectedArgs =  new ChangedRejectedEventArgs(this,changes.AddedEntities.ToArray(), changes.ModifiedEntities.ToArray());
 
             //https://github.com/FoundOPS/FoundOPS/wiki/Files
             //Remove inserted files from cloud storage that are now going to be removed
@@ -76,8 +113,10 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             base.RejectChanges();
 
+            _changesRejectedSubject.OnNext(changesRejectedArgs);
+
             if (ChangesRejected != null)
-                ChangesRejected(this, addedEntities, modifiedEntities);
+                ChangesRejected(changesRejectedArgs);
         }
 
         /// <summary>

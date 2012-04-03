@@ -96,8 +96,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Load the TaskHolders whenever
             //a) the Dispatcher is entered/re-entered
             //b) the SelectedDate changes
+            //c) RejectChanges is called due to an error
             MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
             .Merge(VM.Routes.SelectedDateObservable.AsGeneric())
+            .Merge(DataManager.RejectChangesDueToError)
+            .Throttle(TimeSpan.FromMilliseconds(100))
             .ObserveOnDispatcher().Subscribe(_ =>
             {
                 _cancelLastTasksLoad.OnNext(true);
@@ -123,12 +126,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Listen to RejectChanges and put any new RouteTasks back into the TaskBoard
-            DomainContext.ChangesRejected += (sender, rejectedAddedEntities, rejectedModifiedEntities) =>
+            DomainContext.ChangesRejectedObservable.ObserveOnDispatcher().Subscribe(e =>
             {
-                var tasksToReturnToTaskBoard = rejectedAddedEntities.OfType<RouteTask>();
+                var tasksToReturnToTaskBoard = e.RejectedAddedEntities.OfType<RouteTask>();
                 if (SourceCollection as ObservableCollection<TaskHolder> != null)
                     ((ObservableCollection<TaskHolder>)SourceCollection).AddRange(tasksToReturnToTaskBoard.Select(rt => rt.ParentRouteTaskHolder));
-            };
+            });
 
             #endregion
 
