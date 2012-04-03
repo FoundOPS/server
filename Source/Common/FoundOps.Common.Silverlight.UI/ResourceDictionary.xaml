@@ -1027,106 +1027,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="NavigationButtonStyleLessPadding" TargetType="telerik:RadRibbonButton">
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="1"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="telerik:RadRibbonButton">
-                    <Grid>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="buttonSurface">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadRibbonBarButtonPressedBorder}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="buttonSurface">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadRibbonBarButtonPressedBackground}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="buttonSurfaceInner">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource RadRibbonBarButtonPressedBorderInner}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard Duration="0">
-                                        <DoubleAnimation Duration="0" To="0.5" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ContentGrid"/>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                            <VisualStateGroup x:Name="FocusStates">
-                                <VisualState x:Name="Focused"/>
-                                <VisualState x:Name="Unfocused"/>
-                            </VisualStateGroup>
-                            <VisualStateGroup x:Name="TextAlignment">
-                                <VisualState x:Name="TextAtBottom"/>
-                                <VisualState x:Name="TextAtRight">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Row)" Storyboard.TargetName="textRow1">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Grid.Column)" Storyboard.TargetName="textRow1">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="textRow1">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="4,0,1,0"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="VerticalAlignment" Storyboard.TargetName="textRow1">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Center"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="TextAlignment" Storyboard.TargetName="textRow1">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Left"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="textRow2">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="TextHide">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="textRow1">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="textRow2">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Border x:Name="buttonSurface" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="2">
-                            <Border x:Name="buttonSurfaceInner" BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}"/>
-                        </Border>
-                        <Grid x:Name="ContentGrid" Margin="{TemplateBinding Padding}">
-                            <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*" MaxHeight="28"/>
-                                </Grid.RowDefinitions>
-                                <Image x:Name="Image"/>
-                                <TextBlock x:Name="textRow1" Margin="0,2,0,0" Grid.Row="1" TextAlignment="Center" Text="{TemplateBinding TextRow1}"/>
-                                <TextBlock x:Name="textRow2" Margin="0,14,0,0" Grid.Row="1" TextAlignment="Center" Text="{TemplateBinding TextRow2}"/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
     <Style x:Key="ButtonStyle"  BasedOn="{StaticResource NavigationButtonStyle}" TargetType="telerik:RadRibbonButton">
         <Setter Property="Background" Value="{StaticResource PermissionBrush}"/>
     </Style>
@@ -1178,7 +1078,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="RegionsButtonStyle" BasedOn="{StaticResource NavigationButtonStyleLessPadding}" TargetType="telerik:RadRibbonButton">
+    <Style x:Key="RegionsButtonStyle" BasedOn="{StaticResource NavigationButtonStyle}" TargetType="telerik:RadRibbonButton">
         <Setter Property="Background" Value="{StaticResource LocationBrush}"/>
         <Setter Property="ContentTemplate">
             <Setter.Value>
