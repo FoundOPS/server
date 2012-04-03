@@ -321,6 +321,7 @@
     <Content Include="Lib\System.Windows.Controls.Toolkit.dll" />
     <Content Include="Lib\System.Windows.Controls.Toolkit.Internals.dll" />
     <Content Include="Lib\System.Windows.Interactivity.dll" />
+    <Resource Include="Resources\regions.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
