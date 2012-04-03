@@ -4,8 +4,7 @@
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
              xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services" xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Controls1="clr-namespace:FoundOps.SLClient.UI.Controls"
-             xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.UI.Controls;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Controls1="clr-namespace:FoundOps.SLClient.UI.Controls" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="RecurringServicesVM" >
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
         <Grid.RowDefinitions>
@@ -59,16 +58,20 @@
                         </Grid>
                     </StackPanel>
                 </toolkit:Expander>
-                <Controls:Overlay Message="Save Changes to Preview Service Occurences">
-                    <TextBlock Text="Heyo"/>
-                </Controls:Overlay>
-                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ServiceBrush}" 
-                                  IsEnabled="{Binding DataContext.IsLoading, ElementName=ServicesGrid, Converter={StaticResource NotExistsBoolConverter}}">
-                    <toolkit:Expander.Header>
-                        <TextBlock Text="Service Occurences" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}"/>
-                    </toolkit:Expander.Header>
-                    <Services:ServicesGrid x:Name="ServicesGrid" IsMainGrid="False"/>
-                </toolkit:Expander>
+                <telerik:RadBusyIndicator IsBusy="{Binding Repeat.HasChanges}" BusyContent="Save Changes to Preview Service Occurences">
+                    <telerik:RadBusyIndicator.ProgressBarStyle>
+                        <Style TargetType="telerik:RadProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Style>
+                    </telerik:RadBusyIndicator.ProgressBarStyle>
+                        <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource ServiceBrush}"
+                                      IsEnabled="{Binding DataContext.IsLoading, ElementName=ServicesGrid, Converter={StaticResource NotExistsBoolConverter}}">
+                        <toolkit:Expander.Header>
+                            <TextBlock Text="Service Occurences" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}"/>
+                        </toolkit:Expander.Header>
+                        <Services:ServicesGrid x:Name="ServicesGrid" IsMainGrid="False" />
+                    </toolkit:Expander>
+                </telerik:RadBusyIndicator>
             </StackPanel>
         </ScrollViewer>
     </Grid>

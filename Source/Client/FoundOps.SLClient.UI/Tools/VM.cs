@@ -1,4 +1,5 @@
-﻿using FoundOps.SLClient.UI.ViewModels;
+﻿using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.ComponentModel.Composition;
@@ -119,6 +120,17 @@ namespace FoundOps.SLClient.UI.Tools
             get
             {
                 return (RegionsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RegionsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the RecurringServicesVM.
+        /// </summary>
+        public static RecurringServicesVM RecurringServices
+        {
+            get
+            {
+                return (RecurringServicesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RecurringServicesVM", null, CreationPolicy.Shared).Value;
             }
         }
 

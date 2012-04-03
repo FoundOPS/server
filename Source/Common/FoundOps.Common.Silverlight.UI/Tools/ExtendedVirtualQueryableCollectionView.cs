@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.ObjectModel;
+using FoundOps.Common.Models;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using System;
@@ -23,6 +24,8 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         where TEntity : TBase
     {
         #region Public Events and Properties
+
+        #region IsLoading/Loaded
 
         private bool _loadingVirtualItems;
         /// <summary>
@@ -66,6 +69,8 @@ namespace FoundOps.Common.Silverlight.UI.Tools
 
         #endregion
 
+        #endregion
+
         #region Local Variables
 
         //The DomainContext to load the entities with
@@ -73,6 +78,9 @@ namespace FoundOps.Common.Silverlight.UI.Tools
 
         //When a value is pushed, it will cancel any previous loads
         private readonly Subject<bool> _cancelAllLoads = new Subject<bool>();
+
+        //The EntitySet of the entity to load.
+        private readonly EntitySet<TBase> _entitySet;
 
         //A function which returns the EntityQuery to use to load the entities
         private readonly Func<EntityQuery<TBase>> _loadItemsQuery;
@@ -83,14 +91,22 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         #region Subscriptions to track for disposal
 
         private IDisposable _filterSubscription;
+        private IDisposable _loadVirtualItemCountObservableSubscription;
         private IDisposable _loadVirtualItemCountSubscription;
-        private IDisposable _loadVirtualItemsSubscription;
         private IDisposable _forceLoadFirstItemsSubscription;
 
         #endregion
 
-        //The EntitySet of the entity to load.
-        private readonly EntitySet<TBase> _entitySet;
+        #region ObservationState
+
+        private readonly ObservableCollection<object> _controlsThatCurrentlyRequireThisData = new ObservableCollection<object>();
+        ///<summary>
+        /// A list of controls that require this data.
+        /// It will only load if this is > 0
+        ///</summary>
+        protected ObservableCollection<object> ControlsThatCurrentlyRequireThisData { get { return _controlsThatCurrentlyRequireThisData; } }
+
+        #endregion
 
         #endregion
 
@@ -118,14 +134,14 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             this.LoadSize = 50;
 
             //Whenever the loadVirtualItemCount pushes: load/reload the virtual item count
-            _loadVirtualItemsSubscription = _loadVirtualItemCount.Throttle(TimeSpan.FromMilliseconds(200)).ObserveOnDispatcher()
+            _loadVirtualItemCountSubscription = _loadVirtualItemCount.ObserveOnDispatcher()
                 .Subscribe(_ => UpdateVirtualItemCount());
 
             //Reload the virtual item count when
             //a) there are filter changes
             _filterSubscription = SubscribeToFilterChanges(_loadVirtualItemCount);
             //b) a value is pushed to the user passed loadVirtualItemCount
-            _loadVirtualItemCountSubscription = loadVirtualItemCount.Subscribe(_loadVirtualItemCount);
+            _loadVirtualItemCountObservableSubscription = loadVirtualItemCount.Subscribe(_loadVirtualItemCount);
 
             //Handle the ItemsLoading event by loading the items
             this.ItemsLoading += ExtendedVirtualQueryableCollectionViewItemsLoading;
@@ -185,10 +201,10 @@ namespace FoundOps.Common.Silverlight.UI.Tools
                 _loadVirtualItemCountSubscription.Dispose();
                 _loadVirtualItemCountSubscription = null;
             }
-            if (_loadVirtualItemsSubscription != null)
+            if (_loadVirtualItemCountObservableSubscription != null)
             {
-                _loadVirtualItemsSubscription.Dispose();
-                _loadVirtualItemsSubscription = null;
+                _loadVirtualItemCountObservableSubscription.Dispose();
+                _loadVirtualItemCountObservableSubscription = null;
             }
             if (_forceLoadFirstItemsSubscription != null)
             {
@@ -293,14 +309,6 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         /// </summary>
         private void ExtendedVirtualQueryableCollectionViewItemsLoading(object sender, VirtualQueryableCollectionViewItemsLoadingEventArgs e)
         {
-            //Do not load if ther VQCV has no load size (the system is not in details view or a related type's details view)
-            //TODO (look into) Do not load if loadingAfterFilterChange (to prevent double loading if force first load is flagged)
-            if (this.LoadSize == 0)
-            {
-                e.Cancel = true;
-                return;
-            }
-
             LoadItems(e.StartIndex, e.ItemCount);
         }
 
@@ -317,7 +325,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             if (sourceCollection.Contains(e.Entity))
             {
                 sourceCollection.Remove(e.Entity);
-                this.VirtualItemCount = sourceCollection.Count - 1;
+                this.VirtualItemCount = sourceCollection.Count;
             }
         }
 

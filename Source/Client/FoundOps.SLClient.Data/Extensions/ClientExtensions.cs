@@ -128,6 +128,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 _displayNameSubscription = null;
             }
 
+            if (this.OwnedParty == null) return;
             this.OwnedParty.Locations.EntityAdded -= LocationsEntityAdded;
             this.OwnedParty.Locations.EntityRemoved -= LocationsEntityRemoved;
         }

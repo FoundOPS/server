@@ -174,7 +174,6 @@
     <Compile Include="Controls\AddEditDelete\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Overlay.cs" />
     <Compile Include="Controls\TooManyRoutesError.xaml.cs">
       <DependentUpon>TooManyRoutesError.xaml</DependentUpon>
     </Compile>
@@ -530,10 +529,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ResourceDictionary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

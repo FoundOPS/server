@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Tools;
+﻿using FoundOps.Common.Silverlight.UI.Interfaces;
+using FoundOps.Common.Tools;
 using System;
 using System.ComponentModel;
 using System.Reactive.Linq;
@@ -8,8 +9,35 @@ using System.Reactive.Linq;
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class RecurringService
+    public partial class RecurringService : ILoadDetails
     {
+        #region Public Properties
+
+        #region Implementation of ILoadDetails
+
+        private bool _detailsLoaded;
+        /// <summary>
+        /// Gets or sets a value indicating whether [details loaded].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DetailsLoaded
+        {
+            get { return _detailsLoaded; }
+            set
+            {
+                _detailsLoaded = value;
+                this.RaisePropertyChanged("DetailsLoaded");
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
         /// Generates a Service based off this ServiceTemplate for the specified date.
         /// </summary>
@@ -39,5 +67,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 Observable.Empty<PropertyChangedEventArgs>() 
                 : this.Repeat.FromAnyPropertyChanged();
         }
+
+        #endregion
     }
 }

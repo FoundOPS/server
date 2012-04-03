@@ -155,9 +155,9 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <param name="entityQuery">The entity query.</param>
         /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
         /// <param name="forceFirstLoad">Force load the first items after the VirtualItemCount is loaded. Used for controls that do not automatically support virtual loading.</param>
-        /// <param name="virtualItemCountLoadBehavior">sets the VirtualItemCountLoadBehavior</param>
+        /// <param name="contextType">Whether of not a many relation context is required to load.</param>
         protected void SetupContextDataLoading(Func<Guid, EntityQuery<TBase>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters, bool forceFirstLoad = false,
-                                               VirtualItemCountLoadBehavior virtualItemCountLoadBehavior = VirtualItemCountLoadBehavior.LoadAfterCreation)
+                                               ContextLoadingType contextType = ContextLoadingType.RequiredContext)
         {
             //Whenever the RoleId updates, update the VirtualQueryableCollectionView
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
@@ -184,26 +184,37 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                 #endregion
 
-                IObservable<bool> loadVirtualItemCount;
-                //Loads once immediately after creation (and automatically whenever a filter or sort changes).
-                if (virtualItemCountLoadBehavior == VirtualItemCountLoadBehavior.LoadAfterCreation)
-                {
-                    loadVirtualItemCount = new BehaviorSubject<bool>(true);
-                }
-                else
-                {
-                    //Loads any time a many relation context changes (and automatically whenever a filter or sort changes).
-                    loadVirtualItemCount =
-                        (from manyRelation in ManyRelationships
-                         let method = typeof(ContextManager).GetMethod("GetContextObservable")
-                         let generic = method.MakeGenericMethod(new[] { manyRelation })
-                         let contextObservable = (IObservable<object>)generic.Invoke(ContextManager, null)
-                         select contextObservable.DistinctUntilChanged().ObserveOnDispatcher())
-                         .Merge().AsGeneric();
-                }
+                //Loads the VirtualItemCount any time a many relation context changes
+                var loadVirtualItemCount = (from manyRelation in ManyRelationships
+                                            let method = typeof(ContextManager).GetMethod("GetContextObservable")
+                                            let generic = method.MakeGenericMethod(new[] { manyRelation })
+                                            let contextObservable = (IObservable<object>)generic.Invoke(ContextManager, null)
+                                            select contextObservable.DistinctUntilChanged().ObserveOnDispatcher())
+                                            .Merge()
+                    //TODO replace Merge with commented out below to prevent loads when there is no context
+                    //.CombineLatest()
+                    ////If there is no required context, always load
+                    ////Otherwise make sure one of the contexts is not null
+                    //.Where(contexts => contextType == ContextType.NoRequiredContext || contexts.Any(c => c != null))
+                                            .Throttle(TimeSpan.FromMilliseconds(100)).AsGeneric();
 
-                QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TBase, TEntity>(DomainContext, () =>
-                                  entityQuery(roleId), loadVirtualItemCount, forceFirstLoad);
+                QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TBase, TEntity>(DomainContext,
+                    () =>
+                    {
+                        //If a context is required for loading, check there is one
+                        if (contextType == ContextLoadingType.RequiredContext)
+                        {
+                            var contexts = (from manyRelation in ManyRelationships
+                                            let method = typeof(ContextManager).GetMethod("GetContext")
+                                            let generic = method.MakeGenericMethod(new[] { manyRelation })
+                                            let context = (object)generic.Invoke(ContextManager, null)
+                                            select context);
+
+                            if (contexts.All(c => c == null))
+                                return null;
+                        }
+                        return entityQuery(roleId);
+                    }, loadVirtualItemCount, forceFirstLoad);
 
                 _contextRelationshipFiltersSubscription = AddContextRelationshipFiltersHelper(contextRelationshipFilters, QueryableCollectionView, ContextManager);
 
@@ -385,18 +396,18 @@ namespace FoundOps.SLClient.Data.ViewModels
     }
 
     /// <summary>
-    /// Describes the QueryableCollectionView's virtual item count load behavior
+    /// Describes the QueryableCollectionView's load behavior
     /// </summary>
-    public enum VirtualItemCountLoadBehavior
+    public enum ContextLoadingType
     {
         /// <summary>
-        /// Loads once immediately after creation (and automatically whenever a filter or sort changes).
+        /// Load only when part of a Context
         /// </summary>
-        LoadAfterCreation,
+        RequiredContext,
         /// <summary>
-        /// Loads any time a many relation context changes (and automatically whenever a filter or sort changes).
+        /// Load even when there is no Context
         /// </summary>
-        LoadAfterManyRelationContextChanges
+        NoRequiredContext
     }
 
     /// <summary>
@@ -407,17 +418,30 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <summary>
         /// The type of related entity context. Ex. Vehicle
         /// </summary>
-        public Type RelatedContextType { get; set; }
+        public Type RelatedContextType { get; private set; }
 
         /// <summary>
         /// The Member of the current entity related to the context. Ex. VehicleMaintenance's "VehicleId"
         /// </summary>
-        public String EntityMember { get; set; }
+        public String EntityMember { get; private set; }
 
         /// <summary>
-        /// A function when given the current related entity context, return the value of the context.
+        /// A function when given the current related entity context, returns the value of the context.
         /// Ex. FilterValueGenerator(someVehicle) = abcd-1324-asfa-fegeg (someVehicle.Id)
         /// </summary>
-        public Func<object, object> FilterValueGenerator { get; set; }
+        public Func<object, object> FilterValueGenerator { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContextRelationshipFilter"/> class.
+        /// </summary>
+        /// <param name="entityMember">The Member of the current entity related to the context. Ex. VehicleMaintenance's "VehicleId"</param>
+        /// <param name="relatedContextType">The type of related entity context. Ex. Vehicle</param>
+        /// <param name="filterValueGenerator">A function when given the current related entity context, returns the value of the context</param>
+        public ContextRelationshipFilter(String entityMember, Type relatedContextType, Func<object, object> filterValueGenerator)
+        {
+            EntityMember = entityMember;
+            RelatedContextType = relatedContextType;
+            FilterValueGenerator = filterValueGenerator;
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using FoundOps.SLClient.UI.Tools;
 using Telerik.Windows;
 using System.ComponentModel;
 using FoundOps.SLClient.Data.Tools;
@@ -30,17 +31,9 @@ namespace FoundOps.SLClient.UI.Controls.Clients
                 return;
 #endif
 
-            this.DependentWhenVisible(ClientsVM);
+            this.DependentWhenVisible(VM.Clients);
 
             ClientsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
-        }
-
-        private ClientsVM ClientsVM
-        {
-            get
-            {
-                return (ClientsVM)this.DataContext;
-            }
         }
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs radRoutedEventArgs)

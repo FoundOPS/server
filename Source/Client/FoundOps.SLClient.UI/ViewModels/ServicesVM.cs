@@ -311,6 +311,14 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         /// <summary>
+        /// Used to force refresh the services for the current context starting today.
+        /// </summary>
+        public void ForceRefresh()
+        {
+            LoadServiceHolders(ServiceHoldersLoad.InitialLoad);
+        }
+
+        /// <summary>
         /// A method to load the previous day of services.
         /// </summary>
         internal void PushBackServices()

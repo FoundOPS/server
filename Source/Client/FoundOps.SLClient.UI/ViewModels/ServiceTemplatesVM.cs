@@ -224,13 +224,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 return DomainContext.GetServiceTemplatesForServiceProviderQuery(roleId, serviceTemplateLevel);
             },
-            new[]{
-                new ContextRelationshipFilter
-                {
-                    EntityMember = "OwnerServiceProviderId",
-                    FilterValueGenerator = v => ((BusinessAccount) v).Id,
-                    RelatedContextType = typeof (BusinessAccount)
-               }});
+            new[] { new ContextRelationshipFilter("OwnerServiceProviderId", typeof(BusinessAccount), v => ((BusinessAccount)v).Id) });
 
             SetupDetailsLoading(selectedEntity =>
             {

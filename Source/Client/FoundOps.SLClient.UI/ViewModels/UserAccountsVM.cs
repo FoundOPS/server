@@ -105,14 +105,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private void SetupDataLoading()
         {
-            //Force load the entities when in a related types view
-            //this is because VDCV will only normally load when a virtual item is loaded onto the screen
-            //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
             SetupContextDataLoading(roleId =>
                                         {
                                             var businessAccountContext = this.ContextManager.GetContext<BusinessAccount>();
                                             return DomainContext.GetUserAccountsQuery(roleId, businessAccountContext != null ? businessAccountContext.Id : Guid.Empty);
-                                        }, null, false, VirtualItemCountLoadBehavior.LoadAfterManyRelationContextChanges);
+                                        }, null);
 
 
             //Whenever the user account changes load the details

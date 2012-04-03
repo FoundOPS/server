@@ -5,11 +5,11 @@ using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.ServiceModel.DomainServices.Client;
 using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -21,15 +21,6 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class LocationsVM : InfiniteAccordionVM<Location, Location>, IAddToDeleteFromSource<Location>
     {
         #region Public Properties
-
-        #region Entity Data Items
-
-        /// <summary>
-        /// The search text.
-        /// </summary>
-        public string SearchText { get; set; }
-
-        #endregion
 
         #region Location Properties
 
@@ -81,10 +72,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
-
-        #endregion
-
-        #region Locals
 
         #endregion
 
@@ -154,8 +141,17 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return newLocation;
             };
 
-            ManuallyUpdateSuggestions = autoCompleteBox =>
-                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchLocationsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
+            ManuallyUpdateSuggestions =
+                autoCompleteBox => SearchSuggestionsHelper(autoCompleteBox,
+                () =>
+                {
+                    var query = Manager.Data.DomainContext.SearchLocationsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText);
+                    //If the search is happening in a recurring service context, filter by the recurring service's client
+                    var recurringServiceContext = ContextManager.GetContext<RecurringService>();
+                    if (recurringServiceContext != null && recurringServiceContext.ClientId != Guid.Empty)
+                        query = query.Where(l => l.PartyId == recurringServiceContext.ClientId);
+                    return query;
+                });
 
             #endregion
         }
@@ -165,26 +161,13 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
+            var contextRelationshipFilters = new[] { new ContextRelationshipFilter("PartyId", typeof (Client), v => ((Client) v).Id), 
+                                                     new ContextRelationshipFilter("RegionId", typeof (Region), v => ((Region) v).Id) };
+
             //Force load the entities when in a related types view
             //this is because VDCV will only normally load when a virtual item is loaded onto the screen
             //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
-            SetupContextDataLoading(roleId => DomainContext.GetLocationsToAdministerForRoleQuery(roleId),
-                                    new[]
-                                        {
-                                            new ContextRelationshipFilter
-                                                {
-                                                    EntityMember = "PartyId",
-                                                    FilterValueGenerator = v => ((Client) v).Id,
-                                                    RelatedContextType = typeof (Client)
-                                                },
-                                                  new ContextRelationshipFilter
-                                                {
-                                                    EntityMember = "RegionId",
-                                                    FilterValueGenerator = v => ((Region) v).Id,
-                                                    RelatedContextType = typeof (Region)
-                                                }
-                                        }, true);
-
+            SetupContextDataLoading(roleId => DomainContext.GetLocationsToAdministerForRoleQuery(roleId), contextRelationshipFilters, true, ContextLoadingType.NoRequiredContext);
 
             //Whenever the location changes load the location details
             SetupDetailsLoading(selectedEntity => DomainContext.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));

@@ -6,7 +6,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/FoundOps.Common.Silverlight.UI;component/ResourceDictionary.xaml" />
-                <ResourceDictionary Source="/FoundOps.Common.Silverlight.UI;component/Themes/generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

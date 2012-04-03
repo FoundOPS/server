@@ -38,15 +38,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         private void SetupDataLoading()
         {
             SetupContextDataLoading(roleId => DomainContext.GetVehicleMaintenanceLogForPartyQuery(roleId),
-                                    new[]
-                                        {
-                                            new ContextRelationshipFilter
-                                                {
-                                                    EntityMember = "VehicleId",
-                                                    FilterValueGenerator = v => ((Vehicle) v).Id,
-                                                    RelatedContextType = typeof (Vehicle)
-                                                }
-                                        });
+                                    new[] { new ContextRelationshipFilter("VehicleId", typeof(Vehicle), v => ((Vehicle)v).Id) });
         }
 
         #region Logic

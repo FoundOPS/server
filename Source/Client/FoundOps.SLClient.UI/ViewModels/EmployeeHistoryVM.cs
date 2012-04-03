@@ -28,16 +28,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            SetupContextDataLoading(roleId => DomainContext.GetEmployeeHistoryEntriesForRoleQuery(roleId),
-                                    new[]
-                                        {
-                                            new ContextRelationshipFilter
-                                                {
-                                                    EntityMember = "EmployeeId",
-                                                    FilterValueGenerator = v => ((Employee) v).Id,
-                                                    RelatedContextType = typeof (Employee)
-                                                }
-                                        });
+            SetupContextDataLoading(roleId => DomainContext.GetEmployeeHistoryEntriesForRoleQuery(roleId), 
+                new[] { new ContextRelationshipFilter("EmployeeId", typeof(Employee), v => ((Employee)v).Id) });
         }
 
         #region Logic

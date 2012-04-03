@@ -1,28 +1,29 @@
-﻿using System;
-using Telerik.Windows;
+﻿using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
+using FoundOps.SLClient.UI.Tools;
+using Telerik.Windows;
 using Telerik.Windows.Controls.GridView;
-using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+using System;
 
 namespace FoundOps.SLClient.UI.Controls.Services.RecurringServices
 {
+    /// <summary>
+    /// UI for displaying the RecurringServices for the current context.
+    /// </summary>
     public partial class RecurringServicesGrid
     {
         public bool IsMainGrid { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecurringServicesGrid"/> class.
+        /// </summary>
         public RecurringServicesGrid()
         {
             InitializeComponent();
 
-            this.DependentWhenVisible(RecurringServicesVM);
+            this.DependentWhenVisible(VM.RecurringServices);
 
             RecurringServiceRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
-        }
-
-        public RecurringServicesVM RecurringServicesVM
-        {
-            get { return (RecurringServicesVM) this.DataContext; }
         }
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs e)

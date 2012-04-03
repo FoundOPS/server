@@ -186,7 +186,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (recurringServiceContext.HasValue)
             {
                 //Check the user has access to the RecurringService
-                if (!GetRecurringServicesForServiceProviderOptimized(roleId).Any(rs => rs.Id == recurringServiceContext))
+                if (!RecurringServicesForServiceProviderOptimized(roleId).Any(rs => rs.Id == recurringServiceContext))
                     return null;
 
                 recurringServiceContextId = recurringServiceContext;
@@ -226,18 +226,35 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #endregion
 
-        #region RecurringService Optimized
+        #region Recurring Services
 
         /// <summary>
         /// Gets the RecurringServices for the roleId.
+        /// It includes the bare minimum Client.
         /// </summary>
         /// <param name="roleId">The role to determine the business account from.</param>
-        public IQueryable<RecurringService> GetRecurringServicesForServiceProviderOptimized(Guid roleId)
+        private IQueryable<RecurringService> RecurringServicesForServiceProviderOptimized(Guid roleId)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.VendorId == businessForRole.Id);
-            return recurringServices;
+            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client)
+                .Where(v => v.Client.VendorId == businessForRole.Id);
+
+            return recurringServices.OrderBy(rs=>rs.ClientId);
+        }
+
+        /// <summary>
+        /// Gets the RecurringServices for the roleId.
+        /// It includes the Client, Repeat and ServiceTemplate (without fields).
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        public IQueryable<RecurringService> GetRecurringServicesForServiceProvider(Guid roleId)
+        {
+            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId)
+                .Include(rs => rs.Repeat).Include(rs => rs.ServiceTemplate);
+
+            return recurringServices.OrderBy(rs => rs.ClientId);
         }
 
         /// <summary>
@@ -248,52 +265,13 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="recurringServiceId">The recurring service id.</param>
         public RecurringService GetRecurringServiceDetailsForRole(Guid roleId, Guid recurringServiceId)
         {
-            var recurringService = GetRecurringServicesForServiceProviderOptimized(roleId).Include(c => c.Client.OwnedParty)
+            var recurringService = GetRecurringServicesForServiceProvider(roleId).Include(c => c.Client.OwnedParty)
                 .FirstOrDefault(rs => rs.Id == recurringServiceId);
 
             //Load the ServiceTemplate for the RecurringService
             GetServiceTemplateDetailsForRole(roleId, recurringServiceId);
 
             return recurringService;
-        }
-
-        #endregion
-
-        #region RecurringService  //TODO Optimize then Delete
-
-        public IEnumerable<RecurringService> GetRecurringServicesForServiceProvider(Guid roleId)
-        {
-            return GetRecurringServicesForServiceProvider(roleId, Guid.Empty, Guid.Empty, Guid.Empty);
-        }
-
-        private IEnumerable<RecurringService> GetRecurringServicesForServiceProvider(Guid roleId, Guid clientIdFilter, Guid locationIdFilter, Guid recurringServiceIdFilter)
-        {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-
-            var recurringServicesToReturn = this.ObjectContext.RecurringServices.Include("Client").Where(v => v.Client.VendorId == businessForRole.Id);
-
-            if (clientIdFilter != Guid.Empty)
-                recurringServicesToReturn = recurringServicesToReturn.Where(rs => rs.ClientId == clientIdFilter);
-
-            if (recurringServiceIdFilter != Guid.Empty)
-                recurringServicesToReturn = recurringServicesToReturn.Where(rs => rs.Id == recurringServiceIdFilter);
-
-            recurringServicesToReturn = ((ObjectQuery<RecurringService>)recurringServicesToReturn).Include("Repeat").Include("ServiceTemplate").Include("ServiceTemplate.Fields").Include("Client.OwnedParty");
-
-            //Force Load LocationField's Location
-            recurringServicesToReturn.SelectMany(rs => rs.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
-
-            //Force Load Options
-            recurringServicesToReturn.SelectMany(rs => rs.ServiceTemplate.Fields).OfType<OptionsField>().SelectMany(of => of.Options).ToArray();
-
-            //Force Load ServiceTemplate.Invoice
-            //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            this.ObjectContext.Invoices.Join(recurringServicesToReturn.Select(rs => rs.ServiceTemplate), i => i.Id, st => st.Id, (i, st) => i).ToArray();
-
-            if (locationIdFilter != Guid.Empty)
-                return recurringServicesToReturn.ToList().Where(rs => rs.ServiceTemplate.GetDestination() != null && rs.ServiceTemplate.GetDestination().Id == locationIdFilter);
-
-            return recurringServicesToReturn;
         }
 
         public void InsertRecurringService(RecurringService recurringService)

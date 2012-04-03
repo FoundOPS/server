@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Windows;
-using FoundOps.Common.Silverlight.Services;
-using FoundOps.Core.Models.CoreEntities.Extensions.Services;
-using MEFedMVVM.ViewModelLocator;
-using System.ComponentModel.Composition;
+﻿using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.UI.Tools;
+using MEFedMVVM.ViewModelLocator;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -17,26 +15,33 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("RecurringServicesVM")]
     public class RecurringServicesVM : InfiniteAccordionVM<RecurringService, RecurringService>
     {
+        #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RecurringServicesVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public RecurringServicesVM()
-            : base(new[] { typeof(Client) })
+        public RecurringServicesVM() : base(new[] { typeof(Client) })
         {
-            //TODO Optimization
-            ////Subscribe to the RecurringServices query
-            //IsLoadingObservable = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, null);
-
-            //Setup DomainCollectionView based on the current Client context
-
-            var clientContext = ContextManager.GetContextObservable<Client>();
-            clientContext.ObserveOnDispatcher().Subscribe(client =>
-            {
-                if (client != null)
-                    ViewObservable.OnNext(DomainCollectionViewFactory<ServiceTemplate>.GetDomainCollectionView(client.RecurringServices));
-            });
+            SetupDataLoading();
         }
+
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
+        private void SetupDataLoading()
+        {
+            //Force load the entities when in a related types view
+            //this is because VDCV will only normally load when a virtual item is loaded onto the screen
+            //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
+            SetupContextDataLoading(roleId => DomainContext.GetRecurringServicesForServiceProviderQuery(roleId),
+                                    new[] { new ContextRelationshipFilter("ClientId", typeof(Client), v => ((Client)v).Id) }, true);
+
+            //Whenever the selected RecurringService changes load the details
+            SetupDetailsLoading(selectedEntity => DomainContext.GetRecurringServiceDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+        }
+
+        #endregion
 
         #region Logic
 
@@ -95,6 +100,14 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return false;
             }
             return true;
+        }
+
+        protected override void OnSave(System.ServiceModel.DomainServices.Client.SubmitOperation submitOperation)
+        {
+            base.OnSave(submitOperation);
+
+            //Refresh Services
+            VM.Services.ForceRefresh();
         }
 
         #endregion
