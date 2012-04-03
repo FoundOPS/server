@@ -20,6 +20,21 @@ namespace FoundOps.SLClient.Data.Services
     /// </summary>
     public partial class DataManager
     {
+        #region Public Events
+
+        /// <summary>
+        /// The event handler delefate for the ChangesSaved event.
+        /// </summary>
+        /// <param name="submitOperation"></param>
+        public delegate void ChangesSavedHandler(SubmitOperation submitOperation);
+
+        /// <summary>
+        /// An event triggered when changes are saved.
+        /// </summary>
+        public event ChangesSavedHandler ChangesSaved;
+
+        #endregion
+
         #region SubmitOperation and SaveDiscardCancel Methods
 
         #region SubmitOperation
@@ -97,6 +112,9 @@ namespace FoundOps.SLClient.Data.Services
                         submitOperationQueued.OnNext(submitOperationCallback);
                         submitOperationQueued.OnCompleted();
                     }
+
+                    if (ChangesSaved != null)
+                        ChangesSaved(submitOperationCallback);
 
                     //Clear the _currentSubmitOperation
                     _currentSubmitOperation = null;

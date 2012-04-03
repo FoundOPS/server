@@ -1,4 +1,5 @@
-﻿using FoundOps.Core.Models.CoreEntities.Extensions.Services;
+﻿using System.ServiceModel.DomainServices.Client;
+using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
@@ -21,7 +22,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="RecurringServicesVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public RecurringServicesVM() : base(new[] { typeof(Client) })
+        public RecurringServicesVM()
+            : base(new[] { typeof(Client) })
         {
             SetupDataLoading();
         }
@@ -31,8 +33,15 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            SetupContextDataLoading(roleId => 
-                DomainContext.GetRecurringServicesForServiceProviderQuery(roleId), new[] { new ContextRelationshipFilter("ClientId", typeof(Client), v => ((Client)v).Id) });
+            SetupContextDataLoading(roleId =>
+                                        {
+                                            //Manually filter as workaround to a randomly occuring problem
+                                            //where they are all getting loaded when there is no context
+                                            var clientContext = ContextManager.GetContext<Client>();
+                                            return clientContext == null
+                                                       ? null
+                                                       : DomainContext.GetRecurringServicesForServiceProviderQuery(roleId).Where(rs => rs.ClientId == clientContext.Id);
+                                        }, new[] { new ContextRelationshipFilter("ClientId", typeof(Client), v => ((Client)v).Id) });
 
             //Whenever the selected RecurringService changes load the details
             SetupDetailsLoading(selectedEntity => DomainContext.GetRecurringServiceDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));

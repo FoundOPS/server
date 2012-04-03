@@ -431,7 +431,8 @@ namespace FoundOps.SLClient.Data.ViewModels
                 OnNavigateFrom();
             };
 
-            if (DomainContextHasRelatedChanges())
+            //TODO: reenable save discard cancel prompt when adding new items to list
+            if (false && DomainContextHasRelatedChanges())
             {
                 //Before saving, navigate
 

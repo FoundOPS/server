@@ -139,6 +139,21 @@ namespace FoundOps.SLClient.Data.ViewModels
                                {
                                    DisableSelectedEntitySaveDiscardCancel = disableSaveDiscardCancel;
                                });
+
+            //When rejecting changes, if the entity is detached. Clear the SelectedEntity
+            this.DomainContext.ChangesRejected += (sender, rejectedAddedEntities, rejectedModifiedEntities) =>
+            {
+                if (SelectedEntity != null && rejectedAddedEntities.Contains(SelectedEntity))
+                    SelectedEntity = null;
+            };
+
+            //TODO FIX ADDING NEW ENTITIES then remove workaround
+            this.DataManager.ChangesSaved += submitOperation =>
+            {
+                //Add the added entities to the VirtualItemCount
+                if (ExtendedVirtualQueryableCollectionView != null)
+                    ExtendedVirtualQueryableCollectionView.VirtualItemCount += submitOperation.ChangeSet.AddedEntities.OfType<TEntity>().Count();
+            };
         }
 
         #region InfiniteAccordionVM's Logic
@@ -379,17 +394,6 @@ namespace FoundOps.SLClient.Data.ViewModels
             ((IPreventNavigationFrom)ContextManager.CurrentContextProvider).CanNavigateFrom(() =>
                 //If it is possible send the MoveToDetailsViewMessage
                 MessageBus.Current.SendMessage(new MoveToDetailsViewMessage(ObjectTypeProvided, MoveStrategy.AddContextToExisting)));
-        }
-
-        protected override void OnSave(SubmitOperation submitOperation)
-        {
-            //TODO Fix adding to work properly
-
-            //Add the added entities to the VirtualItemCount
-            if (ExtendedVirtualQueryableCollectionView != null)
-                ExtendedVirtualQueryableCollectionView.VirtualItemCount += submitOperation.ChangeSet.AddedEntities.OfType<TEntity>().Count();
-
-            base.OnSave(submitOperation);
         }
 
         #endregion

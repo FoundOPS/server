@@ -115,14 +115,14 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Service Occurences" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
-                            <AddEditDelete:AddDelete Grid.Column="1" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" AddDeleteMode="AddItemDelete" 
+                            <!--<AddEditDelete:AddDelete Grid.Column="1" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" AddDeleteMode="AddItemDelete" 
                                                      ItemsSource="{Binding ServiceTemplatesForContext, Source={Tools1:GetVM Type=ViewModels:ServiceTemplatesVM}}" Margin="0,0,0,0">
                                 <AddEditDelete:AddDelete.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Name}"/>
                                     </DataTemplate>
                                 </AddEditDelete:AddDelete.ItemTemplate>
-                            </AddEditDelete:AddDelete>
+                            </AddEditDelete:AddDelete>-->
                         </Grid>
                     </toolkit:Expander.Header>
                     <Services:ServicesGrid IsMainGrid="False" MaxHeight="150" />
