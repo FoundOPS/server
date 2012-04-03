@@ -41,6 +41,12 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             }
         }
 
+        private readonly Subject<bool> _loadingVirtualItemCountSubject = new Subject<bool>();
+        /// <summary>
+        /// An observable that pushes when the virtual item count is loading or not.
+        /// </summary>
+        public IObservable<bool> LoadingVirtualItemCountObservable { get { return _loadingVirtualItemCountSubject; } }
+
         private bool _loadingVirtualItemCount;
         /// <summary>
         /// Set to true when loading the virtual item count.
@@ -48,9 +54,10 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         public bool LoadingVirtualItemCount
         {
             get { return _loadingVirtualItemCount; }
-            set
+            private set
             {
                 _loadingVirtualItemCount = value;
+                _loadingVirtualItemCountSubject.OnNext(value);
                 OnPropertyChanged("LoadingVirtualItemCount");
             }
         }
@@ -234,6 +241,8 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             var query = _loadItemsQuery();
             if (query == null) return;
 
+            LoadingVirtualItemCount = true;
+
             //Cancel any previous loads when reloading the VirtualItemCount
             _cancelAllLoads.OnNext(true);
 
@@ -257,6 +266,8 @@ namespace FoundOps.Common.Silverlight.UI.Tools
                      _virtualItemCountLoaded.OnNext(VirtualItemCount);
 
                      _firstVirtualLoadAfterVirtualItemCountLoadedFlag = true;
+
+                     LoadingVirtualItemCount = false;
                  }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 

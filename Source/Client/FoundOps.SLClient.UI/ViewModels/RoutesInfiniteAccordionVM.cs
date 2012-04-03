@@ -18,9 +18,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ImportingConstructor]
         public RoutesInfiniteAccordionVM() : base(new[] { typeof(Employee), typeof(Vehicle) })
         {
-            ////b) select the closest Route to today
-            //SelectedEntity = Collection.FirstOrDefault(r => r.Date >= DateTime.Now.Date);
-
             SetupContextDataLoading(roleId =>
                                         {
                                             var employeeContext = ContextManager.GetContext<Employee>();

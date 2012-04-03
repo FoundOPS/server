@@ -31,11 +31,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            //Force load the entities when in a related types view
-            //this is because VDCV will only normally load when a virtual item is loaded onto the screen
-            //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
-            SetupContextDataLoading(roleId => DomainContext.GetRecurringServicesForServiceProviderQuery(roleId),
-                                    new[] { new ContextRelationshipFilter("ClientId", typeof(Client), v => ((Client)v).Id) }, true);
+            SetupContextDataLoading(roleId => 
+                DomainContext.GetRecurringServicesForServiceProviderQuery(roleId), new[] { new ContextRelationshipFilter("ClientId", typeof(Client), v => ((Client)v).Id) });
 
             //Whenever the selected RecurringService changes load the details
             SetupDetailsLoading(selectedEntity => DomainContext.GetRecurringServiceDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));

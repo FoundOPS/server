@@ -1,9 +1,14 @@
+using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Common.Tools;
@@ -11,11 +16,6 @@ using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
-using MEFedMVVM.ViewModelLocator;
-using System;
-using System.ComponentModel.Composition;
-using System.Windows.Controls;
-using ReactiveUI;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

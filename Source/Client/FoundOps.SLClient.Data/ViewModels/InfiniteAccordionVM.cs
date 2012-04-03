@@ -222,8 +222,8 @@ namespace FoundOps.SLClient.Data.ViewModels
                 _selectFirstEntitySubscription = ExtendedVirtualQueryableCollectionView.FirstItemsLoadedAfterUpdated
                     .Subscribe(loadedEntities => SelectedEntity = loadedEntities.FirstOrDefault());
 
-                //TODO Subscribe the loading subject to when the count is loading
-                //result.CountLoading.Subscribe(IsLoadingSubject);
+                //Subscribe the loading subject to when the count is loading
+                ExtendedVirtualQueryableCollectionView.LoadingVirtualItemCountObservable.Subscribe(IsLoadingSubject);
             });
         }
 
@@ -300,8 +300,8 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                 QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TBase, TEntity>(DomainContext, () => entityQuery(roleId), loadVirtualItemCount);
 
-                //TODO Subscribe the loading subject to when the count is loading
-                //result.CountLoading.Subscribe(IsLoadingSubject);
+                //Subscribe the loading subject to when the count is loading
+                ExtendedVirtualQueryableCollectionView.LoadingVirtualItemCountObservable.Subscribe(IsLoadingSubject);
             });
         }
 

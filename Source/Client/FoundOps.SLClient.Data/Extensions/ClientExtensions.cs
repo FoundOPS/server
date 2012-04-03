@@ -94,6 +94,7 @@ namespace FoundOps.Core.Models.CoreEntities
             Observable2.FromPropertyChangedPattern(this, x => x.DisplayName).ObserveOnDispatcher()
                 .Subscribe(displayName =>
                                {
+                                   if (OwnedParty == null) return;
                                    var defaultLocation = this.OwnedParty.Locations.Count == 1 ? this.OwnedParty.Locations.First() : null;
                                    if (defaultLocation == null) return;
                                    defaultLocation.Name = displayName;
