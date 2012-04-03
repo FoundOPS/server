@@ -25,6 +25,8 @@ namespace FoundOps.Core.Models.CoreEntities
         void IEntityDefaultCreation.OnCreate()
         {
             Id = Guid.NewGuid();
+            ServicedBy = "";
+            Comments = "";
             OnCreation();
         }
 

@@ -430,15 +430,14 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
             {
+                //Whenever the manifests are opened save the Routes
+                this.SaveCommand.Execute(null);
+
                 //Setup the route manifest viewer if there is not one yet
                 if (_routeManifestViewer == null)
                     _routeManifestViewer = new RouteManifestViewer();
 
                 _routeManifestViewer.Show();
-
-                //Whenever the manifests are opened save the Routes
-                if (this.SaveCommand.CanExecute(null))
-                    this.SaveCommand.Execute(null);
             });
 
             #region Date Modifiers
