@@ -28,10 +28,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <DefaultSchema>dbo</DefaultSchema>
     <PreviousProjectVersion>4.0</PreviousProjectVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccProvider>SAK</SccProvider>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccLocalPath>SAK</SccLocalPath>
+    <SccProjectName>
+    </SccProjectName>
+    <SccProvider>
+    </SccProvider>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccLocalPath>
+    </SccLocalPath>
     <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
     <AnsiNulls>False</AnsiNulls>
     <AnsiPadding>False</AnsiPadding>
@@ -120,6 +124,9 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="Snapshots" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />
@@ -136,6 +143,7 @@
     <None Include="Snapshots\FoundOps.Database.Core_20120202_08-43-46.sqlx" />
     <None Include="Snapshots\FoundOps.Database.Core_20120223_11-10-32.sqlx" />
     <None Include="Snapshots\FoundOps.Database.Core_20120307_09-38-08.sqlx" />
+    <None Include="Snapshots\FoundOps.Database.Core_20120404_01-07-17.dacpac" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\RouteEmployee.sql">
@@ -323,5 +331,26 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
+    <Build Include="dbo\Views\ServiceTemplatesWithVendorId.sql" />
+    <Build Include="dbo\Views\PartiesWithName.sql" />
+    <Build Include="dbo\Functions\GetPreviousOccurrence.sql" />
+    <Build Include="dbo\Functions\GetPreviousDayInMonth.sql" />
+    <Build Include="dbo\Functions\GetNextOccurence.sql" />
+    <Build Include="dbo\Functions\GetNextDayInMonth.sql" />
+    <Build Include="dbo\Functions\GetLastOfDayOfWeekInMonth.sql" />
+    <Build Include="dbo\Functions\GetLastDayOfMonth.sql" />
+    <Build Include="dbo\Functions\GetFirstOfDayOfWeekInMonth.sql" />
+    <Build Include="dbo\Functions\GetFirstDayOfMonth.sql" />
+    <Build Include="dbo\Functions\CheckServiceTemplateForChildren.sql" />
+    <Build Include="dbo\Functions\Split.sql" />
+    <Build Include="dbo\Functions\GetUnroutedServicesForDate.sql" />
+    <Build Include="dbo\Functions\GetServiceHolders.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteUserAccountBasedOnId.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteServiceTemplatesAndChildrenBasedOnContextId.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteLocationBasedOnId.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteClientBasedOnId.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteBusinessAccountBasedOnId.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteBasicPartyBasedOnId.sql" />
   </ItemGroup>
 </Project>

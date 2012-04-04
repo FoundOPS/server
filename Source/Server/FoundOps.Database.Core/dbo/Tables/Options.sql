@@ -6,8 +6,10 @@
     [Index]          INT              NOT NULL,
     [Tooltip]        NVARCHAR (MAX)   NULL,
     CONSTRAINT [PK_Options] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_OptionsFieldOption] FOREIGN KEY ([OptionsFieldId]) REFERENCES [dbo].[Fields_OptionsField] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_OptionsFieldOption] FOREIGN KEY ([OptionsFieldId]) REFERENCES [dbo].[Fields_OptionsField] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 GO

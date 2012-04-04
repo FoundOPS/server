@@ -6,6 +6,8 @@
     [Value]         DECIMAL (16, 6)  NULL,
     [Id]            UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_Fields_NumericField] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_NumericField_inherits_Field] FOREIGN KEY ([Id]) REFERENCES [dbo].[Fields] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_NumericField_inherits_Field] FOREIGN KEY ([Id]) REFERENCES [dbo].[Fields] ([Id]) ON DELETE CASCADE
 );
+
+
 
