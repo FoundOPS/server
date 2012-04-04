@@ -268,6 +268,9 @@ namespace FoundOps.Common.Silverlight.UI.Tools
                      _firstVirtualLoadAfterVirtualItemCountLoadedFlag = true;
 
                      LoadingVirtualItemCount = false;
+
+                     //Force load first items
+                     LoadItems(0, 50);
                  }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
@@ -281,6 +284,8 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         {
             var query = _loadItemsQuery();
             if (query == null) return;
+
+            if (LoadingVirtualItemCount) return;
 
             LoadingVirtualItems = true;
 

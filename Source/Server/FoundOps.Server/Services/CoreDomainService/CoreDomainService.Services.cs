@@ -248,21 +248,21 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client)
+            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Include(rs=>rs.Client.OwnedParty)
                 .Where(v => v.Client.VendorId == businessForRole.Id);
 
             return recurringServices.OrderBy(rs=>rs.ClientId);
         }
 
         /// <summary>
-        /// Gets the RecurringServices for the roleId.
+        /// Gets the RecurringServices for a Client.
         /// It includes the Client, Repeat and ServiceTemplate (without fields).
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        public IQueryable<RecurringService> GetRecurringServicesForServiceProvider(Guid roleId)
+        /// <param name="roleId">The role to determine the business account from.</param>
+        /// <param name="clientId">The client to get recurring services from.</param>
+        public IQueryable<RecurringService> GetRecurringServicesForClient(Guid roleId, Guid clientId)
         {
-            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId)
+            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Where(rs=>rs.ClientId == clientId)
                 .Include(rs => rs.Repeat).Include(rs => rs.ServiceTemplate);
 
             return recurringServices.OrderBy(rs => rs.ClientId);
@@ -276,7 +276,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="recurringServiceId">The recurring service id.</param>
         public RecurringService GetRecurringServiceDetailsForRole(Guid roleId, Guid recurringServiceId)
         {
-            var recurringService = GetRecurringServicesForServiceProvider(roleId).Include(c => c.Client.OwnedParty)
+            var recurringService = RecurringServicesForServiceProviderOptimized(roleId).Include(c => c.Client.OwnedParty)
                 .FirstOrDefault(rs => rs.Id == recurringServiceId);
 
             //Load the ServiceTemplate for the RecurringService

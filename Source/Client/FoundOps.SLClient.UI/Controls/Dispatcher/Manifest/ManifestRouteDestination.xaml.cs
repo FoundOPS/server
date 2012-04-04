@@ -39,7 +39,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 "RouteDestination",
                 typeof(RouteDestination),
                 typeof(ManifestRouteDestination),
-                new PropertyMetadata(new PropertyChangedCallback(RouteDestinationChanged)));
+                new PropertyMetadata(RouteDestinationChanged));
 
         private static void RouteDestinationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

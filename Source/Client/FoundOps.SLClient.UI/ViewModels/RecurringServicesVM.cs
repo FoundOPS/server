@@ -40,7 +40,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                                             var clientContext = ContextManager.GetContext<Client>();
                                             return clientContext == null
                                                        ? null
-                                                       : DomainContext.GetRecurringServicesForServiceProviderQuery(roleId).Where(rs => rs.ClientId == clientContext.Id);
+                                                       : DomainContext.GetRecurringServicesForClientQuery(roleId, clientContext.Id);
                                         }, new[] { new ContextRelationshipFilter("ClientId", typeof(Client), v => ((Client)v).Id) });
 
             //Whenever the selected RecurringService changes load the details
