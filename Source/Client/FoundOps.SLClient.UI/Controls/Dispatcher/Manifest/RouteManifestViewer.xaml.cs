@@ -31,6 +31,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         /// </summary>
         private IDisposable _updateSizeSubscription;
 
+        private bool _currentlyPrinting;
+
         #endregion
 
         /// <summary>
@@ -59,6 +61,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             };
 
             Closed += (s, e) => VM.Routes.ManifestOpen = false;
+
+            this.ManifestRichTextBox.PrintStarted += (s, e) => _currentlyPrinting = true;
+            this.ManifestRichTextBox.PrintCompleted += (s, e) => _currentlyPrinting = false;
         }
 
         #region Logic
@@ -75,8 +80,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 _updateSizeSubscription = null;
             }
 
-            //Only load the manifest when the current viewer is open
-            if (!VM.Routes.ManifestOpen) return;
+            //Only load the manifest when the current viewer is open and is not printing
+            if (!VM.Routes.ManifestOpen || _currentlyPrinting) return;
             var document = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
             var mainSection = new Section { FooterBottomMargin = 0, HeaderTopMargin = 0, ActualPageMargin = new Padding(0, 20, 0, 20) };
             var bodyParagraph = new Paragraph();
@@ -183,6 +188,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 _updateSizeSubscription = uiElementSizeChangedObservables.Merge().Buffer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
                     .Subscribe(containersToUpdate =>
                     {
+                        //Do not update while printing
+                        if (_currentlyPrinting)
+                            return;
+
                         foreach (var container in containersToUpdate)
                         {
                             var uiElement = container.UiElement;
@@ -192,11 +201,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                                 container.Height = desiredHeight;
                         }
 
-                        try
-                        {
-                            ManifestRichTextBox.UpdateEditorLayout();
-                        }
-                        catch {} //Ignore problems. An exception will occur when RichTextBox tries to print
+                        ManifestRichTextBox.UpdateEditorLayout();
                     });
 
                 #endregion

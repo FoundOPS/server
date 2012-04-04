@@ -60,4 +60,15 @@ namespace FoundOps.SLClient.Data.Services
             return Manager.Context;
         }
     }
+
+    /// <summary>
+    /// Gets the CoreDomainContext.
+    /// </summary>
+    public class GetCoreDomainContext: MarkupExtension
+    {
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return Manager.CoreDomainContext;
+        }
+    }
 }
