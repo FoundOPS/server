@@ -10,16 +10,16 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	AS
 	BEGIN
 
+	DELETE FROM RouteDestinations
+	WHERE ClientId = @clientId
+	
+	DELETE FROM RouteTasks
+	WHERE ClientId = @clientId
+
 	DELETE FROM Services
 	WHERE ClientId = @clientId
 
 	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = NULL, @ownerClientId = @clientId
-
-	DELETE FROM RouteTasks
-	WHERE ClientId = @clientId
-
-	DELETE FROM RouteDestinations
-	WHERE ClientId = @clientId
 
 	DELETE FROM RecurringServices
 	WHERE ClientId = @clientId

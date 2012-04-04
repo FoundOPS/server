@@ -386,7 +386,58 @@ ADD CONSTRAINT [FK_EmployeeHistoryEntryEmployee]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO");
+	
+	//24. FK_EmployeeHistoryEntryEmployee with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete EmployeeHistory when an Employee is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[RouteEmployee]
+ADD CONSTRAINT [FK_RouteEmployee_Route]
+    FOREIGN KEY ([Routes_Id])
+    REFERENCES [dbo].[Routes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO");
 
+	newTextArray.Add(@"ALTER TABLE [dbo].[RouteEmployee]
+ADD CONSTRAINT [FK_RouteEmployee_Route]
+    FOREIGN KEY ([Routes_Id])
+    REFERENCES [dbo].[Routes]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+	
+	//24. FK_EmployeeHistoryEntryEmployee with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete EmployeeHistory when an Employee is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[RouteVehicle]
+ADD CONSTRAINT [FK_RouteVehicle_Route]
+    FOREIGN KEY ([Routes_Id])
+    REFERENCES [dbo].[Routes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[RouteVehicle]
+ADD CONSTRAINT [FK_RouteVehicle_Route]
+    FOREIGN KEY ([Routes_Id])
+    REFERENCES [dbo].[Routes]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");
+
+	//24. FK_EmployeeHistoryEntryEmployee with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete EmployeeHistory when an Employee is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[RoleBlock]
+ADD CONSTRAINT [FK_RoleBlock_Role]
+    FOREIGN KEY ([Roles_Id])
+    REFERENCES [dbo].[Roles]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO");
+
+	newTextArray.Add(@"ALTER TABLE [dbo].[RoleBlock]
+ADD CONSTRAINT [FK_RoleBlock_Role]
+    FOREIGN KEY ([Roles_Id])
+    REFERENCES [dbo].[Roles]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO");	
+	
 	//25. FK_ClientLocation with ON DELETE SET NULL ON UPDATE NO ACTION; //This will remove the DefaultBillingLocation from a Client when the Location is deleted
 	oldTextArray.Add(@"ALTER TABLE [dbo].[Clients]
 ADD CONSTRAINT [FK_ClientLocation]

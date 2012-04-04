@@ -1251,7 +1251,7 @@ ADD CONSTRAINT [FK_RouteVehicle_Route]
     FOREIGN KEY ([Routes_Id])
     REFERENCES [dbo].[Routes]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Vehicles_Id] in table 'RouteVehicle'
@@ -1755,7 +1755,7 @@ ADD CONSTRAINT [FK_RouteEmployee_Route]
     FOREIGN KEY ([Routes_Id])
     REFERENCES [dbo].[Routes]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Technicians_Id] in table 'RouteEmployee'
@@ -2232,23 +2232,73 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	AS
 	BEGIN
 
-	DELETE FROM Services
-	WHERE ServiceProviderId = @providerId
-
-	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = @providerId, @ownerClientId = null
+	DELETE FROM Routes
+	WHERE OwnerBusinessAccountId = @providerId
 
 	DELETE FROM RouteTasks
 	WHERE BusinessAccountId = @providerId
 
-	DELETE FROM Routes
-	WHERE OwnerBusinessAccountId = @providerId
+	DELETE FROM Services
+	WHERE ServiceProviderId = @providerId
 
-	DELETE FROM Clients
-	WHERE VendorId = @providerId
+	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = @providerId, @ownerClientId = null
+-------------------------------------------------------------------------------------------------------------------------
+--Delete Clients for ServiceProvider
+-------------------------------------------------------------------------------------------------------------------------	
+	DECLARE @ClientId uniqueidentifier
 
-	DELETE FROM Locations
-	WHERE		PartyId = @providerId
-	OR			OwnerPartyId = @providerId
+	DECLARE @ClientIdsForServiceProvider TABLE
+	(
+		ClientId uniqueidentifier
+	)
+
+	INSERT INTO @ClientIdsForServiceProvider
+	SELECT Id FROM Clients
+	WHERE	VendorId = @providerId
+
+	DECLARE @ClientRowCount int
+	SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
+
+	WHILE @ClientRowCount > 0
+	BEGIN
+			SET @ClientId = (SELECT MIN(ClientId) FROM @ClientIdsForServiceProvider)
+
+			EXEC dbo.DeleteClientBasedOnId @clientId = @ClientId
+
+			DELETE FROM @ClientIdsForServiceProvider
+			WHERE ClientId = @ClientId
+
+			SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
+	END
+-------------------------------------------------------------------------------------------------------------------------
+--Delete Locations for ServiceProvider
+-------------------------------------------------------------------------------------------------------------------------	
+	DECLARE @LocationId uniqueidentifier
+
+	DECLARE @LocationIdsForServiceProvider TABLE
+	(
+		LocationId uniqueidentifier
+	)
+
+	INSERT INTO @LocationIdsForServiceProvider
+	SELECT Id FROM Locations
+	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
+
+	DECLARE @LocationRowCount int
+	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+
+	WHILE @LocationRowCount > 0
+	BEGIN
+			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
+
+			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationRowCount
+
+			DELETE FROM @LocationIdsForServiceProvider
+			WHERE LocationId = @LocationId
+
+			SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+	END
+-------------------------------------------------------------------------------------------------------------------------
 
 	DELETE FROM Regions
 	WHERE BusinessAccountId = @providerId
@@ -2291,16 +2341,16 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	AS
 	BEGIN
 
+	DELETE FROM RouteDestinations
+	WHERE ClientId = @clientId
+	
+	DELETE FROM RouteTasks
+	WHERE ClientId = @clientId
+
 	DELETE FROM Services
 	WHERE ClientId = @clientId
 
 	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = NULL, @ownerClientId = @clientId
-
-	DELETE FROM RouteTasks
-	WHERE ClientId = @clientId
-
-	DELETE FROM RouteDestinations
-	WHERE ClientId = @clientId
 
 	DELETE FROM RecurringServices
 	WHERE ClientId = @clientId
@@ -2410,6 +2460,18 @@ CREATE PROCEDURE dbo.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
 	SELECT	TemplateRecurs.Id
 	FROM	TemplateRecurs
 	
+	DELETE
+	FROM		RouteTasks
+	--This is a Semi-Join between the ServiceTemplateRecurs table created above and the RouteTasks Table
+	--Semi-Join simply means that it has all the same logic as a normal join, but it doesnt actually join the tables
+	--In this case, it finds all the rows on RouteTasks that correspond to a row in ServiceTemplateRecurs
+	WHERE EXISTS
+	(
+	SELECT		#TempTable.Id
+	FROM		#TempTable
+	WHERE		#TempTable.Id = RouteTasks.ServiceId
+	)
+
 	DELETE 
 	FROM		Services
 	--This is a Semi-Join between the ServiceTemplateRecurs table created above and the Services Table
@@ -2509,6 +2571,17 @@ CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId
 	FROM	ServiceTemplateRecurs
 	END
 
+	DELETE
+	FROM		RouteTasks
+	--This is a Semi-Join between the ServiceTemplateRecurs table created above and the RouteTasks Table
+	--Semi-Join simply means that it has all the same logic as a normal join, but it doesnt actually join the tables
+	--In this case, it finds all the rows on RouteTasks that correspond to a row in ServiceTemplateRecurs
+	WHERE EXISTS
+	(
+	SELECT		#TempTable.Id
+	FROM		#TempTable
+	WHERE		#TempTable.Id = RouteTasks.ServiceId
+	)
 
 	DELETE 
 	FROM		Services
@@ -2566,9 +2639,35 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	AS
 	BEGIN
 
-	DELETE FROM Locations
-	WHERE		OwnerPartyId = @providerId
-	OR			PartyId = @providerId
+-------------------------------------------------------------------------------------------------------------------------
+--Delete Locations for ServiceProvider
+-------------------------------------------------------------------------------------------------------------------------	
+	DECLARE @LocationId uniqueidentifier
+
+	DECLARE @LocationIdsForServiceProvider TABLE
+	(
+		LocationId uniqueidentifier
+	)
+
+	INSERT INTO @LocationIdsForServiceProvider
+	SELECT Id FROM Locations
+	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
+
+	DECLARE @LocationRowCount int
+	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+
+	WHILE @LocationRowCount > 0
+	BEGIN
+			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
+
+			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationRowCount
+
+			DELETE FROM @LocationIdsForServiceProvider
+			WHERE LocationId = @LocationId
+
+			SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+	END
+-------------------------------------------------------------------------------------------------------------------------
 
 	DELETE FROM Contacts
 	WHERE		OwnerPartyId = @providerId

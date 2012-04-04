@@ -61,6 +61,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         /// <param name="roleId">The role id.</param>
         /// <param name="clientsIds">The ids of the Clients to load.</param>
+        [Query(HasSideEffects = true)] //HasSideEffects so a POST is used and a maximum URI length is not thrown
         public IQueryable<Client> GetClientsWithContactInfoSet(Guid roleId, IEnumerable<Guid> clientsIds)
         {
             var clients = GetClientsForRole(roleId).Where(c => clientsIds.Contains(c.Id)).Include(c => c.OwnedParty.ContactInfoSet);
@@ -402,6 +403,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         /// <param name="roleId">The role id.</param>
         /// <param name="locationsIds">The ids of the Locations to load.</param>
+        [Query(HasSideEffects = true)] //HasSideEffects so a POST is used and a maximum URI length is not thrown
         public IQueryable<Location> GetLocationsWithContactInfoSet(Guid roleId, IEnumerable<Guid> locationsIds)
         {
             var locations = GetLocationsToAdministerForRole(roleId).Where(l => locationsIds.Contains(l.Id)).Include(l => l.ContactInfoSet);

@@ -195,7 +195,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
 
                 //Update the ServiceDate
-                Service.ServiceDate = this.OccurDate;
+                if (this.OccurDate != DateTime.MinValue)
+                    Service.ServiceDate = this.OccurDate;
             });
         }
 
@@ -272,6 +273,9 @@ namespace FoundOps.Core.Models.CoreEntities
                     if (task.IsCanceled || !task.Result.Any()) return;
                     Service = task.Result.First();
                     _entityGraph = this.Service.EntityGraph();
+
+                    this.OccurDate = Service.ServiceDate;
+                    this.RecurringServiceId = Service.RecurringServiceId;
 
                     DetailsLoaded = true;
                     if (loadedCallback != null)

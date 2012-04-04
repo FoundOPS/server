@@ -51,6 +51,17 @@ CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId
 	FROM	ServiceTemplateRecurs
 	END
 
+	DELETE
+	FROM		RouteTasks
+	--This is a Semi-Join between the ServiceTemplateRecurs table created above and the RouteTasks Table
+	--Semi-Join simply means that it has all the same logic as a normal join, but it doesnt actually join the tables
+	--In this case, it finds all the rows on RouteTasks that correspond to a row in ServiceTemplateRecurs
+	WHERE EXISTS
+	(
+	SELECT		#TempTable.Id
+	FROM		#TempTable
+	WHERE		#TempTable.Id = RouteTasks.ServiceId
+	)
 
 	DELETE 
 	FROM		Services

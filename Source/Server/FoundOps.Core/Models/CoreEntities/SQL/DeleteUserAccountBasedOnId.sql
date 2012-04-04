@@ -8,9 +8,35 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	AS
 	BEGIN
 
-	DELETE FROM Locations
-	WHERE		OwnerPartyId = @providerId
-	OR			PartyId = @providerId
+-------------------------------------------------------------------------------------------------------------------------
+--Delete Locations for ServiceProvider
+-------------------------------------------------------------------------------------------------------------------------	
+	DECLARE @LocationId uniqueidentifier
+
+	DECLARE @LocationIdsForServiceProvider TABLE
+	(
+		LocationId uniqueidentifier
+	)
+
+	INSERT INTO @LocationIdsForServiceProvider
+	SELECT Id FROM Locations
+	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
+
+	DECLARE @LocationRowCount int
+	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+
+	WHILE @LocationRowCount > 0
+	BEGIN
+			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
+
+			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationRowCount
+
+			DELETE FROM @LocationIdsForServiceProvider
+			WHERE LocationId = @LocationId
+
+			SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+	END
+-------------------------------------------------------------------------------------------------------------------------
 
 	DELETE FROM Contacts
 	WHERE		OwnerPartyId = @providerId

@@ -135,7 +135,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (!this.ObjectContext.CurrentUserCanAdministerFoundOPS())
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
-            ObjectContext.DeleteBusinessAccountBasedOnId(businessAccountToDelete.Id);
+
+            throw new InvalidOperationException("Deleting BusinessAccounts has been temporarily disabled...Sorry Patrick");
+            //ObjectContext.DeleteBusinessAccountBasedOnId(businessAccountToDelete.Id);
 
             #region NOT USED TO DELETE ANYMORE
 
