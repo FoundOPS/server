@@ -236,7 +236,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         /// <summary>
         /// Update the VirtualItemCount
         /// </summary>
-        private void UpdateVirtualItemCount()
+        public void UpdateVirtualItemCount()
         {
             var query = _loadItemsQuery();
             if (query == null) return;

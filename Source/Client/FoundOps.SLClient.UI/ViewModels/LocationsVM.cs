@@ -80,7 +80,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public LocationsVM()
-            : base(new[] { typeof(Client), typeof(Region) })
+            //WORKAROUND TO BE FIXED: Prevent null selection because unsaved entities will not show up
+            : base(new[] { typeof(Client), typeof(Region) }, true, true)
         {
             SetupDataLoading();
 
@@ -142,7 +143,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 newLocation.RaiseValidationErrors();
 
-                SelectedEntity = newLocation;
+                DataManager.EnqueueSubmitOperation(submitOperation => 
+                    Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ => SelectedEntity = newLocation));
 
                 return newLocation;
             };
@@ -218,6 +220,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Reuse the CreateNewItem method
             var newLocation = CreateNewItem("New Location");
             this.QueryableCollectionView.AddNew(newLocation);
+
             return newLocation;
         }
 

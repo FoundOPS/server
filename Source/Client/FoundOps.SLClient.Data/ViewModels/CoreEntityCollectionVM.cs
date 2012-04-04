@@ -365,7 +365,6 @@ namespace FoundOps.SLClient.Data.ViewModels
                     return;
 
                 //b) load the details
-                ((ILoadDetails)selectedEntity).DetailsLoaded = false;
                 detailsLoadOperation = DomainContext.Load(query, loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
             });
         }

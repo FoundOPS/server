@@ -318,7 +318,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 cancelLastDetailsLoad.OnNext(true);
 
                 //Load the RouteTask's ServiceHolder details
-                selectedRouteTask.DetailsLoaded = false;
                 selectedRouteTask.ParentRouteTaskHolder.ServiceHolder.LoadDetails(cancelLastDetailsLoad, () => selectedRouteTask.DetailsLoaded = true);
             });
 
@@ -333,7 +332,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 //a) cancel the last loads
                 cancelLastDetailsLoad.OnNext(true);
-                selectedRouteDestination.DetailsLoaded = false;
 
                 DomainContext.LoadAsync(DomainContext.GetRouteDestinationDetailsQuery(ContextManager.RoleId, selectedRouteDestination.Id), cancelLastDetailsLoad)
                 .ContinueWith(task =>

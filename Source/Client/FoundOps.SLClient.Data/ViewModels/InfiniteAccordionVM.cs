@@ -147,13 +147,15 @@ namespace FoundOps.SLClient.Data.ViewModels
                     SelectedEntity = null;
             });
 
-
             //TODO FIX ADDING NEW ENTITIES then remove workaround
             this.DataManager.ChangesSaved += submitOperation =>
             {
                 //Add the added entities to the VirtualItemCount
                 if (ExtendedVirtualQueryableCollectionView != null)
-                    ExtendedVirtualQueryableCollectionView.VirtualItemCount += submitOperation.ChangeSet.AddedEntities.OfType<TEntity>().Count();
+                {
+                    var addedEntities = submitOperation.ChangeSet.AddedEntities.OfType<TEntity>();
+                    ExtendedVirtualQueryableCollectionView.VirtualItemCount += addedEntities.Count();
+                }
             };
         }
 
@@ -385,6 +387,14 @@ namespace FoundOps.SLClient.Data.ViewModels
             DomainContext.EntityContainer.GetEntitySet(typeof(TBase)).Remove(entityToDelete);
 
             base.DeleteEntity(entityToDelete);
+        }
+
+        protected override void OnSave(SubmitOperation submitOperation)
+        {
+            base.OnSave(submitOperation);
+
+            //TODO Undo when fixing non-saved added entities
+            ExtendedVirtualQueryableCollectionView.UpdateVirtualItemCount();
         }
 
         #endregion
