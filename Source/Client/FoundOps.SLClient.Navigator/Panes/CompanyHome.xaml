@@ -16,9 +16,8 @@
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            This is no april fools joke.<LineBreak/>
-            * OPTIMIZATION REVAMP: Every part of the system has been optimized.<LineBreak/>
-            * Up to 200x speed improvements (most things are near instant loading).<LineBreak/>
+            * OPTIMIZATION: Dispatcher, Employees, Locations, Services, and Vehicles.<LineBreak/>
+            * GENERAL: Overall system stability improvements. <LineBreak/>
             * DISPATCHER: Added the ability to filter routes by region. <LineBreak/>
             * DISPATCHER: The filter now also filters tasks. Only visible tasks and routes<LineBreak/>
             * will be assigned when you click "Auto Assign Jobs".<LineBreak/>
