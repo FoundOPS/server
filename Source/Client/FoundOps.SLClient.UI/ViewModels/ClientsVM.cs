@@ -120,7 +120,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             AddNewItemLocation = name =>
             {
                 var newLocation = VM.Locations.CreateNewItem(name);
-                this.SelectedEntity.OwnedParty.Locations.Add(newLocation);
                 VM.Locations.MoveToDetailsView.Execute(null);
                 return newLocation;
             };
@@ -129,6 +128,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 SelectedEntity.OwnedParty.Locations.Add(existingItem);
                 VM.Locations.MoveToDetailsView.Execute(null);
+
+                VM.Locations.SelectedEntity = existingItem;
             };
 
             RemoveItemLocation = () =>
@@ -191,11 +192,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var availableServiceTemplate = serviceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
                 newClient.ServiceTemplates.Add(availableServiceTemplate);
             }
-
-            //If there is a location context add it to the new client
-            var currentLocation = ContextManager.GetContext<Location>();
-            if (currentLocation != null)
-                newClient.OwnedParty.OwnedLocations.Add(currentLocation);
         }
 
         protected override void OnDeleteEntity(Client entityToDelete)

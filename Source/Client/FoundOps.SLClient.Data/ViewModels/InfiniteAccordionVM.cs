@@ -366,6 +366,9 @@ namespace FoundOps.SLClient.Data.ViewModels
             //Must call this or else adds will not show up in RadGridView
             this.RaisePropertyChanged("QueryableCollectionView");
 
+            DataManager.EnqueueSubmitOperation(submitOperation => 
+                Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ => SelectedEntity = newEntity));
+
             return newEntity;
         }
 

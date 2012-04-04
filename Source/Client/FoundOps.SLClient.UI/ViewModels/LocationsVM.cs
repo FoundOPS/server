@@ -119,13 +119,20 @@ namespace FoundOps.SLClient.UI.ViewModels
             CreateNewItem = name =>
             {
                 //Set the Party to the current OwnerAccount
-                var newLocation = new Location { Party = ContextManager.OwnerAccount };
+                var newLocation = new Location { Name = name, OwnerParty = ContextManager.OwnerAccount };
+
+                //Add the entity to the EntitySet so it is tracked by the DomainContext
+                DomainContext.Locations.Add(newLocation);
 
                 var client = ContextManager.GetContext<Client>();
 
                 //If the client context != null add this to the current Client's Locations
                 if (client != null)
+                {
                     client.OwnedParty.Locations.Add(newLocation);
+                    if (client.OwnedParty.Locations.Count == 1)
+                        newLocation.Name = client.DisplayName;
+                }
 
                 var region = ContextManager.GetContext<Region>();
 
@@ -135,8 +142,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 newLocation.RaiseValidationErrors();
 
-                //Add the entity to the EntitySet so it is tracked by the DomainContext
-                DomainContext.Locations.Add(newLocation);
+                SelectedEntity = newLocation;
 
                 return newLocation;
             };
@@ -210,7 +216,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override Location AddNewEntity(object commandParameter)
         {
             //Reuse the CreateNewItem method
-            var newLocation = CreateNewItem("");
+            var newLocation = CreateNewItem("New Location");
             this.QueryableCollectionView.AddNew(newLocation);
             return newLocation;
         }

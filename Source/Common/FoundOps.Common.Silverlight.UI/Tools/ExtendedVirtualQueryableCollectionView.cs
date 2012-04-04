@@ -329,15 +329,17 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         void ExtendedVirtualQueryableCollectionViewEntityRemoved(object sender, EntityCollectionChangedEventArgs<TBase> e)
         {
             //Ignore other base class changes
-            if (e.Entity as TEntity == null)
-                return;
+            //if (e.Entity as TEntity == null)
+            //    return;
 
-            var sourceCollection = (RadObservableCollection<object>)this.SourceCollection;
-            if (sourceCollection.Contains(e.Entity))
-            {
-                sourceCollection.Remove(e.Entity);
-                this.VirtualItemCount = sourceCollection.Count;
-            }
+            //var sourceCollection = (RadObservableCollection<object>)this.SourceCollection;
+            //if (sourceCollection.Contains(e.Entity))
+            //{
+            //    sourceCollection.Remove(e.Entity);
+            //    this.VirtualItemCount = sourceCollection.Count;
+            //}
+
+            UpdateVirtualItemCount();
         }
 
         #endregion
