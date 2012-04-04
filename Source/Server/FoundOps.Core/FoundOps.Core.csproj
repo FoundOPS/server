@@ -214,8 +214,9 @@
     <Content Include="Models\CoreEntities\SQL\DeleteBasicPartyBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteBusinessAccountBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteClientBasedOnId.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteLocationBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId.sql" />
-    <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplatesAndChildrenBasedOnContextId.sql" />
     <Content Include="Models\CoreEntities\Extensions\SQL Tests\DeleteFields.sql" />
     <Content Include="Models\CoreEntities\SQL\GetNextOccurence.sql" />
     <Content Include="Models\CoreEntities\SQL\GetPreviousOccurance.sql" />

@@ -934,63 +934,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
-        {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
-            {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
-            }
-            else
-            {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId(Nullable<global::System.Guid> providerId)
-        {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
-            {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
-            }
-            else
-            {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId", providerIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
-        {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
-            {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
-            }
-            else
-            {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
@@ -1101,6 +1044,131 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="clientId">No Metadata Documentation available.</param>
+        public int DeleteClientBasedOnId(Nullable<global::System.Guid> clientId)
+        {
+            ObjectParameter clientIdParameter;
+            if (clientId.HasValue)
+            {
+                clientIdParameter = new ObjectParameter("clientId", clientId);
+            }
+            else
+            {
+                clientIdParameter = new ObjectParameter("clientId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteClientBasedOnId", clientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        public int DeleteLocationBasedOnId(Nullable<global::System.Guid> locationId)
+        {
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
+            {
+                locationIdParameter = new ObjectParameter("locationId", locationId);
+            }
+            else
+            {
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        /// <param name="ownerClientId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplatesAndChildrenBasedOnContextId(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.Guid> ownerClientId)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter ownerClientIdParameter;
+            if (ownerClientId.HasValue)
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", ownerClientId);
+            }
+            else
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnContextId", serviceProviderIdParameter, ownerClientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="parentTemplateId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(Nullable<global::System.Guid> parentTemplateId)
+        {
+            ObjectParameter parentTemplateIdParameter;
+            if (parentTemplateId.HasValue)
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", parentTemplateId);
+            }
+            else
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId", parentTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
         }
 
         #endregion

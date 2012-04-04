@@ -1694,7 +1694,7 @@ ADD CONSTRAINT [FK_EmployeeUserAccount]
     FOREIGN KEY ([LinkedUserAccountId])
     REFERENCES [dbo].[Parties_UserAccount]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_EmployeeUserAccount'
 CREATE INDEX [IX_FK_EmployeeUserAccount]
@@ -2235,7 +2235,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DELETE FROM Services
 	WHERE ServiceProviderId = @providerId
 
-	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId @providerId
+	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = @providerId, @ownerClientId = null
 
 	DELETE FROM RouteTasks
 	WHERE BusinessAccountId = @providerId
@@ -2279,6 +2279,8 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 
 GO
 
+USE Core
+GO
 IF OBJECT_ID(N'[dbo].[DeleteClientBasedOnId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].DeleteClientBasedOnId
 GO
@@ -2303,11 +2305,73 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	DELETE FROM RecurringServices
 	WHERE ClientId = @clientId
 
+	DECLARE @LocationId uniqueidentifier
+	
+	DECLARE @LocationIdsForClient TABLE
+	(
+		LocationId uniqueidentifier
+	)
+
+	INSERT INTO @LocationIdsForClient
+	SELECT Id FROM Locations
+	WHERE	PartyId = @clientId
+
+	DECLARE @RowCount int
+	SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
+
+	WHILE @RowCount > 0
+	BEGIN
+			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForClient)
+
+			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationId
+
+			DELETE FROM @LocationIdsForClient
+			WHERE LocationId = @LocationId
+
+			SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
+	END
+
 	DELETE FROM ClientTitles
 	WHERE ClientId = @clientId
 
+	DELETE FROM Parties_Business
+	WHERE Id = @clientId
+
 	DELETE FROM Clients
 	WHERE Id = @clientId
+
+	END
+	RETURN
+
+GO
+
+USE Core
+GO
+
+IF OBJECT_ID(N'[dbo].[DeleteLocationBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].[DeleteLocationBasedOnId]
+GO
+--This procedure deletes a Business Account
+CREATE PROCEDURE dbo.DeleteLocationBasedOnId
+		(@locationId uniqueidentifier)
+
+	AS
+	BEGIN
+
+	DELETE FROM RouteTasks
+	WHERE LocationId = @locationId
+
+	DELETE FROM SubLocations
+	WHERE LocationId = @locationId
+
+	DELETE ContactInfoSet
+	WHERE LocationId = @locationId
+
+	DELETE FROM RouteDestinations
+	WHERE LocationId = @locationId
+
+	DELETE FROM Locations
+	WHERE Id = @locationId	
 
 	END
 	RETURN
@@ -2520,9 +2584,6 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 
 	DELETE FROM Files
 	WHERE		PartyId = @providerId
-
-	DELETE FROM Employees
-	WHERE LinkedUserAccountId = @providerId
 
 	DELETE FROM TrackPoints
 	WHERE UserAccountId = @providerId

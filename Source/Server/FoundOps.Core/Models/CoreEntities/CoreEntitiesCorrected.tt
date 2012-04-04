@@ -402,7 +402,37 @@ ADD CONSTRAINT [FK_ClientLocation]
         ([Id])
     ON DELETE SET NULL ON UPDATE NO ACTION;");
 	
-	//26. Remove generated PartiesWithName table (it is created as a View)
+	//26.
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Employees]
+ADD CONSTRAINT [FK_EmployeeUserAccount]
+    FOREIGN KEY ([LinkedUserAccountId])
+    REFERENCES [dbo].[Parties_UserAccount]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+	
+	newTextArray.Add(@"ALTER TABLE [dbo].[Employees]
+ADD CONSTRAINT [FK_EmployeeUserAccount]
+    FOREIGN KEY ([LinkedUserAccountId])
+    REFERENCES [dbo].[Parties_UserAccount]
+        ([Id])
+    ON DELETE SET NULL ON UPDATE NO ACTION;");
+	
+	//26.
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields_LocationField]
+ADD CONSTRAINT [FK_LocationFieldLocation]
+    FOREIGN KEY ([LocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+	
+	newTextArray.Add(@"ALTER TABLE [dbo].[Fields_LocationField]
+ADD CONSTRAINT [FK_LocationFieldLocation]
+    FOREIGN KEY ([LocationId])
+    REFERENCES [dbo].[Locations]
+        ([Id])
+    ON DELETE SET NULL ON UPDATE NO ACTION;");
+	
+	//27. Remove generated PartiesWithName table (it is created as a View)
 
 	oldTextArray.Add(@"IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[PartiesWithName]', 'U') IS NOT NULL
     DROP TABLE [CoreEntitiesStoreContainer].[PartiesWithName];
@@ -427,7 +457,7 @@ GO");
 
 	newTextArray.Add(@"");
 
-	//26. Remove generated ServiceTemplatesWithVendorId table (it is created as a View)
+	//28. Remove generated ServiceTemplatesWithVendorId table (it is created as a View)
 
 	oldTextArray.Add(@"IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId]', 'U') IS NOT NULL
     DROP TABLE [CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId];

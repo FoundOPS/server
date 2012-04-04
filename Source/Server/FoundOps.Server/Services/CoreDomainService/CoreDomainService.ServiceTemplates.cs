@@ -279,7 +279,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Stored procedure that will find all the children of this ServiceTemplate
             //Then it will delete all of them
             //Cascades will take care of all associations
-            //ObjectContext.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(serviceTemplate.Id);
+            ObjectContext.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(serviceTemplate.Id);
         }
 
         private IEnumerable<ServiceTemplate> GetDescendants(ServiceTemplate serviceTemplate)

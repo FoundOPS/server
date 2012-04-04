@@ -104,45 +104,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteClient(Client client)
         {
-            if ((client.EntityState == EntityState.Detached))
-                this.ObjectContext.Clients.Attach(client);
-
-            client.ServicesToRecieve.Load();
-            foreach (var serviceToRecieve in client.ServicesToRecieve.ToList())
-                this.DeleteService(serviceToRecieve);
-
-            client.RouteTasks.Load();
-            foreach (var routeTask in client.RouteTasks.ToList())
-                this.DeleteRouteTask(routeTask);
-
-            client.RouteDestinations.Load();
-            foreach (var routeDestination in client.RouteDestinations.ToList())
-                this.DeleteRouteDestination(routeDestination);
-
-            client.RecurringServices.Load();
-            foreach (var recurringService in client.RecurringServices.ToList())
-                this.DeleteRecurringService(recurringService);
-
-            //This must be after Services and Recurring Services
-            //Delete all ServiceTemplates that do not have delete ChangeSetEntries
-            client.ServiceTemplates.Load();
-            var serviceTemplatesToDelete = client.ServiceTemplates.Where(st =>
-                    !ChangeSet.ChangeSetEntries.Any(cse => cse.Operation == DomainOperation.Delete &&
-                        cse.Entity is ServiceTemplate && ((ServiceTemplate)cse.Entity).Id == st.Id))
-                        .ToArray();
-
-            foreach (var serviceTemplate in serviceTemplatesToDelete)
-                this.DeleteServiceTemplate(serviceTemplate);
-
-            client.ClientTitles.Load();
-            foreach (var clientTitle in client.ClientTitles.ToArray())
-                this.DeleteClientTitle(clientTitle);
-
-            client.OwnedPartyReference.Load();
-            if (client.OwnedParty != null)
-                this.DeleteParty(client.OwnedParty);
-
-            this.ObjectContext.Clients.DeleteObject(client);
+            ObjectContext.DeleteClientBasedOnId(client.Id);
         }
 
         #endregion
@@ -562,29 +524,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="location">The location.</param>
         public void DeleteLocation(Location location)
         {
-            this.ObjectContext.DetachExistingAndAttach(location);
-
-            location.RouteTasks.Load();
-            location.RouteTasks.Clear();
-
-            location.LocationFieldsWhereValue.Load();
-            location.LocationFieldsWhereValue.Clear();
-
-            location.SubLocations.Load();
-            var sublocationsToDelete = location.SubLocations.ToArray();
-            foreach (var subLocation in sublocationsToDelete)
-                this.DeleteSubLocation(subLocation);
-
-            location.ContactInfoSet.Load();
-            var contactInfoSetToDelete = location.ContactInfoSet.ToArray();
-            foreach (var contactInfoToDelete in contactInfoSetToDelete)
-                this.DeleteContactInfo(contactInfoToDelete);
-
-            location.RouteDestinations.Load();
-            foreach (var routeDestination in location.RouteDestinations.ToList())
-                this.DeleteRouteDestination(routeDestination);
-
-            this.ObjectContext.Locations.DeleteObject(location);
+            ObjectContext.DeleteLocationBasedOnId(location.Id);
         }
 
         #endregion

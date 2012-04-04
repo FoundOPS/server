@@ -13,7 +13,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DELETE FROM Services
 	WHERE ServiceProviderId = @providerId
 
-	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId @providerId
+	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = @providerId, @ownerClientId = null
 
 	DELETE FROM RouteTasks
 	WHERE BusinessAccountId = @providerId

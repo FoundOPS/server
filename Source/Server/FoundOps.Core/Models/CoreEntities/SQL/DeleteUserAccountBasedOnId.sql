@@ -27,9 +27,6 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	DELETE FROM Files
 	WHERE		PartyId = @providerId
 
-	DELETE FROM Employees
-	WHERE LinkedUserAccountId = @providerId
-
 	DELETE FROM TrackPoints
 	WHERE UserAccountId = @providerId
 
