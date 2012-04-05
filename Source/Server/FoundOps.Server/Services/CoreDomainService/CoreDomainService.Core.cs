@@ -31,12 +31,12 @@ namespace FoundOps.Server.Services.CoreDomainService
     {
         protected override bool PersistChangeSet()
         {
-           //var original = this.ChangeSet.GetOriginal(this.ChangeSet.ChangeSetEntries.FirstOrDefault().Entity);
+            //var original = this.ChangeSet.GetOriginal(this.ChangeSet.ChangeSetEntries.FirstOrDefault().Entity);
 
-           //if (original != ChangeSet.ChangeSetEntries.FirstOrDefault())
-           //     original = this.ChangeSet.ChangeSetEntries.FirstOrDefault();
+            //if (original != ChangeSet.ChangeSetEntries.FirstOrDefault())
+            //     original = this.ChangeSet.ChangeSetEntries.FirstOrDefault();
 
-          //Get any files that were just deleted
+            //Get any files that were just deleted
             var deletedFiles =
               this.ChangeSet.ChangeSetEntries.Where(cse => cse.Entity is File && cse.Operation == DomainOperation.Delete)
                 .Select(cse => cse.Entity as File);
@@ -351,7 +351,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             if ((party.EntityState == EntityState.Detached))
                 this.ObjectContext.Parties.Attach(party);
-            
+
             party.PartyImageReference.Load();
 
             if (party.PartyImage != null)
@@ -364,56 +364,56 @@ namespace FoundOps.Server.Services.CoreDomainService
                 DeleteBusinessAccount(businessAccountToDelete);
             else if (userAccountToDelete != null)
                 ObjectContext.DeleteUserAccountBasedOnId(userAccountToDelete.Id);
-            
+
             #region NOT USED TO DELETE ANYMORE
             //party.Locations.Load();
-                //party.OwnedLocations.Load();
-                //party.ClientOwnerReference.Load();
-                //party.Contacts.Load();
-                //party.ContactInfoSet.Load();
-                //party.OwnedRoles.Load();
-                //party.Vehicles.Load();
-                //party.OwnedFiles.Load();
+            //party.OwnedLocations.Load();
+            //party.ClientOwnerReference.Load();
+            //party.Contacts.Load();
+            //party.ContactInfoSet.Load();
+            //party.OwnedRoles.Load();
+            //party.Vehicles.Load();
+            //party.OwnedFiles.Load();
 
-                //party.RoleMembership.Load();
-                //party.RoleMembership.Clear();
+            //party.RoleMembership.Load();
+            //party.RoleMembership.Clear();
 
-                //var accountLocations = party.OwnedLocations.ToArray();
-                //foreach (var location in accountLocations)
-                //    this.DeleteLocation(location);
+            //var accountLocations = party.OwnedLocations.ToArray();
+            //foreach (var location in accountLocations)
+            //    this.DeleteLocation(location);
 
-                //var partyLocations = party.Locations.ToArray();
-                //foreach (var location in partyLocations)
-                //    this.DeleteLocation(location);
+            //var partyLocations = party.Locations.ToArray();
+            //foreach (var location in partyLocations)
+            //    this.DeleteLocation(location);
 
-                //var contacts = party.Contacts.ToArray();
-                //foreach (var contact in contacts)
-                //    this.DeleteContact(contact);
+            //var contacts = party.Contacts.ToArray();
+            //foreach (var contact in contacts)
+            //    this.DeleteContact(contact);
 
-                //var contactInfoSetToRemove = party.ContactInfoSet.ToArray();
-                //foreach (var contactInfo in contactInfoSetToRemove)
-                //    this.DeleteContactInfo(contactInfo);
+            //var contactInfoSetToRemove = party.ContactInfoSet.ToArray();
+            //foreach (var contactInfo in contactInfoSetToRemove)
+            //    this.DeleteContactInfo(contactInfo);
 
-                //var ownedRolesToDelete = party.OwnedRoles.ToArray();
-                //foreach (var ownedRole in ownedRolesToDelete)
-                //    this.DeleteRole(ownedRole);
+            //var ownedRolesToDelete = party.OwnedRoles.ToArray();
+            //foreach (var ownedRole in ownedRolesToDelete)
+            //    this.DeleteRole(ownedRole);
 
-                //var vehicles = party.Vehicles.ToArray();
-                //foreach (var vehicle in vehicles)
-                //    this.DeleteVehicle(vehicle);
+            //var vehicles = party.Vehicles.ToArray();
+            //foreach (var vehicle in vehicles)
+            //    this.DeleteVehicle(vehicle);
 
-                //var files = party.OwnedFiles.ToArray();
-                //foreach (var file in files)
-                //    this.DeleteFile(file);
+            //var files = party.OwnedFiles.ToArray();
+            //foreach (var file in files)
+            //    this.DeleteFile(file);
 
-                //if ((party.EntityState != EntityState.Detached))
-                //{
-                //    this.ObjectContext.ObjectStateManager.ChangeObjectState(party, EntityState.Deleted);
-                //}
-                //else
-                //{
-                //    this.ObjectContext.Parties.Attach(party);
-                //    this.ObjectContext.Parties.DeleteObject(party);
+            //if ((party.EntityState != EntityState.Detached))
+            //{
+            //    this.ObjectContext.ObjectStateManager.ChangeObjectState(party, EntityState.Deleted);
+            //}
+            //else
+            //{
+            //    this.ObjectContext.Parties.Attach(party);
+            //    this.ObjectContext.Parties.DeleteObject(party);
             //}
             #endregion
         }
@@ -590,7 +590,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             var userAccounts = GetUserAccounts(roleId, Guid.Empty).OfType<UserAccount>();
 
             if (!String.IsNullOrEmpty(searchText))
-                userAccounts = userAccounts.Where(ua => ua.FirstName.StartsWith(searchText) || ua.LastName.StartsWith(searchText));
+                userAccounts = userAccounts.Where(ua => ua.FirstName.StartsWith(searchText) || ua.LastName.StartsWith(searchText)
+                                             || searchText.StartsWith(ua.FirstName) || searchText.Contains(ua.LastName));
 
             return userAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName);
         }
