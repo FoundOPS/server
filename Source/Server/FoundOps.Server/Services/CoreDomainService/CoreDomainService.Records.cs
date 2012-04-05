@@ -288,8 +288,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             if (!String.IsNullOrEmpty(searchText))
                 employees = employees.Where(e =>
-                    e.OwnedPerson.FirstName.StartsWith(searchText) || e.OwnedPerson.LastName.StartsWith(searchText) 
-                    || (e.OwnedPerson.FirstName + " " + e.OwnedPerson.LastName).Contains(searchText));
+                    e.OwnedPerson.FirstName.StartsWith(searchText) || e.OwnedPerson.LastName.StartsWith(searchText)
+                    || searchText.StartsWith(e.OwnedPerson.FirstName) || searchText.Contains(e.OwnedPerson.LastName));
 
             return employees.OrderBy(e => e.OwnedPerson.LastName + " " + e.OwnedPerson.FirstName);
         }

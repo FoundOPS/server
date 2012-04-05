@@ -145,7 +145,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             .Subscribe(_ =>
             {
                 var clientContext = ContextManager.GetContext<Client>();
-                _serviceTemplatesForContext.OnNext(clientContext == null ? ContextManager.CurrentServiceTemplates : clientContext.ServiceTemplates);
+                _serviceTemplatesForContext.OnNext(clientContext == null ? ContextManager.CurrentServiceTemplates : 
+                    clientContext.ServiceTemplates.Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ClientDefined));
             });
 
             //Setup AdditionalServiceTemplatesForClient
