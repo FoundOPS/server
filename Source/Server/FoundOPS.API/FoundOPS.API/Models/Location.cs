@@ -8,6 +8,8 @@ namespace FoundOPS.API.Models
         public string AddressLineOne { get; set; }
         public string AddressLineTwo { get; set; }
         public string City { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
         public string State { get; set; }
         public string ZipCode { get; set; }
 
@@ -25,6 +27,8 @@ namespace FoundOPS.API.Models
                 Name = locationModel.Name,
                 AddressLineOne = locationModel.AddressLineOne,
                 AddressLineTwo = locationModel.AddressLineTwo,
+                Longitude = locationModel.Longitude.ToString(),
+                Latitude = locationModel.Latitude.ToString(),
                 City = locationModel.City,
                 State = locationModel.State,
                 ZipCode = locationModel.ZipCode
