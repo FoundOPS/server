@@ -5,10 +5,12 @@
     [VendorId]                 UNIQUEIDENTIFIER NOT NULL,
     [DefaultBillingLocationId] UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_Clients] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_BusinessAccountClient] FOREIGN KEY ([VendorId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_ClientLocation] FOREIGN KEY ([DefaultBillingLocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_ClientParty] FOREIGN KEY ([Id]) REFERENCES [dbo].[Parties] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_BusinessAccountClient] FOREIGN KEY ([VendorId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
+    CONSTRAINT [FK_ClientLocation] FOREIGN KEY ([DefaultBillingLocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE SET NULL,
+    CONSTRAINT [FK_ClientParty] FOREIGN KEY ([Id]) REFERENCES [dbo].[Parties] ([Id])
 );
+
+
 
 
 

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net;
 using System.Web.Mvc;
-using FoundOps.Core.Models;
+using FoundOps.Common.Server;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Tools;
 
@@ -13,12 +13,12 @@ namespace FoundOps.Server.Controllers
         public ActionResult Index()
         {
 #if DEBUG
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
+            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan") || UserSpecificResourcesWrapper.GetBool("AutomaticLoginDavid"))
                 return RedirectToAction("Silverlight", "Home");
 #endif
 
-            if (!HttpContext.User.Identity.IsAuthenticated) 
-                return Redirect(Global.RootBlogUrl);
+            if (!HttpContext.User.Identity.IsAuthenticated)
+                return Redirect(Global.RootFrontSiteUrl);
 
             return RedirectToAction("Silverlight", "Home");
         }
@@ -30,6 +30,10 @@ namespace FoundOps.Server.Controllers
         [AddTestUsersThenAuthorize]
         public ActionResult Silverlight()
         {
+#if DEBUG
+            var random = new Random();
+            var version = random.Next(10000).ToString();
+#else
             var request = (HttpWebRequest)WebRequest.Create("http://fstore.blob.core.windows.net/xaps/version.txt");
 
             // *** Retrieve request info headers
@@ -39,6 +43,7 @@ namespace FoundOps.Server.Controllers
             var version = stream.ReadToEnd();
             response.Close();
             stream.Close();
+#endif
 
             //Must cast the string as an object so it uses the correct overloaded method
             return View((object)version);
@@ -52,7 +57,8 @@ namespace FoundOps.Server.Controllers
         /// <returns></returns>
         public ActionResult CCDAPDD()
         {
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
+            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan") ||
+                UserSpecificResourcesWrapper.GetBool("AutomaticLoginDavid") || UserSpecificResourcesWrapper.GetBool("TestServer"))
             {
                 CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
                 return View();
@@ -61,13 +67,10 @@ namespace FoundOps.Server.Controllers
             throw new Exception("Invalid attempted access logged for investigation.");
         }
 
-        /// <summary>
-        /// An action for triggering one time server operations.
-        /// </summary>
-        /// <returns></returns>
         [AddTestUsersThenAuthorize]
         public ActionResult PerformServerOperations()
         {
+            //TODO Authenticate first
             ServerManagement.PerformServerOperations();
             return View();
         }

@@ -423,6 +423,21 @@
             Inline properties of document elements using style attribute
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.LoadImageEventArgs.ImageElement">
+            <summary>
+            Contains a reference to the ImageInline element which is currently being initialized.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.LoadImageEventArgs.Url">
+            <summary>
+            Specifies the Url from which the image will be loaded if Handled is false.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.FormatProviders.Html.LoadImageEventArgs.Handled">
+            <summary>
+            Specifies if the image has been already initialized by the user or should be loaded from the specified in the event args Url.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Documents.FormatProviders.Html.ImageExportMode.None">
             <summary>
             Image are not exported
@@ -618,14 +633,14 @@
             Occurs when the items list of the collection has changed, or the collection is reset.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Lists.ListItemStringFormatter.GetListItemString(Telerik.Windows.Documents.Lists.ListItemInfo,System.Boolean)">
+        <member name="M:Telerik.Windows.Documents.Lists.ListItemStringFormatter.GetListItemString(Telerik.Windows.Documents.Model.Paragraph,System.Boolean,System.Boolean)">
             <summary>
             Gets the list item string.
             </summary>
             <param name="listItem">The list item info.</param>
             <param name="macOSXSaveBulletSymbols">If set to <c>true</c> changes bullet symbol to one that is correctly visualized on MacOSX.</param>
         </member>
-        <member name="M:Telerik.Windows.Documents.Lists.ListItemStringFormatter.GetListItemStringInternal(Telerik.Windows.Documents.Lists.ListItemInfo,System.Boolean)">
+        <member name="M:Telerik.Windows.Documents.Lists.ListItemStringFormatter.GetListItemStringInternal(Telerik.Windows.Documents.Model.Paragraph,System.Boolean,System.Boolean)">
             <summary>
             Gets the list item string.
             </summary>
@@ -800,6 +815,22 @@
             </summary>
             <param name="header">The header to clone.</param>
         </member>
+        <member name="P:Telerik.Windows.Documents.Model.Header.WatermarkSettings">
+            <summary>
+            Gets or sets the watermark settings.
+            </summary>
+            <value>
+            The watermark settings.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Header.IsEmpty">
+            <summary>
+            Gets a value indicating whether header/footer is empty.
+            </summary>
+            <value>
+              <c>true</c> if header/footer is empty; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="T:Telerik.Windows.Documents.Model.HeaderFooterType">
             <summary>
             Specifies the type of header/footer.
@@ -858,6 +889,25 @@
         <member name="P:Telerik.Windows.Documents.Model.PermissionInfo.DisplayName">
             <summary>
             Gets the display name.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.AssociatedRichTextBox">
+            <summary>
+            Gets the associated rich text box.
+            </summary>
+            <value>The associated rich text box.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.CanExecuteInReadOnlyMode">
+            <summary>
+            Gets a value indicating whether this command can be executed when RadRichTextBox is read-only. The default implementation returns false. 
+            </summary>
+            <value>
+            	<c>true</c> if this command preserves document's content; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.SupportedTargets">
+            <summary>
+            Gets the supported targets.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Documents.UI.IDocumentEditor">
@@ -1134,6 +1184,15 @@
             Changes the layout mode.
             </summary>
             <param name="layoutMode">The new layout mode to be applied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.InsertCaption(Telerik.Windows.Documents.Model.CaptionDefinition,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Inserts a caption.
+            </summary>
+            <param name="definition">The definition.</param>
+            <param name="caption">The caption text to be used.</param>
+            <param name="includeLabel">if set to <c>true</c> the label is included in the caption.</param>
+            <param name="insertBelow">if set to <c>true</c> the caption is inserted after the current selection.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.RadRichTextBox.UpdateHeader(Telerik.Windows.Documents.Model.Section,Telerik.Windows.Documents.Model.HeaderFooterType,Telerik.Windows.Documents.Model.Header)">
             <summary>
@@ -1457,6 +1516,21 @@
         <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowManageStylesDialog">
             <summary>
             Shows the dialog for managing styles.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertCrossReferenceWindow">
+            <summary>
+            Shows the insert cross reference window.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertCaptionDialog">
+            <summary>
+            Shows the insert caption dialog.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowWatermarkSettingsDialog">
+            <summary>
+            Shows the watermark settings dialog.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowImageEditorDialog">
@@ -2027,6 +2101,16 @@
             Gets or sets a value representing the current mange styles dialog instance.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertCrossReferenceWindow">
+            <summary>
+            Gets or sets a value representing the current insert cross-reference window instance.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertCaptionDialog">
+            <summary>
+            Gets or sets a value representing the current insert caption dialog instance.
+            </summary>
+        </member>
         <member name="E:Telerik.Windows.Controls.RadRichTextBox.DocumentChanging">
             <summary>
             Occurs when the current document is changing.
@@ -2156,25 +2240,6 @@
         <member name="E:Telerik.Windows.Controls.RadRichTextBox.ActiveDocumentEditorChanged">
             <summary>
             Occurs when active document editor changes.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.AssociatedRichTextBox">
-            <summary>
-            Gets the associated rich text box.
-            </summary>
-            <value>The associated rich text box.</value>
-        </member>
-        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.CanExecuteInReadOnlyMode">
-            <summary>
-            Gets a value indicating whether this command can be executed when RadRichTextBox is read-only. The default implementation returns false. 
-            </summary>
-            <value>
-            	<c>true</c> if this command preserves document's content; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.SupportedTargets">
-            <summary>
-            Gets the supported targets.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Documents.RichTextBoxCommands.ToggleCommandBase.OnToggleExecuted(Telerik.Windows.Documents.RichTextBoxCommands.StylePropertyChangedEventArgs{System.Boolean})">
@@ -3941,7 +4006,7 @@
             <summary>
             Creates a new instance of StyleDefinition and copies all relevant property values from the specified StyleDefinition instance.
             </summary>
-            <param name="styleDefinition"></param>
+            <param name="styleDefinition">The instance to copy the properties from.</param>
         </member>
         <member name="M:Telerik.Windows.Documents.Model.Styles.StyleDefinition.GetPropertyValue(Telerik.Windows.Documents.Model.Styles.IStylePropertyDefinition)">
             <summary>
@@ -3997,7 +4062,7 @@
             Gets or sets the name of the linked style.
             </summary>
             <remarks>This property can be set to Paragraph or Character style only. Paragraph style can be linked only to Character style and vice versa. 
-            StyleDefinition would obtain the corresponding property values from the linked style. Either LenkedStyle or LinkedStyleName can be specified. If BasedOnName is specified BasedOn StyleDefinition would be set automatically if this style definition is added to a document StyleRepository that contains StyleDefinition with corresponding Name.</remarks>
+            StyleDefinition would obtain the corresponding property values from the linked style. Either LinkedStyle or LinkedStyleName can be specified. If BasedOnName is specified BasedOn StyleDefinition would be set automatically if this style definition is added to a document StyleRepository that contains StyleDefinition with corresponding Name.</remarks>
         </member>
         <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.LinkedStyle">
             <summary>
@@ -4005,6 +4070,15 @@
             </summary>
             <remarks>This property can be set to Paragraph or Character style only. Paragraph style can be linked only to Character style and vice versa. 
             StyleDefinition would obtain the corresponding property values from the linked style. Either LenkedStyle or LinkedStyleName can be specified. If BasedOnName is specified BasedOn StyleDefinition would be set automatically if this style definition is added to a document StyleRepository that contains StyleDefinition with corresponding Name.</remarks>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.NextStyleName">
+            <summary>
+            Gets or sets the style which shall automatically be applied to a new paragraph created following a paragraph with this style.
+            </summary>
+            <value>
+            The name of the next style.
+            </value>
+            <remarks>This property will have effect when set to Paragraph style only.</remarks>
         </member>
         <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.IsCustom">
             <summary>

@@ -171,6 +171,21 @@
             The close aggregate function.
             </value>
         </member>
+        <member name="T:Telerik.Charting.DateTimeExtensions">
+            <summary>
+            Collection of helper methods for retrieving unique (year-wise) values for some date/time components besides the ones provided by DateTime class.  
+            </summary>
+        </member>
+        <member name="M:Telerik.Charting.DateTimeExtensions.GetWeekOfYear(System.DateTime)">
+            <summary>
+            Gets the week component of the date represented by the DateTime instance.
+            </summary>
+        </member>
+        <member name="M:Telerik.Charting.DateTimeExtensions.GetQuarterOfYear(System.DateTime)">
+            <summary>
+            Gets the quarter component of the date represented by the DateTime instance.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.ChartView.KeepExtremesFunction">
             <summary>
             Represents a function which keeps the extremes in the underlying data.
@@ -641,6 +656,11 @@
             It represents the Y (or Vertical) axis for a Cartesian coordinate system and the Angle axis for a Polar coordinate system.
             </summary>
         </member>
+        <member name="T:Telerik.Charting.IAxisSupportsCombinedSeriesPlot">
+            <summary>
+            Identifies axes that can be used as stack axes when plotting <see cref="T:Telerik.Charting.ISupportCombineMode"/> chart series instances.
+            </summary>
+        </member>
         <member name="P:Telerik.Charting.CategoricalAxisModel.MajorTickInterval">
             <summary>
             Gets or sets the step at which ticks are positioned.
@@ -763,19 +783,14 @@
             The <see cref="P:System.DateTime.Ticks"/> component.
             </summary>
         </member>
-        <member name="F:Telerik.Charting.DateTimeComponent.Date">
-            <summary>
-            The <see cref="P:System.DateTime.Date"/> component.
-            </summary>
-        </member>
-        <member name="F:Telerik.Charting.DateTimeComponent.TimeOfDay">
-            <summary>
-            The <see cref="P:System.DateTime.TimeOfDay"/> component.
-            </summary>
-        </member>
         <member name="F:Telerik.Charting.DateTimeComponent.Year">
             <summary>
             The <see cref="P:System.DateTime.Year"/> component.
+            </summary>
+        </member>
+        <member name="F:Telerik.Charting.DateTimeComponent.Quarter">
+            <summary>
+            The Quarter component.
             </summary>
         </member>
         <member name="F:Telerik.Charting.DateTimeComponent.Month">
@@ -783,19 +798,9 @@
             The <see cref="P:System.DateTime.Month"/> component.
             </summary>
         </member>
-        <member name="F:Telerik.Charting.DateTimeComponent.Day">
+        <member name="F:Telerik.Charting.DateTimeComponent.Week">
             <summary>
-            The <see cref="P:System.DateTime.Day"/> component.
-            </summary>
-        </member>
-        <member name="F:Telerik.Charting.DateTimeComponent.DayOfWeek">
-            <summary>
-            The <see cref="P:System.DateTime.DayOfWeek"/> component.
-            </summary>
-        </member>
-        <member name="F:Telerik.Charting.DateTimeComponent.DayOfYear">
-            <summary>
-            The <see cref="P:System.DateTime.DayOfYear"/> component.
+            The Week component.
             </summary>
         </member>
         <member name="F:Telerik.Charting.DateTimeComponent.Hour">
@@ -816,6 +821,31 @@
         <member name="F:Telerik.Charting.DateTimeComponent.Millisecond">
             <summary>
             The <see cref="P:System.DateTime.Millisecond"/> component.
+            </summary>
+        </member>
+        <member name="F:Telerik.Charting.DateTimeComponent.Date">
+            <summary>
+            The <see cref="P:System.DateTime.Date"/> component.
+            </summary>
+        </member>
+        <member name="F:Telerik.Charting.DateTimeComponent.TimeOfDay">
+            <summary>
+            The <see cref="P:System.DateTime.TimeOfDay"/> component.
+            </summary>
+        </member>
+        <member name="F:Telerik.Charting.DateTimeComponent.Day">
+            <summary>
+            The <see cref="P:System.DateTime.Day"/> component.
+            </summary>
+        </member>
+        <member name="F:Telerik.Charting.DateTimeComponent.DayOfWeek">
+            <summary>
+            The <see cref="P:System.DateTime.DayOfWeek"/> component.
+            </summary>
+        </member>
+        <member name="F:Telerik.Charting.DateTimeComponent.DayOfYear">
+            <summary>
+            The <see cref="P:System.DateTime.DayOfYear"/> component.
             </summary>
         </member>
         <member name="M:Telerik.Charting.AxisModelLayoutStrategy.GetVisibleRange(Telerik.Charting.RadSize)">
@@ -932,6 +962,11 @@
         <member name="P:Telerik.Charting.DateTimeContinuousAxisModel.MonthStep">
             <summary>
             Gets the month step. Exposed for testing purposes.
+            </summary>
+        </member>
+        <member name="P:Telerik.Charting.DateTimeContinuousAxisModel.YearStep">
+            <summary>
+            Gets the year step. Exposed for testing purposes.
             </summary>
         </member>
         <member name="P:Telerik.Charting.DateTimeContinuousAxisModel.DateTimePoints">
@@ -1178,7 +1213,7 @@
             Gets or sets the angle that defines the length of the Arc.
             </summary>
         </member>
-        <member name="T:Telerik.Charting.AxesChartAreaModel">
+        <member name="T:Telerik.Charting.ChartAreaModelWithAxes">
             <summary>
             Represents a chart area that needs two <see cref="T:Telerik.Charting.AxisModel"/> instances to plot its points.
             Such chart areas are the <see cref="T:Telerik.Charting.CartesianChartAreaModel"/> and <see cref="T:Telerik.Charting.PolarChartAreaModel"/>.
@@ -1215,12 +1250,12 @@
             Gets the dispatcher used to broadcast messages among tree nodes.
             </summary>
         </member>
-        <member name="M:Telerik.Charting.AxesChartAreaModel.#ctor">
+        <member name="M:Telerik.Charting.ChartAreaModelWithAxes.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Charting.AxesChartAreaModel"/> class.
+            Initializes a new instance of the <see cref="T:Telerik.Charting.ChartAreaModelWithAxes"/> class.
             </summary>
         </member>
-        <member name="P:Telerik.Charting.AxesChartAreaModel.IsTreeLoaded">
+        <member name="P:Telerik.Charting.ChartAreaModelWithAxes.IsTreeLoaded">
             <summary>
             Determines whether the plot area is fully loaded and may be visualized.
             </summary>
@@ -1404,6 +1439,12 @@
             Serves as a hash function for a particular type.
             </summary>
             <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
+        </member>
+        <member name="T:Telerik.Charting.ReferenceDictionary`2">
+            <summary>
+            A dictionary, based on a List is faster and with smaller footprint for several items - e.g. 2 to 9.
+            In .NET there is the HybridDictionary class which actually uses LinkedList for up to 9 items.
+            </summary>
         </member>
         <member name="T:Telerik.Charting.StringToAngleRangeConverter">
             <summary>
@@ -2335,7 +2376,6 @@
         <member name="T:Telerik.Charting.ChartSeriesModel">
             <summary>
             Base non-generic class used for non-generic declarations.
-            TODO: We may use an interface here but it will be additional overhead as we need to declare everything twice. People will seldom (if ever) implement their own series.
             </summary>
         </member>
         <member name="M:Telerik.Charting.ChartSeriesModel.GetCombinedPlotStrategy">
@@ -2360,7 +2400,7 @@
         </member>
         <member name="T:Telerik.Charting.ISupportCombineMode">
             <summary>
-            Indentifies chart series that can be combined with other <see cref="T:Telerik.Charting.ISupportCombineMode"/> instances of same type.
+            Identifies chart series that can be combined with other <see cref="T:Telerik.Charting.ISupportCombineMode"/> instances of same type.
             </summary>
         </member>
         <member name="P:Telerik.Charting.ISupportCombineMode.CombineMode">
@@ -4928,6 +4968,11 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.DateTimeContinuousAxis.MajorStepUnit"/> dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.ChartView.DateTimeContinuousAxis.GapLengthProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.DateTimeContinuousAxis.GapLength"/> dependency property.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.ChartView.DateTimeContinuousAxis.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ChartView.DateTimeContinuousAxis"/> class.
@@ -6947,6 +6992,11 @@
             Represents a <see cref="T:Telerik.Windows.Controls.ChartView.RadialAxis"/> that plots numerical data.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.ChartView.NumericRadialAxis.MajorStepProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.NumericRadialAxis.MajorStep"/> dependency property.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.ChartView.NumericRadialAxis.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ChartView.NumericRadialAxis"/> class.
@@ -6960,6 +7010,21 @@
         <member name="T:Telerik.Windows.Controls.ChartView.PolarAxis">
             <summary>
             Represents the Polar (Radius) axis within a <see cref="T:Telerik.Windows.Controls.RadPolarChart"/> instance.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ChartView.PolarAxis.MajorStepProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.PolarAxis.MajorStep"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ChartView.PolarAxis.MinimumProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.PolarAxis.Minimum"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ChartView.PolarAxis.MaximumProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.PolarAxis.Maximum"/> dependency property.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.ChartView.PolarAxis.#ctor">
@@ -6987,6 +7052,11 @@
             By default the axis itself will calculate the maximum, depending on the maximum of the plotted data points.
             </summary>
             <remarks> You can reset this property by setting it to double.PositiveInfinity to restore the default behavior.</remarks>
+        </member>
+        <member name="P:Telerik.Windows.Controls.ChartView.PolarAxis.ActualRange">
+            <summary>
+            Gets the actual range used by the axis to plot data points.
+            </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.ChartView.PolarChartGrid">
             <summary>
@@ -7105,6 +7175,21 @@
         <member name="T:Telerik.Windows.Controls.RadPolarChart">
             <summary>
             Represents a <see cref="T:Telerik.Windows.Controls.ChartView.RadChartBase"/> instance that uses Polar coordinate system to plot data points.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadPolarChart.PolarAxisProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadPolarChart.PolarAxis"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadPolarChart.RadialAxisProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadPolarChart.RadialAxis"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadPolarChart.StartAngleProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadPolarChart.StartAngle"/> dependency property.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadPolarChart.#ctor">
@@ -7355,6 +7440,11 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.RadarPointSeries.CategoryBinding"/> property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.ChartView.RadarPointSeries.CombineModeProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.RadarPointSeries.CombineMode"/> dependency property.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.ChartView.RadarPointSeries.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ChartView.RadarPointSeries"/> class.
@@ -7380,6 +7470,16 @@
         <member name="P:Telerik.Windows.Controls.ChartView.RadarPointSeries.CategoryBinding">
             <summary>
             Gets or sets the binding that will be used to fill the <see cref="P:Telerik.Charting.CategoricalDataPointBase.Category"/> member of the contained data points.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.ChartView.RadarPointSeries.CombineMode">
+            <summary>
+            Gets or sets the combination mode to be used when data points are plotted.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.ChartView.RadarPointSeries.StackGroupKey">
+            <summary>
+            Gets or sets the key that defines in which stack group this series will be included if its <see cref="P:Telerik.Windows.Controls.ChartView.RadarPointSeries.CombineMode"/> equals Stack or Stack100.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.ChartView.RadarPointSeries.DataPoints">

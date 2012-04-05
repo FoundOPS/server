@@ -1,17 +1,16 @@
-using System;
-using ReactiveUI;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Collections;
-using FoundOps.SLClient.UI.Tools;
-using MEFedMVVM.ViewModelLocator;
-using System.Reactive.Disposables;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.ViewModels;
-using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
-using Microsoft.Windows.Data.DomainServices;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.UI.Tools;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+using System;
+using System.Collections;
+using System.ComponentModel.Composition;
+using System.Reactive.Linq;
+using System.ServiceModel.DomainServices.Client;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -19,7 +18,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Clients
     ///</summary>
     [ExportViewModel("ClientsVM")]
-    public class ClientsVM : CoreEntityCollectionInfiniteAccordionVM<Client>,
+    public class ClientsVM : InfiniteAccordionVM<Client, Client>,
         IAddToDeleteFromDestination<Location>, IAddNewExisting<Location>, IRemoveDelete<Location>
     {
         #region Public
@@ -29,6 +28,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Gets the selected Client's OwnedParty's PartyVM. (The OwnedPary is a Business)
         /// </summary>
         public PartyVM SelectedClientOwnedBusinessVM { get { return _selectedClientOwnedBusinessVM.Value; } }
+
+        /// <summary>
+        /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
+        /// </summary>
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #region Implementation of IAddToDeleteFromDestination
 
@@ -88,49 +92,21 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        //private
-
-        private EntityList<ServiceTemplate> _loadedServiceTemplates;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ClientsVM(DataManager dataManager)
-            : base(dataManager)
+        public ClientsVM()
         {
-            //Setup the MainQuery to load Clients
-            SetupMainQuery(DataManager.Query.Clients, null, "DisplayName");
-
-            //ClientsVM requires ServiceTemplate
-            DataManager.Subscribe<ServiceTemplate>(DataManager.Query.ServiceTemplates, ObservationState, entities => _loadedServiceTemplates = entities);
-
-            //Can only add whenever ServiceTemplates is loaded
-            DataManager.GetIsLoadingObservable(DataManager.Query.ServiceTemplates).Subscribe(isLoading => CanAddSubject.OnNext(!isLoading));
+            SetupDataLoading();
 
             //Setup the selected client's OwnedParty PartyVM whenever the selected client changes
             _selectedClientOwnedBusinessVM =
-                SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty, this.DataManager))
+                SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty))
                 .ToProperty(this, x => x.SelectedClientOwnedBusinessVM);
 
-            var serialDisposable = new SerialDisposable();
-
-            //Whenever the client name changes update the default location name
-            //There is a default location as long as there is only one location
-            SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Subscribe(selectedClient =>
-            {
-                serialDisposable.Disposable = Observable2.FromPropertyChangedPattern(selectedClient, x => x.DisplayName)
-                    .Subscribe(displayName =>
-                    {
-                        var defaultLocation = selectedClient.OwnedParty.Locations.Count == 1
-                                                  ? selectedClient.OwnedParty.Locations.First()
-                                                  : null;
-
-                        if (defaultLocation == null) return;
-                        defaultLocation.Name = displayName;
-                    });
-            });
+            ManuallyUpdateSuggestions = autoCompleteBox =>
+                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchClientsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
 
             #region Implementation of IAddToDeleteFromDestination<Location>
 
@@ -144,7 +120,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             AddNewItemLocation = name =>
             {
                 var newLocation = VM.Locations.CreateNewItem(name);
-                this.SelectedEntity.OwnedParty.Locations.Add(newLocation);
                 VM.Locations.MoveToDetailsView.Execute(null);
                 return newLocation;
             };
@@ -153,6 +128,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 SelectedEntity.OwnedParty.Locations.Add(existingItem);
                 VM.Locations.MoveToDetailsView.Execute(null);
+
+                VM.Locations.SelectedEntity = existingItem;
             };
 
             RemoveItemLocation = () =>
@@ -176,6 +153,21 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
+        private void SetupDataLoading()
+        {
+            SetupTopEntityDataLoading(roleId => DomainContext.GetClientsForRoleQuery(ContextManager.RoleId));
+
+            //Whenever the client changes load the contact info
+            SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Subscribe(selectedClient =>
+                DomainContext.Load(DomainContext.GetContactInfoSetQuery().Where(c => c.PartyId == selectedClient.Id)));
+
+            //Service templates are required for adding. So disable CanAdd until they are loaded.
+            ContextManager.ServiceTemplatesLoading.Select(loading => !loading).Subscribe(CanAddSubject);
+        }
+
         #region Logic
 
         protected override void OnAddEntity(Client newClient)
@@ -192,31 +184,21 @@ namespace FoundOps.SLClient.UI.ViewModels
             };
             newClient.OwnedParty.Locations.Add(defaultLocation);
 
-            this.RaisePropertyChanged("ClientsView");
-
-            var availableServicesForServiceProvider = _loadedServiceTemplates.Where(st =>
-                    st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined &&
-                    st.OwnerServiceProviderId == ContextManager.OwnerAccount.Id).ToArray();
+            newClient.DefaultBillingLocation = defaultLocation;
 
             //Add every available service to the client by default
-            foreach (var serviceTemplate in availableServicesForServiceProvider)
+            foreach (var serviceTemplate in ContextManager.CurrentServiceTemplates)
             {
                 var availableServiceTemplate = serviceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
                 newClient.ServiceTemplates.Add(availableServiceTemplate);
             }
-
-            //If there is a location context add it to the new client
-            var currentLocation = ContextManager.GetContext<Location>();
-            if (currentLocation != null)
-                newClient.OwnedParty.OwnedLocations.Add(currentLocation);
         }
 
         protected override void OnDeleteEntity(Client entityToDelete)
         {
-            //Remove Client's EntityGraphToRemove
-            var clientEntitiesToRemove = entityToDelete.EntityGraphToRemove;
-
-            DataManager.RemoveEntities(clientEntitiesToRemove);
+            //Detach the entity graph related to the client 
+            //they will be deleted in Client's delete method of the DomainService
+            DataManager.DetachEntities(entityToDelete.EntityGraphToRemove);
         }
 
         #endregion

@@ -5,8 +5,7 @@
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
-             xmlns:Controls2="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
+             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels" xmlns:Controls2="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
              ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM" d:DesignWidth="230" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters:DateTimeOfTodayToTimeSpanConverter x:Key="DateTimeOfTodayToTimeSpanConverter"/>
@@ -16,7 +15,7 @@
             <TextBox Text="{Binding Name, Mode=TwoWay}" TextAlignment="Center" FontWeight="Bold"/>
             <!--Bind to Route Name, For A New Route, autoname it Untitled #1 etc -->
             <telerik:RadComboBox AllowDrop="True" ItemsSource="{Binding DataContext.RouteTypes, ElementName=myRouteDetails}" Width="150" SelectedValue="{Binding RouteType, Mode=TwoWay}" />
-            <Grid>
+            <Grid Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MinWidth="5"/>
                     <ColumnDefinition Width="80" />
@@ -49,14 +48,14 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Employees" />
-                <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Employees" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools:GetVM Type=ViewModels:EmployeesVM}}" 
+                <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Employees"
                                    SourceType="{MarkupExtensions:Static MemberType=CoreEntities:Employee}"
-                                   ItemToRemoveDisplayMember="{Binding SelectedRouteSelectedEmployee.OwnedPerson.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name}"
-                                   IsDeleteEnabled="{Binding SelectedRouteSelectedEmployee, Converter={StaticResource ExistsBoolConverter}}"
-                                   Source="{Tools:GetVM Type=ViewModels:EmployeesVM}" Destination="{Binding}"
-                                   DestinationItemsSource="{Binding EmployeesDestinationItemsSource}" />
+                                   ItemToRemoveDisplayMember="{Binding SelectedRouteVM.SelectedEmployee.OwnedPerson.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name}"
+                                   IsDeleteEnabled="{Binding SelectedRouteVM.SelectedEmployee, Converter={StaticResource ExistsBoolConverter}}"
+                                   Source="{Tools:GetVM Type=ViewModels:EmployeesVM}" Destination="{Binding SelectedRouteVM}"
+                                   DestinationItemsSource="{Binding SelectedRouteVM.EmployeesDestinationItemsSource}" />
                 <Controls2:RadGridView Grid.Row="1" Grid.ColumnSpan="2" SelectionMode="Single" AutoGenerateColumns="False" ShowGroupPanel="False" ShowColumnHeaders="False" RowIndicatorVisibility="Collapsed" 
-                                       ItemsSource="{Binding EmployeesDestinationItemsSource}" SelectedItem="{Binding SelectedRouteSelectedEmployee, Mode=TwoWay}">
+                                       ItemsSource="{Binding SelectedRouteVM.EmployeesDestinationItemsSource}" SelectedItem="{Binding SelectedRouteVM.SelectedEmployee, Mode=TwoWay}">
                     <Controls2:RadGridView.Columns>
                         <Controls2:GridViewDataColumn DataMemberBinding="{Binding OwnedPerson.DisplayName, Mode=TwoWay}" />
                     </Controls2:RadGridView.Columns>
@@ -73,14 +72,14 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Vehicles" />
-                <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Vehicles" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools:GetVM Type=ViewModels:EmployeesVM}}"
+                <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Vehicles"
                                    SourceType="{MarkupExtensions:Static MemberType=CoreEntities:Vehicle}"
-                                   ItemToRemoveDisplayMember="{Binding SelectedRouteSelectedVehicle.VehicleId}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name}"
-                                   IsDeleteEnabled="{Binding SelectedRouteSelectedVehicle, Converter={StaticResource ExistsBoolConverter}}"
-                                   Source="{Tools:GetVM Type=ViewModels:VehiclesVM}" Destination="{Binding}"
-                                   DestinationItemsSource="{Binding VehiclesDestinationItemsSource}" />
+                                   ItemToRemoveDisplayMember="{Binding SelectedRouteVM.SelectedVehicle.VehicleId}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name}"
+                                   IsDeleteEnabled="{Binding SelectedRouteVM.SelectedVehicle, Converter={StaticResource ExistsBoolConverter}}"
+                                   Source="{Tools:GetVM Type=ViewModels:VehiclesVM}" Destination="{Binding SelectedRouteVM}"
+                                   DestinationItemsSource="{Binding SelectedRouteVM.VehiclesDestinationItemsSource}" />
                 <Controls2:RadGridView Grid.Row="1" Grid.ColumnSpan="2" SelectionMode="Single" AutoGenerateColumns="False" ShowGroupPanel="False" ShowColumnHeaders="False" RowIndicatorVisibility="Collapsed" 
-                                       ItemsSource="{Binding VehiclesDestinationItemsSource}" SelectedItem="{Binding SelectedRouteSelectedVehicle, Mode=TwoWay}">
+                                       ItemsSource="{Binding SelectedRouteVM.VehiclesDestinationItemsSource}" SelectedItem="{Binding SelectedRouteVM.SelectedVehicle, Mode=TwoWay}">
                     <Controls2:RadGridView.Columns>
                         <Controls2:GridViewDataColumn DataMemberBinding="{Binding VehicleId, Mode=TwoWay}" />
                     </Controls2:RadGridView.Columns>

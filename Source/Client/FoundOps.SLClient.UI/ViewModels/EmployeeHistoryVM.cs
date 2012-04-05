@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
-using FoundOps.Core.Context.Services;
-using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
+using System;
+using System.ComponentModel.Composition;
 using MEFedMVVM.ViewModelLocator;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -13,33 +11,28 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying EmployeeHistory
     /// </summary>
     [ExportViewModel("EmployeeHistoryVM")]
-    public class EmployeeHistoryVM : CoreEntityCollectionInfiniteAccordionVM<EmployeeHistoryEntry>
+    public class EmployeeHistoryVM : InfiniteAccordionVM<EmployeeHistoryEntry, EmployeeHistoryEntry>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmployeeHistoryVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public EmployeeHistoryVM(DataManager dataManager)
-            : base(dataManager)
+        public EmployeeHistoryVM()
+            : base(new[] { typeof(Employee) })
         {
-            this.SetupMainQuery(DataManager.Query.EmployeeHistory);
+            SetupDataLoading();
         }
 
-        //Logic
-
-        protected override bool EntityIsPartOfView(EmployeeHistoryEntry entity, bool isNew)
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
+        private void SetupDataLoading()
         {
-            if (isNew)
-                return true;
-
-            var employeeContext = ContextManager.GetContext<Employee>();
-
-            if (employeeContext != null && entity.EmployeeId == employeeContext.Id)
-                return true;
-
-            return false;
+            SetupContextDataLoading(roleId => DomainContext.GetEmployeeHistoryEntriesForRoleQuery(roleId), 
+                new[] { new ContextRelationshipFilter("EmployeeId", typeof(Employee), v => ((Employee)v).Id) });
         }
+
+        #region Logic
 
         protected override void OnAddEntity(EmployeeHistoryEntry newEntity)
         {
@@ -50,5 +43,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (!IsInDetailsView)
                 MoveToDetailsView.Execute(null);
         }
+
+        #endregion
     }
 }

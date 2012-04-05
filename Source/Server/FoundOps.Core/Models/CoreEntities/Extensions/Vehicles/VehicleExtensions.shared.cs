@@ -25,6 +25,10 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             Id = Guid.NewGuid();
             VehicleId = "";
+            LicensePlate = "";
+            Make = "";
+            Model = "";
+            Notes = "";
             OnCreation();
         }
 

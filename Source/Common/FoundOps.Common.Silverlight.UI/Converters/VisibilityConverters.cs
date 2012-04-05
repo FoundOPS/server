@@ -141,6 +141,24 @@ namespace FoundOps.Common.Silverlight.Converters
     }
 
     /// <summary>
+    /// Visibility based on matching an enum to the converter parameter.
+    /// </summary>
+    public class EnumToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return Enum.GetName(value.GetType(), value).Equals(parameter) ? 
+                Visibility.Visible : 
+                Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return null;
+        }
+    } 
+
+    /// <summary>
     /// If the value is greater than 1 it will return Visible.
     /// </summary>
     public class GreaterThanVisibilityConverter : IValueConverter

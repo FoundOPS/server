@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using Recaptcha;
 using System.Text;
@@ -145,7 +145,7 @@ namespace FoundOps.Server.Controllers
         {
             FormsService.SignOut();
 
-            return Redirect(Global.RootBlogUrl);
+            return Redirect(Global.RootFrontSiteUrl);
         }
 
         #endregion

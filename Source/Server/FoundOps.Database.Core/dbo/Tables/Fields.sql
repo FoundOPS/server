@@ -7,9 +7,11 @@
     [ParentFieldId]     UNIQUEIDENTIFIER NULL,
     [ServiceTemplateId] UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_Fields] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_FieldField] FOREIGN KEY ([ParentFieldId]) REFERENCES [dbo].[Fields] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_ServiceTemplateField] FOREIGN KEY ([ServiceTemplateId]) REFERENCES [dbo].[ServiceTemplates] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_FieldField] FOREIGN KEY ([ParentFieldId]) REFERENCES [dbo].[Fields] ([Id]),
+    CONSTRAINT [FK_ServiceTemplateField] FOREIGN KEY ([ServiceTemplateId]) REFERENCES [dbo].[ServiceTemplates] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 GO

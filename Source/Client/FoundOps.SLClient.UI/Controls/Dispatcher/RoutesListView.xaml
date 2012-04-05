@@ -33,7 +33,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" />
                     <Controls2:RadTreeView x:Name="RouteTreeView" Loaded="RouteTreeViewLoaded" 
-                                           Grid.Row="1" SelectionMode="Extended" ItemsSource="{Binding RouteDestinationsListWrapper}" 
+                                           Grid.Row="1" SelectionMode="Single" ItemsSource="{Binding RouteDestinationsListWrapper}" 
                                            IsDragDropEnabled="True" Background="Transparent" Selected="RouteTreeViewSelected" Unselected="RouteTreeViewUnselected"
                                            Width="200" IsDropPreviewLineEnabled="True" IsDragPreviewEnabled="True" PreviewDragEnded="RouteTreeViewPreviewDragEnded">
                         <!-- IsDragTooltipEnabled="True" IsDropPreviewLineEnabled="True"-->
@@ -46,35 +46,34 @@
                                     <Controls1:HierarchicalDataTemplate>
                                         <TextBlock Text="{Binding Name}" Width="150">
                                         <!--MultiBinding to set the Opacity of the TextBlock which uses the RouteTasksOpacityConverter to determine if the task should be greyed out or not-->
-                                        <SLMultiBinding:BindingUtil.MultiBindings>
+                                        <!--<SLMultiBinding:BindingUtil.MultiBindings>
                                             <SLMultiBinding:MultiBindings>
                                                 <SLMultiBinding:MultiBinding TargetProperty="Opacity" Converter="{StaticResource RouteTasksOpacityConverter}">
                                                     <SLMultiBinding:BindingCollection>
                                                         <Binding />
                                                         <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                                        <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" /> <!--For updates-->
+                                                        <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" /> //For updates
                                                     </SLMultiBinding:BindingCollection>
                                                 </SLMultiBinding:MultiBinding>
                                             </SLMultiBinding:MultiBindings>
-                                        </SLMultiBinding:BindingUtil.MultiBindings>
+                                        </SLMultiBinding:BindingUtil.MultiBindings>-->
                                         </TextBlock>
                                     </Controls1:HierarchicalDataTemplate>
                                 </Controls1:HierarchicalDataTemplate.ItemTemplate>
                                 <!--Bind the Background of the grid below to the color of the region where the destination is located-->
                                 <Grid Background="{Binding Location.Region.Color, Converter={StaticResource StringToColorConverter}}">
-                                    <SLMultiBinding:BindingUtil.MultiBindings>
+                                    <!--MultiBinding to set the Opacity of the TextBlock which uses the RouteDestinationsOpacityConverter to determine if the destination should be greyed out or not-->
+                                    <!--<SLMultiBinding:BindingUtil.MultiBindings>
                                         <SLMultiBinding:MultiBindings>
-                                            <!--MultiBinding to set the Opacity of the TextBlock which uses the RouteDestinationsOpacityConverter to determine if the destination should be greyed out or not-->
                                             <SLMultiBinding:MultiBinding TargetProperty="Opacity" Converter="{StaticResource RouteDestinationsOpacityConverter}">
                                                 <SLMultiBinding:BindingCollection>
                                                     <Binding />
                                                     <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                                    <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                                    <!--For updates-->
+                                                    <Binding Path="SelectedTypesBool" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" /> //For updates
                                                 </SLMultiBinding:BindingCollection>
                                             </SLMultiBinding:MultiBinding>
                                         </SLMultiBinding:MultiBindings>
-                                    </SLMultiBinding:BindingUtil.MultiBindings>
+                                    </SLMultiBinding:BindingUtil.MultiBindings>-->
                                     <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Name}" Width="165"/>
                                 </Grid>
                             </Controls1:HierarchicalDataTemplate>
@@ -86,7 +85,7 @@
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <Grid>
-            <ListBox x:Name="RoutesListBox" ItemTemplate="{StaticResource RouteTemplate}" ItemsSource="{Binding DomainCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemContainerStyle="{StaticResource draggableItemStyle}"
+            <ListBox x:Name="RoutesListBox" ItemTemplate="{StaticResource RouteTemplate}" ItemsSource="{Binding CollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemContainerStyle="{StaticResource draggableItemStyle}"
                  telerikDragDrop:RadDragAndDropManager.AllowDrag="True" Background="Transparent">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

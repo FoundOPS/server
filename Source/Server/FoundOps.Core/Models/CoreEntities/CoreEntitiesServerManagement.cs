@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.IO;
-using FoundOps.Common.NET;
-using System.Configuration;
 using System.Data.SqlClient;
-using FoundOps.Core.Server.Blocks;
+using FoundOps.Common.NET;
+using FoundOps.Common.Server;
 using Microsoft.SqlServer.Management.Common;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 
@@ -13,14 +12,16 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         #region ConnectionString, Paths and Parameters
 
-        private static readonly string SqlConnectionString = ConfigurationManager.ConnectionStrings["CoreConnectionString"].ConnectionString;
-        private static readonly string ContainerConnectionString = ConfigurationManager.ConnectionStrings["CoreEntitiesContainer"].ConnectionString;
+        public static readonly string SqlConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreConnectionString");
+        private static readonly string ContainerConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreEntitiesContainer");
+
+        private static readonly string RootDirectory = UserSpecificResourcesWrapper.GetString("RootDirectory");
 
         private static readonly string ClearCoreEntitiesDatabaseScriptLocation =
-            ServerConstants.RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
+            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
 
         private static readonly string CreateCoreEntitiesDatabaseScriptLocation =
-            ServerConstants.RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx.sql";
+            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql";
 
         #endregion
 
@@ -119,9 +120,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 //container.SaveChanges();
 
                 //Add Services
-                //var servicesDesignData = new ServicesDesignData(businessAccount, clientsDesignData.DesignClient);
-                //foreach (var service in servicesDesignData.DesignServices)
-                //    businessAccount.ServicesToProvide.Add(service);
+                var servicesDesignData = new ServicesDesignData(serviceProvider, clientsDesignData.DesignClient, serviceProvider.ServiceTemplates);
+                foreach (var service in servicesDesignData.DesignServices)
+                    serviceProvider.ServicesToProvide.Add(service);
             }
 
             container.SaveChanges();

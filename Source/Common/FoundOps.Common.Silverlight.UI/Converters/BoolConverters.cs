@@ -5,10 +5,11 @@ using System.Windows;
 using System.Windows.Data;
 using System.Collections.Generic;
 
-namespace FoundOps.Common.Silverlight.Converters
+namespace FoundOps.Common.Silverlight.UI.Converters
 {
     /// <summary>
     /// If the object exists the converter will return true.
+    /// If it is a bool it will return whether bool or not.
     /// </summary>
     public class ExistsBoolConverter : IValueConverter
     {

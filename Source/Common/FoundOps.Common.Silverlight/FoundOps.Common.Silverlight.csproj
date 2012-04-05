@@ -88,7 +88,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL" />
-    <Reference Include="Kent.Boogaart.KBCsv, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Kent.Boogaart.KBCsv, Version=1.3.0.0, Culture=neutral, PublicKeyToken=cc96fa93a217f7a1, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Windows.Data.DomainServices, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="SLaB.Utilities.Xaml">
       <HintPath>..\Lib\SLaB.Utilities.Xaml.dll</HintPath>
@@ -176,7 +176,7 @@
     <Compile Include="Tools\DynamicTools.cs" />
     <Compile Include="Tools\ExtensionMethods\CollectionExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\DependencyObjectExtensions.cs" />
-    <Compile Include="Tools\ExtensionMethods\DomainCollectionViewExtensions.cs" />
+    <Compile Include="Tools\ExtensionMethods\EditableCollectionViewExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\DomainContextExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\ItemsControlExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\Rxx3.cs" />
@@ -271,6 +271,7 @@
     <Resource Include="Resources\FaxSymbol.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Lib\AsyncCtpLibrary_Silverlight5.dll" />
     <Content Include="Lib\Croll.Silverlight.Controls.dll" />
     <Content Include="Lib\DataValidationFramework.Silverlight.dll" />
     <Content Include="Lib\EntityGraph.Silverlight.dll" />

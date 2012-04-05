@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using FoundOps.SLClient.UI.ViewModels;
+﻿using FoundOps.SLClient.UI.Tools;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
@@ -18,57 +15,24 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             InitializeComponent();
         }
 
-        private RoutesVM RoutesVM
+        private void RouteCapabilitiesTreeViewChecked(object sender, Telerik.Windows.RadRoutedEventArgs e)
         {
-            get { return (RoutesVM) this.DataContext; }
+            VM.DispatcherFilter.TriggerFilterUpdated();
         }
 
-        //Manually handle RouteType checked
-        private void RouteTypeCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void RouteCapabilitiesTreeViewUnchecked(object sender, Telerik.Windows.RadRoutedEventArgs e)
         {
-            var routeTypeToAdd = (string)((CheckBox)sender).DataContext;
-
-            if (routeTypeToAdd == null)
-                return;
-            
-            if (!RoutesVM.SelectedRouteTypes.Any(c => c == routeTypeToAdd))
-                RoutesVM.SelectedRouteTypes.Add(routeTypeToAdd);
+            VM.DispatcherFilter.TriggerFilterUpdated();
         }
 
-        //Manually handle RouteType unchecked
-        private void RouteTypeCheckBoxUnchecked(object sender, RoutedEventArgs e)
+        private void RegionsTreeViewChecked(object sender, Telerik.Windows.RadRoutedEventArgs e)
         {
-            var routeTypeToRemove = (string)((CheckBox)sender).DataContext;
-
-            if (routeTypeToRemove == null)
-                return;
-
-            if (this.RoutesVM.SelectedRouteTypes.Any(c => c == routeTypeToRemove))
-                RoutesVM.SelectedRouteTypes.Remove(routeTypeToRemove);
+            VM.DispatcherFilter.TriggerFilterUpdated();
         }
 
-        //Manually handle Region checked
-        private void RegionsCheckBoxChecked(object sender, RoutedEventArgs e)
+        private void RegionsTreeViewUnchecked(object sender, Telerik.Windows.RadRoutedEventArgs e)
         {
-            var regionToAdd = (string)((CheckBox)sender).DataContext;
-
-            if (regionToAdd == null)
-                return;
-
-            if (!RoutesVM.SelectedRegions.Any(c => c == regionToAdd))
-                RoutesVM.SelectedRegions.Add(regionToAdd);
-        }
-
-        //Manually handle Region unchecked
-        private void RegionsCheckBoxUnchecked(object sender, RoutedEventArgs e)
-        {
-            var regionToRemove = (string)((CheckBox)sender).DataContext;
-
-            if (regionToRemove == null)
-                return;
-
-            if (this.RoutesVM.SelectedRegions.Any(c => c == regionToRemove))
-                RoutesVM.SelectedRegions.Remove(regionToRemove);
+            VM.DispatcherFilter.TriggerFilterUpdated();
         }
     }
 }

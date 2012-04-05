@@ -1,18 +1,17 @@
-﻿using System;
-using ReactiveUI;
-using System.Linq;
-using System.Windows;
+﻿using FoundOps.Common.Silverlight.Loader;
+using FoundOps.Common.Silverlight.MVVM.Messages;
+using FoundOps.Common.Silverlight.UI.Interfaces;
+using FoundOps.Common.Silverlight.UI.ViewModels;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
-using FoundOps.Core.Navigator.VMs;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.Core.Models.CoreEntities;
 using System.ComponentModel.Composition;
-using FoundOps.Common.Silverlight.Loader;
-using FoundOps.Common.Silverlight.MVVM.Messages;
-using FoundOps.Common.Silverlight.UI.ViewModels;
-using FoundOps.Common.Silverlight.MVVM.Interfaces;
+using System.Linq;
+using System.Windows;
 
 namespace FoundOps.SLClient.Navigator.ViewModels
 {
@@ -143,7 +142,7 @@ namespace FoundOps.SLClient.Navigator.ViewModels
                 this.RaisePropertyChanged("SelectedRole");
 
                 //Update the ContextManager's RoleId
-                _dataManager.ContextManager.RoleIdObserver.OnNext(SelectedRole.Id);
+                Manager.Context.RoleIdObserver.OnNext(SelectedRole.Id);
             }
         }
 
@@ -192,15 +191,6 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         /// </value>
         public object SelectedContent { get; set; }
 
-        private readonly DataManager _dataManager;
-        /// <summary>
-        /// Gets the data manager.
-        /// </summary>
-        public DataManager DataManager
-        {
-            get { return _dataManager; }
-        }
-
         #endregion
 
         #region Local Variables
@@ -212,19 +202,16 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationBarVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public NavigationBarVM(DataManager dataManager)
+        public NavigationBarVM()
         {
-            _dataManager = dataManager;
+            Manager.Context.UserAccountObservable.Subscribe(ua => CurrentUserAccount = ua);
 
-            DataManager.ContextManager.UserAccountObservable.Subscribe(ua => CurrentUserAccount = ua);
-
-            dataManager.GetPublicBlocks(blocks =>
-            {
-                PublicBlocks = blocks;
-                OnDataLoaded();
-            });
+            Manager.Data.GetPublicBlocks(blocks =>
+             {
+                 PublicBlocks = blocks;
+                 OnDataLoaded();
+             });
         }
 
         #region NavigationBarVM's Logic
@@ -248,13 +235,14 @@ namespace FoundOps.SLClient.Navigator.ViewModels
             if (SelectedContent != null)
             {
                 var selectedContentDataContext = ((FrameworkElement)SelectedContent).DataContext;
-                if (typeof(IPreventNavigationFrom).IsAssignableFrom(selectedContentDataContext.GetType()))
+                var preventNavigationFrom = selectedContentDataContext as IPreventNavigationFrom;
+
+                if (preventNavigationFrom != null)
                 {
-                    if (!((IPreventNavigationFrom)selectedContentDataContext).CanNavigateFrom(() =>
-                        MessageBus.Current.SendMessage(new NavigateToMessage { UriToNavigateTo = new Uri(uri, UriKind.RelativeOrAbsolute) })))
+                    if (!preventNavigationFrom.CanNavigateFrom(() => MessageBus.Current.SendMessage(new NavigateToMessage { UriToNavigateTo = new Uri(uri, UriKind.RelativeOrAbsolute) })))
                         return;
 
-                    ((IPreventNavigationFrom)selectedContentDataContext).OnNavigateFrom();
+                    (preventNavigationFrom).OnNavigateFrom();
                 }
             }
 
@@ -284,23 +272,21 @@ namespace FoundOps.SLClient.Navigator.ViewModels
 
         private void OnDataLoaded()
         {
-            if (PublicBlocks != null && CurrentUserAccount != null)
-            {
-                SetupBlocksMappingInMEFContentLoader();
-                NavigateToCommand.RaiseCanExecuteChanged();
-            }
+            if (CurrentUserAccount == null) return;
+
+            SetupBlocksMappingInMEFContentLoader();
+            NavigateToCommand.RaiseCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Setups the blocks mapping in MEF content loader.
+        /// </summary>
         private void SetupBlocksMappingInMEFContentLoader()
         {
-            foreach (var block in CurrentUserAccount.AccessibleBlocks.Union(PublicBlocks))
-            {
-                if (block.Link != null)
-                    MEFBlockLoader.MapUri(new Uri(block.NavigateUri, UriKind.RelativeOrAbsolute),
-                                            new Uri(block.Link, UriKind.RelativeOrAbsolute));
-            }
+            foreach (var block in CurrentUserAccount.AccessibleBlocks.Union(PublicBlocks).Where(block => block.Link != null))
+                MEFBlockLoader.MapUri(new Uri(block.NavigateUri, UriKind.RelativeOrAbsolute), new Uri(block.Link, UriKind.RelativeOrAbsolute));
+
             _setupBlocksMappingInMEFContentLoader = true;
-            MessageBus.Current.SendMessage(new BlockMappingSetupMessage());
         }
 
         #endregion

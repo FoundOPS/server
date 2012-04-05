@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -57,17 +57,17 @@ namespace FoundOps.Common.NET
                 xmlResultSet.Elements("ResultSet").Elements("Result").Select(
                     result =>
                         new GeocoderResult
-                                  {
-                                      Name = result.Element("name").Value,
-                                      Precision = result.Element("quality").Value,
-                                      Latitude = result.Element("latitude").Value,
-                                      Longitude = result.Element("longitude").Value,
-                                      AddressLineOne = result.Element("line1").Value,
-                                      AddressLineTwo = result.Element("line2").Value,
-                                      City = result.Element("city").Value,
-                                      State = result.Element("statecode").Value,
-                                      ZipCode = result.Element("postal").Value
-                                  });
+                        {
+                            Name = result.Element("name").Value,
+                            Precision = result.Element("quality").Value,
+                            Latitude = result.Element("latitude").Value,
+                            Longitude = result.Element("longitude").Value,
+                            AddressLineOne = result.Element("line1").Value,
+                            AddressLineTwo = result.Element("line2").Value,
+                            City = result.Element("city").Value,
+                            State = result.Element("statecode").Value,
+                            ZipCode = result.Element("postal").Value
+                        });
 
             return results;
         }

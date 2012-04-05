@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Objects.DataClasses;
 using System.IO;
@@ -18,7 +18,7 @@ namespace FoundOps.Server.Services.CoreDomainService
     {
         public bool ImportEntities(Guid currentRoleId, ImportDestination importDestination, byte[] dataCSV)
         {
-            var business = ObjectContext.BusinessAccountForRole(currentRoleId);
+            var business = ObjectContext.BusinessAccountOwnerOfRole(currentRoleId);
             if (business == null)
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
@@ -237,7 +237,6 @@ namespace FoundOps.Server.Services.CoreDomainService
                 }
             }
 
-
             #region Hookup remaining assocations
 
             //Hookup Locations to Clients
@@ -268,29 +267,20 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 var clientNamesToLoad = locationClientAssociationsToHookup.Select(cl => cl.Item2).Distinct();
 
+                //TODO: When importing people clients, fix the ChildName logic below (probably setup 2 left joins)
                 //Load all the associatedClients
                 var associatedClients =
                     (from client in ObjectContext.Clients.Where(c => c.VendorId == business.Id)
-                     //Need to get the client displayname, so join with the person and the business table
-                     join p in ObjectContext.Parties.OfType<Person>()
-                         on client.Id equals p.Id into personClient
-                     from personParty in personClient.DefaultIfEmpty()
-                     //Left Join
-                     join b in ObjectContext.Parties.OfType<Business>()
-                         on client.Id equals b.Id into businessClient
-                     from businessParty in businessClient.DefaultIfEmpty()
-                     //Left Join
-                     let displayName = businessParty != null
-                                           ? businessParty.Name
-                                           : personParty.LastName + " " + personParty.FirstName + " " +
-                                             personParty.MiddleInitial
-                     where clientNamesToLoad.Contains(displayName)
-                     select new { displayName, client }).ToArray();
+                     //Need to get the Clients names
+                     join p in ObjectContext.PartiesWithNames
+                         on client.Id equals p.Id
+                     where clientNamesToLoad.Contains(p.ChildName)
+                     select new { p.ChildName, client }).ToArray();
 
                 foreach (var locationClientAssociation in locationClientAssociationsToHookup)
                 {
                     var associatedClient =
-                        associatedClients.FirstOrDefault(c => c.displayName == locationClientAssociation.Item2);
+                        associatedClients.FirstOrDefault(c => c.ChildName == locationClientAssociation.Item2);
 
                     if (associatedClient == null) continue;
                     //If the associatedClient was found set the Location's PartyId to this Client's (OwnerParty) Id

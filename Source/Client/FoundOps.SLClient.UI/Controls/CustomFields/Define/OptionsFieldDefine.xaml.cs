@@ -1,18 +1,24 @@
-﻿using System.ComponentModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
+using System.ComponentModel;
 using System.Windows.Controls;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
-using Telerik.Windows.Data;
+using SortDescriptor = Telerik.Windows.Data.SortDescriptor;
 
 namespace FoundOps.SLClient.UI.Controls.CustomFields.Define
 {
+    /// <summary>
+    /// The UI for defining an OptionsField.
+    /// </summary>
     public partial class OptionsFieldDefine
     {
         private readonly OptionsFieldVM _optionsFieldVM = new OptionsFieldVM();
         public OptionsFieldVM OptionsFieldVM { get { return _optionsFieldVM; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OptionsFieldDefine"/> class.
+        /// </summary>
         public OptionsFieldDefine()
         {
             InitializeComponent();

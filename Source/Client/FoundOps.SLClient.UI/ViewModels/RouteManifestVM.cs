@@ -1,36 +1,45 @@
-﻿using System;
-using System.Reactive.Linq;
-using FoundOps.Common.Tools;
-using FoundOps.SLClient.Data.Models;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.ViewModels;
+﻿using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Models;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using System;
+using System.Reactive.Linq;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
     /// <summary>
     /// Contains the logic for displaying and printing RouteManifests
     /// </summary>
+    [ExportViewModel("RouteManifestVM")]
     public class RouteManifestVM : CoreEntityVM
     {
         #region Public
 
+        private RouteManifestSettings _routeManifestSettings;
         /// <summary>
         /// Gets the route manifest settings.
         /// </summary>
-        public RouteManifestSettings RouteManifestSettings { get; private set; }
+        public RouteManifestSettings RouteManifestSettings
+        {
+            get { return _routeManifestSettings; }
+            private set
+            {
+                _routeManifestSettings = value;
+                this.RaisePropertyChanged("RouteManifestSettings");
+            }
+        }
 
         #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteManifestVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
-        public RouteManifestVM(DataManager dataManager) : base(dataManager)
+        public RouteManifestVM()
         {
             //Setup the RouteManifestSettings based on the OwnerAccount
             ContextManager.OwnerAccountObservable.Select(oa => oa as BusinessAccount).Where(ba => ba != null)
-                .Subscribe(currentBusinessAccount =>
+            .Subscribe(currentBusinessAccount =>
             {
                 //Setup the currentBusinessAccount's RouteManifestSettings if there are none
                 if (currentBusinessAccount.RouteManifestSettings == null)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows.Data;
 using System.Globalization;
@@ -7,7 +7,7 @@ using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Framework.Views.Converters
 {
-    public class FieldDefaultValueStringConverter : IValueConverter
+    public class FieldDefaultValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -33,13 +33,12 @@ namespace FoundOps.Framework.Views.Converters
             {
                 return ((TextBoxField)field).Value;
             }
-
             if (field is DateTimeField)
             {
                 var dateTimeField = (DateTimeField)field;
 
                 if (dateTimeField.DateTimeType == DateTimeType.TimeOnly)
-                    return dateTimeField.Value.HasValue ? dateTimeField.Value.Value.ToLongTimeString() : "";
+                    return dateTimeField.Value.HasValue ? dateTimeField.Value.Value.ToShortTimeString() : "";
             }
 
             return "Not setup yet";
@@ -51,7 +50,7 @@ namespace FoundOps.Framework.Views.Converters
         }
     }
 
-    public class ManifestFieldDefaultValueStringConverter : IValueConverter
+    public class FieldDefaultValueStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -59,9 +58,9 @@ namespace FoundOps.Framework.Views.Converters
 
             if (field == null) return "";
 
-            var optionsField = field as OptionsField;
-            if (optionsField != null)
+            if (field is OptionsField)
             {
+                var optionsField = (OptionsField)field;
                 if (optionsField.OptionsType == OptionsType.Checkbox && optionsField.Options.FirstOrDefault() != null)
                     return optionsField.Options.First().IsChecked ? "Checked" : "Not Checked";
                 if (optionsField.OptionsType == OptionsType.Checklist)
@@ -69,30 +68,26 @@ namespace FoundOps.Framework.Views.Converters
                 if (optionsField.OptionsType == OptionsType.Combobox)
                     return "";
             }
-            var numericField = field as NumericField;
-            if (numericField != null)
+            if (field is NumericField)
             {
-                if ((numericField).Value == null)
-                {
-                    return "__________";
-                }
-                return (numericField).Value;
+                var numericField = (NumericField)field;
+                if (numericField.Mask == "c")
+                    if (numericField.Value != null) return "$" + ((double)numericField.Value).ToString("0.00", CultureInfo.InvariantCulture);
+                if (numericField.Mask == "g")
+                    if (numericField.Value != null) return ((double)numericField.Value).ToString(CultureInfo.InvariantCulture);
+                if (numericField.Mask == "p")
+                    if (numericField.Value != null) return ((double)numericField.Value * 100).ToString(CultureInfo.InvariantCulture) + "%";
             }
-            var textBoxField = field as TextBoxField;
-            if (textBoxField != null)
+            if (field is TextBoxField)
             {
-                if ((textBoxField).Value == null)
-                {
-                    return "__________";
-                }
-                return (textBoxField).Value;
+                return ((TextBoxField)field).Value;
             }
+            if (field is DateTimeField)
+            {
+                var dateTimeField = (DateTimeField)field;
 
-            var dateTimeField = field as DateTimeField;
-            if (dateTimeField != null)
-            {
                 if (dateTimeField.DateTimeType == DateTimeType.TimeOnly)
-                    return dateTimeField.Value.HasValue ? dateTimeField.Value.Value.ToLongTimeString() : "__________";
+                    return dateTimeField.Value.HasValue ? dateTimeField.Value.Value.ToShortTimeString() : "";
             }
 
             return "Not setup yet";
@@ -103,7 +98,7 @@ namespace FoundOps.Framework.Views.Converters
             throw new NotImplementedException();
         }
     }
-    
+
     public class FieldToTypeStringConverter : IValueConverter
     {
         #region IValueConverter Members
@@ -163,6 +158,66 @@ namespace FoundOps.Framework.Views.Converters
         #endregion
     }
 
+    /// <summary>
+    /// Takes a field and returns the value if it exists, otherwise returns an empty space to fill in the value.
+    /// </summary>
+    public class ManifestFieldValueConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var field = value as Field;
+
+            if (field == null) return "";
+
+            if (field is OptionsField)
+            {
+                var optionsField = (OptionsField)field;
+                if (optionsField.OptionsType == OptionsType.Checkbox && optionsField.Options.FirstOrDefault() != null)
+                    return optionsField.Options.First().IsChecked ? "Checked" : "Not Checked";
+                if (optionsField.OptionsType == OptionsType.Checklist)
+                    return "";
+                if (optionsField.OptionsType == OptionsType.Combobox)
+                    return "";
+            }
+            if (field is NumericField)
+            {
+                var numericField = (NumericField)field;
+                if (numericField.Mask == "c")
+                    return numericField.Value.HasValue ? "$" + ((double)numericField.Value).ToString("0.00") : "$_______.____";
+                if (numericField.Mask == "g")
+                    return numericField.Value.HasValue ? ((double)numericField.Value).ToString(CultureInfo.InvariantCulture) : "____________";
+                if (numericField.Mask == "p")
+                    return numericField.Value.HasValue ? ((double)numericField.Value * 100).ToString(CultureInfo.InvariantCulture) + "%" : "____________%";
+            }
+            if (field is TextBoxField)
+            {
+                var textBoxField = (TextBoxField)field;
+                if (textBoxField.IsMultiline)
+                    return textBoxField.Value != null ? ((TextBoxField)field).Value :
+                        "_________________________\r\n_________________________\r\n_________________________";
+                if (!textBoxField.IsMultiline)
+                    return textBoxField.Value != null ? ((TextBoxField)field).Value : "_________________________";
+            }
+            if (field is DateTimeField)
+            {
+                var dateTimeField = (DateTimeField)field;
+
+                if (dateTimeField.DateTimeType == DateTimeType.TimeOnly)
+                    return dateTimeField.Value.HasValue ? dateTimeField.Value.Value.ToShortTimeString() : "____:____";
+            }
+
+            return "Not setup yet";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// Takes a collection and orders the items by name in ascending order.
+    /// </summary>
     public class OrderByNameConverter : IValueConverter
     {
         #region Implementation of IValueConverter
@@ -180,5 +235,48 @@ namespace FoundOps.Framework.Views.Converters
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Takes two values and combines them into one string. 
+    /// Ex. "Name" + "Value" becomes "Name: Value"
+    /// </summary>
+    public class CombineNameValueConverter : IMultiValueConverter
+    {
+        /// <summary>
+        /// Converts the specified values.
+        /// </summary>
+        /// <param name="values">The values.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="culture">The culture.</param>
+        /// <returns></returns>
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var name = values[0] as string;
+            var field = values[1] as Field;
+            var textBoxField = (TextBoxField)field;
+            if (textBoxField != null && !(string.IsNullOrEmpty(textBoxField.Value)))
+            {
+                return name + ": " + textBoxField.Value;
+            }
+
+            if (textBoxField != null && textBoxField.IsMultiline)
+                return name + ": _________________________\r\n_________________________\r\n_________________________";
+            return name + ": _________________________";
+        }
+
+        /// <summary>
+        /// Converts the specified values.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="targetTypes">The target types.</param>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="culture">The culture.</param>
+        /// <returns></returns>
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

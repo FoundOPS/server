@@ -1,15 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using FoundOps.Common.Silverlight.UI.Interfaces;
 using RiaServicesContrib;
 using RiaServicesContrib.DomainServices.Client;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class ServiceTemplate
+    public partial class ServiceTemplate : ILoadDetails
     {
+        #region Public Properties
+
+        #region Implementation of ILoadDetails
+
+        private bool _detailsLoaded;
+        /// <summary>
+        /// Gets or sets a value indicating whether [details loaded].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DetailsLoaded
+        {
+            get { return _detailsLoaded; }
+            set
+            {
+                _detailsLoaded = value;
+                this.RaisePropertyChanged("DetailsLoaded");
+            }
+        }
+
+        #endregion
+
+        #endregion
+
         protected override void OnLoaded(bool isInitialLoad)
         {
             base.OnLoaded(isInitialLoad);
@@ -105,20 +131,19 @@ namespace FoundOps.Core.Models.CoreEntities
     }
 
     /// <summary>
-    /// Compares two service templates to see if one is an ancestor of the other.
     /// </summary>
-    public class ServiceTemplateIsAncestorOrDescendent: IEqualityComparer<object>
+    public static class ServiceTemplateHelpers
     {
-        #region Implementation of IEqualityComparer<in ServiceTemplate>
-
-        bool IEqualityComparer<object>.Equals(object serviceTemplateA, object serviceTemplateB)
+        /// <summary>
+        /// Compares two service templates to see if one is an ancestor of the other.
+        /// </summary>
+        /// <param name="a">One service template to compare.</param>
+        /// <param name="b">The other service template to compare.</param>
+        public static bool ServiceTemplateIsAncestorOrDescendent(ServiceTemplate a, ServiceTemplate b)
         {
-            var a = (ServiceTemplate) serviceTemplateA;
-            var b = (ServiceTemplate) serviceTemplateB;
-
             //Climb the parents of x and see if an ancestor is y
             var currentServiceTemplate = a;
-            while(currentServiceTemplate!= null)
+            while (currentServiceTemplate != null)
             {
                 if (currentServiceTemplate == b)
                     return true;
@@ -138,14 +163,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
             return false;
         }
-
-        int IEqualityComparer<object>.GetHashCode(object obj)
-        {
-            var serviceTemplate = (ServiceTemplate) obj;
-            return obj.GetHashCode();
-        }
-
-        #endregion
     }
 }
 

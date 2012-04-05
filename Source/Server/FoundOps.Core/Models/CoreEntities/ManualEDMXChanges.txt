@@ -1,0 +1,176 @@
+1. After generating database from model need to fix the PartiesWithName view in the CoreEntities.edmx
+
+Replace
+    <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />
+with
+    <EntitySet Name="PartiesWithName" EntityType="CoreEntities.Store.PartiesWithName" store:Type="Views" store:Schema="dbo" store:Name="PartiesWithName">
+      <DefiningQuery>
+        SELECT
+        [PartiesWithName].[Id] AS [Id],
+        [PartiesWithName].[ChildName] AS [ChildName]
+        FROM [dbo].[PartiesWithName] AS [PartiesWithName]
+      </DefiningQuery>
+    </EntitySet>
+Replace
+  <EntityType Name="PartiesWithNames">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ChildName" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+with
+  <EntityType Name="PartiesWithName">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ChildName" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+
+DO NOT CHANGE : <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.PartyWithName" />
+
+Replace
+    <EntitySetMapping Name="PartiesWithNames">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.PartyWithName)">
+        <MappingFragment StoreEntitySet="PartiesWithNames">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ChildName" ColumnName="ChildName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+with
+    <EntitySetMapping Name="PartiesWithNames">
+      <EntityTypeMapping TypeName="CoreEntities.PartyWithName">
+        <MappingFragment StoreEntitySet="PartiesWithName">
+          <ScalarProperty Name="ChildName" ColumnName="ChildName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+
+2. After generating database from model need to fix the ServiceTemplatesWithVendorId view in the CoreEntities.edmx
+
+Replace
+    <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.Store.ServiceTemplateWithVendorIds" store:Type="Tables" Schema="dbo" />
+with
+          <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId">
+            <DefiningQuery>SELECT 
+      [ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId], 
+      [ServiceTemplatesWithVendorId].[VendorId] AS [VendorId]
+      FROM [dbo].[ServiceTemplatesWithVendorId] AS [ServiceTemplatesWithVendorId]</DefiningQuery>
+          </EntitySet>
+Replace
+  <EntityType Name="ServiceTemplateWithVendorIds">
+    <Key>
+      <PropertyRef Name="ServiceTemplateId" />
+      <PropertyRef Name="VendorId" />
+    </Key>
+    <Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+with
+        <EntityType Name="ServiceTemplatesWithVendorId">
+          <Key>
+            <PropertyRef Name="ServiceTemplateId" />
+            <PropertyRef Name="VendorId" />
+          </Key>
+          <Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+
+DO NOT CHANGE: <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.ServiceTemplateWithVendorId" />
+
+Replace
+    <EntitySetMapping Name="ServiceTemplateWithVendorIds">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.ServiceTemplateWithVendorId)">
+        <MappingFragment StoreEntitySet="ServiceTemplateWithVendorIds">
+          <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+with
+          <EntitySetMapping Name="ServiceTemplateWithVendorIds">
+            <EntityTypeMapping TypeName="CoreEntities.ServiceTemplateWithVendorId">
+              <MappingFragment StoreEntitySet="ServiceTemplatesWithVendorId">
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+
+3. Add Functions back
+
+Add after </EntityContainer>
+
+        <Function Name="GetServiceHolders" IsComposable="false">
+          <CommandText>
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
+            FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
+          </CommandText>
+          <Parameter Name="serviceProviderIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="clientIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="recurringServiceIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="seedDate"
+                     Mode="In"
+                     Type="datetime"/>
+          <Parameter Name="frontBackMinimum"
+                     Mode="In"
+                     Type="int"/>
+          <Parameter Name="getPrevious"
+                     Mode="In"
+                     Type="bit"/>
+          <Parameter Name="getNext"
+                     Mode="In"
+                     Type="bit"/>
+        </Function>
+        <Function Name="GetUnroutedServicesForDate" IsComposable="false">
+          <CommandText>
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude
+            FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
+          </CommandText>
+          <Parameter Name="serviceProviderContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="serviceDate"
+                     Mode="In"
+                     Type="datetime"/>
+        </Function>
+
+Add before </EntityContainerMapping>
+
+          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using System.Reactive.Linq;
-using System.Collections.Generic;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.Services;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -17,7 +16,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Fields
     /// </summary>
     [ExportViewModel("FieldsVM")]
-    public class FieldsVM : CoreEntityCollectionInfiniteAccordionVM<Field>
+    public class FieldsVM : InfiniteAccordionVM<Field, Field>
     {
         # region Public Properties
 
@@ -42,16 +41,14 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public FieldsVM(DataManager dataManager)
-            : base(dataManager, false)
+        public FieldsVM() : base(new[] { typeof(ServiceTemplate)}, false )
         {
             //Can only delete if the selected field is not required
             this.SelectedEntityObservable.Where(se => se != null)
                 .Select(selectedField => !selectedField.Required).Subscribe(CanDeleteSubject);
 
-            //Whenever the ServiceTemplateContext changes
+            //Whenever the ServiceTemplateContext changes or the details are loaded
             //a) update the Fields DCV
             //b) Enable the Destination field option 
             //   if the current ServiceTemplate is a FoundOPS level or ServiceProvider level service template
@@ -60,7 +57,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 .Subscribe(serviceTemplateContext =>
                 {
                     //a) update the Fields DCV
-                    DomainCollectionViewObservable.OnNext(serviceTemplateContext != null ?
+                    ViewObservable.OnNext(serviceTemplateContext != null ?
                         DomainCollectionViewFactory<Field>.GetDomainCollectionView(serviceTemplateContext.Fields) : null);
                     //b) Enable the Destination field option 
                     //   if the current ServiceTemplate is a FoundOPS level or ServiceProvider level service template
@@ -143,7 +140,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Setup the ServiceTemplate Context
             serviceTemplateContext.Fields.Add(fieldToAdd);
-            this.Context.Fields.Add(fieldToAdd);
+            this.DomainContext.Fields.Add(fieldToAdd);
 
             return fieldToAdd;
         }

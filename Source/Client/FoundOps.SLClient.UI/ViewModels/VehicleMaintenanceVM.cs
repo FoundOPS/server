@@ -1,11 +1,10 @@
-﻿using System;
-using FoundOps.Core.Models.CoreEntities;
-using GalaSoft.MvvmLight.Command;
-using MEFedMVVM.ViewModelLocator;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
+using GalaSoft.MvvmLight.Command;
+using MEFedMVVM.ViewModelLocator;
+using System;
 using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -13,7 +12,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the VehicleMaintenanceLogEntries
     ///</summary>
     [ExportViewModel("VehicleMaintenanceVM")]
-    public class VehicleMaintenanceVM : CoreEntityCollectionInfiniteAccordionVM<VehicleMaintenanceLogEntry>
+    public class VehicleMaintenanceVM : InfiniteAccordionVM<VehicleMaintenanceLogEntry, VehicleMaintenanceLogEntry>
     {
         //Public Properties
         public RelayCommand AddLineItemCommand { get; private set; }
@@ -22,12 +21,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="VehicleMaintenanceVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public VehicleMaintenanceVM(DataManager dataManager)
-            : base(dataManager)
+        public VehicleMaintenanceVM()
+            : base(new[] { typeof(Vehicle) })
         {
-            SetupMainQuery(DataManager.Query.VehicleMaintenance);
+            SetupDataLoading();
 
             #region Register Commands
 
@@ -37,25 +35,13 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
-        #region Logic
-
-        protected override bool EntityIsPartOfView(VehicleMaintenanceLogEntry vehicleMaintenanceLogEntry, bool isNew)
+        private void SetupDataLoading()
         {
-            if (isNew)
-                return true;
-
-            var entityIsPartOfView = false;
-
-            //Setup filters
-
-            //Find if there is a client context
-            var vehicleContext = ContextManager.GetContext<Vehicle>();
-
-            if (vehicleContext != null)
-                entityIsPartOfView = vehicleMaintenanceLogEntry.VehicleId == vehicleContext.Id;
-
-            return entityIsPartOfView;
+            SetupContextDataLoading(roleId => DomainContext.GetVehicleMaintenanceLogForPartyQuery(roleId),
+                                    new[] { new ContextRelationshipFilter("VehicleId", typeof(Vehicle), v => ((Vehicle)v).Id) });
         }
+
+        #region Logic
 
         protected override void OnAddEntity(VehicleMaintenanceLogEntry vehicleMaintenanceLogEntry)
         {

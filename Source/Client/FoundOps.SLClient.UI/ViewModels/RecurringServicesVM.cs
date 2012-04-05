@@ -1,14 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Windows;
-using FoundOps.Common.Silverlight.Services;
+﻿using System.ServiceModel.DomainServices.Client;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.UI.Tools;
+using MEFedMVVM.ViewModelLocator;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -16,29 +14,40 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying RecurringServices
     /// </summary>
     [ExportViewModel("RecurringServicesVM")]
-    public class RecurringServicesVM : CoreEntityCollectionInfiniteAccordionVM<RecurringService>
+    public class RecurringServicesVM : InfiniteAccordionVM<RecurringService, RecurringService>
     {
+        #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RecurringServicesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public RecurringServicesVM(DataManager dataManager)
-            : base(dataManager)
+        public RecurringServicesVM()
+            : base(new[] { typeof(Client) })
         {
-            //Subscribe to the RecurringServices query
-            IsLoadingObservable = DataManager.Subscribe<RecurringService>(DataManager.Query.RecurringServices, ObservationState, null);
-
-            //Setup DomainCollectionView based on the current Client context
-
-            var clientContext = ContextManager.GetContextObservable<Client>();
-            clientContext.ObserveOnDispatcher().Subscribe(client =>
-            {
-                if (client != null)
-                    DomainCollectionViewObservable.OnNext(
-                        DomainCollectionViewFactory<ServiceTemplate>.GetDomainCollectionView(client.RecurringServices));
-            });
+            SetupDataLoading();
         }
+
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
+        private void SetupDataLoading()
+        {
+            SetupContextDataLoading(roleId =>
+                                        {
+                                            //Manually filter as workaround to a randomly occuring problem
+                                            //where they are all getting loaded when there is no context
+                                            var clientContext = ContextManager.GetContext<Client>();
+                                            return clientContext == null
+                                                       ? null
+                                                       : DomainContext.GetRecurringServicesForClientQuery(roleId, clientContext.Id);
+                                        }, new[] { new ContextRelationshipFilter("ClientId", typeof(Client), v => ((Client)v).Id) });
+
+            //Whenever the selected RecurringService changes load the details
+            SetupDetailsLoading(selectedEntity => DomainContext.GetRecurringServiceDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+        }
+
+        #endregion
 
         #region Logic
 
@@ -81,7 +90,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Make sure the recurring service is removed from the Context
             //Instead of it being removed from the Client (the backing DCV)
-            Context.RecurringServices.Remove(entityToDelete);
+            DomainContext.RecurringServices.Remove(entityToDelete);
         }
 
         #endregion
@@ -97,6 +106,14 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return false;
             }
             return true;
+        }
+
+        protected override void OnSave(System.ServiceModel.DomainServices.Client.SubmitOperation submitOperation)
+        {
+            base.OnSave(submitOperation);
+
+            //Refresh Services
+            VM.Services.ForceRefresh();
         }
 
         #endregion

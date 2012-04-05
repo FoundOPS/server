@@ -1,19 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.ComponentModel;
-using FoundOps.Common.NET;
-using MEFedMVVM.ViewModelLocator;
-using GalaSoft.MvvmLight.Command;
-using System.Collections.Generic;
-using GalaSoft.MvvmLight.Messaging;
-using System.Collections.ObjectModel;
-using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Common.NET;
 using FoundOps.Common.Silverlight.Services;
-using FoundOps.Core.Context.Services.Interface;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.ViewModels;
+using GalaSoft.MvvmLight.Command;
+using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Linq;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -111,11 +108,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="SubLocationsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         /// <param name="selectedLocation">The selected location.</param>
         [ImportingConstructor]
-        public SubLocationsVM(DataManager dataManager, Location selectedLocation)
-            : base(false, dataManager)
+        public SubLocationsVM(Location selectedLocation) : base(false)
         {
             GeocoderResults = new ObservableCollection<GeocoderResult>();
             ManuallySelectGeocoderResult = new GeocoderResult
@@ -127,8 +122,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             if (_selectedLocation != null)
             {
-                DomainCollectionViewObservable.OnNext(new DomainCollectionViewFactory<SubLocation>(_selectedLocation.SubLocationsListWrapper).View);
-                DomainCollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
+                ViewObservable.OnNext(new DomainCollectionViewFactory<SubLocation>(_selectedLocation.SubLocationsListWrapper).View);
+                CollectionView.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
             }
 
             #region Register Commands
@@ -158,7 +153,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         //instead of just being removed from the _selectedLocation.SubLocationsListWrapper
         public override void DeleteEntity(SubLocation entityToDelete)
         {
-            this.Context.SubLocations.Remove(entityToDelete);
+            this.DomainContext.SubLocations.Remove(entityToDelete);
         }
 
         protected override void OnAddEntity(SubLocation newSubLocation)

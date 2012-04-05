@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -6,6 +7,7 @@ using System.Collections;
 using System.Reactive.Linq;
 using FoundOps.Common.Tools;
 using System.Windows.Controls;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using System.IO.IsolatedStorage;
 using System.Collections.Generic;
@@ -51,6 +53,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         /// </summary>
         public struct ErrorConstants
         {
+            public static string CannotDropHere = "Invalid Drop Location";
+
             public const string DifferentService = "Items Selected Have Different Services";
         }
 
@@ -70,6 +74,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             //set the click event for the reset button in DispatcherToolBar
             this.DispatcherToolBar.ResetLayoutButton.Click += ResetLayoutButtonClick;
 
+            this.DependentWhenVisible(VM.DispatcherFilter);
             this.DependentWhenVisible(RoutesVM);
             this.DependentWhenVisible(RegionsVM);
 
@@ -83,27 +88,49 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             //Whenever a route, route destination, or task is selected select the appropriate details pane
             this.RoutesVM.FromAnyPropertyChanged()
-                .Where(e => e.PropertyName == "SelectedEntity" || e.PropertyName == "SelectedRouteDestination" || e.PropertyName == "SelectedTask")
-                .Throttle(new TimeSpan(0, 0, 0, 0, 250)).ObserveOnDispatcher()
+                .Where(e => e.PropertyName == "SelectedEntity" || e.PropertyName == "SelectedRouteDestination" || e.PropertyName == "SelectedRouteTask")
+                .Throttle(new TimeSpan(0, 0, 0, 0, 300)).ObserveOnDispatcher()
                 .Subscribe(pe =>
                 {
                     switch (pe.PropertyName)
                     {
+                        #region Cases
+
                         case "SelectedEntity":
                             DestinationDetailsPane.IsSelected = false;
                             TaskDetailsPane.IsSelected = false;
                             RouteDetailsPane.IsSelected = true;
                             break;
                         case "SelectedRouteDestination":
-                            RouteDetailsPane.IsSelected = false;
                             TaskDetailsPane.IsSelected = false;
-                            DestinationDetailsPane.IsSelected = true;
+
+                            if (VM.Routes.SelectedRouteDestination == null)
+                            {
+                                RouteDetailsPane.IsSelected = true;
+                                DestinationDetailsPane.IsSelected = false;
+                            }
+                            else
+                            {
+                                RouteDetailsPane.IsSelected = false;
+                                DestinationDetailsPane.IsSelected = true;
+                            }
                             break;
-                        case "SelectedTask":
-                            RouteDetailsPane.IsSelected = false;
+                        case "SelectedRouteTask":
                             DestinationDetailsPane.IsSelected = false;
-                            TaskDetailsPane.IsSelected = true;
+
+                            if (VM.Routes.SelectedRouteTask == null)
+                            {
+                                RouteDetailsPane.IsSelected = true;
+                                TaskDetailsPane.IsSelected = false;
+                            }
+                            else
+                            {
+                                RouteDetailsPane.IsSelected = false;
+                                TaskDetailsPane.IsSelected = true;
+                            }
                             break;
+
+                        #endregion
                     }
                 });
         }
@@ -121,18 +148,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             //TrackEventAction.Track("RoutePanes", "RoutePanesSelectionChanged", mainGroup.SelectedPane.ToString());
         }
 
-        private void AddNewRouteTaskButtonClick(object sender, RoutedEventArgs e)
-        {
-            //Analytics - Track when a new route task is created
-            Analytics.AddNewRouteTask();
-        }
-
-        private void DeleteRouteTaskButtonClick(object sender, RoutedEventArgs e)
-        {
-            //Analytics - Track when a route task is deleted
-            Analytics.DeleteRouteTask();
-        }
-
         #endregion
 
         #region DragAndDrop
@@ -147,7 +162,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (CheckSourceForHeaderCell(e.Options.Source))
                 return;
 
-            var draggedItems = e.Options.Payload as IEnumerable;
+            var draggedTaskHolders = e.Options.Payload as IEnumerable;
+
+            var draggedItems = (from object draggedItem in draggedTaskHolders
+                                select ((TaskHolder)draggedItem).ChildRouteTask).ToList();
 
             if (draggedItems == null) return;
 
@@ -174,13 +192,15 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                 #endregion
 
-                draggedItems = draggedItems as IEnumerable<object>;
+                //draggedItems = draggedItems as IEnumerable<object>;
 
                 foreach (var draggedItem in draggedItems)
                     AddToRouteRemoveFromTaskBoard(draggedItem, destination, dropPlacement, placeInRoute);
             }
 
             e.Handled = true;
+
+            VM.Routes.DispatcherSave();
         }
 
 
@@ -205,20 +225,21 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             var destination = destinationCheck.DataContext;
 
             //Collection of dragged items
-            var payloadCollection = (IEnumerable<object>)e.Options.Payload;
+            var payloadCollection = ((IEnumerable<object>)e.Options.Payload).Select(o => ((TaskHolder)o).ChildRouteTask).ToArray();
 
             //The first item, used in various checks to be sure that all dragged items have the same service, location, etc.
-            var payloadCheck = (RouteTask)(payloadCollection.FirstOrDefault());
+            var payloadCheck = payloadCollection.First();
+
 
             #region Setting Drag Cue off Different Conditions
 
             #region Check For Multiple Tasks Being Dragged
 
-            var routeTasks = draggedItems.OfType<RouteTask>();
+            var routeTasks = draggedItems.OfType<RouteTask>().ToArray();
 
             if (routeTasks.Count() > 1)
             {
-                var services = routeTasks.Select(rt => rt.Service).Where(s => s != null).Distinct();
+                var services = routeTasks.Select(rt => rt.ParentRouteTaskHolder.ServiceName).Where(n => n != null).Distinct();
 
                 if (services.Count() > 1)
                     return ErrorConstants.DifferentService;
@@ -231,6 +252,9 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             if (destination == null)
                 return "";
+
+            if (!(destination is Route) && !(destination is RouteDestination) && !(destination is RouteTask))
+                return ErrorConstants.CannotDropHere;
 
             #region Drag Destination is RouteTask
 
@@ -276,7 +300,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 var dragActionString = ((String)((TreeViewDragCue)e.Options.DragCue).DragActionContent);
 
                 //Checks to see if the dragged locations match the destinations location. Also makes sure that you are trying to drop in the destination before throwing an error.
-                if (((payloadCheck.Location != ((RouteDestination)destination).Location)) && dragActionString != null && dragActionString.Contains("in"))
+                if (((payloadCheck.LocationId != ((RouteDestination)destination).LocationId)) && dragActionString != null && dragActionString.Contains("in"))
                     return CommonErrorConstants.InvalidLocation;
             }
 
@@ -346,7 +370,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             DragDropTools.AddRouteTaskToRoute(routeTask, destination, placeInRoute, dropPlacement);
 
             //Remove the RouteTask from the TaskBoard
-            VM.Routes.UnroutedTasks.Remove((RouteTask)draggedItem);
+            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(((RouteTask)draggedItem).ParentRouteTaskHolder);
 
         }
 

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.Dispatcher.DestinationDetails" x:Name="myDestinationDetails"
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.DestinationDetails" x:Name="myDestinationDetails"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
@@ -6,13 +6,13 @@
     <UserControl.Resources>
         <Converters:StringToColorConverter x:Key="StringToColorConverter"/>
     </UserControl.Resources>
-    <ScrollViewer x:Name="LayoutRoot" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" DataContext="{Binding SelectedRouteDestination}">
-        <StackPanel>
+    <ScrollViewer x:Name="LayoutRoot" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" >
+        <StackPanel DataContext="{Binding SelectedRouteDestination}">
             <TextBlock Text="{Binding Location.Name}" FontWeight="Bold" TextAlignment="Center" />
             <TextBlock Text="Client" HorizontalAlignment="Center" FontWeight="Bold"/>
             <TextBlock Text="{Binding Client.OwnedParty.Name}" HorizontalAlignment="Center"/>
             <Rectangle Fill="Black" Height="1" Margin="5,3"/>
-            <Grid>
+            <Grid DataContext="{Binding Location}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto"/>
@@ -30,26 +30,26 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Location:" HorizontalAlignment="Right"/>
-                <TextBlock Text="{Binding Location.Name}" Grid.Column="1"/>
-                <TextBlock Text="Region:" HorizontalAlignment="Right" Grid.Row="3"/>
-                <TextBlock Text="{Binding Location.Region.Name}" Foreground="{Binding Location.Region.Color, Converter={StaticResource StringToColorConverter}}" Grid.Row="3" Grid.Column="1"/>
-                <TextBlock Text="Address:" HorizontalAlignment="Right" Grid.Row="4"/>
+                <TextBlock Text="Location: " HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding Name}" Grid.Column="1"/>
+                <TextBlock Text="Region: " HorizontalAlignment="Right" Grid.Row="3"/>
+                <TextBlock Text="{Binding Region.Name}" Foreground="{Binding Location.Region.Color, Converter={StaticResource StringToColorConverter}}" Grid.Row="3" Grid.Column="1"/>
+                <TextBlock Text="Address: " HorizontalAlignment="Right" Grid.Row="4"/>
                 <StackPanel Grid.Row="4" Grid.Column="1">
-                    <TextBlock Text="{Binding Location.AddressLineOne}" />
-                    <TextBlock Text="{Binding Location.AddressLineTwo}" />
+                    <TextBlock Text="{Binding AddressLineOne}" />
+                    <TextBlock Text="{Binding AddressLineTwo}" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Location.City}" />
+                        <TextBlock Text="{Binding City}" />
                         <TextBlock Text=", " />
-                        <TextBlock Text="{Binding Location.State}" />
+                        <TextBlock Text="{Binding State}" />
                         <TextBlock Text=" " />
-                        <TextBlock Text="{Binding Location.ZipCode}" />
+                        <TextBlock Text="{Binding ZipCode}" />
                     </StackPanel>
                 </StackPanel>
             </Grid>
             <Rectangle Fill="Black" Height="1" Margin="5,3"/>
             <TextBlock Text="Contact Info" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <ContactInfo:ContactInfoView HorizontalAlignment="Center" ContactInfoVM="{Binding DataContext.SelectedRouteDestinationClientContactInfoVM, ElementName=myDestinationDetails}"/>
+            <ContactInfo:ContactInfoView HorizontalAlignment="Center" ContactInfoVM="{Binding DataContext.SelectedRouteDestinationVM.ClientContactInfoVM, ElementName=myDestinationDetails}"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

@@ -99,13 +99,14 @@ namespace FoundOps.SLClient.UI.Tools
                 return;
             }
 
+            routeTask.RemoveRouteDestination();
+
             //Create new destination
             var newDestination = new RouteDestination
             {
                 Id = Guid.NewGuid(),
-                Location = routeTask.Location,
-                Client = routeTask.Client,
-
+                LocationId =  routeTask.LocationId,
+                ClientId = routeTask.ClientId
             };
 
             //Add the tasks to the destination
@@ -169,18 +170,18 @@ namespace FoundOps.SLClient.UI.Tools
         {
             if (payloadCheck is RouteDestination)
             {
-                var routeDestination = ((RouteDestination)payloadCheck).RouteTasks.FirstOrDefault();
-                if (routeDestination == null || routeDestination.Service == null || routeDestination.Service.ServiceTemplate == null)
+                var routetask = ((RouteDestination)payloadCheck).RouteTasks.FirstOrDefault();
+                if (routetask == null || routetask.ParentRouteTaskHolder.ServiceName == null)
                     return null;
 
-                return routeDestination.Service.ServiceTemplate.Name;
+                return routetask.ParentRouteTaskHolder.ServiceName;
             }
             if (payloadCheck is RouteTask)
             {
-                if (((RouteTask)payloadCheck).Service == null)
+                if (((RouteTask)payloadCheck).ParentRouteTaskHolder.ServiceName == null)
                     return null;
 
-                return ((RouteTask)payloadCheck).Service.ServiceTemplate.Name;
+                return ((RouteTask)payloadCheck).ParentRouteTaskHolder.ServiceName;
             }
 
             return null;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Web.Mvc;
@@ -10,8 +10,8 @@ namespace FoundOps.Server
     {
         public static bool IsDebugMode;
 
-        public static string RootUrl;
-        public static string RootBlogUrl;
+        public static string RootApplicationUrl;
+        public static string RootFrontSiteUrl;
 
         public static void RegisterRoutes(RouteCollection routes)
         {
@@ -36,11 +36,11 @@ namespace FoundOps.Server
         {
 #if DEBUG
             IsDebugMode = true;
-            RootUrl = "http://localhost:31820";
-            RootBlogUrl = "http://localhost:55206";
+            RootApplicationUrl = "http://localhost:31820";
+            RootFrontSiteUrl = "http://localhost:55206";
 #else
-            RootUrl = "https://app.foundops.com";
-            RootBlogUrl = "http://foundops.com";
+            RootApplicationUrl = "https://app.foundops.com";
+            RootFrontSiteUrl = "http://foundops.com";
 #endif
             RegisterRoutes(RouteTable.Routes);
         }

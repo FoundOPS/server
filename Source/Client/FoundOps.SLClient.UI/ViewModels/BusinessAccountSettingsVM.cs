@@ -23,12 +23,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="BusinessAccountSettingsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public BusinessAccountSettingsVM(DataManager dataManager)
-            : base(dataManager)
+        public BusinessAccountSettingsVM()
         {
-            _selectedBusinessAccount =dataManager.ContextManager.OwnerAccountObservable.SubscribeOnDispatcher().Select(ba => (BusinessAccount) ba)
+            _selectedBusinessAccount = Manager.Data.ContextManager.OwnerAccountObservable.SubscribeOnDispatcher().Select(ba => (BusinessAccount)ba)
                 .ToProperty(this, x => x.SelectedBusinessAccount);
         }
     }

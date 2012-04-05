@@ -1,21 +1,53 @@
 ﻿using FoundOps.Common.Silverlight.Tools;
-using Telerik.Windows.Controls;
-using System.Collections.ObjectModel;
-using FoundOps.Core.Context.Extensions;
 using FoundOps.Common.Silverlight.Interfaces;
+using FoundOps.Common.Silverlight.UI.Interfaces;
+using System.Linq;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class RouteDestination : IReject
+    public partial class RouteDestination : ILoadDetails, IReject
     {
-        partial void OnInitializedSilverlight()
+        #region Public Properties
+
+        #region Implementation of ILoadDetails
+
+        private bool _detailsLoaded;
+        /// <summary>
+        /// Gets or sets a value indicating whether [details loaded].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DetailsLoaded
         {
-            RouteTasksListWrapper = new OrderedEntityCollection<RouteTask>(this.RouteTasks, "OrderInRouteDestination", false);
-            this.RouteTasks.EntityAdded += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
-            this.RouteTasks.EntityRemoved += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
+            get { return _detailsLoaded; }
+            set
+            {
+                _detailsLoaded = value;
+                this.CompositeRaiseEntityPropertyChanged("DetailsLoaded");
+            }
+        }
+
+        #endregion
+
+        //NOTE: The notify property changed handling happens on the Server Extensions
+        public string Name
+        {
+            get
+            {
+                //If this Location is null, return the first RouteTask with a LocationName
+                if (Location == null)
+                {
+                    var routeTaskName = this.RouteTasks.Select(rt => rt.LocationName).FirstOrDefault(ln => !string.IsNullOrEmpty(ln));
+                    if (routeTaskName != null)
+                        return routeTaskName;
+                }
+
+                return Location != null ? this.Location.Name : "**********************";
+            }
         }
 
         private OrderedEntityCollection<RouteTask> _routeTasksListWrapper;
@@ -32,38 +64,26 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
-        //NOTE: The notify property changed handling happens on the Server Extensions
-        public string Name
+        #endregion
+
+        #region Constructor
+
+        partial void OnInitializedSilverlight()
         {
-            get { return Location != null ? this.Location.Name : "**********************"; }
+            RouteTasksListWrapper = new OrderedEntityCollection<RouteTask>(this.RouteTasks, "OrderInRouteDestination", false);
+            this.RouteTasks.EntityAdded += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
+            this.RouteTasks.EntityRemoved += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
         }
 
-        public ScheduleViewAppointment ScheduleViewAppointment
-        {
-            get
-            {
-                var apt = new ScheduleViewAppointment { Subject = this.Name, Location = this.Location.Name };
-                var newResource = new Resource();
-                newResource.ResourceName = this.Route.Name;
-                newResource.ResourceType = "Route";
-                apt.Resources.Add(newResource);
-                //TODO: Start and End Time
-                apt.Start = this.StartTime;
-                apt.End = this.EndTime;
-                var tasks = new ObservableCollection<RouteTask>();
-                foreach (var routeTask in this.RouteTasks)
-                {
-                    tasks.Add(routeTask);
-                    tasks.Add(routeTask);//testing code
-                }
-                apt.Tasks = tasks;
-                return apt;
-            }
-        }
+        #endregion
+
+        #region Public Methods
 
         public void Reject()
         {
             this.RejectChanges();
         }
+
+        #endregion
     }
 }

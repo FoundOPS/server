@@ -6,8 +6,10 @@
     [Notes]      NVARCHAR (MAX)   NULL,
     [EmployeeId] UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_EmployeeHistoryEntries] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_EmployeeHistoryEntryEmployee] FOREIGN KEY ([EmployeeId]) REFERENCES [dbo].[Employees] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_EmployeeHistoryEntryEmployee] FOREIGN KEY ([EmployeeId]) REFERENCES [dbo].[Employees] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 GO

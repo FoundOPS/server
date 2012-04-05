@@ -3,7 +3,7 @@
           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <assembly>
     <name>Telerik.Windows.Controls</name>
-    <version>2012.1.0221.1050</version>
+    <version>2012.1.0326.1050</version>
     <publickeytoken>5803cfa389c90ce7</publickeytoken>
     <relpath>Telerik.Windows.Controls.dll</relpath>
     <extension downloadUri="Telerik.Windows.Controls.zip" />

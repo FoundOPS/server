@@ -89,6 +89,9 @@
         <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.Progress">
             <Summary>Gets or sets Progress and notifies for changes</Summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.OriginalEvent">
+            <Summary>Gets or sets OriginalEvent and notifies for changes</Summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.GanttView.GanttTask">
             <summary>
             Represents the objects displayed from RadGanttView control. Every task can be a milestone, summary and a regular task.

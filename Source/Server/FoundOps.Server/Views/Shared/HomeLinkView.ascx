@@ -1,3 +1,3 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" %>
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" %>
 <%@ Import Namespace="FoundOps.Server" %>
-<big><a href="<%= Global.RootUrl%>">Home</a> </big>
+<big><a href="<%= Global.RootApplicationUrl%>">Home</a> </big>

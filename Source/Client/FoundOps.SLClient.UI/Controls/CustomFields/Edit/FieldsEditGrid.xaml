@@ -1,25 +1,25 @@
-﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.CustomFields.Edit.FieldsEditGrid" x:Name="myFieldsEditGrid"
+<UserControl x:Class="FoundOps.SLClient.UI.Controls.CustomFields.Edit.FieldsEditGrid" x:Name="myFieldsEditGrid"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"  
+    xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" 
     xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" 
-    xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" 
+    xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
     xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d">
     <UserControl.Resources>
-        <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:ComboBoxSelectedItemConverter x:Key="ComboBoxSelectedItemConverter"/>
-        <Converters1:NumericFieldToValueFormatConverter x:Key="NumericFieldToValueFormatConverter"/>
+        <Converters:DateTimeWithTodaysDateConverter x:Key="DateTimeWithTodaysDateConverter"/>
+        <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:OrderByNameConverter x:Key="OrderByNameConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
-                    <TextBlock Text=":" />
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
                 </StackPanel>
                 <StackPanel Grid.Column="2" Grid.Row="4" DataContext="{Binding Options, ConverterParameter=0, Converter={StaticResource ElementFromEnumerableConverter}}">
                     <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
@@ -29,20 +29,20 @@
         <DataTemplate x:Key="CheckListTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
-                    <TextBlock Text=":" />
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
                 </StackPanel>
                 <ItemsControl Grid.Column="2" Grid.Row="4" ItemsSource="{Binding OptionsWrapper}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Right"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                 <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -52,28 +52,29 @@
         <DataTemplate x:Key="ComboBoxTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
-                    <TextBlock Text=":" />
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
                 </StackPanel>
-                <telerik:RadComboBox Grid.Column="2" SelectedValue="{Binding Path=ThisField, Mode=TwoWay, Converter={StaticResource ComboBoxSelectedItemConverter}}" ItemsSource="{Binding OptionsWrapper}" DisplayMemberPath="Name" IsReadOnly="True"/>
+                <telerik:RadComboBox Grid.Column="2" SelectedValue="{Binding Path=ThisField, Mode=TwoWay, Converter={StaticResource ComboBoxSelectedItemConverter}}" 
+                                     ItemsSource="{Binding OptionsWrapper}" DisplayMemberPath="Name" IsReadOnly="True"/>
                 <!--bind item source to possible items-->
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="CurrencyTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
-                    <TextBlock Text=":" />
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
                 </StackPanel>
                 <telerik:RadMaskedCurrencyInput Grid.Column="2" Culture="en-US" TextMode="PlainText" Value="{Binding Value, Mode=TwoWay}"/>
                 <!--bind value, bind valueformat to currency, numeric, or percentage, bind numberdecimaldigits to decimals-->
@@ -81,66 +82,99 @@
         </DataTemplate>
         <DataTemplate x:Key="LocationTemplate">
             <Grid>
-                <Edit:LocationFieldEdit LocationField="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}" IsEnabled="{Binding IsGeneratedService, RelativeSource={RelativeSource AncestorType=Edit:FieldsEditGrid}, Converter={StaticResource NotExistsBoolConverter}}"/>
+                <Edit:LocationFieldEdit LocationField="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}" 
+                      IsEnabled="{Binding IsGeneratedService, RelativeSource={RelativeSource AncestorType=Edit:FieldsEditGrid}, Converter={StaticResource NotExistsBoolConverter}}"/>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="NumberPercentageTemplate">
+        <DataTemplate x:Key="NumberTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
-                    <TextBlock Text=":" />
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
                 </StackPanel>
                 <!--bind value, bind valueformat to currency, numeric, or percentage, bind numberdecimaldigits to decimals-->
-                <telerik:RadNumericUpDown Value="{Binding Value, Mode=TwoWay}" SmallChange=".05" IsEditable="True" Grid.Column="2" NumberDecimalDigits="{Binding DecimalPlaces}" ValueFormat="{Binding Mask, Converter={StaticResource NumericFieldToValueFormatConverter}}"/>
+                <telerik:RadNumericUpDown Value="{Binding Value, Mode=TwoWay}" SmallChange=".05" IsEditable="True" Grid.Column="2" 
+                     NumberDecimalDigits="{Binding DecimalPlaces}" ValueFormat="Numeric"/>
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="TextTemplate">
+        <DataTemplate x:Key="PercentageTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
-                    <TextBlock Text=":" />
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
+                </StackPanel>
+                <!--bind value, bind valueformat to currency, numeric, or percentage, bind numberdecimaldigits to decimals-->
+                <telerik:RadNumericUpDown Value="{Binding Value, Mode=TwoWay}" SmallChange=".05" IsEditable="True" Grid.Column="2" 
+                     NumberDecimalDigits="{Binding DecimalPlaces}" ValueFormat="Percentage"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="TextLgTemplate">
+            <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
                 </StackPanel>
                 <TextBox Grid.Column="2" TextWrapping="NoWrap" Text="{Binding Value, Mode=TwoWay}" AcceptsReturn="{Binding IsMultiline}"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="TextSmTemplate">
+            <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
+                </StackPanel>
+                <TextBox Grid.Column="2" TextWrapping="NoWrap" Text="{Binding Value, Mode=TwoWay}" AcceptsReturn="{Binding IsMultiline}" MaxLength="30" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="TimeTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
-                    <TextBlock Text=":" />
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
                 </StackPanel>
-                <telerik:RadDateTimePicker x:Name="DefaultDateTimePicker" Grid.Column="2" DateTimeWatermarkContent="Enter time" SelectedValue="{Binding Value, Mode=TwoWay}" InputMode="TimePicker"/>
+                <telerik:RadDateTimePicker x:Name="DefaultDateTimePicker" Grid.Column="2" DateTimeWatermarkContent="Enter time" InputMode="TimePicker"
+                                           SelectedValue="{Binding Value, Mode=TwoWay, Converter={StaticResource DateTimeWithTodaysDateConverter}}"/>
                 <!--bind text to text, bind textwrapping to small or large text box-->
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="ImageTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource LargeValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}"/>
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
                     <TextBlock Text=":" />
                 </StackPanel>
                 <Button Grid.Column="2" Content="Upload A File"/>
@@ -150,9 +184,9 @@
         </DataTemplate>
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                    CheckListTemplate="{StaticResource CheckListTemplate}" ComboBoxTemplate="{StaticResource ComboBoxTemplate}" 
-                   CurrencyTemplate="{StaticResource CurrencyTemplate}" LocationTemplate="{StaticResource LocationTemplate}"  NumberTemplate="{StaticResource NumberPercentageTemplate}" 
-                   PercentageTemplate="{StaticResource NumberPercentageTemplate}" TextLgTemplate="{StaticResource TextTemplate}" 
-                   TextSmTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+                   CurrencyTemplate="{StaticResource CurrencyTemplate}" LocationTemplate="{StaticResource LocationTemplate}"  NumberTemplate="{StaticResource NumberTemplate}" 
+                   PercentageTemplate="{StaticResource PercentageTemplate}" TextLgTemplate="{StaticResource TextLgTemplate}" 
+                   TextSmTemplate="{StaticResource TextSmTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
     </UserControl.Resources>
     <Grid>
         <Controls:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" 

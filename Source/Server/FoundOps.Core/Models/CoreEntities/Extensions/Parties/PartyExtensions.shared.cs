@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using FoundOps.Common.Composite.Entities;
 
 // ReSharper disable CheckNamespace
@@ -28,6 +28,12 @@ namespace FoundOps.Core.Models.CoreEntities
         public virtual void OnCreate()
         {
             Id = Guid.NewGuid();
+            if(this is Person)
+            {
+                ((Person) this).FirstName = "";
+                ((Person)this).LastName = "";
+                ((Person)this).MiddleInitial = "";
+            }
             OnCreation();
         }
 

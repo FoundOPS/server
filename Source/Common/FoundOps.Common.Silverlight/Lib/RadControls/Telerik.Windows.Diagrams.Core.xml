@@ -2074,7 +2074,7 @@
             </summary>
             <param name="e">The e.</param>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.GraphController.Clear">
+        <member name="M:Telerik.Windows.Diagrams.Core.GraphController.Clear(System.Boolean)">
             <summary>
             Clears the diagram and resets the document.
             </summary>
@@ -2702,6 +2702,11 @@
         <member name="P:Telerik.Windows.Diagrams.Core.DiagramConstants.ShapeToConnectorOffset">
             <summary>
             The offset between the shape and the connector.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.DiagramConstants.InitialZoomLevel">
+            <summary>
+            The default zooming step.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.DiagramConstants.DefaultZoomFactor">
@@ -7359,6 +7364,14 @@
             </summary>
             <param name="isSelectedInGroup">True if this instance is selected if group, otherwise false.</param>
         </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.IDiagramItem.IsEnabled">
+            <summary>
+            Gets or sets whether the diagram entity is enabled.
+            </summary>
+            <value>
+            	<c>True</c> if enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:Telerik.Windows.Diagrams.Core.IDiagramItem.IsSelected">
             <summary>
             Gets or sets whether the diagram entity is selected.
@@ -7369,7 +7382,7 @@
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.IDiagramItem.IsSelectedInGroup">
             <summary>
-            Gets or sets a value indicating whether this instance is selected in group.
+            Gets a value indicating whether this instance is selected in group.
             </summary>
             <value>
             	<c>True</c> if this instance is selected in group; otherwise, <c>false</c>.
@@ -7753,6 +7766,14 @@
             </summary>
             <value>
             	<c>True</c> if this instance is resizing enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.IsManipulationAdornerVisible">
+            <summary>
+            Gets or sets a value indicating whether the manipulation adorner is visible.
+            </summary>
+            <value>
+              <c>True</c> if the manipulation adorner is visible; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.IGraph.PositionX">
@@ -8776,6 +8797,11 @@
             The IsZoomEnabled constant.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Diagrams.Core.SerializationConstants.IsManipulationAdornerVisible">
+            <summary>
+            The IsManipulationAdornerVisible constant.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Diagrams.Core.SerializationConstants.IsConnectorsManipulationEnabled">
             <summary>
             The IsConnectorsManipulationEnabled constant.
@@ -9123,14 +9149,6 @@
             Gets the manipulation point.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ManipulationPointService.ManipulationInProgress">
-            <summary>
-            Gets a value indicating whether manipulation is in progress.
-            </summary>
-            <value>
-            	<c>True</c> if manipulation is in progress; otherwise, <c>false</c>.
-            </value>
-        </member>
         <member name="F:Telerik.Windows.Diagrams.Core.ManipulationPointService.LineOrientation.Horizontal">
             <summary>
             
@@ -9253,21 +9271,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="E:Telerik.Windows.Diagrams.Core.RotationService.SelectionBoundsChanged">
-            <summary>
-            Occurs when [selection bounds changed].
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.RotationService.SelectionBounds">
-            <summary>
-            Gets the starting selection bounds.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.RotationService.InflatedBounds">
-            <summary>
-            Gets the inflated bounds.
-            </summary>
-        </member>
         <member name="P:Telerik.Windows.Diagrams.Core.RotationService.CurrentAngle">
             <summary>
             Gets or sets the current rotation.
@@ -9384,6 +9387,17 @@
             Selects the next item in an ordered collection based on the current selected items.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SelectionService.UpdateSelectionBounds(System.Windows.Rect)">
+            <summary>
+            Updates the selection bounds.
+            </summary>
+            <param name="newBounds">The new bounds.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SelectionService.UpdateSelectionBounds">
+            <summary>
+            Updates the selection bounds.
+            </summary>
+        </member>
         <member name="E:Telerik.Windows.Diagrams.Core.SelectionService.SelectionChanged">
             <summary>
             Occurs when [selection ended].
@@ -9392,6 +9406,21 @@
         <member name="E:Telerik.Windows.Diagrams.Core.SelectionService.PreviewSelectionChanged">
             <summary>
             Occurs when [selection starts].
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Diagrams.Core.SelectionService.SelectionBoundsChanged">
+            <summary>
+            Occurs when selection bounds change].
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.SelectionService.SelectionBounds">
+            <summary>
+            Gets the starting selection bounds.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.SelectionService.InflatedBounds">
+            <summary>
+            Gets the inflated bounds.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.SelectionService.SelectedItems">
@@ -9442,6 +9471,13 @@
             The serialization info.
             </param>
         </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SerializationService.Serialize">
+            <summary>
+            Serializes the diagram.
+            </summary>
+            <returns>
+            </returns>
+        </member>
         <member name="M:Telerik.Windows.Diagrams.Core.SerializationService.DeserializeItems(Telerik.Windows.Diagrams.Core.SerializationInfo,System.Boolean)">
             <summary>
             Deserializes the items.
@@ -9451,23 +9487,6 @@
             </param>
             <param name="makeUnique">
             If set to <c>true</c> [make unique].
-            </param>
-            <returns>
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.SerializationService.Serialize">
-            <summary>
-            Serializes the diagram.
-            </summary>
-            <returns>
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.SerializationService.SerializeConnections(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IConnection})">
-            <summary>
-            Serializes the connections.
-            </summary>
-            <param name="connections">
-            The connections.
             </param>
             <returns>
             </returns>
@@ -9489,6 +9508,16 @@
             </summary>
             <param name="shapes">
             The shapes.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SerializationService.SerializeConnections(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IConnection})">
+            <summary>
+            Serializes the connections.
+            </summary>
+            <param name="connections">
+            The connections.
             </param>
             <returns>
             </returns>
@@ -9519,11 +9548,6 @@
             <summary>
             Serializes the metadata of the diagram.
             </summary>
-            <param name="diagram">
-            The metadata.
-            </param>
-            <returns>
-            </returns>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.SerializationService.DeserializeMetadata(System.String)">
             <summary>

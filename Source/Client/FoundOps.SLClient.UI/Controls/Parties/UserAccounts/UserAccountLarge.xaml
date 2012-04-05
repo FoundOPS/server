@@ -6,17 +6,5 @@
              ViewModelLocator:ViewModelLocator.SharedViewModel="UserAccountsVM" mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="400">
     <StackPanel>
         <UserAccounts:UserAccountEdit ISaveDiscardChangesCommands="{Binding}" Entity="{Binding SelectedEntity}"/>
-        <!--Employees Grid-->
-        <toolkit:Expander Margin="5" IsExpanded="true" Style="{StaticResource ExpanderStyle}" BorderBrush="{StaticResource EmployeeBrush}">
-            <toolkit:Expander.Header>
-                <TextBlock Text="Employees" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource EmployeeBrush}" />
-            </toolkit:Expander.Header>
-            <telerik:RadGridView AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
-            RowIndicatorVisibility="Collapsed" ItemsSource="{Binding SelectedEntity.LinkedEmployees}">
-                <telerik:RadGridView.Columns>
-                    <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding DisplayName}" Width="*"/>
-                </telerik:RadGridView.Columns>
-            </telerik:RadGridView>
-        </toolkit:Expander>
     </StackPanel>
 </UserControl>

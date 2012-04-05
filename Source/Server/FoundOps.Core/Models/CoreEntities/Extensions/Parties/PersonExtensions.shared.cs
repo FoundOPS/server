@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FoundOps.Common.Composite.Entities;
 
 //This is a partial class, must be in the same namespace so disable warning
 // ReSharper disable CheckNamespace

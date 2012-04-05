@@ -1,16 +1,15 @@
-﻿using FoundOps.Common.NET;
+using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
-using FoundOps.Core.Models.QuickBooks;
-using FoundOps.Core.Server.Blocks;
+using FoundOps.Server.Authentication;
 using FoundOps.Server.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.Objects;
 using System.Linq;
 using System.Reflection;
-using FoundOps.Core.Tools;
 using System.Security.Authentication;
 using System.ServiceModel.DomainServices.EntityFramework;
 using System.ServiceModel.DomainServices.Hosting;
@@ -32,9 +31,14 @@ namespace FoundOps.Server.Services.CoreDomainService
     {
         protected override bool PersistChangeSet()
         {
-            //Get any files that were just deleted
+           //var original = this.ChangeSet.GetOriginal(this.ChangeSet.ChangeSetEntries.FirstOrDefault().Entity);
+
+           //if (original != ChangeSet.ChangeSetEntries.FirstOrDefault())
+           //     original = this.ChangeSet.ChangeSetEntries.FirstOrDefault();
+
+          //Get any files that were just deleted
             var deletedFiles =
-                this.ChangeSet.ChangeSetEntries.Where(cse => cse.Entity is File && cse.Operation == DomainOperation.Delete)
+              this.ChangeSet.ChangeSetEntries.Where(cse => cse.Entity is File && cse.Operation == DomainOperation.Delete)
                 .Select(cse => cse.Entity as File);
 
             //Delete the files from cloud storage
@@ -57,45 +61,49 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IEnumerable<Block> GetBlocks()
         {
-            return ObjectContext.Blocks;
+            throw new NotSupportedException("Exists solely to generate Blocks in the clients data project");
         }
 
-        #region Businesses
+        #region Businesses and BusinessAccounts
 
+        /// <summary>
+        /// Gets all the BusinessAccounts
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
         public IQueryable<Party> GetBusinessAccountsForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            //Make sure current account is a FoundOPS account
+            return businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id
+                       ? null
+                       : this.ObjectContext.Parties.OfType<BusinessAccount>().OrderBy(b => b.Name);
+        }
+
+        /// <summary>
+        /// Gets the BusinessAccount details.
+        /// It includes the ContactInfoSet, ServiceTemplates, OwnedRoles, OwnedRoles.MemberParties, and PartyImage.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="businessAccountId">The businessAccount id.</param>
+        public Party GetBusinessAccountDetailsForRole(Guid roleId, Guid businessAccountId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             //Make sure current account is a FoundOPS account
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
                 return null;
 
-            var businessAccounts = this.ObjectContext.Parties.OfType<BusinessAccount>().Include("ServiceTemplates")
-                .Include("ContactInfoSet").Include("OwnedRoles").Include("OwnedRoles.MemberParties");
+            var businessAccount = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId)
+                .Include("ContactInfoSet").Include("ServiceTemplates").Include("OwnedRoles").Include("OwnedRoles.MemberParties").FirstOrDefault();
 
             //Force load PartyImage
-            var t = (from ba in businessAccounts
-                     join pi in this.ObjectContext.Files.OfType<PartyImage>()
-                         on ba.Id equals pi.Id
-                     select pi).ToArray();
-            var count = t.Count();
+            businessAccount.PartyImageReference.Load();
 
-            return businessAccounts;
+            return businessAccount;
         }
 
-        public BusinessAccount BusinessAccountWithClientsForRole(Guid roleId)
-        {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
-            return businessForRole == null
-                       ? null
-                       : this.ObjectContext.Parties.OfType<BusinessAccount>().Include("Clients")
-                       .FirstOrDefault(ba => ba.Id == businessForRole.Id);
-        }
-
-        public Business BusinessForRole(Guid roleId)
-        {
-            return ObjectContext.BusinessForRole(roleId);
-        }
 
         #endregion
 
@@ -104,7 +112,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         private void UpdateBusinessAccount(BusinessAccount account)
         {
             //Only FoundOPS admin accounts or a user with admin capabilities for the current account can update the account
-            if (!this.ObjectContext.CurrentUserHasFoundOPSAdminAccess() && !this.ObjectContext.CurrentUserCanAdministerThisParty(account.Id))
+            if (!this.ObjectContext.CurrentUserCanAdministerFoundOPS() && !this.ObjectContext.CurrentUserCanAdministerParty(account.Id))
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
             this.ObjectContext.DetachExistingAndAttach(account);
@@ -112,7 +120,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var originalBusinessAccount = this.ChangeSet.GetOriginal(account);
 
             //Only FoundOPS's admins can change the MaxRoutes
-            if (originalBusinessAccount.MaxRoutes != account.MaxRoutes && !this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
+            if (originalBusinessAccount.MaxRoutes != account.MaxRoutes && !this.ObjectContext.CurrentUserCanAdministerFoundOPS())
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
             this.ObjectContext.Parties.AttachAsModified(account);
@@ -124,48 +132,48 @@ namespace FoundOps.Server.Services.CoreDomainService
                 throw new InvalidOperationException("You are trying to delete the FoundOPS account?!");
 
             //Make sure current account is a FoundOPS account
-            if (!this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
+            if (!this.ObjectContext.CurrentUserCanAdministerFoundOPS())
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
-            businessAccountToDelete.Employees.Load();
-            foreach (var employee in businessAccountToDelete.Employees.ToList())
-                this.DeleteEmployee(employee);
 
-            businessAccountToDelete.Regions.Load();
-            foreach (var region in businessAccountToDelete.Regions.ToList())
-                this.DeleteRegion(region);
+            throw new InvalidOperationException("Deleting BusinessAccounts has been temporarily disabled...Sorry Patrick");
+            //ObjectContext.DeleteBusinessAccountBasedOnId(businessAccountToDelete.Id);
 
-            businessAccountToDelete.RouteTasks.Load();
-            foreach (var routeTask in businessAccountToDelete.RouteTasks.ToList())
-                this.DeleteRouteTask(routeTask);
+            #region NOT USED TO DELETE ANYMORE
 
-            businessAccountToDelete.Routes.Load();
-            foreach (var route in businessAccountToDelete.Routes.ToList())
-                this.DeleteRoute(route);
+            //businessAccountToDelete.ServicesToProvide.Load();
+            //foreach (var service in businessAccountToDelete.ServicesToProvide.ToList())
+            //    this.DeleteService(service);
 
-            businessAccountToDelete.ServicesToProvide.Load();
-            foreach (var service in businessAccountToDelete.ServicesToProvide.ToList())
-                this.DeleteService(service);
+            ////Stored procedure that will find all ServiceTemplates on this BusinessAccount
+            ////Then it will find all of the children of those ServiceTemplates
+            ////Then it will delete all of them
+            //ObjectContext.DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId(businessAccountToDelete.Id);
 
-            businessAccountToDelete.Clients.Load();
-            foreach (var client in businessAccountToDelete.Clients.ToList())
-                this.DeleteClient(client);
+            //businessAccountToDelete.Employees.Load();
+            //foreach (var employee in businessAccountToDelete.Employees.ToList())
+            //    this.DeleteEmployee(employee);
 
-            //This must be after Services
-            //Delete all ServiceTemplates that do not have delete ChangeSetEntries
-            var serviceTemplatesToDelete = businessAccountToDelete.ServiceTemplates.Where(st =>
-                        !ChangeSet.ChangeSetEntries.Any(cse => cse.Operation == DomainOperation.Delete &&
-                        cse.Entity is ServiceTemplate && ((ServiceTemplate)cse.Entity).Id == st.Id))
-                        .ToArray();
+            //businessAccountToDelete.Regions.Load();
+            //foreach (var region in businessAccountToDelete.Regions.ToList())
+            //    this.DeleteRegion(region);
 
-            foreach (var serviceTemplate in serviceTemplatesToDelete)
-                this.DeleteServiceTemplate(serviceTemplate);
+            //businessAccountToDelete.RouteTasks.Load();
+            //foreach (var routeTask in businessAccountToDelete.RouteTasks.ToList())
+            //    this.DeleteRouteTask(routeTask);
 
-            businessAccountToDelete.Invoices.Load();
-            foreach (var invoice in businessAccountToDelete.Invoices.ToList())
-                this.DeleteInvoice(invoice);
+            //businessAccountToDelete.Routes.Load();
+            //foreach (var route in businessAccountToDelete.Routes.ToList())
+            //    this.DeleteRoute(route);
 
-            QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
+            //businessAccountToDelete.Clients.Load();
+            //foreach (var client in businessAccountToDelete.Clients.ToList())
+            //    this.DeleteClient(client);
+
+            #endregion
+
+            //TODO: When quickbooks is setup
+            //QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
         }
 
         #endregion
@@ -295,7 +303,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public Party PartyForRole(Guid roleId)
         {
-            return this.ObjectContext.PartyForRole(roleId);
+            return this.ObjectContext.OwnerPartyOfRole(roleId);
         }
 
         public Party PartyToAdministerForRole(Guid roleId)
@@ -343,59 +351,71 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             if ((party.EntityState == EntityState.Detached))
                 this.ObjectContext.Parties.Attach(party);
-
-            party.Locations.Load();
-            party.OwnedLocations.Load();
-            party.ClientOwnerReference.Load();
-            party.Contacts.Load();
-            party.ContactInfoSet.Load();
+            
             party.PartyImageReference.Load();
-            party.OwnedRoles.Load();
-            party.Vehicles.Load();
-
-            party.RoleMembership.Load();
-            party.RoleMembership.Clear();
 
             if (party.PartyImage != null)
                 this.DeleteFile(party.PartyImage);
 
-            var accountLocations = party.OwnedLocations.ToArray();
-            foreach (var location in accountLocations)
-                this.DeleteLocation(location);
-
-            var partyLocations = party.Locations.ToArray();
-            foreach (var location in partyLocations)
-                this.DeleteLocation(location);
-
-            var contacts = party.Contacts.ToArray();
-            foreach (var contact in contacts)
-                this.DeleteContact(contact);
-
-            var contactInfoSetToRemove = party.ContactInfoSet.ToArray();
-            foreach (var contactInfo in contactInfoSetToRemove)
-                this.DeleteContactInfo(contactInfo);
-
-            var ownedRolesToDelete = party.OwnedRoles.ToArray();
-            foreach (var ownedRole in ownedRolesToDelete)
-                this.DeleteRole(ownedRole);
-
-            var vehicles = party.Vehicles.ToArray();
-            foreach (var vehicle in vehicles)
-                this.DeleteVehicle(vehicle);
-
             var businessAccountToDelete = party as BusinessAccount;
+            var userAccountToDelete = party as UserAccount;
+
             if (businessAccountToDelete != null)
                 DeleteBusinessAccount(businessAccountToDelete);
+            else if (userAccountToDelete != null)
+                ObjectContext.DeleteUserAccountBasedOnId(userAccountToDelete.Id);
+            
+            #region NOT USED TO DELETE ANYMORE
+            //party.Locations.Load();
+                //party.OwnedLocations.Load();
+                //party.ClientOwnerReference.Load();
+                //party.Contacts.Load();
+                //party.ContactInfoSet.Load();
+                //party.OwnedRoles.Load();
+                //party.Vehicles.Load();
+                //party.OwnedFiles.Load();
 
-            if ((party.EntityState != EntityState.Detached))
-            {
-                this.ObjectContext.ObjectStateManager.ChangeObjectState(party, EntityState.Deleted);
-            }
-            else
-            {
-                this.ObjectContext.Parties.Attach(party);
-                this.ObjectContext.Parties.DeleteObject(party);
-            }
+                //party.RoleMembership.Load();
+                //party.RoleMembership.Clear();
+
+                //var accountLocations = party.OwnedLocations.ToArray();
+                //foreach (var location in accountLocations)
+                //    this.DeleteLocation(location);
+
+                //var partyLocations = party.Locations.ToArray();
+                //foreach (var location in partyLocations)
+                //    this.DeleteLocation(location);
+
+                //var contacts = party.Contacts.ToArray();
+                //foreach (var contact in contacts)
+                //    this.DeleteContact(contact);
+
+                //var contactInfoSetToRemove = party.ContactInfoSet.ToArray();
+                //foreach (var contactInfo in contactInfoSetToRemove)
+                //    this.DeleteContactInfo(contactInfo);
+
+                //var ownedRolesToDelete = party.OwnedRoles.ToArray();
+                //foreach (var ownedRole in ownedRolesToDelete)
+                //    this.DeleteRole(ownedRole);
+
+                //var vehicles = party.Vehicles.ToArray();
+                //foreach (var vehicle in vehicles)
+                //    this.DeleteVehicle(vehicle);
+
+                //var files = party.OwnedFiles.ToArray();
+                //foreach (var file in files)
+                //    this.DeleteFile(file);
+
+                //if ((party.EntityState != EntityState.Detached))
+                //{
+                //    this.ObjectContext.ObjectStateManager.ChangeObjectState(party, EntityState.Deleted);
+                //}
+                //else
+                //{
+                //    this.ObjectContext.Parties.Attach(party);
+                //    this.ObjectContext.Parties.DeleteObject(party);
+            //}
+            #endregion
         }
 
         #endregion
@@ -404,7 +424,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<Repeat> GetRepeats()
         {
-            return this.ObjectContext.Repeats;
+            throw new NotSupportedException("Exists solely to generate Repeats in the clients data project");
         }
 
         public void InsertRepeat(Repeat repeat)
@@ -487,6 +507,11 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region User Accounts
 
+        /// <summary>
+        /// Gets the current user account. Includes RoleMembership, RoleMembership.OwnerParty, OwnedRoles, OwnedRoles.Blocks, LinkedEmployees
+        /// and PartyImage.
+        /// TODO optimize
+        /// </summary>
         public UserAccount CurrentUserAccount()
         {
             var currentUserAccount = ((ObjectQuery<UserAccount>)AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext))
@@ -499,16 +524,75 @@ namespace FoundOps.Server.Services.CoreDomainService
             return currentUserAccount;
         }
 
-        public IEnumerable<Party> GetAllUserAccounts(Guid roleId)
+        /// <summary>
+        /// Returns the UserAccounts the current role has access to.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="serviceProviderId">(Optional) filter user accounts that are in a owned role of this service provider.</param>
+        public IQueryable<Party> GetUserAccounts(Guid roleId, Guid serviceProviderId)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            //make sure current account is a foundops account
+            IQueryable<UserAccount> accesibleUserAccounts;
+
+            //If the current account is a foundops account, return all user accounts
             if (businessForRole.Id == BusinessAccountsDesignData.FoundOps.Id)
-                return this.ObjectContext.Parties.OfType<UserAccount>();
+            {
+                accesibleUserAccounts = this.ObjectContext.Parties.OfType<UserAccount>();
+            }
+            else
+            {
+                //If not a FoundOPS account, return the current business's owned roles memberparties
+                accesibleUserAccounts =
+                    from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == businessForRole.Id)
+                    from userAccount in this.ObjectContext.Parties.OfType<UserAccount>()
+                    where role.MemberParties.Any(p => p.Id == userAccount.Id)
+                    select userAccount;
+            }
 
-            //Filter by current businesses role
-            return businessForRole.OwnedRoles.SelectMany(or => or.MemberParties);
+            //If the serviceProviderId context is not empty
+            //Filter only user accounts that are member parties of one of it's roles
+            if (serviceProviderId != Guid.Empty)
+            {
+                return from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == serviceProviderId)
+                       from userAccount in accesibleUserAccounts
+                       where role.MemberParties.Any(p => p.Id == userAccount.Id)
+                       orderby userAccount.LastName + " " + userAccount.FirstName
+                       select userAccount;
+            }
+
+            return accesibleUserAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName);
+        }
+
+        /// <summary>
+        /// Gets the UserAccount details.
+        /// It includes the ContactInfoSet and PartyImage.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="userAccountId">The user account id.</param>
+        public Party GetUserAccountDetailsForRole(Guid roleId, Guid userAccountId)
+        {
+            var userAccount = GetUserAccounts(roleId, Guid.Empty).Include("ContactInfoSet").FirstOrDefault(ua => ua.Id == userAccountId);
+
+            //Force load PartyImage
+            userAccount.PartyImageReference.Load();
+
+            return userAccount;
+        }
+
+        /// <summary>
+        /// Returns the UserAccounts the current role has access to filtered by the search text.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="searchText">The search text.</param>
+        public IQueryable<Party> SearchUserAccountsForRole(Guid roleId, string searchText)
+        {
+            var userAccounts = GetUserAccounts(roleId, Guid.Empty).OfType<UserAccount>();
+
+            if (!String.IsNullOrEmpty(searchText))
+                userAccounts = userAccounts.Where(ua => ua.FirstName.StartsWith(searchText) || ua.LastName.StartsWith(searchText));
+
+            return userAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName);
         }
 
         public void InsertUserAccount(UserAccount userAccount)
@@ -530,7 +614,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Update]
         public void UpdateUserAccount(UserAccount currentUserAccount)
         {
-            if (!ObjectContext.CurrentUserCanAdministerThisParty(currentUserAccount.Id) || !this.ObjectContext.CurrentUserHasFoundOPSAdminAccess())
+            if (!ObjectContext.CurrentUserCanAdministerParty(currentUserAccount.Id) || !this.ObjectContext.CurrentUserCanAdministerFoundOPS())
                 throw new AuthenticationException();
 
             //Check if there is a temporary password

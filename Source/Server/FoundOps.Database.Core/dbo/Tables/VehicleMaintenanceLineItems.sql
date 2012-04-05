@@ -5,8 +5,10 @@
     [Details]                      NVARCHAR (MAX)   NULL,
     [VehicleMaintenanceLogEntryId] UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_VehicleMaintenanceLineItems] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_VehicleMaintenanceLogEntryLineItem] FOREIGN KEY ([VehicleMaintenanceLogEntryId]) REFERENCES [dbo].[VehicleMaintenanceLog] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_VehicleMaintenanceLogEntryLineItem] FOREIGN KEY ([VehicleMaintenanceLogEntryId]) REFERENCES [dbo].[VehicleMaintenanceLog] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 GO

@@ -12,13 +12,21 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (3/7/2012)
+                (4/4/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            * Made route selection more intuitive.<LineBreak/>
-            * Fixed popup placements.<LineBreak/>
-            * Updated administrative tools: Optimized importer and update business account settings.<LineBreak/>
+            * OPTIMIZATION: Dispatcher, Employees, Locations, Services, and Vehicles.<LineBreak/>
+            * GENERAL: Overall system stability improvements. <LineBreak/>
+            * DISPATCHER: Added the ability to filter routes by region. <LineBreak/>
+            * DISPATCHER: The filter now also filters tasks. Only visible tasks and routes<LineBreak/>
+            * will be assigned when you click "Auto Assign Jobs".<LineBreak/>
+            * DISPATCHER: Added fields to manifests.<LineBreak/>
+            * DISPATCHER: Fixed manifest formatting.<LineBreak/>
+            * DISPATCHER: Dragging and dropping now automatically saves.<LineBreak/>
+            * DISPATCHER: Fixed crashing issue when printing manifests.<LineBreak/>
+            * SERVICES: Can now edit today's and future service dates.<LineBreak/>
+            * SERVICES: Fixed issues adding and editing individual services.<LineBreak/>
         </TextBlock>
     </Grid>
 </sdk:Page>

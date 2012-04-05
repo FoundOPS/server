@@ -5,7 +5,6 @@ using ReactiveUI.Xaml;
 using System.ComponentModel;
 using MEFedMVVM.ViewModelLocator;
 using System.Collections.Generic;
-using FoundOps.Core.Context.Services;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using System.ComponentModel.Composition;
@@ -18,7 +17,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A VM which manages Contact's ClientTitles
     /// </summary>
     [ExportViewModel("ClientTitlesVM")]
-    public class ClientTitlesVM : CoreEntityCollectionInfiniteAccordionVM<ClientTitle>
+    public class ClientTitlesVM : InfiniteAccordionVM<ClientTitle, ClientTitle>
     {
         //Public
 
@@ -27,12 +26,15 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public IEnumerable<string> DistinctTitles
         {
-            get { return Context.ClientTitles.Select(t => t.Title).Distinct().OrderBy(t => t); }
+            get { return DomainContext.ClientTitles.Select(t => t.Title).Distinct().OrderBy(t => t); }
         }
 
         //Local
         private ClientTitle _clientTitleInCreation;
-        public ClientTitle ClientTitleInCreation //Only public for this.WhenAny 
+        /// <summary>
+        /// Only public for this.WhenAny. TODO, update to use AddToDeleteFrom
+        /// </summary>
+        public ClientTitle ClientTitleInCreation
         {
             get { return _clientTitleInCreation; }
             set
@@ -61,12 +63,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientTitlesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ClientTitlesVM(DataManager dataManager)
-            : base(dataManager)
+        public ClientTitlesVM() : base(new [] { typeof(Contact) })
         {
-            SetupMainQuery(DataManager.Query.ClientTitles, entities => this.RaisePropertyChanged("DistinctTitles"), "Title");
+            //TODO Optimization
+            //SetupMainQuery(DataManager.Query.ClientTitles, entities => this.RaisePropertyChanged("DistinctTitles"), "Title");
 
             #region Register Commands
 
@@ -81,7 +82,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (ClientTitleInCreation == null) return;
 
                 //Add the ClientTitleInCreation to the DCV
-                ((IList<ClientTitle>)this.DomainCollectionView.SourceCollection).Add(ClientTitleInCreation);
+                ((IList<ClientTitle>)this.CollectionView.SourceCollection).Add(ClientTitleInCreation);
                 ClientTitleInCreation = null;
             });
 
@@ -97,7 +98,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public void DeleteClientTitleInCreation()
         {
-            this.Context.ClientTitles.Remove(ClientTitleInCreation);
+            this.DomainContext.ClientTitles.Remove(ClientTitleInCreation);
             ClientTitleInCreation = null;
         }
 
@@ -114,14 +115,14 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         //Overridden
 
-        protected override bool EntityIsPartOfView(ClientTitle entity, bool isNew)
-        {
-            var contactContext = ContextManager.GetContext<Contact>();
+        //protected override bool EntityIsPartOfView(ClientTitle entity, bool isNew)
+        //{
+        //    var contactContext = ContextManager.GetContext<Contact>();
 
-            if (contactContext == null) return true;
+        //    if (contactContext == null) return true;
 
-            return entity.ContactId == contactContext.Id;
-        }
+        //    return entity.ContactId == contactContext.Id;
+        //}
 
 
         #endregion

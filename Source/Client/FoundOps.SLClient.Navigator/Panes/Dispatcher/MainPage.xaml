@@ -4,7 +4,9 @@
         xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
         xmlns:Dispatcher1="clr-namespace:FoundOps.Framework.Views.Controls.Dispatcher;assembly=FoundOps.SLClient.UI" xmlns:Dispatcher2="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher;assembly=FoundOps.SLClient.UI" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.Navigator.Panes.Dispatcher"
-        mc:Ignorable="d" Height="600" Width="890" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM">
+          xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools;assembly=FoundOps.SLClient.UI"
+          xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI"
+          mc:Ignorable="d" Height="600" Width="890" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM">
     <UserControl.Resources>
         <DataTemplate x:Key="DragCueTemplate">
             <telerik:RadDockPanel Margin="2" MaxWidth="200">
@@ -27,17 +29,9 @@
                     <telerik:RadPane Header="Task Board" telerik:RadDocking.SerializationTag="TaskBoard" ContextMenuTemplate="{x:Null}" CanUserClose="False">
                         <telerik:RadPane.TitleTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Task Board" />
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                        <telerik:RadButton Content="Add" Command="{Binding DataContext.AddRouteTask, ElementName=myDispatcherMainPage}" Click="AddNewRouteTaskButtonClick"/>
-                                        <telerik:RadButton Content="Delete" Command="{Binding DataContext.DeleteRouteTasks, ElementName=myDispatcherMainPage}" Click="DeleteRouteTaskButtonClick"/>
+                                    <StackPanel>
+                                        <TextBlock Text="Task Board" />
                                     </StackPanel>
-                                </Grid>
                             </DataTemplate>
                         </telerik:RadPane.TitleTemplate>
                         <Dispatcher2:TaskBoard x:Name="TaskBoard" telerik:RadDragAndDropManager.AutoDrag="True"/>
@@ -51,22 +45,25 @@
                     </telerik:RadPane>
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>
-            <telerik:RadSplitContainer InitialPosition="DockedRight" Orientation="Horizontal" Width="220">
+            <telerik:RadSplitContainer InitialPosition="DockedRight" Orientation="Horizontal" Width="240">
                 <telerik:RadPaneGroup x:Name="DetailsPaneGroup" IsEnabled="True" TabStripPlacement="Top" TabOrientation="Horizontal">
                     <telerik:RadPane x:Name="RouteDetailsPane" telerik:RadDocking.SerializationTag="Route" Header="Route" ContextMenuTemplate="{x:Null}" CanUserClose="False"
                                          IsEnabled="{Binding SelectedEntity, Converter={StaticResource ExistsBoolConverter}}">
                         <Dispatcher2:RouteDetails Visibility="{Binding DataContext.SelectedEntity,
-                            RelativeSource={RelativeSource AncestorType=Dispatcher:MainPage}, Converter={StaticResource VisibilityConverter}}"/>
+                            RelativeSource={RelativeSource AncestorType=Dispatcher:MainPage}, Converter={StaticResource VisibilityConverter}}"
+                                                       IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:RoutesVM}}" />
                     </telerik:RadPane>
                     <telerik:RadPane x:Name="DestinationDetailsPane" telerik:RadDocking.SerializationTag="Destination" Visibility="Visible" Header="Destination" ContextMenuTemplate="{x:Null}"
                                          CanUserClose="False" IsEnabled="{Binding SelectedRouteDestination, Converter={StaticResource ExistsBoolConverter}}">
-                        <Dispatcher1:DestinationDetails Visibility="{Binding DataContext.SelectedRouteDestination,
-                            RelativeSource={RelativeSource AncestorType=Dispatcher:MainPage}, Converter={StaticResource VisibilityConverter}}"/>
+                        <Dispatcher2:DestinationDetails Visibility="{Binding DataContext.SelectedRouteDestination,
+                            RelativeSource={RelativeSource AncestorType=Dispatcher:MainPage}, Converter={StaticResource VisibilityConverter}}"
+                                                       IsEnabled="{Binding SelectedRouteDestination.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:RoutesVM}}" />
                     </telerik:RadPane>
                     <telerik:RadPane x:Name="TaskDetailsPane" telerik:RadDocking.SerializationTag="Task" Visibility="Visible" Header="Task" ContextMenuTemplate="{x:Null}" CanUserClose="False" 
-                                         IsEnabled="{Binding SelectedTask, Converter={StaticResource ExistsBoolConverter}}">
-                        <Dispatcher1:TaskDetails Visibility="{Binding DataContext.SelectedTask,
-                            RelativeSource={RelativeSource AncestorType=Dispatcher:MainPage}, Converter={StaticResource VisibilityConverter}}"/>
+                                         IsEnabled="{Binding SelectedRouteTask, Converter={StaticResource ExistsBoolConverter}}">
+                        <Dispatcher1:TaskDetails Visibility="{Binding DataContext.SelectedRouteTask,
+                            RelativeSource={RelativeSource AncestorType=Dispatcher:MainPage}, Converter={StaticResource VisibilityConverter}}"
+                                                       IsEnabled="{Binding SelectedRouteTask.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:RoutesVM}}" />
                     </telerik:RadPane>
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>

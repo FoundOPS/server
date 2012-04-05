@@ -1,12 +1,11 @@
-﻿using System.Linq;
-using System.Reactive.Linq;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.Core.Context.Services;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.Core.Models.CoreEntities;
-using System.ComponentModel.Composition;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
+using System;
+using System.ComponentModel.Composition;
+using System.Reactive.Linq;
+using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -14,59 +13,52 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Contacts
     /// </summary>
     [ExportViewModel("ContactsVM")]
-    public class ContactsVM : CoreEntityCollectionInfiniteAccordionVM<Contact>
+    public class ContactsVM : InfiniteAccordionVM<Contact, Contact>
     {
+        #region Public
+
         private readonly ObservableAsPropertyHelper<PartyVM> _selectedContactPersonVM;
         /// <summary>
         /// Gets the selected Contact's PartyVM
         /// </summary>
         public PartyVM SelectedContactPersonVM { get { return _selectedContactPersonVM.Value; } }
 
+        #endregion
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ContactsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public ContactsVM(DataManager dataManager)
-            : base(dataManager)
+        public ContactsVM()
+            : base(new[] { typeof(Client) })
         {
-            this.SetupMainQuery(DataManager.Query.Contacts, null, "DisplayName");
+            SetupDataLoading();
 
             //Setup the selected contact's OwnedPerson PartyVM whenever the selected contact changes
             _selectedContactPersonVM =
-                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson, this.DataManager))
+                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson))
                 .ToProperty(this, x => x.SelectedContactPersonVM);
+        }
+
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
+        private void SetupDataLoading()
+        {
+            SetupContextDataLoading(roleId => DomainContext.GetContactsForRoleQuery(roleId),
+                                    new[] { new ContextRelationshipFilter("OwnerPartyId",  typeof(Client), v => ((Client)v).Id) }, false, ContextLoadingType.NoRequiredContext);
+
+            //Whenever the contact changes load the contact info
+            SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Subscribe(selectedContact =>
+                DomainContext.Load(DomainContext.GetContactInfoSetQuery().Where(c => c.PartyId == selectedContact.Id)));
         }
 
         #region Logic
 
-        protected override bool BeforeSaveCommand()
-        {
-            return true;
-        }
-
-        protected override bool EntityIsPartOfView(Contact entity, bool isNew)
-        {
-            if (isNew)
-                return true;
-
-            var entityIsPartOfView = true;
-
-            //Setup filters
-
-            var clientContext = ContextManager.GetContext<Client>();
-            if (clientContext != null)
-                entityIsPartOfView = clientContext.ClientTitles.Any(ct => entity.Id == ct.ContactId && ct.ClientId == clientContext.Id);
-
-            var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
-
-            if (businessAccountContext != null)
-                entityIsPartOfView = entityIsPartOfView && entity.Id == businessAccountContext.Id;
-
-            return entityIsPartOfView;
-        }
-
-
+        /// <summary>
+        /// Called when [add entity].
+        /// </summary>
+        /// <param name="newEntity">The new entity.</param>
         protected override void OnAddEntity(Contact newEntity)
         {
             //Create an OwnedPerson
@@ -74,8 +66,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Set the OwnerParty
             newEntity.OwnerParty = this.ContextManager.OwnerAccount;
-
-            base.OnAddEntity(newEntity);
         }
 
         #endregion

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using FoundOps.Common.Tools.ExtensionMethods;
+using FoundOps.SLClient.Data.Services;
 using ReactiveUI;
 using System.Windows;
 using System.Windows.Browser;
 using System.Windows.Controls;
-using FoundOps.Core.Navigator.VMs;
 using FoundOps.Common.Silverlight.Loader;
 using FoundOps.SLClient.Navigator.ViewModels;
 using FoundOps.Common.Silverlight.MVVM.Messages;
@@ -24,7 +24,6 @@ namespace FoundOps.SLClient.Navigator
             InitializeComponent();
 
             MessageBus.Current.Listen<NavigateToMessage>().Subscribe(OnNavigateToMessageRecieved);
-            MessageBus.Current.Listen<BlockMappingSetupMessage>().Subscribe(OnBlockMappingSetupMessageRecieved);
 
             //Automatically size the ContentFrame's content to the size of the ContentFrame
             //This is especially important for Dispatcher
@@ -55,20 +54,10 @@ namespace FoundOps.SLClient.Navigator
             var navigationContext = ((Page)ContentFrame.Content).NavigationContext;
 
             //Update the RoleId
-            if (navigationContext.QueryString.ContainsKey("roleid"))
-            {
-                var roleId = new Guid(navigationContext.QueryString["roleid"]);
+            if (!navigationContext.QueryString.ContainsKey("roleid")) return;
 
-                ((NavigationBarVM)this.DataContext).DataManager.ContextManager.RoleIdObserver.OnNext(roleId);
-            }
-        }
-
-        private void OnBlockMappingSetupMessageRecieved(BlockMappingSetupMessage obj)
-        {
-            var navigationState = Application.Current.Host.NavigationState;
-
-            if (!String.IsNullOrEmpty(navigationState)) //Navigate to navigation state if it exists (after the Block Mapping is setup)
-                ContentFrame.Navigate(new Uri(navigationState, UriKind.RelativeOrAbsolute));
+            var roleId = new Guid(navigationContext.QueryString["roleid"]);
+            Manager.Context.RoleIdObserver.OnNext(roleId);
         }
 
         private void OnNavigateToMessageRecieved(NavigateToMessage navigateToMessage)

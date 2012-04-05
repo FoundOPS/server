@@ -56,12 +56,10 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreSelectedEntitiesCollectionVM&lt;TEntity&gt;"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         /// <param name="selectedEntities">The selected entities collection.</param>
         /// <param name="loadedEntities">An Observable of the loaded entities.</param>
-        public CoreSelectedEntitiesCollectionVM(DataManager dataManager, IEntityCollection<TEntity> selectedEntities,
-            IObservable<EntityList<TEntity>> loadedEntities)
-            : base(false, dataManager)
+        public CoreSelectedEntitiesCollectionVM(IEntityCollection<TEntity> selectedEntities, IObservable<EntityList<TEntity>> loadedEntities) 
+            : base(false)
         {
             SelectedEntities = selectedEntities;
 
@@ -105,7 +103,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                 //If the Entity is new delete it
                 if (entityToRemove.EntityState == EntityState.New)
-                    Context.EntityContainer.GetEntitySet(typeof(TEntity)).Remove(entityToRemove);
+                    DomainContext.EntityContainer.GetEntitySet(typeof(TEntity)).Remove(entityToRemove);
             });
 
             #endregion

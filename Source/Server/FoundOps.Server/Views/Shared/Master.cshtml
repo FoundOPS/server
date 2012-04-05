@@ -1,5 +1,5 @@
-@model FoundOps.Core.Models.Authentication.LogOnModel
-@using FoundOps.Core.Server
+@model FoundOps.Server.Authentication.LogOnModel
+@using FoundOps.Server
 @{
     Layout = null;
 }
@@ -8,7 +8,7 @@
 <head>
     <!--Copyright FoundOPS 2011. All rights reserved.
     FoundOPS and Cloud Dispatched are trademarks of FoundOPS LLC.-->
-    <title>FoundOPS - Field Service Management</title>
+    <title>Field Service Management @@ FoundOPS</title>
     <meta name="keywords" content="FoundOPS, dis-patch, SaaS, service management, field service management, service dispatching, technician dispatch" />
     <meta name="description" content="Manage your field service company with GPS technician tracking, drag & drop dispatching, 
         and intuitive customer management in one easy-to-use system." />
@@ -51,7 +51,7 @@
 <body>
     <div id="container">
         <div id="header">
-            <a href="@Global.RootUrl">
+            <a href="@Global.RootApplicationUrl">
                 <img id="SiteLogo" src="@Url.Content("../../Content/SiteLogo.png")" alt="FoundOPS" /></a>
             <div id="mainLoginContent">
                 @using (Html.BeginForm("Login", "Account"))
@@ -96,47 +96,47 @@
         <table id="bottomTable" class="tabs">
             <tr>
                 <td rowspan="5" valign="middle">
-                    <a href="@Global.RootUrl">
+                    <a href="@Global.RootApplicationUrl">
                         <img id="navLogo" src="@Url.Content("../Content/navLogo.png")" alt="FoundOPS" />
                     </a>
                 </td>
                 <td class="bigFooterText">
-                    <a href="@String.Format("{0}/beta", Global.RootBlogUrl)">FoundOPS</a>
+                    <a href="@String.Format("{0}/features", Global.RootFrontSiteUrl)">Features</a>
                 </td>
                 <td class="bigFooterText">
-                    <a href="@String.Format("{0}/team", Global.RootBlogUrl)">About Us</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="@String.Format("{0}/beta", Global.RootBlogUrl)">Beta</a>
-                </td>
-                <td>
-                    <a href="@String.Format("{0}/team", Global.RootBlogUrl)">The Team</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="@String.Format("{0}/product", Global.RootBlogUrl)">Features</a>
-                </td>
-                <td>
-                    <a href="@String.Format("{0}/values", Global.RootBlogUrl)">Our Values</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td>
-                    <a href="@String.Format("{0}/jobs", Global.RootBlogUrl)">Jobs</a>
+                    <a href="@String.Format("{0}/aboutUs", Global.RootFrontSiteUrl)">About Us</a>
                 </td>
             </tr>
             <tr>
                 <td class="bigFooterText">
-                    <a style="position: relative; top: -10px; left: 0px;" href="@Global.RootBlogUrl">
+                    <a href="@String.Format("{0}/customers", Global.RootFrontSiteUrl)">Customers</a>
+                </td>
+                <td>
+                    <a href="@String.Format("{0}/aboutUs", Global.RootFrontSiteUrl)">The Team</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="bigFooterText">
+                    <a href="@String.Format("{0}/pricing", Global.RootFrontSiteUrl)">Pricing</a>
+                </td>
+                <td>
+                    <a href="@String.Format("{0}/aboutUs?id=values", Global.RootFrontSiteUrl)">Our Values</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <a href="@String.Format("{0}/aboutUs?id=jobs", Global.RootFrontSiteUrl)">Jobs</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="bigFooterText">
+                    <a style="position: relative; top: -10px; left: 0px;" href="@Global.RootFrontSiteUrl">
                         Blog</a>
                 </td>
                 <td>
-                    <a href="@String.Format("{0}/contact", Global.RootBlogUrl)">Contact Us</a>
+                    <a href="@String.Format("{0}/aboutUs?id=contactUs", Global.RootFrontSiteUrl)">Contact Us</a>
                 </td>
             </tr>
         </table>

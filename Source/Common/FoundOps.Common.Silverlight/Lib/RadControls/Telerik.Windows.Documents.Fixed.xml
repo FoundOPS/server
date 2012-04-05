@@ -106,12 +106,41 @@
             Returns the next set of bits.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings">
+            <summary>
+            Represents settings that <see cref="!:PdfFormatProvider "/> uses to import PDF.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings.#ctor(Telerik.Windows.Documents.Fixed.FormatProviders.ReadingMode)">
+            <summary>
+            Initializes a new instance of the <see cref="!:PdfFormatProviderSettings"/> class.
+            </summary>
+            <param name="mode">The rendering mode.</param>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings.ReadAllAtOnce">
+            <summary>
+            Gets the default format provider settings.
+            </summary>
+            <value>The default.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings.ReadOnDemand">
+            <summary>
+            Gets the read on demand format provider settings.
+            </summary>
+            <value>The read on demand.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings.ReadingMode">
+            <summary>
+            Gets or sets the reading mode.
+            </summary>
+            <value>The reading mode.</value>
+        </member>
         <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider">
             <summary>
             Provides functionality for importing PDF documents.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider.#ctor(System.IO.Stream)">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider.#ctor(System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider"/> class.
             </summary>
@@ -119,8 +148,10 @@
         </member>
         <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider.Import">
             <summary>
-            Creates a <see cref="T:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument"/> instance.
+            Creates a <see cref="T:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument"/> that represents the PDF file.
             </summary>
+            <param name="stream">The stream.</param>
+            <returns>The fixed document</returns>
         </member>
         <member name="T:FluxJpeg.Core.DCT">
             <summary>
@@ -7493,6 +7524,30 @@
             Represents the pages collection.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Model.Collections.PagesCollection.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can
+            be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Model.Collections.PagesCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator" /> object that can be
+            used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Model.Collections.PagesCollection.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:Telerik.Windows.Documents.Fixed.Model.RadFixedPage"/> at the specified index.
+            </summary>
+            <value></value>
+        </member>
         <member name="P:Telerik.Windows.Documents.Fixed.Model.Collections.PagesCollection.Count">
             <summary>
             Gets the pages count.
@@ -7504,7 +7559,7 @@
             Hosts a fixed-format document.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument.#ctor(System.Collections.Generic.IEnumerable{Telerik.Windows.Documents.Fixed.Model.RadFixedPage})">
+        <member name="M:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument.#ctor(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.PdfFormatProvider)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument"/> class.
             </summary>
@@ -7524,6 +7579,29 @@
             <value>
             The resource dictionary.
             </value>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.Model.RadFixedPage">
+            <summary>
+            Represents a fixed page.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedPage.Width">
+            <summary>
+            Gets the fixed page's width.
+            </summary>
+            <value>The width.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedPage.Height">
+            <summary>
+            Gets the fixed page's height.
+            </summary>
+            <value>The height.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedPage.PageNo">
+            <summary>
+            Gets the current page number.
+            </summary>
+            <value>The page no.</value>
         </member>
     </members>
 </doc>

@@ -1,55 +1,104 @@
-﻿using System;
 using FoundOps.Common.Silverlight.Interfaces;
-using RiaServicesContrib;
-using RiaServicesContrib.DomainServices.Client;
+using FoundOps.Common.Silverlight.UI.Interfaces;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class RouteTask : IReject
+    public partial class RouteTask : IReject, ILoadDetails
     {
+        #region Public Properties
+
+        #region Implementation of ILoadDetails
+
+        private bool _detailsLoaded;
         /// <summary>
-        /// Gets the generated service route task parent which cloned this RouteTask.
+        /// Gets or sets a value indicating whether [details loaded].
         /// </summary>
-        public RouteTask GeneratedRouteTaskParent { get; private set; }
-
-        partial void OnCreation()
+        /// <value>
+        ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DetailsLoaded
         {
-            InitializeHelper();
+            get { return _detailsLoaded; }
+            set
+            {
+                _detailsLoaded = value;
+                this.RaisePropertyChanged("DetailsLoaded");
+            }
         }
-        protected override void OnLoaded(bool isInitialLoad)
-        {
-            if (isInitialLoad)
-                InitializeHelper();
 
-            base.OnLoaded(isInitialLoad);
+        #endregion
+
+        /// <summary>
+        /// Returns the LocationName of the current RouteTask
+        /// </summary>
+        public string LocationName
+        {
+            get
+            {
+                if (Location != null)
+                    return Location.Name;
+
+                return ParentRouteTaskHolder != null ? ParentRouteTaskHolder.LocationName : "";
+            }
         }
 
-        private void InitializeHelper()
+        private TaskHolder _parentRouteTaskHolder;
+        /// <summary>
+        /// This is the link to the parent RouteTaskHolder.
+        /// It will have a value if this was recently generated.
+        /// </summary>
+        public TaskHolder ParentRouteTaskHolder
         {
-            /* Follow when this routetask is added to a RouteDestination.
-             * It is the last place a generated route task can be added to the database.
-             * 
-             * So if this is a generated service cancel adding itself to the route and add a clone instead.
-             *
-             * It must add a clone (instead of itself) so it shows up as a new entity.
-             * Generated services passed over the wire, even though they are not added to the DB,
-             * show up as unmodified/not new entities. */
+            get { return _parentRouteTaskHolder; }
+            set
+            {
+                _parentRouteTaskHolder = value;
+                this.RaisePropertyChanged("TaskHolder");
+            }
+        }
 
-            //Observable2.FromPropertyChangedPattern(this, x => x.RouteDestination).Where(_ => this.GeneratedOnServer).WhereNotNull().SubscribeOnDispatcher()
-            //.Subscribe(routeDestination =>
-            //{
-            //    //Cancel adding this to a route
-            //    this.RouteDestination = null;
+        #endregion
 
-            //    //Clone this
-            //    var clone = this.Clone(this.Service != null);
+        #region Logic
 
-            //    //Add the clone to the route destination
-            //    routeDestination.RouteTasks.Add(clone);
-            //});
+        /// <summary>
+        /// Sets up the ParentRouteTask holder if there is not one yet.
+        /// This is used when loading existing RouteTasks.
+        /// </summary>
+        public void SetupTaskHolder()
+        {
+            if (this.ParentRouteTaskHolder != null)
+                return;
+
+            var taskHolder = new TaskHolder
+            {
+                ClientId = ClientId,
+                ChildRouteTask = this,
+                OccurDate = Date,
+                LocationId = Location.Id,
+                LocationName = LocationName,
+                ServiceName = Name,
+                ServiceId = ServiceId,
+                RecurringServiceId = RecurringServiceId
+            };
+
+            if (Client != null)
+                taskHolder.ClientName = Client.DisplayName;
+
+            if (Location != null)
+            {
+                if (Location.Region != null)
+                    taskHolder.RegionName = Location.Region.Name;
+
+                taskHolder.AddressLine = Location.AddressLineOne;
+                taskHolder.Latitude = Location.Latitude;
+                taskHolder.Longitude = Location.Longitude;
+            }
+
+            ParentRouteTaskHolder = taskHolder;
         }
 
         ///<summary>
@@ -61,60 +110,11 @@ namespace FoundOps.Core.Models.CoreEntities
             this.RouteDestinationId = null;
         }
 
-        /// <summary>
-        /// Gets the entity graph with service shape.
-        /// </summary>
-        public EntityGraphShape EntityGraphWithServiceShape
-        {
-            get
-            {
-                return new EntityGraphShape().Edge<RouteTask, Service>(rt => rt.Service);
-            }
-        }
-
-        /// <summary>
-        /// Clones the RouteTask.
-        /// </summary>
-        /// <param name="withService">if set to <c>true</c> [clones the service and service template as well].</param>
-        public RouteTask Clone(bool withService)
-        {
-            var clonedRouteTask = withService ? this.Clone(EntityGraphWithServiceShape) : this.Clone(new EntityGraphShape());
-
-            if (this.GeneratedOnServer)
-            {
-                //Change GeneratedOnServer to false
-                clonedRouteTask.GeneratedOnServer = false;
-                //Set a link back to this parent
-                clonedRouteTask.GeneratedRouteTaskParent = this;
-            }
-
-            //Update to the Id to a new one
-            clonedRouteTask.Id = Guid.NewGuid();
-
-            if (!withService) return clonedRouteTask;
-
-            //clone the service template
-            var clonedServiceTemplate = this.Service.ServiceTemplate.MakeSibling();
-
-            //clone the service
-            var serviceClone = clonedRouteTask.Service;
-            serviceClone.Id = Guid.NewGuid(); //Fix the serviceClone.Id
-
-            //update the serviceClone.Id to the serviceTemplate.Id
-            serviceClone.Id = clonedServiceTemplate.Id;
-
-            //set the serviceClone's service template
-            serviceClone.ServiceTemplate = clonedServiceTemplate;
-
-            //set the Service property of clonedRouteTask
-            clonedRouteTask.Service = serviceClone;
-
-            return clonedRouteTask;
-        }
-
         public void Reject()
         {
             this.RejectChanges();
         }
+
+        #endregion
     }
 }

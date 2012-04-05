@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using FoundOps.Core.Models.CoreEntities.Validation;
 
 // ReSharper disable CheckNamespace
@@ -410,6 +411,7 @@ namespace FoundOps.Core.Models.CoreEntities
             [Include]
             public EntityCollection<RouteTask> RouteTasks { get; set; }
 
+            [Include]
             public Client Client { get; set; }
         }
     }
@@ -440,7 +442,6 @@ namespace FoundOps.Core.Models.CoreEntities
     [MetadataTypeAttribute(typeof(ServiceMetadata))]
     public partial class Service
     {
-
         internal sealed class ServiceMetadata
         {
             // Metadata classes are not meant to be instantiated.
@@ -448,13 +449,30 @@ namespace FoundOps.Core.Models.CoreEntities
             {
             }
 
-            //[RequiredGuid(ErrorMessage = "You must select a client for the service")]
+            [Required(ErrorMessage = "The Client is required")]
+            public Guid ClientId { get; set; }
 
             [Include]
             public RecurringService RecurringServiceParent { get; set; }
 
             [Include]
             public ServiceTemplate ServiceTemplate { get; set; }
+        }
+    }
+
+    [MetadataTypeAttribute(typeof(ServiceHolderMetadata))]
+    public partial class ServiceHolder
+    {
+        internal sealed class ServiceHolderMetadata
+        {
+            // Metadata classes are not meant to be instantiated.
+            private ServiceHolderMetadata()
+            {
+            }
+
+            //No need to do change tracking
+            [RoundtripOriginalAttribute] 
+            public Guid? ServiceId { get; set; }
         }
     }
 

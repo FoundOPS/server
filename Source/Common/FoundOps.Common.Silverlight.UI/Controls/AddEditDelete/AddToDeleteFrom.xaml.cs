@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Windows;
 using System.Collections;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 {
@@ -18,6 +19,10 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// Calls the AddCommand.
         /// </summary>
         Add,
+        /// <summary>
+        /// Displays the Add Existing menu
+        /// </summary>
+        AddExisting,
         /// <summary>
         /// Displays the Add New/Add Existing menu
         /// </summary>
@@ -61,20 +66,14 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         Func<string, T> CreateNewItem { get; }
 
         /// <summary>
-        /// An optional comparer of source and destination items. 
-        /// It will affect which existing items show up as available options.
-        /// </summary>
-        IEqualityComparer<object> CustomComparer { get; }
-
-        /// <summary>
-        /// Returns the existing items. This is not generic because of inheritance issues and entitylists.
-        /// </summary>
-        IEnumerable ExistingItemsSource { get; }
-
-        /// <summary>
         /// The member path to be used for searching and displaying existing items.
         /// </summary>
         string MemberPath { get; }
+
+        /// <summary>
+        /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
+        /// </summary>
+        Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; }
     }
 
     #region Destination interfaces
@@ -178,7 +177,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public bool IsDeleteEnabled
         {
-            get { return (bool) GetValue(IsDeleteEnabledProperty); }
+            get { return (bool)GetValue(IsDeleteEnabledProperty); }
             set { SetValue(IsDeleteEnabledProperty, value); }
         }
 
@@ -188,8 +187,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         public static readonly DependencyProperty IsDeleteEnabledProperty =
             DependencyProperty.Register(
                 "IsDeleteEnabled",
-                typeof (bool),
-                typeof (AddToDeleteFrom),
+                typeof(bool),
+                typeof(AddToDeleteFrom),
                 new PropertyMetadata(new PropertyChangedCallback(IsDeleteEnabledChanged)));
 
         private static void IsDeleteEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -201,7 +200,6 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #endregion
 
-
         #region ItemToRemoveDisplayMember Dependency Property
 
         /// <summary>
@@ -209,7 +207,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public string ItemToRemoveDisplayMember
         {
-            get { return (string) GetValue(ItemToRemoveDisplayMemberProperty); }
+            get { return (string)GetValue(ItemToRemoveDisplayMemberProperty); }
             set { SetValue(ItemToRemoveDisplayMemberProperty, value); }
         }
 
@@ -219,8 +217,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         public static readonly DependencyProperty ItemToRemoveDisplayMemberProperty =
             DependencyProperty.Register(
                 "ItemToRemoveDisplayMember",
-                typeof (string),
-                typeof (AddToDeleteFrom),
+                typeof(string),
+                typeof(AddToDeleteFrom),
                 new PropertyMetadata(null));
 
         #endregion
@@ -275,7 +273,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
             DependencyProperty.Register(
                 "Source",
                 typeof(IAddToDeleteFromSource<object>),
-                typeof(AddToDeleteFrom), null);
+                typeof(AddToDeleteFrom),
+                new PropertyMetadata(null));
 
         #endregion
 
@@ -319,7 +318,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// </summary>
         public IEnumerable DestinationItemsSource
         {
-            get { return (IEnumerable) GetValue(DestinationItemsSourceProperty); }
+            get { return (IEnumerable)GetValue(DestinationItemsSourceProperty); }
             set { SetValue(DestinationItemsSourceProperty, value); }
         }
 
@@ -329,8 +328,8 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         public static readonly DependencyProperty DestinationItemsSourceProperty =
             DependencyProperty.Register(
                 "DestinationItemsSource",
-                typeof (IEnumerable),
-                typeof (AddToDeleteFrom),
+                typeof(IEnumerable),
+                typeof(AddToDeleteFrom),
                 new PropertyMetadata(null));
 
         #endregion
@@ -468,10 +467,9 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
                                                    : Visibility.Visible;
 
             //Set the AddDelete's AddDeleteMode
-            c.AddDelete.AddDeleteMode = addMode != AddMode.AddNewExisting
-                                            ? AddDeleteMode.AddDelete
-                                            : AddDeleteMode.AddCustomTemplateDelete;
-
+            c.AddDelete.AddDeleteMode = addMode == AddMode.AddExisting || addMode == AddMode.AddNewExisting
+                                            ? AddDeleteMode.AddCustomTemplateDelete
+                                            : AddDeleteMode.AddDelete;
         }
 
         #endregion
@@ -629,5 +627,23 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         #endregion
 
         #endregion
+
+        /// <summary>
+        /// Handles the Populating event of the AutoCompleteBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Controls.PopulatingEventArgs"/> instance containing the event data.</param>
+        private void AutoCompleteBoxPopulating(object sender, PopulatingEventArgs e)
+        {
+            if (Source == null || Source.ManuallyUpdateSuggestions == null) return;
+
+            e.Cancel = true;
+            Source.ManuallyUpdateSuggestions((AutoCompleteBox)sender);
+        }
+
+        private void AutoCompleteBoxOnGotFocus(object sender, RoutedEventArgs e)
+        {
+            ((AutoCompleteBox) sender).IsDropDownOpen = true;
+        }
     }
 }

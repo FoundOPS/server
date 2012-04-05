@@ -34,6 +34,17 @@ namespace FoundOps.Core.Models.CoreEntities
                     var validator = new ValidationEngine { RulesProvider = new MEFValidationRulesProvider<ValidationResult>() };
                     validator.Validate(this);
                 });
+
+            Observable2.FromPropertyChangedPattern(this, x => x.Value).DistinctUntilChanged().ObserveOnDispatcher()
+                 .Subscribe(_ =>
+                 {
+                     //When a LocationField's value is set automatically set the parent Service's Client
+                     if (Value != null && Value.Party != null && Value.Party.ClientOwner != null &&
+                         OwnerServiceTemplate != null && OwnerServiceTemplate.OwnerService != null)
+                     {
+                         OwnerServiceTemplate.OwnerService.Client = Value.Party.ClientOwner;
+                     }
+                 });
         }
 
         protected override Field MakeChildSilverlight()

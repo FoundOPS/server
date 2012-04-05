@@ -1,7 +1,8 @@
-﻿using System.Windows;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.UI.Tools;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.Controls.Clients
 {
@@ -17,12 +18,9 @@ namespace FoundOps.SLClient.UI.Controls.Clients
         {
             InitializeComponent();
 
-            this.DependentWhenVisible(ClientsVM);
-        }
+            this.DependentWhenVisible(VM.Clients);
 
-        public ClientsVM ClientsVM
-        {
-            get { return (ClientsVM)this.DataContext; }
+            ClientsAutoCompleteBox.HookupSearchSuggestions(VM.Clients.ManuallyUpdateSuggestions);
         }
 
         #region SelectedClient Dependency Property
@@ -67,13 +65,13 @@ namespace FoundOps.SLClient.UI.Controls.Clients
                 "IsReadOnly",
                 typeof(bool),
                 typeof(ClientLinkLarge),
-                new PropertyMetadata(new PropertyChangedCallback(IsReadOnlyChanged)));
+                new PropertyMetadata(IsReadOnlyChanged));
 
         private static void IsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var c = d as ClientLinkLarge;
             if (c != null)
-                c.ClientsRadComboBox.IsEnabled = !((bool)e.NewValue);
+                c.ClientsAutoCompleteBox.IsEnabled = !((bool)e.NewValue);
         }
 
         #endregion

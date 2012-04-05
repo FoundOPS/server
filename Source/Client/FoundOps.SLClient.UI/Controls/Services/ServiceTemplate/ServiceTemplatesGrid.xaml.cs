@@ -1,8 +1,12 @@
-﻿using System;
-using Telerik.Windows;
-using FoundOps.SLClient.UI.Tools;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
+using FoundOps.SLClient.UI.Tools;
+using System;
+using System.Reactive.Linq;
+using System.Windows.Data;
+using Telerik.Windows;
+using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.GridView;
 
 namespace FoundOps.SLClient.UI.Controls.Services.ServiceTemplate
@@ -27,27 +31,25 @@ namespace FoundOps.SLClient.UI.Controls.Services.ServiceTemplate
         {
             InitializeComponent();
 
-            this.DependentWhenVisible(ServiceTemplatesVM);
-            this.DependentWhenVisible(FieldsVM);
+            this.DependentWhenVisible(VM.ServiceTemplates);
+            this.DependentWhenVisible(VM.Fields);
 
             ServiceTemplatesRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
+
+            //Switch the RadGridView's ItemSource depending on whether this is in the admin console or not
+            //If there is a BusinessAccountContext
+            //bind the ItemsSource to the QueryableCollectionView
+            //Otherwise bind the ItemsSource to the ServiceTemplatesForContext
+            Manager.Context.GetContextObservable<BusinessAccount>().ObserveOnDispatcher().Subscribe(businessAccountContext =>
+                ServiceTemplatesRadGridView.SetBinding(DataControl.ItemsSourceProperty,
+                new Binding(businessAccountContext != null ? "QueryableCollectionView" : "ServiceTemplatesForContext") { Source = VM.ServiceTemplates }));
         }
-
-        /// <summary>
-        /// Gets the ServiceTemplatesVM.
-        /// </summary>
-        public ServiceTemplatesVM ServiceTemplatesVM { get { return VM.ServiceTemplates; } }
-
-        /// <summary>
-        /// Gets the FieldsVM.
-        /// </summary>
-        public FieldsVM FieldsVM { get { return VM.Fields; } }
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs e)
         {
-            //TODO: Should there be conditions?
-            if (!IsMainGrid)
-                ServiceTemplatesVM.MoveToDetailsView.Execute(null);
+            //Only move to details view if this is in the admin console (there is a BusinessAccount context)
+            if (Manager.Context.GetContext<BusinessAccount>() != null && !IsMainGrid)
+                VM.ServiceTemplates.MoveToDetailsView.Execute(null);
         }
     }
 }

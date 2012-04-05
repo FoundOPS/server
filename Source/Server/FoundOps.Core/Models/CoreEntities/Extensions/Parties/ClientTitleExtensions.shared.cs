@@ -24,6 +24,7 @@ namespace FoundOps.Core.Models.CoreEntities
         void IEntityDefaultCreation.OnCreate()
         {
             Id = Guid.NewGuid();
+            Title = "";
             OnCreation();
         }
 

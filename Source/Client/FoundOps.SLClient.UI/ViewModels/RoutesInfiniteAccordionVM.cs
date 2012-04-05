@@ -1,79 +1,44 @@
-﻿using System;
-using System.Linq;
-using System.Reactive.Linq;
-using FoundOps.Common.Tools;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.Data.Services;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using System;
 using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
     /// <summary>
-    /// 
+    /// Displays the proper routes depending on the context.
     /// </summary>
     [ExportViewModel("RoutesInfiniteAccordionVM")]
-    public class RoutesInfiniteAccordionVM : CoreEntityCollectionInfiniteAccordionVM<Route>
+    public class RoutesInfiniteAccordionVM : InfiniteAccordionVM<Route, Route>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutesInfiniteAccordionVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public RoutesInfiniteAccordionVM(DataManager dataManager)
-            : base(dataManager)
+        public RoutesInfiniteAccordionVM() : base(new[] { typeof(Employee), typeof(Vehicle) })
         {
-            SetupMainQuery(DataManager.Query.RouteLog, null, "Date");
+            SetupContextDataLoading(roleId =>
+                                        {
+                                            var employeeContext = ContextManager.GetContext<Employee>();
+                                            var employeeContextId = employeeContext != null ? employeeContext.Id : Guid.Empty;
+                                            var vehicleContext = ContextManager.GetContext<Vehicle>();
+                                            var vehicleContextId = vehicleContext != null ? vehicleContext.Id : Guid.Empty;
 
-
-            //Whenever the Employee or Vehicle Conntext changes:
-            //a) update the filter
-            //b) select the closest Route to today
-            this.ContextManager.GetContextObservable<Employee>().AsGeneric()
-                .Merge(this.ContextManager.GetContextObservable<Vehicle>().AsGeneric())
-                .ObserveOnDispatcher().Subscribe(_ =>
-            {
-                if (DomainCollectionView == null)
-                    return;
-                //a) update the filter
-                UpdateFilter();
-                //b) select the closest Route to today
-                SelectedEntity = DomainCollectionView.FirstOrDefault(r => r.Date >= DateTime.Now.Date);
-            });
+                                            return DomainContext.GetRouteLogForServiceProviderQuery(roleId, employeeContextId, vehicleContextId);
+                                        }, null);
         }
 
         #region Logic
 
-        protected override bool EntityIsPartOfView(Route route, bool isNew)
-        {
-            var entityIsPartOfView = true;
-
-            var employeeContext = this.ContextManager.GetContext<Employee>();
-
-            if (employeeContext != null)
-                entityIsPartOfView = route.Technicians.Contains(employeeContext);
-
-            var vehicleContext = this.ContextManager.GetContext<Vehicle>();
-
-            if (vehicleContext != null)
-                entityIsPartOfView = entityIsPartOfView && route.Vehicles.Contains(vehicleContext);
-
-            return entityIsPartOfView;
-        }
-
         protected override void OnAddEntity(Route newEntity)
         {
-            throw new Exception("Not supposed to do this here.");
-        }
-        protected override void OnDeleteEntity(Route newEntity)
-        {
-            throw new Exception("Not supposed to do this here.");
+            throw new Exception("Not supposed to add routes in the RouteLog.");
         }
 
-        protected override bool BeforeSaveCommand()
+        protected override void OnDeleteEntity(Route newEntity)
         {
-            return true;
+            throw new Exception("Not supposed to delete routes in the RouteLog.");
         }
 
         #endregion

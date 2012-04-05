@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FoundOps.Core.Models.Import;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
@@ -262,14 +262,14 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             var csvToImport = DataTable.ToCSV(headerRecord, columnIndexesToIgnore);
 
-            Manager.Data.Context.ImportEntities(Manager.Context.RoleId, ImportDestination, csvToImport, invokeOp =>
+            Manager.Data.DomainContext.ImportEntities(Manager.Context.RoleId, ImportDestination, csvToImport, invokeOp =>
             {
                 if (!invokeOp.HasError)
                     MessageBox.Show("Data Imported");
                 else
                 {
                     MessageBox.Show("There was a problem with the last import, please try again.");
-                    Manager.Data.Context.RejectChanges();
+                    Manager.Data.DomainContext.RejectChanges();
                 }
 
                 IsBusy = false;

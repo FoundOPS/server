@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using FoundOps.SLClient.Data.Services;
-using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
+﻿using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
-using Microsoft.Windows.Data.DomainServices;
-using ReactiveUI;
+using System;
+using System.ComponentModel.Composition;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -16,15 +13,9 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model for all of the Vehicles
     /// </summary>
     [ExportViewModel("VehiclesVM")]
-    public class VehiclesVM : CoreEntityCollectionInfiniteAccordionVM<Vehicle>, IAddToDeleteFromSource<Vehicle>
+    public class VehiclesVM : InfiniteAccordionVM<Vehicle, Vehicle>, IAddToDeleteFromSource<Vehicle>
     {
         #region Implementation of IAddToDeleteFromSource
-
-        //Want to use the default comparer. So this does not need to be set.
-        public IEqualityComparer<object> CustomComparer { get; set; }
-
-        private readonly ObservableAsPropertyHelper<IEnumerable> _loadedVehicles;
-        public IEnumerable ExistingItemsSource { get { return _loadedVehicles.Value; } }
 
         public string MemberPath { get { return "VehicleId"; } }
 
@@ -33,33 +24,34 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public Func<string, Vehicle> CreateNewItem { get; private set; }
 
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+
         #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VehiclesVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public VehiclesVM(DataManager dataManager)
-            : base(dataManager)
+        public VehiclesVM()
         {
-            var loadedVehicles = this.SetupMainQuery(DataManager.Query.Vehicles, null, "VehicleId");
+            SetupTopEntityDataLoading(roleId => DomainContext.GetVehiclesForPartyQuery(roleId));
 
             #region Implementation of IAddToDeleteFromSource<Employee>
-
-            //Whenever loadedVehicles changes notify ExistingItemsSource changed
-            _loadedVehicles = loadedVehicles.ToProperty(this, x => x.ExistingItemsSource);
 
             //Set the new Vehicles OwnerParty to this OwnerAccount
             CreateNewItem = vehicleId =>
             {
                 var newVehicle = new Vehicle { VehicleId = vehicleId, OwnerParty = ContextManager.OwnerAccount };
-                
-                //Add the new entity to the EntityList behind the DCV
-                ((EntityList<Vehicle>)ExistingItemsSource).Add(newVehicle);
-                
+
+                //Add the entity to the EntitySet so it is tracked by the DomainContext
+                DomainContext.Vehicles.Add(newVehicle);
+                this.QueryableCollectionView.AddNew(newVehicle);
+
                 return newVehicle;
             };
+
+            ManuallyUpdateSuggestions = autoCompleteBox =>
+                SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchVehiclesForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
 
             #endregion
         }

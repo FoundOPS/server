@@ -38,10 +38,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteMapVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public RouteMapVM(DataManager dataManager)
-            : base(false, dataManager)
+        public RouteMapVM() : base(false)
         {
             //Register Commands
             ManuallySetLatitudeLongitude = new RelayCommand<Tuple<decimal, decimal>>(OnManuallySetLatitudeLongitude, (latitudeLongitude) => true);

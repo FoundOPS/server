@@ -1,13 +1,13 @@
-﻿using System;
+﻿using FoundOps.Server.Services.CoreDomainService;
+using FoundOps.Common.Silverlight.MVVM.Messages;
+using FoundOps.Common.Silverlight.UI.ViewModels;
+using FoundOps.SLClient.Data.Services;
 using ReactiveUI;
 using ReactiveUI.Xaml;
+using System;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.Common.Silverlight.UI.ViewModels;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.MVVM.Messages;
-using FoundOps.Server.Services.CoreDomainService;
 
 namespace FoundOps.SLClient.Data.ViewModels
 {
@@ -40,89 +40,61 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         #region Protected
 
-        private CoreDomainContext _context;
         /// <summary>
-        /// Gets or sets the CoreDomainContext.
+        /// Gets the CoreDomainContext.
         /// </summary>
-        /// <value>
-        /// The CoreDomainContext.
-        /// </value>
-        public CoreDomainContext Context
-        {
-            get
-            {
-                return _context;
-            }
-            private set
-            {
-                _context = value;
-                this.RaisePropertyChanged("Context");
-            }
-        }
+        public CoreDomainContext DomainContext { get { return Manager.Data.DomainContext; } }
 
         /// <summary>
-        /// The DataManager.
+        /// Gets the data manager.
         /// </summary>
-        protected readonly DataManager DataManager;
+        protected DataManager DataManager { get { return Manager.Data; } }
 
         /// <summary>
         /// Gets the context manager.
         /// </summary>
-        public ContextManager ContextManager { get; private set; }
+        public ContextManager ContextManager { get { return Manager.Context; } }
 
-        private readonly Subject<bool> _discardObservable = new Subject<bool>();
+        //Only to be used if overriding the DiscardCommand
+        protected readonly Subject<bool> DiscardSubject = new Subject<bool>();
+
         /// <summary>
         /// Gets an observable which streams the DateTimes discards are called.
         /// </summary>
-        protected IObservable<bool> DiscardObservable
-        {
-            get { return _discardObservable.AsObservable(); }
-        }
+        protected IObservable<bool> DiscardObservable { get { return DiscardSubject.AsObservable(); } }
 
         #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreEntityVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
-        protected CoreEntityVM(DataManager dataManager)
+        protected CoreEntityVM()
         {
-            DataManager = dataManager;
-            ContextManager = dataManager.ContextManager;
-            Context = DataManager.Context;
-
             //Hookup NavigateToObservable
             MessageBus.Current.Listen<NavigateToMessage>().Subscribe(message => _navigateToObservable.OnNext(message.UriToNavigateTo.ToString()));
 
             #region Register Commands
 
-            //Can save when: context has changes and is not submitting
-            var canSaveCommand = 
-                DataManager.DomainContextHasChangesObservable.CombineLatest(DataManager.DomainContextIsSubmittingObservable, (hasChanges, isSubmitting)=> hasChanges && !isSubmitting)
-                //Combine with the CanSaveObservable
-                .CombineLatest(CanSaveObservable, (canSave, canSaveTwo) => canSave && canSaveTwo).DistinctUntilChanged();
+            //Can save or discard when context has changes and is not submitting
+            var canSaveDiscardCommand =
+                DataManager.DomainContextHasChangesObservable.CombineLatest(DataManager.DomainContextIsSubmittingObservable,
+                (hasChanges, isSubmitting) => hasChanges && !isSubmitting);
 
-            SaveCommand = new ReactiveCommand(canSaveCommand);
-            SaveCommand.Subscribe(param =>
+            SaveCommand = new ReactiveCommand(canSaveDiscardCommand);
+            SaveCommand.ObserveOnDispatcher().Subscribe(param =>
             {
                 if (!BeforeSaveCommand()) return;
 
                 DataManager.EnqueueSubmitOperation(OnSave);
             });
 
-            //Can discard when: context has changes and is not submitting. Check every .25 second
-            var canDiscardCommand = 
-                DataManager.DomainContextHasChangesObservable.CombineLatest(DataManager.DomainContextIsSubmittingObservable, (hasChanges, isSubmitting)=> hasChanges && !isSubmitting)
-                //Combine with the CanDiscardObservable
-                .CombineLatest(CanDiscardObservable, (canDiscard, canDiscardTwo) => canDiscard && canDiscardTwo).DistinctUntilChanged();
-
-            DiscardCommand = new ReactiveCommand(canDiscardCommand);
-            DiscardCommand.Subscribe(param =>
+            DiscardCommand = new ReactiveCommand(canSaveDiscardCommand);
+            DiscardCommand.ObserveOnDispatcher().Subscribe(param =>
             {
                 if (!BeforeDiscardCommand()) return;
-                Context.RejectChanges();
-                OnDiscard();
-                _discardObservable.OnNext(true);
+                DomainContext.RejectChanges();
+                AfterDiscard();
+                DiscardSubject.OnNext(true);
             });
 
             #endregion
@@ -139,59 +111,15 @@ namespace FoundOps.SLClient.Data.ViewModels
         protected virtual bool BeforeDiscardCommand() { return true; }
 
         /// <summary>
-        /// Called when after changes are Discarded.
+        /// Called after changes are Discarded.
         /// </summary>
-        protected virtual void OnDiscard() { }
-
-        private readonly BehaviorSubject<bool> _canSaveObservable = new BehaviorSubject<bool>(true);
-        private IDisposable _canSaveDisposable; //Keeps track of the subscription to the last set CanSaveObservable
-        /// <summary>
-        /// Determines whether this instance can save (in addition to CanSave). This is now the preferred method over CanSave.
-        /// </summary>
-        protected IObservable<bool> CanSaveObservable
-        {
-            get
-            {
-                return _canSaveObservable;
-            }
-            set
-            {
-                if (_canSaveDisposable != null)
-                    _canSaveDisposable.Dispose(); //Dispose the last CanSaveObservable
-
-                if (value != null)
-                    //Subscribe _canSaveObservable to the new CanSaveObservable
-                    _canSaveDisposable = value.Subscribe(canSave => _canSaveObservable.OnNext(canSave));
-            }
-        }
+        protected virtual void AfterDiscard() { }
 
         /// <summary>
         /// Before the save command.
         /// </summary>
         /// <returns></returns>
         protected virtual bool BeforeSaveCommand() { return true; }
-
-        private readonly BehaviorSubject<bool> _canDiscardObservable = new BehaviorSubject<bool>(true);
-        private IDisposable _canDiscardDisposable; //Keeps track of the subscription to the last set CanSaveObservable
-        /// <summary>
-        /// Determines whether this instance can discard.
-        /// </summary>
-        protected IObservable<bool> CanDiscardObservable
-        {
-            get
-            {
-                return _canDiscardObservable;
-            }
-            set
-            {
-                if (_canDiscardDisposable != null)
-                    _canDiscardDisposable.Dispose(); //Dispose the last CanDiscardObservable
-
-                if (value != null)
-                    //Subscribe _canDiscardDisposable to the new CanDiscardObservable
-                    _canDiscardDisposable = value.Subscribe(canDiscard => _canDiscardObservable.OnNext(canDiscard));
-            }
-        }
 
         /// <summary>
         /// Called after changes are saved.

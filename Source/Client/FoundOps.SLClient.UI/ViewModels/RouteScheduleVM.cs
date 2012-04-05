@@ -58,8 +58,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             get
             {
-                return DomainCollectionView.Count() <= 0 ? new TimeSpan(9, 0, 0) :
-                    DomainCollectionView.OrderBy(r => r.StartTime).First().StartTime.TimeOfDay;
+                return !Collection.Any() ? new TimeSpan(9, 0, 0) :
+                    Collection.OrderBy(r => r.StartTime).First().StartTime.TimeOfDay;
             }
         }
 
@@ -70,8 +70,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             get
             {
-                return DomainCollectionView.Count() <= 0 ? new TimeSpan(17, 0, 0) :
-                    DomainCollectionView.OrderBy(r => r.EndTime).Last().EndTime.TimeOfDay;
+                return !Collection.Any() ? new TimeSpan(17, 0, 0) :
+                    Collection.OrderBy(r => r.EndTime).Last().EndTime.TimeOfDay;
             }
         }
 
@@ -80,10 +80,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteScheduleVM"/> class.
         /// </summary>
-        /// <param name="domainCollectionView">The domain collection view.</param>
-        /// <param name="dataManager">The data manager.</param>
-        public RouteScheduleVM(DomainCollectionView<Route> domainCollectionView, DataManager dataManager)
-            : base(false, dataManager)
+        public RouteScheduleVM() : base(false)
         {
             //DomainCollectionViewObservable.OnNext(domainCollectionView);
 

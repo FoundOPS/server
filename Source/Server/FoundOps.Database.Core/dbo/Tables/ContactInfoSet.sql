@@ -7,9 +7,11 @@
     [LocationId] UNIQUEIDENTIFIER NULL,
     [ContactId]  UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_ContactInfoSet] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_ContactInfoParty] FOREIGN KEY ([PartyId]) REFERENCES [dbo].[Parties] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_LocationContactInfo] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_ContactInfoParty] FOREIGN KEY ([PartyId]) REFERENCES [dbo].[Parties] ([Id]),
+    CONSTRAINT [FK_LocationContactInfo] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 GO

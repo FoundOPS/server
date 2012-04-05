@@ -92,9 +92,8 @@
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
     </Reference>
-    <Reference Include="Kent.Boogaart.KBCsv">
+    <Reference Include="Kent.Boogaart.KBCsv, Version=1.3.0.0, Culture=neutral, PublicKeyToken=cc96fa93a217f7a1, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="mscorlib">
       <Private>False</Private>
@@ -127,6 +126,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Windows.Controls.Input, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Interactivity.dll</HintPath>
       <Private>False</Private>
@@ -202,17 +202,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomFields\Define\TextLargeDefine.xaml.cs">
+      <DependentUpon>TextLargeDefine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomFields\ManifestFields.xaml.cs">
       <DependentUpon>ManifestFields.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomFields\FieldSmall.xaml.cs">
       <DependentUpon>FieldSmall.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dispatcher\Converters\ManifestConverters.cs" />
     <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
       <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml.cs">
-      <DependentUpon>ManifestFooter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml.cs">
       <DependentUpon>ManifestHeader.xaml</DependentUpon>
@@ -287,8 +288,8 @@
     <Compile Include="Controls\CustomFields\Define\PercentageDefine.xaml.cs">
       <DependentUpon>PercentageDefine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CustomFields\Define\TextDefine.xaml.cs">
-      <DependentUpon>TextDefine.xaml</DependentUpon>
+    <Compile Include="Controls\CustomFields\Define\TextSmallDefine.xaml.cs">
+      <DependentUpon>TextSmallDefine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomFields\Define\TimeDefine.xaml.cs">
       <DependentUpon>TimeDefine.xaml</DependentUpon>
@@ -370,9 +371,6 @@
     </Compile>
     <Compile Include="Controls\Locations\LocationLinkSmall.xaml.cs">
       <DependentUpon>LocationLinkSmall.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Locations\LocationLinkLarge.xaml.cs">
-      <DependentUpon>LocationLinkLarge.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Locations\LocationEdit.xaml.cs">
       <DependentUpon>LocationEdit.xaml</DependentUpon>
@@ -458,9 +456,6 @@
     <Compile Include="Controls\Services\ServiceLarge.xaml.cs">
       <DependentUpon>ServiceLarge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Services\ServiceOccurencesLink.xaml.cs">
-      <DependentUpon>ServiceOccurencesLink.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Services\ServicesGrid.xaml.cs">
       <DependentUpon>ServicesGrid.xaml</DependentUpon>
     </Compile>
@@ -472,9 +467,6 @@
     </Compile>
     <Compile Include="Controls\Services\ServiceTemplate\ServiceTemplatesGrid.xaml.cs">
       <DependentUpon>ServiceTemplatesGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Services\ServiceTemplate\ServiceTemplatesLink.xaml.cs">
-      <DependentUpon>ServiceTemplatesLink.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Parties\BusinessAccounts\BusinessAccountSettings.xaml.cs">
       <DependentUpon>BusinessAccountSettings.xaml</DependentUpon>
@@ -506,6 +498,7 @@
     <Compile Include="Controls\Vehicles\VehicleLarge.xaml.cs">
       <DependentUpon>VehicleLarge.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\TimeSpanConverters.cs" />
     <Compile Include="Controls\Dispatcher\Converters\ClientConverters.cs" />
     <Compile Include="Controls\Dispatcher\Converters\LocationConverters.cs" />
     <Compile Include="Controls\Dispatcher\Converters\ScheduleConverters.cs" />
@@ -524,6 +517,7 @@
     <Compile Include="Converters\RepeatConverters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selectors\FieldDataTemplateSelector.cs" />
+    <Compile Include="Tools\AutoCompleteBoxTools.cs" />
     <Compile Include="Tools\DragDropTools.cs" />
     <Compile Include="Tools\ServiceGenerator.cs" />
     <Compile Include="Tools\VM.cs" />
@@ -532,12 +526,17 @@
     <Compile Include="ViewModels\ContactsVM.cs" />
     <Compile Include="ViewModels\ClientTitlesVM.cs" />
     <Compile Include="ViewModels\BusinessAccountSettingsVM.cs" />
+    <Compile Include="ViewModels\DispatcherFilterVM.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
     <Compile Include="ViewModels\PartySettingsVM.cs" />
     <Compile Include="ViewModels\PartyVM.cs" />
+    <Compile Include="ViewModels\RouteDestinationVM.cs" />
     <Compile Include="ViewModels\RouteScheduleVM.cs" />
     <Compile Include="ViewModels\RoutesDragDropVM.cs" />
     <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />
+    <Compile Include="ViewModels\RouteVM.cs" />
+    <Compile Include="ViewModels\SearchVM.cs" />
+    <Compile Include="ViewModels\TaskBoardVM.cs" />
     <Compile Include="ViewModels\UserAccountSettingsVM.cs" />
     <Compile Include="ViewModels\UserAccountsVM.cs" />
     <Compile Include="ViewModels\RegionsVM.cs" />
@@ -564,6 +563,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\CustomFields\Define\TextLargeDefine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\CustomFields\ManifestFields.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -571,10 +574,6 @@
     <Page Include="Controls\CustomFields\FieldSmall.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Dispatcher\Manifest\ManifestFooter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml">
       <SubType>Designer</SubType>
@@ -676,7 +675,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\CustomFields\Define\TextDefine.xaml">
+    <Page Include="Controls\CustomFields\Define\TextSmallDefine.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -785,10 +784,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Locations\LocationLinkSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Locations\LocationLinkLarge.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -904,10 +899,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Services\ServiceOccurencesLink.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\Services\ServicesGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -921,10 +912,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Services\ServiceTemplate\ServiceTemplatesGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Services\ServiceTemplate\ServiceTemplatesLink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -976,6 +963,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\DataSources\FoundOps.Server.Services.CoreDomainService.CoreDomainContext.datasource" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\FoundOps.Common.Silverlight.UI\FoundOps.Common.Silverlight.UI.csproj">
@@ -996,9 +984,7 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\Parties\AdmininistrativeConsole\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

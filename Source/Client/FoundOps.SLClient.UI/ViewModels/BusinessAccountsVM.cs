@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Collections;
-using System.Reactive.Linq;
 using FoundOps.Common.Silverlight.UI.Controls;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Server.Services.CoreDomainService;
+using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
-using FoundOps.Core.Server.Blocks;
-using FoundOps.SLClient.Data.Services;
+using System;
+using System.Collections;
 using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
-using Microsoft.Windows.Data.DomainServices;
-using FoundOps.Server.Services.CoreDomainService;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using System.Linq;
+using System.Reactive.Linq;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
     /// <summary>
-    /// Contains the logic for displaying BusinessAccounts
+    /// Contains the logic for adding, editing, and removing BusinessAccounts in the admin console.
     /// </summary>
     [ExportViewModel("BusinessAccountsVM")]
-    public class BusinessAccountsVM : CoreEntityCollectionInfiniteAccordionVM<Party>, //Base class is Party instead of BusinessAccount because DomainCollectionView does not work well with inheritance
+    public class BusinessAccountsVM : InfiniteAccordionVM<Party, BusinessAccount>,
         IAddToDeleteFromDestination<UserAccount>, IAddNewExisting<UserAccount>, IRemoveDelete<UserAccount>,
         IAddToDeleteFromDestination<ServiceTemplate>, IAddNewExisting<ServiceTemplate>, IRemoveDelete<ServiceTemplate>
     {
@@ -93,7 +88,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         Action<ServiceTemplate> IAddNewExisting<ServiceTemplate>.AddExistingItem { get { return AddExistingItemServiceTemplate; } }
 
         /// <summary>
-        /// An action to remove a ServiceTemplate from the current BusinessAccount.
+        /// NOT POSSIBLE
         /// </summary>
         public Func<ServiceTemplate> RemoveItemServiceTemplate { get; private set; }
         Func<ServiceTemplate> IRemove<ServiceTemplate>.RemoveItem { get { return RemoveItemServiceTemplate; } }
@@ -132,14 +127,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         Func<UserAccount> IRemoveDelete<UserAccount>.DeleteItem { get { return DeleteItemUserAccount; } }
 
         #endregion
-
-        /// <summary>
-        /// Gets the object type provided (for the InfiniteAccordion). Overriden because base class is Party.
-        /// </summary>
-        public override Type ObjectTypeProvided
-        {
-            get { return typeof(BusinessAccount); }
-        }
 
         private ContactInfoVM _selectedEntityContactInfoVM;
         /// <summary>
@@ -183,12 +170,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="BusinessAccountsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public BusinessAccountsVM(DataManager dataManager)
-            : base(dataManager, true)
+        public BusinessAccountsVM()
         {
-            SetupMainQuery(DataManager.Query.BusinessAccounts);
+            SetupDataLoading();
 
             #region Implementation of IAddToDeleteFromDestination<UserAccount> and Implementation of IAddToDeleteFromDestination<ServiceTemplate>
 
@@ -203,37 +188,27 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Implementation of IAddNewExisting<ServiceTemplate> & IRemoveDelete<ServiceTemplate>
 
+            //Used in the FoundOPS admin console to add a new FoundOPS service template
             AddNewItemServiceTemplate = name => VM.ServiceTemplates.CreateNewItem(name);
 
-            AddExistingItemServiceTemplate = existingItem =>
-            {
-                var serviceTemplateChild = existingItem.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
-                ((BusinessAccount)SelectedEntity).ServiceTemplates.Add(serviceTemplateChild);
-            };
+            //Used in the Service Providers admin console to add an existing (create a child) FoundOPS service template
+            AddExistingItemServiceTemplate = foundOPSServiceTemplate =>
+                VM.ServiceTemplates.CreateChildServiceTemplate(foundOPSServiceTemplate);
 
-            RemoveItemServiceTemplate = () =>
-            {
-                var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
-                if (selectedServiceTemplate != null)
-                    ((BusinessAccount)this.SelectedEntity).ServiceTemplates.Remove(selectedServiceTemplate);
-
-                return selectedServiceTemplate;
-
-                //MessageBox.Show("You cannot remove FoundOPS ServiceTemplates manually yet.");
-                //return null;
-            };
+            RemoveItemServiceTemplate = () => { throw new Exception("Cannot remove service templates. Can only delete them."); };
 
             DeleteItemServiceTemplate = () =>
             {
-                //Add logic to remove a Service template here
-                var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
-                if (selectedServiceTemplate != null)
-                    VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
+                //TODO Call a function on the domain service
+                //Refresh when complete
 
-                return selectedServiceTemplate;
+                //var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
+                //if (selectedServiceTemplate != null)
+                //    VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
 
-                //MessageBox.Show("You cannot delete FoundOPS ServiceTemplates manually yet.");
-                //return null;
+                //return selectedServiceTemplate;
+
+                return null;
             };
 
             #endregion
@@ -270,6 +245,17 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
+        /// <summary>
+        /// Used in the constructor to setup data loading.
+        /// </summary>
+        private void SetupDataLoading()
+        {
+            SetupTopEntityDataLoading(roleId => DomainContext.GetBusinessAccountsForRoleQuery(ContextManager.RoleId));
+
+            //Whenever the business account changes load the details
+            SetupDetailsLoading(selectedEntity => DomainContext.GetBusinessAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
+        }
+
         #region Logic
 
         //Must override or else it will create a Party
@@ -284,29 +270,24 @@ namespace FoundOps.SLClient.UI.ViewModels
             foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds))
                 role.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
-            ((EntityList<Party>)this.DomainCollectionView.SourceCollection).Add(newBusinessAccount);
+            //Add the entity to the EntitySet so it is tracked by the DomainContext
+            this.DomainContext.Parties.Add(newBusinessAccount);
 
             return newBusinessAccount;
         }
 
+        /// <summary>
+        /// Before deleting make the user verify a string.
+        /// </summary>
+        /// <param name="checkCompleted">The action to call after checking.</param>
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
             var stringVerifier = new StringVerifier();
-            
-            stringVerifier.Succeeded += (sender, args) => checkCompleted(true);
 
+            stringVerifier.Succeeded += (sender, args) => checkCompleted(true);
             stringVerifier.Cancelled += (sender, args) => checkCompleted(false);
 
             stringVerifier.Show();
-        }
-
-        public override void DeleteEntity(Party entityToDelete)
-        {
-            var entityCollection = new List<BusinessAccount> { (BusinessAccount)entityToDelete };
-
-            //MessageBox.Show("Cannot manually delete Service Providers.");
-
-            DataManager.RemoveEntities(entityCollection);
         }
 
         /// <summary>
@@ -320,7 +301,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             if (newValue != null)
                 //Whenever the SelectedEntity changes setup the ContactInfoVM for that entity
-                SelectedEntityContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.OwnedParties, newValue.ContactInfoSet);
+                SelectedEntityContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, newValue.ContactInfoSet);
         }
 
         #endregion

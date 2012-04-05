@@ -1,19 +1,17 @@
-﻿using System;
-using ReactiveUI;
-using System.Linq;
-using FoundOps.Common.NET;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
+﻿using FoundOps.Common.NET;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Server.Services.CoreDomainService;
+using FoundOps.SLClient.Data.ViewModels;
 using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using FoundOps.SLClient.Data.Services;
 using System.ComponentModel.Composition;
-using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Context.Services.Interface;
-using FoundOps.Server.Services.CoreDomainService;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -153,12 +151,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationVM"/> class.
         /// </summary>
-        /// <param name="locationsDataService">The locations data service.</param>
         /// <param name="entity">The entity this viewmodel is for</param>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public LocationVM(Location entity, DataManager dataManager)
-            : base(dataManager)
+        public LocationVM(Location entity)
         {
             #region Register Commands
 
@@ -181,7 +176,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             _entity = entity;
 
             //Setup the ContactInfoVM
-            ContactInfoVM = new ContactInfoVM(DataManager, ContactInfoType.Locations, entity != null ? entity.ContactInfoSet : null);
+            ContactInfoVM = new ContactInfoVM(ContactInfoType.Locations, entity != null ? entity.ContactInfoSet : null);
 
             //Set ManuallySelectGeocoderResult to the Entity if it has a Latitude/Longitude
             ManuallySelectGeocoderResult = new GeocoderResult { Name = ManuallySelectLocationString, AddressLineOne = ClickOnTheMapString };

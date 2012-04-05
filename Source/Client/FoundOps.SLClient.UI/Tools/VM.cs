@@ -1,9 +1,10 @@
-﻿using System;
+﻿using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.ViewModels;
+using MEFedMVVM.ViewModelLocator;
+using System;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Markup;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.SLClient.UI.ViewModels;
-using System.ComponentModel.Composition;
 
 namespace FoundOps.SLClient.UI.Tools
 {
@@ -46,6 +47,17 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
+        /// Gets the ContactsVM.
+        /// </summary>
+        public static ContactsVM Contacts
+        {
+            get
+            {
+                return (ContactsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ContactsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
         /// Gets the EmployeesVM.
         /// </summary>
         public static EmployeesVM Employees
@@ -64,6 +76,17 @@ namespace FoundOps.SLClient.UI.Tools
             get
             {
                 return (FieldsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("FieldsVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the FieldsVM.
+        /// </summary>
+        public static DispatcherFilterVM DispatcherFilter
+        {
+            get
+            {
+                return (DispatcherFilterVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("DispatcherFilterVM", null, CreationPolicy.Shared).Value;
             }
         }
 
@@ -101,6 +124,17 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
+        /// Gets the RecurringServicesVM.
+        /// </summary>
+        public static RecurringServicesVM RecurringServices
+        {
+            get
+            {
+                return (RecurringServicesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RecurringServicesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
         /// Gets the RoutesVM.
         /// </summary>
         public static RoutesVM Routes
@@ -108,6 +142,17 @@ namespace FoundOps.SLClient.UI.Tools
             get
             {
                 return (RoutesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the RoutesInfiniteAccordionVM.
+        /// </summary>
+        public static RoutesInfiniteAccordionVM RoutesInfiniteAccordion
+        {
+            get
+            {
+                return (RoutesInfiniteAccordionVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesInfiniteAccordionVM", null, CreationPolicy.Shared).Value;
             }
         }
 
@@ -122,10 +167,18 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
+        private static RouteManifestVM _routeManifestVM;
         /// <summary>
         /// Gets the RouteManifestVM.
         /// </summary>
-        public static RouteManifestVM RouteManifest { get { return Routes.RouteManifestVM; } }
+        public static RouteManifestVM RouteManifest
+        {
+            get
+            {
+                return _routeManifestVM ??
+                       (_routeManifestVM = (RouteManifestVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RouteManifestVM", null, CreationPolicy.Shared).Value);
+            }
+        }
 
         /// <summary>
         /// Gets the ServiceTemplatesVM.
@@ -146,6 +199,17 @@ namespace FoundOps.SLClient.UI.Tools
             get
             {
                 return (ServicesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ServicesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the TaskBoardVM.
+        /// </summary>
+        public static TaskBoardVM TaskBoard
+        {
+            get
+            {
+                return (TaskBoardVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("TaskBoardVM", null, CreationPolicy.Shared).Value;
             }
         }
 
@@ -194,5 +258,4 @@ namespace FoundOps.SLClient.UI.Tools
             return ViewModelRepository.Instance.Resolver.GetViewModelByContract(viewModelName, null, CreationPolicy.Shared).Value;
         }
     }
-
 }

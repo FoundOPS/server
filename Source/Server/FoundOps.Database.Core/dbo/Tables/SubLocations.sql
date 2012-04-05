@@ -7,8 +7,10 @@
     [LocationId] UNIQUEIDENTIFIER NULL,
     [Number]     INT              NOT NULL,
     CONSTRAINT [PK_SubLocations] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_LocationSubLocation] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_LocationSubLocation] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 GO

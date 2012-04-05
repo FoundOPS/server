@@ -1,33 +1,23 @@
-﻿using System.ComponentModel;
-using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
+﻿using FoundOps.SLClient.Data.Tools;
+using FoundOps.SLClient.UI.Tools;
 
 namespace FoundOps.SLClient.UI.Controls.Contacts
 {
-    public partial class ContactsGrid : INotifyPropertyChanged
+    /// <summary>
+    /// UI for displaying the proper Contacts depending on the current context.
+    /// </summary>
+    public partial class ContactsGrid
     {
         public bool IsMainGrid { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContactsGrid"/> class.
+        /// </summary>
         public ContactsGrid()
         {
             InitializeComponent();
 
-            this.DependentWhenVisible(ContactsVM);
+            this.DependentWhenVisible(VM.Contacts);
         }
-
-        public ContactsVM ContactsVM
-        {
-            get { return (ContactsVM)this.DataContext; }
-        }
-
-        #region Implementation of INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }

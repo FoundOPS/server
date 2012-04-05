@@ -185,8 +185,7 @@
                                     <TextBlock TextWrapping="Wrap" Text="Locations" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <StackPanel Orientation="Horizontal" Grid.Column="1">
                                         <AddEditDelete:AddDelete AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" CommandParameter="{Binding SelectedLocationVM.Entity}" />
-                                        <Controls:CsvButton Margin="5,3,5,3" Content="CSV" ToolTipService.ToolTip="Export to CSV"
-                                                Click="ExportLocationsCSV_OnClick" IsEnabled="{Binding CanExportCSV}"/>
+                                        <Controls:CsvButton Margin="5,3,5,3" Content="CSV" ToolTipService.ToolTip="Export to CSV" Click="ExportLocationsCSV_OnClick" />
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -245,7 +244,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Recurring Services" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForClient, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}">
+                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForContext, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}">
                                         <AddEditDelete:AddDelete.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Name}"/>
@@ -264,7 +263,7 @@
                         <RecurringServices:RecurringServiceSmall />
                     </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
-                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Service">
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.ServiceHolder">
                     <InfiniteAccordion:ThirdsListDetails.List>
                         <!--Use grid to limit height of RadGridView so scroller will work-->
                         <Grid>
@@ -280,7 +279,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Services" Margin="5,3,5,3" FontSize="13" Foreground="White" />
                                     <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForServiceProvider, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}">
+                                                CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForContext, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}">
                                         <AddEditDelete:AddDelete.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Name}"/>
@@ -293,7 +292,7 @@
                         </Grid>
                     </InfiniteAccordion:ThirdsListDetails.List>
                     <InfiniteAccordion:ThirdsListDetails.Details>
-                        <my:ServiceLarge />
+                        <Services:ServiceLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
                     <InfiniteAccordion:ThirdsListDetails.Summary>
                         <my:ServiceSmall />
@@ -314,19 +313,6 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Service Templates" Margin="5,3,5,3" FontSize="13" Foreground="White" />
-                                    <!--AddDeleteMode within FoundOPS context: AddDelete, all other serviceproviders: AddItemDelete  -->
-                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
-                                                             AddItemCommand="{Binding AddCommand, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}" 
-                                                             DeleteCommand="{Binding DeleteCommand, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
-                                                             CommandParameter="{Binding SelectedEntity, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}" 
-                                                             ItemsSource="{Binding AdditionalServiceTemplatesForServiceProvider, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}"
-                                                             AddDeleteMode="{Tools:GetContextObservableValue Converter={StaticResource ServiceTemplatesAddDeleteModeConverter}, ContextType=CoreEntities1:BusinessAccount}">
-                                        <AddEditDelete:AddDelete.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Name}"/>
-                                            </DataTemplate>
-                                        </AddEditDelete:AddDelete.ItemTemplate>
-                                    </AddEditDelete:AddDelete>
                                 </Grid>
                             </Border>
                             <ServiceTemplate1:ServiceTemplatesGrid x:Name="ServiceTemplatesGrid" IsMainGrid="True" Grid.Row="1" />
@@ -448,7 +434,7 @@
                         <TextBlock Text="{Binding Name}" Foreground="White" />
                     </InfiniteAccordion:ContextBorder.HeaderContent>
                 </InfiniteAccordion:ContextBorder>
-                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Service" BorderBrush="{StaticResource ServiceBrush}" DeleteButtonVisibility="Collapsed">
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.ServiceHolder" BorderBrush="{StaticResource ServiceBrush}" DeleteButtonVisibility="Collapsed">
                     <InfiniteAccordion:ContextBorder.HeaderContent>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding AccountToService.DisplayName}" Foreground="White" />

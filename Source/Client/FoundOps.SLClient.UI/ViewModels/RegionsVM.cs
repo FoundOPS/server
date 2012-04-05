@@ -1,13 +1,11 @@
-﻿using System.Windows;
-using System.ComponentModel;
-using GalaSoft.MvvmLight.Command;
-using MEFedMVVM.ViewModelLocator;
-using GalaSoft.MvvmLight.Messaging;
+﻿using System;
+using System.Windows.Controls;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
-using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
+using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
+using System.ComponentModel.Composition;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -15,54 +13,31 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Regions
     /// </summary>
     [ExportViewModel("RegionsVM")]
-    public class RegionsVM : CoreEntityCollectionInfiniteAccordionVM<Region>, IAddDeleteSelectedLocation
+    public class RegionsVM : InfiniteAccordionVM<Region, Region>
     {
         #region Public Properties
 
-        public RelayCommand<Location> AddSelectedLocationCommand { get; set; }
-        public RelayCommand<Location> DeleteSelectedLocationCommand { get; set; }
+        /// <summary>
+        /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
+        /// </summary>
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
 
         #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegionsVM"/> class.
         /// </summary>
-        /// <param name="dataManager">The data manager.</param>
         [ImportingConstructor]
-        public RegionsVM(DataManager dataManager)
-            : base(dataManager)
+        public RegionsVM()
         {
-            //Setup the main query to Regions
-            this.SetupMainQuery(DataManager.Query.Regions);
+            //Setup data loading
+            SetupTopEntityDataLoading(roleId => DomainContext.GetRegionsForServiceProviderQuery(ContextManager.RoleId));
 
-            #region Register Commands
-
-            AddSelectedLocationCommand = new RelayCommand<Location>(OnAddSelectedLocation);
-            DeleteSelectedLocationCommand = new RelayCommand<Location>(OnDeleteSelectedLocation);
-
-            #endregion
+            ManuallyUpdateSuggestions = autoCompleteBox =>
+              SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchRegionsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
         }
 
         #region Logic
-
-        private void OnAddSelectedLocation(Location locationToAdd)
-        {
-            if (locationToAdd == null)
-                MessageBox.Show("Please select a Location to add");
-            else
-            {
-                this.SelectedEntity.Locations.Add(locationToAdd);
-                //Refresh the Context to assure proper filtering
-                RaisePropertyChanged("SelectedContext");
-            }
-        }
-
-        private void OnDeleteSelectedLocation(Location locationToRemove)
-        {
-            this.SelectedEntity.Locations.Remove(locationToRemove);
-            //Refresh the Context to assure proper filtering
-            RaisePropertyChanged("SelectedContext");
-        }
 
         protected void OnSelectedEntityChanged(Location oldValue, Location newValue)
         {
@@ -82,6 +57,5 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         #endregion
-
     }
 }

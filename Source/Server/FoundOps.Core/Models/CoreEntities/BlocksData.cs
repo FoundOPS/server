@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Core.Server.Blocks
+namespace FoundOps.Core.Models.CoreEntities
 {
     /// <summary>
     /// Constant Block values.

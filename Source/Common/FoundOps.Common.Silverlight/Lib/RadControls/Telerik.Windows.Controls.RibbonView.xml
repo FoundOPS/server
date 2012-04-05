@@ -1438,6 +1438,15 @@
             Resets the theme.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.RibbonView.KeyTips.KeyTipControl.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Called to remeasure a control.
+            </summary>
+            <param name="constraint">The maximum size that the method can return.</param>
+            <returns>
+            The size of the control, up to the maximum specified by <paramref name="constraint"/>.
+            </returns>
+        </member>
         <member name="T:Telerik.Windows.Controls.RibbonView.KeyTipService">
             <summary>
             Class used to Enable/Disable key tips for RadRibbonView control.
@@ -3278,12 +3287,6 @@
             </summary>
             <param name="item">The item to check.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadRibbonView.UpdateSelectedContentProperties">
-            <summary>
-            Updates the selected content properties. This method must be implemented appropriately in the deriving class.
-            Selected content properties are used when representing the content of selected tab item.
-            </summary>
-        </member>
         <member name="M:Telerik.Windows.Controls.RadRibbonView.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
             <summary>
             Prepares the specified element to display the specified item.
@@ -3303,6 +3306,12 @@
             Called when the Selected item has changed.
             </summary>
             <param name="e"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRibbonView.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Called when the value of the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.
+            </summary>
+            <param name="e">A <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> that contains the event data.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.RadRibbonView.OnKeyUp(System.Windows.Input.KeyEventArgs)">
             <summary>

@@ -14,19 +14,20 @@ namespace FoundOps.SLClient.UI.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var currentDestination = values[0] as RouteDestination;
-            var routesVM = values[1] as RoutesVM;
-            var selectedRouteTypes = routesVM.SelectedRouteTypes;
+            //var currentDestination = values[0] as RouteDestination;
+            //var routesVM = values[1] as RoutesVM;
+            //var selectedRouteTypes = routesVM.SelectedRouteTypes;
 
-            // If one of the conditions is met the opacity returned will be 100%
-            // a) There is a null destination passed
-            // b) The destination has no tasks associated with it
-            // c) One of the Tasks has the same type as one of the selected RouteTypes
-            if (currentDestination == null || currentDestination.RouteTasks.Count == 0 || currentDestination.RouteTasks.Any(task => selectedRouteTypes.Contains(task.Name)))
-                return "1";
+            //// If one of the conditions is met the opacity returned will be 100%
+            //// a) There is a null destination passed
+            //// b) The destination has no tasks associated with it
+            //// c) One of the Tasks has the same type as one of the selected RouteTypes
+            //if (currentDestination == null || currentDestination.RouteTasks.Count == 0 || currentDestination.RouteTasks.Any(task => selectedRouteTypes.Contains(task.Name)))
+            //    return "1";
 
-            // Only gets here if the above condtions fail
-            return ".25";
+            //// Only gets here if the above condtions fail
+            //return ".25";
+            return 1;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -42,17 +43,19 @@ namespace FoundOps.SLClient.UI.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] as RouteTask == null || values[1] as RoutesVM == null)
-                return ".25";
+            //if (values[0] as RouteTask == null || values[1] as RoutesVM == null)
+            //    return ".25";
 
-            var currentDestination = ((RouteTask)values[0]).RouteDestination;
-            var routesVM = values[1] as RoutesVM;
-            var selectedRouteTypes = routesVM.SelectedRouteTypes;
+            //var currentDestination = ((RouteTask)values[0]).RouteDestination;
+            //var routesVM = values[1] as RoutesVM;
+            //var selectedRouteTypes = routesVM.SelectedRouteTypes;
 
-            if (currentDestination == null || currentDestination.RouteTasks.Count == 0 || currentDestination.RouteTasks.Any(task => selectedRouteTypes.Contains(task.Name)))
-                return "1";
+            //if (currentDestination == null || currentDestination.RouteTasks.Count == 0 || currentDestination.RouteTasks.Any(task => selectedRouteTypes.Contains(task.Name)))
+            //    return "1";
 
-            return ".25";
+            //return ".25";
+
+            return 1;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

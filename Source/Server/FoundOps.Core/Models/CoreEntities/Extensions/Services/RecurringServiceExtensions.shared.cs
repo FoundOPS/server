@@ -3,7 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 using FoundOps.Common.Composite.Entities;
 
+//This is a partial class, must be in the same namespace so disable warning
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     //Not sure what this is used for [Field("PartyToService", "Client")]
     public partial class RecurringService : IEntityDefaultCreation, ICompositeRaiseEntityPropertyChanged
@@ -53,13 +56,25 @@ namespace FoundOps.Core.Models.CoreEntities
                 if (ExcludedDatesString == null)
                     return new List<DateTime>();
 
-                //Split the delimited string and convert it to a list of DateTimes
-                return ExcludedDatesString.Split(',').Select(Convert.ToDateTime);
+                try
+                {
+                    //Split the delimited string and convert it to a list of DateTimes
+                    return ExcludedDatesString.Split(',').Select(Convert.ToDateTime);
+                }
+                catch (Exception)
+                {
+                    ExcludedDates = new List<DateTime>();
+                    return ExcludedDates;
+                }
             }
             set
             {
                 //Create a delimited string of DateTimes
-                ExcludedDatesString = String.Join(",", value);
+                if (value == null || !value.Any())
+                    ExcludedDatesString = null;
+                else
+                    ExcludedDatesString = String.Join(",", value);
+           
                 CompositeRaiseEntityPropertyChanged("ExcludedDates");
             }
         }

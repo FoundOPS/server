@@ -1,14 +1,12 @@
-﻿using System.Windows;
-using System.Windows.Data;
-using Telerik.Windows.Controls;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.UI.Tools;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
 {
     /// <summary>
-    /// Displays the linked UserAccount
+    /// Displays the linked UserAccount.
     /// </summary>
     public partial class UserAccountLinkLarge
     {
@@ -19,24 +17,8 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         {
             InitializeComponent();
 
-            UserAccountsVM.PropertyChanged += (sender, e) =>
-            {
-                //After the User Accounts are loaded, setup two way binding
-                if (e.PropertyName == "IsLoading" && !UserAccountsVM.IsLoading)
-                {
-                    UserAccountsRadComboBox.SetBinding(Selector.SelectedValueProperty, new Binding("SelectedUserAccount") { Source = this, Mode = BindingMode.TwoWay });
-                }
-            };
-
-            this.DependentWhenVisible(UserAccountsVM);
-        }
-
-        /// <summary>
-        /// Gets the user accounts VM.
-        /// </summary>
-        public UserAccountsVM UserAccountsVM
-        {
-            get { return (UserAccountsVM)DataContext; }
+            this.DependentWhenVisible(VM.UserAccounts);
+            UserAccountsAutoCompleteBox.HookupSearchSuggestions(VM.UserAccounts.ManuallyUpdateSuggestions);
         }
 
         #region SelectedUserAccount Dependency Property

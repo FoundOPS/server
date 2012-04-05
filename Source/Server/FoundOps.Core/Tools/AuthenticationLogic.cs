@@ -1,35 +1,23 @@
-﻿using System;
+using System;
 using System.Web;
 using System.Text;
 using System.Linq;
 using System.Data.Objects;
-using FoundOps.Core.Models;
+using FoundOps.Common.Server;
 using System.Security.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 
-namespace FoundOps.Core.Tools
+namespace FoundOps.Server.Authentication
 {
     public static class AuthenticationLogic
     {
-        /// <summary>
-        /// Returns the current user accounts email address.
-        /// </summary>
-        public static string CurrentUserAccountsEmailAddress()
-        {
-#if DEBUG
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin)
-                return "jperl@foundops.com";
-
-            if (ServerConstants.AutomaticLoginOPSManager)
-                return "david@gotgrease.net";
-#endif
-            return HttpContext.Current.User.Identity.Name;
-        }
+        #region Helpers
 
         /// <summary>
-        /// Gets a random 8 digit uppercase alphanumeric code.
+        /// Gets a random 8 character uppercase alphanumeric code.
         /// </summary>
+        /// <returns></returns>
         public static string GetCode()
         {
             var builder = new StringBuilder();
@@ -45,55 +33,14 @@ namespace FoundOps.Core.Tools
             return code;
         }
 
-        /// <summary>
-        /// Returns a queryable with the user account.
-        /// </summary>
-        /// <param name="coreEntitiesContainer">The core entities container.</param>
-        public static IQueryable<UserAccount> CurrentUserAccountQueryable(CoreEntitiesContainer coreEntitiesContainer)
-        {
-            return GetUserAccountQueryable(coreEntitiesContainer, CurrentUserAccountsEmailAddress());
-        }
+        #endregion
 
-        public static IQueryable<UserAccount> GetUserAccountQueryable(CoreEntitiesContainer container, string emailAddress)
-        {
-            return container.Parties.OfType<UserAccount>().Where(userAccount => userAccount.EmailAddress == emailAddress);
-        }
+        #region Roles
 
-        public static UserAccount GetUserAccount(CoreEntitiesContainer container, string emailAddress)
-        {
-            return GetUserAccountQueryable(container, emailAddress).FirstOrDefault();
-        }
-
-        public static UserAccount GetUserAccount(CoreEntitiesContainer container, Guid userId)
-        {
-            return container.Parties.OfType<UserAccount>().FirstOrDefault(userParty => userParty.Id == userId);
-        }
-
-        /// <summary>
-        ///  Role includes MemberPartys and OwnerParty
-        /// </summary>
-        /// <exception cref="AuthenticationException">Thrown if user is not logged in</exception>
-        public static IQueryable<Role> RolesCurrentUserHasAccessTo(this CoreEntitiesContainer coreEntitiesContainer)
-        {
-            var currentUser = CurrentUserAccountQueryable(coreEntitiesContainer).FirstOrDefault();
-
-            return RolesCurrentUserHasAccessTo(currentUser, coreEntitiesContainer);
-        }
-
-        public static IQueryable<Role> RolesCurrentUserHasAccessTo(UserAccount currentUser, CoreEntitiesContainer coreEntitiesContainer)
-        {
-            if (currentUser == null)
-                return null;
-
-            return ((ObjectQuery<Role>)
-                coreEntitiesContainer.Roles.Include("MemberParties").Where(r => r.OwnerPartyId == currentUser.Id || r.MemberParties.Any(a => a.Id == currentUser.Id)))
-                .Include("Blocks").Include("OwnerParty");
-        }
-
-        /// <param name='rolesToFilter'>The roles that you want to filter</param>
         /// <summary>
         /// Returns the Administrator roles of rolesToFilter
         /// </summary>
+        /// <param name='rolesToFilter'>The roles that you want to filter</param>
         public static IQueryable<Role> AdministratorRoles(IQueryable<Role> rolesToFilter)
         {
             //TODO: Setup better Administrator role logic, when roles develop
@@ -102,63 +49,200 @@ namespace FoundOps.Core.Tools
 
             return filteredRoles;
         }
-
-        public static IQueryable<Party> PartiesCurrentUserCanAdminister(this CoreEntitiesContainer coreEntitiesContainer)
+        
+        /// <summary>
+        /// Gets the roles the current user has access to
+        /// NOTE: Role includes MemberParties, and OwnerParty
+        /// </summary>
+        /// <exception cref="AuthenticationException">Thrown if user is not logged in</exception>
+        public static IQueryable<Role> RolesCurrentUserHasAccessTo(this CoreEntitiesContainer coreEntitiesContainer)
         {
-            var rolesCurrentUserHasAccessTo = RolesCurrentUserHasAccessTo(coreEntitiesContainer);
-            return AdministratorRoles(rolesCurrentUserHasAccessTo).Select(r => r.OwnerParty);
+            var roles = (ObjectQuery<Role>) //cast as an ObjectQuery to defer Blocks and OwnerParty include until last minute
+                        from user in CurrentUserAccountQueryable(coreEntitiesContainer) //there will only be one
+                        from role in coreEntitiesContainer.Roles.Include("OwnerParty").Include("MemberParties")
+                        where role.OwnerPartyId == user.Id || role.MemberParties.Any(a => a.Id == user.Id)
+                        select role;
+
+            return roles;
         }
 
-        public static bool CurrentUserHasFoundOPSAdminAccess(this CoreEntitiesContainer coreEntitiesContainer)
+        #region OwnerParty
+
+        /// <summary>
+        /// Gets the owner party of a role.
+        /// It will return one entity as an IQueryable for performance.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="roleId">The role id.</param>
+        /// <returns></returns>
+        public static IQueryable<Party> OwnerPartyOfRoleQueryable(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
         {
-            var partiesCurrentUserCanAdminister = PartiesCurrentUserCanAdminister(coreEntitiesContainer).ToArray();
+            var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer)
+                             where role.Id == roleId
+                             select role.OwnerParty;
 
-            return partiesCurrentUserCanAdminister.Any(p => p.Id == BusinessAccountsConstants.FoundOpsId);
-        }
-
-        public static bool CurrentUserCanAdministerThisParty(this CoreEntitiesContainer coreEntitiesContainer, Guid partyId)
-        {
-            //If the current user is a FoundOPS admin then they should have access
-            if (CurrentUserHasFoundOPSAdminAccess(coreEntitiesContainer))
-                return true;
-
-            var partiesCurrentUserCanAdminister = PartiesCurrentUserCanAdminister(coreEntitiesContainer).ToArray();
-
-            return partiesCurrentUserCanAdminister.Any(p => p.Id == partyId);
-        }
-
-        public static Party PartyForRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
-        {
-            var role = RolesCurrentUserHasAccessTo(coreEntitiesContainer).FirstOrDefault(r => r.Id == roleId);
-
-            if (role == null || role.OwnerPartyId == null)
-                return null;
-
-            var ownerParty = role.OwnerParty;
-            ownerParty.PartyImageReference.Load();
             return ownerParty;
         }
 
-        public static Business BusinessForRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
+        /// <summary>
+        /// Gets the owner party of a role.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="roleId">The role id.</param>
+        /// <returns></returns>
+        public static Party OwnerPartyOfRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
         {
-            var accountForRole = coreEntitiesContainer.PartyForRole(roleId);
+            return coreEntitiesContainer.OwnerPartyOfRoleQueryable(roleId).FirstOrDefault();
+        }
 
-            if (!(accountForRole is Business))
-                return null;
+        /// <summary>
+        /// Gets the Business owner of a role.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="roleId">The role id.</param>
+        /// <returns></returns>
+        public static Business BusinessOwnerOfRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
+        {
+            var accountForRole = coreEntitiesContainer.OwnerPartyOfRole(roleId);
+            if (!(accountForRole is Business)) return null;
 
             var ownerParty = (Business)accountForRole;
             return ownerParty;
         }
 
-        public static BusinessAccount BusinessAccountForRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
+        /// <summary>
+        /// Gets the BusinessAccount owner of a role.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="roleId">The role id.</param>
+        /// <returns></returns>
+        public static BusinessAccount BusinessAccountOwnerOfRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
         {
-            var accountForRole = coreEntitiesContainer.PartyForRole(roleId);
+            var accountForRole = coreEntitiesContainer.OwnerPartyOfRole(roleId);
 
-            if (!(accountForRole is BusinessAccount))
-                return null;
+            if (!(accountForRole is BusinessAccount)) return null;
 
             var ownerParty = (BusinessAccount)accountForRole;
             return ownerParty;
         }
+
+        #endregion
+
+        #endregion
+
+        #region User Accounts
+
+        #region Access & Administration methods
+
+        /// <summary>
+        /// Returns if the current user can access the party.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="partyId">The party id.</param>
+        /// <returns></returns>
+        public static bool CurrentUserCanAccessParty(this CoreEntitiesContainer coreEntitiesContainer, Guid partyId)
+        {
+            //Return if the current user can administer the party or
+            //if the current user is a FoundOPS admin (then they should have access to administer the party)
+            return RolesCurrentUserHasAccessTo(coreEntitiesContainer).Select(r => r.OwnerParty).Any(p => p.Id == partyId || p.Id == BusinessAccountsConstants.FoundOpsId);
+        }
+
+        /// <summary>
+        /// Returns the parties the current user can administer.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The container.</param>
+        /// <returns></returns>
+        public static IQueryable<Party> PartiesCurrentUserCanAdminister(this CoreEntitiesContainer coreEntitiesContainer)
+        {
+            return AdministratorRoles(RolesCurrentUserHasAccessTo(coreEntitiesContainer)).Select(r => r.OwnerParty);
+        }
+
+        /// <summary>
+        /// Returns if the current user can administer the party.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="partyId">The party id.</param>
+        /// <returns></returns>
+        public static bool CurrentUserCanAdministerParty(this CoreEntitiesContainer coreEntitiesContainer, Guid partyId)
+        {
+            //Return if the current user can administer the party or
+            //if the current user is a FoundOPS admin (then they should have access to administer the party)
+            return PartiesCurrentUserCanAdminister(coreEntitiesContainer).Any(p => p.Id == partyId || p.Id == BusinessAccountsConstants.FoundOpsId);
+        }
+
+        /// <summary>
+        /// Returns if the current user has FoundOPS admin access.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <returns></returns>
+        public static bool CurrentUserCanAdministerFoundOPS(this CoreEntitiesContainer coreEntitiesContainer)
+        {
+            return PartiesCurrentUserCanAdminister(coreEntitiesContainer).Any(p => p.Id == BusinessAccountsConstants.FoundOpsId);
+        }
+
+        #endregion
+
+        #region Get methods
+
+        /// <summary>
+        /// Gets the current user accounts email address.
+        /// </summary>
+        /// <returns></returns>
+        public static string CurrentUserAccountsEmailAddress()
+        {
+#if DEBUG
+            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan"))
+                return "jperl@foundops.com";
+#endif
+
+            return HttpContext.Current.User.Identity.Name;
+        }
+
+        /// <summary>
+        /// Gets the current user account in a queryable format.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <returns></returns>
+        public static IQueryable<UserAccount> CurrentUserAccountQueryable(CoreEntitiesContainer coreEntitiesContainer)
+        {
+            return UserAccountQueryable(coreEntitiesContainer, CurrentUserAccountsEmailAddress());
+        }
+
+        /// <summary>
+        /// Gets the current user account.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <param name="userId">The user id.</param>
+        /// <returns></returns>
+        public static UserAccount GetUserAccount(CoreEntitiesContainer container, Guid userId)
+        {
+            return container.Parties.OfType<UserAccount>().FirstOrDefault(userParty => userParty.Id == userId);
+        }
+
+        /// <summary>
+        /// Gets the current user account.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <param name="emailAddress">The user's email address.</param>
+        /// <returns></returns>
+        public static UserAccount GetUserAccount(CoreEntitiesContainer container, string emailAddress)
+        {
+            return UserAccountQueryable(container, emailAddress).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the user account for an email address in a queryable format.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <param name="emailAddress">The email address.</param>
+        /// <returns></returns>
+        public static IQueryable<UserAccount> UserAccountQueryable(CoreEntitiesContainer container, string emailAddress)
+        {
+            return container.Parties.OfType<UserAccount>().Where(userAccount => userAccount.EmailAddress == emailAddress);
+        }
+
+        #endregion
+
+        #endregion
     }
 }

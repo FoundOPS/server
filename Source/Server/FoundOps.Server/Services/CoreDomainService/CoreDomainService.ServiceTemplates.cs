@@ -1,17 +1,20 @@
-﻿using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Tools;
+using System.Data.Entity;
+using FoundOps.Common.NET;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.Server.Authentication;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
+using System.Data;
 using System.ServiceModel.DomainServices.EntityFramework;
-using System.ServiceModel.DomainServices.Server;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
     /// <summary>
     /// Holds the domain service operations for any template entities:
     /// Fields, Options, and ServiceTemplates
+    /// TODO: Secure
     /// </summary>
     public partial class CoreDomainService
     {
@@ -61,6 +64,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteOptionsField(OptionsField optionsField)
         {
+            this.ObjectContext.DetachExistingAndAttach(optionsField);
             optionsField.Options.Load();
             var optionsToDelete = optionsField.Options.ToArray();
             foreach (var option in optionsToDelete)
@@ -134,30 +138,135 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region ServiceTemplate
 
-        public IQueryable<ServiceTemplate> GetServiceTemplatesForServiceProvider(Guid roleId)
+        /// <summary>
+        /// Gets the ServiceTemplates the current role has access to.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="serviceTemplateLevel">(Optional/recommended) The service template level to filter by.</param>
+        public IQueryable<ServiceTemplate> GetServiceTemplatesForServiceProvider(Guid roleId, int? serviceTemplateLevel)
         {
-            var businessForRole = ObjectContext.BusinessForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var recurringServicesForServiceProvider = GetRecurringServicesForServiceProvider(roleId);
+            IQueryable<ServiceTemplate> serviceTemplatesToReturn = this.ObjectContext.ServiceTemplates;
 
-            var serviceTemplatesForServiceProvider =
-                this.ObjectContext.ServiceTemplates.Include("Fields").Include("OwnerClient").Where(
-                        st => st.OwnerServiceProviderId == businessForRole.Id ||
-                        (st.OwnerClient != null && st.OwnerClient.VendorId == businessForRole.Id) ||
-                        recurringServicesForServiceProvider.Any(rs => rs.Id == st.OwnerRecurringService.Id));
+            //Filter by serviceTemplateLevel if it is not null
+            if (serviceTemplateLevel != null)
+                serviceTemplatesToReturn = serviceTemplatesToReturn.Where(st => st.LevelInt == serviceTemplateLevel);
+
+            //If the current role is FoundOPS, filter by what service templates can be accessed
+            if (businessForRole.Id != BusinessAccountsConstants.FoundOpsId)
+            {
+                //Filter by the service templates for the service provider (Vendor)
+                serviceTemplatesToReturn = (from serviceTemplate in serviceTemplatesToReturn
+                                            join stv in ObjectContext.ServiceTemplateWithVendorIds
+                                                on serviceTemplate.Id equals stv.ServiceTemplateId
+                                            where stv.VendorId == businessForRole.Id
+                                            select serviceTemplate).Distinct();
+            }
+
+            //TODO? Limit by 1000
+            return serviceTemplatesToReturn.OrderBy(st => st.Name);
+        }
+
+        /// <summary>
+        /// Gets the current ServiceProvider's ServiceProvider level ServiceTemplates and details.
+        /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        public IEnumerable<ServiceTemplate> GetServiceProviderServiceTemplates(Guid roleId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            //Filter by the service templates for the service provider (Vendor)
+            var serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
+                                            join stv in ObjectContext.ServiceTemplateWithVendorIds
+                                                on serviceTemplate.Id equals stv.ServiceTemplateId
+                                            where stv.VendorId == businessForRole.Id
+                                            select serviceTemplate).Distinct();
+
+            //Force load the details
+            var templatesWithDetails =
+                (from serviceTemplate in serviceProviderTemplates
+                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
+
+            return templatesWithDetails.Select(t => t.serviceTemplate).OrderBy(st => st.Name);
+        }
+
+        /// <summary>
+        /// Gets the Client's ServiceTemplates and details.
+        /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="clientId">The clientId to load service templates for.</param>
+        public IEnumerable<ServiceTemplate> GetClientServiceTemplates(Guid roleId, Guid clientId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            //Filter by the service templates for the Client
+            //also filter be service provider (Vendor) for security
+            var serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.OwnerClientId == clientId)
+                                            join stv in ObjectContext.ServiceTemplateWithVendorIds
+                                                on serviceTemplate.Id equals stv.ServiceTemplateId
+                                            where stv.VendorId == businessForRole.Id
+                                            select serviceTemplate).Distinct();
+
+            //Force load the details
+            var templatesWithDetails =
+                (from serviceTemplate in serviceProviderTemplates
+                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
+
+            return templatesWithDetails.Select(t => t.serviceTemplate).OrderBy(st => st.Name);
+        }
+
+        /// <summary>
+        /// Searches the FoundOPS ServiceTemplates the current role's ServiceProvider does not have yet.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="serviceProviderId">The service provider you are searching templates for.</param>
+        /// <param name="searchText">The search text.</param>
+        public IQueryable<ServiceTemplate> SearchServiceTemplatesForServiceProvider(Guid roleId, Guid serviceProviderId, string searchText)
+        {
+            var foundOpsServiceTemplates = GetServiceTemplatesForServiceProvider(roleId, (int)ServiceTemplateLevel.FoundOpsDefined);
+
+            if (!String.IsNullOrEmpty(searchText))
+                foundOpsServiceTemplates = foundOpsServiceTemplates.Where(st => st.Name.StartsWith(searchText));
+
+            var existingChildren = GetServiceTemplatesForServiceProvider(roleId, (int)ServiceTemplateLevel.ServiceProviderDefined)
+                .Where(sp => sp.OwnerServiceProviderId == serviceProviderId);
+
+            //Remove existing children service templates
+            foundOpsServiceTemplates = foundOpsServiceTemplates.Where(foundOpsTemplate =>
+                !existingChildren.Any(ec => ec.OwnerServiceTemplateId == foundOpsTemplate.Id));
+
+            return foundOpsServiceTemplates.OrderBy(st => st.Name);
+        }
+
+        /// <summary>
+        /// Gets the service template details.
+        /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="serviceTemplateId">The ServiceTemplate id.</param>
+        public ServiceTemplate GetServiceTemplateDetailsForRole(Guid roleId, Guid serviceTemplateId)
+        {
+            var serviceTemplateTuples =
+                from serviceTemplate in GetServiceTemplatesForServiceProvider(roleId, null).Where(st => st.Id == serviceTemplateId)
+                from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
 
 
-            //Force Load Options
-            serviceTemplatesForServiceProvider.SelectMany(st => st.Fields).OfType<OptionsField>().SelectMany(of => of.Options).ToArray();
+            var serviceTemplateTuple = serviceTemplateTuples.FirstOrDefault();
+            return serviceTemplateTuple == null ? null : serviceTemplateTuple.serviceTemplate;
 
-            //Force Load LocationField's Location
-            serviceTemplatesForServiceProvider.SelectMany(st => st.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
-
-            //Force load Invoices
-            //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            this.ObjectContext.Invoices.Join(serviceTemplatesForServiceProvider, i => i.Id, st => st.Id, (i, st) => i).ToArray();
-
-            return serviceTemplatesForServiceProvider;
+            //TODO w QuickBooks
+            ////Force load Invoices
+            ////Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
+            //this.ObjectContext.Invoices.Join(serviceTemplatesForServiceProvider, i => i.Id, st => st.Id, (i, st) => i).ToArray();
         }
 
         /// <summary>
@@ -166,51 +275,11 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceTemplate"></param>
         public void DeleteServiceTemplate(ServiceTemplate serviceTemplate)
         {
-            var loadedServiceTemplate = this.ObjectContext.ServiceTemplates.FirstOrDefault(st => st.Id == serviceTemplate.Id);
-            if (loadedServiceTemplate != null)
-                this.ObjectContext.Detach(loadedServiceTemplate);
-
-            if ((serviceTemplate.EntityState == EntityState.Detached))
-                this.ObjectContext.ServiceTemplates.Attach(serviceTemplate);
-
-            //Force delete all sub servicetemplates if you are deleting a business account
-            var forceDelete = this.ChangeSet.ChangeSetEntries
-                .Any(cse => cse.Entity is BusinessAccount && cse.Operation == DomainOperation.Delete &&
-                            ((BusinessAccount)cse.Entity).ServiceTemplates.Contains(serviceTemplate));
-
-            var decendants = GetDescendants(serviceTemplate);
-
-            //If not force delete, make sure there are no RecurringServiceLevel or ServiceLevel decendants before deleting the service template
-            if (!forceDelete)
-            {
-                //Find last descendant and check what level it is at
-                var recurringServiceOrServiceLevelExist =
-                    decendants.Any(d => d.ServiceTemplateLevel == ServiceTemplateLevel.ServiceDefined ||
-                                        d.ServiceTemplateLevel == ServiceTemplateLevel.RecurringServiceDefined);
-
-                //If the lowest level is either the RecurringService or Service level, do not delete
-                if (recurringServiceOrServiceLevelExist)
-                    return;
-            }
-
-            //Delete the ServiceTemplate and it's descendants
-            var serviceTemplatesToDelete = decendants.Union(new[] { serviceTemplate });
-
-            foreach (var serviceTemplateToDelete in serviceTemplatesToDelete)
-            {
-                //Delete each Field
-                serviceTemplateToDelete.Fields.Load();
-                var fieldsToDelete = serviceTemplateToDelete.Fields.ToArray();
-                foreach (var fieldToDelete in fieldsToDelete)
-                    this.DeleteField(fieldToDelete);
-
-                //Delete the invoice reference
-                serviceTemplateToDelete.InvoiceReference.Load();
-                if (serviceTemplateToDelete.Invoice != null)
-                    DeleteInvoice(serviceTemplateToDelete.Invoice);
-
-                this.ObjectContext.ServiceTemplates.DeleteObject(serviceTemplateToDelete);
-            }
+            //TODO cannot delete if it has children
+            //Stored procedure that will find all the children of this ServiceTemplate
+            //Then it will delete all of them
+            //Cascades will take care of all associations
+            ObjectContext.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(serviceTemplate.Id);
         }
 
         private IEnumerable<ServiceTemplate> GetDescendants(ServiceTemplate serviceTemplate)

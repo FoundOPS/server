@@ -26,27 +26,21 @@
             <RowDefinition Height="5" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
         <TextBlock Text="Name:" HorizontalAlignment="Right" Grid.Column="1"/>
-        <TextBox Text="{Binding Name, Mode=TwoWay}" Grid.Column="3"/>
-
+        <TextBox Text="{Binding Name, Mode=TwoWay}" Grid.Column="3" MaxLength="40"/>
         <TextBlock Text="Tooltip:" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" ToolTipService.ToolTip="This is a tooltip. When the user hovers over the field, 
                    whatever helpful information you've inputted here will be displayed in a box like this one."/>
         <TextBox Text="{Binding Tooltip, Mode=TwoWay}" Grid.Column="3" Grid.Row="2"/>
-
         <TextBlock Text="Default Value:" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="1"/>
         <telerik:RadNumericUpDown Grid.Column="3" Grid.Row="4" NumberDecimalDigits="{Binding DecimalPlaces}" Value="{Binding Value, Mode=TwoWay}" ValueFormat="Numeric"/>
-        <!--<telerik:RadMaskedNumericInput Grid.Column="3" Grid.Row="4" TextMode="PlainText" FormatString="n0" Value="{Binding Value, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"/>-->
-
         <TextBlock Text="Decimals:" HorizontalAlignment="Right" Grid.Row="6" Grid.Column="1"/>
-        <telerik:RadNumericUpDown Grid.Column="3" Grid.Row="6" NumberDecimalDigits="0" Value="{Binding DecimalPlaces, Mode=TwoWay}" Height="22" VerticalAlignment="Top" />
-
+        <telerik:RadNumericUpDown Grid.Column="3" Grid.Row="6" NumberDecimalDigits="0" Value="{Binding DecimalPlaces, Mode=TwoWay}" Height="22" VerticalAlignment="Top"/>
         <TextBlock Text="Minimum:" HorizontalAlignment="Right" Grid.Row="8" Grid.Column="1"/>
-        <telerik:RadNumericUpDown Grid.Column="3" Grid.Row="8" NumberDecimalDigits="{Binding DecimalPlaces}" Value="{Binding Minimum, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"/>
-        
+        <telerik:RadNumericUpDown Grid.Column="3" Grid.Row="8" NumberDecimalDigits="{Binding DecimalPlaces}" 
+                                  Value="{Binding Minimum, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"/>
         <TextBlock Text="Maximum:" HorizontalAlignment="Right" Grid.Row="10" Grid.Column="1"/>
-        <telerik:RadNumericUpDown Grid.Column="3" Grid.Row="10" NumberDecimalDigits="{Binding DecimalPlaces}" Maximum="9999999999" Value="{Binding Maximum, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"/>
-        
+        <telerik:RadNumericUpDown Grid.Column="3" Grid.Row="10" NumberDecimalDigits="{Binding DecimalPlaces}" Maximum="9999999999" 
+                                  Value="{Binding Maximum, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"/>
         <!--Future feature: allow selection of permitted values-->
     </Grid>
 </UserControl>

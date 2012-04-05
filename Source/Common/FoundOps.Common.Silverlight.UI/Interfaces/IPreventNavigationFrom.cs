@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FoundOps.Common.Silverlight.MVVM.Interfaces
+namespace FoundOps.Common.Silverlight.UI.Interfaces
 {
     public interface IPreventNavigationFrom
     {

@@ -62,17 +62,23 @@
             Represents a fixed document source, which can load a document from URI or stream.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.#ctor(System.Uri)">
+        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.#ctor(System.Uri,Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource"/> class.
             </summary>
             <param name="uri">The URI from which to load the fixed document.</param>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.#ctor(System.IO.Stream)">
+        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.#ctor(System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource"/> class.
             </summary>
             <param name="stream">The stream from which to load the fixed document.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.OnDocumentLoaded(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:DocumentLoaded"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.OnLoaded(System.EventArgs)">
             <summary>
@@ -80,13 +86,13 @@
             </summary>
             <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.CreateDocumentFromStreamOverride(System.IO.Stream)">
+        <member name="M:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.CreateDocumentFromStreamOverride(System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings)">
             <summary>
             Creates the document from a stream.
             </summary>
             <param name="stream">The stream from which to create the document.</param>
         </member>
-        <member name="E:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.Loaded">
+        <member name="E:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.DocumentLoaded">
             <summary>
             Occurs when document is loaded. It can be loaded asynchronously in case the provided URI is absolute.
             </summary>
@@ -112,13 +118,27 @@
             </summary>
             <param name="uri">The URI from which to load the PDF document.</param>
         </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.PdfDocumentSource.#ctor(System.Uri,Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.PdfDocumentSource"/> class.
+            </summary>
+            <param name="uri">The URI from which to load the PDF document.</param>
+            <param name="settings">The settings that will be used to load the PDF document.</param>
+        </member>
         <member name="M:Telerik.Windows.Documents.Fixed.PdfDocumentSource.#ctor(System.IO.Stream)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.PdfDocumentSource"/> class.
             </summary>
             <param name="stream">The stream from which to load the PDF document.</param>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.PdfDocumentSource.CreateDocumentFromStreamOverride(System.IO.Stream)">
+        <member name="M:Telerik.Windows.Documents.Fixed.PdfDocumentSource.#ctor(System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.PdfDocumentSource"/> class.
+            </summary>
+            <param name="stream">The stream from which to load the PDF document.</param>
+            <param name="settings">The settings that will be used to load the PDF document.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.PdfDocumentSource.CreateDocumentFromStreamOverride(System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings)">
             <summary>
             Creates the document from a stream.
             </summary>
@@ -171,11 +191,28 @@
             Goes a page down.
             </summary>
         </member>
+        <member name="E:Telerik.Windows.Controls.FixedDocumentViewerBase.DocumentChanged">
+            <summary>
+            Occurs when the PDF document is changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.FixedDocumentViewerBase.CurrentPageChanged">
+            <summary>
+            Occurs when the current page is changed.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.Document">
             <summary>
             Gets or sets the document for the viewer.
             </summary>
             <value>The document.</value>
+            <remarks>Instance of RadFixedDocument can be created from PdfFormatProvider class. Otherwise the DocumentSource property should be used.</remarks>
+        </member>
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.DefaultFormatProviderSettings">
+            <summary>
+            Gets or sets the default format provider settings for the current FixedDocumentViewerBase. This property is used in the OpenPdfDocumentCommand.
+            </summary>
+            <value>The default format provider settings.</value>
         </member>
         <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.DocumentSource">
             <summary>

@@ -1,4 +1,4 @@
-﻿using FoundOps.Common.Silverlight.MVVM.Models;
+﻿using System.ComponentModel;
 
 namespace FoundOps.SLClient.Data.Models
 {
@@ -6,8 +6,10 @@ namespace FoundOps.SLClient.Data.Models
     /// Holds the RouteManifestSettings
     /// </summary>
     // ReSharper disable CSharpWarnings::CS1591
-    public class RouteManifestSettings : ThreadableNotifiableObject
+    public class RouteManifestSettings : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         #region Public Properties
 
         #region Header
@@ -870,6 +872,12 @@ namespace FoundOps.SLClient.Data.Models
             CustomMessage = "Drive Safely and Thank you for your hard work";
 
             #endregion
+        }
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
     // ReSharper restore CSharpWarnings::CS1591

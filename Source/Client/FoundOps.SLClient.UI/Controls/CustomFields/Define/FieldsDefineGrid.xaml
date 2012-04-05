@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.CustomFields.FieldsDefineGrid" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<UserControl x:Class="FoundOps.Framework.Views.Controls.CustomFields.FieldsDefineGrid" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
     xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields" xmlns:Define="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Define"
@@ -23,8 +23,11 @@
         <DataTemplate x:Key="PercentageTemplate">
             <CustomFields:PercentageDefine NumericField="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Key="TextTemplate">
-            <CustomFields:TextDefine TextBoxField="{Binding}"/>
+        <DataTemplate x:Key="TextLgTemplate">
+            <CustomFields:TextLargeDefine TextBoxField="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="TextSmTemplate">
+            <CustomFields:TextSmallDefine TextBoxField="{Binding}"/>
         </DataTemplate>
         <DataTemplate x:Key="TimeTemplate">
             <CustomFields:TimeDefine DateTimeField="{Binding}"/>
@@ -32,17 +35,17 @@
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                                              CheckListTemplate="{StaticResource OptionsFieldTemplate}" ComboBoxTemplate="{StaticResource OptionsFieldTemplate}" 
                                              CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberTemplate}" 
-                                             PercentageTemplate="{StaticResource PercentageTemplate}" TextSmTemplate="{StaticResource TextTemplate}" 
-                                             TextLgTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+                                             PercentageTemplate="{StaticResource PercentageTemplate}" TextSmTemplate="{StaticResource TextSmTemplate}" 
+                                             TextLgTemplate="{StaticResource TextLgTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
     </UserControl.Resources>
     <telerik:RadTreeListView x:Name="FieldDefineTreeListView"  AutoGenerateColumns="False" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" 
                              RowIndicatorVisibility="Collapsed" SelectionMode="Single" RowDetailsTemplateSelector="{StaticResource FieldDataTemplateSelector}" 
-                             SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding DomainCollectionView}">
+                             SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding CollectionView}">
         <telerik:RadTreeListView.Columns>
             <telerik:GridViewDataColumn Header="Type">
                 <telerik:GridViewColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldToTypeStringConverter}}"/>
+                        <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldToTypeStringConverter}}" TextAlignment="Left"/>
                     </DataTemplate>
                 </telerik:GridViewColumn.CellTemplate>
             </telerik:GridViewDataColumn>

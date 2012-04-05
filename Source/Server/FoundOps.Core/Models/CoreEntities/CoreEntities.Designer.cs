@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -78,6 +79,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountInvoice", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientInvoice", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientLocation", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "RouteTaskRecurringService", "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), true)]
 
 #endregion
 
@@ -624,8 +626,41 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
         private ObjectSet<Error> _Errors;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<PartyWithName> PartiesWithNames
+        {
+            get
+            {
+                if ((_PartiesWithNames == null))
+                {
+                    _PartiesWithNames = base.CreateObjectSet<PartyWithName>("PartiesWithNames");
+                }
+                return _PartiesWithNames;
+            }
+        }
+        private ObjectSet<PartyWithName> _PartiesWithNames;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ServiceTemplateWithVendorId> ServiceTemplateWithVendorIds
+        {
+            get
+            {
+                if ((_ServiceTemplateWithVendorIds == null))
+                {
+                    _ServiceTemplateWithVendorIds = base.CreateObjectSet<ServiceTemplateWithVendorId>("ServiceTemplateWithVendorIds");
+                }
+                return _ServiceTemplateWithVendorIds;
+            }
+        }
+        private ObjectSet<ServiceTemplateWithVendorId> _ServiceTemplateWithVendorIds;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -875,13 +910,273 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             base.AddObject("Errors", error);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the PartiesWithNames EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPartiesWithNames(PartyWithName partyWithName)
+        {
+            base.AddObject("PartiesWithNames", partyWithName);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ServiceTemplateWithVendorIds EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToServiceTemplateWithVendorIds(ServiceTemplateWithVendorId serviceTemplateWithVendorId)
+        {
+            base.AddObject("ServiceTemplateWithVendorIds", serviceTemplateWithVendorId);
+        }
 
         #endregion
-    }
+
+        #region Function Imports
     
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
+        /// <param name="clientIdContext">No Metadata Documentation available.</param>
+        /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
+        /// <param name="seedDate">No Metadata Documentation available.</param>
+        /// <param name="frontBackMinimum">No Metadata Documentation available.</param>
+        /// <param name="getPrevious">No Metadata Documentation available.</param>
+        /// <param name="getNext">No Metadata Documentation available.</param>
+        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> seedDate, Nullable<global::System.Int32> frontBackMinimum, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
+        {
+            ObjectParameter serviceProviderIdContextParameter;
+            if (serviceProviderIdContext.HasValue)
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
+            }
+            else
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter clientIdContextParameter;
+            if (clientIdContext.HasValue)
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", clientIdContext);
+            }
+            else
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter recurringServiceIdContextParameter;
+            if (recurringServiceIdContext.HasValue)
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", recurringServiceIdContext);
+            }
+            else
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter seedDateParameter;
+            if (seedDate.HasValue)
+            {
+                seedDateParameter = new ObjectParameter("seedDate", seedDate);
+            }
+            else
+            {
+                seedDateParameter = new ObjectParameter("seedDate", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter frontBackMinimumParameter;
+            if (frontBackMinimum.HasValue)
+            {
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", frontBackMinimum);
+            }
+            else
+            {
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter getPreviousParameter;
+            if (getPrevious.HasValue)
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", getPrevious);
+            }
+            else
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter getNextParameter;
+            if (getNext.HasValue)
+            {
+                getNextParameter = new ObjectParameter("getNext", getNext);
+            }
+            else
+            {
+                getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
+            }
+    
+            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+            }
+            else
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="clientId">No Metadata Documentation available.</param>
+        public int DeleteClientBasedOnId(Nullable<global::System.Guid> clientId)
+        {
+            ObjectParameter clientIdParameter;
+            if (clientId.HasValue)
+            {
+                clientIdParameter = new ObjectParameter("clientId", clientId);
+            }
+            else
+            {
+                clientIdParameter = new ObjectParameter("clientId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteClientBasedOnId", clientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        public int DeleteLocationBasedOnId(Nullable<global::System.Guid> locationId)
+        {
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
+            {
+                locationIdParameter = new ObjectParameter("locationId", locationId);
+            }
+            else
+            {
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        /// <param name="ownerClientId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplatesAndChildrenBasedOnContextId(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.Guid> ownerClientId)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter ownerClientIdParameter;
+            if (ownerClientId.HasValue)
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", ownerClientId);
+            }
+            else
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnContextId", serviceProviderIdParameter, ownerClientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="parentTemplateId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(Nullable<global::System.Guid> parentTemplateId)
+        {
+            ObjectParameter parentTemplateIdParameter;
+            if (parentTemplateId.HasValue)
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", parentTemplateId);
+            }
+            else
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId", parentTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
+        }
+
+        #endregion
+
+    }
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -916,6 +1211,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1114,6 +1410,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnHideFromNavigationChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1140,6 +1437,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1165,6 +1463,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1192,6 +1491,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
 
         #endregion
+
     
     }
     
@@ -1217,6 +1517,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1364,6 +1665,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnMaxRoutesChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1544,6 +1846,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1572,6 +1875,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1698,6 +2002,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnDefaultBillingLocationIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1970,6 +2275,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1998,6 +2304,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2100,6 +2407,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnContactIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2180,6 +2488,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2206,6 +2515,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2284,6 +2594,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnOwnerPartyIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2386,6 +2697,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2412,6 +2724,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2586,6 +2899,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnContactIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2666,6 +2980,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2702,6 +3017,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2801,6 +3117,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnValueChanged();
 
         #endregion
+
     
     }
     
@@ -2828,6 +3145,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3122,6 +3440,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnEmployerIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3284,6 +3603,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3310,6 +3630,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3460,6 +3781,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnEmployeeIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3502,6 +3824,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3526,6 +3849,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3676,6 +4000,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnInnerExceptionChanged();
 
         #endregion
+
     
     }
     
@@ -3712,6 +4037,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3886,6 +4212,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnServiceTemplateIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3988,6 +4315,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4017,6 +4345,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4143,6 +4472,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnPartyIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4223,6 +4553,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4249,6 +4580,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4591,6 +4923,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnClientIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4807,6 +5140,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4833,6 +5167,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4935,6 +5270,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnAmountChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4977,6 +5313,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -5001,6 +5338,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -5295,6 +5633,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRegionIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -5601,6 +5940,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -5633,6 +5973,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -5684,6 +6025,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnLocationFieldTypeIntChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -5726,6 +6068,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -5754,6 +6097,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     
     }
     
@@ -5793,6 +6137,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -5916,6 +6261,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnValueChanged();
 
         #endregion
+
     
     }
     
@@ -5946,6 +6292,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6096,6 +6443,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnTooltipChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6138,6 +6486,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6172,6 +6521,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6223,6 +6573,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnTypeIntChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6249,6 +6600,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6275,6 +6627,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6305,6 +6658,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6567,6 +6921,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6595,6 +6950,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6637,6 +6993,88 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="PartyWithName")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class PartyWithName : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new PartyWithName object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        public static PartyWithName CreatePartyWithName(global::System.Guid id)
+        {
+            PartyWithName partyWithName = new PartyWithName();
+            partyWithName.Id = id;
+            return partyWithName;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ChildName
+        {
+            get
+            {
+                return _ChildName;
+            }
+            set
+            {
+                OnChildNameChanging(value);
+                ReportPropertyChanging("ChildName");
+                _ChildName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ChildName");
+                OnChildNameChanged();
+            }
+        }
+        private global::System.String _ChildName;
+        partial void OnChildNameChanging(global::System.String value);
+        partial void OnChildNameChanged();
+
+        #endregion
+
+    
     }
     
     /// <summary>
@@ -6662,6 +7100,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6785,6 +7224,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnDateOfBirthChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6865,6 +7305,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6891,6 +7332,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6972,6 +7414,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnExcludedDatesStringChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7110,8 +7553,31 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RouteTaskRecurringService", "RouteTask")]
+        public EntityCollection<RouteTask> RouteTaskChildren
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<RouteTask>("CoreEntities.RouteTaskRecurringService", "RouteTask");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<RouteTask>("CoreEntities.RouteTaskRecurringService", "RouteTask", value);
+                }
+            }
+        }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7138,6 +7604,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7264,6 +7731,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNotesChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7328,6 +7796,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7358,6 +7827,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7532,6 +8002,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnStartDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7574,6 +8045,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7598,6 +8070,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7724,6 +8197,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRoleTypeIntChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7810,6 +8284,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7844,6 +8319,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -8018,6 +8494,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRouteTypeChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -8126,6 +8603,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -8154,6 +8632,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -8280,6 +8759,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnClientIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -8420,6 +8900,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -8456,6 +8937,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -8748,8 +9230,33 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Int32 _OrderInRouteDestination;
         partial void OnOrderInRouteDestinationChanging(global::System.Int32 value);
         partial void OnOrderInRouteDestinationChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> RecurringServiceId
+        {
+            get
+            {
+                return _RecurringServiceId;
+            }
+            set
+            {
+                OnRecurringServiceIdChanging(value);
+                ReportPropertyChanging("RecurringServiceId");
+                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RecurringServiceId");
+                OnRecurringServiceIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _RecurringServiceId;
+        partial void OnRecurringServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnRecurringServiceIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -8942,8 +9449,47 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RouteTaskRecurringService", "RecurringService")]
+        public RecurringService ParentRecurringService
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<RecurringService>("CoreEntities.RouteTaskRecurringService", "RecurringService").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<RecurringService>("CoreEntities.RouteTaskRecurringService", "RecurringService").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<RecurringService> ParentRecurringServiceReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<RecurringService>("CoreEntities.RouteTaskRecurringService", "RecurringService");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<RecurringService>("CoreEntities.RouteTaskRecurringService", "RecurringService", value);
+                }
+            }
+        }
 
         #endregion
+
     }
     
     /// <summary>
@@ -8970,6 +9516,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -9048,6 +9595,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9074,6 +9622,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -9104,6 +9653,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -9230,6 +9780,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnServiceDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9408,6 +9959,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -9434,6 +9986,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -9584,6 +10137,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9860,6 +10414,93 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="ServiceTemplateWithVendorId")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ServiceTemplateWithVendorId : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ServiceTemplateWithVendorId object.
+        /// </summary>
+        /// <param name="serviceTemplateId">Initial value of the ServiceTemplateId property.</param>
+        /// <param name="vendorId">Initial value of the VendorId property.</param>
+        public static ServiceTemplateWithVendorId CreateServiceTemplateWithVendorId(global::System.Guid serviceTemplateId, global::System.Guid vendorId)
+        {
+            ServiceTemplateWithVendorId serviceTemplateWithVendorId = new ServiceTemplateWithVendorId();
+            serviceTemplateWithVendorId.ServiceTemplateId = serviceTemplateId;
+            serviceTemplateWithVendorId.VendorId = vendorId;
+            return serviceTemplateWithVendorId;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ServiceTemplateId
+        {
+            get
+            {
+                return _ServiceTemplateId;
+            }
+            set
+            {
+                if (_ServiceTemplateId != value)
+                {
+                    OnServiceTemplateIdChanging(value);
+                    ReportPropertyChanging("ServiceTemplateId");
+                    _ServiceTemplateId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ServiceTemplateId");
+                    OnServiceTemplateIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _ServiceTemplateId;
+        partial void OnServiceTemplateIdChanging(global::System.Guid value);
+        partial void OnServiceTemplateIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid VendorId
+        {
+            get
+            {
+                return _VendorId;
+            }
+            set
+            {
+                if (_VendorId != value)
+                {
+                    OnVendorIdChanging(value);
+                    ReportPropertyChanging("VendorId");
+                    _VendorId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("VendorId");
+                    OnVendorIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _VendorId;
+        partial void OnVendorIdChanging(global::System.Guid value);
+        partial void OnVendorIdChanged();
+
+        #endregion
+
+    
     }
     
     /// <summary>
@@ -9888,6 +10529,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10062,6 +10704,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNumberChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10104,6 +10747,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10136,6 +10780,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10187,6 +10832,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnValueChanged();
 
         #endregion
+
     
     }
     
@@ -10220,6 +10866,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10370,6 +11017,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnUserAccountIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10412,6 +11060,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10440,6 +11089,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10539,6 +11189,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnCreationDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10609,6 +11260,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10637,6 +11289,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10739,6 +11392,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnUserAccountIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10781,6 +11435,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10807,6 +11462,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11053,6 +11709,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnOwnerPartyIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -11139,6 +11796,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -11165,6 +11823,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11291,6 +11950,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnVehicleMaintenanceLogEntryIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -11333,6 +11993,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -11359,6 +12020,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11509,6 +12171,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnVehicleIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -11573,8 +12236,456 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
 
     #endregion
+
+    #region ComplexTypes
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="ServiceHolder")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class ServiceHolder : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ServiceHolder object.
+        /// </summary>
+        /// <param name="occurDate">Initial value of the OccurDate property.</param>
+        public static ServiceHolder CreateServiceHolder(global::System.DateTime occurDate)
+        {
+            ServiceHolder serviceHolder = new ServiceHolder();
+            serviceHolder.OccurDate = occurDate;
+            return serviceHolder;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> RecurringServiceId
+        {
+            get
+            {
+                return _RecurringServiceId;
+            }
+            set
+            {
+                OnRecurringServiceIdChanging(value);
+                ReportPropertyChanging("RecurringServiceId");
+                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RecurringServiceId");
+                OnRecurringServiceIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _RecurringServiceId;
+        partial void OnRecurringServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnRecurringServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> ServiceId
+        {
+            get
+            {
+                return _ServiceId;
+            }
+            set
+            {
+                OnServiceIdChanging(value);
+                ReportPropertyChanging("ServiceId");
+                _ServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ServiceId");
+                OnServiceIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _ServiceId;
+        partial void OnServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime OccurDate
+        {
+            get
+            {
+                return _OccurDate;
+            }
+            set
+            {
+                OnOccurDateChanging(value);
+                ReportPropertyChanging("OccurDate");
+                _OccurDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OccurDate");
+                OnOccurDateChanged();
+            }
+        }
+        private global::System.DateTime _OccurDate;
+        partial void OnOccurDateChanging(global::System.DateTime value);
+        partial void OnOccurDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ServiceName
+        {
+            get
+            {
+                return _ServiceName;
+            }
+            set
+            {
+                OnServiceNameChanging(value);
+                ReportPropertyChanging("ServiceName");
+                _ServiceName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ServiceName");
+                OnServiceNameChanged();
+            }
+        }
+        private global::System.String _ServiceName;
+        partial void OnServiceNameChanging(global::System.String value);
+        partial void OnServiceNameChanged();
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="TaskHolder")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class TaskHolder : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new TaskHolder object.
+        /// </summary>
+        /// <param name="occurDate">Initial value of the OccurDate property.</param>
+        public static TaskHolder CreateTaskHolder(global::System.DateTime occurDate)
+        {
+            TaskHolder taskHolder = new TaskHolder();
+            taskHolder.OccurDate = occurDate;
+            return taskHolder;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> RecurringServiceId
+        {
+            get
+            {
+                return _RecurringServiceId;
+            }
+            set
+            {
+                OnRecurringServiceIdChanging(value);
+                ReportPropertyChanging("RecurringServiceId");
+                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RecurringServiceId");
+                OnRecurringServiceIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _RecurringServiceId;
+        partial void OnRecurringServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnRecurringServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> ServiceId
+        {
+            get
+            {
+                return _ServiceId;
+            }
+            set
+            {
+                OnServiceIdChanging(value);
+                ReportPropertyChanging("ServiceId");
+                _ServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ServiceId");
+                OnServiceIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _ServiceId;
+        partial void OnServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ServiceName
+        {
+            get
+            {
+                return _ServiceName;
+            }
+            set
+            {
+                OnServiceNameChanging(value);
+                ReportPropertyChanging("ServiceName");
+                _ServiceName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ServiceName");
+                OnServiceNameChanged();
+            }
+        }
+        private global::System.String _ServiceName;
+        partial void OnServiceNameChanging(global::System.String value);
+        partial void OnServiceNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ClientName
+        {
+            get
+            {
+                return _ClientName;
+            }
+            set
+            {
+                OnClientNameChanging(value);
+                ReportPropertyChanging("ClientName");
+                _ClientName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ClientName");
+                OnClientNameChanged();
+            }
+        }
+        private global::System.String _ClientName;
+        partial void OnClientNameChanging(global::System.String value);
+        partial void OnClientNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String RegionName
+        {
+            get
+            {
+                return _RegionName;
+            }
+            set
+            {
+                OnRegionNameChanging(value);
+                ReportPropertyChanging("RegionName");
+                _RegionName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("RegionName");
+                OnRegionNameChanged();
+            }
+        }
+        private global::System.String _RegionName;
+        partial void OnRegionNameChanging(global::System.String value);
+        partial void OnRegionNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String AddressLine
+        {
+            get
+            {
+                return _AddressLine;
+            }
+            set
+            {
+                OnAddressLineChanging(value);
+                ReportPropertyChanging("AddressLine");
+                _AddressLine = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("AddressLine");
+                OnAddressLineChanged();
+            }
+        }
+        private global::System.String _AddressLine;
+        partial void OnAddressLineChanging(global::System.String value);
+        partial void OnAddressLineChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> Latitude
+        {
+            get
+            {
+                return _Latitude;
+            }
+            set
+            {
+                OnLatitudeChanging(value);
+                ReportPropertyChanging("Latitude");
+                _Latitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Latitude");
+                OnLatitudeChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _Latitude;
+        partial void OnLatitudeChanging(Nullable<global::System.Decimal> value);
+        partial void OnLatitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> Longitude
+        {
+            get
+            {
+                return _Longitude;
+            }
+            set
+            {
+                OnLongitudeChanging(value);
+                ReportPropertyChanging("Longitude");
+                _Longitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Longitude");
+                OnLongitudeChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _Longitude;
+        partial void OnLongitudeChanging(Nullable<global::System.Decimal> value);
+        partial void OnLongitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime OccurDate
+        {
+            get
+            {
+                return _OccurDate;
+            }
+            set
+            {
+                OnOccurDateChanging(value);
+                ReportPropertyChanging("OccurDate");
+                _OccurDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OccurDate");
+                OnOccurDateChanged();
+            }
+        }
+        private global::System.DateTime _OccurDate;
+        partial void OnOccurDateChanging(global::System.DateTime value);
+        partial void OnOccurDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LocationName
+        {
+            get
+            {
+                return _LocationName;
+            }
+            set
+            {
+                OnLocationNameChanging(value);
+                ReportPropertyChanging("LocationName");
+                _LocationName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LocationName");
+                OnLocationNameChanged();
+            }
+        }
+        private global::System.String _LocationName;
+        partial void OnLocationNameChanging(global::System.String value);
+        partial void OnLocationNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LocationId
+        {
+            get
+            {
+                return _LocationId;
+            }
+            set
+            {
+                OnLocationIdChanging(value);
+                ReportPropertyChanging("LocationId");
+                _LocationId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LocationId");
+                OnLocationIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LocationId;
+        partial void OnLocationIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLocationIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> ClientId
+        {
+            get
+            {
+                return _ClientId;
+            }
+            set
+            {
+                OnClientIdChanging(value);
+                ReportPropertyChanging("ClientId");
+                _ClientId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ClientId");
+                OnClientIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _ClientId;
+        partial void OnClientIdChanging(Nullable<global::System.Guid> value);
+        partial void OnClientIdChanged();
+
+        #endregion
+
+    }
+
+    #endregion
+
     
 }

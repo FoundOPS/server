@@ -24,6 +24,13 @@ namespace FoundOps.Core.Models.CoreEntities
         void IEntityDefaultCreation.OnCreate()
         {
             Id = Guid.NewGuid();
+            AddressLineOne = "";
+            AddressLineTwo = "";
+            City = "";
+            Comments = "";
+            State = "";
+            ZipCode = "";
+            SSN = "";
             OnCreation();
         }
 

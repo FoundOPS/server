@@ -138,7 +138,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         //Manually handle TaskBoardRadGridViewSelectionChanged for RouteTask to choose the last task for details
         private void TaskBoardRadGridViewSelectionChanged(object sender, SelectionChangeEventArgs e)
         {
-            VM.Routes.SelectedTaskBoardTasks = TaskBoardRadGridView.SelectedItems.Cast<RouteTask>();
+            VM.TaskBoard.SelectedTasks = TaskBoardRadGridView.SelectedItems.Cast<TaskHolder>();
         }
     }
 }

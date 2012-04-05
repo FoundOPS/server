@@ -1,36 +1,35 @@
-﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.CustomFields.FieldSmall" x:Name="myFieldSmall" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+<UserControl x:Class="FoundOps.Framework.Views.Controls.CustomFields.FieldSmall" x:Name="myFieldSmall" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors"
-             xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300">
     <UserControl.Resources>
-        <Converters:DecimalToCurrencyStringConverter x:Key="DecimalToCurrencyStringConverter"/>
+        <Converters1:ComboBoxSelectedItemConverter x:Key="ComboBoxSelectedItemConverter"/>
+        <Converters:DateTimeWithTodaysDateConverter x:Key="DateTimeWithTodaysDateConverter"/>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:OrderByNameConverter x:Key="OrderByNameConverter"/>
-        <Converters1:NumericFieldToValueFormatConverter x:Key="NumericFieldToValueFormatConverter"/>
-        <Converters1:FieldDefaultValueStringConverter x:Key="FieldDefaultValueStringConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource ExtraSmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}"/>
-                    <TextBlock Text=":" />
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                    <TextBlock Text=" "/>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Grid.Row="4" DataContext="{Binding Options, ConverterParameter=0, Converter={StaticResource ElementFromEnumerableConverter}}">
-                    <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
+                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="CheckListTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource ExtraSmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <TextBlock Text="{Binding Name}"/>
@@ -39,9 +38,9 @@
                 <ItemsControl Grid.Column="2" Grid.Row="4" ItemsSource="{Binding OptionsWrapper}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Right"/>
-                                <TextBlock Text="{Binding ThisField, Converter={StaticResource FieldDefaultValueStringConverter}}"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -51,100 +50,119 @@
         <DataTemplate x:Key="ComboBoxTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource ExtraSmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
                     <TextBlock Text=":" />
                 </StackPanel>
-                <TextBlock Grid.Column="2" Text="{Binding Value, Converter={StaticResource FieldDefaultValueStringConverter}}"/>
+                <telerik:RadComboBox Grid.Column="2" SelectedValue="{Binding Path=ThisField, Mode=TwoWay, Converter={StaticResource ComboBoxSelectedItemConverter}}" 
+                                     ItemsSource="{Binding OptionsWrapper}" DisplayMemberPath="Name" IsReadOnly="True"/>
                 <!--bind item source to possible items-->
             </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LocationTemplate">
+            <Grid></Grid>
         </DataTemplate>
         <DataTemplate x:Key="CurrencyTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource ExtraSmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
                     <TextBlock Text=":" />
                 </StackPanel>
-                <TextBlock Grid.Column="2" Text="{Binding Value, Converter={StaticResource DecimalToCurrencyStringConverter}}" />
-                <!--bind value, bind valueformat to currency, numeric, or percentage, bind numberdecimaldigits to decimals-->
+                <telerik:RadMaskedCurrencyInput Grid.Column="2" Culture="en-US" TextMode="PlainText" 
+                                                HorizontalAlignment="Left" Value="{Binding Value, Mode=TwoWay}" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="LocationTemplate">
+        <DataTemplate x:Key="NumberTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource ExtraSmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
                     <TextBlock Text=":" />
                 </StackPanel>
-                <TextBlock Grid.Column="2" Text="{Binding Value.Name}"/>
+                <telerik:RadNumericUpDown Grid.Column="2" Value="{Binding Value, Mode=TwoWay}" NumberDecimalDigits="{Binding DecimalPlaces}" 
+                                          HorizontalContentAlignment="Left" ValueFormat="Numeric" HorizontalAlignment="Left" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="NumberPercentageTemplate">
+        <DataTemplate x:Key="PercentageTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="{StaticResource ExtraSmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
                     <TextBlock Text=":" />
                 </StackPanel>
-                <telerik:RadNumericUpDown Grid.Column="2" Value="{Binding Value}" IsEnabled="False" NumberDecimalDigits="{Binding DecimalPlaces}" 
-                                          HorizontalContentAlignment="Left" ValueFormat="{Binding Mask, Converter={StaticResource NumericFieldToValueFormatConverter}}" 
-                                          ShowButtons="False" Background="White" BorderBrush="White" Width="80" HorizontalAlignment="Left" />
+                <telerik:RadNumericUpDown Grid.Column="2" Value="{Binding Value, Mode=TwoWay}" NumberDecimalDigits="{Binding DecimalPlaces}" 
+                                          HorizontalContentAlignment="Left" ValueFormat="Percentage" HorizontalAlignment="Left" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="TextTemplate">
+        <DataTemplate x:Key="TextLgTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource ExtraSmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
                     <TextBlock Text=":" />
                 </StackPanel>
-                <TextBlock Grid.Column="2" TextWrapping="Wrap" Text="{Binding Value}"/>
+                <TextBox Grid.Column="2" TextWrapping="Wrap" Text="{Binding Value, Mode=TwoWay}"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="TextSmTemplate">
+            <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}"/>
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="{StaticResource ExtraSmallValueColumn}" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                    <TextBlock Text=":" />
+                </StackPanel>
+                <TextBox Grid.Column="2" TextWrapping="Wrap" Text="{Binding Value, Mode=TwoWay}" MaxLength="30"/>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="TimeTemplate">
             <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource LargeLabelColumn}"/>
+                    <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}"/>
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                    <ColumnDefinition Width="{StaticResource ExtraSmallValueColumn}" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
                     <TextBlock Text=":" />
                 </StackPanel>
-                <TextBlock Grid.Column="2" Text="{Binding ThisField, Converter={StaticResource FieldDefaultValueStringConverter}}"/>
+                <telerik:RadDateTimePicker Grid.Column="2" InputMode="TimePicker" 
+                                           SelectedValue="{Binding Value, Mode=TwoWay, Converter={StaticResource DateTimeWithTodaysDateConverter}}" />
                 <!--bind text to text, bind textwrapping to small or large text box-->
             </Grid>
         </DataTemplate>
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                    CheckListTemplate="{StaticResource CheckListTemplate}" ComboBoxTemplate="{StaticResource ComboBoxTemplate}" 
-                   CurrencyTemplate="{StaticResource CurrencyTemplate}" LocationTemplate="{StaticResource LocationTemplate}"  NumberTemplate="{StaticResource NumberPercentageTemplate}" 
-                   PercentageTemplate="{StaticResource NumberPercentageTemplate}" TextLgTemplate="{StaticResource TextTemplate}" 
-                   TextSmTemplate="{StaticResource TextTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+                   CurrencyTemplate="{StaticResource CurrencyTemplate}" LocationTemplate="{StaticResource LocationTemplate}"  NumberTemplate="{StaticResource NumberTemplate}" 
+                   PercentageTemplate="{StaticResource PercentageTemplate}" TextLgTemplate="{StaticResource TextLgTemplate}" 
+                   TextSmTemplate="{StaticResource TextSmTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
     </UserControl.Resources>
     <StackPanel>
-        <TextBlock TextAlignment="Left" Text="Fields" FontWeight="Bold"/>
+        <TextBlock TextAlignment="Center" Text="Fields" FontWeight="Bold" FontSize="12" Margin="0,5,0,0"/>
         <telerik:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" ItemsSource="{Binding ServiceTemplate.Fields, 
             ElementName=myFieldSmall, Converter={StaticResource OrderByNameConverter}}"/>
     </StackPanel>

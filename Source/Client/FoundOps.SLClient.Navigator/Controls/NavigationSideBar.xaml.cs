@@ -2,7 +2,6 @@
 using System.Windows;
 using System.ComponentModel;
 using System.Windows.Browser;
-using FoundOps.Core.Server.Blocks;
 using Telerik.Windows.Controls;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Navigator.ViewModels;

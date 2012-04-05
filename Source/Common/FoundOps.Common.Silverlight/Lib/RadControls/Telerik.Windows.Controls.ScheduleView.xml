@@ -9210,6 +9210,14 @@
             </summary>
             <value>The single selection template.</value>
         </member>
+        <member name="P:Telerik.Windows.Controls.SchedulerDialogViewModel.AdditionalData">
+            <summary>
+            Gets or sets the additional data set to the view model.
+            </summary>
+            <value>
+            The additional data.
+            </value>
+        </member>
         <member name="T:Telerik.Windows.Controls.ScheduleView.NameValueItem`1">
             <summary>
             Name and value object useful for data binding operations.

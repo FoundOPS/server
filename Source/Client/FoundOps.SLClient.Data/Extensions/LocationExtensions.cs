@@ -1,18 +1,69 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.Interfaces;
 using FoundOps.Common.Silverlight.Tools;
+using FoundOps.Common.Silverlight.UI.Interfaces;
 using ReactiveUI;
-using RiaServicesContrib;
+using System;
 using System.ComponentModel;
-using FoundOps.Common.Silverlight.Interfaces;
-using System.ServiceModel.DomainServices.Client;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class Location : IRaiseValidationErrors, IReactiveNotifyPropertyChanged
+    public partial class Location : IRaiseValidationErrors, IReactiveNotifyPropertyChanged, ILoadDetails
     {
+        #region Public Properties
+
+        #region Implementation of ILoadDetails
+
+        private bool _detailsLoaded;
+        /// <summary>
+        /// Gets or sets a value indicating whether [details loaded].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [details loading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool DetailsLoaded
+        {
+            get { return _detailsLoaded; }
+            set
+            {
+                _detailsLoaded = value;
+                this.RaisePropertyChanged("DetailsLoaded");
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Gets the telerik location.
+        /// </summary>
+        public Telerik.Windows.Controls.Map.Location? TelerikLocation
+        {
+            get
+            {
+                if (this.Latitude == null || this.Longitude == null)
+                    return null;
+
+                return new Telerik.Windows.Controls.Map.Location(System.Convert.ToDouble(this.Latitude),
+                                                                 System.Convert.ToDouble(this.Longitude));
+            }
+        }
+
+        private OrderedEntityCollection<SubLocation> _subLocationsListWrapper;
+        /// <summary>
+        /// Gets the sub locations list wrapper. It orders and numbers the SubLocations automatically when items are added and removed.
+        /// </summary>
+        public OrderedEntityCollection<SubLocation> SubLocationsListWrapper
+        {
+            get { return _subLocationsListWrapper; }
+            private set
+            {
+                _subLocationsListWrapper = value;
+                this.RaisePropertyChanged("SubLocationsListWrapper");
+            }
+        }
+
         #region IReactiveNotifyPropertyChanged
 
         public event PropertyChangingEventHandler PropertyChanging;
@@ -30,19 +81,9 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        private OrderedEntityCollection<SubLocation> _subLocationsListWrapper;
-        /// <summary>
-        /// Gets the sub locations list wrapper. It orders and numbers the SubLocations automatically when items are added and removed.
-        /// </summary>
-        public OrderedEntityCollection<SubLocation> SubLocationsListWrapper
-        {
-            get { return _subLocationsListWrapper; }
-            private set
-            {
-                _subLocationsListWrapper = value;
-                this.RaisePropertyChanged("SubLocationsListWrapper");
-            }
-        }
+        #endregion
+
+        #region Initialization
 
         partial void OnCreation()
         {
@@ -61,20 +102,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
         }
 
-        /// <summary>
-        /// Gets the telerik location.
-        /// </summary>
-        public Telerik.Windows.Controls.Map.Location? TelerikLocation
-        {
-            get
-            {
-                if (this.Latitude == null || this.Longitude == null)
-                    return null;
+        #endregion
 
-                return new Telerik.Windows.Controls.Map.Location(System.Convert.ToDouble(this.Latitude),
-                                                                 System.Convert.ToDouble(this.Longitude));
-            }
-        }
+        #region Public Methods
 
         /// <summary>
         /// Raises the validation errors.
@@ -85,17 +115,7 @@ namespace FoundOps.Core.Models.CoreEntities
             this.EndEdit();
         }
 
-        /// <summary>
-        /// Gets the entity graph of Location to remove.
-        /// </summary>
-        public EntityGraph<Entity> EntityGraphToRemove
-        {
-            get
-            {
-                var graphShape = new EntityGraphShape().Edge<Location, ContactInfo>(location => location.ContactInfoSet);
-                return new EntityGraph<Entity>(this, graphShape);
-            }
-        }
+        #endregion
     }
 }
 

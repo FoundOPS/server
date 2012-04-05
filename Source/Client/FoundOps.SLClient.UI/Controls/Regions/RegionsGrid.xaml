@@ -3,12 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView"
         xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"  xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d"
-        ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM">
+        ViewModelLocator:ViewModelLocator.SharedViewModel="RegionsVM" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
     <UserControl.Resources>
         <Converters:StringToColorConverter x:Key="StringToColorConverter"/>
     </UserControl.Resources>
     <telerik:RadGridView x:Name="RegionsRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
-            RowIndicatorVisibility="Collapsed" ItemsSource="{Binding DomainCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
+            RowIndicatorVisibility="Collapsed" ItemsSource="{Binding QueryableCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Region">
                 <telerik:GridViewDataColumn.CellTemplate>
@@ -21,13 +21,6 @@
                 <telerik:GridViewDataColumn.CellTemplate>
                     <DataTemplate>
                         <Rectangle Width="40" Height="20" Fill="{Binding Color, Converter={StaticResource StringToColorConverter}}" />
-                    </DataTemplate>
-                </telerik:GridViewDataColumn.CellTemplate>
-            </telerik:GridViewDataColumn>
-            <telerik:GridViewDataColumn Header="Locations" Width="*">
-                <telerik:GridViewDataColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Locations.Count}" />
                     </DataTemplate>
                 </telerik:GridViewDataColumn.CellTemplate>
             </telerik:GridViewDataColumn>

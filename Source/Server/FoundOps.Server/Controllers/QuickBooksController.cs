@@ -22,7 +22,7 @@ namespace FoundOps.Server.Controllers
         /// </returns>
         public bool NeedsAuthorization(Guid roleId)
         {
-            var currentBusinessAccount = CoreEntitiesContainer.BusinessAccountForRole(roleId);
+            var currentBusinessAccount = CoreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
 
             //A null BusinessAccount means that it is actually a user account
             //If QuickBooks is disabled on the account
@@ -67,7 +67,7 @@ namespace FoundOps.Server.Controllers
 
             //Gets the Business Account based on the roleId passed
             var currentRoleId = new Guid(roleId);
-            var currentBusinessAccount = CoreEntitiesContainer.BusinessAccountForRole(currentRoleId);
+            var currentBusinessAccount = CoreEntitiesContainer.BusinessAccountOwnerOfRole(currentRoleId);
 
             var authUrl = QuickBooksTools.GetAuthorizationUrl(oauthCallbackUrl, roleId, currentBusinessAccount);
 
@@ -88,7 +88,7 @@ namespace FoundOps.Server.Controllers
         {
             //Gets the BusinessAccount based on the roleId
             var currentRoleId = new Guid(roleId);
-            var currentBusinessAccount = CoreEntitiesContainer.BusinessAccountForRole(currentRoleId);
+            var currentBusinessAccount = CoreEntitiesContainer.BusinessAccountOwnerOfRole(currentRoleId);
 
             var oauthVerifyer = Request.QueryString["oauth_verifier"];
             var realmid = Request.QueryString["realmId"];

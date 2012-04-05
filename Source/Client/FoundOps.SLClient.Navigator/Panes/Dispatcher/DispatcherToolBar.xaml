@@ -19,7 +19,7 @@
             </telerik:RadButton>
             <!--1 day forward-->
             <telerik:RadToolBarSeparator/>
-            <telerik:RadDropDownButton>
+            <telerik:RadDropDownButton Visibility="Collapsed">
                 <telerik:RadDropDownButton.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Stretch="Fill" Source="/FoundOps.Common.Silverlight;component/Resources/New.png"/>
@@ -33,6 +33,13 @@
                     </telerik:RadContextMenu>
                 </telerik:RadDropDownButton.DropDownContent>
             </telerik:RadDropDownButton>
+            <telerik:RadButton Command="{Binding AddCommand}">
+                <!--Launch a confirmation box-->
+                <StackPanel Orientation="Horizontal">
+                    <Image Stretch="Fill" Source="/FoundOps.Common.Silverlight;component/Resources/New.png"/>
+                    <TextBlock Text="Add Route" VerticalAlignment="Center"/>
+                </StackPanel>
+            </telerik:RadButton>
             <telerik:RadButton Command="{Binding DeleteCommand}"><!--Launch a confirmation box-->
                 <StackPanel Orientation="Horizontal">
                     <Image Stretch="Fill" Source="/FoundOps.Common.Silverlight;component/Resources/Delete.png"/>

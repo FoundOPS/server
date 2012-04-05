@@ -1,75 +1,18 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.Filter" x:Name="myFilter"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation" 
-    xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
-    xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding"
-    xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM"
-    xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels"
-             xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation"
+             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
+             xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             xmlns:Converters="clr-namespace:FoundOps.SLClient.UI.Converters" mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300" 
+             ViewModelLocator:ViewModelLocator.SharedViewModel="DispatcherFilterVM">
     <UserControl.Resources>
-        <Converters1:RouteTypeFilterConverter x:Key="RouteTypeFilterConverter"/>
-        <Converters1:RegionFilterConverter x:Key="RegionFilterConverter"/>
-        <DataTemplate x:Key="CheckBoxTemplate">
-            <CheckBox Checked="RouteTypeCheckBoxChecked" Unchecked="RouteTypeCheckBoxUnchecked" 
-                      IsChecked="{MarkupExtensions:ItemExistsInCollection Item={Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}, 
-                Collection={Binding SelectedRouteTypes, Source={Tools1:GetVM Type=CoreEntities:RoutesVM}}}" >
-                <local:BindingUtil.MultiBindings>
-                    <local:MultiBindings>
-                        <!--MultiBinding that determines the number of RouteTasks that exist in the DCV that correspond to each ServiceType-->
-                        <!--Outputs in the following format: "Oil (12)"-->
-                        <local:MultiBinding TargetProperty="Content" Converter="{StaticResource RouteTypeFilterConverter}">
-                            <local:BindingCollection>
-                                <Binding />
-                                <Binding Path="SelectedRegions" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                <Binding Path="ForceFilterCountUpdate" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}"/>
-                                <!--For updates-->
-                            </local:BindingCollection>
-                        </local:MultiBinding>
-                    </local:MultiBindings>
-                </local:BindingUtil.MultiBindings>
-            </CheckBox>
-        </DataTemplate>
-        <DataTemplate x:Key="RegionsTextBlockTemplate">
-            <TextBlock>
-                <local:BindingUtil.MultiBindings>
-                    <local:MultiBindings>
-                        <!--MultiBinding that determines the number of RouteTasks that exist in the DCV that correspond to each Region-->
-                        <!--Outputs in the following format: "NorthEastern (12)"-->
-                        <local:MultiBinding TargetProperty="Text" Converter="{StaticResource RegionFilterConverter}">
-                            <local:BindingCollection>
-                                <Binding />
-                                <Binding Path="SelectedRouteTypes" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                <Binding Path="ForceFilterCountUpdate" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                <!--For updates-->
-                            </local:BindingCollection>
-                        </local:MultiBinding>
-                    </local:MultiBindings>
-                </local:BindingUtil.MultiBindings>
-            </TextBlock>
-        </DataTemplate>
-        <DataTemplate x:Key="RegionsCheckBoxTemplate">
-            <CheckBox IsChecked="{MarkupExtensions:ItemExistsInCollection Item={Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}, 
-                Collection={Binding DataContext.SelectedRegions, ElementName=myFilter}}" Checked="RegionsCheckBoxChecked" Unchecked="RegionsCheckBoxUnchecked">
-                <local:BindingUtil.MultiBindings>
-                    <local:MultiBindings>
-                        <!--MultiBinding that determines the number of RouteTasks that exist in the DCV that correspond to each Region-->
-                        <!--Outputs in the following format: "NorthEastern (12)"-->
-                        <local:MultiBinding TargetProperty="Content" Converter="{StaticResource RegionFilterConverter}">
-                            <local:BindingCollection>
-                                <Binding />
-                                <Binding Path="SelectedRouteTypes" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                <Binding Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                <Binding Path="ForceFilterCountUpdate" Source="{Tools1:GetVM Type=CoreEntities:RoutesVM}" />
-                                <!--For updates-->
-                            </local:BindingCollection>
-                        </local:MultiBinding>
-                    </local:MultiBindings>
-                </local:BindingUtil.MultiBindings>
-            </CheckBox>
-        </DataTemplate>
+        <Converters:CheckStateConverter x:Key="CheckStateConverter" />
+        <Controls:ContainerBindingCollection x:Key="BindingsCollection">
+            <Controls:ContainerBinding PropertyName="CheckState" Binding="{Binding IsSelected, Mode=TwoWay, Converter={StaticResource CheckStateConverter}}" />
+        </Controls:ContainerBindingCollection>
+        <Controls:HierarchicalDataTemplate x:Key="TreeViewItemTemplate" Controls:ContainerBinding.ContainerBindings="{StaticResource BindingsCollection}">
+          <TextBlock Text="{Binding Entity.Name}" />
+        </Controls:HierarchicalDataTemplate>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">
         <telerik:RadPanelBar ExpandMode="Multiple">
@@ -77,18 +20,22 @@
                 <telerik:RadPanelBarItem.Header>
                     <TextBlock Text="Route Capabilities" Margin="5,3" />
                 </telerik:RadPanelBarItem.Header>
-                <StackPanel x:Name="GridCapabilities" Orientation="Horizontal" Background="White">
-                    <ItemsControl ItemsSource="{Binding RouteTypes}" ItemTemplate="{StaticResource CheckBoxTemplate}"/>
-                </StackPanel>
+                <Grid Background="White">
+                <telerik:RadTreeView x:Name="RouteCapabilitiesTreeView" ItemsOptionListType="CheckList" IsOptionElementsEnabled="True"
+                                     Checked="RouteCapabilitiesTreeViewChecked" Unchecked="RouteCapabilitiesTreeViewUnchecked"
+                                     ItemsSource="{Binding ServiceTemplateOptions}" ItemTemplate="{StaticResource TreeViewItemTemplate}" />
+                </Grid>
             </telerik:RadPanelBarItem>
-            <!--<telerik:RadPanelBarItem IsExpanded="True">
+            <telerik:RadPanelBarItem IsExpanded="True">
                 <telerik:RadPanelBarItem.Header>
                     <TextBlock Text="Regions" Margin="5,3" />
                 </telerik:RadPanelBarItem.Header>
-                <Grid x:Name="GridRegions" Background="White">
-                    <ItemsControl ItemsSource="{Binding Regions}" ItemTemplate="{StaticResource RegionsTextBlockTemplate}"/>
+                <Grid Background="White">
+                    <telerik:RadTreeView x:Name="RegionsTreeView" ItemsOptionListType="CheckList" IsOptionElementsEnabled="True"
+                                         Checked="RegionsTreeViewChecked" Unchecked="RegionsTreeViewUnchecked"
+                                         ItemsSource="{Binding RegionOptions}" ItemTemplate="{StaticResource TreeViewItemTemplate}"/>
                 </Grid>
-            </telerik:RadPanelBarItem>-->
+            </telerik:RadPanelBarItem>
         </telerik:RadPanelBar>
     </Grid>
 </UserControl>
