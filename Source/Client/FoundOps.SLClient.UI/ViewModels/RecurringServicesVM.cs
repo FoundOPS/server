@@ -31,7 +31,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             SetupDataLoading();
 
             //Cannot currently delete recurring services. Waiting on bug fix.
-            this.CanDeleteSubject.OnNext(false);
+            //this.CanDeleteSubject.OnNext(false);
         }
 
         /// <summary>

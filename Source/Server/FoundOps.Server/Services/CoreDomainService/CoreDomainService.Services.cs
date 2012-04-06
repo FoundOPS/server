@@ -301,24 +301,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteRecurringService(RecurringService recurringService)
         {
-            //TODO delete all RouteTasks and RouteDestinations associated
-            if ((recurringService.EntityState == EntityState.Detached))
-                this.ObjectContext.RecurringServices.Attach(recurringService);
-
-            recurringService.GeneratedServices.Load();
-            recurringService.GeneratedServices.Clear(); //Sever link to generated services
-
-            recurringService.ServiceTemplateReference.Load();
-
-            if (recurringService.ServiceTemplate != null)
-                this.DeleteServiceTemplate(recurringService.ServiceTemplate);
-
-            var repeat = this.ObjectContext.Repeats.FirstOrDefault(r => r.Id == recurringService.Id);
-
-            if (repeat != null)
-                this.DeleteRepeat(repeat);
-
-            this.ObjectContext.RecurringServices.DeleteObject(recurringService);
+            ObjectContext.DeleteRecurringService(recurringService.Id);
         }
 
         #endregion
