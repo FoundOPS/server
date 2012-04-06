@@ -429,6 +429,12 @@
     <Compile Include="Controls\Dispatcher\RoutesListView.xaml.cs">
       <DependentUpon>RoutesListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Routes\RouteLarge.xaml.cs">
+      <DependentUpon>RouteLarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Routes\RouteSmall.xaml.cs">
+      <DependentUpon>RouteSmall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Services\RecurringServices\RecurringServicesLinkSmall.xaml.cs">
       <DependentUpon>RecurringServicesLinkSmall.xaml</DependentUpon>
     </Compile>
@@ -860,6 +866,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Repeat.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Routes\RouteLarge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Routes\RouteSmall.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

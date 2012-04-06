@@ -553,7 +553,6 @@ namespace FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel
                 var i = 0;
                 for (var counter = 0; counter < children.Count; counter++)
                 {
-
                     if (children[counter].DesiredSize.Height > 0)
                     {
                         startOfColumnElementIndex[i] = counter;

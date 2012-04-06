@@ -116,7 +116,14 @@
                 <EmployeeHistory:EmployeeHistoryLinkLarge MaxHeight="150"/>
                 <!--<my4:ClientsGrid MaxHeight="150"/>-->
                 <!--Only visible if role has permission to see clients assigned to them (salesperson) and filter to show their clients-->
-                <Dispatcher:RoutesLogGrid MaxHeight="150"/>
+                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource RoutesBrush}">
+                    <toolkit:Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap" Text="Route Log" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource RoutesBrush}" />
+                        </StackPanel>
+                    </toolkit:Expander.Header>
+                    <Dispatcher:RoutesLogGrid MaxHeight="150"/>
+                </toolkit:Expander>
                 <!--Only show for if role has permission to be routes (technician/driver, operations manager) -->
                 <UserAccounts:UserAccountLinkLarge IsEnabled="{Binding DataContext.SelectedEntity.DetailsLoaded, ElementName=myEmployeeLarge}"
                                                    SelectedUserAccount="{Binding DataContext.SelectedEntity.LinkedUserAccount, ElementName=myEmployeeLarge, Mode=TwoWay}"/>

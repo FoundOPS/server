@@ -102,7 +102,14 @@
                     </toolkit:Expander.Header>
                     <Maintenance:MaintenanceGrid x:Name="MaintenanceGrid" MaxHeight="150" />
                 </toolkit:Expander>
-                <Dispatcher:RoutesLogGrid MaxHeight="150" />
+                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource RoutesBrush}">
+                    <toolkit:Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap" Text="Route Log" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource RoutesBrush}" />
+                        </StackPanel>
+                    </toolkit:Expander.Header>
+                    <Dispatcher:RoutesLogGrid MaxHeight="150" />
+                </toolkit:Expander>
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -13,11 +13,12 @@
              xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services;assembly=FoundOps.SLClient.UI" xmlns:EmployeeHistory1="clr-namespace:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory;assembly=FoundOps.SLClient.UI" 
              xmlns:ServiceTemplate1="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate;assembly=FoundOps.SLClient.UI" xmlns:Maintenance1="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles.Maintenance;assembly=FoundOps.SLClient.UI"  
              xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:Tools="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
              xmlns:AdministrativeConsole="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts;assembly=FoundOps.SLClient.UI"
              xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts;assembly=FoundOps.SLClient.UI"
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools;assembly=FoundOps.SLClient.UI" xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI"
-             xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI">
+             xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher;assembly=FoundOps.SLClient.UI"
+             xmlns:Routes="clr-namespace:FoundOps.Framework.Views.Controls.Routes;assembly=FoundOps.SLClient.UI">
     <UserControl.Resources>
         <Converters:ServiceTemplatesAddDeleteModeConverter x:Key="ServiceTemplatesAddDeleteModeConverter"/>
     </UserControl.Resources>
@@ -263,6 +264,35 @@
                         <RecurringServices:RecurringServiceSmall />
                     </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
+                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Route">
+                    <InfiniteAccordion:ThirdsListDetails.List>
+                        <!--Use grid to limit height of RadGridView so scroller will work-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Background="{StaticResource RoutesBrush}">
+                                <Grid DataContext="{Binding DataContext, ElementName=RoutesLogGrid}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Text="Routes" Margin="5,3,5,3" FontSize="13" Foreground="White" />
+                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                                CommandParameter="{Binding SelectedEntity}" />
+                                </Grid>
+                            </Border>
+                            <Dispatcher:RoutesLogGrid x:Name="RoutesLogGrid" IsMainGrid="True" Grid.Row="1" />
+                        </Grid>
+                    </InfiniteAccordion:ThirdsListDetails.List>
+                    <InfiniteAccordion:ThirdsListDetails.Details>
+                        <Routes:RouteLarge />
+                    </InfiniteAccordion:ThirdsListDetails.Details>
+                    <InfiniteAccordion:ThirdsListDetails.Summary>
+                        <Routes:RouteSmall />
+                    </InfiniteAccordion:ThirdsListDetails.Summary>
+                </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.ServiceHolder">
                     <InfiniteAccordion:ThirdsListDetails.List>
                         <!--Use grid to limit height of RadGridView so scroller will work-->
@@ -430,6 +460,11 @@
                     </InfiniteAccordion:ContextBorder.HeaderContent>
                 </InfiniteAccordion:ContextBorder>
                 <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Region" BorderBrush="{StaticResource LocationBrush}" DeleteButtonVisibility="Collapsed">
+                    <InfiniteAccordion:ContextBorder.HeaderContent>
+                        <TextBlock Text="{Binding Name}" Foreground="White" />
+                    </InfiniteAccordion:ContextBorder.HeaderContent>
+                </InfiniteAccordion:ContextBorder>
+                <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Route" BorderBrush="{StaticResource RoutesBrush}" DeleteButtonVisibility="Collapsed">
                     <InfiniteAccordion:ContextBorder.HeaderContent>
                         <TextBlock Text="{Binding Name}" Foreground="White" />
                     </InfiniteAccordion:ContextBorder.HeaderContent>

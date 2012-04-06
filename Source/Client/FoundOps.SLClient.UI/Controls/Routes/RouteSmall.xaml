@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.Routes.RouteSmall" x:Name="myRouteSmall"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
+             xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             mc:Ignorable="d" d:DesignWidth="300" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesInfiniteAccordionVM">
+    <UserControl.Resources>
+        <Converters:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter" />
+    </UserControl.Resources>
+    <Grid x:Name="LayoutRoot" DataContext="{Binding SelectedEntity}"  Margin="0,0,0,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Background="{StaticResource RoutesBrush}">
+            <StackPanel Orientation="Horizontal" Margin="5,3" >
+                <TextBlock Text="Route - " FontSize="13" Foreground="White"/>
+                <TextBlock Text="{Binding Name}" FontSize="13" Foreground="White"/>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{StaticResource SmallLabelColumn}" />
+                <ColumnDefinition Width="{StaticResource SmallValueColumn}"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Date: " HorizontalAlignment="Right"/>
+            <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToLongDateConverter}}" HorizontalAlignment="Left" Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</UserControl>

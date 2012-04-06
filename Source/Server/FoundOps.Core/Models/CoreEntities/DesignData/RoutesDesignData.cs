@@ -17,6 +17,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         public IEnumerable<Route> DesignRoutes { get; private set; }
         private readonly BusinessAccount _ownerBusinessAccount;
         private readonly ClientsDesignData _clientsDesignData;
+        private readonly VehiclesDesignData _vehiclesDesignData;
 
         public RoutesDesignData()
             : this(new BusinessAccountsDesignData().GotGrease)
@@ -24,7 +25,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         }
 
         public RoutesDesignData(BusinessAccount ownerBusinessAccount)
-            : this(ownerBusinessAccount, new ClientsDesignData())
+            : this(ownerBusinessAccount, new ClientsDesignData(), new VehiclesDesignData())
         {
         }
 
@@ -33,10 +34,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         /// </summary>
         /// <param name="ownerBusinessAccount">The owner business account.</param>
         /// <param name="clientsDesignData">The clients design data.</param>
-        public RoutesDesignData(BusinessAccount ownerBusinessAccount, ClientsDesignData clientsDesignData)
+        /// <param name="vehiclesDesignData">The vehicles design data.</param>
+        public RoutesDesignData(BusinessAccount ownerBusinessAccount, ClientsDesignData clientsDesignData, VehiclesDesignData vehiclesDesignData)
         {
             _ownerBusinessAccount = ownerBusinessAccount;
             _clientsDesignData = clientsDesignData;
+            _vehiclesDesignData = vehiclesDesignData;
 
             InitializeRoute();
 
@@ -55,6 +58,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                   .ElementAt(0).Name
                               };
             AddRouteDestinations(DesignRoute);
+            DesignRoute.Vehicles.Add(_vehiclesDesignData.DesignVehicle);
 
             DesignRouteTwo = new Route
                                  {
@@ -66,6 +70,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                  };
 
             AddRouteDestinations(DesignRouteTwo);
+            DesignRouteTwo.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
 
             DesignRouteThree = new Route
                                    {
@@ -76,7 +81,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                  .ElementAt(2).Name
                                    };
             AddRouteDestinations(DesignRouteThree);
-
+            DesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
             DesignRoutes = new List<Route> { DesignRoute, DesignRouteTwo, DesignRouteThree };
         }
 

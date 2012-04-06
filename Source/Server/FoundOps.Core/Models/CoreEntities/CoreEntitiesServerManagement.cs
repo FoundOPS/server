@@ -113,7 +113,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 //container.SaveChanges();
 
                 //Add Routes (with RouteTasks, Technicians)
-                var routesDesignData = new RoutesDesignData(serviceProvider, clientsDesignData);
+                var routesDesignData = new RoutesDesignData(serviceProvider, clientsDesignData, vehiclesDesignData);
                 foreach (var route in routesDesignData.DesignRoutes)
                     serviceProvider.Routes.Add(route);
 

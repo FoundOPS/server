@@ -1,5 +1,4 @@
 ﻿using System;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using ReactiveUI;
 using System.Windows;
@@ -47,6 +46,8 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Location).ToString();
             else if (navigateToUriString.Contains("Regions"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Region).ToString();
+            else if (navigateToUriString.Contains("Routes"))
+                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Route).ToString();
             else if (navigateToUriString.Contains("Services"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(ServiceHolder).ToString();
             else if (navigateToUriString.Contains("Vehicles"))

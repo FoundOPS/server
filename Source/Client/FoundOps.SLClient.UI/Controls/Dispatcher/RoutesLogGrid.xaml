@@ -1,6 +1,6 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.RoutesLogGrid" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesInfiniteAccordionVM"
@@ -12,44 +12,35 @@
         <Converters2:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter"/>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">
-        <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource RoutesBrush}">
-            <toolkit:Expander.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock TextWrapping="Wrap" Text="Route Log" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource RoutesBrush}" />
-                </StackPanel>
-            </toolkit:Expander.Header>
-            <Grid>
-                <telerik:RadGridView x:Name="RouteLogRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" 
-                                     IsFilteringAllowed="True" RowIndicatorVisibility="Collapsed"
-                                     ItemsSource="{Binding QueryableCollectionView}">
-                    <telerik:RadGridView.Columns>
-                        <telerik:GridViewDataColumn Header="Date" DataMemberBinding="{Binding Date, Converter={StaticResource DateTimeToLongDateConverter}}" DataFormatString="{}{0:MM/dd/yyyy}"/>
-                        <telerik:GridViewDataColumn Header="Time">
-                            <telerik:GridViewDataColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource RouteLogTimeConverter}}"/>
-                                </DataTemplate>
-                            </telerik:GridViewDataColumn.CellTemplate>
-                        </telerik:GridViewDataColumn>
-                        <!--Start Time to End Time "8:45-16:40"-->
-                        <telerik:GridViewDataColumn Header="Vehicles">
-                            <telerik:GridViewDataColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Vehicles, Converter={StaticResource RouteLogVehiclesConverter}}"/>
-                                </DataTemplate>
-                            </telerik:GridViewDataColumn.CellTemplate>
-                        </telerik:GridViewDataColumn>
-                        <telerik:GridViewDataColumn Header="Technicians">
-                            <telerik:GridViewDataColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Technicians, Converter={StaticResource RouteLogTechniciansConverter}}"/>
-                                </DataTemplate>
-                            </telerik:GridViewDataColumn.CellTemplate>
-                        </telerik:GridViewDataColumn>
-                        <telerik:GridViewDataColumn Header="Stops" DataMemberBinding="{Binding NumberOfRouteDestinations}" Width="*"/>
-                    </telerik:RadGridView.Columns>
-                </telerik:RadGridView>
-            </Grid>
-        </toolkit:Expander>
+        <telerik:RadGridView x:Name="RouteLogRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" 
+                                IsFilteringAllowed="True" RowIndicatorVisibility="Collapsed"
+                                ItemsSource="{Binding QueryableCollectionView}">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="Date" DataMemberBinding="{Binding Date, StringFormat=MM/dd/yyy}" />
+                <telerik:GridViewDataColumn Header="Time">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource RouteLogTimeConverter}}"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+                <!--Start Time to End Time "8:45-16:40"-->
+                <telerik:GridViewDataColumn Header="Vehicles">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Vehicles, Converter={StaticResource RouteLogVehiclesConverter}}"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Technicians">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Technicians, Converter={StaticResource RouteLogTechniciansConverter}}"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Header="Stops" DataMemberBinding="{Binding NumberOfRouteDestinations}" Width="*"/>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
     </Grid>
 </UserControl>

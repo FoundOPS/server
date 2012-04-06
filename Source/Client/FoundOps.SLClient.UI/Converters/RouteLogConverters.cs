@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using FoundOps.Core.Models.CoreEntities;
@@ -67,8 +68,8 @@ namespace FoundOps.Framework.Views.Converters
             if (item as Route == null)
                 return "";
             var route = (Route)item;
-            var startTime = route.StartTime.TimeOfDay.ToString();
-            var endTime = route.EndTime.TimeOfDay.ToString();
+            var startTime = route.StartTime.ToShortTimeString();
+            var endTime = route.EndTime.ToShortTimeString();
 
             return (startTime + " - " + endTime);
         }

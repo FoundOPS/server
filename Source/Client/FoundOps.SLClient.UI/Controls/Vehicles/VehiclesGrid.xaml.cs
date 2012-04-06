@@ -1,5 +1,13 @@
-﻿using FoundOps.SLClient.Data.Tools;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
+using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Tools;
+using FoundOps.SLClient.UI.ViewModels;
+using Telerik.Windows;
+using Telerik.Windows.Controls.GridView;
+using PropertyMetadata = System.Windows.PropertyMetadata;
 
 namespace FoundOps.SLClient.UI.Controls.Vehicles
 {
@@ -8,6 +16,12 @@ namespace FoundOps.SLClient.UI.Controls.Vehicles
     /// </summary>
     public partial class VehiclesGrid
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is main grid.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is main grid; otherwise, <c>false</c>.
+        /// </value>
         public bool IsMainGrid { get; set; }
 
         /// <summary>
@@ -16,8 +30,48 @@ namespace FoundOps.SLClient.UI.Controls.Vehicles
         public VehiclesGrid()
         {
             InitializeComponent();
-
             this.DependentWhenVisible(VM.Vehicles);
+            VehiclesRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
         }
+
+        private void OnCellDoubleClick(object sender, RadRoutedEventArgs e)
+        {
+            if (!IsMainGrid)
+                ((IProvideContext)this.DataContext).MoveToDetailsView.Execute(null);
+        }
+
+        #region ParentContextVM Dependency Property
+
+        /// <summary>
+        /// ParentContextVM
+        /// </summary>
+        public IAddDeleteSelectedVehicle ParentContextVM
+        {
+            get { return (IAddDeleteSelectedVehicle)GetValue(ParentContextVMProperty); }
+            set { SetValue(ParentContextVMProperty, value); }
+        }
+
+        /// <summary>
+        /// ParentContextVM Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty ParentContextVMProperty =
+            DependencyProperty.Register(
+                "ParentContextVM",
+                typeof(IAddDeleteSelectedVehicle),
+                typeof(VehiclesGrid),
+                new PropertyMetadata(null));
+
+        #endregion
+
+        #region Implementation of INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
     }
 }

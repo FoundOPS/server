@@ -5,11 +5,11 @@
     <Grid x:Name="LayoutGrid" DataContext="{Binding ElementName=myThirdsAccordian}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="LeftColumn" MinWidth="250"/>
-            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition x:Name="RightColumn" MinWidth="300" Width="850"/>
         </Grid.ColumnDefinitions>
         <ContentPresenter Grid.Column="0" Content="{Binding LeftContent}" />
-        <controls:GridSplitter x:Name="gridSplitter" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="15" Background="#cccccc"/>
+        <controls:GridSplitter x:Name="gridSplitter" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="10" Background="#dddddd"/>
         <ContentPresenter Grid.Column="2" Content="{Binding RightContent}" HorizontalAlignment="Left" />
     </Grid>
 </UserControl>

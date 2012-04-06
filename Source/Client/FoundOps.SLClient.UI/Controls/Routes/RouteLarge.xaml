@@ -1,0 +1,83 @@
+﻿<UserControl x:Name="myRouteLarge" x:Class="FoundOps.Framework.Views.Controls.Routes.RouteLarge" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
+             xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Employees1="clr-namespace:FoundOps.SLClient.UI.Controls.Employees" xmlns:Vehicles="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles"
+             xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesInfiniteAccordionVM" 
+             d:DesignWidth="400" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+    <UserControl.Resources>
+        <Converters:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter" />
+        <Converters1:RouteLogTimeConverter x:Key="RouteLogTimeConverter"/>
+    </UserControl.Resources>
+    <!--Use grid to allow scrollviewer to work-->
+    <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Background="{StaticResource RoutesBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="5,3" >
+                    <TextBlock Text="Route - " FontSize="13" Foreground="White"/>
+                    <TextBlock Text="{Binding Name}" FontSize="13" Foreground="White"/>
+                </StackPanel>
+                <SaveDiscardCancel:SaveCancel Grid.Column="1" ISaveDiscardChangesCommands="{Binding DataContext, ElementName=myRouteLarge}"/>
+            </Grid>
+        </Border>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <StackPanel>
+                <toolkit:Expander Margin="2" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource RoutesBrush}">
+                    <toolkit:Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap" Text="Details" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource RoutesBrush}" />
+                        </StackPanel>
+                    </toolkit:Expander.Header>
+                    <Grid Margin="0,5" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{StaticResource LargeLabelColumn}" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="{StaticResource LargeValueColumn}"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="{StaticResource DetailRowHeight}"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="{StaticResource DetailRowHeight}"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="{StaticResource DetailRowHeight}"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Name:" TextAlignment="Right"/>
+                        <TextBlock Text="{Binding Name}" Grid.Column="2"  TextAlignment="Left"/>
+                        <TextBlock Text="Date:" Grid.Row="2" TextAlignment="Right"/>
+                        <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToLongDateConverter}}" Grid.Row="2" Grid.Column="2" TextAlignment="Left"/>
+                        <TextBlock Text="Time:" Grid.Row="4" TextAlignment="Right"/>
+                        <TextBlock Text="{Binding Converter={StaticResource RouteLogTimeConverter}}" Grid.Row="4" Grid.Column="2" TextAlignment="Left"/>
+                    </Grid>
+                </toolkit:Expander>
+                <toolkit:Expander Margin="2" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource EmployeeBrush}">
+                    <toolkit:Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap" Text="Employees" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource EmployeeBrush}" />
+                        </StackPanel>
+                    </toolkit:Expander.Header>
+                    <Employees1:EmployeesGrid x:Name="EmployeesGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myRouteLarge}"/>
+                </toolkit:Expander>
+                <toolkit:Expander Margin="2" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource VehiclesBrush}">
+                    <toolkit:Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap" Text="Vehicles" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource VehiclesBrush}" />
+                        </StackPanel>
+                    </toolkit:Expander.Header>
+                    <Vehicles:VehiclesGrid x:Name="VehiclesGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myRouteLarge}"/>
+                </toolkit:Expander>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

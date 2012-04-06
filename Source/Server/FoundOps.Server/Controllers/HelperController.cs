@@ -25,18 +25,11 @@ namespace FoundOps.Server.Controllers
             var bmp = new Bitmap(200, 200);
             var g = Graphics.FromImage(bmp);
             g.Clear(Color.White);
-            for (int y = 0; y <= img.Length - 1; y++)
+            for (var y = 0; y <= img.Length - 1; y++)
             {
-                for (int x = 0; x <= img[y].Length - 1; x++)
+                for (var x = 0; x <= img[y].Length - 1; x++)
                 {
-                    if (img[y][x] == 0)
-                    {
-                        g.FillRectangle(Brushes.Black, x, y, 1, 1);
-                    }
-                    else
-                    {
-                        g.FillRectangle(Brushes.White, x, y, 1, 1);
-                    }
+                    g.FillRectangle(img[y][x] == 0 ? Brushes.Black : Brushes.White, x, y, 1, 1);
                 }
             }
 

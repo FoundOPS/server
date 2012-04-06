@@ -12,6 +12,13 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
     public partial class RoutesLogGrid
     {
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is main grid.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is main grid; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsMainGrid { get; set; }
+        /// <summary>
         /// Initializes a new instance of the <see cref="RoutesLogGrid"/> class.
         /// </summary>
         public RoutesLogGrid()
@@ -25,8 +32,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs radRoutedEventArgs)
         {
-            //TODO:
-            //Navigate to the Dispatcher on the Service date of the selected route
+            if (!IsMainGrid)
+                VM.RoutesInfiniteAccordion.MoveToDetailsView.Execute(null);
         }
     }
 }

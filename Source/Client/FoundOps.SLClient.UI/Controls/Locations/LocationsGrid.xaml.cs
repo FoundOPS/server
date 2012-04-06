@@ -29,9 +29,7 @@ namespace FoundOps.SLClient.UI.Controls.Locations
         public LocationsGrid()
         {
             InitializeComponent();
-
             this.DependentWhenVisible(LocationsVM);
-
             LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);
         }
 

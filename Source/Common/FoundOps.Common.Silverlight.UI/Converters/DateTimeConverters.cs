@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 using FoundOps.Common.Composite;
 
@@ -95,7 +94,6 @@ namespace FoundOps.Common.Silverlight.Converters
 
         #endregion
     }
-
 
     /// <summary>
     /// This method takes a datetime and sets the date to today's date
