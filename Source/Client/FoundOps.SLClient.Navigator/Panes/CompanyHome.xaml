@@ -16,8 +16,7 @@
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            * OPTIMIZATION: Clients.
-            <LineBreak/>
+            * GENERAL: Small fixes.<LineBreak/>
             <LineBreak/>
             (4/4/2012)<LineBreak/>
             * OPTIMIZATION: Dispatcher, Employees, Locations, Services, and Vehicles.<LineBreak/>

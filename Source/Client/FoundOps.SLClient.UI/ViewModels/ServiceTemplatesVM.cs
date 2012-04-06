@@ -254,53 +254,52 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Make sure this is in a proper context to be creating a service template
 
             //Find if there is a RecurringService, Client, or ServiceProvider context
-            var recurringServiceContext = ContextManager.GetContext<RecurringService>();
+            //var recurringServiceContext = ContextManager.GetContext<RecurringService>();
             var clientContext = ContextManager.GetContext<Client>();
             var serviceProviderContext = ContextManager.GetContext<BusinessAccount>();
 
-            if (recurringServiceContext == null && clientContext == null && serviceProviderContext == null)
+            //NOTE: Recurring services are currently disabled
+            //recurringServiceContext == null && 
+            if (clientContext == null && serviceProviderContext == null)
                 throw new Exception("Cannot create Service Template outside of a context.");
-
-            //Load the parent's ServiceTemplate's details, then create the child
-            DomainContext.Load(DomainContext.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, parentServiceTemplate.Id),
-            loadOp =>
+            if (clientContext != null)
             {
-                if (loadOp.HasError)
-                    throw new Exception("Could not create Service Template. Please try again.");
-
-                parentServiceTemplate.DetailsLoaded = true;
-
-                //Setup RecurringServiceDefined ServiceTemplate
-                if (recurringServiceContext != null)
-                {
-                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
-                    serviceTemplateChild.Id = recurringServiceContext.Id;
-                    recurringServiceContext.ServiceTemplate = serviceTemplateChild;
-
-                    completed(serviceTemplateChild);
-                    return;
-                }
-
                 //Setup ClientDefined ServiceTemplate
-                if (clientContext != null)
-                {
-                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
-                    serviceTemplateChild.OwnerClient = clientContext;
-                    completed(serviceTemplateChild);
-                    return;
-                }
+                var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
+                serviceTemplateChild.OwnerClient = clientContext;
+                completed(serviceTemplateChild);
+            }
+            ////Setup RecurringServiceDefined ServiceTemplate
+            //else if (recurringServiceContext != null)
+            //{
+            //    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
+            //    serviceTemplateChild.Id = recurringServiceContext.Id;
+            //    recurringServiceContext.ServiceTemplate = serviceTemplateChild;
 
-                //Setup ServiceProvider ServiceTemplate
-                if (serviceProviderContext != null)
+                    //    completed(serviceTemplateChild);
+            //    return;
+            //}
+            //If in Admin Console. Load the parent's ServiceTemplate's details then create the child.
+            else if (serviceProviderContext != null)
+                DomainContext.Load(DomainContext.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, parentServiceTemplate.Id),
+                loadOp =>
                 {
-                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
-                    serviceTemplateChild.OwnerServiceProvider = serviceProviderContext;
-                    completed(serviceTemplateChild);
-                    return;
-                }
+                    if (loadOp.HasError)
+                        throw new Exception("Could not create Service Template. Please try again.");
 
-                throw new Exception("Could not create Service Template. Please try again.");
-            }, null);
+                    parentServiceTemplate.DetailsLoaded = true;
+
+                    //Setup ServiceProvider ServiceTemplate
+                    if (serviceProviderContext != null)
+                    {
+                        var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
+                        serviceTemplateChild.OwnerServiceProvider = serviceProviderContext;
+                        completed(serviceTemplateChild);
+                        return;
+                    }
+
+                    throw new Exception("Could not create Service Template. Please try again.");
+                }, null);
         }
 
         #endregion
