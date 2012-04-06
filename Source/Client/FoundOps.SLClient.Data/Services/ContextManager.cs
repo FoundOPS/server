@@ -1,4 +1,6 @@
-﻿using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+﻿using System.Threading.Tasks;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using ReactiveUI;
@@ -230,10 +232,12 @@ namespace FoundOps.SLClient.Data.Services
 
             _currentServiceTemplates = _currentServiceTemplatesSubject.ToProperty(this, x => x.CurrentServiceTemplates);
 
+            var cancelLastServiceTemplatesLoad = new Subject<bool>();
+
             //Whenever the RoleId changes
             //a) load the OwnerAccount of the Role (usually a ServiceProvider)
             //b) load the ServiceProvider's ServiceTemplates
-            RoleIdObservable.Subscribe(roleId =>
+            RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
                 //a) load the OwnerAccount of the Role (usually a ServiceProvider)
                 Manager.Data.GetCurrentParty(roleId, account => ((BehaviorSubject<Party>)OwnerAccountObservable).OnNext(account));
@@ -242,19 +246,25 @@ namespace FoundOps.SLClient.Data.Services
                 _serviceTemplatesLoading.OnNext(true);
                 var serviceTemplatesQuery = Manager.CoreDomainContext.GetServiceProviderServiceTemplatesQuery(roleId);
 
-                Manager.CoreDomainContext.Load(serviceTemplatesQuery, lo =>
-                {
-                    if (lo.HasError)
-                        throw new Exception("Please reload the page");
+                cancelLastServiceTemplatesLoad.OnNext(true);
 
-                    //The query includes the details
-                    foreach (var st in lo.Entities)
-                        st.DetailsLoaded = true;
+                Manager.CoreDomainContext.LoadAsync(serviceTemplatesQuery, cancelLastServiceTemplatesLoad)
+                .ContinueWith(task =>
+                 {
+                     if (task.IsCanceled)
+                         return;
 
-                    _currentServiceTemplatesSubject.OnNext(lo.Entities);
+                     if (!task.Result.Any())
+                         throw new Exception("Please reload the page");
 
-                    _serviceTemplatesLoading.OnNext(false);
-                }, null);
+                     //The query includes the details
+                     foreach (var st in task.Result)
+                         st.DetailsLoaded = true;
+
+                     _currentServiceTemplatesSubject.OnNext(task.Result);
+
+                     _serviceTemplatesLoading.OnNext(false);
+                 }, TaskScheduler.FromCurrentSynchronizationContext());
             });
 
             #region TODO Clear entity sets whenever Roles change

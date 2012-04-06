@@ -56,6 +56,33 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
+        /// Gets the Client details.
+        /// It includes the ContactInfo, Available Services (ServiceTemplates),
+        /// RecurringServices, RecurringServices.Repeat, RecurringServices.ServiceTemplate (without fields)
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="clientId">The client id.</param>
+        public Client GetClientDetailsForRole(Guid roleId, Guid clientId)
+        {
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+
+            if (businessForRole == null) return null;
+
+            //Load contact info
+            var client = ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id && c.Id == clientId)
+                .Include(c => c.OwnedParty).Include(c => c.OwnedParty.ContactInfoSet).Include("RecurringServices")
+                .Include("RecurringServices.Repeat").Include("RecurringServices.ServiceTemplate").FirstOrDefault();
+
+            if (client == null) return null;
+
+            //Load clients ServiceTemplates
+            GetClientServiceTemplates(businessForRole.Id, client.Id).ToArray();
+
+            return client;
+        }
+
+
+        /// <summary>
         /// Returns the clients for the current role.
         /// It also includes the Client.OwnedParty and Client.OwnedParty.ContactInfoSet
         /// </summary>

@@ -368,7 +368,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             //Must call this or else adds will not show up in RadGridView
             this.RaisePropertyChanged("QueryableCollectionView");
 
-            DataManager.EnqueueSubmitOperation(submitOperation => 
+            DataManager.EnqueueSubmitOperation(submitOperation =>
                 Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ => SelectedEntity = newEntity));
 
             return newEntity;
@@ -394,7 +394,8 @@ namespace FoundOps.SLClient.Data.ViewModels
             base.OnSave(submitOperation);
 
             //TODO Undo when fixing non-saved added entities
-            ExtendedVirtualQueryableCollectionView.UpdateVirtualItemCount();
+            if (ExtendedVirtualQueryableCollectionView != null)
+                ExtendedVirtualQueryableCollectionView.UpdateVirtualItemCount();
         }
 
         #endregion

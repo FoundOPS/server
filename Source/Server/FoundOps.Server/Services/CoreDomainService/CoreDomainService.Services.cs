@@ -75,7 +75,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //If the service being inserted has a RecurringServiceId
             //Find any RouteTasks that have the same RecurringServiceId and Date
             //Update the ServiceId on the RouteTask with the Id of the newly created Service
-            if(service.RecurringServiceId != null)
+            if (service.RecurringServiceId != null)
             {
                 var routeTasks = this.ObjectContext.RouteTasks.Where(rt => rt.RecurringServiceId == service.RecurringServiceId && rt.Date == service.ServiceDate).ToArray();
 
@@ -136,7 +136,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                     //If the RouteDestination has no remaining tasks, delete it
                     if (routeDestination.RouteTasks.Count == 0)
-                       DeleteRouteDestination(routeDestination);
+                        DeleteRouteDestination(routeDestination);
                 }
 
                 //Delete the route task
@@ -248,29 +248,15 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Include(rs=>rs.Client.OwnedParty)
+            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Include(rs => rs.Client.OwnedParty)
                 .Where(v => v.Client.VendorId == businessForRole.Id);
-
-            return recurringServices.OrderBy(rs=>rs.ClientId);
-        }
-
-        /// <summary>
-        /// Gets the RecurringServices for a Client.
-        /// It includes the Client, Repeat and ServiceTemplate (without fields).
-        /// </summary>
-        /// <param name="roleId">The role to determine the business account from.</param>
-        /// <param name="clientId">The client to get recurring services from.</param>
-        public IQueryable<RecurringService> GetRecurringServicesForClient(Guid roleId, Guid clientId)
-        {
-            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Where(rs=>rs.ClientId == clientId)
-                .Include(rs => rs.Repeat).Include(rs => rs.ServiceTemplate);
 
             return recurringServices.OrderBy(rs => rs.ClientId);
         }
 
         /// <summary>
         /// Gets the RecurringService details.
-        /// It includes the Client/Client.OwnedParty and the ServiceTemplate and Fields.
+        /// It includes the ServiceTemplate and Fields.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="recurringServiceId">The recurring service id.</param>
@@ -304,7 +290,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var newlyAddedFutureDatesToExclude = currentRecurringService.ExcludedDates.Except(originalRecurringService.ExcludedDates).Where(d => d >= DateTime.Now.Date).ToArray();
             if (newlyAddedFutureDatesToExclude.Any())
             {
-                var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt => 
+                var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt =>
                     rt.RecurringServiceId == currentRecurringService.Id && newlyAddedFutureDatesToExclude.Contains(rt.Date)).ToArray();
 
                 DeleteRouteTasks(routeTasksToDelete);
