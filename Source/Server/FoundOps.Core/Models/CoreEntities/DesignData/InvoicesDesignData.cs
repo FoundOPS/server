@@ -53,7 +53,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 DueDate = DateTime.Now.AddDays(40),
                 FixedScheduleOptionInt = (Int32)FixedScheduleOption.LastOfMonth,
-                Memo = "Delivering Baloons",
+                Memo = "Deliver Freight",
                 RelativeScheduleDays = 34,
                 ScheduleModeInt = (Int32)ScheduleMode.FixedDate
             };

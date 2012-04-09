@@ -21,8 +21,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             InitializeEmployees();
 
             DesignEmployeeHistory.Employee = employeesDesignData.DesignEmployee;
-            DesignEmployeeHistoryTwo.Employee = employeesDesignData.DesignEmployee;
-            DesignEmployeeHistoryThree.Employee = employeesDesignData.DesignEmployee;
+            DesignEmployeeHistoryTwo.Employee = employeesDesignData.DesignEmployeeTwo;
+            DesignEmployeeHistoryThree.Employee = employeesDesignData.DesignEmployeeThree;
         }
 
         private void InitializeEmployees()
@@ -31,24 +31,24 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Date = DateTime.Now,
                 Type = "Employment Application",
-                Summary = "Questionable",
-                Notes = "Good notes"
+                Summary = "Applied for secretary position",
+                Notes = "Meets requirements"
             };
 
             DesignEmployeeHistoryTwo = new EmployeeHistoryEntry
             {
                 Date = DateTime.Now,
                 Type = "Performance Review",
-                Summary = "Not good",
-                Notes = "Mediocre notes"
+                Summary = "Passed",
+                Notes = "No noteworthy complaints"
             };
 
             DesignEmployeeHistoryThree = new EmployeeHistoryEntry
             {
                 Date = DateTime.Now,
                 Type = "Termination",
-                Summary = "The worst",
-                Notes = "Bad notes"
+                Summary = "Moved away",
+                Notes = "Received severence pay"
             };
 
             DesignEmployeeHistoryEnties = new List<EmployeeHistoryEntry> { DesignEmployeeHistory, DesignEmployeeHistoryTwo, DesignEmployeeHistoryThree };

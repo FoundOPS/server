@@ -3,9 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Employees1="clr-namespace:FoundOps.SLClient.UI.Controls.Employees" xmlns:Vehicles="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles"
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesInfiniteAccordionVM" 
+             xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesInfiniteAccordionVM" 
              d:DesignWidth="400" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <UserControl.Resources>
         <Converters:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter" />
@@ -67,7 +67,15 @@
                             <TextBlock TextWrapping="Wrap" Text="Employees" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource EmployeeBrush}" />
                         </StackPanel>
                     </toolkit:Expander.Header>
-                    <Employees1:EmployeesGrid x:Name="EmployeesGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myRouteLarge}"/>
+                    <telerik:RadGridView x:Name="EmployeesGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
+                        RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding Technicians}">
+                        <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn Header="First Name" DataMemberBinding="{Binding OwnedPerson.FirstName}"/>
+                            <telerik:GridViewDataColumn Header="Last Name" DataMemberBinding="{Binding OwnedPerson.LastName}" Width="*"/>
+                            <!--<telerik:GridViewDataColumn Header="Role" Width="*"/>-->
+                        </telerik:RadGridView.Columns>
+                    </telerik:RadGridView>
+                    <!--<Employees1:EmployeesGrid x:Name="EmployeesGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myRouteLarge}" MaxHeight="150"/>-->
                 </toolkit:Expander>
                 <toolkit:Expander Margin="2" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource VehiclesBrush}">
                     <toolkit:Expander.Header>
@@ -75,7 +83,20 @@
                             <TextBlock TextWrapping="Wrap" Text="Vehicles" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource VehiclesBrush}" />
                         </StackPanel>
                     </toolkit:Expander.Header>
-                    <Vehicles:VehiclesGrid x:Name="VehiclesGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myRouteLarge}"/>
+                    <telerik:RadGridView x:Name="VehiclesGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
+                        RowIndicatorVisibility="Collapsed" ItemsSource="{Binding Vehicles}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
+                        <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn Header="Vehicle ID" Width="*">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding VehicleId}" />
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+                            <!--<telerik:GridViewDataColumn Header="Status"/> Once Mobile App Has Live Linking-->
+                        </telerik:RadGridView.Columns>
+                    </telerik:RadGridView>
+                    <!--<Vehicles:VehiclesGrid x:Name="VehiclesGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myRouteLarge}" MaxHeight="150"/>-->
                 </toolkit:Expander>
             </StackPanel>
         </ScrollViewer>

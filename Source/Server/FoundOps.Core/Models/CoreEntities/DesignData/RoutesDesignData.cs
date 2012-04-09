@@ -18,6 +18,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         private readonly BusinessAccount _ownerBusinessAccount;
         private readonly ClientsDesignData _clientsDesignData;
         private readonly VehiclesDesignData _vehiclesDesignData;
+        private readonly EmployeesDesignData _employeesDesignData;
 
         public RoutesDesignData()
             : this(new BusinessAccountsDesignData().GotGrease)
@@ -25,7 +26,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         }
 
         public RoutesDesignData(BusinessAccount ownerBusinessAccount)
-            : this(ownerBusinessAccount, new ClientsDesignData(), new VehiclesDesignData())
+            : this(ownerBusinessAccount, new ClientsDesignData(), new VehiclesDesignData(), new EmployeesDesignData())
         {
         }
 
@@ -35,11 +36,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         /// <param name="ownerBusinessAccount">The owner business account.</param>
         /// <param name="clientsDesignData">The clients design data.</param>
         /// <param name="vehiclesDesignData">The vehicles design data.</param>
-        public RoutesDesignData(BusinessAccount ownerBusinessAccount, ClientsDesignData clientsDesignData, VehiclesDesignData vehiclesDesignData)
+        public RoutesDesignData(BusinessAccount ownerBusinessAccount, ClientsDesignData clientsDesignData, VehiclesDesignData vehiclesDesignData, EmployeesDesignData employeesDesignData)
         {
             _ownerBusinessAccount = ownerBusinessAccount;
             _clientsDesignData = clientsDesignData;
             _vehiclesDesignData = vehiclesDesignData;
+            _employeesDesignData = employeesDesignData;
 
             InitializeRoute();
 
@@ -58,6 +60,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                   .ElementAt(0).Name
                               };
             AddRouteDestinations(DesignRoute);
+            DesignRoute.Technicians.Add(_employeesDesignData.DesignEmployee);
             DesignRoute.Vehicles.Add(_vehiclesDesignData.DesignVehicle);
 
             DesignRouteTwo = new Route
@@ -70,6 +73,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                  };
 
             AddRouteDestinations(DesignRouteTwo);
+            DesignRouteTwo.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
             DesignRouteTwo.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
 
             DesignRouteThree = new Route
@@ -81,6 +85,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                  .ElementAt(2).Name
                                    };
             AddRouteDestinations(DesignRouteThree);
+            DesignRouteThree.Technicians.Add(_employeesDesignData.DesignEmployeeThree);
             DesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
             DesignRoutes = new List<Route> { DesignRoute, DesignRouteTwo, DesignRouteThree };
         }

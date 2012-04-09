@@ -25,15 +25,15 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             InitializeVehicleMaintenance();
 
             DesignVehicleMaintenance.Vehicle = vehiclesDesignData.DesignVehicle;
-            DesignVehicleMaintenanceTwo.Vehicle = vehiclesDesignData.DesignVehicle;
-            DesignVehicleMaintenanceThree.Vehicle = vehiclesDesignData.DesignVehicle;
+            DesignVehicleMaintenanceTwo.Vehicle = vehiclesDesignData.DesignVehicleTwo;
+            DesignVehicleMaintenanceThree.Vehicle = vehiclesDesignData.DesignVehicleThree;
         }
 
         private void InitializeVehicleMaintenance()
         {
             DesignVehicleMaintenance = new VehicleMaintenanceLogEntry
             {
-                Comments = "Oil Changed",
+                Comments = "",
                 Date = new DateTime(2009, 06, 09),
                 Mileage = 128675,
                 ServicedBy = "Linda Splenda"
@@ -42,7 +42,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignVehicleMaintenanceTwo = new VehicleMaintenanceLogEntry
             {
-                Comments = "No comment",
+                Comments = "",
                 Date = new DateTime(2010, 06, 12),
                 Mileage = 67075,
                 ServicedBy = "Jim Smith"
@@ -51,10 +51,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignVehicleMaintenanceThree = new VehicleMaintenanceLogEntry
             {
-                Comments = "Small amount of comments",
+                Comments = "",
                 Date = new DateTime(2008, 01, 20),
                 Mileage = 18615,
-                ServicedBy = "Another Person"
+                ServicedBy = "Tim"
             };
             AddLineItems(DesignVehicleMaintenanceThree);
 
