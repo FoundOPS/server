@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
+using FoundOps.Core.Tools;
 using FoundOps.Common.Tools;
-using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.QuickBooks;
 using FoundOps.Core.Models.CoreEntities;
 

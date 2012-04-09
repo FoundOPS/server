@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.Import;
-using FoundOps.Server.Authentication;
+using FoundOps.Core.Tools;
 using Kent.Boogaart.KBCsv;
 
 namespace FoundOps.Server.Services.CoreDomainService

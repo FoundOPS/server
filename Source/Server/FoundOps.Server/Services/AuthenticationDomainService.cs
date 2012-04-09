@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using FoundOps.Server.Authentication;
-using FoundOps.Core.Models.Account.Extensions;
+using FoundOps.Core.Tools;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.Authentication;
 using System.ServiceModel.DomainServices.Server.ApplicationServices;
 
 namespace FoundOps.Server.Services

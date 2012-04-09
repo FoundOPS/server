@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Data.SqlClient;
 using FoundOps.Common.NET;
 using FoundOps.Common.Server;
-using Microsoft.SqlServer.Management.Common;
 using FoundOps.Core.Models.CoreEntities.DesignData;
+using Microsoft.SqlServer.Management.Common;
+using System;
+using System.IO;
+using System.Data.SqlClient;
 
 namespace FoundOps.Core.Models.CoreEntities
 {

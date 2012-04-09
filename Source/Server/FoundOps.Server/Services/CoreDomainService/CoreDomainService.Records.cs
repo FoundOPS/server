@@ -1,4 +1,4 @@
-﻿using FoundOps.Common.NET;
+using FoundOps.Common.NET;
 using FoundOps.Server.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
