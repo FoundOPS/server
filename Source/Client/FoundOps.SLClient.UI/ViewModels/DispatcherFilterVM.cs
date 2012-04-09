@@ -137,7 +137,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public bool TaskHolderIncludedInFilter(TaskHolder taskHolder)
         {
             var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == taskHolder.ServiceName);
-            var meetsRegionsFilter = RegionOptions.Any(option => option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName);
+            var meetsRegionsFilter = RegionOptions.Any(option => (option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName)) || taskHolder.RegionName == null;
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
         }
