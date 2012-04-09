@@ -1,12 +1,15 @@
-﻿using System.ServiceModel.DomainServices.Client;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
+using System;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reactive.Linq;
+using System.ServiceModel.DomainServices.Client;
 using System.Windows;
+using Telerik.Windows.Data;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -26,6 +29,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             : base(new[] { typeof(Client) })
         {
             SetupDataLoading();
+
+            //Cannot currently delete recurring services. Waiting on bug fix.
+            //this.CanDeleteSubject.OnNext(false);
         }
 
         /// <summary>
@@ -33,17 +39,14 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            SetupContextDataLoading(roleId =>
-                                        {
-                                            //Manually filter as workaround to a randomly occuring problem
-                                            //where they are all getting loaded when there is no context
-                                            var clientContext = ContextManager.GetContext<Client>();
-                                            return clientContext == null
-                                                       ? null
-                                                       : DomainContext.GetRecurringServicesForClientQuery(roleId, clientContext.Id);
-                                        }, new[] { new ContextRelationshipFilter("ClientId", typeof(Client), v => ((Client)v).Id) });
+            //Update when the ClientContext changes
+            ContextManager.GetContextObservable<Client>().ObserveOnDispatcher()
+                .Subscribe(clientContext =>
+                    QueryableCollectionView = clientContext == null
+                                                                    ? new QueryableCollectionView(new Client[] { })
+                                                                    : new QueryableCollectionView(clientContext.RecurringServices));
 
-            //Whenever the selected RecurringService changes load the details
+            //Whenever the selected RecurringService changes load the details (ServiceTemplate and fields)
             SetupDetailsLoading(selectedEntity => DomainContext.GetRecurringServiceDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 
@@ -55,7 +58,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         protected override RecurringService AddNewEntity(object commandParameter)
         {
-            var newRecurringService = base.AddNewEntity(commandParameter);
+            var newRecurringService = new RecurringService();
 
             //The RecurringServices Add Button will pass a ClientLevel ServiceTemplate (Available Service)
             var clientLevelServiceTemplate = (ServiceTemplate)commandParameter;
@@ -65,22 +68,19 @@ namespace FoundOps.SLClient.UI.ViewModels
             copiedTemplate.Id = newRecurringService.Id;
             newRecurringService.ServiceTemplate = copiedTemplate;
 
-            var currentClient = ContextManager.GetContext<Client>();
+            var clientContext = ContextManager.GetContext<Client>();
+
+            newRecurringService.Client = clientContext;
 
             //If there is only one location, try to set the destination (assuming this Service Template has a destination field)
-            if (currentClient.OwnedParty.Locations.Count == 1)
-                newRecurringService.ServiceTemplate.SetDestination(currentClient.OwnedParty.Locations.First());
+            if (clientContext.OwnedParty.Locations.Count == 1)
+                newRecurringService.ServiceTemplate.SetDestination(clientContext.OwnedParty.Locations.First());
 
             return newRecurringService;
         }
 
         protected override void OnAddEntity(RecurringService recurringService)
         {
-            //Find if there is a client context
-            var clientContext = ContextManager.GetContext<Client>();
-
-            recurringService.Client = clientContext;
-
             //Move to the RecurringServices Details View if not already
             if (!IsInDetailsView)
                 MoveToDetailsView.Execute(null);
@@ -108,7 +108,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             return true;
         }
 
-        protected override void OnSave(System.ServiceModel.DomainServices.Client.SubmitOperation submitOperation)
+        protected override void OnSave(SubmitOperation submitOperation)
         {
             base.OnSave(submitOperation);
 

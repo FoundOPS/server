@@ -217,6 +217,7 @@
       <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
     </Content>
     <Content Include="Models\CoreEntities\SQL\CheckServiceTemplateForChildren.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteRecurringService.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteBasicPartyBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteBusinessAccountBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteClientBasedOnId.sql" />

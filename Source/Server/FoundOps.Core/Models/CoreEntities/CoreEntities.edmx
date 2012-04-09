@@ -369,45 +369,45 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
-        <Function Name="GetServiceHolders" IsComposable="false">
-          <CommandText>
-            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
-            FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
-          </CommandText>
-          <Parameter Name="serviceProviderIdContext"
-                     Mode="In"
-                     Type="uniqueidentifier"/>
-          <Parameter Name="clientIdContext"
-                     Mode="In"
-                     Type="uniqueidentifier"/>
-          <Parameter Name="recurringServiceIdContext"
-                     Mode="In"
-                     Type="uniqueidentifier"/>
-          <Parameter Name="seedDate"
-                     Mode="In"
-                     Type="datetime"/>
-          <Parameter Name="frontBackMinimum"
-                     Mode="In"
-                     Type="int"/>
-          <Parameter Name="getPrevious"
-                     Mode="In"
-                     Type="bit"/>
-          <Parameter Name="getNext"
-                     Mode="In"
-                     Type="bit"/>
-        </Function>
-        <Function Name="GetUnroutedServicesForDate" IsComposable="false">
-          <CommandText>
-            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude
-            FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
-          </CommandText>
-          <Parameter Name="serviceProviderContext"
-                     Mode="In"
-                     Type="uniqueidentifier"/>
-          <Parameter Name="serviceDate"
-                     Mode="In"
-                     Type="datetime"/>
-        </Function>
+      <Function Name="GetServiceHolders" IsComposable="false">
+        <CommandText>
+          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
+          FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
+        </CommandText>
+        <Parameter Name="serviceProviderIdContext"
+                   Mode="In"
+                   Type="uniqueidentifier"/>
+        <Parameter Name="clientIdContext"
+                   Mode="In"
+                   Type="uniqueidentifier"/>
+        <Parameter Name="recurringServiceIdContext"
+                   Mode="In"
+                   Type="uniqueidentifier"/>
+        <Parameter Name="seedDate"
+                   Mode="In"
+                   Type="datetime"/>
+        <Parameter Name="frontBackMinimum"
+                   Mode="In"
+                   Type="int"/>
+        <Parameter Name="getPrevious"
+                   Mode="In"
+                   Type="bit"/>
+        <Parameter Name="getNext"
+                   Mode="In"
+                   Type="bit"/>
+      </Function>
+      <Function Name="GetUnroutedServicesForDate" IsComposable="false">
+        <CommandText>
+          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude
+          FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
+        </CommandText>
+        <Parameter Name="serviceProviderContext"
+                   Mode="In"
+                   Type="uniqueidentifier"/>
+        <Parameter Name="serviceDate"
+                   Mode="In"
+                   Type="datetime"/>
+      </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />
@@ -1619,7 +1619,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RouteEmployee_Route">
-          <End Role="Routes" Type="CoreEntities.Store.Routes" Multiplicity="1" />
+          <End Role="Routes" Type="CoreEntities.Store.Routes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="RouteEmployee" Type="CoreEntities.Store.RouteEmployee" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Routes">
@@ -1693,7 +1695,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RouteVehicle_Route">
-          <End Role="Routes" Type="CoreEntities.Store.Routes" Multiplicity="1" />
+          <End Role="Routes" Type="CoreEntities.Store.Routes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="RouteVehicle" Type="CoreEntities.Store.RouteVehicle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Routes">
@@ -1882,6 +1886,9 @@
         </Function>
         <Function Name="DeleteLocationBasedOnId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="locationId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="DeleteRecurringService" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="recurringServiceId" Type="uniqueidentifier" Mode="In" />
         </Function>
         <Function Name="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="parentTemplateId" Type="uniqueidentifier" Mode="In" />
@@ -2233,23 +2240,26 @@
             <End Role="RecurringService" EntitySet="RecurringServices" />
           </AssociationSet>
           <FunctionImport Name="DeleteClientBasedOnId">
-            <Parameter Name="clientId" Mode="In" Type="Guid" />
+          <Parameter Name="clientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteLocationBasedOnId">
-            <Parameter Name="locationId" Mode="In" Type="Guid" />
+          <Parameter Name="locationId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplatesAndChildrenBasedOnContextId">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="ownerClientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId">
-            <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
+          <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteBusinessAccountBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserAccountBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteRecurringService">
+            <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Block">
@@ -4059,41 +4069,42 @@
         <ScalarProperty Name="Id" ColumnName="Technicians_Id" />
       </EndProperty>
     </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
-                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
-                <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="DeleteClientBasedOnId" FunctionName="CoreEntities.Store.DeleteClientBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteLocationBasedOnId" FunctionName="CoreEntities.Store.DeleteLocationBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplatesAndChildrenBasedOnContextId" FunctionName="CoreEntities.Store.DeleteServiceTemplatesAndChildrenBasedOnContextId" />
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" FunctionName="CoreEntities.Store.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" />
           <FunctionImportMapping FunctionImportName="DeleteBusinessAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteBusinessAccountBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
-    </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="DeleteRecurringService" FunctionName="CoreEntities.Store.DeleteRecurringService" />
+    <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
+          <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
+          <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+          <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+          <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+          <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>  
+  </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->

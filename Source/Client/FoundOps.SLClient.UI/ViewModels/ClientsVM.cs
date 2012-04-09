@@ -160,9 +160,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             SetupTopEntityDataLoading(roleId => DomainContext.GetClientsForRoleQuery(ContextManager.RoleId));
 
-            //Whenever the client changes load the contact info
-            SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Subscribe(selectedClient =>
-                DomainContext.Load(DomainContext.GetContactInfoSetQuery().Where(c => c.PartyId == selectedClient.Id)));
+            //Whenever the client changes load the ContactInfo, Available Services (ServiceTemplates),
+            //RecurringServices, RecurringServices.Repeat, RecurringServices.ServiceTemplate (without fields)
+            //This is all done in one query, otherwise it would take a long time
+            SetupDetailsLoading(selectedEntity => DomainContext.GetClientDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
 
             //Service templates are required for adding. So disable CanAdd until they are loaded.
             ContextManager.ServiceTemplatesLoading.Select(loading => !loading).Subscribe(CanAddSubject);

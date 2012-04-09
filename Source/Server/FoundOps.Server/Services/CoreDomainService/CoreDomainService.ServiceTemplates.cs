@@ -198,18 +198,16 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// Gets the Client's ServiceTemplates and details.
         /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
         /// </summary>
-        /// <param name="roleId">The current role id.</param>
+        /// <param name="vendorId">The current role's vendor id.</param>
         /// <param name="clientId">The clientId to load service templates for.</param>
-        public IEnumerable<ServiceTemplate> GetClientServiceTemplates(Guid roleId, Guid clientId)
+        private IEnumerable<ServiceTemplate> GetClientServiceTemplates(Guid vendorId, Guid clientId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
-
             //Filter by the service templates for the Client
             //also filter be service provider (Vendor) for security
             var serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.OwnerClientId == clientId)
                                             join stv in ObjectContext.ServiceTemplateWithVendorIds
                                                 on serviceTemplate.Id equals stv.ServiceTemplateId
-                                            where stv.VendorId == businessForRole.Id
+                                            where stv.VendorId == vendorId
                                             select serviceTemplate).Distinct();
 
             //Force load the details

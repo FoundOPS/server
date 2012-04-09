@@ -12,10 +12,13 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (4/4/2012)
+                (4/5/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * GENERAL: Small fixes.<LineBreak/>
+            <LineBreak/>
+            (4/4/2012)<LineBreak/>
             * OPTIMIZATION: Dispatcher, Employees, Locations, Services, and Vehicles.<LineBreak/>
             * GENERAL: Overall system stability improvements. <LineBreak/>
             * DISPATCHER: Added the ability to filter routes by region. <LineBreak/>

@@ -63,6 +63,12 @@ namespace FoundOps.Core.Models.CoreEntities
 
             [Include]
             public Party OwnedParty { get; set; }
+
+            [Include]
+            public EntityCollection<RecurringService> RecurringServices { get; set; }
+
+            [Include]
+            public EntityCollection<ServiceTemplate> ServiceTemplates { get; set; }
         }
     }
 

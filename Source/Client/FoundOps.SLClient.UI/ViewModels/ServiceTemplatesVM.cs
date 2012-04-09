@@ -1,3 +1,9 @@
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Common.Tools;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
@@ -6,16 +12,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.ServiceModel.DomainServices.Client;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
-using FoundOps.Common.Tools;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Models.CoreEntities.DesignData;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Data.ViewModels;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -44,13 +41,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// It will return the ServiceProviders ServiceTemplates that the current client context does not have yet.
         /// </summary>
         public IEnumerable<ServiceTemplate> AdditionalServiceTemplatesForClient { get { return _additionalServiceTemplatesForClientHelper.Value; } }
-
-        private Subject<bool> _clientServiceTemplatesLoadingSubject = new Subject<bool>();
-        private ObservableAsPropertyHelper<bool> _clientServiceTemplatesLoadingHelper;
-        /// <summary>
-        /// A bool for whether the ClientContext's ServiceTemplates are loading.
-        /// </summary>
-        public bool ClientServiceTemplatesLoading { get { return _clientServiceTemplatesLoadingHelper.Value; } }
 
         #region Implementation of IAddToDeleteFromSource<ServiceTemplate>
 
@@ -135,18 +125,21 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //The ServiceTemplatesForContext will either be the ClientContext.ServiceTemplates or the current ServiceProvider's ServiceTemplates
 
-            //Update when the ServiceProvider's ServiceTemplates are loaded and when the ClientContext changes
+            //Whenever the ClientContext changes
             //a) if there is no ClientContext, push the ServiceProvider's SerivceTemplates
             //b) if there is a ClientContext, push the ClientContext's ServiceTemplates
-            ContextManager.CurrentServiceTemplatesObservable.AsGeneric()
-            .Merge(ContextManager.GetContextObservable<Client>().AsGeneric())
-                //Throttle to allow time for the values to propogate
-            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
-            .Subscribe(_ =>
+            ContextManager.GetContextObservable<Client>().SelectLatest(clientContext =>
             {
-                var clientContext = ContextManager.GetContext<Client>();
-                _serviceTemplatesForContext.OnNext(clientContext == null ? ContextManager.CurrentServiceTemplates : clientContext.ServiceTemplates);
-            });
+                if (clientContext == null)
+                    return ContextManager.CurrentServiceTemplatesObservable;
+
+                //Return the ClientDefined level service templates
+                //They will change whenever the details are loaded and the clientContext ServiceTemplates change
+                return Observable2.FromPropertyChangedPattern(clientContext, x => x.DetailsLoaded).AsGeneric()
+                       .Merge(clientContext.ServiceTemplates.FromCollectionChangedAndNow().AsGeneric())
+                       .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
+                       .Select(_ => clientContext.ServiceTemplates.Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ClientDefined));
+            }).Subscribe(_serviceTemplatesForContext);
 
             //Setup AdditionalServiceTemplatesForClient
             var additionalServiceTemplatesForClient = ContextManager.GetContextObservable<Client>()
@@ -169,38 +162,11 @@ namespace FoundOps.SLClient.UI.ViewModels
                         //Remove already existing ServiceTemplates
                         var availableServiceTemplatesForClient = ContextManager.CurrentServiceTemplates.Where(spst => !clientContext.ServiceTemplates.Any(cst => cst.OwnerServiceTemplateId == spst.Id));
 
-                        return availableServiceTemplatesForClient.ToArray();
+                        return availableServiceTemplatesForClient;
                     });
                 });
 
             _additionalServiceTemplatesForClientHelper = additionalServiceTemplatesForClient.ToProperty(this, x => x.AdditionalServiceTemplatesForClient);
-
-
-            //Whenever the ClientContext changes load the it's ServiceTemplates with details
-
-            //Setup loading property helper
-            _clientServiceTemplatesLoadingHelper = _clientServiceTemplatesLoadingSubject.ToProperty(this, x => x.ClientServiceTemplatesLoading);
-            var cancelLastClientServiceTemplatesLoad = new Subject<bool>();
-
-            ContextManager.GetContextObservable<Client>().Where(c => c != null).ObserveOnDispatcher().Subscribe(client =>
-            {
-                cancelLastClientServiceTemplatesLoad.OnNext(true);
-
-                //Do not try to load ServiceTemplates for a Client that does not exist yet
-                if (client.EntityState == EntityState.New)
-                    return;
-
-                //Notify loading
-                _clientServiceTemplatesLoadingSubject.OnNext(true);
-
-                DomainContext.LoadAsync(DomainContext.GetClientServiceTemplatesQuery(ContextManager.RoleId, client.Id), cancelLastClientServiceTemplatesLoad)
-                .ContinueWith(result =>
-                {
-                    if (!result.IsCanceled)
-                        _clientServiceTemplatesLoadingSubject.OnNext(false);
-
-                }, TaskScheduler.FromCurrentSynchronizationContext());
-            });
 
             #endregion
 
@@ -288,53 +254,52 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Make sure this is in a proper context to be creating a service template
 
             //Find if there is a RecurringService, Client, or ServiceProvider context
-            var recurringServiceContext = ContextManager.GetContext<RecurringService>();
+            //var recurringServiceContext = ContextManager.GetContext<RecurringService>();
             var clientContext = ContextManager.GetContext<Client>();
             var serviceProviderContext = ContextManager.GetContext<BusinessAccount>();
 
-            if (recurringServiceContext == null && clientContext == null && serviceProviderContext == null)
+            //NOTE: Recurring services are currently disabled
+            //recurringServiceContext == null && 
+            if (clientContext == null && serviceProviderContext == null)
                 throw new Exception("Cannot create Service Template outside of a context.");
-
-            //Load the parent's ServiceTemplate's details, then create the child
-            DomainContext.Load(DomainContext.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, parentServiceTemplate.Id),
-            loadOp =>
+            if (clientContext != null)
             {
-                if (loadOp.HasError)
-                    throw new Exception("Could not create Service Template. Please try again.");
-
-                parentServiceTemplate.DetailsLoaded = true;
-
-                //Setup RecurringServiceDefined ServiceTemplate
-                if (recurringServiceContext != null)
-                {
-                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
-                    serviceTemplateChild.Id = recurringServiceContext.Id;
-                    recurringServiceContext.ServiceTemplate = serviceTemplateChild;
-
-                    completed(serviceTemplateChild);
-                    return;
-                }
-
                 //Setup ClientDefined ServiceTemplate
-                if (clientContext != null)
-                {
-                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
-                    serviceTemplateChild.OwnerClient = clientContext;
-                    completed(serviceTemplateChild);
-                    return;
-                }
+                var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
+                serviceTemplateChild.OwnerClient = clientContext;
+                completed(serviceTemplateChild);
+            }
+            ////Setup RecurringServiceDefined ServiceTemplate
+            //else if (recurringServiceContext != null)
+            //{
+            //    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
+            //    serviceTemplateChild.Id = recurringServiceContext.Id;
+            //    recurringServiceContext.ServiceTemplate = serviceTemplateChild;
 
-                //Setup ServiceProvider ServiceTemplate
-                if (serviceProviderContext != null)
+                    //    completed(serviceTemplateChild);
+            //    return;
+            //}
+            //If in Admin Console. Load the parent's ServiceTemplate's details then create the child.
+            else if (serviceProviderContext != null)
+                DomainContext.Load(DomainContext.GetServiceTemplateDetailsForRoleQuery(ContextManager.RoleId, parentServiceTemplate.Id),
+                loadOp =>
                 {
-                    var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
-                    serviceTemplateChild.OwnerServiceProvider = serviceProviderContext;
-                    completed(serviceTemplateChild);
-                    return;
-                }
+                    if (loadOp.HasError)
+                        throw new Exception("Could not create Service Template. Please try again.");
 
-                throw new Exception("Could not create Service Template. Please try again.");
-            }, null);
+                    parentServiceTemplate.DetailsLoaded = true;
+
+                    //Setup ServiceProvider ServiceTemplate
+                    if (serviceProviderContext != null)
+                    {
+                        var serviceTemplateChild = parentServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
+                        serviceTemplateChild.OwnerServiceProvider = serviceProviderContext;
+                        completed(serviceTemplateChild);
+                        return;
+                    }
+
+                    throw new Exception("Could not create Service Template. Please try again.");
+                }, null);
         }
 
         #endregion
