@@ -5,6 +5,22 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	AS
 	BEGIN
 
+	DELETE FROM RouteEmployee
+	WHERE EXISTS
+	(
+		SELECT Id
+		FROM Routes
+		WHERE OwnerBusinessAccountId = @providerId
+	)
+
+	DELETE FROM RouteVehicle
+	WHERE EXISTS
+	(
+		SELECT Id
+		FROM Routes
+		WHERE OwnerBusinessAccountId = @providerId
+	)
+
 	DELETE FROM Routes
 	WHERE OwnerBusinessAccountId = @providerId
 
@@ -64,7 +80,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
 
-			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationRowCount
+			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationId
 
 			DELETE FROM @LocationIdsForServiceProvider
 			WHERE LocationId = @LocationId

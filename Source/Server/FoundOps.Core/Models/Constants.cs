@@ -5,6 +5,7 @@
     /// </summary>
     public class ServerConstants
     {
+#if DEBUG
         /// <summary>
         /// If set to true it will automatically login an operations manager.
         /// </summary>
@@ -14,6 +15,10 @@
         /// If set to true it will automatically login a FoundOPS Admin.
         /// </summary>
         public static bool AutomaticLoginFoundOPSAdmin = false;
+#else
+        public static bool AutomaticLoginOPSManager = false;
+        public static bool AutomaticLoginFoundOPSAdmin = false;
+#endif
 
         /// <summary>
         /// The root directory of the server projects.

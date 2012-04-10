@@ -12,10 +12,14 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (4/5/2012)
+                (4/10/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * OPTIMIZATION: Dispatcher fields loading.<LineBreak/>
+            * GENERAL: Small fixes.<LineBreak/>
+            <LineBreak/>
+            (4/5/2012)<LineBreak/>
             * GENERAL: Small fixes.<LineBreak/>
             <LineBreak/>
             (4/4/2012)<LineBreak/>
