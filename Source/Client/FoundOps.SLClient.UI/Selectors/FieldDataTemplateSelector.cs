@@ -66,7 +66,7 @@ namespace FoundOps.Framework.Views.Selectors
                     return TextSmTemplate;
             }
 
-            throw new NotImplementedException("Fields not recognized");
+            return new DataTemplate();
         }
     }
 }

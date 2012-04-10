@@ -147,7 +147,7 @@ namespace FoundOps.Framework.Views.Converters
             if (field is LocationField)
                 return "Destination";
 
-            throw new NotImplementedException("Fields not recognized");
+            return "Field not recognized";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
