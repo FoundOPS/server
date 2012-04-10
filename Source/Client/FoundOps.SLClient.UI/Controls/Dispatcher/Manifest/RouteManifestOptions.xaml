@@ -21,12 +21,12 @@
                 <CheckBox Content="Route Summary" IsChecked="{Binding RouteManifestSettings.IsRouteSummaryVisible, Mode=TwoWay}"/>
                 <StackPanel Margin="25,0,0,0" Visibility="{Binding RouteManifestSettings.IsRouteSummaryVisible, Converter={StaticResource VisibilityConverter}}">
                     <CheckBox  Content="Capabilities" IsChecked="{Binding RouteManifestSettings.IsCapabilitiesVisible, Mode=TwoWay}" Visibility="Collapsed"/>
-                    <CheckBox  Content="Scheduled Start Time" IsChecked="{Binding RouteManifestSettings.IsScheduledStartTimeVisible, Mode=TwoWay}"/>
+                    <!--<CheckBox  Content="Scheduled Start Time" IsChecked="{Binding RouteManifestSettings.IsScheduledStartTimeVisible, Mode=TwoWay}"/>
                     <CheckBox  Content="Scheduled End Time" IsChecked="{Binding RouteManifestSettings.IsScheduledEndTimeVisible, Mode=TwoWay}"/>
                     <CheckBox  Content="Estimated End Time" IsChecked="{Binding RouteManifestSettings.IsEstimatedEndTimeVisible, Mode=TwoWay}" Visibility="Collapsed"/>
                     <CheckBox  Content="Scheduled Duration" IsChecked="{Binding RouteManifestSettings.IsScheduledDurationVisible, Mode=TwoWay}" Visibility="Collapsed"/>
                     <CheckBox  Content="Estimated Duration" IsChecked="{Binding RouteManifestSettings.IsEstimatedDurationVisible, Mode=TwoWay}" Visibility="Collapsed"/>
-                    <CheckBox  Content="Total Distance" IsChecked="{Binding RouteManifestSettings.IsTotalDistanceVisible, Mode=TwoWay}" Visibility="Collapsed"/>
+                    <CheckBox  Content="Total Distance" IsChecked="{Binding RouteManifestSettings.IsTotalDistanceVisible, Mode=TwoWay}" Visibility="Collapsed"/>-->
                 </StackPanel>
                 <CheckBox Content="Destinations Summary" IsChecked="{Binding RouteManifestSettings.IsDestinationsSummaryVisible, Mode=TwoWay}"/>
                 <StackPanel Margin="25,0,0,0" Visibility="{Binding RouteManifestSettings.IsDestinationsSummaryVisible, Converter={StaticResource VisibilityConverter}}">

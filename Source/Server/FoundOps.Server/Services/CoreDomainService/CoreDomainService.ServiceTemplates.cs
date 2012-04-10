@@ -244,7 +244,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
-        /// Gets the service template details.
+        /// Gets the service template details. Should only use when loading one ServiceTemplate.
         /// It includes the OwnerClient, Fields, OptionsFields w Options, LocationFields w Location, (TODO) Invoices
         /// </summary>
         /// <param name="roleId">The current role id.</param>
@@ -256,7 +256,6 @@ namespace FoundOps.Server.Services.CoreDomainService
                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
-
 
             var serviceTemplateTuple = serviceTemplateTuples.FirstOrDefault();
             return serviceTemplateTuple == null ? null : serviceTemplateTuple.serviceTemplate;

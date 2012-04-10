@@ -173,10 +173,8 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         /// <param name="entityQuery">The entity query.</param>
         /// <param name="contextRelationshipFilters">The related types and their property values on the current type. Ex. Vehicle, VehicleId, Vehicle.Id</param>
-        /// <param name="forceFirstLoad">Force load the first items after the VirtualItemCount is loaded. Used for controls that do not automatically support virtual loading.</param>
         /// <param name="contextType">Whether of not a many relation context is required to load.</param>
-        protected void SetupContextDataLoading(Func<Guid, EntityQuery<TBase>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters, bool forceFirstLoad = false,
-                                               ContextLoadingType contextType = ContextLoadingType.RequiredContext)
+        protected void SetupContextDataLoading(Func<Guid, EntityQuery<TBase>> entityQuery, ContextRelationshipFilter[] contextRelationshipFilters, ContextLoadingType contextType = ContextLoadingType.RequiredContext)
         {
             //Whenever the RoleId updates, update the VirtualQueryableCollectionView
             ContextManager.RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
@@ -233,7 +231,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                                 return null;
                         }
                         return entityQuery(roleId);
-                    }, loadVirtualItemCount, forceFirstLoad);
+                    }, loadVirtualItemCount);
 
                 _contextRelationshipFiltersSubscription = AddContextRelationshipFiltersHelper(contextRelationshipFilters, QueryableCollectionView, ContextManager);
 

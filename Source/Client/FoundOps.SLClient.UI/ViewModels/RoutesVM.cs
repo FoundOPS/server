@@ -368,9 +368,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                         DomainContext.LoadAsync(locationsWithContactInfoQuery, cancelLoadDetails);
 
                         //Load the Fields info of the RouteTasks
-                        foreach (var serviceHolder in SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ParentRouteTaskHolder)
-                            .Where(rth => rth != null && rth.ServiceHolder != null).Select(rth => rth.ServiceHolder))
-                            serviceHolder.LoadDetails(cancelLoadDetails);
+                        var serviceHoldersToLoad = SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ParentRouteTaskHolder.ServiceHolder);
+                        ServiceHolder.LoadDetails(serviceHoldersToLoad, cancelLoadDetails, false);
                     });
 
             #endregion

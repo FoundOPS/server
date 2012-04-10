@@ -21,12 +21,14 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <!--Bind to Capabilities-->
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsScheduledStartTimeVisible, Converter={StaticResource VisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
+                        <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsScheduledStartTimeVisible, Converter={StaticResource VisibilityConverter}}"-->
                         <TextBlock Text="Scheduled Start: "/>
                         <TextBlock Text="{Binding SelectedEntity.StartTime, StringFormat=\{0:t\}}"/>
                         <!--Bind to scheduled start-->
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsScheduledEndTimeVisible, Converter={StaticResource VisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
+                        <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsScheduledEndTimeVisible, Converter={StaticResource VisibilityConverter}}"-->
                         <TextBlock Text="Scheduled End: "/>
                         <TextBlock Text="{Binding SelectedEntity.EndTime, StringFormat=\{0:t\}}"/>
                         <!--Bind to scheduled end time-->

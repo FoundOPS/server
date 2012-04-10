@@ -100,7 +100,6 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         private IDisposable _filterSubscription;
         private IDisposable _loadVirtualItemCountObservableSubscription;
         private IDisposable _loadVirtualItemCountSubscription;
-        private IDisposable _forceLoadFirstItemsSubscription;
 
         #endregion
 
@@ -127,8 +126,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
         /// <param name="context">The DomainContext to load the entities with.</param>
         /// <param name="loadItemsQuery">A function which returns the EntityQuery to use to load the entities.</param>
         /// <param name="loadVirtualItemCount">An observable when pushed will load/reload the virtual item count. You must push at least once. It will cancel previous loads.</param>
-        /// <param name="forceFirstLoad">Force load the first items after the VirtualItemCount is loaded. Used for controls that do not automatically support virtual loading.</param>
-        public ExtendedVirtualQueryableCollectionView(DomainContext context, Func<EntityQuery<TBase>> loadItemsQuery, IObservable<bool> loadVirtualItemCount, bool forceFirstLoad = false)
+        public ExtendedVirtualQueryableCollectionView(DomainContext context, Func<EntityQuery<TBase>> loadItemsQuery, IObservable<bool> loadVirtualItemCount)
         {
             //Keep this updated when entities are deleted from the entity set
             _entitySet = ((EntitySet<TBase>)context.EntityContainer.GetEntitySet(typeof(TBase)));
@@ -152,10 +150,6 @@ namespace FoundOps.Common.Silverlight.UI.Tools
 
             //Handle the ItemsLoading event by loading the items
             this.ItemsLoading += ExtendedVirtualQueryableCollectionViewItemsLoading;
-
-            //Whenever the VirtualItemCount is loaded force load the first items
-            if (forceFirstLoad)
-                _forceLoadFirstItemsSubscription = VirtualItemCountLoaded.Subscribe(itemCount => LoadItems(0, LoadSize));
         }
 
         /// <summary>
@@ -212,11 +206,6 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             {
                 _loadVirtualItemCountObservableSubscription.Dispose();
                 _loadVirtualItemCountObservableSubscription = null;
-            }
-            if (_forceLoadFirstItemsSubscription != null)
-            {
-                _forceLoadFirstItemsSubscription.Dispose();
-                _forceLoadFirstItemsSubscription = null;
             }
 
             _entitySet.EntityRemoved -= ExtendedVirtualQueryableCollectionViewEntityRemoved;

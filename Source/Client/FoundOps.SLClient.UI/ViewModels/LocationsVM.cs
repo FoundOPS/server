@@ -143,7 +143,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 newLocation.RaiseValidationErrors();
 
-                DataManager.EnqueueSubmitOperation(submitOperation => 
+                DataManager.EnqueueSubmitOperation(submitOperation =>
                     Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ => SelectedEntity = newLocation));
 
                 return newLocation;
@@ -175,7 +175,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Force load the entities when in a related types view
             //this is because VDCV will only normally load when a virtual item is loaded onto the screen
             //virtual items will not always load because in clients context the gridview does not always show (sometimes it is in single view)
-            SetupContextDataLoading(roleId => DomainContext.GetLocationsToAdministerForRoleQuery(roleId), contextRelationshipFilters, true, ContextLoadingType.NoRequiredContext);
+            SetupContextDataLoading(roleId => DomainContext.GetLocationsToAdministerForRoleQuery(roleId), contextRelationshipFilters, ContextLoadingType.NoRequiredContext);
 
             //Whenever the location changes load the location details
             SetupDetailsLoading(selectedEntity => DomainContext.GetLocationDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
