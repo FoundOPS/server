@@ -40,32 +40,27 @@ namespace FoundOps.Server.Services.CoreDomainService
             return service;
         }
 
-        public IEnumerable<Service> GetServicesForRole(Guid roleId)
-        {
-            return GetExistingServicesForRole(roleId, Guid.Empty, Guid.Empty, Guid.Empty);
-        }
-
-        private IEnumerable<Service> GetExistingServicesForRole(Guid roleId, Guid clientIdFilter, Guid locationIdFilter, Guid recurringServiceIdFilter)
+        /// <summary>
+        /// Gets the service details for the current role.
+        /// It includes the Client/Client.OwnedParty, RecurringServiceParent, the ServiceTemplate and Fields.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="serviceIds">The ids of the Services to load.</param>
+        [Query(HasSideEffects = true)] //HasSideEffects so a POST is used and a maximum URI length is not thrown
+        public IQueryable<Service> GetServicesDetailsForRole(Guid roleId, IEnumerable<Guid> serviceIds)
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             if (businessForRole == null) return null;
 
-            var servicesForRole = this.ObjectContext.Services.Where(service => service.ServiceProviderId == businessForRole.Id);
+            var servicesForRole = this.ObjectContext.Services.Where(service => service.ServiceProviderId == businessForRole.Id).Where(s => serviceIds.Contains(s.Id));
 
-            if (clientIdFilter != Guid.Empty)
-                servicesForRole = servicesForRole.Where(s => s.ClientId == clientIdFilter);
-
-            if (recurringServiceIdFilter != Guid.Empty)
-                servicesForRole = servicesForRole.Where(s => s.RecurringServiceId == recurringServiceIdFilter);
-
-            servicesForRole = ((ObjectQuery<Service>)servicesForRole).Include("Client").Include("Client.OwnedParty").Include("RecurringServiceParent").Include("ServiceTemplate").Include("ServiceTemplate.Fields");
+            servicesForRole = servicesForRole.Include(s => s.Client).Include(s => s.Client.OwnedParty).Include(s => s.RecurringServiceParent)
+                .Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields);
 
             //Force Load LocationField's Location
+            //TODO: Optimize by IQueryable
             servicesForRole.SelectMany(s => s.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
-
-            if (locationIdFilter != Guid.Empty)
-                return servicesForRole.ToList().Where(s => s.ServiceTemplate.GetDestination() != null && s.ServiceTemplate.GetDestination().Id == locationIdFilter);
 
             return servicesForRole;
         }
@@ -248,7 +243,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Include(rs => rs.Client.OwnedParty)
+            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client)
                 .Where(v => v.Client.VendorId == businessForRole.Id);
 
             return recurringServices.OrderBy(rs => rs.ClientId);
@@ -256,19 +251,38 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         /// <summary>
         /// Gets the RecurringService details.
-        /// It includes the ServiceTemplate and Fields.
+        /// It includes the Client.OwnedParty, ServiceTemplate and Fields.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="recurringServiceId">The recurring service id.</param>
         public RecurringService GetRecurringServiceDetailsForRole(Guid roleId, Guid recurringServiceId)
         {
-            var recurringService = RecurringServicesForServiceProviderOptimized(roleId).Include(c => c.Client.OwnedParty)
-                .FirstOrDefault(rs => rs.Id == recurringServiceId);
+            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Where(rs => rs.Id == recurringServiceId)
+                .Include(c => c.Client.OwnedParty).Include(rs => rs.ServiceTemplate).Include(rs => rs.ServiceTemplate.Fields);
 
-            //Load the ServiceTemplate for the RecurringService
-            GetServiceTemplateDetailsForRole(roleId, recurringServiceId);
+            //Force Load LocationField's Location
+            recurringServices.SelectMany(s => s.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
 
-            return recurringService;
+            return recurringServices.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the RecurringService details.
+        /// It includes the Client.OwnedParty, ServiceTemplate and Fields.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="recurringServiceIds">The ids of the RecurringServices to load.</param>
+        [Query(HasSideEffects = true)] //HasSideEffects so a POST is used and a maximum URI length is not thrown
+        public IQueryable<RecurringService> GetRecurringServicesWithDetailsForRole(Guid roleId, IEnumerable<Guid> recurringServiceIds)
+        {
+            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId)
+                .Where(rs => recurringServiceIds.Contains(rs.Id)).Include(c => c.Client.OwnedParty).Include(rs => rs.ServiceTemplate).Include(rs => rs.ServiceTemplate.Fields);
+
+            //Force Load LocationField's Location
+            //TODO: Optimize by IQueryable
+            recurringServices.SelectMany(rs => rs.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
+
+            return recurringServices;
         }
 
         public void InsertRecurringService(RecurringService recurringService)
