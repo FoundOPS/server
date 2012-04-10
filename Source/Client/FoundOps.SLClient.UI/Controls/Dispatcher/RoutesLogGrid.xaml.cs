@@ -18,6 +18,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// 	<c>true</c> if this instance is main grid; otherwise, <c>false</c>.
         /// </value>
         public bool IsMainGrid { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutesLogGrid"/> class.
         /// </summary>
@@ -32,8 +33,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs radRoutedEventArgs)
         {
-            if (!IsMainGrid)
-                VM.RoutesInfiniteAccordion.MoveToDetailsView.Execute(null);
+            //Disable for publish
+            //    if (!IsMainGrid)
+            //        VM.RoutesInfiniteAccordion.MoveToDetailsView.Execute(null);
         }
     }
 }
