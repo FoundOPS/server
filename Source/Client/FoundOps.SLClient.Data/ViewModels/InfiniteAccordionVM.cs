@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Silverlight.UI.Tools;
@@ -133,12 +135,11 @@ namespace FoundOps.SLClient.Data.ViewModels
             MoveToDetailsView = new RelayCommand(NavigateToThis);
 
             //Whenever not in details view, disable SaveDiscardCancel
-            this.ContextManager.CurrentContextProviderObservable.Select(contextProvider => contextProvider != this).
-                SubscribeOnDispatcher()
-                .Subscribe(disableSaveDiscardCancel =>
-                               {
-                                   DisableSelectedEntitySaveDiscardCancel = disableSaveDiscardCancel;
-                               });
+            this.ContextManager.CurrentContextProviderObservable.Select(contextProvider => contextProvider != this)
+                .ObserveOnDispatcher().Subscribe(disableSaveDiscardCancel =>
+                {
+                    DisableSelectedEntitySaveDiscardCancel = disableSaveDiscardCancel;
+                });
 
             //When rejecting changes, if the entity is detached. Clear the SelectedEntity
             this.DomainContext.ChangesRejectedObservable.ObserveOnDispatcher().Subscribe(args =>
@@ -207,14 +208,14 @@ namespace FoundOps.SLClient.Data.ViewModels
                                             let method = typeof(ContextManager).GetMethod("GetContextObservable")
                                             let generic = method.MakeGenericMethod(new[] { manyRelation })
                                             let contextObservable = (IObservable<object>)generic.Invoke(ContextManager, null)
-                                            select contextObservable.DistinctUntilChanged().ObserveOnDispatcher())
+                                            select contextObservable.DistinctUntilChanged())
                                             .Merge()
                     //TODO replace Merge with commented out below to prevent loads when there is no context
                     //.CombineLatest()
                     ////If there is no required context, always load
                     ////Otherwise make sure one of the contexts is not null
                     //.Where(contexts => contextType == ContextType.NoRequiredContext || contexts.Any(c => c != null))
-                                            .Throttle(TimeSpan.FromMilliseconds(100)).AsGeneric();
+                                            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().AsGeneric();
 
                 QueryableCollectionView = new ExtendedVirtualQueryableCollectionView<TBase, TEntity>(DomainContext,
                     () =>
@@ -225,7 +226,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                             var contexts = (from manyRelation in ManyRelationships
                                             let method = typeof(ContextManager).GetMethod("GetContext")
                                             let generic = method.MakeGenericMethod(new[] { manyRelation })
-                                            let context = (object)generic.Invoke(ContextManager, null)
+                                            let context = generic.Invoke(ContextManager, null)
                                             select context);
 
                             if (contexts.All(c => c == null))
@@ -238,7 +239,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
                 //Select the first loaded entity after the virtual item count is loaded
                 _selectFirstEntitySubscription = ExtendedVirtualQueryableCollectionView.FirstItemsLoadedAfterUpdated
-                    .Subscribe(loadedEntities => SelectedEntity = loadedEntities.FirstOrDefault());
+                    .ObserveOnDispatcher().Subscribe(loadedEntities => SelectedEntity = loadedEntities.FirstOrDefault());
 
                 //Subscribe the loading subject to when the count is loading
                 ExtendedVirtualQueryableCollectionView.LoadingVirtualItemCountObservable.Subscribe(IsLoadingSubject);
@@ -275,7 +276,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                      })).Merge();
 
             //Add, remove, or update the context relationship filters whenever their contexts change
-            return filterDescriptorObservableChanged.Subscribe(tple =>
+            return filterDescriptorObservableChanged.ObserveOnDispatcher().Subscribe(tple =>
             {
                 //Try to find an existing related filter descriptor to the ContextRelationshipFilter.EntityMember for use below
                 var relatedFilterDescriptor = queryableCollectionView.FilterDescriptors.
@@ -323,30 +324,27 @@ namespace FoundOps.SLClient.Data.ViewModels
             });
         }
 
-        private LoadOperation<TBase> _lastSuggestionQuery;
-
+        private readonly Subject<bool> _cancelLastSearchSubject = new Subject<bool>();
         /// <summary>
         /// Sets up the search suggestions for an AutoCompleteBox.
         /// </summary>
         /// <param name="autoCompleteBox">The autocomplete box.</param>
         /// <param name="searchQueryFunction">A function that returns the search EntityQuery.</param>
-        protected void SearchSuggestionsHelper(AutoCompleteBox autoCompleteBox,
-                                               Func<EntityQuery<TBase>> searchQueryFunction)
+        protected void SearchSuggestionsHelper(AutoCompleteBox autoCompleteBox, Func<EntityQuery<TBase>> searchQueryFunction)
         {
-            if (_lastSuggestionQuery != null && _lastSuggestionQuery.CanCancel)
-                _lastSuggestionQuery.Cancel();
+            Manager.CoreDomainContext.LoadAsync(searchQueryFunction().Take(10), _cancelLastSearchSubject)
+                .ContinueWith(task =>
+                {
+                    _cancelLastSearchSubject.OnNext(true);
 
-            _lastSuggestionQuery = Manager.Data.DomainContext.Load(searchQueryFunction().Take(10),
-                                                                   loadOperation =>
-                                                                   {
-                                                                       if (loadOperation.IsCanceled ||
-                                                                           loadOperation.HasError) return;
+                    if (task.IsCanceled)
+                        return;
 
-                                                                       //TODO: Filter the Entities by the CustomComparer and the Destination ItemSource
+                    //TODO: Filter the Entities by the CustomComparer and the Destination ItemSource
 
-                                                                       autoCompleteBox.ItemsSource = loadOperation.Entities;
-                                                                       autoCompleteBox.PopulateComplete();
-                                                                   }, null);
+                    autoCompleteBox.ItemsSource = task.Result;
+                    autoCompleteBox.PopulateComplete();
+                }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         #endregion
