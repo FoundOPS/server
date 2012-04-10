@@ -1,8 +1,6 @@
 using System;
-using System.IO;
-using System.Net;
 using System.Web.Mvc;
-using FoundOps.Common.Server;
+using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Tools;
 
@@ -13,7 +11,7 @@ namespace FoundOps.Server.Controllers
         public ActionResult Index()
         {
 #if DEBUG
-            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan") || UserSpecificResourcesWrapper.GetBool("AutomaticLoginDavid"))
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
                 return RedirectToAction("Silverlight", "Home");
 #endif
 
@@ -57,8 +55,7 @@ namespace FoundOps.Server.Controllers
         /// <returns></returns>
         public ActionResult CCDAPDD()
         {
-            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan") ||
-                UserSpecificResourcesWrapper.GetBool("AutomaticLoginDavid") || UserSpecificResourcesWrapper.GetBool("TestServer"))
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
             {
                 CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
                 return View();

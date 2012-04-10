@@ -3,8 +3,9 @@ using System.Linq;
 using System.Web.Security;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Tools;
 
-namespace FoundOps.Server.Authentication
+namespace FoundOps.Core.Models.Authentication
 {
     public class CoreEntitiesMembershipProvider : MembershipProvider
     {
@@ -35,7 +36,7 @@ namespace FoundOps.Server.Authentication
             return true;
         }
 
-        internal void ChangePassword(string username, string temporaryPassword)
+        public void ChangePassword(string username, string temporaryPassword)
         {
             var user = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
             user.PasswordHash = EncryptionTools.Hash(temporaryPassword);

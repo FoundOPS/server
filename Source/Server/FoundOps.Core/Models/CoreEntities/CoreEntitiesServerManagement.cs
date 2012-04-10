@@ -15,7 +15,7 @@ namespace FoundOps.Core.Models.CoreEntities
         public static readonly string SqlConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreConnectionString");
         private static readonly string ContainerConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreEntitiesContainer");
 
-        private static readonly string RootDirectory = UserSpecificResourcesWrapper.GetString("RootDirectory");
+        private static readonly string RootDirectory = ServerConstants.RootDirectory;
 
         private static readonly string ClearCoreEntitiesDatabaseScriptLocation =
             RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";

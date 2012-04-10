@@ -1,5 +1,5 @@
 using FoundOps.Common.NET;
-using FoundOps.Server.Authentication;
+using FoundOps.Core.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using Kent.Boogaart.KBCsv;

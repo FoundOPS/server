@@ -1,7 +1,7 @@
 using System;
 using System.Web.Mvc;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Server.Authentication;
+using FoundOps.Core.Tools;
 
 namespace FoundOps.Server.Controllers
 {

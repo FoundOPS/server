@@ -3,12 +3,12 @@ using System.Web;
 using System.Text;
 using System.Linq;
 using System.Data.Objects;
-using FoundOps.Common.Server;
 using System.Security.Authentication;
+using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 
-namespace FoundOps.Server.Authentication
+namespace FoundOps.Core.Tools
 {
     public static class AuthenticationLogic
     {
@@ -49,7 +49,7 @@ namespace FoundOps.Server.Authentication
 
             return filteredRoles;
         }
-        
+
         /// <summary>
         /// Gets the roles the current user has access to
         /// NOTE: Role includes MemberParties, and OwnerParty
@@ -191,7 +191,7 @@ namespace FoundOps.Server.Authentication
         public static string CurrentUserAccountsEmailAddress()
         {
 #if DEBUG
-            if (UserSpecificResourcesWrapper.GetBool("AutomaticLoginJonathan"))
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin)
                 return "jperl@foundops.com";
 #endif
 

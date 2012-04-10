@@ -1,7 +1,7 @@
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
-using FoundOps.Server.Authentication;
+using FoundOps.Core.Tools;
 using FoundOps.Server.Controllers;
 using System;
 using System.Collections.Generic;
