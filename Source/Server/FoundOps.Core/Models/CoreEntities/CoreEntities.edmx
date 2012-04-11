@@ -324,14 +324,6 @@
       <End Role="RouteTask" EntitySet="RouteTasks" />
       <End Role="RecurringService" EntitySet="RecurringServices" />
     </AssociationSet>
-    <AssociationSet Name="TrackPointEmployee" Association="CoreEntities.Store.TrackPointEmployee">
-      <End Role="TrackPoint" EntitySet="TrackPoints" />
-      <End Role="Employee" EntitySet="Employees" />
-    </AssociationSet>
-    <AssociationSet Name="TrackPointVehicle" Association="CoreEntities.Store.TrackPointVehicle">
-      <End Role="TrackPoint" EntitySet="TrackPoints" />
-      <End Role="Vehicle" EntitySet="Vehicles" />
-    </AssociationSet>
     <AssociationSet Name="FK_Business_inherits_Party" Association="CoreEntities.Store.FK_Business_inherits_Party">
       <End Role="Party" EntitySet="Parties" />
       <End Role="Business" EntitySet="Parties_Business" />
@@ -540,6 +532,12 @@
     <Property Name="Make" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Model" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Notes" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LastCompassDirection" Type="int" Nullable="true" />
+    <Property Name="LastLongitude" Type="float" Nullable="true" />
+    <Property Name="LastLatitude" Type="float" Nullable="true" />
+    <Property Name="LastTimeStamp" Type="datetime" Nullable="true" />
+    <Property Name="LastSpeed" Type="float" Nullable="true" />
+    <Property Name="LastSource" Type="nvarchar(max)" Nullable="true" />
     <Property Name="OwnerPartyId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="VehicleMaintenanceLog">
@@ -652,6 +650,12 @@
     <Property Name="SSN" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LinkedUserAccountId" Type="uniqueidentifier" Nullable="true" />
     <Property Name="EmployerId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LastCompassDirection" Type="int" Nullable="true" />
+    <Property Name="LastLongitude" Type="float" Nullable="true" />
+    <Property Name="LastLatitude" Type="float" Nullable="true" />
+    <Property Name="LastTimeStamp" Type="datetime" Nullable="true" />
+    <Property Name="LastSpeed" Type="float" Nullable="true" />
+    <Property Name="LastSource" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="EmployeeHistoryEntries">
     <Key>
@@ -782,8 +786,6 @@
     <Property Name="Longitude" Type="float" Nullable="true" />
     <Property Name="TimeStamp" Type="datetime" Nullable="true" />
     <Property Name="Speed" Type="float" Nullable="true" />
-    <Property Name="EmployeeId" Type="uniqueidentifier" Nullable="true" />
-    <Property Name="VehicleId" Type="uniqueidentifier" Nullable="true" />
     <Property Name="Source" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Parties_Business">
@@ -1587,30 +1589,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="TrackPointEmployee">
-    <End Role="TrackPoint" Type="CoreEntities.Store.TrackPoints" Multiplicity="*" />
-    <End Role="Employee" Type="CoreEntities.Store.Employees" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="TrackPoint">
-        <PropertyRef Name="EmployeeId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="TrackPointVehicle">
-    <End Role="TrackPoint" Type="CoreEntities.Store.TrackPoints" Multiplicity="*" />
-    <End Role="Vehicle" Type="CoreEntities.Store.Vehicles" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="Vehicle">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="TrackPoint">
-        <PropertyRef Name="VehicleId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_RoleBlock_Role">
     <End Role="Role" Type="CoreEntities.Store.Roles" Multiplicity="1" />
     <End Role="RoleBlock" Type="CoreEntities.Store.RoleBlock" Multiplicity="*" />
@@ -2174,14 +2152,6 @@
             <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
           </FunctionImport>
           <EntitySet Name="TrackPoints" EntityType="CoreEntities.TrackPoint" />
-          <AssociationSet Name="TrackPointEmployee" Association="CoreEntities.TrackPointEmployee">
-            <End Role="TrackPoint" EntitySet="TrackPoints" />
-            <End Role="Employee" EntitySet="Employees" />
-          </AssociationSet>
-          <AssociationSet Name="TrackPointVehicle" Association="CoreEntities.TrackPointVehicle">
-            <End Role="TrackPoint" EntitySet="TrackPoints" />
-            <End Role="Vehicle" EntitySet="Vehicles" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Block">
           <Key>
@@ -2436,11 +2406,16 @@
           <Property Type="String" Name="Make" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Model" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Notes" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="Int32" Name="LastCompassDirection" Nullable="true" />
+          <Property Type="Double" Name="LastLongitude" Nullable="true" />
+          <Property Type="Double" Name="LastLatitude" Nullable="true" />
+          <Property Type="DateTime" Name="LastTimeStamp" Nullable="true" />
+          <Property Type="Double" Name="LastSpeed" Nullable="true" />
+          <Property Type="String" Name="LastSource" Nullable="true" />
           <NavigationProperty Name="VehicleMaintenanceLog" Relationship="CoreEntities.VehicleMaintenanceLogEntryVehicle" FromRole="Vehicle" ToRole="VehicleMaintenanceLogEntry" />
           <NavigationProperty Name="Routes" Relationship="CoreEntities.RouteVehicle" FromRole="Vehicle" ToRole="Route" />
           <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.VehicleParty" FromRole="Vehicle" ToRole="Party" />
           <Property Type="Guid" Name="OwnerPartyId" Nullable="false" />
-          <NavigationProperty Name="TrackPoints" Relationship="CoreEntities.TrackPointVehicle" FromRole="Vehicle" ToRole="TrackPoint" />
         </EntityType>
         <EntityType Name="VehicleMaintenanceLogEntry">
           <Key>
@@ -2989,7 +2964,12 @@
           <NavigationProperty Name="OwnedPerson" Relationship="CoreEntities.EmployeePerson" FromRole="Employee" ToRole="Person" />
           <NavigationProperty Name="EmployeeHistoryEntries" Relationship="CoreEntities.EmployeeHistoryEntryEmployee" FromRole="Employee" ToRole="EmployeeHistoryEntry" />
           <NavigationProperty Name="Routes" Relationship="CoreEntities.RouteEmployee" FromRole="Employee" ToRole="Route" />
-          <NavigationProperty Name="TrackPoints" Relationship="CoreEntities.TrackPointEmployee" FromRole="Employee" ToRole="TrackPoint" />
+          <Property Type="Int32" Name="LastCompassDirection" Nullable="true" />
+          <Property Type="Double" Name="LastLongitude" Nullable="true" />
+          <Property Type="Double" Name="LastLatitude" Nullable="true" />
+          <Property Type="DateTime" Name="LastTimeStamp" Nullable="true" />
+          <Property Type="Double" Name="LastSpeed" Nullable="true" />
+          <Property Type="String" Name="LastSource" Nullable="true" />
         </EntityType>
         <Association Name="EmployeeUserAccount">
           <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
@@ -3454,36 +3434,8 @@
           <Property Type="Double" Name="Longitude" Nullable="true" />
           <Property Type="DateTime" Name="TimeStamp" Nullable="true" />
           <Property Type="Double" Name="Speed" Nullable="true" />
-          <NavigationProperty Name="Employee" Relationship="CoreEntities.TrackPointEmployee" FromRole="TrackPoint" ToRole="Employee" />
-          <Property Type="Guid" Name="EmployeeId" Nullable="true" />
-          <NavigationProperty Name="Vehicle" Relationship="CoreEntities.TrackPointVehicle" FromRole="TrackPoint" ToRole="Vehicle" />
-          <Property Type="Guid" Name="VehicleId" Nullable="true" />
           <Property Type="String" Name="Source" Nullable="true" />
         </EntityType>
-        <Association Name="TrackPointEmployee">
-          <End Type="CoreEntities.TrackPoint" Role="TrackPoint" Multiplicity="*" />
-          <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="TrackPoint">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="TrackPointVehicle">
-          <End Type="CoreEntities.TrackPoint" Role="TrackPoint" Multiplicity="*" />
-          <End Type="CoreEntities.Vehicle" Role="Vehicle" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Vehicle">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="TrackPoint">
-              <PropertyRef Name="VehicleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3699,6 +3651,12 @@
           <ScalarProperty Name="Make" ColumnName="Make" />
           <ScalarProperty Name="Model" ColumnName="Model" />
           <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="LastCompassDirection" ColumnName="LastCompassDirection" />
+          <ScalarProperty Name="LastLongitude" ColumnName="LastLongitude" />
+          <ScalarProperty Name="LastLatitude" ColumnName="LastLatitude" />
+          <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
+          <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
+          <ScalarProperty Name="LastSource" ColumnName="LastSource" />
           <ScalarProperty Name="OwnerPartyId" ColumnName="OwnerPartyId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3826,6 +3784,12 @@
           <ScalarProperty Name="SSN" ColumnName="SSN" />
           <ScalarProperty Name="LinkedUserAccountId" ColumnName="LinkedUserAccountId" />
           <ScalarProperty Name="EmployerId" ColumnName="EmployerId" />
+          <ScalarProperty Name="LastCompassDirection" ColumnName="LastCompassDirection" />
+          <ScalarProperty Name="LastLongitude" ColumnName="LastLongitude" />
+          <ScalarProperty Name="LastLatitude" ColumnName="LastLatitude" />
+          <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
+          <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
+          <ScalarProperty Name="LastSource" ColumnName="LastSource" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3972,8 +3936,6 @@
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
           <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
           <ScalarProperty Name="Speed" ColumnName="Speed" />
-          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
           <ScalarProperty Name="Source" ColumnName="Source" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -4058,7 +4020,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="CoreEntities" ZoomLevel="97" >
+      <Diagram Name="CoreEntities" ZoomLevel="115" >
         <EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="23.625" PointY="22.875" Height="2.7494921874999818" />
         <EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="21.375" PointY="23.125" Height="2.5571907552083246" />
         <EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="18.75" PointY="22.875" Height="2.7494921875000102" />
@@ -4774,8 +4736,6 @@
           <ConnectorPoint PointX="17.5" PointY="10.59375" />
         </AssociationConnector>
         <EntityTypeShape EntityType="CoreEntities.TrackPoint" Width="1.5" PointX="24.625" PointY="33.25" />
-        <AssociationConnector Association="CoreEntities.TrackPointEmployee" />
-        <AssociationConnector Association="CoreEntities.TrackPointVehicle" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

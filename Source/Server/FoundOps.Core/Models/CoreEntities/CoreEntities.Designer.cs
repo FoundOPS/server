@@ -79,8 +79,6 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientInvoice", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientLocation", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteTaskRecurringService", "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "TrackPointEmployee", "TrackPoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.TrackPoint), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Employee), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "TrackPointVehicle", "TrackPoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.TrackPoint), "Vehicle", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Vehicle), true)]
 
 #endregion
 
@@ -3458,6 +3456,150 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _EmployerId;
         partial void OnEmployerIdChanging(global::System.Guid value);
         partial void OnEmployerIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> LastCompassDirection
+        {
+            get
+            {
+                return _LastCompassDirection;
+            }
+            set
+            {
+                OnLastCompassDirectionChanging(value);
+                ReportPropertyChanging("LastCompassDirection");
+                _LastCompassDirection = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastCompassDirection");
+                OnLastCompassDirectionChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _LastCompassDirection;
+        partial void OnLastCompassDirectionChanging(Nullable<global::System.Int32> value);
+        partial void OnLastCompassDirectionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> LastLongitude
+        {
+            get
+            {
+                return _LastLongitude;
+            }
+            set
+            {
+                OnLastLongitudeChanging(value);
+                ReportPropertyChanging("LastLongitude");
+                _LastLongitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastLongitude");
+                OnLastLongitudeChanged();
+            }
+        }
+        private Nullable<global::System.Double> _LastLongitude;
+        partial void OnLastLongitudeChanging(Nullable<global::System.Double> value);
+        partial void OnLastLongitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> LastLatitude
+        {
+            get
+            {
+                return _LastLatitude;
+            }
+            set
+            {
+                OnLastLatitudeChanging(value);
+                ReportPropertyChanging("LastLatitude");
+                _LastLatitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastLatitude");
+                OnLastLatitudeChanged();
+            }
+        }
+        private Nullable<global::System.Double> _LastLatitude;
+        partial void OnLastLatitudeChanging(Nullable<global::System.Double> value);
+        partial void OnLastLatitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastTimeStamp
+        {
+            get
+            {
+                return _LastTimeStamp;
+            }
+            set
+            {
+                OnLastTimeStampChanging(value);
+                ReportPropertyChanging("LastTimeStamp");
+                _LastTimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastTimeStamp");
+                OnLastTimeStampChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastTimeStamp;
+        partial void OnLastTimeStampChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastTimeStampChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> LastSpeed
+        {
+            get
+            {
+                return _LastSpeed;
+            }
+            set
+            {
+                OnLastSpeedChanging(value);
+                ReportPropertyChanging("LastSpeed");
+                _LastSpeed = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastSpeed");
+                OnLastSpeedChanged();
+            }
+        }
+        private Nullable<global::System.Double> _LastSpeed;
+        partial void OnLastSpeedChanging(Nullable<global::System.Double> value);
+        partial void OnLastSpeedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastSource
+        {
+            get
+            {
+                return _LastSource;
+            }
+            set
+            {
+                OnLastSourceChanging(value);
+                ReportPropertyChanging("LastSource");
+                _LastSource = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastSource");
+                OnLastSourceChanged();
+            }
+        }
+        private global::System.String _LastSource;
+        partial void OnLastSourceChanging(global::System.String value);
+        partial void OnLastSourceChanged();
 
         #endregion
 
@@ -3618,28 +3760,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Route>("CoreEntities.RouteEmployee", "Route", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "TrackPointEmployee", "TrackPoint")]
-        public EntityCollection<TrackPoint> TrackPoints
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<TrackPoint>("CoreEntities.TrackPointEmployee", "TrackPoint");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<TrackPoint>("CoreEntities.TrackPointEmployee", "TrackPoint", value);
                 }
             }
         }
@@ -11055,54 +11175,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Guid> EmployeeId
-        {
-            get
-            {
-                return _EmployeeId;
-            }
-            set
-            {
-                OnEmployeeIdChanging(value);
-                ReportPropertyChanging("EmployeeId");
-                _EmployeeId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("EmployeeId");
-                OnEmployeeIdChanged();
-            }
-        }
-        private Nullable<global::System.Guid> _EmployeeId;
-        partial void OnEmployeeIdChanging(Nullable<global::System.Guid> value);
-        partial void OnEmployeeIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Guid> VehicleId
-        {
-            get
-            {
-                return _VehicleId;
-            }
-            set
-            {
-                OnVehicleIdChanging(value);
-                ReportPropertyChanging("VehicleId");
-                _VehicleId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("VehicleId");
-                OnVehicleIdChanged();
-            }
-        }
-        private Nullable<global::System.Guid> _VehicleId;
-        partial void OnVehicleIdChanging(Nullable<global::System.Guid> value);
-        partial void OnVehicleIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public global::System.String Source
         {
             get
@@ -11125,86 +11197,6 @@ namespace FoundOps.Core.Models.CoreEntities
         #endregion
 
     
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "TrackPointEmployee", "Employee")]
-        public Employee Employee
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.TrackPointEmployee", "Employee").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.TrackPointEmployee", "Employee").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Employee> EmployeeReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.TrackPointEmployee", "Employee");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Employee>("CoreEntities.TrackPointEmployee", "Employee", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "TrackPointVehicle", "Vehicle")]
-        public Vehicle Vehicle
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Vehicle>("CoreEntities.TrackPointVehicle", "Vehicle").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Vehicle>("CoreEntities.TrackPointVehicle", "Vehicle").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Vehicle> VehicleReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Vehicle>("CoreEntities.TrackPointVehicle", "Vehicle");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Vehicle>("CoreEntities.TrackPointVehicle", "Vehicle", value);
-                }
-            }
-        }
-
-        #endregion
-
     }
     
     /// <summary>
@@ -11809,6 +11801,150 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> LastCompassDirection
+        {
+            get
+            {
+                return _LastCompassDirection;
+            }
+            set
+            {
+                OnLastCompassDirectionChanging(value);
+                ReportPropertyChanging("LastCompassDirection");
+                _LastCompassDirection = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastCompassDirection");
+                OnLastCompassDirectionChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _LastCompassDirection;
+        partial void OnLastCompassDirectionChanging(Nullable<global::System.Int32> value);
+        partial void OnLastCompassDirectionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> LastLongitude
+        {
+            get
+            {
+                return _LastLongitude;
+            }
+            set
+            {
+                OnLastLongitudeChanging(value);
+                ReportPropertyChanging("LastLongitude");
+                _LastLongitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastLongitude");
+                OnLastLongitudeChanged();
+            }
+        }
+        private Nullable<global::System.Double> _LastLongitude;
+        partial void OnLastLongitudeChanging(Nullable<global::System.Double> value);
+        partial void OnLastLongitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> LastLatitude
+        {
+            get
+            {
+                return _LastLatitude;
+            }
+            set
+            {
+                OnLastLatitudeChanging(value);
+                ReportPropertyChanging("LastLatitude");
+                _LastLatitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastLatitude");
+                OnLastLatitudeChanged();
+            }
+        }
+        private Nullable<global::System.Double> _LastLatitude;
+        partial void OnLastLatitudeChanging(Nullable<global::System.Double> value);
+        partial void OnLastLatitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastTimeStamp
+        {
+            get
+            {
+                return _LastTimeStamp;
+            }
+            set
+            {
+                OnLastTimeStampChanging(value);
+                ReportPropertyChanging("LastTimeStamp");
+                _LastTimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastTimeStamp");
+                OnLastTimeStampChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastTimeStamp;
+        partial void OnLastTimeStampChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastTimeStampChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> LastSpeed
+        {
+            get
+            {
+                return _LastSpeed;
+            }
+            set
+            {
+                OnLastSpeedChanging(value);
+                ReportPropertyChanging("LastSpeed");
+                _LastSpeed = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastSpeed");
+                OnLastSpeedChanged();
+            }
+        }
+        private Nullable<global::System.Double> _LastSpeed;
+        partial void OnLastSpeedChanging(Nullable<global::System.Double> value);
+        partial void OnLastSpeedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastSource
+        {
+            get
+            {
+                return _LastSource;
+            }
+            set
+            {
+                OnLastSourceChanging(value);
+                ReportPropertyChanging("LastSource");
+                _LastSource = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastSource");
+                OnLastSourceChanged();
+            }
+        }
+        private global::System.String _LastSource;
+        partial void OnLastSourceChanging(global::System.String value);
+        partial void OnLastSourceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.Guid OwnerPartyId
@@ -11913,28 +12049,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Party>("CoreEntities.VehicleParty", "Party", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "TrackPointVehicle", "TrackPoint")]
-        public EntityCollection<TrackPoint> TrackPoints
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<TrackPoint>("CoreEntities.TrackPointVehicle", "TrackPoint");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<TrackPoint>("CoreEntities.TrackPointVehicle", "TrackPoint", value);
                 }
             }
         }

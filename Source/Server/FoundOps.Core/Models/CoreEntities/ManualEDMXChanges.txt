@@ -54,12 +54,12 @@ with
 Replace
     <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.Store.ServiceTemplateWithVendorIds" store:Type="Tables" Schema="dbo" />
 with
-          <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId">
-            <DefiningQuery>SELECT 
-      [ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId], 
-      [ServiceTemplatesWithVendorId].[VendorId] AS [VendorId]
-      FROM [dbo].[ServiceTemplatesWithVendorId] AS [ServiceTemplatesWithVendorId]</DefiningQuery>
-          </EntitySet>
+    <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId">
+		<DefiningQuery>SELECT 
+		[ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId], 
+		[ServiceTemplatesWithVendorId].[VendorId] AS [VendorId]
+		FROM [dbo].[ServiceTemplatesWithVendorId] AS [ServiceTemplatesWithVendorId]</DefiningQuery>
+    </EntitySet>
 Replace
   <EntityType Name="ServiceTemplateWithVendorIds">
     <Key>
@@ -70,14 +70,14 @@ Replace
     <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
 with
-        <EntityType Name="ServiceTemplatesWithVendorId">
-          <Key>
+	<EntityType Name="ServiceTemplatesWithVendorId">
+		<Key>
             <PropertyRef Name="ServiceTemplateId" />
-            <PropertyRef Name="VendorId" />
-          </Key>
-          <Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
+			<PropertyRef Name="VendorId" />
+		</Key>
+		<Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
+		<Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
+	</EntityType>
 
 DO NOT CHANGE: <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.ServiceTemplateWithVendorId" />
 

@@ -44,7 +44,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Permissions = "none",
                 HireDate = DateTime.UtcNow,
                 SSN = "123-45-6789",
-                OwnedPerson = partyDesignData.OwnedPerson
+                OwnedPerson = partyDesignData.OwnedPerson,
+                LastCompassDirection = 100,
+                LastLatitude = 87.46325,
+                LastLongitude = -86.4582,
+                LastSource = "Android",
+                LastSpeed = 25.65,
+                LastTimeStamp = DateTime.UtcNow
             };
 
             DesignEmployeeTwo = new Employee
@@ -58,7 +64,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Permissions = "",
                 HireDate = DateTime.UtcNow,
                 SSN = "000-11-2222",
-                OwnedPerson = partyDesignData.OwnedPersonTwo
+                OwnedPerson = partyDesignData.OwnedPersonTwo,
+                LastCompassDirection = 32,
+                LastLatitude = 86.2225,
+                LastLongitude = -89.6589,
+                LastSource = "iPhone",
+                LastSpeed = 15.2,
+                LastTimeStamp = DateTime.UtcNow
             };
 
             DesignEmployeeThree = new Employee
@@ -72,7 +84,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Permissions = "Level 2",
                 HireDate = DateTime.UtcNow,
                 SSN = "654-98-0123",
-                OwnedPerson = partyDesignData.OwnedPersonThree
+                OwnedPerson = partyDesignData.OwnedPersonThree,
+                LastCompassDirection = -11,
+                LastLatitude = 84.3654,
+                LastLongitude = -85.7894,
+                LastSource = "Windows Phone",
+                LastSpeed = 48.82,
+                LastTimeStamp = DateTime.UtcNow
             };
 
             DesignEmployees = new List<Employee> { DesignEmployee, DesignEmployeeTwo, DesignEmployeeThree };

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
@@ -38,7 +39,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 VehicleId = "3636",
                 VIN = "1M8GDM9AXKP042788",
                 Year = 2005,
-                OwnerParty = _ownerParty
+                OwnerParty = _ownerParty,
+                LastCompassDirection = 30,
+                LastLatitude = 87.46325,
+                LastLongitude = -86.4582,
+                LastSource = "Catch Me If You Can",
+                LastSpeed = 25.65,
+                LastTimeStamp = DateTime.UtcNow
             };
 
             DesignVehicleTwo = new Vehicle
@@ -51,7 +58,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 VehicleId = "53",
                 VIN = "5GZCZ43D13S812715",
                 Year = 2008,
-                OwnerParty = _ownerParty
+                OwnerParty = _ownerParty,
+                LastCompassDirection = -15,
+                LastLatitude = 84.3654,
+                LastLongitude = -85.7894,
+                LastSource = "Find Me",
+                LastSpeed = 48.82,
+                LastTimeStamp = DateTime.UtcNow
             };
 
             DesignVehicleThree = new Vehicle
@@ -64,7 +77,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 VehicleId = "47",
                 VIN = "1M8GDM9AXKP042788",
                 Year = 2000,
-                OwnerParty = _ownerParty
+                OwnerParty = _ownerParty,
+                LastCompassDirection = 0,
+                LastLatitude = 86.2225,
+                LastLongitude = -89.6589,
+                LastSource = "US Fleet Tracker",
+                LastSpeed = 15.2,
+                LastTimeStamp = DateTime.UtcNow
             };
 
             DesignVehicles = new List<Vehicle> { DesignVehicle, DesignVehicleTwo, DesignVehicleThree };

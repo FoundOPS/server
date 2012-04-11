@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 04/11/2012 11:32:53
+-- Date Created: 04/11/2012 16:52:26
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -521,6 +521,12 @@ CREATE TABLE [dbo].[Vehicles] (
     [Make] nvarchar(max)  NULL,
     [Model] nvarchar(max)  NULL,
     [Notes] nvarchar(max)  NULL,
+    [LastCompassDirection] int  NULL,
+    [LastLongitude] float  NULL,
+    [LastLatitude] float  NULL,
+    [LastTimeStamp] datetime  NULL,
+    [LastSpeed] float  NULL,
+    [LastSource] nvarchar(max)  NULL,
     [OwnerPartyId] uniqueidentifier  NOT NULL
 );
 GO
@@ -632,7 +638,13 @@ CREATE TABLE [dbo].[Employees] (
     [HireDate] datetime  NULL,
     [SSN] nvarchar(max)  NULL,
     [LinkedUserAccountId] uniqueidentifier  NULL,
-    [EmployerId] uniqueidentifier  NOT NULL
+    [EmployerId] uniqueidentifier  NOT NULL,
+    [LastCompassDirection] int  NULL,
+    [LastLongitude] float  NULL,
+    [LastLatitude] float  NULL,
+    [LastTimeStamp] datetime  NULL,
+    [LastSpeed] float  NULL,
+    [LastSource] nvarchar(max)  NULL
 );
 GO
 
@@ -752,8 +764,6 @@ CREATE TABLE [dbo].[TrackPoints] (
     [Longitude] float  NULL,
     [TimeStamp] datetime  NULL,
     [Speed] float  NULL,
-    [EmployeeId] uniqueidentifier  NULL,
-    [VehicleId] uniqueidentifier  NULL,
     [Source] nvarchar(max)  NULL
 );
 GO
@@ -2021,34 +2031,6 @@ ADD CONSTRAINT [FK_RouteTaskRecurringService]
 CREATE INDEX [IX_FK_RouteTaskRecurringService]
 ON [dbo].[RouteTasks]
     ([RecurringServiceId]);
-GO
-
--- Creating foreign key on [EmployeeId] in table 'TrackPoints'
-ALTER TABLE [dbo].[TrackPoints]
-ADD CONSTRAINT [FK_TrackPointEmployee]
-    FOREIGN KEY ([EmployeeId])
-    REFERENCES [dbo].[Employees]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_TrackPointEmployee'
-CREATE INDEX [IX_FK_TrackPointEmployee]
-ON [dbo].[TrackPoints]
-    ([EmployeeId]);
-GO
-
--- Creating foreign key on [VehicleId] in table 'TrackPoints'
-ALTER TABLE [dbo].[TrackPoints]
-ADD CONSTRAINT [FK_TrackPointVehicle]
-    FOREIGN KEY ([VehicleId])
-    REFERENCES [dbo].[Vehicles]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_TrackPointVehicle'
-CREATE INDEX [IX_FK_TrackPointVehicle]
-ON [dbo].[TrackPoints]
-    ([VehicleId]);
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Business'
