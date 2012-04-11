@@ -210,12 +210,12 @@
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
     <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
-    <Content Include="Models\CoreEntities\ManualEDMXChanges.txt" />
-    <Content Include="Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql">
+    <Content Include="Models\CoreEntities\CoreEntitiesCorrected.edmx.sql">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
     </Content>
+    <Content Include="Models\CoreEntities\ManualEDMXChanges.txt" />
     <Content Include="Models\CoreEntities\SQL\CheckServiceTemplateForChildren.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteRecurringService.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteBasicPartyBasedOnId.sql" />
@@ -247,7 +247,7 @@
     <None Include="App.Config" />
     <None Include="Models\CoreEntities\CoreEntitiesCorrected.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CoreEntitiesCorrected1.edmx.sql</LastGenOutput>
+      <LastGenOutput>CoreEntitiesCorrected.edmx.sql</LastGenOutput>
     </None>
     <None Include="Models\CoreEntities\M2M4RiaEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
