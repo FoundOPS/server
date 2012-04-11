@@ -46,7 +46,7 @@ namespace FoundOps.Server.Controllers
             //Get a reference to a blob, which may or may not exist.
             var blob = blobContainer.GetBlobReference(fileGuid.ToString());
 
-            return blob.GetSharedAccessSignature(new SharedAccessPolicy { Permissions = SharedAccessPermissions.Read, SharedAccessExpiryTime = DateTime.Now + new TimeSpan(0, 30, 0) });
+            return blob.GetSharedAccessSignature(new SharedAccessPolicy { Permissions = SharedAccessPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow + new TimeSpan(0, 30, 0) });
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace FoundOps.Server.Controllers
             blob.Properties.ContentType = "application/octet-stream";
             blob.SetProperties();
 
-            return blob.GetSharedAccessSignature(new SharedAccessPolicy { Permissions = SharedAccessPermissions.Write, SharedAccessExpiryTime = DateTime.Now + new TimeSpan(0, 30, 0) });
+            return blob.GetSharedAccessSignature(new SharedAccessPolicy { Permissions = SharedAccessPermissions.Write, SharedAccessExpiryTime = DateTime.UtcNow + new TimeSpan(0, 30, 0) });
         }
 
         /// <summary>

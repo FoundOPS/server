@@ -37,7 +37,14 @@ namespace FoundOps.Core.Models.CoreEntities
 
         public void AddRepeat()
         {
-            var repeat = new Repeat { Id = this.Id };
+            var repeat = new Repeat
+            {
+                Id = this.Id,
+                StartDate = DateTime.UtcNow.Date,
+                Frequency = Frequency.Once,
+                RepeatEveryTimes = 1
+            };
+
             this.Repeat = repeat;
         }
 

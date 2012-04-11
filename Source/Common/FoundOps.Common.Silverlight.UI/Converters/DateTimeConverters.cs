@@ -13,7 +13,7 @@ namespace FoundOps.Common.Silverlight.Converters
         {
             DateTime dateTime = (DateTime) value;
 
-            if(dateTime.Date==DateTime.Now.Date)
+            if(dateTime.Date==DateTime.UtcNow.Date)
             {
                 return dateTime.ToShortTimeString();
             }
@@ -108,7 +108,7 @@ namespace FoundOps.Common.Silverlight.Converters
             if (value != null)
             {
                 var dateTime = (DateTime) value;
-                var currentDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,
+                var currentDateTime = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day,
                                                    dateTime.Hour, dateTime.Minute, dateTime.Second);
                 return currentDateTime;
             }
@@ -136,7 +136,7 @@ namespace FoundOps.Common.Silverlight.Converters
         {
             var dateTime = (DateTime)value;
 
-            if (dateTime.Date < DateTime.Now.Date)
+            if (dateTime.Date < DateTime.UtcNow.Date)
                 return false;
 
             return true;

@@ -295,7 +295,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             #region Analytics
 
             //get current time
-            var currentTimeOfDay = DateTime.Now.ToShortTimeString();
+            var currentTimeOfDay = DateTime.UtcNow.ToShortTimeString();
 
             //check for route manifest options
             if (Settings.IsHeaderVisible)

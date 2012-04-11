@@ -42,7 +42,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47906",
                 Permissions = "none",
-                HireDate = DateTime.Now,
+                HireDate = DateTime.UtcNow,
                 SSN = "123-45-6789",
                 OwnedPerson = partyDesignData.OwnedPerson
             };
@@ -56,7 +56,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47906",
                 Permissions = "",
-                HireDate = DateTime.Now,
+                HireDate = DateTime.UtcNow,
                 SSN = "000-11-2222",
                 OwnedPerson = partyDesignData.OwnedPersonTwo
             };
@@ -70,7 +70,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47906",
                 Permissions = "Level 2",
-                HireDate = DateTime.Now,
+                HireDate = DateTime.UtcNow,
                 SSN = "654-98-0123",
                 OwnedPerson = partyDesignData.OwnedPersonThree
             };

@@ -31,9 +31,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             
             DesignBusinessAccount = new BusinessAccount { Name = "GotGrease" };
 
-            OwnedPerson = new Person { FirstName = "Bob", LastName = "Black", DateOfBirth = DateTime.Now.Date.AddDays(-21), Gender = Gender.Male };
-            OwnedPersonTwo = new Person { FirstName = "Susanne", LastName = "Greene", DateOfBirth = DateTime.Now.Date.AddDays(-991), Gender = Gender.Female };
-            OwnedPersonThree = new Person { FirstName = "Jim", LastName = "Boliath", DateOfBirth = DateTime.Now.Date.AddDays(-501), Gender = Gender.Male };
+            OwnedPerson = new Person { FirstName = "Bob", LastName = "Black", DateOfBirth = DateTime.UtcNow.Date.AddDays(-21), Gender = Gender.Male };
+            OwnedPersonTwo = new Person { FirstName = "Susanne", LastName = "Greene", DateOfBirth = DateTime.UtcNow.Date.AddDays(-991), Gender = Gender.Female };
+            OwnedPersonThree = new Person { FirstName = "Jim", LastName = "Boliath", DateOfBirth = DateTime.UtcNow.Date.AddDays(-501), Gender = Gender.Male };
 
             DesignPartys = new List<Party> { DesignBusiness, DesignBusinessTwo, DesignBusinessThree, DesignBusinessAccount, OwnedPerson, OwnedPersonTwo, OwnedPersonThree };
 

@@ -154,7 +154,7 @@ namespace FoundOps.SLClient.Data.Services
                                                                                   customDiscardAction, afterDiscard, afterCancel));
 
             //Show a prompt only if it is not visible and was not called within the last 3 seconds
-            if (_currentSaveDiscardCancel != null || DateTime.Now.Subtract(_lastSaveDiscardCancelPrompt) < new TimeSpan(0, 0, 0, 3))
+            if (_currentSaveDiscardCancel != null || DateTime.UtcNow.Subtract(_lastSaveDiscardCancelPrompt) < new TimeSpan(0, 0, 0, 3))
                 return;
 
             //If there are no changes, call Cancelled
@@ -244,7 +244,7 @@ namespace FoundOps.SLClient.Data.Services
 
             //Show the Prompt
             _currentSaveDiscardCancel.Show();
-            _lastSaveDiscardCancelPrompt = DateTime.Now;
+            _lastSaveDiscardCancelPrompt = DateTime.UtcNow;
         }
 
         #endregion

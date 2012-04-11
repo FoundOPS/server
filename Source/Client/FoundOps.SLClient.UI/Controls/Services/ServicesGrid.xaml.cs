@@ -161,7 +161,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 //a) this control is not automatically scrolling an item to the middle
                 //b) the ServicesVM is not loading
                 //c) the last load was 1 second ago (allow time for the RadGridView to update)
-                if (_forceScrolling || VM.Services.IsLoading || DateTime.Now - VM.Services.LastLoad < TimeSpan.FromSeconds(1))
+                if (_forceScrolling || VM.Services.IsLoading || DateTime.UtcNow - VM.Services.LastLoad < TimeSpan.FromSeconds(1))
                     return;
 
                 //Scrolled to the top
@@ -277,10 +277,10 @@ namespace FoundOps.SLClient.UI.Controls.Services
             var serviceDate = ((ServiceHolder)item).OccurDate.Date;
 
             //If the service is in the past it should be grey.
-            if (serviceDate < DateTime.Now.Date)
+            if (serviceDate < DateTime.UtcNow.Date)
                 style.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(Colors.Gray)));
             //If the service is today it should be green.
-            else if (serviceDate == DateTime.Now.Date)
+            else if (serviceDate == DateTime.UtcNow.Date)
                 style.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(Colors.Green)));
             //If the service is in the future it should be blue.
             else

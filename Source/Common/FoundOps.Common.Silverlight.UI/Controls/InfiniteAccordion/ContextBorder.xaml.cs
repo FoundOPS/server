@@ -153,11 +153,11 @@ namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
             if (e.ClickCount != 2) return;
 
             //Only action if the LastContextBorderDoubleClick was > 1/2 second ago
-            if (DateTime.Now - ContextBorderClickManager.LastContextBorderDoubleClick < new TimeSpan(0,0,0,0,500))
+            if (DateTime.UtcNow - ContextBorderClickManager.LastContextBorderDoubleClick < new TimeSpan(0,0,0,0,500))
                 return;
 
             //Track this double click
-            ContextBorderClickManager.LastContextBorderDoubleClick = DateTime.Now;
+            ContextBorderClickManager.LastContextBorderDoubleClick = DateTime.UtcNow;
             
             //Move to this ContextType
             MessageBus.Current.SendMessage(new MoveToDetailsViewMessage(ContextType, MoveStrategy.MoveBackwards));
@@ -182,7 +182,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
 
         public ContextBorderClickManager()
         {
-            LastContextBorderDoubleClick = DateTime.Now;
+            LastContextBorderDoubleClick = DateTime.UtcNow;
         }
     }
 }

@@ -42,7 +42,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls
             this.Close();
         }
 
-        private static readonly Random Random = new Random((int)DateTime.Now.Ticks);
+        private static readonly Random Random = new Random((int)DateTime.UtcNow.Ticks);
         private string _generatedString;
 
         private void GenerateString()

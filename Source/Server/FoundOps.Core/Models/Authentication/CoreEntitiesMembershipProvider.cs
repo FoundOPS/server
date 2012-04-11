@@ -29,7 +29,7 @@ namespace FoundOps.Core.Models.Authentication
             user.UserAccountLog.Add(new UserAccountLogEntry
             {
                 UserAccountLogType = UserAccountLogType.PasswordChange,
-                TimeStamp = DateTime.Now
+                TimeStamp = DateTime.UtcNow
             });
             _coreEntitiesContainer.SaveChanges();
 
@@ -43,7 +43,7 @@ namespace FoundOps.Core.Models.Authentication
             user.UserAccountLog.Add(new UserAccountLogEntry
             {
                 UserAccountLogType = UserAccountLogType.PasswordChange,
-                TimeStamp = DateTime.Now
+                TimeStamp = DateTime.UtcNow
             });
 
             _coreEntitiesContainer.SaveChanges();

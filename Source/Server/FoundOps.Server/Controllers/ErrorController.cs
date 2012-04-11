@@ -32,7 +32,7 @@ namespace FoundOps.Server.Controllers
                                {
                                    Id = Guid.NewGuid(),
                                    BusinessName = businessAccount,
-                                   Date = DateTime.Now,
+                                   Date = DateTime.UtcNow,
                                    UserEmail = currentUser,
                                    ErrorText = errorString,
                                    InnerException = innerException

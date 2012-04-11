@@ -54,7 +54,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignRoute = new Route
                               {
                                   Name = "SF Bay Area",
-                                  Date = DateTime.Now.Date,
+                                  Date = DateTime.UtcNow.Date,
                                   RouteType = _ownerBusinessAccount.ServiceTemplates
                                   .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
                                   .ElementAt(0).Name
@@ -66,7 +66,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignRouteTwo = new Route
                                  {
                                      Name = "Shelter Island",
-                                     Date = DateTime.Now.Date,
+                                     Date = DateTime.UtcNow.Date,
                                      RouteType = _ownerBusinessAccount.ServiceTemplates
                                   .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
                                   .ElementAt(1).Name
@@ -79,7 +79,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignRouteThree = new Route
                                    {
                                        Name = "Purdue",
-                                       Date = DateTime.Now.Date.AddDays(1),
+                                       Date = DateTime.UtcNow.Date.AddDays(1),
                                        RouteType = _ownerBusinessAccount.ServiceTemplates
                                  .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
                                  .ElementAt(2).Name

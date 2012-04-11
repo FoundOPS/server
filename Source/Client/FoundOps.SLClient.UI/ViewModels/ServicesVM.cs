@@ -153,7 +153,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Setup seed date
 
-            var seedDate = DateTime.Now.Date;
+            var seedDate = DateTime.UtcNow.Date;
             switch (loadType)
             {
                 //If this is moving backwards set the seed date to the earliest occur date of the collection
@@ -298,7 +298,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 #endregion
 
-                LastLoad = DateTime.Now;
+                LastLoad = DateTime.UtcNow;
 
                 //Notify this has completed
                 IsLoadingSubject.OnNext(false);
@@ -396,7 +396,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (Collection == null)
                 return null;
 
-            var newService = new Service { Id = Guid.NewGuid(), ServiceDate = DateTime.Now.Date };
+            var newService = new Service { Id = Guid.NewGuid(), ServiceDate = DateTime.UtcNow.Date };
 
             //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)
             var parentServiceTemplate = (ServiceTemplate)commandParameter;

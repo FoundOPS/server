@@ -47,11 +47,6 @@ namespace FoundOps.Core.Models.CoreEntities
         void IEntityDefaultCreation.OnCreate()
         {
             this.Id = Guid.NewGuid();
-            //TODO: Check out this line when looking into the nasty bug in Azure
-            //Check Google talk for link sent to jperl@foundops.com last night
-            this.StartDate = DateTime.Now.Date;
-            this.Frequency = Frequency.Once;
-            RepeatEveryTimes = 1;
             OnCreation();
         }
 
@@ -274,7 +269,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             get
             {
-                var nextScheduledDateFromToday = NextRepeatDateOnOrAfterDate(DateTime.Now);
+                var nextScheduledDateFromToday = NextRepeatDateOnOrAfterDate(DateTime.UtcNow);
                 return nextScheduledDateFromToday;
             }
         }

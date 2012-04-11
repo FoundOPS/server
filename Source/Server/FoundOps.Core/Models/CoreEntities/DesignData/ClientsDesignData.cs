@@ -57,19 +57,19 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignClient = new Client
             {
-                DateAdded = DateTime.Now,
+                DateAdded = DateTime.UtcNow,
                 OwnedParty = partyDesignData.DesignBusiness
             };
 
             DesignClientTwo = new Client
             {
-                DateAdded = DateTime.Now,
+                DateAdded = DateTime.UtcNow,
                 OwnedParty = partyDesignData.DesignBusinessTwo
             };
 
             DesignClientThree = new Client
             {
-                DateAdded = DateTime.Now,
+                DateAdded = DateTime.UtcNow,
                 OwnedParty = partyDesignData.DesignBusinessThree
             };
 

@@ -54,7 +54,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //TODO: I do not think this is correct
 
-            //_routeDataService.GetRoutesForServiceProviderOnDay(ContextManager.RoleId, DateTime.Now, getRoutesCallback =>
+            //_routeDataService.GetRoutesForServiceProviderOnDay(ContextManager.RoleId, DateTime.UtcNow, getRoutesCallback =>
             //{
             //    ShownRoutes = getRoutesCallback;
             //    MessageBus.Current.SendMessage(new RefreshRouteMapView());

@@ -50,8 +50,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
-                Earliest = DateTime.Now,
-                Latest = DateTime.Now.AddHours(2),
+                Earliest = DateTime.UtcNow,
+                Latest = DateTime.UtcNow.AddHours(2),
                 DateTimeType = DateTimeType.TimeOnly
             };
 

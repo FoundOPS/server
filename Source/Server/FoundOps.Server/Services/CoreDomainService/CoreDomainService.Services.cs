@@ -93,7 +93,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var originalService = ChangeSet.GetOriginal(currentService);
 
             //If the original date was prior to today, throw an exception
-            if (originalService.ServiceDate < DateTime.Now.Date)
+            if (originalService.ServiceDate < DateTime.UtcNow.Date)
                 throw new Exception("Cannot change the date of a Service in the past.");
 
             //Delete any associated route tasks (today/in the future) if the service date changed
@@ -301,7 +301,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             //If there is a newly added excluded date today or in the future. Remove any associated route tasks for that date
             var originalRecurringService = ChangeSet.GetOriginal(currentRecurringService);
-            var newlyAddedFutureDatesToExclude = currentRecurringService.ExcludedDates.Except(originalRecurringService.ExcludedDates).Where(d => d >= DateTime.Now.Date).ToArray();
+            var newlyAddedFutureDatesToExclude = currentRecurringService.ExcludedDates.Except(originalRecurringService.ExcludedDates).Where(d => d >= DateTime.UtcNow.Date).ToArray();
             if (newlyAddedFutureDatesToExclude.Any())
             {
                 var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt =>
