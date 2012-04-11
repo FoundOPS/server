@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 04/10/2012 20:19:30
+-- Date Created: 04/11/2012 11:32:53
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -753,7 +753,8 @@ CREATE TABLE [dbo].[TrackPoints] (
     [TimeStamp] datetime  NULL,
     [Speed] float  NULL,
     [EmployeeId] uniqueidentifier  NULL,
-    [VehicleId] uniqueidentifier  NULL
+    [VehicleId] uniqueidentifier  NULL,
+    [Source] nvarchar(max)  NULL
 );
 GO
 

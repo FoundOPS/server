@@ -10,6 +10,7 @@ namespace FoundOPS.API.Models
         public Double Latitude { get; set; }
         public Double Longitude { get; set; }
         public Double Speed { get; set; }
+        public String Source { get; set; }
 
         public static FoundOps.Core.Models.CoreEntities.TrackPoint ConvertFromModel(TrackPoint modelTrackPoint)
         {
@@ -20,7 +21,8 @@ namespace FoundOPS.API.Models
                                      TimeStamp = modelTrackPoint.TimeStamp,
                                      Latitude = modelTrackPoint.Latitude,
                                      Longitude = modelTrackPoint.Longitude,
-                                     Speed = modelTrackPoint.Speed
+                                     Speed = modelTrackPoint.Speed,
+                                     Source = modelTrackPoint.Source
                                  };
 
             return trackPoint;

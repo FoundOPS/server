@@ -27,8 +27,9 @@ namespace API.Tests.Controllers
                 TimeStamp = DateTime.Now,
                 Speed = 50.23,
             };
-            var controller = new TrackPointController();
-            HttpResponseMessage<TrackPoint> response = controller.PostTrackPoint(Guid.NewGuid(), trackPoint);
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
+            var controller = new TrackPointController {Request = request};
+            var response = controller.PostEmployeeTrackPoint(trackPoint);
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.IsNotNull(response.Headers.Location);
             TrackPoint postedTrackPoint = response.Content.ReadAsync().Result;
