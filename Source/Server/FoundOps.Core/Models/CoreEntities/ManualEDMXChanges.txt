@@ -102,7 +102,7 @@ with
 
 3. Add Functions back
 
-Add after </EntityContainer>
+Add after </EntityContainer> (the one after FK association sets)
 
         <Function Name="GetServiceHolders" IsComposable="false">
           <CommandText>

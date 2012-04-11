@@ -5,6 +5,7 @@ using System.Web.Http;
 
 namespace FoundOPS.API.Controllers
 {
+    [Authorize]
     public class RoutesController : ApiController
     {
         private readonly RoutesDesignData _routesDesignData = new RoutesDesignData();

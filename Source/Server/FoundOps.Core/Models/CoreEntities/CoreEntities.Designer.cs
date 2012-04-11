@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -38,7 +39,6 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountRoute", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountClient", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountRouteTask", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "UserAccountTrackPoint", "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.UserAccount), "TrackPoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.TrackPoint), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "UserAccountUserAccountLogEntry", "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.UserAccount), "UserAccountLogEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.UserAccountLogEntry), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceTemplateBusinessAccount", "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RecurringServiceServiceTemplate", "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), true)]
@@ -79,6 +79,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientInvoice", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientLocation", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteTaskRecurringService", "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "TrackPointEmployee", "TrackPoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.TrackPoint), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Employee), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "TrackPointVehicle", "TrackPoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.TrackPoint), "Vehicle", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Vehicle), true)]
 
 #endregion
 
@@ -257,22 +259,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
         private ObjectSet<RouteDestination> _RouteDestinations;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<TrackPoint> TrackPoints
-        {
-            get
-            {
-                if ((_TrackPoints == null))
-                {
-                    _TrackPoints = base.CreateObjectSet<TrackPoint>("TrackPoints");
-                }
-                return _TrackPoints;
-            }
-        }
-        private ObjectSet<TrackPoint> _TrackPoints;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -657,8 +643,25 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
         private ObjectSet<ServiceTemplateWithVendorId> _ServiceTemplateWithVendorIds;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<TrackPoint> TrackPoints
+        {
+            get
+            {
+                if ((_TrackPoints == null))
+                {
+                    _TrackPoints = base.CreateObjectSet<TrackPoint>("TrackPoints");
+                }
+                return _TrackPoints;
+            }
+        }
+        private ObjectSet<TrackPoint> _TrackPoints;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -723,14 +726,6 @@ namespace FoundOps.Core.Models.CoreEntities
         public void AddToRouteDestinations(RouteDestination routeDestination)
         {
             base.AddObject("RouteDestinations", routeDestination);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the TrackPoints EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToTrackPoints(TrackPoint trackPoint)
-        {
-            base.AddObject("TrackPoints", trackPoint);
         }
     
         /// <summary>
@@ -924,8 +919,17 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             base.AddObject("ServiceTemplateWithVendorIds", serviceTemplateWithVendorId);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the TrackPoints EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToTrackPoints(TrackPoint trackPoint)
+        {
+            base.AddObject("TrackPoints", trackPoint);
+        }
 
         #endregion
+
         #region Function Imports
     
         /// <summary>
@@ -1188,11 +1192,11 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -1227,6 +1231,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1425,6 +1430,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnHideFromNavigationChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1451,6 +1457,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1476,6 +1483,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1503,6 +1511,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
 
         #endregion
+
     
     }
     
@@ -1528,6 +1537,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1675,6 +1685,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnMaxRoutesChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1855,6 +1866,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1883,6 +1895,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2009,6 +2022,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnDefaultBillingLocationIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2281,6 +2295,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2309,6 +2324,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2411,6 +2427,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnContactIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2491,6 +2508,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2517,6 +2535,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2595,6 +2614,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnOwnerPartyIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2697,6 +2717,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2723,6 +2744,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2897,6 +2919,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnContactIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2977,6 +3000,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3013,6 +3037,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3112,6 +3137,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnValueChanged();
 
         #endregion
+
     
     }
     
@@ -3139,6 +3165,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3433,6 +3460,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnEmployerIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3593,8 +3621,31 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "TrackPointEmployee", "TrackPoint")]
+        public EntityCollection<TrackPoint> TrackPoints
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<TrackPoint>("CoreEntities.TrackPointEmployee", "TrackPoint");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<TrackPoint>("CoreEntities.TrackPointEmployee", "TrackPoint", value);
+                }
+            }
+        }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3621,6 +3672,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3771,6 +3823,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnEmployeeIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3813,6 +3866,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3837,6 +3891,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3987,6 +4042,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnInnerExceptionChanged();
 
         #endregion
+
     
     }
     
@@ -4023,6 +4079,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4197,6 +4254,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnServiceTemplateIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4299,6 +4357,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4328,6 +4387,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4454,6 +4514,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnPartyIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4534,6 +4595,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4560,6 +4622,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4902,6 +4965,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnClientIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -5118,6 +5182,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -5144,6 +5209,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -5246,6 +5312,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnAmountChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -5288,6 +5355,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -5312,6 +5380,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -5606,6 +5675,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRegionIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -5912,6 +5982,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -5944,6 +6015,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -5995,6 +6067,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnLocationFieldTypeIntChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6037,6 +6110,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6065,6 +6139,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     
     }
     
@@ -6104,6 +6179,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6227,6 +6303,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnValueChanged();
 
         #endregion
+
     
     }
     
@@ -6257,6 +6334,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6407,6 +6485,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnTooltipChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6449,6 +6528,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6483,6 +6563,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6534,6 +6615,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnTypeIntChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6560,6 +6642,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6586,6 +6669,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -6616,6 +6700,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6878,6 +6963,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6906,6 +6992,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -6948,6 +7035,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -6972,6 +7060,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7026,6 +7115,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnChildNameChanged();
 
         #endregion
+
     
     }
     
@@ -7052,6 +7142,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7175,6 +7266,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnDateOfBirthChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7255,6 +7347,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7281,6 +7374,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7362,6 +7456,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnExcludedDatesStringChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7524,6 +7619,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7550,6 +7646,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7676,6 +7773,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNotesChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7740,6 +7838,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -7770,6 +7869,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -7944,6 +8044,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnStartDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -7986,6 +8087,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -8010,6 +8112,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -8136,6 +8239,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRoleTypeIntChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -8222,6 +8326,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -8256,6 +8361,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -8430,6 +8536,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRouteTypeChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -8538,6 +8645,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -8566,6 +8674,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -8692,6 +8801,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnClientIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -8832,6 +8942,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -8868,6 +8979,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -9186,6 +9298,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnRecurringServiceIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9418,6 +9531,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -9444,6 +9558,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -9522,6 +9637,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9548,6 +9664,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -9578,6 +9695,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -9704,6 +9822,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnServiceDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -9882,6 +10001,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -9908,6 +10028,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10058,6 +10179,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10334,6 +10456,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10360,6 +10483,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10417,6 +10541,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnVendorIdChanged();
 
         #endregion
+
     
     }
     
@@ -10446,6 +10571,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10620,6 +10746,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnNumberChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10662,6 +10789,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10694,6 +10822,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10745,6 +10874,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnValueChanged();
 
         #endregion
+
     
     }
     
@@ -10762,22 +10892,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new TrackPoint object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="compassDirection">Initial value of the CompassDirection property.</param>
-        /// <param name="latitude">Initial value of the Latitude property.</param>
-        /// <param name="longitude">Initial value of the Longitude property.</param>
-        /// <param name="userAccountId">Initial value of the UserAccountId property.</param>
-        public static TrackPoint CreateTrackPoint(global::System.Int64 id, global::System.Int32 compassDirection, global::System.Double latitude, global::System.Double longitude, global::System.Guid userAccountId)
+        public static TrackPoint CreateTrackPoint(global::System.Guid id)
         {
             TrackPoint trackPoint = new TrackPoint();
             trackPoint.Id = id;
-            trackPoint.CompassDirection = compassDirection;
-            trackPoint.Latitude = latitude;
-            trackPoint.Longitude = longitude;
-            trackPoint.UserAccountId = userAccountId;
             return trackPoint;
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -10785,7 +10908,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int64 Id
+        public global::System.Guid Id
         {
             get
             {
@@ -10803,8 +10926,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
             }
         }
-        private global::System.Int64 _Id;
-        partial void OnIdChanging(global::System.Int64 value);
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
     
         /// <summary>
@@ -10812,31 +10935,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> Timestamp
-        {
-            get
-            {
-                return _Timestamp;
-            }
-            set
-            {
-                OnTimestampChanging(value);
-                ReportPropertyChanging("Timestamp");
-                _Timestamp = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Timestamp");
-                OnTimestampChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _Timestamp;
-        partial void OnTimestampChanging(Nullable<global::System.DateTime> value);
-        partial void OnTimestampChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 CompassDirection
+        public Nullable<global::System.Int32> CompassDirection
         {
             get
             {
@@ -10851,16 +10950,16 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnCompassDirectionChanged();
             }
         }
-        private global::System.Int32 _CompassDirection;
-        partial void OnCompassDirectionChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _CompassDirection;
+        partial void OnCompassDirectionChanging(Nullable<global::System.Int32> value);
         partial void OnCompassDirectionChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Double Latitude
+        public Nullable<global::System.Double> Latitude
         {
             get
             {
@@ -10875,16 +10974,16 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnLatitudeChanged();
             }
         }
-        private global::System.Double _Latitude;
-        partial void OnLatitudeChanging(global::System.Double value);
+        private Nullable<global::System.Double> _Latitude;
+        partial void OnLatitudeChanging(Nullable<global::System.Double> value);
         partial void OnLatitudeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Double Longitude
+        public Nullable<global::System.Double> Longitude
         {
             get
             {
@@ -10899,35 +10998,108 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnLongitudeChanged();
             }
         }
-        private global::System.Double _Longitude;
-        partial void OnLongitudeChanging(global::System.Double value);
+        private Nullable<global::System.Double> _Longitude;
+        partial void OnLongitudeChanging(Nullable<global::System.Double> value);
         partial void OnLongitudeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Guid UserAccountId
+        public Nullable<global::System.DateTime> TimeStamp
         {
             get
             {
-                return _UserAccountId;
+                return _TimeStamp;
             }
             set
             {
-                OnUserAccountIdChanging(value);
-                ReportPropertyChanging("UserAccountId");
-                _UserAccountId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("UserAccountId");
-                OnUserAccountIdChanged();
+                OnTimeStampChanging(value);
+                ReportPropertyChanging("TimeStamp");
+                _TimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TimeStamp");
+                OnTimeStampChanged();
             }
         }
-        private global::System.Guid _UserAccountId;
-        partial void OnUserAccountIdChanging(global::System.Guid value);
-        partial void OnUserAccountIdChanged();
+        private Nullable<global::System.DateTime> _TimeStamp;
+        partial void OnTimeStampChanging(Nullable<global::System.DateTime> value);
+        partial void OnTimeStampChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> Speed
+        {
+            get
+            {
+                return _Speed;
+            }
+            set
+            {
+                OnSpeedChanging(value);
+                ReportPropertyChanging("Speed");
+                _Speed = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Speed");
+                OnSpeedChanged();
+            }
+        }
+        private Nullable<global::System.Double> _Speed;
+        partial void OnSpeedChanging(Nullable<global::System.Double> value);
+        partial void OnSpeedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> EmployeeId
+        {
+            get
+            {
+                return _EmployeeId;
+            }
+            set
+            {
+                OnEmployeeIdChanging(value);
+                ReportPropertyChanging("EmployeeId");
+                _EmployeeId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("EmployeeId");
+                OnEmployeeIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _EmployeeId;
+        partial void OnEmployeeIdChanging(Nullable<global::System.Guid> value);
+        partial void OnEmployeeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> VehicleId
+        {
+            get
+            {
+                return _VehicleId;
+            }
+            set
+            {
+                OnVehicleIdChanging(value);
+                ReportPropertyChanging("VehicleId");
+                _VehicleId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("VehicleId");
+                OnVehicleIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _VehicleId;
+        partial void OnVehicleIdChanging(Nullable<global::System.Guid> value);
+        partial void OnVehicleIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -10937,16 +11109,16 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "UserAccountTrackPoint", "UserAccount")]
-        public UserAccount UserAccount
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "TrackPointEmployee", "Employee")]
+        public Employee Employee
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserAccount>("CoreEntities.UserAccountTrackPoint", "UserAccount").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.TrackPointEmployee", "Employee").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserAccount>("CoreEntities.UserAccountTrackPoint", "UserAccount").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.TrackPointEmployee", "Employee").Value = value;
             }
         }
         /// <summary>
@@ -10954,22 +11126,61 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<UserAccount> UserAccountReference
+        public EntityReference<Employee> EmployeeReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserAccount>("CoreEntities.UserAccountTrackPoint", "UserAccount");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.TrackPointEmployee", "Employee");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserAccount>("CoreEntities.UserAccountTrackPoint", "UserAccount", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Employee>("CoreEntities.TrackPointEmployee", "Employee", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "TrackPointVehicle", "Vehicle")]
+        public Vehicle Vehicle
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Vehicle>("CoreEntities.TrackPointVehicle", "Vehicle").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Vehicle>("CoreEntities.TrackPointVehicle", "Vehicle").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Vehicle> VehicleReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Vehicle>("CoreEntities.TrackPointVehicle", "Vehicle");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Vehicle>("CoreEntities.TrackPointVehicle", "Vehicle", value);
                 }
             }
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -10998,6 +11209,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11097,30 +11309,9 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnCreationDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "UserAccountTrackPoint", "TrackPoint")]
-        public EntityCollection<TrackPoint> TrackPoints
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<TrackPoint>("CoreEntities.UserAccountTrackPoint", "TrackPoint");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<TrackPoint>("CoreEntities.UserAccountTrackPoint", "TrackPoint", value);
-                }
-            }
-        }
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -11167,6 +11358,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -11195,6 +11387,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11297,6 +11490,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnUserAccountIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -11339,6 +11533,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -11365,6 +11560,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11611,6 +11807,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnOwnerPartyIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -11695,8 +11892,31 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "TrackPointVehicle", "TrackPoint")]
+        public EntityCollection<TrackPoint> TrackPoints
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<TrackPoint>("CoreEntities.TrackPointVehicle", "TrackPoint");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<TrackPoint>("CoreEntities.TrackPointVehicle", "TrackPoint", value);
+                }
+            }
+        }
 
         #endregion
+
     }
     
     /// <summary>
@@ -11723,6 +11943,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -11849,6 +12070,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnVehicleMaintenanceLogEntryIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -11891,6 +12113,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -11917,6 +12140,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -12067,6 +12291,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnVehicleIdChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -12131,9 +12356,11 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
     }
 
     #endregion
+
     #region ComplexTypes
     
     /// <summary>
@@ -12158,6 +12385,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -12257,6 +12485,7 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnServiceNameChanged();
 
         #endregion
+
     }
     
     /// <summary>
@@ -12281,6 +12510,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -12572,8 +12802,10 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnClientIdChanged();
 
         #endregion
+
     }
 
     #endregion
+
     
 }
