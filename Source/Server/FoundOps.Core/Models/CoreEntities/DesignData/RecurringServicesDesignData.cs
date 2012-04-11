@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 
@@ -50,36 +51,32 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             var secondServiceTemplate = _client.ServiceTemplates.ElementAt(1);
             var thirdServiceTemplate = _client.ServiceTemplates.ElementAt(2);
 
-            DesignRecurringService = new RecurringService
-                                         {
-                                             ServiceTemplate = firstServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined)
-                                         };
+            DesignRecurringService = new RecurringService { ServiceTemplate = firstServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined) };
+            DesignRecurringService.AddRepeat();
 
             var repeat = (new RepeatDesignData()).DesignWeeklyRepeat;
             repeat.Id = DesignRecurringService.Id; //Fix Referential Contraint
             DesignRecurringService.Repeat = repeat;
 
-            DesignRecurringServiceTwo = new RecurringService
-            {
-                ServiceTemplate = secondServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined)
-            };
+            DesignRecurringServiceTwo = new RecurringService { ServiceTemplate = secondServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined) };
+            DesignRecurringServiceTwo.AddRepeat();
+
             repeat = (new RepeatDesignData()).DesignMonthlyRepeat;
             repeat.Id = DesignRecurringServiceTwo.Id; //Fix Referential Contraint
             DesignRecurringServiceTwo.Repeat = repeat;
 
-            DesignRecurringServiceThree = new RecurringService
-                                              {
-                                                  ServiceTemplate = thirdServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined)
-                                              };
+            DesignRecurringServiceThree = new RecurringService { ServiceTemplate = thirdServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined) };
+            DesignRecurringServiceThree.AddRepeat();
+
             repeat = (new RepeatDesignData()).DesignNeverEndingWeeklyRepeat;
             repeat.Id = DesignRecurringServiceThree.Id; //Fix Referential Contraint
             DesignRecurringServiceThree.Repeat = repeat;
             DesignRecurringServices = new ObservableCollection<RecurringService>
-                                          {
-                                              DesignRecurringService,
-                                              DesignRecurringServiceTwo,
-                                              DesignRecurringServiceThree
-                                          };
+            {
+               DesignRecurringService,
+               DesignRecurringServiceTwo,
+               DesignRecurringServiceThree
+            };
         }
     }
 }

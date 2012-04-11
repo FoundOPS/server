@@ -14,25 +14,23 @@ namespace FoundOps.Core.Models.CoreEntities
         #region Implementation of IEntityDefaultCreation
 
 #if SILVERLIGHT
-
         partial void OnCreated()
         {
             ((IEntityDefaultCreation) this).OnCreate();
         }
 #else
-
         public RecurringService()
         {
-            OnCreation();
+            ((IEntityDefaultCreation)this).OnCreate();
         }
-
 #endif
+
         partial void OnCreation(); //For Extensions on Silverlight Side
 
         void IEntityDefaultCreation.OnCreate()
         {
             Id = Guid.NewGuid();
-            AddRepeat();
+            OnCreation();
         }
 
         #endregion
@@ -74,7 +72,7 @@ namespace FoundOps.Core.Models.CoreEntities
                     ExcludedDatesString = null;
                 else
                     ExcludedDatesString = String.Join(",", value);
-           
+
                 CompositeRaiseEntityPropertyChanged("ExcludedDates");
             }
         }

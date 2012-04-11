@@ -59,6 +59,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override RecurringService AddNewEntity(object commandParameter)
         {
             var newRecurringService = new RecurringService();
+            newRecurringService.AddRepeat();
 
             //The RecurringServices Add Button will pass a ClientLevel ServiceTemplate (Available Service)
             var clientLevelServiceTemplate = (ServiceTemplate)commandParameter;
