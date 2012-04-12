@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using FoundOps.Common.Silverlight.MVVM.VMs;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Interfaces;
@@ -343,15 +344,14 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// <param name="entitiesObservable">An observable of T entities to load details from.</param>
         protected void SetupDetailsLoading<T>(Func<T, EntityQuery<T>> entityQuery, IObservable<T> entitiesObservable) where T : Entity
         {
-            LoadOperation<T> detailsLoadOperation = null;
+            var cancelDetailsLoad = new Subject<bool>();
             //Whenever the entity changes
             //a) cancel the last load
             //b) load the details
             entitiesObservable.Where(se => se != null).Subscribe(selectedEntity =>
             {
                 //a) cancel the last load
-                if (detailsLoadOperation != null && detailsLoadOperation.CanCancel)
-                    detailsLoadOperation.Cancel();
+                cancelDetailsLoad.OnNext(true);
 
                 //Do not try to load details for an entity that does not exist yet.
                 if (selectedEntity.EntityState == EntityState.New)
@@ -365,7 +365,14 @@ namespace FoundOps.SLClient.Data.ViewModels
                     return;
 
                 //b) load the details
-                detailsLoadOperation = DomainContext.Load(query, loadOp => ((ILoadDetails)selectedEntity).DetailsLoaded = true, null);
+                DomainContext.LoadAsync(query, cancelDetailsLoad)
+                    .ContinueWith(task =>
+                    {
+                        if (task.IsCanceled || !task.Result.Any())
+                            return;
+
+                        ((ILoadDetails)selectedEntity).DetailsLoaded = true;
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
             });
         }
 
