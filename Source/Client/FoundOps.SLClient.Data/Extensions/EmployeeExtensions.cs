@@ -23,6 +23,10 @@ namespace FoundOps.Core.Models.CoreEntities
             get { return _detailsLoaded; }
             set
             {
+                //Cannot clear details loaded. This is prevent issues when saving.
+                if (_detailsLoaded)
+                    return;
+
                 _detailsLoaded = value;
                 this.RaisePropertyChanged("DetailsLoaded");
             }

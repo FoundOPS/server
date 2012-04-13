@@ -20,6 +20,7 @@
             * GENERAL: Fixed manifest printing/saving bugs.<LineBreak/>
             * GENERAL: Fixed manifest formatting.<LineBreak/>
             * GENERAL: Fixed duplicate Available Services showing up.<LineBreak/>
+            * GENERAL: Fixed items details greying out after save.<LineBreak/>
             <LineBreak/>
             (4/10/2012)<LineBreak/>
             * OPTIMIZATION: Dispatcher fields loading.<LineBreak/>
