@@ -5,9 +5,9 @@ namespace FoundOps.Common.Tools
     public static class AzureTools
     {
 #if DEBUG
-        public const string AccountName = "fstoreroledatadebug";
+        public const string AccountName = "opsappdebug";
 #else
-        public const string AccountName = "fstoreroledata";
+        public const string AccountName = "opsapp";
 #endif
         public const string BlobStorageUrl = @"http://" + AccountName + @".blob.core.windows.net/";
 

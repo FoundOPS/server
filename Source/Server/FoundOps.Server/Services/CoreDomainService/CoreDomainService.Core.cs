@@ -104,7 +104,11 @@ namespace FoundOps.Server.Services.CoreDomainService
                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
                 select new { businessAccount, serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
 
-            var businessAccountWithDetails = a.First().businessAccount;
+            var firstAnon = a.FirstOrDefault();
+            if (firstAnon == null)
+                return null;
+
+            var businessAccountWithDetails = firstAnon.businessAccount;
 
             //Force load PartyImage
             businessAccountWithDetails.PartyImageReference.Load();
