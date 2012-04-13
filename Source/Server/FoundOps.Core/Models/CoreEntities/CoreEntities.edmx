@@ -2416,6 +2416,7 @@
           <NavigationProperty Name="Routes" Relationship="CoreEntities.RouteVehicle" FromRole="Vehicle" ToRole="Route" />
           <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.VehicleParty" FromRole="Vehicle" ToRole="Party" />
           <Property Type="Guid" Name="OwnerPartyId" Nullable="false" />
+          <Property Type="DateTime" Name="LastPushToAzureTimeStamp" Nullable="true" />
         </EntityType>
         <EntityType Name="VehicleMaintenanceLogEntry">
           <Key>
@@ -2970,6 +2971,7 @@
           <Property Type="DateTime" Name="LastTimeStamp" Nullable="true" />
           <Property Type="Double" Name="LastSpeed" Nullable="true" />
           <Property Type="String" Name="LastSource" Nullable="true" />
+          <Property Type="DateTime" Name="LastPushToAzureTimeStamp" Nullable="true" />
         </EntityType>
         <Association Name="EmployeeUserAccount">
           <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />

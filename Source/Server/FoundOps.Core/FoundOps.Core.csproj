@@ -102,6 +102,8 @@
     <Compile Include="Models\Authentication\AccountModels.cs" />
     <Compile Include="Models\Authentication\CoreEntitiesMembershipProvider.cs" />
     <Compile Include="Models\Authentication\UserAccountExtensions.cs" />
+    <Compile Include="Models\Azure\TrackPointsHistoryTableDataModel.cs" />
+    <Compile Include="Models\Azure\TrackPointsHistoryContext.cs" />
     <Compile Include="Models\Azure\InvoiceTableDataModel.cs" />
     <Compile Include="Models\Azure\InvoiceDataServiceContext.cs" />
     <Compile Include="Models\Constants.cs" />
@@ -227,6 +229,7 @@
     <Content Include="Models\CoreEntities\Extensions\SQL Tests\DeleteFields.sql" />
     <Content Include="Models\CoreEntities\SQL\GetNextOccurence.sql" />
     <Content Include="Models\CoreEntities\SQL\GetPreviousOccurance.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetResourcesWithLatestPoint.sql" />
     <Content Include="Models\CoreEntities\SQL\GetUnroutedServiceForDate.sql" />
     <Content Include="Models\CoreEntities\Extensions\SQL Tests\TestFunctionForRecurringServices.sql" />
     <Content Include="Models\CoreEntities\Extensions\SQL Tests\SchedulerTests.sql" />

@@ -3600,6 +3600,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _LastSource;
         partial void OnLastSourceChanging(global::System.String value);
         partial void OnLastSourceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastPushToAzureTimeStamp
+        {
+            get
+            {
+                return _LastPushToAzureTimeStamp;
+            }
+            set
+            {
+                OnLastPushToAzureTimeStampChanging(value);
+                ReportPropertyChanging("LastPushToAzureTimeStamp");
+                _LastPushToAzureTimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastPushToAzureTimeStamp");
+                OnLastPushToAzureTimeStampChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastPushToAzureTimeStamp;
+        partial void OnLastPushToAzureTimeStampChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastPushToAzureTimeStampChanged();
 
         #endregion
 
@@ -11965,6 +11989,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _OwnerPartyId;
         partial void OnOwnerPartyIdChanging(global::System.Guid value);
         partial void OnOwnerPartyIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastPushToAzureTimeStamp
+        {
+            get
+            {
+                return _LastPushToAzureTimeStamp;
+            }
+            set
+            {
+                OnLastPushToAzureTimeStampChanging(value);
+                ReportPropertyChanging("LastPushToAzureTimeStamp");
+                _LastPushToAzureTimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastPushToAzureTimeStamp");
+                OnLastPushToAzureTimeStampChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastPushToAzureTimeStamp;
+        partial void OnLastPushToAzureTimeStampChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastPushToAzureTimeStampChanged();
 
         #endregion
 

@@ -3,8 +3,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.StorageClient;
 using TrackPoint = FoundOPS.API.Models.TrackPoint;
 
 namespace FoundOPS.API.Controllers
@@ -12,6 +15,14 @@ namespace FoundOPS.API.Controllers
     [Authorize]
     public class TrackPointController : ApiController
     {
+        public struct UpdateConstants
+        {
+            public static readonly int TimeBetweenPushesToAzure = 30;
+
+            //Connection String for Azure Tables
+            public const string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=opsappdebug;AccountKey=Wbs5xOmAKdNw8ef9XgRZF2lhE+DYH1uN0qgETVKSCLqIXaaTRjiFIj4sT2cf0iQxUdOAYEej2VI4aPBr7TVOYA==";
+
+        }
         private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
 
         #region POST
@@ -62,18 +73,64 @@ namespace FoundOPS.API.Controllers
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
         private HttpResponseMessage<Models.TrackPoint> PostTrackPointHelper(Guid? employeeId, Guid? vehicleId, Models.TrackPoint modelTrackPoint)
         {
-            //Convert the model TrackPoint to database version
-            var trackPoint = Models.TrackPoint.ConvertFromModel(modelTrackPoint);
-            
-            //Add in both the VehicleId and EmployeeId. One of the should be null
-            trackPoint.EmployeeId = employeeId;
-            trackPoint.VehicleId = vehicleId;
+            var pushTrackPointToAzure = false;
+            var tableName = "";
+
+            if(employeeId != null)
+            {
+                var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == employeeId);
+
+                employee.LastCompassDirection = modelTrackPoint.CompassDirection;
+                employee.LastLatitude = modelTrackPoint.Latitude;
+                employee.LastLongitude = modelTrackPoint.Longitude;
+                employee.LastSource = modelTrackPoint.Source;
+                employee.LastSpeed = modelTrackPoint.Speed;
+                employee.LastTimeStamp = modelTrackPoint.TimeStamp;
+
+                tableName = employee.Id.ToString().Replace("-", "");
+
+                if (modelTrackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= employee.LastPushToAzureTimeStamp)
+                    pushTrackPointToAzure = true;
+            }
+
+            else if (vehicleId != null)
+            {
+                var vehicle = _coreEntitiesContainer.Vehicles.FirstOrDefault(v => v.Id == vehicleId);
+
+                vehicle.LastCompassDirection = modelTrackPoint.CompassDirection;
+                vehicle.LastLatitude = modelTrackPoint.Latitude;
+                vehicle.LastLongitude = modelTrackPoint.Longitude;
+                vehicle.LastSource = modelTrackPoint.Source;
+                vehicle.LastSpeed = modelTrackPoint.Speed;
+                vehicle.LastTimeStamp = modelTrackPoint.TimeStamp;
+
+                if (modelTrackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= vehicle.LastPushToAzureTimeStamp)
+                    pushTrackPointToAzure = true;
+            }
+
+            if(pushTrackPointToAzure)
+            {
+                var storageAccount = CloudStorageAccount.Parse(UpdateConstants.StorageConnectionString);
+
+                var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(),
+                                                                        storageAccount.Credentials);
+
+                // Create the table if there is not already a table with the name of the Business Account
+                var tableClient = storageAccount.CreateCloudTableClient();
+
+                //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
+                tableName = "t" + currentInvoice.BusinessAccount.Id.ToString().Replace("-", "");
+
+                try
+                {
+                    tableClient.CreateTableIfNotExist(tableName);
+                }
+                catch { }
+            }
 
             //Find the one that is not null and keep it to be returned in the response header
             var employeeOrVehicleId = employeeId ?? vehicleId;
 
-            //Add the new TrackPoint to the DB and save
-            _coreEntitiesContainer.TrackPoints.AddObject(trackPoint);
             _coreEntitiesContainer.SaveChanges();
 
             //Create the Http response 
