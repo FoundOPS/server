@@ -906,121 +906,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
-        /// <param name="clientIdContext">No Metadata Documentation available.</param>
-        /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
-        /// <param name="seedDate">No Metadata Documentation available.</param>
-        /// <param name="frontBackMinimum">No Metadata Documentation available.</param>
-        /// <param name="getPrevious">No Metadata Documentation available.</param>
-        /// <param name="getNext">No Metadata Documentation available.</param>
-        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> seedDate, Nullable<global::System.Int32> frontBackMinimum, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
-        {
-            ObjectParameter serviceProviderIdContextParameter;
-            if (serviceProviderIdContext.HasValue)
-            {
-                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
-            }
-            else
-            {
-                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter clientIdContextParameter;
-            if (clientIdContext.HasValue)
-            {
-                clientIdContextParameter = new ObjectParameter("clientIdContext", clientIdContext);
-            }
-            else
-            {
-                clientIdContextParameter = new ObjectParameter("clientIdContext", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter recurringServiceIdContextParameter;
-            if (recurringServiceIdContext.HasValue)
-            {
-                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", recurringServiceIdContext);
-            }
-            else
-            {
-                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter seedDateParameter;
-            if (seedDate.HasValue)
-            {
-                seedDateParameter = new ObjectParameter("seedDate", seedDate);
-            }
-            else
-            {
-                seedDateParameter = new ObjectParameter("seedDate", typeof(global::System.DateTime));
-            }
-    
-            ObjectParameter frontBackMinimumParameter;
-            if (frontBackMinimum.HasValue)
-            {
-                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", frontBackMinimum);
-            }
-            else
-            {
-                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", typeof(global::System.Int32));
-            }
-    
-            ObjectParameter getPreviousParameter;
-            if (getPrevious.HasValue)
-            {
-                getPreviousParameter = new ObjectParameter("getPrevious", getPrevious);
-            }
-            else
-            {
-                getPreviousParameter = new ObjectParameter("getPrevious", typeof(global::System.Boolean));
-            }
-    
-            ObjectParameter getNextParameter;
-            if (getNext.HasValue)
-            {
-                getNextParameter = new ObjectParameter("getNext", getNext);
-            }
-            else
-            {
-                getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
-            }
-    
-            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
-        {
-            ObjectParameter serviceProviderContextParameter;
-            if (serviceProviderContext.HasValue)
-            {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
-            }
-            else
-            {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter serviceDateParameter;
-            if (serviceDate.HasValue)
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
-            }
-            else
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
-            }
-    
-            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="clientId">No Metadata Documentation available.</param>
         public int DeleteClientBasedOnId(Nullable<global::System.Guid> clientId)
         {
@@ -1160,6 +1045,121 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnContextId", serviceProviderIdParameter, ownerClientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
+        /// <param name="clientIdContext">No Metadata Documentation available.</param>
+        /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
+        /// <param name="seedDate">No Metadata Documentation available.</param>
+        /// <param name="frontBackMinimum">No Metadata Documentation available.</param>
+        /// <param name="getPrevious">No Metadata Documentation available.</param>
+        /// <param name="getNext">No Metadata Documentation available.</param>
+        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> seedDate, Nullable<global::System.Int32> frontBackMinimum, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
+        {
+            ObjectParameter serviceProviderIdContextParameter;
+            if (serviceProviderIdContext.HasValue)
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
+            }
+            else
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter clientIdContextParameter;
+            if (clientIdContext.HasValue)
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", clientIdContext);
+            }
+            else
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter recurringServiceIdContextParameter;
+            if (recurringServiceIdContext.HasValue)
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", recurringServiceIdContext);
+            }
+            else
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter seedDateParameter;
+            if (seedDate.HasValue)
+            {
+                seedDateParameter = new ObjectParameter("seedDate", seedDate);
+            }
+            else
+            {
+                seedDateParameter = new ObjectParameter("seedDate", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter frontBackMinimumParameter;
+            if (frontBackMinimum.HasValue)
+            {
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", frontBackMinimum);
+            }
+            else
+            {
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter getPreviousParameter;
+            if (getPrevious.HasValue)
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", getPrevious);
+            }
+            else
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter getNextParameter;
+            if (getNext.HasValue)
+            {
+                getNextParameter = new ObjectParameter("getNext", getNext);
+            }
+            else
+            {
+                getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
+            }
+    
+            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+            }
+            else
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
         }
 
         #endregion
