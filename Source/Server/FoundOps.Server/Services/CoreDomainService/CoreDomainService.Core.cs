@@ -95,20 +95,20 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
                 return null;
 
-            var a =
-               (from businessAccount in this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId).Include(ba => ba.ContactInfoSet)
-                                           .Include(ba => ba.ServiceTemplates).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties")
+            var businessAccountQueryable = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId).Include(ba => ba.ContactInfoSet)
+                .Include(ba => ba.ServiceTemplates).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties");
+
+            var a = 
+                (from businessAccount in businessAccountQueryable
                 //Force load the details
                 from serviceTemplate in businessAccount.ServiceTemplates
                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
                 select new { businessAccount, serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
 
-            var firstAnon = a.FirstOrDefault();
-            if (firstAnon == null)
+            var businessAccountWithDetails = businessAccountQueryable.FirstOrDefault();
+            if (businessAccountWithDetails == null)
                 return null;
-
-            var businessAccountWithDetails = firstAnon.businessAccount;
 
             //Force load PartyImage
             businessAccountWithDetails.PartyImageReference.Load();

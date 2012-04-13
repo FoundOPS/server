@@ -255,9 +255,10 @@ namespace FoundOps.SLClient.Data.Services
                      if (task.IsCanceled)
                          return;
 
-                     //Service templates are not loaded for the FoundOPS account
-                     if (!task.Result.Any() && OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
-                         throw new Exception("Please reload the page");
+                     //TODO Ask the user to reload if this does not work. NOTE: Service templates are not loaded for the FoundOPS account.
+                     //throw new Exception("Please reload the page");
+                     if (!task.Result.Any())
+                         return;
 
                      //The query includes the details
                      foreach (var st in task.Result)

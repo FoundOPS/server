@@ -52,7 +52,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //     on c.OwnedParty.PartyImage.Id equals pi.Id
             // select pi).ToArray();
 
-            return clients.Include("OwnedParty");
+            return clients.Distinct().Include("OwnedParty");
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (!String.IsNullOrEmpty(searchText))
                 clientsWithDisplayName = clientsWithDisplayName.Where(cdn => cdn.ChildName.StartsWith(searchText));
 
-            return clientsWithDisplayName.Select(c => c.c).Include("OwnedParty");
+            return clientsWithDisplayName.Select(c => c.c).Distinct().Include("OwnedParty");
         }
 
         public void InsertClient(Client client)
@@ -205,7 +205,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Force loads the OwnedPerson (workaround for inheritance includes not working in Entity Framework)
             contactsPeople.Select(cp => cp.person).ToArray();
 
-            return contactsPeople.Select(i => i.contact);
+            return contactsPeople.Select(i => i.contact).Distinct();
         }
 
         public void InsertContact(Contact contact)
@@ -273,7 +273,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
             employeesPeople.Select(cp => cp.person).ToArray();
 
-            return employeesPeople.Select(i => i.employee);
+            return employeesPeople.Select(i => i.employee).Distinct();
         }
 
         /// <summary>

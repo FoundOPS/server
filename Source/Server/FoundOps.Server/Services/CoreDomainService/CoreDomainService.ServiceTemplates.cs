@@ -165,7 +165,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             }
 
             //TODO? Limit by 1000
-            return serviceTemplatesToReturn.OrderBy(st => st.Name);
+            return serviceTemplatesToReturn.Distinct().OrderBy(st => st.Name);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                  from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
                  select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
 
-            return templatesWithDetails.Select(t => t.serviceTemplate).OrderBy(st => st.Name);
+            return templatesWithDetails.Select(t => t.serviceTemplate).Distinct().OrderBy(st => st.Name);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                  from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
                  select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
 
-            return templatesWithDetails.Select(t => t.serviceTemplate).OrderBy(st => st.Name);
+            return templatesWithDetails.Select(t => t.serviceTemplate).Distinct().OrderBy(st => st.Name);
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             foundOpsServiceTemplates = foundOpsServiceTemplates.Where(foundOpsTemplate =>
                 !existingChildren.Any(ec => ec.OwnerServiceTemplateId == foundOpsTemplate.Id));
 
-            return foundOpsServiceTemplates.OrderBy(st => st.Name);
+            return foundOpsServiceTemplates.Distinct().OrderBy(st => st.Name);
         }
 
         /// <summary>

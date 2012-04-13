@@ -10,7 +10,8 @@
              xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
              xmlns:BusinessAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="BusinessAccountsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" d:DesignWidth="400" 
+             ViewModelLocator:ViewModelLocator.SharedViewModel="BusinessAccountsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!-- Note: You cannot remove CoreEntities, it is used by GetVM-->
     <UserControl.Resources>
         <BusinessAccounts:ServiceTemplateAddModeConverter x:Name="ServiceTemplateAddModeConverter" />
@@ -35,7 +36,7 @@
                 <SaveDiscardCancel:SaveCancel Grid.Column="1" ISaveDiscardChangesCommands="{Binding DataContext, ElementName=myBusinessAccountLarge}"/>
             </Grid>
         </Border>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" IsEnabled="{Binding DetailsLoaded}">
             <StackPanel>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">
                     <toolkit:Expander.Header>
