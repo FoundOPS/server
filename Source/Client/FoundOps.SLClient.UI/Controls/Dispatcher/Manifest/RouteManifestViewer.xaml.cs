@@ -13,7 +13,6 @@ using System.Windows;
 using System.Reactive.Linq;
 using System.Windows.Media;
 using System.Windows.Controls;
-using Microsoft.Expression.Interactivity.Layout;
 using Telerik.Windows.Documents.UI;
 using Telerik.Windows.Documents.Model;
 using Telerik.Windows.Documents.Layout;
@@ -68,32 +67,50 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
             var updateManifest = new Subject<bool>();
 
+            //Make sure the 2D barcodes are loaded on the routes locations
+            //Do this by updating whenever:
+            //a) 2D barcode setting is set to true
+            //b) the selected route changes and the Is2DBarcodeVisible is true
+            VM.Routes.SelectedEntityObservable.AsGeneric()
+            .Merge(Observable2.FromPropertyChangedPattern(Settings, x => x.Is2DBarcodeVisible).AsGeneric())
+            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
+            {
+                if (VM.Routes.SelectedEntity == null || !Settings.Is2DBarcodeVisible)
+                    return;
+
+                foreach (var location in VM.Routes.SelectedEntity.RouteLocations)
+                    location.UpdateBarcode();
+            });
+
             //When the data is loaded, update the manifest
-
             var detailsLoadedObservable = VM.Routes.SelectedEntityObservable.WhereNotNull().SelectLatest(se => Observable2.FromPropertyChangedPattern(se, x => x.ManifestDetailsLoaded)).DistinctUntilChanged();
-
 
             //Update the Manifest when
             //a) the RouteManifestSettings properties change (if the details are loaded)
             //b) the selected entity changed (if the details are loaded)
             //c) the details are loaded
-            Settings.FromAnyPropertyChanged().Throttle(TimeSpan.FromMilliseconds(700)).AsGeneric()
-            .Merge(VM.Routes.SelectedEntityObservable.AsGeneric())
+            //d) barcode images are loaded
+            Settings.FromAnyPropertyChanged().AsGeneric()
+            .Merge(VM.Routes.SelectedEntityObservable.DistinctUntilChanged().AsGeneric())
             .Merge(detailsLoadedObservable)
+            .Merge(VM.Routes.SelectedEntityObservable.WhereNotNull().SelectLatest(r =>
+                    r.RouteLocations.Select(rl => Observable2.FromPropertyChangedPattern(rl, x => x.BarcodeLoading).Where(loading => !loading)).Merge()))
             .ObserveOnDispatcher().Subscribe(updateManifest);
 
             //Update the manifest when this is opened
             Loaded += (s, e) =>
             {
                 VM.Routes.ManifestOpen = true;
-                
+
+                //Set the busy indicator if the SelectedEntity != null && the SelectedEntity's manifest details are loaded
                 if (VM.Routes.SelectedEntity != null && !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
                     ManifestBusyIndicator.IsBusy = true;
 
-                updateManifest.OnNext(true);
+                if (CanUpdateDocument())
+                    updateManifest.OnNext(true);
             };
 
-            updateManifest.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(_ => UpdateDocument());
+            updateManifest.Throttle(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(_ => UpdateDocument());
 
             //Disable printing and saving and show the busy indicator when the details are loading
             detailsLoadedObservable.DistinctUntilChanged().ObserveOnDispatcher().Subscribe(detailsLoaded =>
@@ -223,12 +240,33 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         }
 
         /// <summary>
+        /// Whether or not the docuent can be updated.
+        /// </summary>
+        private bool CanUpdateDocument()
+        {
+            //Only load the manifest when the current viewer is open, is not printing, and the details are loaded
+            if (!VM.Routes.ManifestOpen || _currentlyPrinting || VM.Routes.SelectedEntity == null || !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
+                return false;
+
+            //If the 2D Barcode is to be displayed and they are still loading: return
+            if (VM.Routes.RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible && VM.Routes.SelectedEntity.RouteLocations.Any(rl => rl.BarcodeLoading))
+                return false;
+
+            return true;
+        }
+
+        private IDisposable _lastUpdateSubscription = null;
+        /// <summary>
         /// Updates the document.
         /// </summary>
         private void UpdateDocument()
         {
-            //Only load the manifest when the current viewer is open, is not printing, and the details are loaded
-            if (!VM.Routes.ManifestOpen || _currentlyPrinting || VM.Routes.SelectedEntity == null || !VM.Routes.SelectedEntity.ManifestDetailsLoaded) return;
+            //Cancel the last update
+            if (_lastUpdateSubscription != null)
+                _lastUpdateSubscription.Dispose();
+
+            if (!CanUpdateDocument())
+                return;
 
             //Disable printing and saving
             CanPrintOrSave = false;
@@ -236,7 +274,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             ManifestBusyIndicator.IsBusy = true;
 
             //Wait for the busy indicator to open
-            Observable.Interval(TimeSpan.FromMilliseconds(500)).Take(1).ObserveOnDispatcher()
+            _lastUpdateSubscription = Observable.Interval(TimeSpan.FromMilliseconds(750)).Take(1).ObserveOnDispatcher()
             .Subscribe(_ =>
             {
                 var document = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
@@ -370,7 +408,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         {
             base.OnApplyTemplate();
             var contentRoot = this.GetTemplateChild("ContentRoot") as FrameworkElement;
-            if (contentRoot != null) 
+            if (contentRoot != null)
                 contentRoot.LayoutUpdated += ContentRootLayoutUpdated;
         }
 
