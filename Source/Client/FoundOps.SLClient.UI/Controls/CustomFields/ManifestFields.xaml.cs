@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using FoundOps.SLClient.Data.Converters;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 
 // Needs to be in the same namespace, because it is a partial class
@@ -13,6 +15,8 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
     /// </summary>
     public partial class ManifestFields
     {
+        private static OrderByNameConverter _orderByNameConverter = new OrderByNameConverter();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldsDefineGrid"/> class.
         /// </summary>
@@ -27,6 +31,7 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
             //var two = this.ServiceTemplate;
         }
 
+
         #region ServiceTemplate Dependency Property
 
         /// <summary>
@@ -34,7 +39,7 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
         /// </summary>
         public ServiceTemplate ServiceTemplate
         {
-            get { return (ServiceTemplate) GetValue(ServiceTemplateProperty); }
+            get { return (ServiceTemplate)GetValue(ServiceTemplateProperty); }
             set { SetValue(ServiceTemplateProperty, value); }
         }
 
@@ -44,12 +49,22 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
         public static readonly DependencyProperty ServiceTemplateProperty =
             DependencyProperty.Register(
                 "ServiceTemplate",
-                typeof (ServiceTemplate),
+                typeof(ServiceTemplate),
                 typeof(ManifestFields),
-                new PropertyMetadata(null));
+                new PropertyMetadata(ServiceTemplateChanged));
+
+        private static void ServiceTemplateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var c = d as ManifestFields;
+            if (c != null)
+            {
+                var newValue = e.NewValue as ServiceTemplate;
+
+                //Manually set the ItemsControl so this happens immediately
+                c.FieldsItemsControl.ItemsSource = (IEnumerable) (newValue == null ? null : _orderByNameConverter.Convert(newValue.Fields, null, null, null));
+            }
+        }
 
         #endregion
     }
-
-
 }

@@ -1,10 +1,5 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Converters;
-using System;
-using System.Net;
-using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Media.Imaging;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 {

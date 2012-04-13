@@ -122,8 +122,5 @@
                    PercentageTemplate="{StaticResource PercentageTemplate}" LocationTemplate="{StaticResource LocationTemplate}" 
                    TextLgTemplate="{StaticResource TextLargeTemplate}" TextSmTemplate="{StaticResource TextSmallTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
     </UserControl.Resources>
-    <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel Width="500" MinHeight="0" NumberOfColumns="2">
-        <telerik:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" ItemsSource="{Binding ServiceTemplate.Fields, 
-            ElementName=myManifestFields, Converter={StaticResource OrderByNameConverter}}"/>
-    </DynamicallySizedWrapPanel:DynamicallySizedWrapPanel>
+    <telerik:ItemsControl x:Name="FieldsItemsControl" Width="500" ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" />
 </UserControl>

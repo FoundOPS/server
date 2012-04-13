@@ -298,7 +298,8 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="serviceHoldersToLoad">The service holders to load details for.</param>
         /// <param name="cancel">(Optional) A cancel observable. Push once to cancel this.</param>
         /// <param name="refresh">If false it will not load the details if they are already loaded. Otherwise it will always reload the details. Defaults to true.</param>
-        public static void LoadDetails(IEnumerable<ServiceHolder> serviceHoldersToLoad, IObservable<bool> cancel = null, bool refresh = true)
+        /// <param name="onLoad">Called on a succesful load.</param>
+        public static void LoadDetails(IEnumerable<ServiceHolder> serviceHoldersToLoad, IObservable<bool> cancel = null, bool refresh = true, Action onLoad = null)
         {
             //Only load details for existing services
             //New services details are already loaded (and not in the server yet)
@@ -311,6 +312,9 @@ namespace FoundOps.Core.Models.CoreEntities
             //Load the ServiceHolders with existing services and the ServiceHolders to generate seperately
             var serviceHoldersWithExistingServices = serviceHoldersToLoad.Where(sh => sh.ExistingServiceId.HasValue).ToArray();
 
+            var existingServicesLoaded = false;
+            var serviceHoldersToGenerateLoaded = false;
+
             //Load the existing services ServiceHolders
             var existingServicesQuery = Manager.CoreDomainContext.GetServicesDetailsForRoleQuery(Manager.Context.RoleId,
                 serviceHoldersWithExistingServices.Select(sh => sh.ExistingServiceId.Value).Distinct());
@@ -318,16 +322,23 @@ namespace FoundOps.Core.Models.CoreEntities
             Manager.CoreDomainContext.LoadAsync(existingServicesQuery, cancel)
                 .ContinueWith(task =>
                 {
-                    if (task.IsCanceled || !task.Result.Any()) return;
+                    if (task.IsCanceled) return;
 
                     //Call the finished OnLoadServiceDetails for the loaded existing services
-                    foreach (var existingService in task.Result)
+                    if (task.Result.Any())
                     {
-                        var serviceHolders = serviceHoldersWithExistingServices.Where(sh => sh.ExistingServiceId == existingService.Id);
-                        foreach (var serviceHolder in serviceHolders)
-                            serviceHolder.OnLoadServiceDetails(existingService);
+                        foreach (var existingService in task.Result)
+                        {
+                            var serviceHolders = serviceHoldersWithExistingServices.Where(sh => sh.ExistingServiceId == existingService.Id);
+                            foreach (var serviceHolder in serviceHolders)
+                                serviceHolder.OnLoadServiceDetails(existingService);
+                        }
                     }
 
+                    existingServicesLoaded = true;
+
+                    if (onLoad != null && existingServicesLoaded && serviceHoldersToGenerateLoaded)
+                        onLoad();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
 
             var serviceHoldersToGenerate = serviceHoldersToLoad.Where(sh => !sh.ExistingServiceId.HasValue && sh.RecurringServiceId.HasValue).ToArray();
@@ -338,15 +349,24 @@ namespace FoundOps.Core.Models.CoreEntities
             Manager.CoreDomainContext.LoadAsync(recurringServiceParentsQuery, cancel)
                 .ContinueWith(task =>
                 {
-                    if (task.IsCanceled || !task.Result.Any()) return;
+                    if (task.IsCanceled) return;
 
                     //Call the finished OnLoadServiceDetails for the loaded recurring service parents
-                    foreach (var recurringService in task.Result)
+                    if (task.Result.Any())
                     {
-                        var serviceHolders = serviceHoldersToGenerate.Where(sh => sh.RecurringServiceId == recurringService.Id);
-                        foreach (var serviceHolder in serviceHolders)
-                            serviceHolder.OnLoadRecurringServiceDetails(recurringService);
+                        foreach (var recurringService in task.Result)
+                        {
+                            var serviceHolders =
+                                serviceHoldersToGenerate.Where(sh => sh.RecurringServiceId == recurringService.Id);
+                            foreach (var serviceHolder in serviceHolders)
+                                serviceHolder.OnLoadRecurringServiceDetails(recurringService);
+                        }
                     }
+
+                    serviceHoldersToGenerateLoaded = true;
+
+                    if (onLoad != null && existingServicesLoaded && serviceHoldersToGenerateLoaded)
+                        onLoad();
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 

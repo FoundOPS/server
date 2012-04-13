@@ -26,6 +26,20 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
+        private bool _manifestDetailsLoaded;
+        /// <summary>
+        /// This means the Clients, Locations, and ServiceTemplates and Fields of the RouteDestinations and Tasks have been loaded.
+        /// </summary>
+        public bool ManifestDetailsLoaded
+        {
+            get { return _manifestDetailsLoaded; }
+            set
+            {
+                _manifestDetailsLoaded = value;
+                this.RaisePropertyChanged("ManifestDetailsLoaded");
+            }
+        }
+
         #endregion
 
         /// <summary>

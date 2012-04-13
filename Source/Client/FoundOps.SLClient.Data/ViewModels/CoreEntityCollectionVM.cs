@@ -120,7 +120,7 @@ namespace FoundOps.SLClient.Data.ViewModels
 
         #region Selected Entity
 
-        readonly Subject<TEntity> _selectedEntityObservable = new Subject<TEntity>(); //The backing SelectedEntityObservable
+        readonly BehaviorSubject<TEntity> _selectedEntityObservable = new BehaviorSubject<TEntity>(null); //The backing SelectedEntityObservable
         /// <summary>
         /// Gets the selected entity observable.
         /// </summary>

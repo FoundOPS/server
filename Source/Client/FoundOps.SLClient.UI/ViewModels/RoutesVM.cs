@@ -355,21 +355,46 @@ namespace FoundOps.SLClient.UI.ViewModels
                     {
                         cancelLoadDetails.OnNext(true);
 
-                        //Load the Clients/ContactInfoSet of the RouteTasks
-                        var clientsWithContactInfoQuery = DomainContext.GetClientsWithContactInfoSetQuery(ContextManager.RoleId, 
-                            SelectedEntity.RouteDestinations.Where(rd=>rd.ClientId.HasValue).Select(rd=>rd.ClientId.Value));
+                        var clientsLoaded = false;
+                        var locationsLoaded = false;
+                        var fieldsLoaded = false;
 
-                        DomainContext.LoadAsync(clientsWithContactInfoQuery, cancelLoadDetails);
-                      
+                        //Load the Clients/ContactInfoSet of the RouteTasks
+                        var clientsWithContactInfoQuery = DomainContext.GetClientsWithContactInfoSetQuery(ContextManager.RoleId,
+                            SelectedEntity.RouteDestinations.Where(rd => rd.ClientId.HasValue).Select(rd => rd.ClientId.Value));
+
+                        DomainContext.LoadAsync(clientsWithContactInfoQuery, cancelLoadDetails)
+                            .ContinueWith(task =>
+                            {
+                                if (task.IsCanceled) return;
+
+                                clientsLoaded = true;
+                                if (clientsLoaded && locationsLoaded && fieldsLoaded)
+                                    SelectedEntity.ManifestDetailsLoaded = true;
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
+
                         //Load the Locations/ContactInfoSet of the RouteTasks
                         var locationsWithContactInfoQuery = DomainContext.GetLocationsWithContactInfoSetQuery(ContextManager.RoleId,
                             SelectedEntity.RouteDestinations.Where(rd => rd.LocationId.HasValue).Select(rd => rd.LocationId.Value));
 
-                        DomainContext.LoadAsync(locationsWithContactInfoQuery, cancelLoadDetails);
+                        DomainContext.LoadAsync(locationsWithContactInfoQuery, cancelLoadDetails)
+                            .ContinueWith(task =>
+                            {
+                                if (task.IsCanceled) return;
+
+                                locationsLoaded = true;
+                                if (clientsLoaded && locationsLoaded && fieldsLoaded)
+                                    SelectedEntity.ManifestDetailsLoaded = true;
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
 
                         //Load the Fields info of the RouteTasks
                         var serviceHoldersToLoad = SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ParentRouteTaskHolder.ServiceHolder);
-                        ServiceHolder.LoadDetails(serviceHoldersToLoad, cancelLoadDetails, false);
+                        ServiceHolder.LoadDetails(serviceHoldersToLoad, cancelLoadDetails, false, () =>
+                        {
+                            fieldsLoaded = true;
+                            if (clientsLoaded && locationsLoaded && fieldsLoaded)
+                                SelectedEntity.ManifestDetailsLoaded = true;
+                        });
                     });
 
             #endregion

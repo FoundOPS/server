@@ -150,7 +150,8 @@
                                 <DataTemplate>
                                     <StackPanel >
                                         <TextBlock Text="{Binding Name}"/>
-                                        <CustomFields:ManifestFields Margin="15,0,0,0" ServiceTemplate="{Binding ParentRouteTaskHolder.ServiceHolder.Service.ServiceTemplate}" 
+                                        <!--This needs to be manually set-->
+                                        <CustomFields:ManifestFields Margin="15,0,0,0" 
                                         Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsFieldsVisible, Converter={StaticResource VisibilityConverter}, 
                                         Source={Tools1:GetVM Type=ViewModels:RoutesVM}}"/>
                                     </StackPanel>
@@ -159,120 +160,6 @@
                         </ItemsControl>
                     </StackPanel>
             </StackPanel>
-            <!--<DynamicallySizedWrapPanel:DynamicallySizedWrapPanel HorizontalAlignment="Center" Width="750" MinHeight="20" NumberOfColumns="3"--> 
-                                                                 <!--DataContext="{Binding RouteDestination, Source={MarkupExtensions:RootElement}}">-->
-                <!--<StackPanel x:Name="AddressElement" Width="245" Margin="4,2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAddressVisible,--> 
-                    <!--Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">-->
-                    <!--<TextBlock Text="Address" FontWeight="Bold"/>-->
-                    <!--<TextBlock Text="{Binding Location.AddressLineOne}"/>-->
-                    <!--Address Line 1-->
-                    <!--<TextBlock Text="{Binding Location.AddressLineTwo}"/>-->
-                    <!--<StackPanel Orientation="Horizontal">-->
-                        <!--<TextBlock Text="{Binding Location.City}"/>-->
-                        <!--<TextBlock Text=", "/>-->
-                        <!--<TextBlock Text="{Binding Location.State}"/>-->
-                        <!--<TextBlock Text=" "/>-->
-                        <!--<TextBlock Text="{Binding Location.ZipCode}"/>-->
-                    <!--</StackPanel>-->
-                <!--</StackPanel>-->
-                <!--<Grid Width="245" Height="120" HorizontalAlignment="Left" Visibility="{Binding RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible,--> 
-                    <!--Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">-->
-                    <!--<Image x:Name="BarcodeImage" Height="120" Width="120" Stretch="UniformToFill"/>-->
-                <!--</Grid>-->
-                <!--<StackPanel x:Name="ContactInfoElement" Width="245" Margin="4,2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsContactInfoVisible,--> 
-                    <!--Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">-->
-                    <!--<TextBlock Text="Contact Information" FontWeight="Bold"/>-->
-                    <!--<ItemsControl x:Name="ContactInfoItemsControl" Margin="4,2" ItemsSource="{Binding Client.OwnedParty.ContactInfoSet}">-->
-                        <!--<ItemsControl.ItemsPanel>-->
-                            <!--<ItemsPanelTemplate>-->
-                                <!--<StackPanel/>-->
-                                <!--Replace VirtualizingStackPanel so export to PDF works properly-->
-                            <!--</ItemsPanelTemplate>-->
-                        <!--</ItemsControl.ItemsPanel>-->
-                        <!--<ItemsControl.ItemTemplate>-->
-                            <!--<DataTemplate>-->
-                                <!--<StackPanel Orientation="Horizontal">-->
-                                    <!--Bind to image based on the type of contact info-->
-                                    <!--<Image Stretch="Uniform" Source="{Binding Type, Converter={StaticResource TypeToImageConverter}}"/>-->
-                                    <!--<TextBlock Text=" "/>-->
-                                    <!--<TextBlock Text="{Binding Label}"/>-->
-                                    <!--Bind to Contact info label-->
-                                    <!--<TextBlock Text=" - "/>-->
-                                    <!--<TextBlock Text="{Binding Data}"/>-->
-                                    <!--Bind to Contact info-->
-                                <!--</StackPanel>-->
-                            <!--</DataTemplate>-->
-                        <!--</ItemsControl.ItemTemplate>-->
-                    <!--</ItemsControl>-->
-                <!--</StackPanel>-->
-                <!--<StackPanel x:Name="RouteTasksElement" Margin="4,2" Width="245" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteTasksVisible,--> 
-                    <!--Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">-->
-                    <!--<TextBlock Text="Tasks" FontWeight="Bold"/>-->
-                    <!--<ItemsControl x:Name="RouteTasksItemsControl" Margin="4,2" ItemsSource="{Binding RouteTasks}">-->
-                        <!--<ItemsControl.ItemsPanel>-->
-                            <!--<ItemsPanelTemplate>-->
-                                <!--<StackPanel/>-->
-                                <!--Replace VirtualizingStackPanel so export to PDF works properly-->
-                            <!--</ItemsPanelTemplate>-->
-                        <!--</ItemsControl.ItemsPanel>-->
-                        <!--<ItemsControl.ItemTemplate>-->
-                            <!--<DataTemplate>-->
-                                <!--<StackPanel >-->
-                                    <!--<TextBlock Text="{Binding Name}"/>-->
-                                    <!--<CustomFields:ManifestFields Margin="15,0,0,0" ServiceTemplate="{Binding ParentRouteTaskHolder.ServiceHolder.Service.ServiceTemplate}"--> 
-                                        <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsFieldsVisible, Converter={StaticResource VisibilityConverter},--> 
-                                        <!--Source={Tools1:GetVM Type=ViewModels:RoutesVM}}"/>-->
-                                <!--</StackPanel>-->
-                            <!--</DataTemplate>-->
-                        <!--</ItemsControl.ItemTemplate>-->
-                    <!--</ItemsControl>-->
-                <!--</StackPanel>-->
-                <!--<StackPanel x:Name="MapElement">
-                                            <StackPanel Width="245" Margin="4,2">
-                                                <Controls1:RadMap x:Name="Map" Margin="5" Width="200" Height="200" NavigationVisibility="Collapsed" CommandBarVisibility="Collapsed" 
-                MouseLocationIndicatorVisibility="Collapsed" 
-                                                ScaleVisibility="Visible" ZoomBarVisibility="Visible" MouseClickMode="None" MinZoomLevel="2" MaxZoomLevel="17">
-                                                    <Controls1:RadMap.Provider>
-                                                        <Telerik:YahooMapsProvider />
-                                                    </Controls1:RadMap.Provider>
-                                                    <Map:InformationLayer>
-                                                        <Icons:ThickPinPointIcon x:Name="MapPinPointLocation" HorizontalAlignment="Center" VerticalAlignment="Top" 
-                Map:MapLayer.Location="{Binding Location.TelerikLocation}" Text="*" Fill="Red">
-                                                            <ToolTipService.ToolTip>
-                                                                <ToolTip>
-                                                                    <StackPanel Background="White">
-                                                                        <TextBlock Text="{Binding Location.Name}" />
-                                                                        <TextBlock Text="{Binding Location.AddressLineOne}" />
-                                                                    </StackPanel>
-                                                                </ToolTip>
-                                                            </ToolTipService.ToolTip>
-                                                        </Icons:ThickPinPointIcon>
-                                                    </Map:InformationLayer>
-                                                    <Map:InformationLayer Name="SubLocationsInformationLayer" ItemTemplate="{StaticResource SubLocationPinPointTemplate}" 
-                ItemsSource="{Binding Location.SubLocationsListWrapper}" Loaded="InformationLayerLoaded" />
-                                                </Controls1:RadMap>
-                                            </StackPanel>
-                                            <StackPanel x:Name="SubLocationsElement" Margin="4,2" Width="245">
-                                                <TextBlock Text="SubLocations" FontWeight="Bold"/>
-                                                <ItemsControl x:Name="Element2" ItemsSource="{Binding Location.SubLocationsListWrapper, Converter={StaticResource OrderByParameterConverter}, 
-                ConverterParameter=Number}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <StackPanel>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <Icons:PinPointIcon Fill="{Binding Number, Converter={StaticResource NumberColorConverter}}" Text="{Binding Number}"/>
-                                                                    <TextBlock Text="{Binding Name}"/>
-                                                                </StackPanel>
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </StackPanel>
-                                        </StackPanel>-->
-                <!--<StackPanel x:Name="UserUploadedImageElement" Width="245" Margin="4,2">
-                                            <Image Margin="4,2" Height="110" Width="120" Source="/FoundOps.Common.Silverlight;component/Resources/ImageToBeBound.png"/>
-                                        </StackPanel>-->
-            <!--</DynamicallySizedWrapPanel:DynamicallySizedWrapPanel>-->
         </StackPanel>
     </Border>
 </UserControl>
