@@ -194,7 +194,7 @@ namespace FoundOps.Framework.Views.Converters
                 var textBoxField = (TextBoxField)field;
                 if (textBoxField.IsMultiline)
                     return textBoxField.Value != null ? ((TextBoxField)field).Value :
-                        "_________________________\r\n_________________________\r\n_________________________";
+                        "______________________________\r\n______________________________\r\n______________________________";
                 if (!textBoxField.IsMultiline)
                     return textBoxField.Value != null ? ((TextBoxField)field).Value : "_________________________";
             }
@@ -262,7 +262,7 @@ namespace FoundOps.Framework.Views.Converters
             }
 
             if (textBoxField != null && textBoxField.IsMultiline)
-                return name + ": _________________________\r\n_________________________\r\n_________________________";
+                return name + ": ______________________________\r\n______________________________\r\n______________________________";
             return name + ": _________________________";
         }
 
