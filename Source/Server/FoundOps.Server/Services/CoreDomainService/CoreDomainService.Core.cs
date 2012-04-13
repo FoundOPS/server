@@ -83,7 +83,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         /// <summary>
         /// Gets the BusinessAccount details.
-        /// It includes the ContactInfoSet, ServiceTemplates, OwnedRoles, OwnedRoles.MemberParties, and PartyImage.
+        /// It includes the ContactInfoSet, ServiceTemplates and Fields, OwnedRoles, OwnedRoles.MemberParties, and PartyImage.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="businessAccountId">The businessAccount id.</param>
@@ -95,13 +95,21 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
                 return null;
 
-            var businessAccount = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId)
-                .Include("ContactInfoSet").Include("ServiceTemplates").Include("OwnedRoles").Include("OwnedRoles.MemberParties").FirstOrDefault();
+            var a =
+               (from businessAccount in this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId).Include(ba => ba.ContactInfoSet)
+                                           .Include(ba => ba.ServiceTemplates).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties")
+                //Force load the details
+                from serviceTemplate in businessAccount.ServiceTemplates
+                from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                select new { businessAccount, serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
+
+            var businessAccountWithDetails = a.First().businessAccount;
 
             //Force load PartyImage
-            businessAccount.PartyImageReference.Load();
+            businessAccountWithDetails.PartyImageReference.Load();
 
-            return businessAccount;
+            return businessAccountWithDetails;
         }
 
 

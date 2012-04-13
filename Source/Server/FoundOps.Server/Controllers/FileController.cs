@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using FoundOps.Common.Tools;
 using Microsoft.WindowsAzure;
@@ -6,16 +7,14 @@ using Microsoft.WindowsAzure.StorageClient;
 
 namespace FoundOps.Server.Controllers
 {
-    public class FileController : Controller
+    public class FileController : AsyncController
     {
 #if DEBUG
-        public static string AccountName = "fstoreroledatadebug";
         public static string AccountKey = "8hmQQJLEJ4f+RfJhebeR4DwPUgp1zxgFG+pwU1UcPx1m8RK14nl6Gr3AKMJYWX794ROP6Rwgw/S+TKiBvKY9Tg==";
 #else
-        public static string AccountName = "fstoreroledata";
         public static string AccountKey = "bs7B22OoZr0jKz9xCJFlNacCemDvaTT8pj3yV2PENA6GwYkERELymg+hDOU2Yz+nAkU8IyvS4lDUmzkfkQsCuQ==";
 #endif
-        public static string AccountUrl = String.Format("http://{0}{1}", AccountName, ".blob.core.windows.net/");
+        private const int TimeoutSeconds = 3;
 
         /// <summary>
         /// Gets the url for retrieving a blob.
@@ -23,20 +22,30 @@ namespace FoundOps.Server.Controllers
         /// <param name="ownerPartyId">The owner role id.</param>
         /// <param name="fileGuid">The file id's guid.</param>
         //TODO: Add Authorize attribute (if current user is in roleId)
+        [AsyncTimeout(2500)]
+        [HandleError(ExceptionType = typeof(TaskCanceledException), View = "TimedOut")]
         public string GetBlobUrl(Guid ownerPartyId, Guid fileGuid)
         {
-            return GetBlobUrlHelper(ownerPartyId, fileGuid);
+            try
+            {
+                var url = GetBlobUrlHelper(ownerPartyId, fileGuid);
+                return url;
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         //Allows other server code to use the GetBlobUrl logic.
         internal static string GetBlobUrlHelper(Guid ownerPartyId, Guid fileGuid)
         {
             //Create service client for credentialed access to the Blob service.
-            var blobClient = new CloudBlobClient(AccountUrl, new StorageCredentialsAccountAndKey(AccountName, AccountKey)) { Timeout = TimeSpan.FromMinutes(30) };
+            var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl, new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = TimeSpan.FromSeconds(TimeoutSeconds) };
 
             //Get a reference to a container, which may or may not exist.
             var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
-            
+
             //Create a new container, if it does not exist
             blobContainer.CreateIfNotExist();
 
@@ -57,7 +66,15 @@ namespace FoundOps.Server.Controllers
         //TODO: Add Authorize attribute (if current user is in roleId)
         public string InsertBlobUrl(Guid ownerPartyId, Guid fileGuid)
         {
-            return InsertBlobUrlHelper(ownerPartyId, fileGuid);
+            try
+            {
+                var url = InsertBlobUrlHelper(ownerPartyId, fileGuid);
+                return url;
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         //Allows other server code to use the InsertBlobUrl logic.
@@ -65,8 +82,8 @@ namespace FoundOps.Server.Controllers
         internal static string InsertBlobUrlHelper(Guid ownerPartyId, Guid fileGuid)
         {
             //Create service client for credentialed access to the Blob service.
-            var blobClient = new CloudBlobClient(AccountUrl,
-                new StorageCredentialsAccountAndKey(AccountName, AccountKey)) { Timeout = TimeSpan.FromMinutes(30) };
+            var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl,
+                new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = TimeSpan.FromSeconds(TimeoutSeconds) };
 
             //Get a reference to a container, which may or may not exist.
             var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
@@ -79,7 +96,7 @@ namespace FoundOps.Server.Controllers
             //Get a reference to a blob, which may or may not exist.
             var blob = blobContainer.GetBlobReference(fileGuid.ToString());
 
-            blob.UploadByteArray(new byte[]{});
+            blob.UploadByteArray(new byte[] { });
 
             // Set the metadata into the blob
             blob.Metadata["Submitter"] = ownerPartyId.ToString();
@@ -101,15 +118,22 @@ namespace FoundOps.Server.Controllers
         [HttpPost]
         public bool DeleteBlob(Guid ownerPartyId, Guid fileGuid)
         {
-            return DeleteBlobHelper(ownerPartyId, fileGuid);
+            try
+            {
+                return DeleteBlobHelper(ownerPartyId, fileGuid);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         //Allows other server code to use the DeleteBlob logic.
         internal static bool DeleteBlobHelper(Guid ownerPartyId, Guid fileGuid)
         {
             //Create service client for credentials access to the Blob service.
-            var blobClient = new CloudBlobClient(AccountUrl,
-                new StorageCredentialsAccountAndKey(AccountName, AccountKey)) { Timeout = TimeSpan.FromMinutes(10) };
+            var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl,
+                new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = TimeSpan.FromSeconds(TimeoutSeconds) };
 
             //Get a reference to a container, which may or may not exist.
             var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));

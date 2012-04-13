@@ -3,6 +3,7 @@ using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -254,7 +255,8 @@ namespace FoundOps.SLClient.Data.Services
                      if (task.IsCanceled)
                          return;
 
-                     if (!task.Result.Any())
+                     //Service templates are not loaded for the FoundOPS account
+                     if (!task.Result.Any() && OwnerAccount.Id != BusinessAccountsConstants.FoundOpsId)
                          throw new Exception("Please reload the page");
 
                      //The query includes the details

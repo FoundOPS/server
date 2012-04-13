@@ -38,11 +38,11 @@ namespace FoundOps.SLClient.UI.Controls.Services.ServiceTemplate
 
             //Switch the RadGridView's ItemSource depending on whether this is in the admin console or not
             //If there is a BusinessAccountContext
-            //bind the ItemsSource to the QueryableCollectionView
+            //bind the ItemsSource to the BusinessAccountContextServiceTemplates
             //Otherwise bind the ItemsSource to the ServiceTemplatesForContext
             Manager.Context.GetContextObservable<BusinessAccount>().ObserveOnDispatcher().Subscribe(businessAccountContext =>
                 ServiceTemplatesRadGridView.SetBinding(DataControl.ItemsSourceProperty,
-                new Binding(businessAccountContext != null ? "QueryableCollectionView" : "ServiceTemplatesForContext") { Source = VM.ServiceTemplates }));
+                new Binding(businessAccountContext != null ? "BusinessAccountContextServiceTemplates" : "ServiceTemplatesForContext") { Source = VM.ServiceTemplates }));
         }
 
         private void OnCellDoubleClick(object sender, RadRoutedEventArgs e)

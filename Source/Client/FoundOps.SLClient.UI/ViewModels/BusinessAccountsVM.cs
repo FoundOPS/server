@@ -199,16 +199,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             DeleteItemServiceTemplate = () =>
             {
-                //TODO Call a function on the domain service
-                //Refresh when complete
+                var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
+                if (selectedServiceTemplate != null)
+                    VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
 
-                //var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
-                //if (selectedServiceTemplate != null)
-                //    VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
-
-                //return selectedServiceTemplate;
-
-                return null;
+                return selectedServiceTemplate;
             };
 
             #endregion
@@ -252,7 +247,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             SetupTopEntityDataLoading(roleId => DomainContext.GetBusinessAccountsForRoleQuery(ContextManager.RoleId));
 
-            //Whenever the business account changes load the details
+            //Whenever the business account changes load the ServiceTemplates (with Fields)
+            //This is all done in one query, otherwise it would take a long time
             SetupDetailsLoading(selectedEntity => DomainContext.GetBusinessAccountDetailsForRoleQuery(ContextManager.RoleId, selectedEntity.Id));
         }
 

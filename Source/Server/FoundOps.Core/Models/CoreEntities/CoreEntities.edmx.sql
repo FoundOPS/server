@@ -209,12 +209,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_RouteTaskRecurringService]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskRecurringService];
 GO
-IF OBJECT_ID(N'[dbo].[FK_TrackPointEmployee]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[TrackPoints] DROP CONSTRAINT [FK_TrackPointEmployee];
-GO
-IF OBJECT_ID(N'[dbo].[FK_TrackPointVehicle]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[TrackPoints] DROP CONSTRAINT [FK_TrackPointVehicle];
-GO
 IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
 GO
@@ -348,9 +342,6 @@ IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[PartiesWithName]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId]', 'U') IS NOT NULL
     DROP TABLE [CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId];
-GO
-IF OBJECT_ID(N'[dbo].[TrackPoints]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[TrackPoints];
 GO
 IF OBJECT_ID(N'[dbo].[Parties_Business]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_Business];
@@ -769,18 +760,6 @@ CREATE TABLE [dbo].[ServiceTemplateWithVendorIds] (
 );
 GO
 
--- Creating table 'TrackPoints'
-CREATE TABLE [dbo].[TrackPoints] (
-    [Id] uniqueidentifier  NOT NULL,
-    [CompassDirection] int  NULL,
-    [Latitude] float  NULL,
-    [Longitude] float  NULL,
-    [TimeStamp] datetime  NULL,
-    [Speed] float  NULL,
-    [Source] nvarchar(max)  NULL
-);
-GO
-
 -- Creating table 'Parties_Business'
 CREATE TABLE [dbo].[Parties_Business] (
     [Name] nvarchar(max)  NULL,
@@ -1100,12 +1079,6 @@ GO
 ALTER TABLE [dbo].[ServiceTemplateWithVendorIds]
 ADD CONSTRAINT [PK_ServiceTemplateWithVendorIds]
     PRIMARY KEY CLUSTERED ([ServiceTemplateId], [VendorId] ASC);
-GO
-
--- Creating primary key on [Id] in table 'TrackPoints'
-ALTER TABLE [dbo].[TrackPoints]
-ADD CONSTRAINT [PK_TrackPoints]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
 -- Creating primary key on [Id] in table 'Parties_Business'
