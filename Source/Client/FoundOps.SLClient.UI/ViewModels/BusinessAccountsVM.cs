@@ -1,3 +1,4 @@
+using System.Windows;
 using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
@@ -200,8 +201,17 @@ namespace FoundOps.SLClient.UI.ViewModels
             DeleteItemServiceTemplate = () =>
             {
                 var selectedServiceTemplate = VM.ServiceTemplates.SelectedEntity;
-                if (selectedServiceTemplate != null)
-                    VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
+
+                if (selectedServiceTemplate == null)
+                    return null;
+
+                if (selectedServiceTemplate.ServiceTemplateLevel == ServiceTemplateLevel.FoundOpsDefined)
+                {
+                    MessageBox.Show("Cannot delete FoundOPS service templates, yet.");
+                    return null;
+                }
+
+                VM.ServiceTemplates.DeleteEntity(selectedServiceTemplate);
 
                 return selectedServiceTemplate;
             };
