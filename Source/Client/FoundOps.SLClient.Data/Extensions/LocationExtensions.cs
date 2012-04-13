@@ -163,15 +163,20 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         public void UpdateBarcode()
         {
-            //If the barcode image is already loaded, return
-            if (BarcodeImage != null && _barcodeLatitudeLongitudeTuple == new Tuple<decimal?, decimal?>(this.Latitude, this.Longitude))
+            //if the barcode is currently loading return
+            if (BarcodeLoading)
                 return;
 
-            //Otherwise update the image
+            //if the barcode image is already loaded return
+            if (BarcodeImage != null && _barcodeLatitudeLongitudeTuple != null &&
+                _barcodeLatitudeLongitudeTuple.Item1 == this.Latitude && _barcodeLatitudeLongitudeTuple.Item2 == this.Longitude)
+                return;
+
+            //if the lat and lon are null, set the image to null
             if (!this.Latitude.HasValue || !this.Longitude.HasValue)
             {
-                //if the lat and lon are null, set the image to null
                 BarcodeImage = null;
+                BarcodeLoading = false;
                 return;
             }
 
@@ -185,7 +190,7 @@ namespace FoundOps.Core.Models.CoreEntities
                     var imageBytes = stream.ReadFully();
 
                     this.BarcodeImage = imageBytes;
-
+                    _barcodeLatitudeLongitudeTuple = new Tuple<decimal?, decimal?>(this.Latitude, this.Longitude);
                     BarcodeLoading = false;
                 });
         }

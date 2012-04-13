@@ -72,7 +72,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             //a) 2D barcode setting is set to true
             //b) the selected route changes and the Is2DBarcodeVisible is true
             VM.Routes.SelectedEntityObservable.AsGeneric()
-            .Merge(Observable2.FromPropertyChangedPattern(Settings, x => x.Is2DBarcodeVisible).AsGeneric())
+            .Merge(Observable2.FromPropertyChangedPattern(Settings, x => x.Is2DBarcodeVisible).DistinctUntilChanged().AsGeneric())
             .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
             {
                 if (VM.Routes.SelectedEntity == null || !Settings.Is2DBarcodeVisible)

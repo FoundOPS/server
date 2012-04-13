@@ -1,21 +1,21 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using FoundOps.Common.Tools;
+﻿using FoundOps.Common.Tools;
 using FoundOps.Core.Tools;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
+using System;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace FoundOps.Server.Controllers
 {
     public class FileController : AsyncController
     {
 #if DEBUG
-        public static string AccountKey = "8hmQQJLEJ4f+RfJhebeR4DwPUgp1zxgFG+pwU1UcPx1m8RK14nl6Gr3AKMJYWX794ROP6Rwgw/S+TKiBvKY9Tg==";
+        public static string AccountKey = "Wbs5xOmAKdNw8ef9XgRZF2lhE+DYH1uN0qgETVKSCLqIXaaTRjiFIj4sT2cf0iQxUdOAYEej2VI4aPBr7TVOYA==";
 #else
         public static string AccountKey = "bs7B22OoZr0jKz9xCJFlNacCemDvaTT8pj3yV2PENA6GwYkERELymg+hDOU2Yz+nAkU8IyvS4lDUmzkfkQsCuQ==";
 #endif
-        private const int TimeoutSeconds = 3;
+        private const int TimeoutMilliseconds = 5000;
 
         /// <summary>
         /// Gets the url for retrieving a blob.
@@ -23,7 +23,7 @@ namespace FoundOps.Server.Controllers
         /// <param name="ownerPartyId">The owner role id.</param>
         /// <param name="fileGuid">The file id's guid.</param>
         //TODO: Add Authorize attribute (if current user is in roleId)
-        [AsyncTimeout(2500)]
+        [AsyncTimeout(TimeoutMilliseconds)]
         [HandleError(ExceptionType = typeof(TaskCanceledException), View = "TimedOut")]
         public Task<string> GetBlobUrl(Guid ownerPartyId, Guid fileGuid)
         {
@@ -36,13 +36,13 @@ namespace FoundOps.Server.Controllers
             return AsyncHelper.RunAsync(() =>
             {
                 //Create service client for credentialed access to the Blob service.
-                var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl, new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = TimeSpan.FromSeconds(TimeoutSeconds) };
+                var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl, new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) };
 
                 //Get a reference to a container, which may or may not exist.
                 var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
 
                 //Create a new container, if it does not exist
-                blobContainer.CreateIfNotExist(new BlobRequestOptions { Timeout = TimeSpan.FromSeconds(TimeoutSeconds) });
+                blobContainer.CreateIfNotExist(new BlobRequestOptions { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) });
 
                 //Setup cross domain policy so Silverlight can access the server
                 CreateSilverlightPolicy(blobClient);
@@ -60,7 +60,7 @@ namespace FoundOps.Server.Controllers
         /// <param name="ownerPartyId">The owner role id.</param>
         /// <param name="fileGuid">The file id's guid.</param>
         //TODO: Add Authorize attribute (if current user is in roleId)
-        [AsyncTimeout(2500)]
+        [AsyncTimeout(TimeoutMilliseconds)]
         [HandleError(ExceptionType = typeof(TaskCanceledException), View = "TimedOut")]
         public Task<string> InsertBlobUrl(Guid ownerPartyId, Guid fileGuid)
         {
@@ -75,12 +75,12 @@ namespace FoundOps.Server.Controllers
             {
                 //Create service client for credentialed access to the Blob service.
                 var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl,
-                    new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = TimeSpan.FromSeconds(TimeoutSeconds) };
+                    new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) };
 
                 //Get a reference to a container, which may or may not exist.
                 var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
                 //Create a new container, if it does not exist
-                blobContainer.CreateIfNotExist(new BlobRequestOptions { Timeout = TimeSpan.FromSeconds(TimeoutSeconds) });
+                blobContainer.CreateIfNotExist(new BlobRequestOptions { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) });
 
                 //Setup cross domain policy so Silverlight can access the server
                 CreateSilverlightPolicy(blobClient);
@@ -109,7 +109,7 @@ namespace FoundOps.Server.Controllers
         /// <param name="fileGuid">The file id's guid.</param>
         //TODO: Add Authorize attribute (if current user is in roleId)
         [HttpPost]
-        [AsyncTimeout(2500)]
+        [AsyncTimeout(TimeoutMilliseconds)]
         [HandleError(ExceptionType = typeof(TaskCanceledException), View = "TimedOut")]
         public Task<bool> DeleteBlob(Guid ownerPartyId, Guid fileGuid)
         {
@@ -123,7 +123,7 @@ namespace FoundOps.Server.Controllers
             {
                 //Create service client for credentials access to the Blob service.
                 var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl,
-                    new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = TimeSpan.FromSeconds(TimeoutSeconds) };
+                    new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) };
 
                 //Get a reference to a container, which may or may not exist.
                 var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
