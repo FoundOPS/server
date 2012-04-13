@@ -869,7 +869,7 @@ namespace FoundOps.SLClient.Data.Models
             IsPageNumbersVisible = true;
             IsCustomMessageVisible = true;
 
-            CustomMessage = "Drive Safely and Thank you for your hard work";
+            CustomMessage = "Drive safely and thank you for your hard work";
 
             #endregion
         }
