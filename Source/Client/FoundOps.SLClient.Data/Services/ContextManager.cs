@@ -255,7 +255,7 @@ namespace FoundOps.SLClient.Data.Services
                      if (task.IsCanceled)
                          return;
 
-                     //TODO Ask the user to reload if this does not work. NOTE: Service templates are not loaded for the FoundOPS account.
+                     //TODO Ask the user to reload if this does not work
                      //throw new Exception("Please reload the page");
                      if (!task.Result.Any())
                          return;

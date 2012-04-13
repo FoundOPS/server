@@ -177,8 +177,13 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            //Filter by the service templates for the service provider (Vendor)
-            var serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
+            IQueryable<ServiceTemplate> serviceProviderTemplates;
+
+            //Filter only FoundOPS templates if the current business is FoundOPS
+            if (businessForRole.Id == BusinessAccountsConstants.FoundOpsId)
+                serviceProviderTemplates = this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.FoundOpsDefined);
+            else //Filter by the service templates for the service provider (Vendor)
+                serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
                                             join stv in ObjectContext.ServiceTemplateWithVendorIds
                                                 on serviceTemplate.Id equals stv.ServiceTemplateId
                                             where stv.VendorId == businessForRole.Id
