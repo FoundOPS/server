@@ -2,20 +2,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors"
              xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:DynamicallySizedWrapPanel="clr-namespace:FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters1:CombineNameValueConverter x:Key="CombineNameValueConverter"/>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:ManifestFieldValueConverter x:Key="ManifestFieldValueConverter"/>
-        <Converters1:OrderByNameConverter x:Key="OrderByNameConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
                 <StackPanel DataContext="{Binding Options, ConverterParameter=0, Converter={StaticResource ElementFromEnumerableConverter}}">
                     <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
                 </StackPanel>
-                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="200"/>
                 <TextBlock Text="  " />
             </StackPanel>
         </DataTemplate>
@@ -27,7 +25,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
                                 <CheckBox IsChecked="{Binding IsChecked}" IsEnabled="False"/>
-                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="200"/>
                                 <TextBlock Text="  " />
                             </StackPanel>
                         </DataTemplate>
@@ -38,7 +36,7 @@
         <DataTemplate x:Key="ComboBoxTemplate">
             <StackPanel HorizontalAlignment="Left" Width="245">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90"/>
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="200"/>
                     <TextBlock Text=" (Pick One)"/>
                 </StackPanel>
                 <ItemsControl ItemsSource="{Binding OptionsWrapper}">

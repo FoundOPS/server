@@ -19,7 +19,7 @@
                                 <TextBlock x:Name="EstimatedDistanceElement" Text="Est. Distance: 30 Miles" Margin="0,0,50,0" />
                                 <TextBlock x:Name="EstimatedTimeElement" Text="Est. Time: 12 Minutes"/>
                             </StackPanel>-->
-    <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10" Margin="5">
+    <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10" Margin="33,5,5,5">
         <StackPanel>
             <Border CornerRadius="9" DataContext="{Binding RouteDestination, Source={MarkupExtensions:RootElement}}">
                 <!--In color mode: Bind background to region color, In B&W mode: Background is black-->

@@ -50,7 +50,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         #region Locals
 
-        private double _headerPadding;
+        private double _summaryPadding;
 
         private RouteManifestSettings Settings { get { return VM.RouteManifest.RouteManifestSettings; } }
 
@@ -286,7 +286,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 if (Settings.IsHeaderVisible)
                 {
                     //We only want the header to show up once, so just add it first to the body paragraph.
-                    var manifestHeader = new ManifestHeader { Margin = new Thickness(0, 0, 0, 45) };
+                    var manifestHeader = new ManifestHeader { Margin = new Thickness(0) };
 
                     bodyParagraph.Inlines.Add(ConvertToImageInline(manifestHeader));
                 }
@@ -298,39 +298,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 if (Settings.IsSummaryVisible)
                 {
                     //We only want the summary to show up once, so just add it first to the body paragraph.
-                    var manifestSummary = new ManifestSummary { Margin = new Thickness(25, 0, 0, _headerPadding) };
-
-                    var numVehicles = VM.Routes.SelectedEntity.Vehicles.Count;
-                    var numTechnicians = VM.Routes.SelectedEntity.Technicians.Count;
-                    if (numVehicles >= numTechnicians)
-                    {
-                        if (Settings.IsAssignedVehiclesVisible)
-                        {
-                            _headerPadding = numVehicles * 25;
-                        }
-                        else if (Settings.IsAssignedTechniciansVisible)
-                        {
-                            _headerPadding = numTechnicians * 25;
-                        }
-                        else
-                            _headerPadding = 25;
-                    }
-                    else
-                    {
-                        if (Settings.IsAssignedTechniciansVisible)
-                        {
-                            _headerPadding = numTechnicians * 25;
-                        }
-                        else if (Settings.IsAssignedVehiclesVisible)
-                        {
-                            _headerPadding = numVehicles * 25;
-                        }
-                        else
-                            _headerPadding = 25;
-                    }
-                    _headerPadding -= 20;
-
-                    manifestSummary.Margin = new Thickness(25, 0, 0, _headerPadding);
+                    var manifestSummary = new ManifestSummary { Margin = new Thickness(0, 0, 0, _summaryPadding) };
 
                     bodyParagraph.Inlines.Add(ConvertToImageInline(manifestSummary));
                 }
@@ -341,7 +309,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
                 foreach (var routeDestination in VM.Routes.SelectedEntity.RouteDestinationsListWrapper)
                 {
-                    var manifestRouteDestination = new ManifestRouteDestination { Margin = new Thickness(25, 2, 0, 10), RouteDestination = routeDestination };
+                    var manifestRouteDestination = new ManifestRouteDestination { Margin = new Thickness(0, 6, 0, 6), RouteDestination = routeDestination };
 
                     bodyParagraph.Inlines.Add(ConvertToImageInline(manifestRouteDestination, () =>
                     {
