@@ -5,6 +5,8 @@
     [CreationDate] DATETIME         NOT NULL,
     [Id]           UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_Parties_UserAccount] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_UserAccount_inherits_Person] FOREIGN KEY ([Id]) REFERENCES [dbo].[Parties_Person] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_UserAccount_inherits_Person] FOREIGN KEY ([Id]) REFERENCES [dbo].[Parties_Person] ([Id]) ON DELETE CASCADE
 );
+
+
 

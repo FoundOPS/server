@@ -7,7 +7,7 @@ namespace FoundOps.Common.Tools
 #if DEBUG
         public const string AccountName = "opsappdebug";
 #else
-        public const string AccountName = "opsapp";
+        public const string AccountName = "fstoreroledata";
 #endif
         public const string BlobStorageUrl = @"http://" + AccountName + @".blob.core.windows.net/";
 

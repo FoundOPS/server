@@ -1,5 +1,9 @@
 ﻿using System;
+#if DEBUG
 using System.IO;
+#else
+using System.Net;
+#endif
 using System.Web.Mvc;
 
 namespace FoundOps.Server.Controllers
@@ -14,7 +18,7 @@ namespace FoundOps.Server.Controllers
             //var currentUserHasAccess = CoreEntitiesLogic.CurrentUserHasAccessToBlock(id);
 
             //if (currentUserHasAccess)
-           
+
 #if DEBUG
             return File(Path.Combine(path, id), "application/x-silverlight-2", id);
 #else
