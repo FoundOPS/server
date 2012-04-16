@@ -20,7 +20,8 @@ RETURNS @EmployeeVehicleTableToReturn TABLE
 		Longitude float(7),
 		LastTimeStamp datetime,
 		Speed float(7),
-		TrackSource nvarchar(max)
+		TrackSource nvarchar(max),
+		RouteId uniqueidentifier
 	) 
 AS
 BEGIN
@@ -30,55 +31,50 @@ BEGIN
 		RouteId uniqueidentifier
 	)
 
-	--Find all Routes for the ServiceProvider on the given date
+	--Finds all Routes for the ServiceProvider on the given date
 	INSERT INTO @RoutesForDate
 	SELECT Id FROM Routes
-	WHERE OwnerBusinessAccountId = @serviceProviderId
+	WHERE OwnerBusinessAccountId = @serviceProviderId AND Date = @serviceDate
 
 	DECLARE @EmployeesForRoutesForDate TABLE
 	(
 		EmployeeId uniqueidentifier,
-		EmployeeName nvarchar(max)
+		EmployeeName nvarchar(max),
+		RouteId uniqueidentifier
 	)
 
 	DECLARE @VehiclesForRoutesForDate TABLE
 	(
-		VehicleId uniqueidentifier
+		VehicleId uniqueidentifier,
+		RouteId uniqueidentifier
 	)
 
-	--Find all Employees on the Routes found above 
-	INSERT INTO @EmployeesForRoutesForDate (EmployeeId)
-	SELECT Technicians_Id FROM RouteEmployee
-	WHERE EXISTS
-	(
-		SELECT	RouteId
-		FROM	@RoutesForDate
-		WHERE	RouteId = Routes_Id
-	)
+	--Pull all employees that are in a Route for the specified day. Keep the EmployeeId and RouteId
+	INSERT INTO @EmployeesForRoutesForDate (EmployeeId, RouteId)
+	SELECT t1.Technicians_Id, t2.RouteId FROM RouteEmployee t1, @RoutesForDate t2
+	WHERE t1.Routes_Id = t2.RouteId
 
-	--Update @EmployeesForRoutesForDate wuth the Employee names
+	--Fill in the Employee Name based on the Id
 	UPDATE @EmployeesForRoutesForDate
 	SET EmployeeName = (SELECT FirstName + ' ' + LastName FROM Parties_Person WHERE Id = EmployeeId)
 	FROM @EmployeesForRoutesForDate
 
-	--Find all Vehicles associated with the Routes found above
-	INSERT INTO @VehiclesForRoutesForDate
-	SELECT Vehicles_Id FROM RouteVehicle
-	WHERE EXISTS
-	(
-		SELECT	RouteId
-		FROM	@RoutesForDate
-		WHERE	RouteId = Routes_Id
-	)
 
-	--Add Vehicles and all associated data to the final table to be returned
-	INSERT INTO @EmployeeVehicleTableToReturn (VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource)
-	SELECT t1.Id, t1.VehicleId, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource FROM Vehicles t1, @VehiclesForRoutesForDate t2 
+	--Pull all vehicles that are in a Route for the specified day. Keep the VehicleId and RouteId
+	INSERT INTO @VehiclesForRoutesForDate
+	SELECT t1.Vehicles_Id, t2.RouteId FROM RouteVehicle t1, @RoutesForDate t2
+	WHERE t1.Routes_Id = t2.RouteId
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--Combine @EmployeesForRoutesForDate and @VehiclesForRoutesForDate into the final output table
+--Most of the data for the output table needs to be pulled from either the Employees or Vehicles tables, this requires a simple combination of INSERT, SELECT and WHERE
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	INSERT INTO @EmployeeVehicleTableToReturn (VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId)
+	SELECT t1.Id, t1.VehicleId, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId FROM Vehicles t1, @VehiclesForRoutesForDate t2 
 	WHERE t1.Id = t2.VehicleId
 
-	--Add Employees and all associated data to the final table to be returned
-	INSERT INTO @EmployeeVehicleTableToReturn (EmployeeId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource)
-	SELECT t1.Id, t2.EmployeeName, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource FROM Employees t1, @EmployeesForRoutesForDate t2 
+	INSERT INTO @EmployeeVehicleTableToReturn (EmployeeId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId)
+	SELECT t1.Id, t2.EmployeeName, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId FROM Employees t1, @EmployeesForRoutesForDate t2 
 	WHERE t1.Id = t2.EmployeeId
 
 RETURN 

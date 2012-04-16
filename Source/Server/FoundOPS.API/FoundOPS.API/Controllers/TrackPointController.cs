@@ -32,7 +32,7 @@ namespace FoundOPS.API.Controllers
         #region Get
 
         // GET /api/trackpoints
-        public IQueryable<TrackPointsHistoryTableDataModel> GetTrackPoints(Guid roleId, DateTime date)
+        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, DateTime date)
         {
             var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
 
@@ -45,10 +45,13 @@ namespace FoundOPS.API.Controllers
             var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
 
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-            var tableName = "t" + currentBusinessAccount.Id.ToString().Replace("-", "");
+            var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");
 
             //Gets all objects from the Azure table specified on the date requested and returns the result
-            return serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).Where(tp => tp.TimeStamp.Date == date);
+            var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).Where(tp => tp.TimeStamp.Date == date).ToArray();
+
+            //Return the list of converted track points as a queryable
+            return trackPoints.Select(TrackPoint.ConvertToModel).AsQueryable();
         }
 
         #endregion
@@ -59,8 +62,10 @@ namespace FoundOPS.API.Controllers
         /// Used to save a TrackPoint from a mobile phone being used by an Employee
         /// </summary>
         /// <param name="modelTrackPoint"></param>
+        /// <param name="roleId"> </param>
+        /// <param name="routeId"> </param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        public HttpResponseMessage<Models.TrackPoint> PostEmployeeTrackPoint(Models.TrackPoint modelTrackPoint, Guid roleId)
+        public HttpResponseMessage<Models.TrackPoint> PostEmployeeTrackPoint(Models.TrackPoint modelTrackPoint, Guid roleId, Guid routeId)
         {
             var currentUserAccount = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).FirstOrDefault();
 
@@ -99,8 +104,9 @@ namespace FoundOPS.API.Controllers
         /// <param name="employeeId"></param>
         /// <param name="vehicleId"></param>
         /// <param name="modelTrackPoint"></param>
+        /// <param name="routeId"> </param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        private HttpResponseMessage<Models.TrackPoint> PostTrackPointHelper(Guid roleId, Guid? employeeId, Guid? vehicleId, Models.TrackPoint modelTrackPoint)
+        private HttpResponseMessage<Models.TrackPoint> PostTrackPointHelper(Guid roleId, Guid? employeeId, Guid? vehicleId, Models.TrackPoint modelTrackPoint, Guid routeId)
         {
             var pushTrackPointToAzure = false;
 
@@ -141,7 +147,7 @@ namespace FoundOPS.API.Controllers
                 var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(),
                                                                         storageAccount.Credentials);
 
-                // Create the table if there is not already a table with the name of t + EmployeeId/VehicleId
+                // Create the table if there is not already a table with the name of tp + EmployeeId/VehicleId
                 var tableClient = storageAccount.CreateCloudTableClient();
 
                 var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
@@ -150,7 +156,7 @@ namespace FoundOPS.API.Controllers
                     return null;
 
                 //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-                var tableName = "t" + currentBusinessAccount.Id.ToString().Replace("-", "");
+                var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");
 
                 try
                 {
@@ -163,6 +169,7 @@ namespace FoundOPS.API.Controllers
                                         {
                                             EmployeetId = employeeId,
                                             VehicleId = vehicleId,
+                                            RouteId = routeId,
                                             Latitude = modelTrackPoint.Latitude,
                                             Longitude = modelTrackPoint.Longitude,
                                             TimeStamp = modelTrackPoint.TimeStamp
