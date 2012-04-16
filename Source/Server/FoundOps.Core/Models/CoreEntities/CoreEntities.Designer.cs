@@ -1164,6 +1164,36 @@ namespace FoundOps.Core.Models.CoreEntities
     
             return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter, serviceDateParameter);
+        }
 
         #endregion
 
@@ -12323,6 +12353,267 @@ namespace FoundOps.Core.Models.CoreEntities
     #endregion
 
     #region ComplexTypes
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="ResourceWithLastPoint")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class ResourceWithLastPoint : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ResourceWithLastPoint object.
+        /// </summary>
+        /// <param name="employeeId">Initial value of the EmployeeId property.</param>
+        /// <param name="vehicleId">Initial value of the VehicleId property.</param>
+        /// <param name="entityName">Initial value of the EntityName property.</param>
+        /// <param name="compassHeading">Initial value of the CompassHeading property.</param>
+        /// <param name="latitude">Initial value of the Latitude property.</param>
+        /// <param name="longitude">Initial value of the Longitude property.</param>
+        /// <param name="timeStamp">Initial value of the TimeStamp property.</param>
+        /// <param name="speed">Initial value of the Speed property.</param>
+        /// <param name="trackSource">Initial value of the TrackSource property.</param>
+        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.Guid employeeId, global::System.Guid vehicleId, global::System.String entityName, global::System.Int32 compassHeading, global::System.Double latitude, global::System.Double longitude, global::System.DateTime timeStamp, global::System.Double speed, global::System.Single trackSource)
+        {
+            ResourceWithLastPoint resourceWithLastPoint = new ResourceWithLastPoint();
+            resourceWithLastPoint.EmployeeId = employeeId;
+            resourceWithLastPoint.VehicleId = vehicleId;
+            resourceWithLastPoint.EntityName = entityName;
+            resourceWithLastPoint.CompassHeading = compassHeading;
+            resourceWithLastPoint.Latitude = latitude;
+            resourceWithLastPoint.Longitude = longitude;
+            resourceWithLastPoint.TimeStamp = timeStamp;
+            resourceWithLastPoint.Speed = speed;
+            resourceWithLastPoint.TrackSource = trackSource;
+            return resourceWithLastPoint;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid EmployeeId
+        {
+            get
+            {
+                return _EmployeeId;
+            }
+            set
+            {
+                OnEmployeeIdChanging(value);
+                ReportPropertyChanging("EmployeeId");
+                _EmployeeId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("EmployeeId");
+                OnEmployeeIdChanged();
+            }
+        }
+        private global::System.Guid _EmployeeId;
+        partial void OnEmployeeIdChanging(global::System.Guid value);
+        partial void OnEmployeeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid VehicleId
+        {
+            get
+            {
+                return _VehicleId;
+            }
+            set
+            {
+                OnVehicleIdChanging(value);
+                ReportPropertyChanging("VehicleId");
+                _VehicleId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("VehicleId");
+                OnVehicleIdChanged();
+            }
+        }
+        private global::System.Guid _VehicleId;
+        partial void OnVehicleIdChanging(global::System.Guid value);
+        partial void OnVehicleIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String EntityName
+        {
+            get
+            {
+                return _EntityName;
+            }
+            set
+            {
+                OnEntityNameChanging(value);
+                ReportPropertyChanging("EntityName");
+                _EntityName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("EntityName");
+                OnEntityNameChanged();
+            }
+        }
+        private global::System.String _EntityName;
+        partial void OnEntityNameChanging(global::System.String value);
+        partial void OnEntityNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 CompassHeading
+        {
+            get
+            {
+                return _CompassHeading;
+            }
+            set
+            {
+                OnCompassHeadingChanging(value);
+                ReportPropertyChanging("CompassHeading");
+                _CompassHeading = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompassHeading");
+                OnCompassHeadingChanged();
+            }
+        }
+        private global::System.Int32 _CompassHeading;
+        partial void OnCompassHeadingChanging(global::System.Int32 value);
+        partial void OnCompassHeadingChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Double Latitude
+        {
+            get
+            {
+                return _Latitude;
+            }
+            set
+            {
+                OnLatitudeChanging(value);
+                ReportPropertyChanging("Latitude");
+                _Latitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Latitude");
+                OnLatitudeChanged();
+            }
+        }
+        private global::System.Double _Latitude;
+        partial void OnLatitudeChanging(global::System.Double value);
+        partial void OnLatitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Double Longitude
+        {
+            get
+            {
+                return _Longitude;
+            }
+            set
+            {
+                OnLongitudeChanging(value);
+                ReportPropertyChanging("Longitude");
+                _Longitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Longitude");
+                OnLongitudeChanged();
+            }
+        }
+        private global::System.Double _Longitude;
+        partial void OnLongitudeChanging(global::System.Double value);
+        partial void OnLongitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime TimeStamp
+        {
+            get
+            {
+                return _TimeStamp;
+            }
+            set
+            {
+                OnTimeStampChanging(value);
+                ReportPropertyChanging("TimeStamp");
+                _TimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TimeStamp");
+                OnTimeStampChanged();
+            }
+        }
+        private global::System.DateTime _TimeStamp;
+        partial void OnTimeStampChanging(global::System.DateTime value);
+        partial void OnTimeStampChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Double Speed
+        {
+            get
+            {
+                return _Speed;
+            }
+            set
+            {
+                OnSpeedChanging(value);
+                ReportPropertyChanging("Speed");
+                _Speed = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Speed");
+                OnSpeedChanged();
+            }
+        }
+        private global::System.Double _Speed;
+        partial void OnSpeedChanging(global::System.Double value);
+        partial void OnSpeedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Single TrackSource
+        {
+            get
+            {
+                return _TrackSource;
+            }
+            set
+            {
+                OnTrackSourceChanging(value);
+                ReportPropertyChanging("TrackSource");
+                _TrackSource = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TrackSource");
+                OnTrackSourceChanged();
+            }
+        }
+        private global::System.Single _TrackSource;
+        partial void OnTrackSourceChanging(global::System.Single value);
+        partial void OnTrackSourceChanged();
+
+        #endregion
+
+    }
     
     /// <summary>
     /// No Metadata Documentation available.

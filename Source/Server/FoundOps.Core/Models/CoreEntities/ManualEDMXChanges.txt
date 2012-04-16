@@ -143,6 +143,18 @@ Add after </EntityContainer> (the one after FK association sets)
                      Mode="In"
                      Type="datetime"/>
         </Function>
+		<Function Name="GetResourcesWithLastPoint" IsComposable="false">
+			<CommandText>
+			  SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource
+			  FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId , @serviceDate)
+			</CommandText>
+			<Parameter Name="serviceProviderId"
+					   Mode="In"
+					   Type="uniqueidentifier"/>
+			<Parameter Name="serviceDate"
+					   Mode="In"
+					   Type="datetime"/>
+		</Function>
 
 Add before </EntityContainerMapping>
 
@@ -171,6 +183,21 @@ Add before </EntityContainerMapping>
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+		  <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+                <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
