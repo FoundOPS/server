@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -48,10 +47,30 @@ namespace FoundOPS.API.Controllers
             var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");
 
             //Gets all objects from the Azure table specified on the date requested and returns the result
-            var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).Where(tp => tp.TimeStamp.Date == date).ToArray();
+            var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).ToArray().Where(tp => tp.TimeStamp.Date == date.Date);
 
             //Return the list of converted track points as a queryable
-            return trackPoints.Select(TrackPoint.ConvertToModel).AsQueryable();
+            var modelTrackPoints = trackPoints.Select(TrackPoint.ConvertToModel);
+
+            return modelTrackPoints.AsQueryable();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roleId">The current roleId</param>
+        /// <param name="serviceDate">The requested ServiceDate</param>
+        /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
+        public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid roleId, DateTime serviceDate)
+        {
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+
+            if (currentBusinessAccount == null)
+                return null;
+
+            var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id, serviceDate);
+
+            return resourcesWithTrackPoint.AsQueryable();
         }
 
         #endregion
@@ -67,12 +86,12 @@ namespace FoundOPS.API.Controllers
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
         public HttpResponseMessage<Models.TrackPoint> PostEmployeeTrackPoint(Models.TrackPoint modelTrackPoint, Guid roleId, Guid routeId)
         {
-            var currentUserAccount = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).FirstOrDefault();
+            var currentUserAccount = AuthenticationLogic.CurrentUserAccount(_coreEntitiesContainer);
 
             if (currentUserAccount == null)
                 return new HttpResponseMessage<TrackPoint>(modelTrackPoint, HttpStatusCode.Unauthorized);
 
-            var response = PostTrackPointHelper(roleId, currentUserAccount.Id, null, modelTrackPoint);
+            var response = PostTrackPointHelper(roleId, currentUserAccount.Id, null, modelTrackPoint, routeId);
 
             return response;
         }
@@ -110,9 +129,14 @@ namespace FoundOPS.API.Controllers
         {
             var pushTrackPointToAzure = false;
 
+            var currentBusinessAccount = new BusinessAccount();
+
             if (employeeId != null)
             {
-                var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == employeeId);
+                var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.LinkedUserAccount.Id == employeeId);
+
+                if(employee == null) 
+                    return new HttpResponseMessage<TrackPoint>(HttpStatusCode.BadRequest);
 
                 employee.LastCompassDirection = modelTrackPoint.CompassDirection;
                 employee.LastLatitude = modelTrackPoint.Latitude;
@@ -120,6 +144,8 @@ namespace FoundOPS.API.Controllers
                 employee.LastSource = modelTrackPoint.Source;
                 employee.LastSpeed = modelTrackPoint.Speed;
                 employee.LastTimeStamp = modelTrackPoint.TimeStamp;
+
+                currentBusinessAccount = employee.Employer;
 
                 if (modelTrackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= employee.LastPushToAzureTimeStamp)
                     pushTrackPointToAzure = true;
@@ -129,6 +155,9 @@ namespace FoundOPS.API.Controllers
             {
                 var vehicle = _coreEntitiesContainer.Vehicles.FirstOrDefault(v => v.Id == vehicleId);
 
+                if (vehicle == null)
+                    return new HttpResponseMessage<TrackPoint>(HttpStatusCode.BadRequest);
+
                 vehicle.LastCompassDirection = modelTrackPoint.CompassDirection;
                 vehicle.LastLatitude = modelTrackPoint.Latitude;
                 vehicle.LastLongitude = modelTrackPoint.Longitude;
@@ -136,9 +165,13 @@ namespace FoundOPS.API.Controllers
                 vehicle.LastSpeed = modelTrackPoint.Speed;
                 vehicle.LastTimeStamp = modelTrackPoint.TimeStamp;
 
+                currentBusinessAccount = vehicle.OwnerParty.ClientOwner.Vendor;
+
                 if (modelTrackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= vehicle.LastPushToAzureTimeStamp)
                     pushTrackPointToAzure = true;
             }
+
+            pushTrackPointToAzure = true;
 
             if (pushTrackPointToAzure)
             {
@@ -150,10 +183,8 @@ namespace FoundOPS.API.Controllers
                 // Create the table if there is not already a table with the name of tp + EmployeeId/VehicleId
                 var tableClient = storageAccount.CreateCloudTableClient();
 
-                var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
-
                 if (currentBusinessAccount == null)
-                    return null;
+                    return new HttpResponseMessage<TrackPoint>(HttpStatusCode.BadRequest);
 
                 //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
                 var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");

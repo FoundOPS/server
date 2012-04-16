@@ -139,6 +139,7 @@
     <Compile Include="Models\CoreEntities\DesignData\VehiclesDesignData.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Core\BlockExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Core\ContactInfoExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Dispatching\ResourceWithLastPoint.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Dispatching\TaskHolder.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Core\RoleExtensions.shared.cs" />

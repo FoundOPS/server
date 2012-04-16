@@ -9,12 +9,12 @@
         /// <summary>
         /// If set to true it will automatically login an operations manager.
         /// </summary>
-        public static bool AutomaticLoginOPSManager = true;
+        public static bool AutomaticLoginOPSManager = false;
 
         /// <summary>
         /// If set to true it will automatically login a FoundOPS Admin.
         /// </summary>
-        public static bool AutomaticLoginFoundOPSAdmin = false;
+        public static bool AutomaticLoginFoundOPSAdmin = true;
 #else
         public static bool AutomaticLoginOPSManager = false;
         public static bool AutomaticLoginFoundOPSAdmin = false;
