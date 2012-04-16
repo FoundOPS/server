@@ -265,6 +265,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             RegularServiceTemplate.Invoice.Id = RegularServiceTemplate.Id;
 
             RegularServiceTemplate.Fields.Add(Notes.MakeChild());
+            RegularServiceTemplate.Fields.Add(HoseLength.MakeChild());
+            RegularServiceTemplate.Fields.Add(LockInfo.MakeChild());
+            RegularServiceTemplate.Fields.Add(EnvironmentalBiotechServicesCheckListField.MakeChild());
             RegularServiceTemplate.Fields.Add(ServiceDestinationField.MakeChild());
 
             EconomyServiceTemplate = new ServiceTemplate

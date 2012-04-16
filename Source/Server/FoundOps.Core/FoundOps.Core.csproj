@@ -207,6 +207,7 @@
     <Compile Include="Models\RouteEntities\RouteResponse.cs" />
     <Compile Include="Models\RouteEntities\TimeWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\AsyncHelper.cs" />
     <Compile Include="Tools\AuthenticationLogic.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -226,13 +227,13 @@
     <Content Include="Models\CoreEntities\SQL\DeleteLocationBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplatesAndChildrenBasedOnContextId.sql" />
-    <Content Include="Models\CoreEntities\Extensions\SQL Tests\DeleteFields.sql" />
+    <Content Include="Models\CoreEntities\SQL Tests\DeleteFields.sql" />
     <Content Include="Models\CoreEntities\SQL\GetNextOccurence.sql" />
     <Content Include="Models\CoreEntities\SQL\GetPreviousOccurance.sql" />
     <Content Include="Models\CoreEntities\SQL\GetResourcesWithLatestPoint.sql" />
     <Content Include="Models\CoreEntities\SQL\GetUnroutedServiceForDate.sql" />
-    <Content Include="Models\CoreEntities\Extensions\SQL Tests\TestFunctionForRecurringServices.sql" />
-    <Content Include="Models\CoreEntities\Extensions\SQL Tests\SchedulerTests.sql" />
+    <Content Include="Models\CoreEntities\SQL Tests\TestFunctionForRecurringServices.sql" />
+    <Content Include="Models\CoreEntities\SQL Tests\SchedulerTests.sql" />
     <Content Include="Models\CoreEntities\SQL\PartiesWithName.sql" />
     <Content Include="Models\CoreEntities\SQL\SchedulerSubFunctions.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteUserAccountBasedOnId.sql" />

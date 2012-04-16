@@ -1,4 +1,6 @@
-﻿using System.ServiceModel.DomainServices.Client;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel.DomainServices.Client;
 using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using RiaServicesContrib;
@@ -21,8 +23,26 @@ namespace FoundOps.Core.Models.CoreEntities
             get { return _detailsLoaded; }
             set
             {
+                //Cannot clear details loaded. This is prevent issues when saving.
+                if (_detailsLoaded)
+                    return;
+
                 _detailsLoaded = value;
                 this.RaisePropertyChanged("DetailsLoaded");
+            }
+        }
+
+        private bool _manifestDetailsLoaded;
+        /// <summary>
+        /// This means the Clients, Locations, and ServiceTemplates and Fields of the RouteDestinations and Tasks have been loaded.
+        /// </summary>
+        public bool ManifestDetailsLoaded
+        {
+            get { return _manifestDetailsLoaded; }
+            set
+            {
+                _manifestDetailsLoaded = value;
+                this.RaisePropertyChanged("ManifestDetailsLoaded");
             }
         }
 
@@ -50,6 +70,17 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 _routeDestinationsListWrapper = value;
                 this.RaisePropertyChanged("RouteDestinationsListWrapper");
+            }
+        }
+
+        /// <summary>
+        /// Returns the route's locations.
+        /// </summary>
+        public IEnumerable<Location> RouteLocations
+        {
+            get
+            {
+                return this.RouteDestinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.Location)).Where(l => l != null);
             }
         }
 

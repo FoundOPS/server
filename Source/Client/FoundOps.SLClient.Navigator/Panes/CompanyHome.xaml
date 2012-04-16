@@ -12,10 +12,17 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (4/10/2012)
+                (4/15/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * OPTIMIZATION: Manifest QR code loading.<LineBreak/>
+            * GENERAL: Fixed manifest printing/saving bugs.<LineBreak/>
+            * GENERAL: Fixed manifest formatting.<LineBreak/>
+            * GENERAL: Fixed duplicate Available Services showing up.<LineBreak/>
+            * GENERAL: Fixed items details greying out after save.<LineBreak/>
+            <LineBreak/>
+            (4/10/2012)<LineBreak/>
             * OPTIMIZATION: Dispatcher fields loading.<LineBreak/>
             * GENERAL: Small fixes.<LineBreak/>
             <LineBreak/>

@@ -518,22 +518,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
     }
 
-    [MetadataTypeAttribute(typeof(TrackPoint.TrackPointMetadata))]
-    public partial class TrackPoint
-    {
-        internal sealed class TrackPointMetadata
-        {
-
-            // Metadata classes are not meant to be instantiated.
-            private TrackPointMetadata()
-            {
-            }
-
-            [Include]
-            public UserAccount UserAccount { get; set; }
-        }
-    }
-
     [MetadataTypeAttribute(typeof(UserAccountMetadata))]
     public partial class UserAccount
     {

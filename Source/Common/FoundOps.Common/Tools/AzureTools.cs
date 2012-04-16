@@ -5,10 +5,11 @@ namespace FoundOps.Common.Tools
     public static class AzureTools
     {
 #if DEBUG
-        public const string BlobStorageUrl = @"http://opsappdebug.blob.core.windows.net/";
+        public const string AccountName = "opsappdebug";
 #else
-        public const string BlobStorageUrl = @"http://fstoreroledata.blob.core.windows.net/";
+        public const string AccountName = "fstoreroledata";
 #endif
+        public const string BlobStorageUrl = @"http://" + AccountName + @".blob.core.windows.net/";
 
         /// <summary>
         /// Builds the container URL. 

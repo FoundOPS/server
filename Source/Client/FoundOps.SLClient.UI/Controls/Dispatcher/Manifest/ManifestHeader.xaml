@@ -8,7 +8,7 @@
     <UserControl.Resources>
         <Converters:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter"/>
     </UserControl.Resources>
-    <StackPanel x:Name="LayoutRoot" HorizontalAlignment="Center" Width="750" Margin="25,0,0,0" DataContext="{Tools1:GetVM Type=ViewModels:RoutesVM}" 
+    <StackPanel x:Name="LayoutRoot" Width="750" Margin="33,0,0,0" DataContext="{Tools1:GetVM Type=ViewModels:RoutesVM}" 
           Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsHeaderVisible, Converter={StaticResource VisibilityConverter}}">
         <Grid>
             <Grid.ColumnDefinitions>

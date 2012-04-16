@@ -1,12 +1,6 @@
-﻿using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.UI.Tools;
-using FoundOps.SLClient.UI.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Windows.Automation;
 using System.Windows.Data;
-using System.Globalization;
 
 namespace FoundOps.SLClient.UI.Converters
 {

@@ -1,0 +1,31 @@
+﻿@model FoundOps.Core.Models.Authentication.LogOnModel
+@{
+    Layout = "../Shared/Master.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //hide the main login
+        document.getElementById('mainLoginContent').style.display = "none";
+    });
+</script>
+    <div id="loginPage">
+        @using (Html.BeginForm("Login", "Account"))
+        { 
+            <fieldset id="loginFieldset">
+                <legend>Login</legend>
+                    Please re-enter your username and password.<br /><br />
+                    @Html.LabelFor(m => m.EmailAddress)<br />
+                    @Html.TextBoxFor(m => m.EmailAddress)<br /><br />
+                    @Html.LabelFor(m => m.Password)<br />
+                    @Html.PasswordFor(m => m.Password)<br /><br />
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe)
+                    <div id="forgotLoginPass">
+                        @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account")
+                    </div>
+                <input id="loginPageBtn" type="submit" value="Log On" />
+            </fieldset>
+            <div class="LogonPageValSummary">@Html.ValidationSummary()</div>
+         } 
+    </div>
+

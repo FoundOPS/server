@@ -641,22 +641,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
         private ObjectSet<ServiceTemplateWithVendorId> _ServiceTemplateWithVendorIds;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<TrackPoint> TrackPoints
-        {
-            get
-            {
-                if ((_TrackPoints == null))
-                {
-                    _TrackPoints = base.CreateObjectSet<TrackPoint>("TrackPoints");
-                }
-                return _TrackPoints;
-            }
-        }
-        private ObjectSet<TrackPoint> _TrackPoints;
 
         #endregion
 
@@ -917,18 +901,154 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             base.AddObject("ServiceTemplateWithVendorIds", serviceTemplateWithVendorId);
         }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the TrackPoints EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToTrackPoints(TrackPoint trackPoint)
-        {
-            base.AddObject("TrackPoints", trackPoint);
-        }
 
         #endregion
 
         #region Function Imports
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="clientId">No Metadata Documentation available.</param>
+        public int DeleteClientBasedOnId(Nullable<global::System.Guid> clientId)
+        {
+            ObjectParameter clientIdParameter;
+            if (clientId.HasValue)
+            {
+                clientIdParameter = new ObjectParameter("clientId", clientId);
+            }
+            else
+            {
+                clientIdParameter = new ObjectParameter("clientId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteClientBasedOnId", clientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        public int DeleteLocationBasedOnId(Nullable<global::System.Guid> locationId)
+        {
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
+            {
+                locationIdParameter = new ObjectParameter("locationId", locationId);
+            }
+            else
+            {
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="recurringServiceId">No Metadata Documentation available.</param>
+        public int DeleteRecurringService(Nullable<global::System.Guid> recurringServiceId)
+        {
+            ObjectParameter recurringServiceIdParameter;
+            if (recurringServiceId.HasValue)
+            {
+                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", recurringServiceId);
+            }
+            else
+            {
+                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteRecurringService", recurringServiceIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="parentTemplateId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(Nullable<global::System.Guid> parentTemplateId)
+        {
+            ObjectParameter parentTemplateIdParameter;
+            if (parentTemplateId.HasValue)
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", parentTemplateId);
+            }
+            else
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId", parentTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        /// <param name="ownerClientId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplatesAndChildrenBasedOnContextId(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.Guid> ownerClientId)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter ownerClientIdParameter;
+            if (ownerClientId.HasValue)
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", ownerClientId);
+            }
+            else
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnContextId", serviceProviderIdParameter, ownerClientIdParameter);
+        }
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1043,150 +1163,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="clientId">No Metadata Documentation available.</param>
-        public int DeleteClientBasedOnId(Nullable<global::System.Guid> clientId)
-        {
-            ObjectParameter clientIdParameter;
-            if (clientId.HasValue)
-            {
-                clientIdParameter = new ObjectParameter("clientId", clientId);
-            }
-            else
-            {
-                clientIdParameter = new ObjectParameter("clientId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteClientBasedOnId", clientIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="locationId">No Metadata Documentation available.</param>
-        public int DeleteLocationBasedOnId(Nullable<global::System.Guid> locationId)
-        {
-            ObjectParameter locationIdParameter;
-            if (locationId.HasValue)
-            {
-                locationIdParameter = new ObjectParameter("locationId", locationId);
-            }
-            else
-            {
-                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        /// <param name="ownerClientId">No Metadata Documentation available.</param>
-        public int DeleteServiceTemplatesAndChildrenBasedOnContextId(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.Guid> ownerClientId)
-        {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
-            }
-            else
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter ownerClientIdParameter;
-            if (ownerClientId.HasValue)
-            {
-                ownerClientIdParameter = new ObjectParameter("ownerClientId", ownerClientId);
-            }
-            else
-            {
-                ownerClientIdParameter = new ObjectParameter("ownerClientId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnContextId", serviceProviderIdParameter, ownerClientIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="parentTemplateId">No Metadata Documentation available.</param>
-        public int DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(Nullable<global::System.Guid> parentTemplateId)
-        {
-            ObjectParameter parentTemplateIdParameter;
-            if (parentTemplateId.HasValue)
-            {
-                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", parentTemplateId);
-            }
-            else
-            {
-                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId", parentTemplateIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
-        {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
-            {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
-            }
-            else
-            {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
-        {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
-            {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
-            }
-            else
-            {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="recurringServiceId">No Metadata Documentation available.</param>
-        public int DeleteRecurringService(Nullable<global::System.Guid> recurringServiceId)
-        {
-            ObjectParameter recurringServiceIdParameter;
-            if (recurringServiceId.HasValue)
-            {
-                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", recurringServiceId);
-            }
-            else
-            {
-                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteRecurringService", recurringServiceIdParameter);
         }
 
         #endregion
@@ -11016,207 +10992,6 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Value;
         partial void OnValueChanging(global::System.String value);
         partial void OnValueChanged();
-
-        #endregion
-
-    
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="TrackPoint")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class TrackPoint : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new TrackPoint object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static TrackPoint CreateTrackPoint(global::System.Guid id)
-        {
-            TrackPoint trackPoint = new TrackPoint();
-            trackPoint.Id = id;
-            return trackPoint;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Guid _Id;
-        partial void OnIdChanging(global::System.Guid value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> CompassDirection
-        {
-            get
-            {
-                return _CompassDirection;
-            }
-            set
-            {
-                OnCompassDirectionChanging(value);
-                ReportPropertyChanging("CompassDirection");
-                _CompassDirection = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CompassDirection");
-                OnCompassDirectionChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _CompassDirection;
-        partial void OnCompassDirectionChanging(Nullable<global::System.Int32> value);
-        partial void OnCompassDirectionChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Double> Latitude
-        {
-            get
-            {
-                return _Latitude;
-            }
-            set
-            {
-                OnLatitudeChanging(value);
-                ReportPropertyChanging("Latitude");
-                _Latitude = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Latitude");
-                OnLatitudeChanged();
-            }
-        }
-        private Nullable<global::System.Double> _Latitude;
-        partial void OnLatitudeChanging(Nullable<global::System.Double> value);
-        partial void OnLatitudeChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Double> Longitude
-        {
-            get
-            {
-                return _Longitude;
-            }
-            set
-            {
-                OnLongitudeChanging(value);
-                ReportPropertyChanging("Longitude");
-                _Longitude = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Longitude");
-                OnLongitudeChanged();
-            }
-        }
-        private Nullable<global::System.Double> _Longitude;
-        partial void OnLongitudeChanging(Nullable<global::System.Double> value);
-        partial void OnLongitudeChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> TimeStamp
-        {
-            get
-            {
-                return _TimeStamp;
-            }
-            set
-            {
-                OnTimeStampChanging(value);
-                ReportPropertyChanging("TimeStamp");
-                _TimeStamp = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("TimeStamp");
-                OnTimeStampChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _TimeStamp;
-        partial void OnTimeStampChanging(Nullable<global::System.DateTime> value);
-        partial void OnTimeStampChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Double> Speed
-        {
-            get
-            {
-                return _Speed;
-            }
-            set
-            {
-                OnSpeedChanging(value);
-                ReportPropertyChanging("Speed");
-                _Speed = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Speed");
-                OnSpeedChanged();
-            }
-        }
-        private Nullable<global::System.Double> _Speed;
-        partial void OnSpeedChanging(Nullable<global::System.Double> value);
-        partial void OnSpeedChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Source
-        {
-            get
-            {
-                return _Source;
-            }
-            set
-            {
-                OnSourceChanging(value);
-                ReportPropertyChanging("Source");
-                _Source = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Source");
-                OnSourceChanged();
-            }
-        }
-        private global::System.String _Source;
-        partial void OnSourceChanging(global::System.String value);
-        partial void OnSourceChanged();
 
         #endregion
 

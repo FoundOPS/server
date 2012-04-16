@@ -76,7 +76,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                                        from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
                                        select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
 
-            return templatesWithDetails.Select(t => t.serviceTemplate).OrderBy(st => st.Name);
+            return templatesWithDetails.Select(t => t.serviceTemplate).Distinct().OrderBy(st => st.Name);
         }
 
         /// <summary>

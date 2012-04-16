@@ -4,14 +4,14 @@
              xmlns:DynamicallySizedWrapPanel="clr-namespace:FoundOps.Common.Silverlight.Tools.DynamicallySizedWrapPanel;assembly=FoundOps.Common.Silverlight.UI"
              mc:Ignorable="d" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI" 
            > <!--Do not remove ViewModels, it is used by GetVM-->
-    <StackPanel x:Name="SummaryStackPanel" DataContext="{Tools1:GetVM Type=ViewModels:RoutesVM}" 
+    <StackPanel x:Name="SummaryStackPanel" DataContext="{Tools1:GetVM Type=ViewModels:RoutesVM}" Margin="33,0,0,0"
                 Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsSummaryVisible, Converter={StaticResource VisibilityConverter}}">
         <!--Route Summary-->
         <DynamicallySizedWrapPanel:DynamicallySizedWrapPanel HorizontalAlignment="Center" Width="750" NumberOfColumns="3">
             <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0">
-                <StackPanel Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteSummaryVisible, Converter={StaticResource VisibilityConverter}}">
+                <!--<StackPanel Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteSummaryVisible, Converter={StaticResource VisibilityConverter}}">
                     <TextBlock Text="Route Summary" FontWeight="Bold"/>
-                    <!--<TextBlock Text="Capabilities: " Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}"/>-->
+                    <TextBlock Text="Capabilities: " Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}"/>
                     <ItemsControl Margin="10,0,0,0" ItemsSource="{Binding SelectedEntity.Capabilities}" 
                                   Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}">
                         <ItemsControl.ItemTemplate>
@@ -20,44 +20,31 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <!--Bind to Capabilities-->
-                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                        <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsScheduledStartTimeVisible, Converter={StaticResource VisibilityConverter}}"-->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsScheduledStartTimeVisible, Converter={StaticResource VisibilityConverter}}">
                         <TextBlock Text="Scheduled Start: "/>
                         <TextBlock Text="{Binding SelectedEntity.StartTime, StringFormat=\{0:t\}}"/>
-                        <!--Bind to scheduled start-->
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                        <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsScheduledEndTimeVisible, Converter={StaticResource VisibilityConverter}}"-->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsScheduledEndTimeVisible, Converter={StaticResource VisibilityConverter}}">
                         <TextBlock Text="Scheduled End: "/>
                         <TextBlock Text="{Binding SelectedEntity.EndTime, StringFormat=\{0:t\}}"/>
-                        <!--Bind to scheduled end time-->
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                        <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}"-->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}">
                         <TextBlock Text="Estimated End: "/>
                         <TextBlock Text="4:43 PM"/>
-                        <!--Bind to estimated end-->
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                        <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}"-->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}">
                         <TextBlock Text="Scheduled Duration: "/>
                         <TextBlock Text="8:00 Hours"/>
-                        <!--Bind to scheduled Duration-->
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                        <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}"-->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}">
                         <TextBlock Text="Estimated Duration: "/>
                         <TextBlock Text="7:43 Hours"/>
-                        <!--Bind to estimated Duration-->
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                        <!--Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}"-->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsCapabilitiesVisible, Converter={StaticResource VisibilityConverter}}">
                         <TextBlock Text="Total Distance: "/>
                         <TextBlock Text="56.3 Miles"/>
-                        <!--Bind to total distance-->
                     </StackPanel>
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
             <!--Destinations Summary-->
             <StackPanel Orientation="Vertical" Width="245" Margin="2.5, 0" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsDestinationsSummaryVisible, 
@@ -124,11 +111,12 @@
         </DynamicallySizedWrapPanel:DynamicallySizedWrapPanel>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="210"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="250"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedVehiclesVisible, Converter={StaticResource VisibilityConverter}}">
+            <StackPanel Grid.Column="1" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedVehiclesVisible, Converter={StaticResource VisibilityConverter}}">
                 <TextBlock Text="Vehicles" FontWeight="Bold"/>
                 <ItemsControl ItemsSource="{Binding SelectedEntity.Vehicles}">
                     <ItemsControl.ItemTemplate>
@@ -138,7 +126,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-            <StackPanel Grid.Column="1" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedTechniciansVisible, Converter={StaticResource VisibilityConverter}}">
+            <StackPanel Grid.Column="2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedTechniciansVisible, Converter={StaticResource VisibilityConverter}}">
                 <TextBlock Text="Technicians" FontWeight="Bold"/>
                 <ItemsControl ItemsSource="{Binding SelectedEntity.Technicians}">
                     <ItemsControl.ItemTemplate>

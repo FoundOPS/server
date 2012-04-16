@@ -104,26 +104,18 @@
                     </Grid>
                 </toolkit:Expander>
                 <RecurringServices:RecurringServicesLinkLarge IsEnabled="{Binding DataContext.SelectedEntity.DetailsLoaded, ElementName=myClientDetailsLarge}"/>
-                <toolkit:Expander Margin="5" IsExpanded="true" Style="{StaticResource ExpanderStyle}" Foreground="{StaticResource ServiceBrush}" 
-                                  BorderBrush="{StaticResource ServiceBrush}">
+                <toolkit:Expander Margin="5" IsExpanded="true" Style="{StaticResource ExpanderStyle}" Foreground="{StaticResource ServiceBrush}" BorderBrush="{StaticResource ServiceBrush}" 
+                                  IsEnabled="{Binding DataContext.IsLoading, ElementName=ServicesGrid, Converter={StaticResource NotExistsBoolConverter}}">
                     <toolkit:Expander.Header>
-                        <Grid ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Service Occurences" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
-                            <!--<AddEditDelete:AddDelete Grid.Column="1" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}" AddDeleteMode="AddItemDelete" 
-                                                     ItemsSource="{Binding ServiceTemplatesForContext, Source={Tools1:GetVM Type=ViewModels:ServiceTemplatesVM}}" Margin="0,0,0,0">
-                                <AddEditDelete:AddDelete.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DataTemplate>
-                                </AddEditDelete:AddDelete.ItemTemplate>
-                            </AddEditDelete:AddDelete>-->
                         </Grid>
                     </toolkit:Expander.Header>
-                    <Services:ServicesGrid IsMainGrid="False" MaxHeight="150" />
+                    <Services:ServicesGrid x:Name="ServicesGrid"  IsMainGrid="False" MaxHeight="150" />
                 </toolkit:Expander>
                 <toolkit:Expander IsExpanded="true" Margin="5" Style="{StaticResource ExpanderStyle}" BorderBrush="{StaticResource ServiceBrush}"
                                   IsEnabled="{Binding SelectedEntity.DetailsLoaded}">

@@ -1,6 +1,10 @@
-﻿using FoundOps.Common.Silverlight.Interfaces;
+﻿using System.Net;
+using System.Reactive.Linq;
+using FoundOps.Common.Composite.Tools;
+using FoundOps.Common.Silverlight.Interfaces;
 using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Silverlight.UI.Interfaces;
+using FoundOps.SLClient.Data.Converters;
 using ReactiveUI;
 using System;
 using System.ComponentModel;
@@ -28,10 +32,51 @@ namespace FoundOps.Core.Models.CoreEntities
             get { return _detailsLoaded; }
             set
             {
+                //Cannot clear details loaded. This is prevent issues when saving.
+                if(_detailsLoaded)
+                    return;
+
                 _detailsLoaded = value;
                 this.RaisePropertyChanged("DetailsLoaded");
             }
         }
+
+        #endregion
+
+        #region Barcode
+
+        private bool _barcodeLoading;
+        /// <summary>
+        /// True when the barcode is loading.
+        /// </summary>
+        public bool BarcodeLoading
+        {
+            get { return _barcodeLoading; }
+            private set
+            {
+                _barcodeLoading = value;
+                RaisePropertyChanged("BarcodeLoading");
+            }
+        }
+
+        private byte[] _barcodeImage;
+        /// <summary>
+        /// The barcode image.
+        /// </summary>
+        public byte[] BarcodeImage
+        {
+            get { return _barcodeImage; }
+            private set
+            {
+                _barcodeImage = value;
+                this.RaisePropertyChanged("BarcodeImage");
+            }
+        }
+
+        /// <summary>
+        /// Contains the loaded barcode image's latitude and longitude
+        /// </summary>
+        private Tuple<decimal?, decimal?> _barcodeLatitudeLongitudeTuple = null;
 
         #endregion
 
@@ -116,6 +161,44 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
+
+        /// <summary>
+        /// A method to update the barcode if it is not loaded.
+        /// </summary>
+        public void UpdateBarcode()
+        {
+            //if the barcode is currently loading return
+            if (BarcodeLoading)
+                return;
+
+            //if the barcode image is already loaded return
+            if (BarcodeImage != null && _barcodeLatitudeLongitudeTuple != null &&
+                _barcodeLatitudeLongitudeTuple.Item1 == this.Latitude && _barcodeLatitudeLongitudeTuple.Item2 == this.Longitude)
+                return;
+
+            //if the lat and lon are null, set the image to null
+            if (!this.Latitude.HasValue || !this.Longitude.HasValue)
+            {
+                BarcodeImage = null;
+                BarcodeLoading = false;
+                return;
+            }
+
+            BarcodeLoading = true;
+
+            var urlConverter = new LocationToUrlConverter();
+            var client = new WebClient();
+            client.OpenReadObservable((Uri)urlConverter.Convert(this, null, null, null)).ObserveOnDispatcher()
+                .Subscribe(stream =>
+                {
+                    var imageBytes = stream.ReadFully();
+
+                    this.BarcodeImage = imageBytes;
+                    _barcodeLatitudeLongitudeTuple = new Tuple<decimal?, decimal?>(this.Latitude, this.Longitude);
+                    BarcodeLoading = false;
+                });
+        }
+
     }
 }
 

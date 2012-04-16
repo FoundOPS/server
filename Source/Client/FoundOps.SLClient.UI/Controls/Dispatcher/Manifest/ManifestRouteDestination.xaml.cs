@@ -1,10 +1,7 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Converters;
-using System;
-using System.Net;
-using System.Reactive.Linq;
-using System.Windows;
+using System.IO;
 using System.Windows.Media.Imaging;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 {
@@ -32,7 +29,23 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 "RouteDestination",
                 typeof(RouteDestination),
                 typeof(ManifestRouteDestination),
-                new PropertyMetadata(null));
+                new PropertyMetadata(new PropertyChangedCallback(RouteDestinationChanged)));
+
+        private static void RouteDestinationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var c = d as ManifestRouteDestination;
+            if (c == null) return;
+            var routeDestination = e.NewValue as RouteDestination;
+
+            //If the barcode image is null hide the barcode image
+            if (routeDestination == null || routeDestination.Location == null || routeDestination.Location.BarcodeImage == null)
+            {
+                c.BarcodeImage.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            c.SetImage(routeDestination.Location.BarcodeImage);
+        }
 
         #endregion
 
@@ -42,6 +55,16 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         public ManifestRouteDestination()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Sets the barcode image
+        /// </summary>
+        private void SetImage(byte[] imageBytes)
+        {
+            var image = new BitmapImage();
+            image.SetSource(new MemoryStream(imageBytes));
+            BarcodeImage.Source = image;
         }
     }
 }

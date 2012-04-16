@@ -1,8 +1,14 @@
+using System.IO;
+using System.Linq;
+using System.Reactive.Subjects;
+using System.Windows.Media.Imaging;
+using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Framework.Views.Controls.CustomFields;
 using FoundOps.SLClient.Data.Models;
 using FoundOps.SLClient.UI.Tools;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Reactive.Linq;
 using System.Windows.Media;
@@ -11,6 +17,8 @@ using Telerik.Windows.Documents.UI;
 using Telerik.Windows.Documents.Model;
 using Telerik.Windows.Documents.Layout;
 using Telerik.Windows.Documents.FormatProviders.Pdf;
+using Telerik.Windows.Media.Imaging;
+using Telerik.Windows.Media.Imaging.FormatProviders;
 using Border = Telerik.Windows.Documents.Model.Border;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
@@ -20,16 +28,31 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
     /// </summary>
     public partial class RouteManifestViewer
     {
+        #region Public Properties and Events
+
+        private bool _canPrintOrSave;
+        /// <summary>
+        /// Whether or not this can print or save.
+        /// This will be false when the data is loading and when the 
+        /// </summary>
+        public bool CanPrintOrSave
+        {
+            get { return _canPrintOrSave; }
+            set
+            {
+                _canPrintOrSave = value;
+                this.btnPrint.IsEnabled = value;
+                this.btnSave.IsEnabled = value;
+            }
+        }
+
+        #endregion
+
         #region Locals
 
-        private double _headerPadding;
+        private double _summaryPadding;
 
         private RouteManifestSettings Settings { get { return VM.RouteManifest.RouteManifestSettings; } }
-
-        /// <summary>
-        /// The updateSizeSubscription to dispose.
-        /// </summary>
-        private IDisposable _updateSizeSubscription;
 
         private bool _currentlyPrinting;
 
@@ -42,23 +65,59 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         {
             InitializeComponent();
 
+            var updateManifest = new Subject<bool>();
+
+            //Make sure the 2D barcodes are loaded on the routes locations
+            //Do this by updating whenever:
+            //a) 2D barcode setting is set to true
+            //b) the selected route changes and the Is2DBarcodeVisible is true
+            VM.Routes.SelectedEntityObservable.AsGeneric()
+            .Merge(Observable2.FromPropertyChangedPattern(Settings, x => x.Is2DBarcodeVisible).DistinctUntilChanged().AsGeneric())
+            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
+            {
+                if (VM.Routes.SelectedEntity == null || !Settings.Is2DBarcodeVisible)
+                    return;
+
+                foreach (var location in VM.Routes.SelectedEntity.RouteLocations)
+                    location.UpdateBarcode();
+            });
+
+            //When the data is loaded, update the manifest
+            var detailsLoadedObservable = VM.Routes.SelectedEntityObservable.WhereNotNull().SelectLatest(se => Observable2.FromPropertyChangedPattern(se, x => x.ManifestDetailsLoaded)).DistinctUntilChanged();
+
             //Update the Manifest when
-            //a) the RouteManifestSettings properties change
-            //b) the SelectedEntity changes
+            //a) the RouteManifestSettings properties change (if the details are loaded)
+            //b) the selected entity changed (if the details are loaded)
+            //c) the details are loaded
+            //d) barcode images are loaded
             Settings.FromAnyPropertyChanged().AsGeneric()
-            .Merge(VM.Routes.SelectedEntityObservable.AsGeneric())
-            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
-                //Update the Manifest
-            .Subscribe(a => UpdateDocument());
+            .Merge(VM.Routes.SelectedEntityObservable.DistinctUntilChanged().AsGeneric())
+            .Merge(detailsLoadedObservable)
+            .Merge(VM.Routes.SelectedEntityObservable.WhereNotNull().SelectLatest(r =>
+                    r.RouteLocations.Select(rl => Observable2.FromPropertyChangedPattern(rl, x => x.BarcodeLoading).Where(loading => !loading)).Merge()))
+            .ObserveOnDispatcher().Subscribe(updateManifest);
 
             //Update the manifest when this is opened
             Loaded += (s, e) =>
             {
                 VM.Routes.ManifestOpen = true;
-                //Wait until the popup is shown before updating the document
-                Observable.Interval(TimeSpan.FromMilliseconds(350)).Take(1).ObserveOnDispatcher()
-                .Subscribe(_ => UpdateDocument());
+
+                //Set the busy indicator if the SelectedEntity != null && the SelectedEntity's manifest details are loaded
+                if (VM.Routes.SelectedEntity != null && !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
+                    ManifestBusyIndicator.IsBusy = true;
+
+                if (CanUpdateDocument())
+                    updateManifest.OnNext(true);
             };
+
+            updateManifest.Throttle(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(_ => UpdateDocument());
+
+            //Disable printing and saving and show the busy indicator when the details are loading
+            detailsLoadedObservable.DistinctUntilChanged().ObserveOnDispatcher().Subscribe(detailsLoaded =>
+            {
+                ManifestBusyIndicator.IsBusy = true;
+                CanPrintOrSave = detailsLoaded;
+            });
 
             Closed += (s, e) => VM.Routes.ManifestOpen = false;
 
@@ -68,162 +127,56 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         #region Logic
 
+        #region Setup Manifest
+
         /// <summary>
-        /// Updates the document.
+        /// Takes a UI element converts it to an image.
         /// </summary>
-        public void UpdateDocument()
+        /// <param name="uiElement">The uiElement to add to the manifest</param>
+        /// <param name="customForceLayoutUpdate">A custom method to force the ui element's layout.</param>
+        private ImageInline ConvertToImageInline(UIElement uiElement, Action customForceLayoutUpdate = null)
         {
-            //Dispose the _updateSizeSubscription
-            if (_updateSizeSubscription != null)
-            {
-                _updateSizeSubscription.Dispose();
-                _updateSizeSubscription = null;
-            }
+            //To make sure the items controls render properly
+            //add it to the BusyContent's StackPanel quickly
 
-            //Only load the manifest when the current viewer is open and is not printing
-            if (!VM.Routes.ManifestOpen || _currentlyPrinting) return;
-            var document = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
-            var mainSection = new Section { FooterBottomMargin = 0, HeaderTopMargin = 0, ActualPageMargin = new Padding(0, 20, 0, 20) };
-            var bodyParagraph = new Paragraph();
+            //The BusyIndicator should be open when rendering manifests
+            BusyContentStackPanel.Children.Add(uiElement);
 
-            //If there is a selected route setup the manifest
-            if (VM.Routes.SelectedEntity != null)
-            {
-                #region Add the Header
+            //Update the layout
+            if (customForceLayoutUpdate != null)
+                customForceLayoutUpdate();
+            else
+                BusyContentStackPanel.UpdateLayout();
 
-                if (Settings.IsHeaderVisible)
-                {
-                    //We only want the header to show up once, so just add it first to the body paragraph.
-                    var manifestHeader = new ManifestHeader { Margin = new Thickness(0, 0, 0, 45) };
-                    manifestHeader.Measure(new Size(double.MaxValue, double.MaxValue));
+            uiElement.Measure(new Size(double.MaxValue, double.MaxValue));
 
-                    var header = new InlineUIContainer
-                                     {
-                                         Height = manifestHeader.DesiredSize.Height,
-                                         Width = manifestHeader.DesiredSize.Width,
-                                         UiElement = manifestHeader
-                                     };
-                    bodyParagraph.Inlines.Add(header);
-                }
+            var writableBitmap = new WriteableBitmap((int)uiElement.DesiredSize.Width, (int)uiElement.DesiredSize.Height);
+            writableBitmap.Render(uiElement, null);
+            writableBitmap.Invalidate();
 
-                #endregion
+            var radImage = new RadBitmap(writableBitmap);
 
-                #region Add the Summary
+            var stream = new MemoryStream();
+            var provider = new PngFormatProvider();
+            provider.Export(radImage, stream);
 
-                if (Settings.IsSummaryVisible)
-                {
-                    //We only want the summary to show up once, so just add it first to the body paragraph.
-                    var manifestSummary = new ManifestSummary { Margin = new Thickness(25, 0, 0, _headerPadding) };
-                    manifestSummary.Measure(new Size(double.MaxValue, double.MaxValue));
+            //Remove it from the stackpanel so the user does not see it
+            BusyContentStackPanel.Children.Remove(uiElement);
 
-                    var summary = new InlineUIContainer
-                                                  {
-                                                      Height = manifestSummary.DesiredSize.Height,
-                                                      Width = manifestSummary.DesiredSize.Width,
-                                                      UiElement = manifestSummary
-                                                  };
-                    var numVehicles = VM.Routes.SelectedEntity.Vehicles.Count;
-                    var numTechnicians = VM.Routes.SelectedEntity.Technicians.Count;
-                    if (numVehicles >= numTechnicians)
-                    {
-                        if (Settings.IsAssignedVehiclesVisible)
-                        {
-                            _headerPadding = numVehicles * 25;
-                        }
-                        else if (Settings.IsAssignedTechniciansVisible)
-                        {
-                            _headerPadding = numTechnicians * 25;
-                        }
-                        else
-                            _headerPadding = 25;
-                    }
-                    else
-                    {
-                        if (Settings.IsAssignedTechniciansVisible)
-                        {
-                            _headerPadding = numTechnicians * 25;
-                        }
-                        else if (Settings.IsAssignedVehiclesVisible)
-                        {
-                            _headerPadding = numVehicles * 25;
-                        }
-                        else
-                            _headerPadding = 25;
-                    }
-                    _headerPadding -= 20;
-
-                    manifestSummary.Margin = new Thickness(25, 0, 0, _headerPadding);
-
-                    bodyParagraph.Inlines.Add(summary);
-                }
-
-                #endregion
-
-                #region Add the RouteDestinations
-
-                //Keep a list of size changed observables
-                var uiElementSizeChangedObservables = new List<IObservable<InlineUIContainer>>();
-
-                foreach (var routeDestination in VM.Routes.SelectedEntity.RouteDestinationsListWrapper)
-                {
-                    var manifestRouteDestination = new ManifestRouteDestination { Margin = new Thickness(25, 2, 0, 10), RouteDestination = routeDestination };
-                    manifestRouteDestination.Measure(new Size(double.MaxValue, double.MaxValue));
-
-                    var destination = new InlineUIContainer
-                    {
-                        Height = manifestRouteDestination.DesiredSize.Height,
-                        Width = manifestRouteDestination.DesiredSize.Width,
-                        UiElement = manifestRouteDestination
-                    };
-
-                    //Track the UiElement's size changed event
-                    uiElementSizeChangedObservables.Add(Observable.FromEventPattern<SizeChangedEventHandler, SizeChangedEventArgs>(h => manifestRouteDestination.SizeChanged += h,
-                          h => manifestRouteDestination.SizeChanged -= h).Select(e => destination));
-
-                    bodyParagraph.Inlines.Add(destination);
-                }
-
-                //Buffer UIElements size changes for a second
-                //Then update the RichTextBox
-                _updateSizeSubscription = uiElementSizeChangedObservables.Merge().Buffer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
-                    .Subscribe(containersToUpdate =>
-                    {
-                        //Do not update while printing
-                        if (_currentlyPrinting)
-                            return;
-
-                        foreach (var container in containersToUpdate)
-                        {
-                            var uiElement = container.UiElement;
-                            var desiredHeight = uiElement.DesiredSize.Height;
-
-                            if (desiredHeight > 0 && container.Height != desiredHeight)
-                                container.Height = desiredHeight;
-                        }
-
-                        ManifestRichTextBox.UpdateEditorLayout();
-                    });
-
-                #endregion
-            }
-
-            if (Settings.IsFooterVisible)
-                mainSection.Footers.Default = GetFooterDocument();
-
-            ////Setup the main section
-            mainSection.Blocks.Add(bodyParagraph);
-
-            //Setup the Document
-            document.Sections.Add(mainSection);
-            ManifestRichTextBox.Document = document;
-            ManifestRichTextBox.IsSpellCheckingEnabled = false;
-            ManifestRichTextBox.Width = 870;
+            return new ImageInline(stream);
         }
 
-        #region Private Methods
+        /// <summary>
+        /// A helper method to get the file name.
+        /// </summary>
+        private string GetFileName()
+        {
+            return String.Format("{0} Manifest", VM.Routes.SelectedEntity != null ? VM.Routes.SelectedEntity.Name : "");
+        }
 
-        #region Add the Footer
-
+        /// <summary>
+        /// Sets up the Footer
+        /// </summary>
         private Footer GetFooterDocument()
         {
             var footer = new Footer();
@@ -286,9 +239,165 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             return footer;
         }
 
+        /// <summary>
+        /// Whether or not the docuent can be updated.
+        /// </summary>
+        private bool CanUpdateDocument()
+        {
+            //Only load the manifest when the current viewer is open, is not printing, and the details are loaded
+            if (!VM.Routes.ManifestOpen || _currentlyPrinting || VM.Routes.SelectedEntity == null || !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
+                return false;
+
+            //If the 2D Barcode is to be displayed and they are still loading: return
+            if (VM.Routes.RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible && VM.Routes.SelectedEntity.RouteLocations.Any(rl => rl.BarcodeLoading))
+                return false;
+
+            return true;
+        }
+
+        private IDisposable _lastUpdateSubscription = null;
+        /// <summary>
+        /// Updates the document.
+        /// </summary>
+        private void UpdateDocument()
+        {
+            //Cancel the last update
+            if (_lastUpdateSubscription != null)
+                _lastUpdateSubscription.Dispose();
+
+            if (!CanUpdateDocument())
+                return;
+
+            //Disable printing and saving
+            CanPrintOrSave = false;
+            //Open busy indicator, used to add things to visual tree
+            ManifestBusyIndicator.IsBusy = true;
+
+            //Wait for the busy indicator to open
+            _lastUpdateSubscription = Observable.Interval(TimeSpan.FromMilliseconds(750)).Take(1).ObserveOnDispatcher()
+            .Subscribe(_ =>
+            {
+                var document = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
+                var mainSection = new Section { FooterBottomMargin = 0, HeaderTopMargin = 0, ActualPageMargin = new Padding(0, 20, 0, 20) };
+                var bodyParagraph = new Paragraph();
+
+                #region Add the Header
+
+                if (Settings.IsHeaderVisible)
+                {
+                    //We only want the header to show up once, so just add it first to the body paragraph.
+                    var manifestHeader = new ManifestHeader { Margin = new Thickness(0) };
+
+                    bodyParagraph.Inlines.Add(ConvertToImageInline(manifestHeader));
+                }
+
+                #endregion
+
+                #region Add the Summary
+
+                if (Settings.IsSummaryVisible)
+                {
+                    //We only want the summary to show up once, so just add it first to the body paragraph.
+                    var manifestSummary = new ManifestSummary { Margin = new Thickness(0, 0, 0, _summaryPadding) };
+
+                    bodyParagraph.Inlines.Add(ConvertToImageInline(manifestSummary));
+                }
+
+                #endregion
+
+                #region Add the Route Destinations
+
+                foreach (var routeDestination in VM.Routes.SelectedEntity.RouteDestinationsListWrapper)
+                {
+                    var manifestRouteDestination = new ManifestRouteDestination { Margin = new Thickness(0, 6, 0, 6), RouteDestination = routeDestination };
+
+                    bodyParagraph.Inlines.Add(ConvertToImageInline(manifestRouteDestination, () =>
+                    {
+                        //Force the manifestRouteDestination's itemscontrol to layout RouteTasks
+                        manifestRouteDestination.UpdateLayout();
+                        manifestRouteDestination.Measure(new Size(double.MaxValue, double.MaxValue));
+
+                        //Force the FieldsControl's ItemsControls to layout fields
+                        foreach (var manifestFieldsControl in manifestRouteDestination.GetDescendants<ManifestFields>())
+                        {
+                            var routeTask = manifestFieldsControl.DataContext as RouteTask;
+
+                            if (routeTask == null || routeTask.ParentRouteTaskHolder.ServiceHolder == null
+                                || routeTask.ParentRouteTaskHolder.ServiceHolder.Service == null)
+                                continue;
+
+                            var serviceTemplate = routeTask.ParentRouteTaskHolder.ServiceHolder.Service.ServiceTemplate;
+
+                            manifestFieldsControl.ServiceTemplate = serviceTemplate;
+                            manifestFieldsControl.UpdateLayout();
+                            manifestFieldsControl.Measure(new Size(double.MaxValue, double.MaxValue));
+                        }
+
+                        manifestRouteDestination.Measure(new Size(double.MaxValue, double.MaxValue));
+                    }));
+                }
+
+                #endregion
+
+                if (Settings.IsFooterVisible)
+                    mainSection.Footers.Default = GetFooterDocument();
+
+                ////Setup the main section
+                mainSection.Blocks.Add(bodyParagraph);
+
+                //Setup the Document
+                document.Sections.Add(mainSection);
+                ManifestRichTextBox.Document = document;
+                ManifestRichTextBox.IsSpellCheckingEnabled = false;
+                ManifestRichTextBox.Width = 870;
+
+                //Close busy indicator
+                ManifestBusyIndicator.IsBusy = false;
+
+                //Allow printing and saving
+                CanPrintOrSave = true;
+            });
+
+        }
+
         #endregion
 
-        private void BtnPrint_OnClick(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// On closing the manifest: update and save the route manifest settings
+        /// </summary>
+        private void MyRouteManifestViewerClosed(object sender, EventArgs e)
+        {
+            VM.RouteManifest.UpdateSaveRouteManifestSettings();
+        }
+
+        #region Automatically Recenter ChildWindow
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            var contentRoot = this.GetTemplateChild("ContentRoot") as FrameworkElement;
+            if (contentRoot != null)
+                contentRoot.LayoutUpdated += ContentRootLayoutUpdated;
+        }
+
+        void ContentRootLayoutUpdated(object sender, EventArgs e)
+        {
+            var contentRoot = this.GetTemplateChild("ContentRoot") as FrameworkElement;
+            if (contentRoot == null) return;
+
+            var tg = contentRoot.RenderTransform as TransformGroup;
+            var tts = tg.Children.OfType<TranslateTransform>();
+            foreach (var t in tts)
+            {
+                t.X = 0; t.Y = 0;
+            }
+        }
+
+        #endregion
+
+        #region Print and Save
+
+        private void PrintButtonClick(object sender, RoutedEventArgs e)
         {
             ManifestRichTextBox.Print(GetFileName(), PrintMode.Native);
 
@@ -355,18 +464,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
             #endregion
         }
-
-        private string GetFileName()
-        {
-            return String.Format("{0} Manifest", VM.Routes.SelectedEntity != null ? VM.Routes.SelectedEntity.Name : "");
-        }
-
-        private void MyRouteManifestViewerClosed(object sender, EventArgs e)
-        {
-            //On closing the manifest: update and save the route manifest settings
-            VM.RouteManifest.UpdateSaveRouteManifestSettings();
-        }
-
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
             //TODO: Need to scroll through to force generation of items controls

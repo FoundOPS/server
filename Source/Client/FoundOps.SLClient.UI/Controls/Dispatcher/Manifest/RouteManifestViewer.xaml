@@ -5,25 +5,8 @@
                       xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools"
                       xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI"
                       xmlns:Services="clr-namespace:FoundOps.SLClient.Data.Services;assembly=FoundOps.SLClient.Data"
-                      mc:Ignorable="d" Closed="MyRouteManifestViewerClosed">
+                      mc:Ignorable="d" Closed="MyRouteManifestViewerClosed" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource UnmovableChildWindow}">
     <!--Do not remove ViewModels, it is used by GetVM-->
-    <Controls:ChildWindow.Resources>
-        <Style x:Key="PanelButtonStyle" TargetType="telerik:RadButton">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="2"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="CornerRadius" Value="3"/>
-            <Setter Property="IsBackgroundVisible" Value="False"/>
-        </Style>
-        <Style x:Key="Separator" TargetType="Rectangle">
-            <Setter Property="Width" Value="2"/>
-            <Setter Property="Margin" Value="5 3 5 3"/>
-            <Setter Property="Stroke" Value="Gray"/>
-        </Style>
-    </Controls:ChildWindow.Resources>
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -47,7 +30,7 @@
                              ItemsSource="{Binding CollectionView}" Height="25"/>
                 <telerik:RadButton x:Name="btnPrint" ToolTipService.ToolTip="Print" Content="Print" Style="{StaticResource PanelButtonStyle}" 
                                    IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Services:GetCoreDomainContext}}" 
-                                   Click="BtnPrint_OnClick" />
+                                   Click="PrintButtonClick" />
                 <Button x:Name="btnSave" Margin="5,3,-4,-5" Height="25" Width="25" ToolTipService.ToolTip="Save" Style="{StaticResource SaveButtonStyle}" Click="SaveButtonClick"/>
                 <!--<Rectangle Style="{StaticResource Separator}"/>
                 <telerik:RadButton x:Name="btnUp" Style="{StaticResource PanelButtonStyle}" Click="BtnUp_OnClick">
@@ -67,7 +50,12 @@
                 <TextBlock x:Name="tbPagesCount" Margin="2" VerticalAlignment="Center"/>-->
             </StackPanel>
         </Border>
-        <telerik:RadRichTextBox x:Name="ManifestRichTextBox" Grid.Row="1" Grid.RowSpan="2" IsReadOnly="True" />
+        <telerik:RadBusyIndicator x:Name="ManifestBusyIndicator" Grid.Row="1" Grid.RowSpan="2">
+            <telerik:RadBusyIndicator.BusyContent>
+                <StackPanel x:Name="BusyContentStackPanel"/>
+            </telerik:RadBusyIndicator.BusyContent>
+            <telerik:RadRichTextBox x:Name="ManifestRichTextBox" IsReadOnly="True" />
+        </telerik:RadBusyIndicator>
         <Dispatcher:RouteManifestOptions Grid.Column="1" Grid.RowSpan="2"/>
     </Grid>
 </Controls:ChildWindow>

@@ -3,6 +3,7 @@ using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -254,8 +255,10 @@ namespace FoundOps.SLClient.Data.Services
                      if (task.IsCanceled)
                          return;
 
+                     //TODO Ask the user to reload if this does not work
+                     //throw new Exception("Please reload the page");
                      if (!task.Result.Any())
-                         throw new Exception("Please reload the page");
+                         return;
 
                      //The query includes the details
                      foreach (var st in task.Result)

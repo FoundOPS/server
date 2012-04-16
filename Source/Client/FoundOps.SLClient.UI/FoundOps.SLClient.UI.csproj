@@ -95,6 +95,9 @@
     <Reference Include="Kent.Boogaart.KBCsv, Version=1.3.0.0, Culture=neutral, PublicKeyToken=cc96fa93a217f7a1, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <Private>False</Private>
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -174,6 +177,9 @@
     <Reference Include="Telerik.Windows.Controls.GridView">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.GridView.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.ImageEditor">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.ImageEditor.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Input">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Input.dll</HintPath>
