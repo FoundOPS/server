@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 04/11/2012 16:52:26
+-- Date Created: 04/13/2012 10:47:11
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -208,12 +208,6 @@ IF OBJECT_ID(N'[dbo].[FK_ClientLocation]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_RouteTaskRecurringService]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskRecurringService];
-GO
-IF OBJECT_ID(N'[dbo].[FK_TrackPointEmployee]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[TrackPoints] DROP CONSTRAINT [FK_TrackPointEmployee];
-GO
-IF OBJECT_ID(N'[dbo].[FK_TrackPointVehicle]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[TrackPoints] DROP CONSTRAINT [FK_TrackPointVehicle];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
@@ -530,7 +524,8 @@ CREATE TABLE [dbo].[Vehicles] (
     [LastTimeStamp] datetime  NULL,
     [LastSpeed] float  NULL,
     [LastSource] nvarchar(max)  NULL,
-    [OwnerPartyId] uniqueidentifier  NOT NULL
+    [OwnerPartyId] uniqueidentifier  NOT NULL,
+    [LastPushToAzureTimeStamp] datetime  NULL
 );
 GO
 
@@ -647,7 +642,8 @@ CREATE TABLE [dbo].[Employees] (
     [LastLatitude] float  NULL,
     [LastTimeStamp] datetime  NULL,
     [LastSpeed] float  NULL,
-    [LastSource] nvarchar(max)  NULL
+    [LastSource] nvarchar(max)  NULL,
+    [LastPushToAzureTimeStamp] datetime  NULL
 );
 GO
 

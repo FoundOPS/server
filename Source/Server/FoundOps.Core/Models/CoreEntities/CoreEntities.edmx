@@ -539,6 +539,7 @@
     <Property Name="LastSpeed" Type="float" Nullable="true" />
     <Property Name="LastSource" Type="nvarchar(max)" Nullable="true" />
     <Property Name="OwnerPartyId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LastPushToAzureTimeStamp" Type="datetime" Nullable="true" />
   </EntityType>
   <EntityType Name="VehicleMaintenanceLog">
     <Key>
@@ -656,6 +657,7 @@
     <Property Name="LastTimeStamp" Type="datetime" Nullable="true" />
     <Property Name="LastSpeed" Type="float" Nullable="true" />
     <Property Name="LastSource" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LastPushToAzureTimeStamp" Type="datetime" Nullable="true" />
   </EntityType>
   <EntityType Name="EmployeeHistoryEntries">
     <Key>
@@ -3660,6 +3662,7 @@
           <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
           <ScalarProperty Name="LastSource" ColumnName="LastSource" />
           <ScalarProperty Name="OwnerPartyId" ColumnName="OwnerPartyId" />
+          <ScalarProperty Name="LastPushToAzureTimeStamp" ColumnName="LastPushToAzureTimeStamp" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3792,6 +3795,7 @@
           <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
           <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
           <ScalarProperty Name="LastSource" ColumnName="LastSource" />
+          <ScalarProperty Name="LastPushToAzureTimeStamp" ColumnName="LastPushToAzureTimeStamp" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

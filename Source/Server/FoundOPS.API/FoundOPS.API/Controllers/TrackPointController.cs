@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,11 +20,38 @@ namespace FoundOPS.API.Controllers
         {
             public static readonly int TimeBetweenPushesToAzure = 30;
 
-            //Connection String for Azure Tables
+        #if DEBUG
             public const string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=opsappdebug;AccountKey=Wbs5xOmAKdNw8ef9XgRZF2lhE+DYH1uN0qgETVKSCLqIXaaTRjiFIj4sT2cf0iQxUdOAYEej2VI4aPBr7TVOYA==";
-
+        #else
+            public const string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=fstoreroledata;AccountKey=bs7B22OoZr0jKz9xCJFlNacCemDvaTT8pj3yV2PENA6GwYkERELymg+hDOU2Yz+nAkU8IyvS4lDUmzkfkQsCuQ==";
+        #endif
         }
+
         private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+
+        #region Get
+
+        // GET /api/trackpoints
+        public IQueryable<TrackPointsHistoryTableDataModel> GetTrackPoints(Guid roleId, DateTime date)
+        {
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+
+            if (currentBusinessAccount == null)
+                return null;
+
+            //Check that this DataConnectionString is right
+            var storageAccount = CloudStorageAccount.Parse(UpdateConstants.StorageConnectionString);
+
+            var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
+
+            //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
+            var tableName = "t" + currentBusinessAccount.Id.ToString().Replace("-", "");
+
+            //Gets all objects from the Azure table specified on the date requested and returns the result
+            return serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).Where(tp => tp.TimeStamp.Date == date);
+        }
+
+        #endregion
 
         #region POST
 
@@ -32,14 +60,14 @@ namespace FoundOPS.API.Controllers
         /// </summary>
         /// <param name="modelTrackPoint"></param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        public HttpResponseMessage<Models.TrackPoint> PostEmployeeTrackPoint(Models.TrackPoint modelTrackPoint)
+        public HttpResponseMessage<Models.TrackPoint> PostEmployeeTrackPoint(Models.TrackPoint modelTrackPoint, Guid roleId)
         {
             var currentUserAccount = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).FirstOrDefault();
 
-            if(currentUserAccount == null)
+            if (currentUserAccount == null)
                 return new HttpResponseMessage<TrackPoint>(modelTrackPoint, HttpStatusCode.Unauthorized);
 
-            var response = PostTrackPointHelper(currentUserAccount.Id, null, modelTrackPoint);
+            var response = PostTrackPointHelper(roleId, currentUserAccount.Id, null, modelTrackPoint);
 
             return response;
         }
@@ -55,7 +83,7 @@ namespace FoundOPS.API.Controllers
             //Note: this is not yet implemented because we do not have a way to track vehicles as of 4/11/2012
             //The code below will work assuming you are passing a valid VehicleId
             return new HttpResponseMessage<TrackPoint>(modelTrackPoint, HttpStatusCode.NotImplemented);
-            
+
             //if (trackedVehicle == null)
             //    return new HttpResponseMessage<TrackPoint>(modelTrackPoint, HttpStatusCode.Unauthorized);
 
@@ -67,16 +95,16 @@ namespace FoundOPS.API.Controllers
         /// <summary>
         /// Used to save TrackPoints from a mobile device
         /// </summary>
+        /// <param name="roleId"> </param>
         /// <param name="employeeId"></param>
         /// <param name="vehicleId"></param>
         /// <param name="modelTrackPoint"></param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        private HttpResponseMessage<Models.TrackPoint> PostTrackPointHelper(Guid? employeeId, Guid? vehicleId, Models.TrackPoint modelTrackPoint)
+        private HttpResponseMessage<Models.TrackPoint> PostTrackPointHelper(Guid roleId, Guid? employeeId, Guid? vehicleId, Models.TrackPoint modelTrackPoint)
         {
             var pushTrackPointToAzure = false;
-            var tableName = "";
 
-            if(employeeId != null)
+            if (employeeId != null)
             {
                 var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == employeeId);
 
@@ -86,8 +114,6 @@ namespace FoundOPS.API.Controllers
                 employee.LastSource = modelTrackPoint.Source;
                 employee.LastSpeed = modelTrackPoint.Speed;
                 employee.LastTimeStamp = modelTrackPoint.TimeStamp;
-
-                tableName = employee.Id.ToString().Replace("-", "");
 
                 if (modelTrackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= employee.LastPushToAzureTimeStamp)
                     pushTrackPointToAzure = true;
@@ -108,24 +134,45 @@ namespace FoundOPS.API.Controllers
                     pushTrackPointToAzure = true;
             }
 
-            if(pushTrackPointToAzure)
+            if (pushTrackPointToAzure)
             {
                 var storageAccount = CloudStorageAccount.Parse(UpdateConstants.StorageConnectionString);
 
                 var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(),
                                                                         storageAccount.Credentials);
 
-                // Create the table if there is not already a table with the name of the Business Account
+                // Create the table if there is not already a table with the name of t + EmployeeId/VehicleId
                 var tableClient = storageAccount.CreateCloudTableClient();
 
+                var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+
+                if (currentBusinessAccount == null)
+                    return null;
+
                 //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-                tableName = "t" + currentInvoice.BusinessAccount.Id.ToString().Replace("-", "");
+                var tableName = "t" + currentBusinessAccount.Id.ToString().Replace("-", "");
 
                 try
                 {
                     tableClient.CreateTableIfNotExist(tableName);
                 }
                 catch { }
+
+                //Create the object to be stored in the Azure table
+                var newTrackPoint = new TrackPointsHistoryTableDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
+                                        {
+                                            EmployeetId = employeeId,
+                                            VehicleId = vehicleId,
+                                            Latitude = modelTrackPoint.Latitude,
+                                            Longitude = modelTrackPoint.Longitude,
+                                            TimeStamp = modelTrackPoint.TimeStamp
+                                        };
+
+                //Push to Azure Table
+                serviceContext.AddObject(tableName, newTrackPoint);
+
+                //Saves the Tables
+                serviceContext.SaveChangesWithRetries();
             }
 
             //Find the one that is not null and keep it to be returned in the response header

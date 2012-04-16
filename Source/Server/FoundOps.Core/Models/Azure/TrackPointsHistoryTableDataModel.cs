@@ -15,9 +15,8 @@ namespace FoundOps.Core.Models.Azure
         {
         }
 
-        public Guid TrackPointId { get; set; }
-        public Guid EmployeetId { get; set; }
-        public Guid VehicleId { get; set; }
+        public Guid? EmployeetId { get; set; }
+        public Guid? VehicleId { get; set; }
         public DateTime TimeStamp { get; set; }
         public Double Latitude { get; set; }
         public Double Longitude { get; set; }

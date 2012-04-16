@@ -29,7 +29,8 @@ namespace API.Tests.Controllers
             };
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
             var controller = new TrackPointController {Request = request};
-            var response = controller.PostEmployeeTrackPoint(trackPoint);
+            //This will no longer work, Need to pass it a real role id and not a new Giuid
+            var response = controller.PostEmployeeTrackPoint(trackPoint, Guid.NewGuid());
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.IsNotNull(response.Headers.Location);
             TrackPoint postedTrackPoint = response.Content.ReadAsync().Result;
