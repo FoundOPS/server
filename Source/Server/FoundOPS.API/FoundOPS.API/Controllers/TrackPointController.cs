@@ -44,7 +44,7 @@ namespace FoundOPS.API.Controllers
             var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
 
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-            var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");
+            var tableName = "tp" + currentBusinessAccount..ToString().Replace("-", "");
 
             //Gets all objects from the Azure table specified on the date requested and returns the result
             var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).ToArray().Where(tp => tp.TimeStamp.Date == date.Date);
@@ -171,7 +171,7 @@ namespace FoundOPS.API.Controllers
                     pushTrackPointToAzure = true;
             }
 
-            pushTrackPointToAzure = true;
+            //pushTrackPointToAzure = true;
 
             if (pushTrackPointToAzure)
             {
