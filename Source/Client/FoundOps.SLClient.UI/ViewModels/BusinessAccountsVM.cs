@@ -11,6 +11,7 @@ using System.Collections;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Collections.Generic;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -26,28 +27,42 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Implementation of IAddToDeleteFromDestination
 
+        private List<IDisposable> addToDeleteFromSubscriptions = new List<IDisposable>();
         /// <summary>
-        /// Links to the LinkToAddToDeleteFromControl events.
+        /// Links to the LinkToAddToDeleteFromControl observables.
         /// </summary>
         /// <param name="control">The control.</param>
         /// <param name="sourceType">Type of the source.</param>
-        public void LinkToAddToDeleteFromEvents(AddToDeleteFrom control, Type sourceType)
+        public void LinkToAddToDeleteFrom(AddToDeleteFrom control, Type sourceType)
         {
             if (sourceType == typeof(UserAccount))
             {
-                control.AddExistingItem += (s, existingItem) => this.AddExistingItemUserAccount((UserAccount)existingItem);
-                control.AddNewItem += (s, newItemText) => this.AddNewItemUserAccount(newItemText);
-                control.RemoveItem += (s, e) => this.RemoveItemUserAccount();
-                control.DeleteItem += (s, e) => this.DeleteItemUserAccount();
+                addToDeleteFromSubscriptions.Add(control.AddExistingItem.Subscribe(existingItem => AddExistingItemUserAccount(existingItem)));
+                addToDeleteFromSubscriptions.Add(control.AddNewItem.Subscribe(text => AddNewItemUserAccount(text)));
+                addToDeleteFromSubscriptions.Add(control.RemoveItem.Subscribe(_ => RemoveItemUserAccount()));
+                addToDeleteFromSubscriptions.Add(control.DeleteItem.Subscribe(_ => DeleteItemUserAccount()));
             }
 
             if (sourceType == typeof(ServiceTemplate))
             {
-                control.AddExistingItem += (s, existingItem) => this.AddExistingItemServiceTemplate((ServiceTemplate)existingItem);
-                control.AddNewItem += (s, newItemText) => this.AddNewItemServiceTemplate(newItemText);
-                control.RemoveItem += (s, e) => this.RemoveItemServiceTemplate();
-                control.DeleteItem += (s, itemToDelete) => this.DeleteItemServiceTemplate();
+                addToDeleteFromSubscriptions.Add(control.AddExistingItem.Subscribe(existingItem => AddExistingItemServiceTemplate(existingItem)));
+                addToDeleteFromSubscriptions.Add(control.AddNewItem.Subscribe(text => AddNewItemServiceTemplate(text)));
+                addToDeleteFromSubscriptions.Add(control.RemoveItem.Subscribe(_ => RemoveItemServiceTemplate()));
+                addToDeleteFromSubscriptions.Add(control.DeleteItem.Subscribe(_ => DeleteItemServiceTemplate()));
             }
+        }
+
+        /// <summary>
+        /// Disposes the subscriptions to the add delete from control observables.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="sourceType">Type of the source.</param>
+        public void UnlinkAddToDeleteFrom(AddToDeleteFrom c, Type type)
+        {
+            foreach (var subscription in addToDeleteFromSubscriptions)
+                subscription.Dispose();
+
+            addToDeleteFromSubscriptions.Clear();
         }
 
         /// <summary>
@@ -85,8 +100,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// An action to add an existing ServiceTemplate to the current BusinessAccount.
         /// </summary>
-        public Action<ServiceTemplate> AddExistingItemServiceTemplate { get; private set; }
-        Action<ServiceTemplate> IAddNewExisting<ServiceTemplate>.AddExistingItem { get { return AddExistingItemServiceTemplate; } }
+        public Action<object> AddExistingItemServiceTemplate { get; private set; }
+        Action<object> IAddNewExisting<ServiceTemplate>.AddExistingItem { get { return AddExistingItemServiceTemplate; } }
 
         /// <summary>
         /// NOT POSSIBLE
@@ -112,8 +127,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Gets the add existing item user account.
         /// </summary>
-        public Action<UserAccount> AddExistingItemUserAccount { get; private set; }
-        Action<UserAccount> IAddNewExisting<UserAccount>.AddExistingItem { get { return AddExistingItemUserAccount; } }
+        public Action<object> AddExistingItemUserAccount { get; private set; }
+        Action<object> IAddNewExisting<UserAccount>.AddExistingItem { get { return AddExistingItemUserAccount; } }
 
         /// <summary>
         /// An action to remove a UserAccount from the current BusinessAccount.
@@ -194,7 +209,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Used in the Service Providers admin console to add an existing (create a child) FoundOPS service template
             AddExistingItemServiceTemplate = foundOPSServiceTemplate =>
-                VM.ServiceTemplates.CreateChildServiceTemplate(foundOPSServiceTemplate);
+                VM.ServiceTemplates.CreateChildServiceTemplate((ServiceTemplate)foundOPSServiceTemplate);
 
             RemoveItemServiceTemplate = () => { throw new Exception("Cannot remove service templates. Can only delete them."); };
 
@@ -227,7 +242,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return (UserAccount)newUserAccount;
             };
 
-            AddExistingItemUserAccount = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add(existingItem);
+            AddExistingItemUserAccount = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add((UserAccount)existingItem);
 
             RemoveItemUserAccount = () =>
             {

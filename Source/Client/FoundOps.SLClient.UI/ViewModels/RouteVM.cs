@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
@@ -57,28 +58,42 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Implementation of IAddToDeleteFromDestination
 
+        private List<IDisposable> addToDeleteFromSubscriptions = new List<IDisposable>();
         /// <summary>
-        /// Links to the LinkToAddToDeleteFromControl events.
+        /// Subscribes to the add delete from control observables.
         /// </summary>
         /// <param name="control">The control.</param>
         /// <param name="sourceType">Type of the source.</param>
-        public void LinkToAddToDeleteFromEvents(AddToDeleteFrom control, Type sourceType)
+        public void LinkToAddToDeleteFrom(AddToDeleteFrom control, Type sourceType)
         {
             if (sourceType == typeof(Employee))
             {
-                control.AddExistingItem += (s, existingItem) => this.AddExistingItemEmployee((Employee)existingItem);
-                control.AddNewItem += (s, newItemText) => this.AddNewItemEmployee(newItemText);
-                control.RemoveItem += (s, e) => this.RemoveItemEmployee();
-                control.DeleteItem += (s, e) => this.DeleteItemEmployee();
+                addToDeleteFromSubscriptions.Add(control.AddExistingItem.Subscribe(existingItem => AddExistingItemEmployee(existingItem)));
+                addToDeleteFromSubscriptions.Add(control.AddNewItem.Subscribe(text => AddNewItemEmployee(text)));
+                addToDeleteFromSubscriptions.Add(control.RemoveItem.Subscribe(_ => RemoveItemEmployee()));
+                addToDeleteFromSubscriptions.Add(control.DeleteItem.Subscribe(_ => DeleteItemEmployee()));
             }
 
             if (sourceType == typeof(Vehicle))
             {
-                control.AddExistingItem += (s, existingItem) => this.AddExistingItemVehicle((Vehicle)existingItem);
-                control.AddNewItem += (s, newItemText) => this.AddNewItemVehicle(newItemText);
-                control.RemoveItem += (s, e) => this.RemoveItemVehicle();
-                control.DeleteItem += (s, e) => this.DeleteItemVehicle();
+                addToDeleteFromSubscriptions.Add(control.AddExistingItem.Subscribe(existingItem => AddExistingItemVehicle(existingItem)));
+                addToDeleteFromSubscriptions.Add(control.AddNewItem.Subscribe(text => AddNewItemVehicle(text)));
+                addToDeleteFromSubscriptions.Add(control.RemoveItem.Subscribe(_ => RemoveItemVehicle()));
+                addToDeleteFromSubscriptions.Add(control.DeleteItem.Subscribe(_ => DeleteItemVehicle()));
             }
+        }
+
+        /// <summary>
+        /// Disposes the subscriptions to the add delete from control observables.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="sourceType">Type of the source.</param>
+        public void UnlinkAddToDeleteFrom(AddToDeleteFrom c, Type type)
+        {
+            foreach (var subscription in addToDeleteFromSubscriptions)
+                subscription.Dispose();
+
+            addToDeleteFromSubscriptions.Clear();
         }
 
         /// <summary>
@@ -106,8 +121,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// An action to add an existing Employee to the current Employee.
         /// </summary>
-        public Action<Employee> AddExistingItemEmployee { get; private set; }
-        Action<Employee> IAddNewExisting<Employee>.AddExistingItem { get { return AddExistingItemEmployee; } }
+        public Action<object> AddExistingItemEmployee { get; private set; }
+        Action<object> IAddNewExisting<Employee>.AddExistingItem { get { return AddExistingItemEmployee; } }
 
         /// <summary>
         /// An action to remove a Employee from the current Employee.
@@ -133,8 +148,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Gets the add existing item user account.
         /// </summary>
-        public Action<Vehicle> AddExistingItemVehicle { get; private set; }
-        Action<Vehicle> IAddNewExisting<Vehicle>.AddExistingItem { get { return AddExistingItemVehicle; } }
+        public Action<object> AddExistingItemVehicle { get; private set; }
+        Action<object> IAddNewExisting<Vehicle>.AddExistingItem { get { return AddExistingItemVehicle; } }
 
         /// <summary>
         /// An action to remove a Vehicle from the current Route.
@@ -204,7 +219,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     return;
 
                 if (!Route.Technicians.Contains(existingItem))
-                    Route.Technicians.Add(existingItem);
+                    Route.Technicians.Add((Employee)existingItem);
             };
             RemoveItemEmployee = () =>
             {
@@ -255,7 +270,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     return;
 
                 if (!Route.Vehicles.Contains(existingItem))
-                    Route.Vehicles.Add(existingItem);
+                    Route.Vehicles.Add((Vehicle)existingItem);
             };
 
             RemoveItemVehicle = () =>
