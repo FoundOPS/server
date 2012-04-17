@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
@@ -51,70 +52,61 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private void InitializeRoute()
         {
+            var serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                .ElementAt(0);
+
             DesignRoute = new Route
                               {
                                   Name = "SF Bay Area",
                                   Date = DateTime.UtcNow.Date,
-                                  RouteType = _ownerBusinessAccount.ServiceTemplates
-                                  .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                                  .ElementAt(0).Name
+                                  RouteType = serviceTemplate.Name
                               };
-            AddRouteDestinations(DesignRoute);
+            AddRouteDestinations(DesignRoute, serviceTemplate);
             DesignRoute.Technicians.Add(_employeesDesignData.DesignEmployee);
             DesignRoute.Vehicles.Add(_vehiclesDesignData.DesignVehicle);
 
+            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                .ElementAt(1);
             DesignRouteTwo = new Route
                                  {
                                      Name = "Shelter Island",
                                      Date = DateTime.UtcNow.Date,
-                                     RouteType = _ownerBusinessAccount.ServiceTemplates
-                                  .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                                  .ElementAt(1).Name
+                                     RouteType = serviceTemplate.Name
                                  };
 
-            AddRouteDestinations(DesignRouteTwo);
+            AddRouteDestinations(DesignRouteTwo, serviceTemplate);
             DesignRouteTwo.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
             DesignRouteTwo.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
+
+            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                .ElementAt(2);
 
             DesignRouteThree = new Route
                                    {
                                        Name = "Purdue",
                                        Date = DateTime.UtcNow.Date.AddDays(1),
-                                       RouteType = _ownerBusinessAccount.ServiceTemplates
-                                 .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                                 .ElementAt(2).Name
+                                       RouteType = serviceTemplate.Name
                                    };
-            AddRouteDestinations(DesignRouteThree);
+
+            AddRouteDestinations(DesignRouteThree, serviceTemplate);
             DesignRouteThree.Technicians.Add(_employeesDesignData.DesignEmployeeThree);
             DesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
             DesignRoutes = new List<Route> { DesignRoute, DesignRouteTwo, DesignRouteThree };
         }
 
-        private void AddRouteDestinations(Route route)
+        private void AddRouteDestinations(Route route, ServiceTemplate serviceTemplate)
         {
             #region Route Destination One
 
-            DesignRouteTask = new RouteTask
-            {
-                OrderInRouteDestination = 1,
-                Date = route.Date,
-                Location = _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(0),
-                Client = _clientsDesignData.DesignClient,
-                Name = "Collect Oil",
-                EstimatedDuration = new TimeSpan(0, 15, 0),
-                OwnerBusinessAccount = _ownerBusinessAccount
-            };
 
-            DesignRouteTaskTwo = new RouteTask
-            {
-                OrderInRouteDestination = 2,
-                Date = route.Date,
-                Location = _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(0),
-                Client = _clientsDesignData.DesignClientTwo,
-                Name = "Get Oil Paperwork Signed",
-                EstimatedDuration = new TimeSpan(0, 1, 0),
-                OwnerBusinessAccount = _ownerBusinessAccount
-            };
+            DesignRouteTask = CreateRouteTaskAndService(1, route.Date, _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(0),
+                _clientsDesignData.DesignClient, route.RouteType, new TimeSpan(0, 15, 0), _ownerBusinessAccount, serviceTemplate);
+
+            DesignRouteTaskTwo = CreateRouteTaskAndService(2, route.Date, _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(0),
+                _clientsDesignData.DesignClientTwo, route.RouteType, new TimeSpan(0, 1, 0), _ownerBusinessAccount, serviceTemplate);
 
             var routeDestination = new RouteDestination { OrderInRoute = 1 };
             routeDestination.RouteTasks.Add(DesignRouteTask);
@@ -125,16 +117,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             #region Route Destination Two
 
-            DesignRouteTaskThree = new RouteTask
-            {
-                OrderInRouteDestination = 1,
-                Date = route.Date,
-                Location = _clientsDesignData.DesignClientTwo.OwnedParty.Locations.ElementAt(0),
-                Client = _clientsDesignData.DesignClientTwo,
-                EstimatedDuration = new TimeSpan(0, 25, 0),
-                Name = "Clean Grease Trap",
-                OwnerBusinessAccount = _ownerBusinessAccount
-            };
+            DesignRouteTaskThree = CreateRouteTaskAndService(1, route.Date, _clientsDesignData.DesignClientTwo.OwnedParty.Locations.ElementAt(0),
+                _clientsDesignData.DesignClientTwo, route.RouteType, new TimeSpan(0, 25, 0), _ownerBusinessAccount, serviceTemplate);
 
             routeDestination = new RouteDestination { OrderInRoute = 2 };
 
@@ -145,16 +129,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             #region Route Destination Three
 
-            var routeTask = new RouteTask
-            {
-                OrderInRouteDestination = 1,
-                Date = route.Date,
-                Location = _clientsDesignData.DesignClientThree.OwnedParty.Locations.ElementAt(0),
-                Client = _clientsDesignData.DesignClientThree,
-                EstimatedDuration = new TimeSpan(0, 10, 0),
-                Name = "Drop off Paperwork",
-                OwnerBusinessAccount = _ownerBusinessAccount
-            };
+            var routeTask = CreateRouteTaskAndService(1, route.Date, _clientsDesignData.DesignClientThree.OwnedParty.Locations.ElementAt(0),
+                _clientsDesignData.DesignClientThree, route.RouteType, new TimeSpan(0, 10, 0), _ownerBusinessAccount, serviceTemplate);
 
             routeDestination = new RouteDestination { OrderInRoute = 3 };
             routeDestination.RouteTasks.Add(routeTask);
@@ -164,16 +140,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             #region Route Destination Four
 
-            routeTask = new RouteTask
-            {
-                OrderInRouteDestination = 1,
-                Date = route.Date,
-                Location = _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(1),
-                Client = _clientsDesignData.DesignClient,
-                EstimatedDuration = new TimeSpan(0, 25, 0),
-                Name = "Clean Grease Trap",
-                OwnerBusinessAccount = _ownerBusinessAccount
-            };
+            routeTask = CreateRouteTaskAndService(1, route.Date, _clientsDesignData.DesignClient.OwnedParty.Locations.ElementAt(1),
+                _clientsDesignData.DesignClient, route.RouteType, new TimeSpan(0, 25, 0), _ownerBusinessAccount, serviceTemplate);
 
             routeDestination = new RouteDestination
             {
@@ -186,16 +154,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             #region Route Destination Five
 
-            routeTask = new RouteTask
-            {
-                OrderInRouteDestination = 1,
-                Date = route.Date,
-                Location = _clientsDesignData.DesignClientTwo.OwnedParty.Locations.ElementAt(1),
-                Client = _clientsDesignData.DesignClientTwo,
-                EstimatedDuration = new TimeSpan(0, 25, 0),
-                Name = "Clean Grease Trap",
-                OwnerBusinessAccount = _ownerBusinessAccount
-            };
+            routeTask = CreateRouteTaskAndService(1, route.Date, _clientsDesignData.DesignClientTwo.OwnedParty.Locations.ElementAt(1),
+                _clientsDesignData.DesignClientTwo, route.RouteType, new TimeSpan(0, 25, 0), _ownerBusinessAccount, serviceTemplate);
 
             routeDestination = new RouteDestination { OrderInRoute = 5 };
             routeDestination.RouteTasks.Add(routeTask);
@@ -205,22 +165,41 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             #region Route Destination Six
 
-            routeTask = new RouteTask
-            {
-                OrderInRouteDestination = 1,
-                Date = route.Date,
-                Location = _clientsDesignData.DesignClientThree.OwnedParty.Locations.ElementAt(1),
-                Client = _clientsDesignData.DesignClientThree,
-                EstimatedDuration = new TimeSpan(0, 25, 0),
-                Name = "Clean Grease Trap",
-                OwnerBusinessAccount = _ownerBusinessAccount
-            };
+            routeTask = CreateRouteTaskAndService(1, route.Date, _clientsDesignData.DesignClientThree.OwnedParty.Locations.ElementAt(1),
+                _clientsDesignData.DesignClientThree, route.RouteType, new TimeSpan(0, 25, 0), _ownerBusinessAccount, serviceTemplate);
 
             routeDestination = new RouteDestination { OrderInRoute = 6 };
             routeDestination.RouteTasks.Add(routeTask);
             route.RouteDestinations.Add(routeDestination);
 
             #endregion
+        }
+
+        private RouteTask CreateRouteTaskAndService(int orderInRouteDestination, DateTime date, Location location, Client designClient, string routeType, TimeSpan timeSpan, BusinessAccount ownerBusinessAccount, ServiceTemplate serviceTemplate)
+        {
+            var newService = new Service
+            {
+                ServiceDate = date,
+                ServiceTemplate = serviceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
+                Client = designClient,
+                ServiceProvider = ownerBusinessAccount
+            };
+
+            newService.ServiceTemplate.SetDestination(location);
+
+            var task = new RouteTask
+            {
+                OrderInRouteDestination = orderInRouteDestination,
+                Date = date,
+                Location = location,
+                Client = designClient,
+                Name = routeType,
+                EstimatedDuration = timeSpan,
+                OwnerBusinessAccount = ownerBusinessAccount,
+                Service = newService
+            };
+
+            return task;
         }
     }
 }

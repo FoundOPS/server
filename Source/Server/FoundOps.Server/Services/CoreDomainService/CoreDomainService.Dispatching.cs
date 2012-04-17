@@ -53,7 +53,13 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var route = ObjectContext.Routes.Where(r => r.OwnerBusinessAccount.Id == businessForRole.Id && r.Id == routeId)
-                .Include("Vehicles").Include("Technicians").Include("Technicians.OwnedPerson").FirstOrDefault();
+                    .Include("Vehicles").Include("Technicians").First();
+
+            //Force load technician's OwnedPerson
+            (from employee in route.Technicians
+             join person in ObjectContext.Parties.OfType<Person>()
+                 on employee.Id equals person.Id
+             select new { employee, person }).ToArray();
 
             return route;
         }
