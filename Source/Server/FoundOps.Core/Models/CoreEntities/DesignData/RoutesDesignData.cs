@@ -9,6 +9,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         public Route DesignRoute { get; private set; }
         public Route DesignRouteTwo { get; private set; }
         public Route DesignRouteThree { get; private set; }
+        public Route DesignRouteFour { get; private set; }
+        public Route DesignRouteFive { get; private set; }
 
         public RouteTask DesignRouteTask { get; private set; }
         public RouteTask DesignRouteTaskTwo { get; private set; }
@@ -87,7 +89,33 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             AddRouteDestinations(DesignRouteThree);
             DesignRouteThree.Technicians.Add(_employeesDesignData.DesignEmployeeThree);
             DesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
-            DesignRoutes = new List<Route> { DesignRoute, DesignRouteTwo, DesignRouteThree };
+
+            DesignRouteFour = new Route
+            {
+                Name = "North Side",
+                Date = DateTime.UtcNow.Date,
+                RouteType = _ownerBusinessAccount.ServiceTemplates
+                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                            .ElementAt(0).Name
+            };
+            AddRouteDestinations(DesignRouteFour);
+            DesignRouteFour.Technicians.Add(_employeesDesignData.DesignEmployee);
+            DesignRouteFour.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
+
+            DesignRouteFive = new Route
+            {
+                Name = "South Side",
+                Date = DateTime.UtcNow.Date,
+                RouteType = _ownerBusinessAccount.ServiceTemplates
+                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                            .ElementAt(1).Name
+            };
+            AddRouteDestinations(DesignRouteFive);
+            DesignRouteFive.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
+            DesignRouteFive.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
+
+
+            DesignRoutes = new List<Route> { DesignRoute, DesignRouteTwo, DesignRouteThree, DesignRouteFour, DesignRouteFive };
         }
 
         private void AddRouteDestinations(Route route)

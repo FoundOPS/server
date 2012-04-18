@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FoundOPS.API.Controllers;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
@@ -16,27 +17,34 @@ namespace API.Tests.Controllers
         [TestMethod]
         public void PostTrackPoint()
         {
-            var coreEntitiesContainer = new CoreEntitiesContainer();
+            var trackPoints = new List<TrackPoint>();
 
-            var trackPoint = new TrackPoint
+            //Create the test TrackPoints with random numbers as properties
+            for (int i = 0; i < 10; i++)
             {
-                Id = Guid.NewGuid(),
-                CompassDirection = 0,
-                Latitude = 40.45997,
-                Longitude = -86.93089,
-                TimeStamp = DateTime.Now,
-                Speed = 50.23,
-            };
+                var random = new Random();
 
-            var currentUser = AuthenticationLogic.CurrentUserAccount(coreEntitiesContainer);
+                var trackPoint = new TrackPoint
+                {
+                    Id = Guid.NewGuid(),
+                    CompassDirection = random.Next(0, 359),
+                    Latitude = random.Next(-90, 90),
+                    Longitude = random.Next(-180, 180),
+                    TimeStamp = DateTime.Now.AddSeconds(10 * i),
+                    Speed = random.Next(20, 60),
+                };
+
+                trackPoints.Add(trackPoint);
+            }
+
             var fakeRouteId = Guid.NewGuid();
 
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
             var controller = new TrackPointController { Request = request };
 
-            var response = controller.PostEmployeeTrackPoint(trackPoint, currentUser.Id, fakeRouteId);
+            var response = controller.PostEmployeeTrackPoint(trackPoints.ToArray(), fakeRouteId);
+
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.IsNotNull(response.Headers.Location);
             var postedTrackPoint = response.Content.ReadAsync().Result;
         }
 

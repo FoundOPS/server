@@ -28,7 +28,7 @@ namespace FoundOPS.API.Controllers
 
         private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
 
-        #region Get
+        #region GET
 
         // GET /api/trackpoints
         public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, DateTime date)
@@ -44,7 +44,7 @@ namespace FoundOPS.API.Controllers
             var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
 
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-            var tableName = "tp" + currentBusinessAccount..ToString().Replace("-", "");
+            var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");
 
             //Gets all objects from the Azure table specified on the date requested and returns the result
             var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).ToArray().Where(tp => tp.TimeStamp.Date == date.Date);
@@ -67,6 +67,11 @@ namespace FoundOPS.API.Controllers
 
             if (currentBusinessAccount == null)
                 return null;
+#if DEBUG
+
+
+
+#endif
 
             var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id, serviceDate);
 
@@ -78,20 +83,19 @@ namespace FoundOPS.API.Controllers
         #region POST
 
         /// <summary>
-        /// Used to save a TrackPoint from a mobile phone being used by an Employee
+        /// Used to save TrackPoints from a mobile phone being used by an Employee
         /// </summary>
-        /// <param name="modelTrackPoint"></param>
-        /// <param name="roleId"> </param>
-        /// <param name="routeId"> </param>
+        /// <param name="modelTrackPoints">The list of TrackPoints being passed from an Employee's device</param>
+        /// <param name="routeId">The Id of the Route that the Employee is currently on</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        public HttpResponseMessage<Models.TrackPoint> PostEmployeeTrackPoint(Models.TrackPoint modelTrackPoint, Guid roleId, Guid routeId)
+        public HttpResponseMessage<TrackPoint[]> PostEmployeeTrackPoint(TrackPoint[] modelTrackPoints, Guid routeId)
         {
             var currentUserAccount = AuthenticationLogic.CurrentUserAccount(_coreEntitiesContainer);
 
             if (currentUserAccount == null)
-                return new HttpResponseMessage<TrackPoint>(modelTrackPoint, HttpStatusCode.Unauthorized);
+                return new HttpResponseMessage<TrackPoint[]>(modelTrackPoints, HttpStatusCode.Unauthorized);
 
-            var response = PostTrackPointHelper(roleId, currentUserAccount.Id, null, modelTrackPoint, routeId);
+            var response = PostTrackPointHelper(currentUserAccount.Id, null, modelTrackPoints, routeId);
 
             return response;
         }
@@ -100,13 +104,13 @@ namespace FoundOPS.API.Controllers
         /// Used to save a TrackPoint from a Vehicle that has some tracking hardware
         /// </summary>
         /// <param name="trackedVehicleId"></param>
-        /// <param name="modelTrackPoint"></param>
+        /// <param name="modelTrackPoints"></param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        public HttpResponseMessage<Models.TrackPoint> PostVehicleTrackPoint(Guid trackedVehicleId, Models.TrackPoint modelTrackPoint)
+        public HttpResponseMessage<Models.TrackPoint[]> PostVehicleTrackPoint(Guid trackedVehicleId, Models.TrackPoint[] modelTrackPoints)
         {
             //Note: this is not yet implemented because we do not have a way to track vehicles as of 4/11/2012
             //The code below will work assuming you are passing a valid VehicleId
-            return new HttpResponseMessage<TrackPoint>(modelTrackPoint, HttpStatusCode.NotImplemented);
+            return new HttpResponseMessage<TrackPoint[]>(modelTrackPoints, HttpStatusCode.NotImplemented);
 
             //if (trackedVehicle == null)
             //    return new HttpResponseMessage<TrackPoint>(modelTrackPoint, HttpStatusCode.Unauthorized);
@@ -119,98 +123,83 @@ namespace FoundOPS.API.Controllers
         /// <summary>
         /// Used to save TrackPoints from a mobile device
         /// </summary>
-        /// <param name="roleId"> </param>
-        /// <param name="employeeId"></param>
-        /// <param name="vehicleId"></param>
-        /// <param name="modelTrackPoint"></param>
-        /// <param name="routeId"> </param>
-        /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        private HttpResponseMessage<Models.TrackPoint> PostTrackPointHelper(Guid roleId, Guid? employeeId, Guid? vehicleId, Models.TrackPoint modelTrackPoint, Guid routeId)
+        /// <param name="roleId">The current roleId</param>
+        /// <param name="employeeId">The employeeId</param>
+        /// <param name="vehicleId">The vehicleId</param>
+        /// <param name="modelTrackPoints">The list of TrackPoints being passed from either an Employees device or a device on a Vehicle</param>
+        /// <param name="routeId">The Id of the Route that the vehicle or employee are currently on</param>
+        /// <returns>An Http response to the device signaling that the TrackPoint was successfully created or that an error occurred</returns>
+        private HttpResponseMessage<TrackPoint[]> PostTrackPointHelper(Guid? employeeId, Guid? vehicleId, TrackPoint[] modelTrackPoints, Guid routeId)
         {
-            var pushTrackPointToAzure = false;
+            //Take the list of TrackPoints passed and order them by their TimeStamps
+            var orderedModelTrackPoints = modelTrackPoints.OrderBy(tp => tp.TimeStamp).ToArray();
 
-            var currentBusinessAccount = new BusinessAccount();
+            //The last TrackPoint in the list above is the most current and therefore will be stored in the SQL database
+            var lastTrackPoint = orderedModelTrackPoints.Last();
+
+            BusinessAccount currentBusinessAccount;
 
             if (employeeId != null)
             {
                 var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.LinkedUserAccount.Id == employeeId);
 
                 if(employee == null) 
-                    return new HttpResponseMessage<TrackPoint>(HttpStatusCode.BadRequest);
+                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
 
-                employee.LastCompassDirection = modelTrackPoint.CompassDirection;
-                employee.LastLatitude = modelTrackPoint.Latitude;
-                employee.LastLongitude = modelTrackPoint.Longitude;
-                employee.LastSource = modelTrackPoint.Source;
-                employee.LastSpeed = modelTrackPoint.Speed;
-                employee.LastTimeStamp = modelTrackPoint.TimeStamp;
+                //Save the last TrackPoint passed to the database
+                employee.LastCompassDirection = lastTrackPoint.CompassDirection;
+                employee.LastLatitude = lastTrackPoint.Latitude;
+                employee.LastLongitude = lastTrackPoint.Longitude;
+                employee.LastSource = lastTrackPoint.Source;
+                employee.LastSpeed = lastTrackPoint.Speed;
+                employee.LastTimeStamp = lastTrackPoint.TimeStamp;
 
                 currentBusinessAccount = employee.Employer;
 
-                if (modelTrackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= employee.LastPushToAzureTimeStamp)
-                    pushTrackPointToAzure = true;
+                //If there is no BusinessAccount something went wrong, return a BadRequest status code
+                if (currentBusinessAccount == null)
+                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
+
+                //Checks each TrackPoint to see if it needs to be pushed to the Azure Tables
+                foreach (var trackPoint in orderedModelTrackPoints)
+                {
+                    //If trackpoint's timestamp is more than 30 seconds passed the last one passed to AzureTables
+                    //Or the LastPushToAzureTimeStamp is null
+                    if (trackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= employee.LastPushToAzureTimeStamp || employee.LastPushToAzureTimeStamp == null)
+                        PushTrackPointToAzure(currentBusinessAccount, trackPoint, employee, null, routeId);
+                }
             }
 
             else if (vehicleId != null)
             {
                 var vehicle = _coreEntitiesContainer.Vehicles.FirstOrDefault(v => v.Id == vehicleId);
 
+                //If there is no Vehicle that corresponds to the vehicleId passed, something went wrong => return a BadRequest status code
                 if (vehicle == null)
-                    return new HttpResponseMessage<TrackPoint>(HttpStatusCode.BadRequest);
+                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
 
-                vehicle.LastCompassDirection = modelTrackPoint.CompassDirection;
-                vehicle.LastLatitude = modelTrackPoint.Latitude;
-                vehicle.LastLongitude = modelTrackPoint.Longitude;
-                vehicle.LastSource = modelTrackPoint.Source;
-                vehicle.LastSpeed = modelTrackPoint.Speed;
-                vehicle.LastTimeStamp = modelTrackPoint.TimeStamp;
+                //Save the last TrackPoint passed to the database
+                vehicle.LastCompassDirection = lastTrackPoint.CompassDirection;
+                vehicle.LastLatitude = lastTrackPoint.Latitude;
+                vehicle.LastLongitude = lastTrackPoint.Longitude;
+                vehicle.LastSource = lastTrackPoint.Source;
+                vehicle.LastSpeed = lastTrackPoint.Speed;
+                vehicle.LastTimeStamp = lastTrackPoint.TimeStamp;
 
                 currentBusinessAccount = vehicle.OwnerParty.ClientOwner.Vendor;
 
-                if (modelTrackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= vehicle.LastPushToAzureTimeStamp)
-                    pushTrackPointToAzure = true;
-            }
-
-            //pushTrackPointToAzure = true;
-
-            if (pushTrackPointToAzure)
-            {
-                var storageAccount = CloudStorageAccount.Parse(UpdateConstants.StorageConnectionString);
-
-                var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(),
-                                                                        storageAccount.Credentials);
-
-                // Create the table if there is not already a table with the name of tp + EmployeeId/VehicleId
-                var tableClient = storageAccount.CreateCloudTableClient();
-
+                //If there is no BusinessAccount something went wrong, return a BadRequest status code
                 if (currentBusinessAccount == null)
-                    return new HttpResponseMessage<TrackPoint>(HttpStatusCode.BadRequest);
+                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
 
-                //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-                var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");
-
-                try
+                //Checks each TrackPoint to see if it needs to be pushed to the Azure Tables
+                foreach (var trackPoint in orderedModelTrackPoints)
                 {
-                    tableClient.CreateTableIfNotExist(tableName);
+                    //If trackpoint's timestamp is more than 30 seconds passed the last one passed to AzureTables
+                    //Or the LastPushToAzureTimeStamp is null
+                    if (trackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= vehicle.LastPushToAzureTimeStamp || vehicle.LastPushToAzureTimeStamp == null)
+                        PushTrackPointToAzure(currentBusinessAccount, trackPoint, null, vehicle, routeId);
                 }
-                catch { }
-
-                //Create the object to be stored in the Azure table
-                var newTrackPoint = new TrackPointsHistoryTableDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
-                                        {
-                                            EmployeetId = employeeId,
-                                            VehicleId = vehicleId,
-                                            RouteId = routeId,
-                                            Latitude = modelTrackPoint.Latitude,
-                                            Longitude = modelTrackPoint.Longitude,
-                                            TimeStamp = modelTrackPoint.TimeStamp
-                                        };
-
-                //Push to Azure Table
-                serviceContext.AddObject(tableName, newTrackPoint);
-
-                //Saves the Tables
-                serviceContext.SaveChangesWithRetries();
             }
 
             //Find the one that is not null and keep it to be returned in the response header
@@ -219,10 +208,77 @@ namespace FoundOPS.API.Controllers
             _coreEntitiesContainer.SaveChanges();
 
             //Create the Http response 
-            var response = new HttpResponseMessage<Models.TrackPoint>(modelTrackPoint, HttpStatusCode.Created);
-            response.Headers.Location = new Uri(Request.RequestUri, "/api/trackpoints/" + employeeOrVehicleId.ToString() + modelTrackPoint.Id.ToString());
+            var response = new HttpResponseMessage<TrackPoint[]>(modelTrackPoints, HttpStatusCode.Created);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/trackpoints/" + employeeOrVehicleId.ToString());
 
             return response;
+        }
+
+        /// <summary>
+        /// Takes a ModelTrackPoint and pushed it to the AzureTables
+        /// </summary>
+        /// <param name="currentBusinessAccount">The current BusinessAccount</param>
+        /// <param name="trackPoint">The Model TrackPoint to be pushed to AzureTables</param>
+        /// <param name="employeeId">The employeeId</param>
+        /// <param name="vehicleId">The vehicleId</param>
+        /// <param name="routeId">The Id of the Route that the vehicle or employee are currently on</param>
+        private void PushTrackPointToAzure(BusinessAccount currentBusinessAccount, TrackPoint trackPoint, Employee employee, Vehicle vehicle, Guid routeId)
+        {
+            var storageAccount = CloudStorageAccount.Parse(UpdateConstants.StorageConnectionString);
+
+            var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(),
+                                                                    storageAccount.Credentials);
+
+            //Create the table if there is not already a table with the name of tp + EmployeeId/VehicleId
+            var tableClient = storageAccount.CreateCloudTableClient();
+
+            //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
+            var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");
+
+            //If an exception occurs, it means that the table already exists
+            try
+            {
+                tableClient.CreateTableIfNotExist(tableName);
+            }
+            catch { }
+
+            #region Set employeeId, vehicleId and appropriate LastPushToAzureTimeStamp
+
+            Guid? employeeId = Guid.NewGuid();
+            Guid? vehicleId = Guid.NewGuid();
+            
+            if(employee != null)
+            {
+                employeeId = employee.Id;
+                vehicleId = null;
+                employee.LastPushToAzureTimeStamp = trackPoint.TimeStamp;
+            }
+
+            if(vehicle != null)
+            {
+                employeeId = null;
+                vehicleId = vehicle.Id;
+                vehicle.LastPushToAzureTimeStamp = trackPoint.TimeStamp;
+            }
+
+            #endregion
+
+            //Create the object to be stored in the Azure table
+            var newTrackPoint = new TrackPointsHistoryTableDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
+            {
+                EmployeetId = employeeId,
+                VehicleId = vehicleId,
+                RouteId = routeId,
+                Latitude = trackPoint.Latitude,
+                Longitude = trackPoint.Longitude,
+                TimeStamp = trackPoint.TimeStamp
+            };
+
+            //Push to Azure Table
+            serviceContext.AddObject(tableName, newTrackPoint);
+
+            //Saves the Tables
+            serviceContext.SaveChangesWithRetries();
         }
 
         #endregion
