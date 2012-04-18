@@ -1,3 +1,4 @@
+using System.ServiceModel;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -27,6 +28,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 #else
     [EnableClientAccess(RequiresSecureEndpoint = true)]
 #endif
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public partial class CoreDomainService : LinqToEntitiesDomainService<CoreEntitiesContainer>
     {
         protected override bool PersistChangeSet()
