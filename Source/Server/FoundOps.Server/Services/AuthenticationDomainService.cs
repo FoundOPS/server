@@ -3,6 +3,7 @@ using FoundOps.Core.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.Authentication;
 using System.Linq;
+using System.ServiceModel;
 using System.ServiceModel.DomainServices.Server.ApplicationServices;
 
 namespace FoundOps.Server.Services
