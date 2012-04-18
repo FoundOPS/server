@@ -9,7 +9,7 @@ using Route = FoundOPS.API.Models.Route;
 
 namespace FoundOPS.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class RoutesController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();

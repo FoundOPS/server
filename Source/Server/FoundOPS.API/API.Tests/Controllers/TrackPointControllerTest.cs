@@ -60,7 +60,7 @@ namespace API.Tests.Controllers
 
             var date = new DateTime(2012, 4, 16);
 
-            var response = controller.GetTrackPoints(new Guid("F7349D7F-77AF-4AED-8425-5AF979AC74B9"), date);
+            //var response = controller.GetTrackPoints(new Guid("F7349D7F-77AF-4AED-8425-5AF979AC74B9"), date);
         }
 
         [TestMethod]

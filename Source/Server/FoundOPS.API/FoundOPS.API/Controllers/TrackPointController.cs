@@ -12,7 +12,7 @@ using TrackPoint = FoundOPS.API.Models.TrackPoint;
 
 namespace FoundOPS.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TrackPointController : ApiController
     {
         public struct UpdateConstants
@@ -30,10 +30,13 @@ namespace FoundOPS.API.Controllers
 
         #region GET
 
-        // GET /api/trackpoints
-        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, DateTime date)
+        // GET /api/trackpoints?roleId={Guid}&date=Datetime
+        public IQueryable<TrackPoint> GetTrackPoints(Guid? roleId, DateTime? date)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+            if (roleId == null || date == null)
+                return null;
+
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole((Guid) roleId);
 
             if (currentBusinessAccount == null)
                 return null;
@@ -47,7 +50,7 @@ namespace FoundOPS.API.Controllers
             var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");
 
             //Gets all objects from the Azure table specified on the date requested and returns the result
-            var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).ToArray().Where(tp => tp.TimeStamp.Date == date.Date);
+            var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).ToArray().Where(tp => tp.TimeStamp.Date == ((DateTime)date).Date);
 
             //Return the list of converted track points as a queryable
             var modelTrackPoints = trackPoints.Select(TrackPoint.ConvertToModel);
@@ -61,7 +64,8 @@ namespace FoundOPS.API.Controllers
         /// <param name="roleId">The current roleId</param>
         /// <param name="serviceDate">The requested ServiceDate</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
-        public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid roleId, DateTime serviceDate)
+        [HttpGet]
+        public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid? roleId, DateTime? serviceDate)
         {
 #if DEBUG
             var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == roleId).FirstOrDefault();
