@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -91,12 +92,19 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// IEnumerable DestinationItemsSource { get; }
 
         /// <summary>
-        /// Links to the add delete from control events.
+        /// Subscribes to the add delete from control observables.
         /// Workaround for wrestling with the type system.
         /// </summary>
         /// <param name="control">The control.</param>
         /// <param name="sourceType">The source type of the AddToDeleteFrom control. </param>
-        void LinkToAddToDeleteFromEvents(AddToDeleteFrom control, Type sourceType);
+        void LinkToAddToDeleteFrom(AddToDeleteFrom control, Type sourceType);
+
+        /// Disposes the subscriptions to the add delete from control observables.
+        /// Workaround for wrestling with the type system.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="sourceType">The source type of the AddToDeleteFrom control. </param>
+        void UnlinkAddToDeleteFrom(AddToDeleteFrom c, Type type);
     }
 
     #region Add interfaces
@@ -122,7 +130,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
         /// <summary>
         /// A method to add an existing item. It is passed the selected existing item.
         /// </summary>
-        Action<T> AddExistingItem { get; }
+        Action<object> AddExistingItem { get; }
     }
 
     #endregion
@@ -304,8 +312,11 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
             var c = d as AddToDeleteFrom;
             if (c == null) return;
 
+            if (e.OldValue != null)
+                ((IAddToDeleteFromDestination<object>)e.OldValue).UnlinkAddToDeleteFrom(c, c.SourceType);
+
             if (e.NewValue == null || c.SourceType == null) return;
-            ((IAddToDeleteFromDestination<object>)e.NewValue).LinkToAddToDeleteFromEvents(c, c.SourceType);
+            ((IAddToDeleteFromDestination<object>)e.NewValue).LinkToAddToDeleteFrom(c, c.SourceType);
         }
 
 
@@ -383,28 +394,29 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #region Events
 
-        public delegate void AddNewItemEventArgs(AddToDeleteFrom sender, string newItemText);
-        public delegate void AddExistingItemEventArgs(AddToDeleteFrom sender, object existingItem);
+        private Subject<string> _addNewItem = new Subject<string>();
+        /// <summary>
+        /// Pushes the RadComboBox text when [add new item] is clicked.
+        /// </summary>
+        public IObservable<string> AddNewItem { get { return _addNewItem; } }
 
+        private Subject<object> _addExistingItem = new Subject<object>();
         /// <summary>
-        /// Occurs when [add new item] is clicked.
-        /// Passes the RadComboBox text in the event args.
+        /// Pushes the selected item when [add existing item] is clicked.
         /// </summary>
-        public event AddNewItemEventArgs AddNewItem;
-        /// <summary>
-        /// Occurs when [add existing item] is clicked.
-        /// Passes the selected item in the event args.
-        /// </summary>
-        public event AddExistingItemEventArgs AddExistingItem;
+        public IObservable<object> AddExistingItem { get { return _addExistingItem; } }
 
+        private Subject<bool> _removeItem = new Subject<bool>();
         /// <summary>
-        /// Occurs when [remove item] is called.
+        /// Pushes when [remove item] is clicked.
         /// </summary>
-        public event EventHandler RemoveItem;
+        public IObservable<bool> RemoveItem { get { return _removeItem; } }
+
+        private Subject<bool> _deleteItem = new Subject<bool>();
         /// <summary>
-        /// Occurs when [delete item] is called.
+        /// Pushes when [delete item] is clicked.
         /// </summary>
-        public event EventHandler DeleteItem;
+        public IObservable<bool> DeleteItem { get { return _deleteItem; } }
 
         #endregion
 
@@ -594,34 +606,36 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         #region Add, Remove, Delete helpers
 
-        //Calls the AddNewItem event
+        /// <summary>
+        /// Pushes the combobox text to the AddNewItem observable
+        /// </summary>
         private void AddNewItemHelper()
         {
-            if (AddNewItem != null)
-                //Pass the combobox text
-                AddNewItem(this, ExistingItemsComboBoxText);
+            _addNewItem.OnNext(ExistingItemsComboBoxText);
         }
 
-        //Calls the AddExistingItem event
+        /// <summary>
+        /// Pushes the selected entity (from the combobox) to the AddNewItem AddExistingItem observable
+        /// </summary>
         private void AddExistingItemHelper()
         {
-            if (AddExistingItem != null)
-                //Pass the selected entity (from the combobox)
-                AddExistingItem(this, SelectedExistingItem);
+            _addExistingItem.OnNext(SelectedExistingItem);
         }
 
-        //Calls the RemoveItem event
+        /// <summary>
+        /// Pushes true on the remove item observable.
+        /// </summary>
         private void RemoveItemHelper()
         {
-            if (RemoveItem != null)
-                RemoveItem(this, null);
+            _removeItem.OnNext(true);
         }
 
-        //Calls the DeleteItem event
+        /// <summary>
+        /// Pushes true on the delete item observable
+        /// </summary>
         private void DeleteItemHelper()
         {
-            if (DeleteItem != null)
-                DeleteItem(this, null);
+            _deleteItem.OnNext(true);
         }
 
         #endregion
@@ -643,7 +657,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.AddEditDelete
 
         private void AutoCompleteBoxOnGotFocus(object sender, RoutedEventArgs e)
         {
-            ((AutoCompleteBox) sender).IsDropDownOpen = true;
+            ((AutoCompleteBox)sender).IsDropDownOpen = true;
         }
     }
 }

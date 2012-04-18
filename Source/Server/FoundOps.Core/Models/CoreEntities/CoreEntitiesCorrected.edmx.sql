@@ -4326,6 +4326,27 @@ BEGIN
 		)
 	)
 
+	INSERT INTO @PreRoutedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+	SELECT t1.RecurringServiceId, t1.Id, t1.ServiceDate, t2.Name
+	FROM Services t1, ServiceTemplates t2
+	WHERE	t1.ServiceProviderId = @serviceProviderIdContext 
+				AND t1.ServiceDate = @serviceDate
+				AND t1.Id = t2.Id
+				AND EXISTS	( 
+								SELECT *
+								FROM  RouteTasks t2
+								WHERE EXISTS
+								(
+									SELECT *
+									FROM RouteDestinations t3
+									WHERE EXISTS
+									(
+										SELECT * FROM Routes t4
+										WHERE t3.RouteId = t4.Id AND t2.RouteDestinationId = t3.Id AND t1.Id = ServiceId AND t4.Date = @serviceDate
+									)
+								)
+							)
+
 	DECLARE @UnroutedServices TABLE
 	(
 		RecurringServiceId uniqueidentifier,

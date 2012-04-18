@@ -11,6 +11,7 @@ using System.ComponentModel.Composition;
 using System.Reactive.Linq;
 using System.ServiceModel.DomainServices.Client;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -36,20 +37,34 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Implementation of IAddToDeleteFromDestination
 
+        private List<IDisposable> addToDeleteFromSubscriptions = new List<IDisposable>();
         /// <summary>
-        /// Links to the LinkToAddToDeleteFromControl events.
+        /// Subscribes to the add delete from control observables.
         /// </summary>
         /// <param name="control">The control.</param>
         /// <param name="sourceType">Type of the source.</param>
-        public void LinkToAddToDeleteFromEvents(AddToDeleteFrom control, Type sourceType)
+        public void LinkToAddToDeleteFrom(AddToDeleteFrom control, Type sourceType)
         {
             if (sourceType == typeof(Location))
             {
-                control.AddExistingItem += (s, existingItem) => this.AddExistingItemLocation((Location)existingItem);
-                control.AddNewItem += (s, newItemText) => this.AddNewItemLocation(newItemText);
-                control.RemoveItem += (s, e) => this.RemoveItemLocation();
-                control.DeleteItem += (s, e) => this.DeleteItemLocation();
+                addToDeleteFromSubscriptions.Add(control.AddExistingItem.Subscribe(existingItem => AddExistingItemLocation(existingItem)));
+                addToDeleteFromSubscriptions.Add(control.AddNewItem.Subscribe(text => AddNewItemLocation(text)));
+                addToDeleteFromSubscriptions.Add(control.RemoveItem.Subscribe(_ => RemoveItemLocation()));
+                addToDeleteFromSubscriptions.Add(control.DeleteItem.Subscribe(_ => DeleteItemLocation()));
             }
+        }
+
+        /// <summary>
+        /// Disposes the subscriptions to the add delete from control observables.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="sourceType">Type of the source.</param>
+        public void UnlinkAddToDeleteFrom(AddToDeleteFrom c, Type type)
+        {
+            foreach (var subscription in addToDeleteFromSubscriptions)
+                subscription.Dispose();
+
+            addToDeleteFromSubscriptions.Clear();
         }
 
         /// <summary>
@@ -65,16 +80,16 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Implementation of IAddNewExisting<Location> & IRemoveDelete<Location>
 
         /// <summary>
+        /// An action to add an existing Location to the current BusinessAccount.
+        /// </summary>
+        public Action<object> AddExistingItemLocation { get; private set; }
+        Action<object> IAddNewExisting<Location>.AddExistingItem { get { return AddExistingItemLocation; } }
+
+        /// <summary>
         /// An action to add a new Location to the current BusinessAccount.
         /// </summary>
         public Func<string, Location> AddNewItemLocation { get; private set; }
         Func<string, Location> IAddNew<Location>.AddNewItem { get { return AddNewItemLocation; } }
-
-        /// <summary>
-        /// An action to add an existing Location to the current BusinessAccount.
-        /// </summary>
-        public Action<Location> AddExistingItemLocation { get; private set; }
-        Action<Location> IAddNewExisting<Location>.AddExistingItem { get { return AddExistingItemLocation; } }
 
         /// <summary>
         /// An action to remove a Location from the current BusinessAccount.
@@ -126,10 +141,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             AddExistingItemLocation = existingItem =>
             {
-                SelectedEntity.OwnedParty.Locations.Add(existingItem);
+                SelectedEntity.OwnedParty.Locations.Add((Location)existingItem);
                 VM.Locations.MoveToDetailsView.Execute(null);
 
-                VM.Locations.SelectedEntity = existingItem;
+                VM.Locations.SelectedEntity = (Location) existingItem;
             };
 
             RemoveItemLocation = () =>
