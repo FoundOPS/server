@@ -16,10 +16,10 @@ RETURNS @EmployeeVehicleTableToReturn TABLE
 		VehicleId uniqueidentifier,
 		EntityName nvarchar(max),
 		CompassHeading int,
-		Latitude float(7),
-		Longitude float(7),
+		Latitude decimal(18,8),
+		Longitude decimal(18,8),
 		LastTimeStamp datetime,
-		Speed float(7),
+		Speed decimal(18,8),
 		TrackSource nvarchar(max),
 		RouteId uniqueidentifier
 	) 

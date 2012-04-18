@@ -12367,27 +12367,11 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Create a new ResourceWithLastPoint object.
         /// </summary>
-        /// <param name="employeeId">Initial value of the EmployeeId property.</param>
-        /// <param name="vehicleId">Initial value of the VehicleId property.</param>
-        /// <param name="entityName">Initial value of the EntityName property.</param>
-        /// <param name="compassHeading">Initial value of the CompassHeading property.</param>
-        /// <param name="latitude">Initial value of the Latitude property.</param>
-        /// <param name="longitude">Initial value of the Longitude property.</param>
-        /// <param name="timeStamp">Initial value of the TimeStamp property.</param>
-        /// <param name="speed">Initial value of the Speed property.</param>
-        /// <param name="trackSource">Initial value of the TrackSource property.</param>
-        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.Guid employeeId, global::System.Guid vehicleId, global::System.String entityName, global::System.Int32 compassHeading, global::System.Double latitude, global::System.Double longitude, global::System.DateTime timeStamp, global::System.Double speed, global::System.Single trackSource)
+        /// <param name="lastTimeStamp">Initial value of the LastTimeStamp property.</param>
+        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.DateTime lastTimeStamp)
         {
             ResourceWithLastPoint resourceWithLastPoint = new ResourceWithLastPoint();
-            resourceWithLastPoint.EmployeeId = employeeId;
-            resourceWithLastPoint.VehicleId = vehicleId;
-            resourceWithLastPoint.EntityName = entityName;
-            resourceWithLastPoint.CompassHeading = compassHeading;
-            resourceWithLastPoint.Latitude = latitude;
-            resourceWithLastPoint.Longitude = longitude;
-            resourceWithLastPoint.TimeStamp = timeStamp;
-            resourceWithLastPoint.Speed = speed;
-            resourceWithLastPoint.TrackSource = trackSource;
+            resourceWithLastPoint.LastTimeStamp = lastTimeStamp;
             return resourceWithLastPoint;
         }
 
@@ -12398,9 +12382,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Guid EmployeeId
+        public Nullable<global::System.Guid> EmployeeId
         {
             get
             {
@@ -12415,16 +12399,16 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnEmployeeIdChanged();
             }
         }
-        private global::System.Guid _EmployeeId;
-        partial void OnEmployeeIdChanging(global::System.Guid value);
+        private Nullable<global::System.Guid> _EmployeeId;
+        partial void OnEmployeeIdChanging(Nullable<global::System.Guid> value);
         partial void OnEmployeeIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Guid VehicleId
+        public Nullable<global::System.Guid> VehicleId
         {
             get
             {
@@ -12439,14 +12423,14 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnVehicleIdChanged();
             }
         }
-        private global::System.Guid _VehicleId;
-        partial void OnVehicleIdChanging(global::System.Guid value);
+        private Nullable<global::System.Guid> _VehicleId;
+        partial void OnVehicleIdChanging(Nullable<global::System.Guid> value);
         partial void OnVehicleIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String EntityName
         {
@@ -12458,7 +12442,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEntityNameChanging(value);
                 ReportPropertyChanging("EntityName");
-                _EntityName = StructuralObject.SetValidValue(value, false);
+                _EntityName = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("EntityName");
                 OnEntityNameChanged();
             }
@@ -12470,9 +12454,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 CompassHeading
+        public Nullable<global::System.Int32> CompassHeading
         {
             get
             {
@@ -12487,16 +12471,16 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnCompassHeadingChanged();
             }
         }
-        private global::System.Int32 _CompassHeading;
-        partial void OnCompassHeadingChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _CompassHeading;
+        partial void OnCompassHeadingChanging(Nullable<global::System.Int32> value);
         partial void OnCompassHeadingChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Double Latitude
+        public Nullable<global::System.Decimal> Latitude
         {
             get
             {
@@ -12511,16 +12495,16 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnLatitudeChanged();
             }
         }
-        private global::System.Double _Latitude;
-        partial void OnLatitudeChanging(global::System.Double value);
+        private Nullable<global::System.Decimal> _Latitude;
+        partial void OnLatitudeChanging(Nullable<global::System.Decimal> value);
         partial void OnLatitudeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Double Longitude
+        public Nullable<global::System.Decimal> Longitude
         {
             get
             {
@@ -12535,8 +12519,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnLongitudeChanged();
             }
         }
-        private global::System.Double _Longitude;
-        partial void OnLongitudeChanging(global::System.Double value);
+        private Nullable<global::System.Decimal> _Longitude;
+        partial void OnLongitudeChanging(Nullable<global::System.Decimal> value);
         partial void OnLongitudeChanged();
     
         /// <summary>
@@ -12544,31 +12528,31 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.DateTime TimeStamp
+        public global::System.DateTime LastTimeStamp
         {
             get
             {
-                return _TimeStamp;
+                return _LastTimeStamp;
             }
             set
             {
-                OnTimeStampChanging(value);
-                ReportPropertyChanging("TimeStamp");
-                _TimeStamp = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("TimeStamp");
-                OnTimeStampChanged();
+                OnLastTimeStampChanging(value);
+                ReportPropertyChanging("LastTimeStamp");
+                _LastTimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastTimeStamp");
+                OnLastTimeStampChanged();
             }
         }
-        private global::System.DateTime _TimeStamp;
-        partial void OnTimeStampChanging(global::System.DateTime value);
-        partial void OnTimeStampChanged();
+        private global::System.DateTime _LastTimeStamp;
+        partial void OnLastTimeStampChanging(global::System.DateTime value);
+        partial void OnLastTimeStampChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Double Speed
+        public Nullable<global::System.Decimal> Speed
         {
             get
             {
@@ -12583,16 +12567,16 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnSpeedChanged();
             }
         }
-        private global::System.Double _Speed;
-        partial void OnSpeedChanging(global::System.Double value);
+        private Nullable<global::System.Decimal> _Speed;
+        partial void OnSpeedChanging(Nullable<global::System.Decimal> value);
         partial void OnSpeedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Single TrackSource
+        public global::System.String TrackSource
         {
             get
             {
@@ -12602,14 +12586,38 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTrackSourceChanging(value);
                 ReportPropertyChanging("TrackSource");
-                _TrackSource = StructuralObject.SetValidValue(value);
+                _TrackSource = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("TrackSource");
                 OnTrackSourceChanged();
             }
         }
-        private global::System.Single _TrackSource;
-        partial void OnTrackSourceChanging(global::System.Single value);
+        private global::System.String _TrackSource;
+        partial void OnTrackSourceChanging(global::System.String value);
         partial void OnTrackSourceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> RouteId
+        {
+            get
+            {
+                return _RouteId;
+            }
+            set
+            {
+                OnRouteIdChanging(value);
+                ReportPropertyChanging("RouteId");
+                _RouteId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RouteId");
+                OnRouteIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _RouteId;
+        partial void OnRouteIdChanging(Nullable<global::System.Guid> value);
+        partial void OnRouteIdChanged();
 
         #endregion
 

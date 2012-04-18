@@ -409,7 +409,7 @@
       </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource
+          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId
           FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId , @serviceDate)
         </CommandText>
         <Parameter Name="serviceProviderId"
@@ -3431,15 +3431,16 @@
           </ReferentialConstraint>
         </Association>
         <ComplexType Name="ResourceWithLastPoint" >
-          <Property Type="Guid" Name="EmployeeId" Nullable="false" />
-          <Property Type="Guid" Name="VehicleId" Nullable="false" />
-          <Property Type="String" Name="EntityName" Nullable="false" />
-          <Property Type="Int32" Name="CompassHeading" Nullable="false" />
-          <Property Type="Double" Name="Latitude" Nullable="false" />
-          <Property Type="Double" Name="Longitude" Nullable="false" />
-          <Property Type="DateTime" Name="TimeStamp" Nullable="false" />
-          <Property Type="Double" Name="Speed" Nullable="false" />
-          <Property Type="Single" Name="TrackSource" Nullable="false" />
+          <Property Type="Guid" Name="EmployeeId" Nullable="true" />
+          <Property Type="Guid" Name="VehicleId" Nullable="true" />
+          <Property Type="String" Name="EntityName" Nullable="true" />
+          <Property Type="Int32" Name="CompassHeading" Nullable="true" />
+          <Property Type="Decimal" Name="Latitude" Nullable="true" />
+          <Property Type="Decimal" Name="Longitude" Nullable="true" />
+          <Property Type="DateTime" Name="LastTimeStamp" Nullable="false" />
+          <Property Type="Decimal" Name="Speed" Nullable="true" />
+          <Property Type="String" Name="TrackSource" Nullable="true" />
+          <Property Type="Guid" Name="RouteId" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -4003,9 +4004,10 @@
                 <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
                 <ScalarProperty Name="Speed" ColumnName="Speed" />
                 <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

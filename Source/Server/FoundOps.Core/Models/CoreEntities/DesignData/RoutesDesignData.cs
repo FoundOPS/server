@@ -97,27 +97,31 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignRouteThree.Technicians.Add(_employeesDesignData.DesignEmployeeThree);
             DesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
 
+            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                            .ElementAt(0);
+            
             DesignRouteFour = new Route
             {
                 Name = "North Side",
                 Date = DateTime.UtcNow.Date,
-                RouteType = _ownerBusinessAccount.ServiceTemplates
-                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                            .ElementAt(0).Name
+                RouteType = serviceTemplate.Name
             };
-            AddRouteDestinations(DesignRouteFour);
+            AddRouteDestinations(DesignRouteFour, serviceTemplate);
             DesignRouteFour.Technicians.Add(_employeesDesignData.DesignEmployee);
             DesignRouteFour.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
+
+            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                            .ElementAt(1);
 
             DesignRouteFive = new Route
             {
                 Name = "South Side",
                 Date = DateTime.UtcNow.Date,
-                RouteType = _ownerBusinessAccount.ServiceTemplates
-                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                            .ElementAt(1).Name
+                RouteType = serviceTemplate.Name
             };
-            AddRouteDestinations(DesignRouteFive);
+            AddRouteDestinations(DesignRouteFive,serviceTemplate);
             DesignRouteFive.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
             DesignRouteFive.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
 

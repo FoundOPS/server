@@ -55,14 +55,23 @@ namespace API.Tests.Controllers
 
             var currentUser = AuthenticationLogic.CurrentUserAccount(coreEntitiesContainer);
 
-            var roleId = currentUser.OwnedRoles.FirstOrDefault().Id;
-
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
             var controller = new TrackPointController { Request = request };
 
             var date = new DateTime(2012, 4, 16);
 
             var response = controller.GetTrackPoints(new Guid("F7349D7F-77AF-4AED-8425-5AF979AC74B9"), date);
+        }
+
+        [TestMethod]
+        public void GetLatestTrackPoints()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
+            var controller = new TrackPointController { Request = request };
+
+            var date = new DateTime(2012, 4, 18);
+
+            var response = controller.GetResourcesWithLatestPoints(new Guid("6E0B4C05-7089-44B7-A9AA-88BF83CEEC12"), date);
         }
     }
 }

@@ -19,11 +19,11 @@ namespace FoundOPS.API.Controllers
         {
             public static readonly int TimeBetweenPushesToAzure = 30;
 
-        #if DEBUG
+#if DEBUG
             public const string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=opsappdebug;AccountKey=Wbs5xOmAKdNw8ef9XgRZF2lhE+DYH1uN0qgETVKSCLqIXaaTRjiFIj4sT2cf0iQxUdOAYEej2VI4aPBr7TVOYA==";
-        #else
+#else
             public const string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=fstoreroledata;AccountKey=bs7B22OoZr0jKz9xCJFlNacCemDvaTT8pj3yV2PENA6GwYkERELymg+hDOU2Yz+nAkU8IyvS4lDUmzkfkQsCuQ==";
-        #endif
+#endif
         }
 
         private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
@@ -63,14 +63,129 @@ namespace FoundOPS.API.Controllers
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
         public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid roleId, DateTime serviceDate)
         {
+#if DEBUG
+            var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == roleId).FirstOrDefault();
+#else
             var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
 
             if (currentBusinessAccount == null)
                 return null;
+#endif
+
+
+
 #if DEBUG
+            var routes = _coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate && r.OwnerBusinessAccountId == currentBusinessAccount.Id).OrderBy(r => r.Id);
 
+            var numberOfRoutes = routes.Count();
 
+            var count = 1;
 
+            var random = new Random();
+
+            foreach (var route in routes)
+            {
+                var routeNumber = count % numberOfRoutes;
+
+                switch (routeNumber)
+                {
+                    //This would be the 4th, 8th, etc
+                    case 0:
+                        var employees = route.Technicians;
+                        foreach (var employee in employees)
+                        {
+                            if (employee.LastLatitude == null && employee.LastLongitude == null ||
+                                (employee.LastTimeStamp != null && employee.LastTimeStamp.Value.Date != DateTime.UtcNow.Date))
+                            {
+                                employee.LastLatitude = 40.4599;
+                                employee.LastLongitude = -86.9309;
+                            }
+                            else
+                            {
+                                employee.LastLatitude = employee.LastLatitude + .001;
+                                employee.LastLongitude = employee.LastLongitude + .001;
+                            }
+
+                            employee.LastCompassDirection = 45;
+                            employee.LastTimeStamp = DateTime.UtcNow;
+                            employee.LastSpeed = random.Next(30, 50);
+                            employee.LastSource = "iPhone";
+                        }
+                        break;
+                    //This would be the 1st, 5th, etc
+                    case 1:
+                        employees = route.Technicians;
+                        foreach (var employee in employees)
+                        {
+                            if (employee.LastLatitude == null && employee.LastLongitude == null || 
+                                (employee.LastTimeStamp != null && employee.LastTimeStamp.Value.Date != DateTime.UtcNow.Date))
+                            {
+                                employee.LastLatitude = 40.4599;
+                                employee.LastLongitude = -86.9309;
+                            }
+                            else
+                            {
+                                employee.LastLatitude = employee.LastLatitude - .001;
+                                employee.LastLongitude = employee.LastLongitude + .001;
+                            }
+
+                            employee.LastCompassDirection = 135;
+                            employee.LastTimeStamp = DateTime.UtcNow;
+                            employee.LastSpeed = random.Next(30, 50);
+                            employee.LastSource = "iPhone";
+                        }
+                        break;
+                    //This would be the 2nd, 6th, etc
+                    case 2:
+                        employees = route.Technicians;
+                        foreach (var employee in employees)
+                        {
+                            if (employee.LastLatitude == null && employee.LastLongitude == null ||
+                                (employee.LastTimeStamp != null && employee.LastTimeStamp.Value.Date != DateTime.UtcNow.Date))
+                            {
+                                employee.LastLatitude = 40.4599;
+                                employee.LastLongitude = -86.9309;
+                            }
+                            else
+                            {
+                                employee.LastLatitude = employee.LastLatitude + .001;
+                                employee.LastLongitude = employee.LastLongitude - .001;
+                            }
+
+                            employee.LastCompassDirection = 225;
+                            employee.LastTimeStamp = DateTime.UtcNow;
+                            employee.LastSpeed = random.Next(30, 50);
+                            employee.LastSource = "iPhone";
+                        }
+                        break;
+                    //This would be the 3rd, 7th, etc
+                    case 3:
+                        employees = route.Technicians;
+                        foreach (var employee in employees)
+                        {
+                            if (employee.LastLatitude == null && employee.LastLongitude == null ||
+                                (employee.LastTimeStamp != null && employee.LastTimeStamp.Value.Date != DateTime.UtcNow.Date))
+                            {
+                                employee.LastLatitude = 40.4599;
+                                employee.LastLongitude = -86.9309;
+                            }
+                            else
+                            {
+                                employee.LastLatitude = employee.LastLatitude - .001;
+                                employee.LastLongitude = employee.LastLongitude - .001;
+                            }
+
+                            employee.LastCompassDirection = 315;
+                            employee.LastTimeStamp = DateTime.UtcNow;
+                            employee.LastSpeed = random.Next(30, 50);
+                            employee.LastSource = "iPhone";
+                        }
+                        break;
+
+                }
+
+                count++;
+            }
 #endif
 
             var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id, serviceDate);
@@ -143,7 +258,7 @@ namespace FoundOPS.API.Controllers
             {
                 var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.LinkedUserAccount.Id == employeeId);
 
-                if(employee == null) 
+                if (employee == null)
                     return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
 
                 //Save the last TrackPoint passed to the database
@@ -246,15 +361,15 @@ namespace FoundOPS.API.Controllers
 
             Guid? employeeId = Guid.NewGuid();
             Guid? vehicleId = Guid.NewGuid();
-            
-            if(employee != null)
+
+            if (employee != null)
             {
                 employeeId = employee.Id;
                 vehicleId = null;
                 employee.LastPushToAzureTimeStamp = trackPoint.TimeStamp;
             }
 
-            if(vehicle != null)
+            if (vehicle != null)
             {
                 employeeId = null;
                 vehicleId = vehicle.Id;
