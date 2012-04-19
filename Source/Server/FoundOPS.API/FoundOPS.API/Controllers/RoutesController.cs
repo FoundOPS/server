@@ -1,10 +1,9 @@
-﻿using System;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Tools;
+using System;
 using System.Collections.Generic;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Models.CoreEntities.DesignData;
 using System.Linq;
 using System.Web.Http;
-using FoundOps.Core.Tools;
 using Route = FoundOPS.API.Models.Route;
 
 namespace FoundOPS.API.Controllers
@@ -27,13 +26,18 @@ namespace FoundOPS.API.Controllers
 
             var apiRoutes = new List<Route>();
 
+            var today = DateTime.UtcNow.Date;
+
             //Finds all LinkedEmployees for the UserAccount
             //Finds all Routes associated with those Employees
             //Converts the FoundOPS model Routes to the API model Routes
             //Adds those APIRoutes to the list of APIRoutes to return
-            foreach (var employeeRoutes in currentUser.LinkedEmployees.Select(employee => _coreEntitiesContainer.Routes.Where(r => r.Technicians.Contains(employee)).ToArray()))
+            foreach (var employee in currentUser.LinkedEmployees)
+            {
+                var employeeRoutes = _coreEntitiesContainer.Routes.Where(r => r.Date == today && r.Technicians.Select(t => t.Id).Contains(employee.Id)).ToArray(); //SelectMany(r => r.Technicians.Select(t => t.Id)).Where(tId => tId == employee.Id)
                 apiRoutes.AddRange(employeeRoutes.Select(Route.ConvertModel));
-            
+            }
+
             return apiRoutes.AsQueryable();
         }
 
