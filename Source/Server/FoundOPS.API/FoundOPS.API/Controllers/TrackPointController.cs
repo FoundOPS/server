@@ -30,7 +30,7 @@ namespace FoundOPS.API.Controllers
 
         #region GET
 
-        // GET /api/trackpoints?roleId={Guid}&date=Datetime
+        // GET /api/trackpoint/GetTrackPoints?roleId={Guid}&date=Datetime
         public IQueryable<TrackPoint> GetTrackPoints(Guid? roleId, DateTime? date)
         {
             if (roleId == null || date == null)
@@ -64,21 +64,21 @@ namespace FoundOPS.API.Controllers
         /// <param name="roleId">The current roleId</param>
         /// <param name="serviceDate">The requested ServiceDate</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
+        //GET /api/trackpoint/GetResourcesWithLatestPoints?roleId={Guid}&date=Datetime
         [HttpGet]
         public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid? roleId, DateTime? serviceDate)
         {
 #if DEBUG
-            var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == roleId).FirstOrDefault();
+            var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(ba => ba.Id == roleId);
 #else
             var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+#endif
 
             if (currentBusinessAccount == null)
                 return null;
-#endif
-
-
 
 #if DEBUG
+            #region Setup Design Data
             var routes = _coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate && r.OwnerBusinessAccountId == currentBusinessAccount.Id).OrderBy(r => r.Id);
 
             var numberOfRoutes = routes.Count();
@@ -190,6 +190,7 @@ namespace FoundOPS.API.Controllers
 
                 count++;
             }
+#endregion
 #endif
 
             var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id, serviceDate);
