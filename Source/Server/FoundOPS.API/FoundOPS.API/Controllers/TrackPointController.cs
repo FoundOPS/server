@@ -76,11 +76,19 @@ namespace FoundOPS.API.Controllers
                 return null;
 #endif
 
-
-
 #if DEBUG
             var routes = _coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate && r.OwnerBusinessAccountId == currentBusinessAccount.Id).OrderBy(r => r.Id);
 
+            SetupDesignDataForGetResourcesWithLatestPoints(routes);
+#endif
+
+            var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id, serviceDate);
+
+            return resourcesWithTrackPoint.AsQueryable();
+        }
+
+        private void SetupDesignDataForGetResourcesWithLatestPoints(IOrderedQueryable<Route> routes)
+        {
             var numberOfRoutes = routes.Count();
 
             var count = 1;
@@ -121,7 +129,7 @@ namespace FoundOPS.API.Controllers
                         employees = route.Technicians;
                         foreach (var employee in employees)
                         {
-                            if (employee.LastLatitude == null && employee.LastLongitude == null || 
+                            if (employee.LastLatitude == null && employee.LastLongitude == null ||
                                 (employee.LastTimeStamp != null && employee.LastTimeStamp.Value.Date != DateTime.UtcNow.Date))
                             {
                                 employee.LastLatitude = 40.4599;
@@ -190,11 +198,8 @@ namespace FoundOPS.API.Controllers
 
                 count++;
             }
-#endif
 
-            var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id, serviceDate);
-
-            return resourcesWithTrackPoint.AsQueryable();
+            _coreEntitiesContainer.SaveChanges();
         }
 
         #endregion
