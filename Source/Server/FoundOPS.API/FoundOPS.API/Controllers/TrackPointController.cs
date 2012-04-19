@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Mvc;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
@@ -65,7 +66,7 @@ namespace FoundOPS.API.Controllers
         /// <param name="serviceDate">The requested ServiceDate</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
         //GET /api/trackpoint/GetResourcesWithLatestPoints?roleId={Guid}&date=Datetime
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid? roleId, DateTime? serviceDate)
         {
 #if DEBUG
@@ -77,7 +78,6 @@ namespace FoundOPS.API.Controllers
             if (currentBusinessAccount == null)
                 return null;
 #if DEBUG
-            #region Setup Design Data
             var routes = _coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate && r.OwnerBusinessAccountId == currentBusinessAccount.Id).OrderBy(r => r.Id);
 
             SetupDesignDataForGetResourcesWithLatestPoints(routes);
@@ -88,6 +88,10 @@ namespace FoundOPS.API.Controllers
             return resourcesWithTrackPoint.AsQueryable();
         }
 
+        /// <summary>
+        /// Sets up the design data for GetResourcesWithLatestPoints. Makes it seem like the resource is actually moving
+        /// </summary>
+        /// <param name="routes">The Routes that have resources</param>
         private void SetupDesignDataForGetResourcesWithLatestPoints(IOrderedQueryable<Route> routes)
         {
             var numberOfRoutes = routes.Count();
@@ -199,12 +203,11 @@ namespace FoundOPS.API.Controllers
 
                 count++;
             }
-#endregion
 
             _coreEntitiesContainer.SaveChanges();
         }
 
-        #endregion
+        #endregion 
 
         #region POST
 
@@ -355,7 +358,6 @@ namespace FoundOPS.API.Controllers
             var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(),
                                                                     storageAccount.Credentials);
 
-            //Create the table if there is not already a table with the name of tp + EmployeeId/VehicleId
             var tableClient = storageAccount.CreateCloudTableClient();
 
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx

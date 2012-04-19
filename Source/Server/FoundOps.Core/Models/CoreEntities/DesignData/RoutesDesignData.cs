@@ -12,6 +12,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         public Route DesignRouteThree { get; private set; }
         public Route DesignRouteFour { get; private set; }
         public Route DesignRouteFive { get; private set; }
+        public Route YesterdayDesignRouteOne { get; private set; }
+        public Route YesterdayDesignRouteTwo { get; private set; }
+        public Route YesterdayDesignRouteThree { get; private set; }
+        public Route YesterdayDesignRouteFour { get; private set; }
+
+        
 
         public RouteTask DesignRouteTask { get; private set; }
         public RouteTask DesignRouteTaskTwo { get; private set; }
@@ -57,6 +63,68 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             var serviceTemplate = _ownerBusinessAccount.ServiceTemplates
                 .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
                 .ElementAt(0);
+            #region Yesterday's Routes
+
+            YesterdayDesignRouteOne = new Route
+            {
+                Name = "SF Bay Area",
+                Date = DateTime.UtcNow.AddDays(-1).Date,
+                RouteType = serviceTemplate.Name
+            };
+            AddRouteDestinations(YesterdayDesignRouteOne, serviceTemplate);
+            YesterdayDesignRouteOne.Technicians.Add(_employeesDesignData.DesignEmployee);
+            YesterdayDesignRouteOne.Vehicles.Add(_vehiclesDesignData.DesignVehicle);
+
+            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                .ElementAt(1);
+
+            YesterdayDesignRouteTwo = new Route
+            {
+                Name = "Shelter Island",
+                Date = DateTime.UtcNow.AddDays(-1).Date,
+                RouteType = serviceTemplate.Name
+            };
+
+            AddRouteDestinations(YesterdayDesignRouteTwo, serviceTemplate);
+            YesterdayDesignRouteTwo.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
+            YesterdayDesignRouteTwo.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
+
+            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                .ElementAt(2);
+
+            YesterdayDesignRouteThree = new Route
+            {
+                Name = "North Side",
+                Date = DateTime.UtcNow.AddDays(-1).Date,
+                RouteType = serviceTemplate.Name
+            };
+            AddRouteDestinations(YesterdayDesignRouteThree, serviceTemplate);
+            YesterdayDesignRouteThree.Technicians.Add(_employeesDesignData.DesignEmployee);
+            YesterdayDesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
+
+            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                            .ElementAt(1);
+
+            YesterdayDesignRouteFour = new Route
+            {
+                Name = "South Side",
+                Date = DateTime.UtcNow.AddDays(-1).Date,
+                RouteType = serviceTemplate.Name
+            };
+            AddRouteDestinations(YesterdayDesignRouteFour, serviceTemplate);
+            YesterdayDesignRouteFour.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
+            YesterdayDesignRouteFour.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
+
+            #endregion
+
+            #region Today's Routes
+
+            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                            .ElementAt(0);
 
             DesignRoute = new Route
                               {
@@ -71,6 +139,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             serviceTemplate = _ownerBusinessAccount.ServiceTemplates
                 .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
                 .ElementAt(1);
+
             DesignRouteTwo = new Route
                                  {
                                      Name = "Shelter Island",
@@ -86,21 +155,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
                 .ElementAt(2);
 
-            DesignRouteThree = new Route
-                                   {
-                                       Name = "Purdue",
-                                       Date = DateTime.UtcNow.Date.AddDays(1),
-                                       RouteType = serviceTemplate.Name
-                                   };
-
-            AddRouteDestinations(DesignRouteThree, serviceTemplate);
-            DesignRouteThree.Technicians.Add(_employeesDesignData.DesignEmployeeThree);
-            DesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
-
-            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
-                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                            .ElementAt(0);
-            
             DesignRouteFour = new Route
             {
                 Name = "North Side",
@@ -121,12 +175,33 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Date = DateTime.UtcNow.Date,
                 RouteType = serviceTemplate.Name
             };
-            AddRouteDestinations(DesignRouteFive,serviceTemplate);
+            AddRouteDestinations(DesignRouteFive, serviceTemplate);
             DesignRouteFive.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
             DesignRouteFive.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
 
+            #endregion
 
-            DesignRoutes = new List<Route> { DesignRoute, DesignRouteTwo, DesignRouteThree, DesignRouteFour, DesignRouteFive };
+            #region Tomorrow's Routes 
+
+            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
+                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+                            .ElementAt(2);
+
+            DesignRouteThree = new Route
+                                   {
+                                       Name = "Purdue",
+                                       Date = DateTime.UtcNow.Date.AddDays(1),
+                                       RouteType = serviceTemplate.Name
+                                   };
+
+            AddRouteDestinations(DesignRouteThree, serviceTemplate);
+            DesignRouteThree.Technicians.Add(_employeesDesignData.DesignEmployeeThree);
+            DesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
+
+            #endregion
+
+            DesignRoutes = new List<Route> { DesignRoute, DesignRouteTwo, DesignRouteThree, DesignRouteFour, DesignRouteFive, 
+                                             YesterdayDesignRouteOne, YesterdayDesignRouteTwo, YesterdayDesignRouteThree, YesterdayDesignRouteFour}; 
         }
 
         private void AddRouteDestinations(Route route, ServiceTemplate serviceTemplate)
