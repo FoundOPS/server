@@ -4,11 +4,13 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
+using FoundOPS.API.Models;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
+using Route = FoundOps.Core.Models.CoreEntities.Route;
 using TrackPoint = FoundOPS.API.Models.TrackPoint;
 
 namespace FoundOPS.API.Controllers
@@ -67,7 +69,7 @@ namespace FoundOPS.API.Controllers
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
         //GET /api/trackpoint/GetResourcesWithLatestPoints?roleId={Guid}&date=Datetime
         [System.Web.Http.HttpGet]
-        public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid? roleId, DateTime? serviceDate)
+        public IQueryable<ModelResourceWithLastPoint> GetResourcesWithLatestPoints(Guid? roleId, DateTime? serviceDate)
         {
 #if DEBUG
             var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(ba => ba.Id == roleId);
@@ -85,7 +87,9 @@ namespace FoundOPS.API.Controllers
 
             var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id, serviceDate);
 
-            return resourcesWithTrackPoint.AsQueryable();
+            var modelResources = resourcesWithTrackPoint.Select(ModelResourceWithLastPoint.ConvertToModel);
+
+            return modelResources.AsQueryable();
         }
 
         /// <summary>
