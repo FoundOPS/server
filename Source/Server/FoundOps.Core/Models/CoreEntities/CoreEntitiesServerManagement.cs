@@ -47,7 +47,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             foreach (var block in BlocksData.AllBlocks)
             {
-                block.Link = !String.IsNullOrEmpty(block.FileName) ? String.Format("/Block/GetBlock/{0}", block.FileName) : String.Format("/{0}", block.NavigateUri);
+                block.Link = String.Format("/{0}", block.NavigateUri);
                 coreEntitiesContainer.Blocks.AddObject(block);
             }
         }

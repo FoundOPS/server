@@ -24,14 +24,12 @@
             </BeginStoryboard>
         </EventTrigger>
     </Grid.Triggers>
-
     <Grid.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF333335" Offset="0.15"/>
             <GradientStop Color="#FF333335" Offset="0.75"/>
         </LinearGradientBrush>
     </Grid.Background>
-
     <TextBlock x:Name="progressText" Visibility="Collapsed" IsHitTestVisible="False" FontSize="250" FontFamily="Arial" Margin="0,250,0,0" Foreground="White" Text="0" HorizontalAlignment="Right" />
     <Grid MinWidth="1005" MinHeight="562" MaxWidth="1380" MaxHeight="900">
         <Grid x:Name="logo" Background="Transparent" HorizontalAlignment="Left" Height="160" Margin="30,0,0,0" VerticalAlignment="Top" Width="320">
@@ -60,7 +58,6 @@
                 </Canvas>
             </Canvas>
         </Grid>
-
         <Grid x:Name="grid" Margin="112,300,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="645" Height="80" RenderTransformOrigin="0.5,0.5">
             <Grid.RenderTransform>
                 <TransformGroup>
