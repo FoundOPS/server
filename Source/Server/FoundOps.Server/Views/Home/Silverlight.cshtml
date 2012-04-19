@@ -88,22 +88,15 @@
         <object data="data:application/x-silverlight-2," type="application/x-silverlight-2"
             width="100%" height="100%">
             @{
-                var xapSource = Global.IsDebugMode ? Url.Content("~/ClientBin/FoundOps.SLClient.Navigator.xap")
-                                                   : Url.Content("http://fstore.blob.core.windows.net/xaps/FoundOps.SLClient.Navigator.xap");
+                var xapSource = Global.IsDebugMode ? Url.Content("/ClientBin/FoundOps.SLClient.Navigator.xap")
+                                                   : Url.Content("http://opsapplive.blob.core.windows.net/xaps/FoundOps.SLClient.Navigator.xap");
 
                 //Setup version
                 var sourceParam = xapSource + "?ignore=" + Model;
             }
             <param name="source" value="@sourceParam"/>
             <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged" />
-            <param name="splashscreensource" value=@if (Global.IsDebugMode)
-                                                   {
-                                                       @Url.Content("~/ClientBin/SplashScreen.xaml");
-                                                   }
-                                                   else
-                                                   {
-                                                       @Url.Content("http://fstore.blob.core.windows.net/xaps/SplashScreen.xaml");
-                                                   } />
+            <param name="splashscreensource" value="~@Url.Content("/ClientBin/SplashScreen.xaml")" />
             <param name="onError" value="onSilverlightError" />
             <param name="background" value="#ff333335" />
             <param name="windowless" value="true" />

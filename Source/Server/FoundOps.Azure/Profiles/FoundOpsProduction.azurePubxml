@@ -5,14 +5,14 @@
     <AzureDeploymentLabel>FoundOps.Azure</AzureDeploymentLabel>
     <AzureSlot>Production</AzureSlot>
     <AzureEnableWebDeploy>False</AzureEnableWebDeploy>
-    <AzureHostedServiceName>foundops</AzureHostedServiceName>
-    <AzureHostedServiceLabel>FoundOps</AzureHostedServiceLabel>
+    <AzureHostedServiceName>opsapp</AzureHostedServiceName>
+    <AzureHostedServiceLabel>FoundOps-App</AzureHostedServiceLabel>
     <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
     <AzureEnableProfiling>False</AzureEnableProfiling>
     <AzureServiceConfiguration>Default</AzureServiceConfiguration>
     <AzureSolutionConfiguration>Release</AzureSolutionConfiguration>
-    <AzureStorageAccountName>fstore</AzureStorageAccountName>
-    <AzureStorageAccountLabel>fstore</AzureStorageAccountLabel>
+    <AzureStorageAccountName>opsapplive</AzureStorageAccountName>
+    <AzureStorageAccountLabel>opsapplive</AzureStorageAccountLabel>
     <AzureAppendTimestampToDeploymentLabel>True</AzureAppendTimestampToDeploymentLabel>
     <AzureAllowUpgrade>True</AzureAllowUpgrade>
     <AzureEnableRemoteDesktop>False</AzureEnableRemoteDesktop>

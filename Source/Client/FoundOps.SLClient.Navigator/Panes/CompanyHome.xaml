@@ -16,6 +16,7 @@
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * OPTIMIZATION: Optimized the server configuration to increase entire applications performance.<LineBreak/>
             * GENERAL: Validation errors no longer trigger a Server Error, instead they prompt the user.<LineBreak/>
             * GENERAL: Fixed an issue with the dispatcher not displaying tasks when there are no regions.<LineBreak/>
             * GENERAL: Fixed adding new regions.<LineBreak/>
