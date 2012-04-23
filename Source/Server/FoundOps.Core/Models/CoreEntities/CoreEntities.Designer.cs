@@ -9113,9 +9113,10 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="businessAccountId">Initial value of the BusinessAccountId property.</param>
         /// <param name="estimatedDuration">Initial value of the EstimatedDuration property.</param>
         /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="statusInt">Initial value of the StatusInt property.</param>
         /// <param name="date">Initial value of the Date property.</param>
         /// <param name="orderInRouteDestination">Initial value of the OrderInRouteDestination property.</param>
-        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Boolean readOnly, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.DateTime date, global::System.Int32 orderInRouteDestination)
+        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Boolean readOnly, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.Int32 statusInt, global::System.DateTime date, global::System.Int32 orderInRouteDestination)
         {
             RouteTask routeTask = new RouteTask();
             routeTask.Id = id;
@@ -9123,6 +9124,7 @@ namespace FoundOps.Core.Models.CoreEntities
             routeTask.BusinessAccountId = businessAccountId;
             routeTask.EstimatedDuration = estimatedDuration;
             routeTask.Name = name;
+            routeTask.StatusInt = statusInt;
             routeTask.Date = date;
             routeTask.OrderInRouteDestination = orderInRouteDestination;
             return routeTask;
@@ -9354,26 +9356,26 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> ReadyToInvoice
+        public global::System.Int32 StatusInt
         {
             get
             {
-                return _ReadyToInvoice;
+                return _StatusInt;
             }
             set
             {
-                OnReadyToInvoiceChanging(value);
-                ReportPropertyChanging("ReadyToInvoice");
-                _ReadyToInvoice = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ReadyToInvoice");
-                OnReadyToInvoiceChanged();
+                OnStatusIntChanging(value);
+                ReportPropertyChanging("StatusInt");
+                _StatusInt = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StatusInt");
+                OnStatusIntChanged();
             }
         }
-        private Nullable<global::System.Boolean> _ReadyToInvoice;
-        partial void OnReadyToInvoiceChanging(Nullable<global::System.Boolean> value);
-        partial void OnReadyToInvoiceChanged();
+        private global::System.Int32 _StatusInt;
+        partial void OnStatusIntChanging(global::System.Int32 value);
+        partial void OnStatusIntChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

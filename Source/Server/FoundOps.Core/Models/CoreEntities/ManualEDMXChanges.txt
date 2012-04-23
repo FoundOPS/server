@@ -195,7 +195,7 @@ Add before </EntityContainerMapping>
                 <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="LastTimeStamp" ColumnName="TimeStamp" />
                 <ScalarProperty Name="Speed" ColumnName="Speed" />
                 <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
               </ComplexTypeMapping>

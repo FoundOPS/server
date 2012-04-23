@@ -409,15 +409,15 @@
       </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId
+          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource
           FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId , @serviceDate)
         </CommandText>
         <Parameter Name="serviceProviderId"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
+               Mode="In"
+               Type="uniqueidentifier"/>
         <Parameter Name="serviceDate"
-                   Mode="In"
-                   Type="datetime"/>
+               Mode="In"
+               Type="datetime"/>
       </Function>
   <EntityType Name="Blocks">
     <Key>
@@ -758,7 +758,7 @@
     <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
     <Property Name="EstimatedDuration" Type="time" Nullable="false" Precision="7" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ReadyToInvoice" Type="bit" Nullable="true" />
+    <Property Name="StatusInt" Type="int" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="OrderInRouteDestination" Type="int" Nullable="false" />
     <Property Name="RecurringServiceId" Type="uniqueidentifier" Nullable="true" />
@@ -2469,7 +2469,7 @@
           <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
           <Property Type="Time" Name="EstimatedDuration" Nullable="false" Precision="7" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="Boolean" Name="ReadyToInvoice" Nullable="true" />
+          <Property Type="Int32" Name="StatusInt" Nullable="false" />
           <Property Type="DateTime" Name="Date" Nullable="false" Precision="3" />
           <Property Type="Int32" Name="OrderInRouteDestination" Nullable="false" />
           <NavigationProperty Name="ParentRecurringService" Relationship="CoreEntities.RouteTaskRecurringService" FromRole="RouteTask" ToRole="RecurringService" />
@@ -3900,7 +3900,7 @@
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="EstimatedDuration" ColumnName="EstimatedDuration" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="ReadyToInvoice" ColumnName="ReadyToInvoice" />
+          <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="OrderInRouteDestination" ColumnName="OrderInRouteDestination" />
           <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
@@ -3995,22 +3995,21 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+          <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="LastTimeStamp" ColumnName="TimeStamp" />
+          <ScalarProperty Name="Speed" ColumnName="Speed" />
+          <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
