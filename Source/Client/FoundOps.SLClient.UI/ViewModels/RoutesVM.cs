@@ -494,9 +494,12 @@ namespace FoundOps.SLClient.UI.ViewModels
                 {
                     if (task.IsCanceled) return;
 
-                    //Send TaskLocationsLoaded
-                    MessageBus.Current.SendMessage(new TaskLocationsLoaded());
+                    //Send a TaskLocationsUpdated message
+                    MessageBus.Current.SendMessage(new TaskLocationsUpdated());
                 }, TaskScheduler.FromCurrentSynchronizationContext());
+
+                //Send a TaskLocationsUpdated message
+                MessageBus.Current.SendMessage(new TaskLocationsUpdated());
             });
 
             //Allow the user to open the route manifests whenever there is one or more route visible
@@ -637,7 +640,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         #endregion
     }
     /// <summary>
-    /// A message to notify that the Task's locations have been loaded. 
+    /// A message to notify that the Task's locations have been loaded/updated. 
     /// </summary>
-    public class TaskLocationsLoaded { }
+    public class TaskLocationsUpdated { }
 }

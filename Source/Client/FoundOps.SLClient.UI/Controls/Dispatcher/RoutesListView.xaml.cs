@@ -57,7 +57,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             });
 
             //Whenever the locations are loaded fixup the background colors
-            ReactiveUI.MessageBus.Current.Listen<TaskLocationsLoaded>()
+            ReactiveUI.MessageBus.Current.Listen<TaskLocationsUpdated>()
                 //throttle by a half second to allow the assocations to hookup
                 .Throttle(TimeSpan.FromSeconds(.5))
                 .ObserveOnDispatcher().Subscribe(_ =>
