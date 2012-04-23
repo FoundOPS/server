@@ -301,6 +301,7 @@
     <Compile Include="Converters\IEnumerableConverters.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Converters\IntConverters.cs" />
+    <Compile Include="Converters\IntToStringConverters.cs" />
     <Compile Include="Converters\ObjectConverters.cs" />
     <Compile Include="Converters\StringConverters.cs" />
     <Compile Include="Converters\TextBoxUpdateBehavior.cs" />

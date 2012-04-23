@@ -47,5 +47,26 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 #endif
         #endregion
+
+        public StatusEnum Status
+        {
+            get { return (StatusEnum)StatusInt; }
+            set
+            {
+                StatusInt = (int)value;
+                CompositeRaiseEntityPropertyChanged("Status");
+            }
+        }
+
+        public enum StatusEnum
+        {
+            Created = 1,
+            Routed = 2,
+            InProgress = 3,
+            OnHold = 4,
+            Completed = 5,
+            Cancelled = 6
+
+        }
     }
 }

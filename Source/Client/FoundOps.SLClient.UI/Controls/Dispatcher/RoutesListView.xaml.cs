@@ -391,12 +391,12 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 OwnerBusinessAccount = oldRouteTask.OwnerBusinessAccount,
                 ParentRecurringService = oldRouteTask.ParentRecurringService,
                 ParentRouteTaskHolder = oldRouteTask.ParentRouteTaskHolder,
-                ReadyToInvoice = false,
                 RecurringServiceId = oldRouteTask.RecurringServiceId,
                 RouteDestination = null,
                 RouteDestinationId = null,
                 Service = oldRouteTask.Service,
-                ServiceId = oldRouteTask.ServiceId
+                ServiceId = oldRouteTask.ServiceId,
+                Status = RouteTask.StatusEnum.Created
             };
 
             VM.Routes.DeleteRouteTask(oldRouteTask);

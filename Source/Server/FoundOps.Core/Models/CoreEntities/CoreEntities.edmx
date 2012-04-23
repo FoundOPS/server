@@ -397,7 +397,7 @@
       </Function>
       <Function Name="GetUnroutedServicesForDate" IsComposable="false">
         <CommandText>
-          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude
+          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt
           FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
         </CommandText>
         <Parameter Name="serviceProviderContext"
@@ -409,15 +409,15 @@
       </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId
+          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource
           FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId , @serviceDate)
         </CommandText>
         <Parameter Name="serviceProviderId"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
+               Mode="In"
+               Type="uniqueidentifier"/>
         <Parameter Name="serviceDate"
-                   Mode="In"
-                   Type="datetime"/>
+               Mode="In"
+               Type="datetime"/>
       </Function>
   <EntityType Name="Blocks">
     <Key>
@@ -758,7 +758,7 @@
     <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
     <Property Name="EstimatedDuration" Type="time" Nullable="false" Precision="7" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ReadyToInvoice" Type="bit" Nullable="true" />
+    <Property Name="StatusInt" Type="int" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="OrderInRouteDestination" Type="int" Nullable="false" />
     <Property Name="RecurringServiceId" Type="uniqueidentifier" Nullable="true" />
@@ -2148,12 +2148,12 @@
             <Parameter Name="getPrevious" Mode="In" Type="Boolean" />
             <Parameter Name="getNext" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
-            <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
-            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
+            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
+            <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
             <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
@@ -2469,7 +2469,7 @@
           <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
           <Property Type="Time" Name="EstimatedDuration" Nullable="false" Precision="7" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="Boolean" Name="ReadyToInvoice" Nullable="true" />
+          <Property Type="Int32" Name="StatusInt" Nullable="false" />
           <Property Type="DateTime" Name="Date" Nullable="false" Precision="3" />
           <Property Type="Int32" Name="OrderInRouteDestination" Nullable="false" />
           <NavigationProperty Name="ParentRecurringService" Relationship="CoreEntities.RouteTaskRecurringService" FromRole="RouteTask" ToRole="RecurringService" />
@@ -3417,6 +3417,7 @@
           <Property Type="String" Name="LocationName" Nullable="true" />
           <Property Type="Guid" Name="LocationId" Nullable="true" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
+          <Property Type="Int32" Name="StatusInt" Nullable="false" />
         </ComplexType>
         <Association Name="RouteTaskRecurringService">
           <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
@@ -3900,7 +3901,7 @@
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="EstimatedDuration" ColumnName="EstimatedDuration" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="ReadyToInvoice" ColumnName="ReadyToInvoice" />
+          <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="OrderInRouteDestination" ColumnName="OrderInRouteDestination" />
           <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
@@ -3977,37 +3978,37 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
+    <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
-          <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-          <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
-          <ScalarProperty Name="RegionName" ColumnName="RegionName" />
-          <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
+        <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+          <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
           <ScalarProperty Name="Latitude" ColumnName="Latitude" />
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-          <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-          <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="LastTimeStamp" ColumnName="TimeStamp" />
+          <ScalarProperty Name="Speed" ColumnName="Speed" />
+          <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+          <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
+              <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

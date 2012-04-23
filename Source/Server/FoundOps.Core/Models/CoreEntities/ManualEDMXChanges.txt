@@ -133,7 +133,7 @@ Add after </EntityContainer> (the one after FK association sets)
         </Function>
         <Function Name="GetUnroutedServicesForDate" IsComposable="false">
           <CommandText>
-            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt
             FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
           </CommandText>
           <Parameter Name="serviceProviderContext"
@@ -183,6 +183,7 @@ Add before </EntityContainerMapping>
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -195,7 +196,7 @@ Add before </EntityContainerMapping>
                 <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="LastTimeStamp" ColumnName="TimeStamp" />
                 <ScalarProperty Name="Speed" ColumnName="Speed" />
                 <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
               </ComplexTypeMapping>

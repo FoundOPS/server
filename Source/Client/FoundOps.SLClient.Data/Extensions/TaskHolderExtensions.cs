@@ -107,7 +107,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 Name = ServiceName,
                 ParentRouteTaskHolder = this,
                 ServiceId = ServiceId,
-                RecurringServiceId = RecurringServiceId
+                RecurringServiceId = RecurringServiceId,
+                StatusInt = StatusInt
             };
 
             this.ChildRouteTask = routedTask;

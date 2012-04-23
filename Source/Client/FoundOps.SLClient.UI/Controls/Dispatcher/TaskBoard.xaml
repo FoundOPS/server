@@ -3,7 +3,11 @@
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:telerikDragDrop="clr-namespace:Telerik.Windows.Controls.DragDrop;assembly=Telerik.Windows.Controls" xmlns:telerikGridElements="clr-namespace:Telerik.Windows.Controls.GridView;assembly=Telerik.Windows.Controls.GridView"
              xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.UI.Converters;assembly=FoundOps.Common.Silverlight.UI"
              mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="TaskBoardVM" d:DesignWidth="400">
+    <UserControl.Resources>
+        <Converters:StatusIntToStringConverter x:Key="StatusIntToStringConverter"/>
+    </UserControl.Resources>
     <Controls1:RadBusyIndicator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BusyContent="Loading Tasks" IsBusy="{Binding TasksLoading}">
         <Grid x:Name="LayoutRoot" Background="White">
             <telerik:RadGridView x:Name="TaskBoardRadGridView" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" IsFilteringAllowed="False"
@@ -60,6 +64,8 @@
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellEditTemplate>-->
                     </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn Header="Scheduled Date" IsReadOnly="True" DataMemberBinding="{Binding OccurDate}"  DataFormatString="{} {0:MMM dd, yyyy}"/>
+                    <telerik:GridViewDataColumn Header="Status" IsReadOnly="True" DataMemberBinding="{Binding ChildRouteTask.StatusInt, Converter={StaticResource StatusIntToStringConverter}}"/>
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
         </Grid>
