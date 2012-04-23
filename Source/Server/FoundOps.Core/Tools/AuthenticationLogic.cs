@@ -193,6 +193,9 @@ namespace FoundOps.Core.Tools
 #if DEBUG
             if (ServerConstants.AutomaticLoginFoundOPSAdmin)
                 return "jperl@foundops.com";
+
+            if (ServerConstants.AutomaticLoginOPSManager)
+                return "david@gotgrease.net";
 #endif
 
             return HttpContext.Current.User.Identity.Name;
@@ -206,6 +209,16 @@ namespace FoundOps.Core.Tools
         public static IQueryable<UserAccount> CurrentUserAccountQueryable(CoreEntitiesContainer coreEntitiesContainer)
         {
             return UserAccountQueryable(coreEntitiesContainer, CurrentUserAccountsEmailAddress());
+        }
+
+        /// <summary>
+        /// Gets the current user account.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <returns></returns>
+        public static UserAccount CurrentUserAccount(CoreEntitiesContainer coreEntitiesContainer)
+        {
+            return CurrentUserAccountQueryable(coreEntitiesContainer).First();
         }
 
         /// <summary>

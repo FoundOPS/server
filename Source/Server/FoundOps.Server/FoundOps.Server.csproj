@@ -278,6 +278,7 @@
     <Content Include="Views\QuickBooks\OAuthGrantHandler.cshtml" />
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\WorkFlow\TimeCheck.cshtml" />
+    <Content Include="Views\Home\ClearCreateHistoricalTrackPoints.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

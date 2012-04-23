@@ -1164,6 +1164,36 @@ namespace FoundOps.Core.Models.CoreEntities
     
             return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter, serviceDateParameter);
+        }
 
         #endregion
 
@@ -3576,6 +3606,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _LastSource;
         partial void OnLastSourceChanging(global::System.String value);
         partial void OnLastSourceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastPushToAzureTimeStamp
+        {
+            get
+            {
+                return _LastPushToAzureTimeStamp;
+            }
+            set
+            {
+                OnLastPushToAzureTimeStampChanging(value);
+                ReportPropertyChanging("LastPushToAzureTimeStamp");
+                _LastPushToAzureTimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastPushToAzureTimeStamp");
+                OnLastPushToAzureTimeStampChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastPushToAzureTimeStamp;
+        partial void OnLastPushToAzureTimeStampChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastPushToAzureTimeStampChanged();
 
         #endregion
 
@@ -11740,6 +11794,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _OwnerPartyId;
         partial void OnOwnerPartyIdChanging(global::System.Guid value);
         partial void OnOwnerPartyIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastPushToAzureTimeStamp
+        {
+            get
+            {
+                return _LastPushToAzureTimeStamp;
+            }
+            set
+            {
+                OnLastPushToAzureTimeStampChanging(value);
+                ReportPropertyChanging("LastPushToAzureTimeStamp");
+                _LastPushToAzureTimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastPushToAzureTimeStamp");
+                OnLastPushToAzureTimeStampChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastPushToAzureTimeStamp;
+        partial void OnLastPushToAzureTimeStampChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastPushToAzureTimeStampChanged();
 
         #endregion
 
@@ -12275,6 +12353,275 @@ namespace FoundOps.Core.Models.CoreEntities
     #endregion
 
     #region ComplexTypes
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="ResourceWithLastPoint")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class ResourceWithLastPoint : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ResourceWithLastPoint object.
+        /// </summary>
+        /// <param name="lastTimeStamp">Initial value of the LastTimeStamp property.</param>
+        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.DateTime lastTimeStamp)
+        {
+            ResourceWithLastPoint resourceWithLastPoint = new ResourceWithLastPoint();
+            resourceWithLastPoint.LastTimeStamp = lastTimeStamp;
+            return resourceWithLastPoint;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> EmployeeId
+        {
+            get
+            {
+                return _EmployeeId;
+            }
+            set
+            {
+                OnEmployeeIdChanging(value);
+                ReportPropertyChanging("EmployeeId");
+                _EmployeeId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("EmployeeId");
+                OnEmployeeIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _EmployeeId;
+        partial void OnEmployeeIdChanging(Nullable<global::System.Guid> value);
+        partial void OnEmployeeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> VehicleId
+        {
+            get
+            {
+                return _VehicleId;
+            }
+            set
+            {
+                OnVehicleIdChanging(value);
+                ReportPropertyChanging("VehicleId");
+                _VehicleId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("VehicleId");
+                OnVehicleIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _VehicleId;
+        partial void OnVehicleIdChanging(Nullable<global::System.Guid> value);
+        partial void OnVehicleIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String EntityName
+        {
+            get
+            {
+                return _EntityName;
+            }
+            set
+            {
+                OnEntityNameChanging(value);
+                ReportPropertyChanging("EntityName");
+                _EntityName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("EntityName");
+                OnEntityNameChanged();
+            }
+        }
+        private global::System.String _EntityName;
+        partial void OnEntityNameChanging(global::System.String value);
+        partial void OnEntityNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> CompassHeading
+        {
+            get
+            {
+                return _CompassHeading;
+            }
+            set
+            {
+                OnCompassHeadingChanging(value);
+                ReportPropertyChanging("CompassHeading");
+                _CompassHeading = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CompassHeading");
+                OnCompassHeadingChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _CompassHeading;
+        partial void OnCompassHeadingChanging(Nullable<global::System.Int32> value);
+        partial void OnCompassHeadingChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> Latitude
+        {
+            get
+            {
+                return _Latitude;
+            }
+            set
+            {
+                OnLatitudeChanging(value);
+                ReportPropertyChanging("Latitude");
+                _Latitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Latitude");
+                OnLatitudeChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _Latitude;
+        partial void OnLatitudeChanging(Nullable<global::System.Decimal> value);
+        partial void OnLatitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> Longitude
+        {
+            get
+            {
+                return _Longitude;
+            }
+            set
+            {
+                OnLongitudeChanging(value);
+                ReportPropertyChanging("Longitude");
+                _Longitude = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Longitude");
+                OnLongitudeChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _Longitude;
+        partial void OnLongitudeChanging(Nullable<global::System.Decimal> value);
+        partial void OnLongitudeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime LastTimeStamp
+        {
+            get
+            {
+                return _LastTimeStamp;
+            }
+            set
+            {
+                OnLastTimeStampChanging(value);
+                ReportPropertyChanging("LastTimeStamp");
+                _LastTimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastTimeStamp");
+                OnLastTimeStampChanged();
+            }
+        }
+        private global::System.DateTime _LastTimeStamp;
+        partial void OnLastTimeStampChanging(global::System.DateTime value);
+        partial void OnLastTimeStampChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Decimal> Speed
+        {
+            get
+            {
+                return _Speed;
+            }
+            set
+            {
+                OnSpeedChanging(value);
+                ReportPropertyChanging("Speed");
+                _Speed = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Speed");
+                OnSpeedChanged();
+            }
+        }
+        private Nullable<global::System.Decimal> _Speed;
+        partial void OnSpeedChanging(Nullable<global::System.Decimal> value);
+        partial void OnSpeedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String TrackSource
+        {
+            get
+            {
+                return _TrackSource;
+            }
+            set
+            {
+                OnTrackSourceChanging(value);
+                ReportPropertyChanging("TrackSource");
+                _TrackSource = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("TrackSource");
+                OnTrackSourceChanged();
+            }
+        }
+        private global::System.String _TrackSource;
+        partial void OnTrackSourceChanging(global::System.String value);
+        partial void OnTrackSourceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> RouteId
+        {
+            get
+            {
+                return _RouteId;
+            }
+            set
+            {
+                OnRouteIdChanging(value);
+                ReportPropertyChanging("RouteId");
+                _RouteId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RouteId");
+                OnRouteIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _RouteId;
+        partial void OnRouteIdChanging(Nullable<global::System.Guid> value);
+        partial void OnRouteIdChanged();
+
+        #endregion
+
+    }
     
     /// <summary>
     /// No Metadata Documentation available.

@@ -1,4 +1,5 @@
 ﻿using System;
+using FoundOps.Core.Models.Azure;
 
 namespace FoundOPS.API.Models
 {
@@ -6,23 +7,28 @@ namespace FoundOPS.API.Models
     {
         public Guid Id { get; set; }
         public DateTime TimeStamp { get; set; }
-        public Int32 CompassDirection { get; set; }
+        public Int32? CompassDirection { get; set; }
         public Double Latitude { get; set; }
         public Double Longitude { get; set; }
-        public Double Speed { get; set; }
+        public Double? Speed { get; set; }
         public String Source { get; set; }
 
-        public static FoundOps.Core.Models.CoreEntities.TrackPoint ConvertFromModel(TrackPoint modelTrackPoint)
+        public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint)
         {
-            var trackPoint = new FoundOps.Core.Models.CoreEntities.TrackPoint
+            var trackPointId = modelTrackPoint.EmployeetId ?? modelTrackPoint.VehicleId;
+
+            if(trackPointId == null) 
+                return null;
+
+            var trackPoint = new TrackPoint
                                  {
-                                     CompassDirection = modelTrackPoint.CompassDirection,
-                                     Id = modelTrackPoint.Id,
+                                     CompassDirection = null,
+                                     Id = (Guid) trackPointId,
                                      TimeStamp = modelTrackPoint.TimeStamp,
                                      Latitude = modelTrackPoint.Latitude,
                                      Longitude = modelTrackPoint.Longitude,
-                                     Speed = modelTrackPoint.Speed,
-                                     Source = modelTrackPoint.Source
+                                     Speed = null,
+                                     Source = null
                                  };
 
             return trackPoint;

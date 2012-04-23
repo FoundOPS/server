@@ -13,6 +13,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         public IEnumerable<Employee> DesignEmployees { get; private set; }
 
         private readonly EmployeeHistoryDesignData _employeeHistoryDesignData;
+        private readonly UserAccountsDesignData _userAccountDesignData;
+
 
         public EmployeesDesignData(BusinessAccount businessAccount)
             : this()
@@ -24,6 +26,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         public EmployeesDesignData()
         {
+            _userAccountDesignData = new UserAccountsDesignData();
             InitializeEmployees();
 
             _employeeHistoryDesignData = new EmployeeHistoryDesignData(this);
@@ -50,7 +53,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastLongitude = -86.4582,
                 LastSource = "Android",
                 LastSpeed = 25.65,
-                LastTimeStamp = DateTime.UtcNow
+                LastTimeStamp = DateTime.UtcNow,
+                LinkedUserAccountId = _userAccountDesignData.Jon.Id
             };
 
             DesignEmployeeTwo = new Employee
@@ -70,7 +74,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastLongitude = -89.6589,
                 LastSource = "iPhone",
                 LastSpeed = 15.2,
-                LastTimeStamp = DateTime.UtcNow
+                LastTimeStamp = DateTime.UtcNow,
+                LinkedUserAccountId = _userAccountDesignData.Zach.Id
             };
 
             DesignEmployeeThree = new Employee
@@ -90,7 +95,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastLongitude = -85.7894,
                 LastSource = "Windows Phone",
                 LastSpeed = 48.82,
-                LastTimeStamp = DateTime.UtcNow
+                LastTimeStamp = DateTime.UtcNow,
+                LinkedUserAccountId = _userAccountDesignData.Oren.Id
             };
 
             DesignEmployees = new List<Employee> { DesignEmployee, DesignEmployeeTwo, DesignEmployeeThree };

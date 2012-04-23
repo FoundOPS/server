@@ -17,14 +17,12 @@ namespace FoundOPS.API
 
             routes.MapHttpRoute(
                 name: "API Default",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}"
                 );
 
             routes.MapHttpRoute(
                 name: "ActionApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
-                defaults: new {id = RouteParameter.Optional}
+                routeTemplate: "api/{controller}/{action}"
                 );
         }
 
@@ -32,7 +30,7 @@ namespace FoundOPS.API
         {
             GlobalConfiguration.Configuration.Formatters[0] = new JsonpMediaTypeFormatter();
             GlobalFilters.Filters.Add(new HandleErrorAttribute());
-          
+
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
         }

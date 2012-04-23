@@ -102,6 +102,8 @@
     <Compile Include="Models\Authentication\AccountModels.cs" />
     <Compile Include="Models\Authentication\CoreEntitiesMembershipProvider.cs" />
     <Compile Include="Models\Authentication\UserAccountExtensions.cs" />
+    <Compile Include="Models\Azure\TrackPointsHistoryTableDataModel.cs" />
+    <Compile Include="Models\Azure\TrackPointsHistoryContext.cs" />
     <Compile Include="Models\Azure\InvoiceTableDataModel.cs" />
     <Compile Include="Models\Azure\InvoiceDataServiceContext.cs" />
     <Compile Include="Models\Constants.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="Models\CoreEntities\DesignData\VehiclesDesignData.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Core\BlockExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Core\ContactInfoExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Dispatching\ResourceWithLastPoint.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Dispatching\TaskHolder.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Core\RoleExtensions.shared.cs" />
@@ -228,6 +231,7 @@
     <Content Include="Models\CoreEntities\SQL Tests\DeleteFields.sql" />
     <Content Include="Models\CoreEntities\SQL\GetNextOccurence.sql" />
     <Content Include="Models\CoreEntities\SQL\GetPreviousOccurance.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetResourcesWithLatestPoint.sql" />
     <Content Include="Models\CoreEntities\SQL\GetUnroutedServiceForDate.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\TestFunctionForRecurringServices.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\SchedulerTests.sql" />
