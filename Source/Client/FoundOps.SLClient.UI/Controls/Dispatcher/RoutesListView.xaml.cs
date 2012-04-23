@@ -380,7 +380,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 RouteDestinationId = null,
                 Service = oldRouteTask.Service,
                 ServiceId = oldRouteTask.ServiceId,
-                StatusInt = (int)RouteTask.Status.Created
+                Status = RouteTask.StatusEnum.Created
             };
 
             VM.Routes.DeleteRouteTask(oldRouteTask);

@@ -34,7 +34,8 @@ RETURNS @ServicesTableToReturn TABLE
 		LocationId uniqueidentifier,
 		AddressLine nvarchar(max),
 		Latitude decimal(18,8),
-		Longitude decimal(18,8)
+		Longitude decimal(18,8),
+		StatusInt int
 	) 
 AS
 BEGIN
@@ -220,7 +221,8 @@ BEGIN
 		LocationName nvarchar(max),
 		AddressLine nvarchar(max),
 		Latitude float,
-		Longitude float
+		Longitude float,
+		StatusInt int
 	) 
 
 	INSERT INTO @UnroutedOrUncompletedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
@@ -228,8 +230,8 @@ BEGIN
 	EXCEPT
 	SELECT * FROM @PreRoutedServices
 
-	INSERT INTO @UnroutedOrUncompletedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
-	SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name FROM RouteTasks t1
+	INSERT INTO @UnroutedOrUncompletedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName, StatusInt)
+	SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name, t1.StatusInt FROM RouteTasks t1
 	WHERE	Date < @serviceDate AND t1.StatusInt < 5
 
 	UPDATE @UnroutedOrUncompletedServices
@@ -311,6 +313,10 @@ BEGIN
 							)
 	WHERE ClientId IS NULL
 
+	UPDATE	@UnroutedOrUncompletedServices
+	SET		StatusInt =		1
+	WHERE StatusInt IS NULL
+
 	DECLARE @ServicesForDateTable TABLE
 		(
 			RecurringServiceId uniqueidentifier,
@@ -324,13 +330,14 @@ BEGIN
 			LocationId uniqueidentifier,
 			AddressLine nvarchar(max),
 			Latitude decimal(18,8),
-			Longitude decimal(18,8)
+			Longitude decimal(18,8),
+			StatusInt int
 		) 
 
 	--This will be a complete table of all services that should have been scheduled for the date provided
 	--This does not take into account dates that have been excluded
-	INSERT @ServicesForDateTable (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude)
-	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude FROM @UnroutedOrUncompletedServices
+	INSERT @ServicesForDateTable (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt)
+	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt FROM @UnroutedOrUncompletedServices
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Now that we have all the services that would have been on the date provided, we will take ExcludedDates into account
@@ -409,7 +416,8 @@ BEGIN
 			LocationId uniqueidentifier,
 			AddressLine nvarchar(max),
 			Latitude decimal(18,8),
-			Longitude decimal(18,8)
+			Longitude decimal(18,8),
+			StatusInt int
 		) 
 
 	--Find all ExcludedServices from @ServicesForDateTable

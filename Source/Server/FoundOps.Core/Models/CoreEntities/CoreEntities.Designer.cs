@@ -1138,36 +1138,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
-        {
-            ObjectParameter serviceProviderContextParameter;
-            if (serviceProviderContext.HasValue)
-            {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
-            }
-            else
-            {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter serviceDateParameter;
-            if (serviceDate.HasValue)
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
-            }
-            else
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
-            }
-    
-            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="serviceProviderId">No Metadata Documentation available.</param>
         /// <param name="serviceDate">No Metadata Documentation available.</param>
         public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDate)
@@ -1193,6 +1163,36 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter, serviceDateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+            }
+            else
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
         }
 
         #endregion
@@ -12764,10 +12764,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new TaskHolder object.
         /// </summary>
         /// <param name="occurDate">Initial value of the OccurDate property.</param>
-        public static TaskHolder CreateTaskHolder(global::System.DateTime occurDate)
+        /// <param name="statusInt">Initial value of the StatusInt property.</param>
+        public static TaskHolder CreateTaskHolder(global::System.DateTime occurDate, global::System.Int32 statusInt)
         {
             TaskHolder taskHolder = new TaskHolder();
             taskHolder.OccurDate = occurDate;
+            taskHolder.StatusInt = statusInt;
             return taskHolder;
         }
 
@@ -13062,6 +13064,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _ClientId;
         partial void OnClientIdChanging(Nullable<global::System.Guid> value);
         partial void OnClientIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 StatusInt
+        {
+            get
+            {
+                return _StatusInt;
+            }
+            set
+            {
+                OnStatusIntChanging(value);
+                ReportPropertyChanging("StatusInt");
+                _StatusInt = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StatusInt");
+                OnStatusIntChanged();
+            }
+        }
+        private global::System.Int32 _StatusInt;
+        partial void OnStatusIntChanging(global::System.Int32 value);
+        partial void OnStatusIntChanged();
 
         #endregion
 
