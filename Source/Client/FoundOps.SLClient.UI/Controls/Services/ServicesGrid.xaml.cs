@@ -2,6 +2,7 @@
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
@@ -168,7 +169,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 if (args.VerticalChange < 0 && ScrollBarPosition == ScrollBarPosition.Top)
                 {
                     //If the scroll viewer is still at the top in .5 second PushBackGeneratedServices
-                    Observable.Interval(TimeSpan.FromSeconds(.5)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
+                    Rxx3.RunDelayed(TimeSpan.FromMilliseconds(500), () =>
                     {
                         if (ScrollBarPosition != ScrollBarPosition.Top) return;
 
@@ -184,7 +185,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 if (args.VerticalChange > 0 && ScrollBarPosition == ScrollBarPosition.Bottom)
                 {
                     //If the scroll viewer is still at the bottom in .5 seconds PushForwardGeneratedServices
-                    Observable.Interval(TimeSpan.FromMilliseconds(.5)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
+                    Rxx3.RunDelayed(TimeSpan.FromMilliseconds(500), () =>
                     {
                         if (ScrollBarPosition != ScrollBarPosition.Bottom) return;
 

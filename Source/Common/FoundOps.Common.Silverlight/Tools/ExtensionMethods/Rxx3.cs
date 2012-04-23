@@ -16,5 +16,15 @@ namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
         {
             return source.SubscribeOnDispatcher().Subscribe(value => obj.SetValue(property, value));
         }
+
+        /// <summary>
+        /// Runs an action on the dispatcher after the delay.
+        /// </summary>
+        /// <param name="delay">The delayed timespan</param>
+        /// <param name="action">The action to run after the delay.</param>
+        public static void RunDelayed(TimeSpan delay, Action action)
+        {
+            Observable.Interval(delay).Take(1).ObserveOnDispatcher().Subscribe(_ => action());
+        }
     }
 }

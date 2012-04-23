@@ -1,20 +1,19 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.UI.Tools;
+using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
-using System.ServiceModel.DomainServices.Client;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Globalization;
 using System.Windows.Input;
-using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
-using FoundOps.Common.Tools;
-using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.UI.ViewModels;
 using Telerik.Windows.Controls;
-using FoundOps.SLClient.UI.Tools;
-using System.Collections.Generic;
-using FoundOps.Core.Models.CoreEntities;
 using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.TreeView;
 
@@ -56,6 +55,23 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 foreach (var routeTreeViewToUnselect in routeTreeViewsToUnselect)
                     routeTreeViewToUnselect.SelectedItems.Clear();
             });
+
+            //Whenever the locations are loaded fixup the background colors
+            ReactiveUI.MessageBus.Current.Listen<TaskLocationsLoaded>()
+                //throttle by a half second to allow the assocations to hookup
+                .Throttle(TimeSpan.FromSeconds(.5))
+                .ObserveOnDispatcher().Subscribe(_ =>
+                {
+                    //Reset Grid background bindings to force the region colors to update
+                    var gridsExpressionsToUpdate = this.GetDescendants<RadTreeView>().SelectMany(treeView => treeView.GetDescendants<Grid>())
+                        .Select(grid => new Tuple<Grid, BindingExpression>(grid, grid.GetBindingExpression(Panel.BackgroundProperty))).Where(b => b.Item2 != null);
+
+                    foreach (var ge in gridsExpressionsToUpdate)
+                    {
+                        var bind = ge.Item2.ParentBinding;
+                        ge.Item1.SetBinding(Panel.BackgroundProperty, bind);
+                    }
+                });
         }
 
         #region Logic
@@ -390,7 +406,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             taskHolder.ChildRouteTask = null;
             taskHolder.ChildRouteTask = newRouteTask;
 
-            Manager.Data.DetachEntities(new [] {newRouteTask});
+            Manager.Data.DetachEntities(new[] { newRouteTask });
 
             ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(routeTask.ParentRouteTaskHolder);
         }

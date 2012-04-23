@@ -244,7 +244,13 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Update the SelectedRouteDestinationVM whenever the RouteDestination changes
-            _selectedRouteDestinationSubject.ObserveOnDispatcher().Subscribe(rd => this.SelectedRouteDestinationVM = new RouteDestinationVM(rd));
+            _selectedRouteDestinationSubject.ObserveOnDispatcher().Subscribe(rd =>
+            {
+                if (this.SelectedRouteDestinationVM != null)
+                    this.SelectedRouteDestinationVM.Dispose();
+
+                this.SelectedRouteDestinationVM = new RouteDestinationVM(rd);
+            });
 
             SetupDataLoading();
             RegisterCommands();
@@ -333,12 +339,39 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //a) cancel the last loads
                 cancelLastDetailsLoad.OnNext(true);
 
-                DomainContext.LoadAsync(DomainContext.GetRouteDestinationDetailsQuery(ContextManager.RoleId, selectedRouteDestination.Id), cancelLastDetailsLoad)
-                .ContinueWith(task =>
+                //if the RouteDestination is not new, load its details
+                if (selectedRouteDestination.EntityState != EntityState.New)
                 {
-                    if (!task.IsCanceled)
-                        selectedRouteDestination.DetailsLoaded = true;
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                    DomainContext.LoadAsync(DomainContext.GetRouteDestinationDetailsQuery(ContextManager.RoleId, selectedRouteDestination.Id), cancelLastDetailsLoad)
+                        .ContinueWith(task =>
+                        {
+                            if (!task.IsCanceled)
+                                selectedRouteDestination.DetailsLoaded = true;
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
+                }
+                else //if the RouteDestination is new, load it's Location/ContactInfoSet and Client/ContactInfoSet
+                {
+                    var clientLoaded = false;
+                    var locationLoaded = false;
+
+                    if (selectedRouteDestination.ClientId.HasValue)
+                        DomainContext.LoadAsync(DomainContext.GetClientsWithContactInfoSetQuery(ContextManager.RoleId, new[] { selectedRouteDestination.ClientId.Value }),cancelLastDetailsLoad)
+                          .ContinueWith(task =>
+                            {
+                                if (!task.IsCanceled && locationLoaded)
+                                    selectedRouteDestination.DetailsLoaded = true;
+                                clientLoaded = true;
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+                    if (selectedRouteDestination.LocationId.HasValue)
+                        DomainContext.LoadAsync(DomainContext.GetLocationsWithContactInfoSetQuery(ContextManager.RoleId, new[] { selectedRouteDestination.LocationId.Value }),cancelLastDetailsLoad)
+                            .ContinueWith(task =>
+                            {
+                                if (!task.IsCanceled && clientLoaded)
+                                    selectedRouteDestination.DetailsLoaded = true;
+                                locationLoaded = true;
+                            }, TaskScheduler.FromCurrentSynchronizationContext());
+                }
             });
 
             #endregion
@@ -437,15 +470,33 @@ namespace FoundOps.SLClient.UI.ViewModels
             var canCalculateRoutes = DataManager.DomainContextIsSubmittingObservable.CombineLatest(routesExist, (isSubmitting, areRoutes) => !isSubmitting && areRoutes);
             AutoCalculateRoutes = new ReactiveCommand(canCalculateRoutes);
 
+            var cancelLoadLocationDetails = new Subject<bool>();
+
             //Populate routes with the UnroutedTasks and refresh the filter counts
             AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
             {
                 //Populate the routes with the unrouted tasks
-                var routedTaskHolders = SimpleRouteCalculator.PopulateRoutes((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, CollectionView.Cast<Route>());
+                var routedTaskHolders = SimpleRouteCalculator.PopulateRoutes((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, CollectionView.Cast<Route>()).ToArray();
 
                 //Remove the routedTasks from the task board
-                foreach (var taskHoldersToRemove in routedTaskHolders.ToArray())
+                foreach (var taskHoldersToRemove in routedTaskHolders)
                     ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHoldersToRemove);
+
+                //Load the locations/contact info set for the newly populated task that do not have loaded locations
+                //No need to load the regions because they are already loaded (from the filter)
+                cancelLoadLocationDetails.OnNext(true);
+                var locationIdsToLoad = routedTaskHolders.Select(rth => rth.ChildRouteTask).Where(crt => crt.Location == null && crt.LocationId.HasValue)
+                    .Select(crt => crt.LocationId.Value).Distinct();
+
+                if (!locationIdsToLoad.Any()) return;
+                var locationsQuery = DomainContext.GetLocationsQuery(ContextManager.RoleId, locationIdsToLoad);
+                DomainContext.LoadAsync(locationsQuery, cancelLoadLocationDetails).ContinueWith(task =>
+                {
+                    if (task.IsCanceled) return;
+
+                    //Send TaskLocationsLoaded
+                    MessageBus.Current.SendMessage(new TaskLocationsLoaded());
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             });
 
             //Allow the user to open the route manifests whenever there is one or more route visible
@@ -585,4 +636,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
     }
+    /// <summary>
+    /// A message to notify that the Task's locations have been loaded. 
+    /// </summary>
+    public class TaskLocationsLoaded { }
 }

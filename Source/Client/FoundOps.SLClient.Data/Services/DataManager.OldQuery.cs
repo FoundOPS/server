@@ -30,21 +30,6 @@ namespace FoundOps.SLClient.Data.Services
             }, null);
         }
 
-        /// <summary>
-        /// Loads a collection.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="query">The query.</param>
-        /// <param name="callback">The callback.</param>
-        public void LoadCollection<TEntity>(EntityQuery<TEntity> query, Action<IEnumerable<TEntity>> callback) where TEntity : Entity
-        {
-            DomainContext.Load(query, loadOperation =>
-            {
-                if (loadOperation.HasError) return; //TODO Setup error callback
-                callback(loadOperation.Entities);
-            }, null);
-        }
-
         #endregion
 
         #region Query Methods
@@ -89,11 +74,8 @@ namespace FoundOps.SLClient.Data.Services
             DomainContext.Load(query, loadOperation =>
             {
                 if (!loadOperation.HasError)
-                {
                     getPublicBlocksCallback(new ObservableCollection<Block>(loadOperation.Entities));
-                }
-            }
-                , null);
+            }, null);
         }
 
         #endregion

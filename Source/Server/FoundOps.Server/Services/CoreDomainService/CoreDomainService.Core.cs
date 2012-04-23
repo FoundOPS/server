@@ -1,4 +1,3 @@
-using System.ServiceModel;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -12,6 +11,7 @@ using System.Data.Objects;
 using System.Linq;
 using System.Reflection;
 using System.Security.Authentication;
+using System.ServiceModel;
 using System.ServiceModel.DomainServices.EntityFramework;
 using System.ServiceModel.DomainServices.Hosting;
 using System.ServiceModel.DomainServices.Server;

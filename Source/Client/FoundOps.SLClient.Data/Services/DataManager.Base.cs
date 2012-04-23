@@ -1,4 +1,5 @@
-﻿using FoundOps.Server.Services.CoreDomainService;
+﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Server.Services.CoreDomainService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -92,7 +93,7 @@ namespace FoundOps.SLClient.Data.Services
             _domainContextHasChangesHelper = _domainContextHasChangesSubject.ToProperty(this, x => x.DomainContextHasChanges);
 
             //Keep track of domain context changes and domain context is submitting every quarter second (and update this public properties)
-            Observable.Interval(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
+            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(250), () => 
             {
                 _domainContextHasChangesSubject.OnNext(this.DomainContext.HasChanges);
                 _domainContextIsSubmittingSubject.OnNext(this.DomainContext.IsSubmitting);

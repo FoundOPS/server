@@ -24,13 +24,13 @@ namespace FoundOps.SLClient.Data.Tools
             //Organize the unroutedTaskHolders by ServiceTemplateName
 
             //a) get a collection of unique ServiceTemplate Names (types) from unroutedTaskHolders
-            var distinctServiceTemplates =
-                unroutedTaskHolders.Where(th => th.ServiceName != null).Select(th => th.ServiceName).Distinct().ToArray();
+            var distinctServiceTemplates = unroutedTaskHolders.Where(th => th.ServiceName != null).Select(th => th.ServiceName).Distinct().ToArray();
 
             //b) organize the unroutedTaskHolders into a 2d collection by ServiceTemplate Name 
             //   only choose task holders with a LocationId and a ServiceName
             var routeTaskHolderCollections =
-                distinctServiceTemplates.Select(serviceTemplateName => unroutedTaskHolders.Where(th => th.LocationId != null && th.ServiceName == serviceTemplateName));
+                distinctServiceTemplates.Select(serviceTemplateName => unroutedTaskHolders.Where(th => th.LocationId != null && th.ServiceName == serviceTemplateName))
+                .Where(collection=>collection.Any()).ToArray();
 
             //Go through each routeTaskHolderCollection and route them
             //(Before routing them, convert them into RouteTasks)

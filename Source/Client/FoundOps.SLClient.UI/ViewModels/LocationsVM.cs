@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
@@ -144,7 +145,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 newLocation.RaiseValidationErrors();
 
                 DataManager.EnqueueSubmitOperation(submitOperation =>
-                    Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ => SelectedEntity = newLocation));
+                    Rxx3.RunDelayed(TimeSpan.FromSeconds(1), () => SelectedEntity = newLocation));
 
                 return newLocation;
             };

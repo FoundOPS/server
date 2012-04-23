@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.ServiceModel.DomainServices.Client;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.SLClient.Data.ViewModels;
+using RiaServicesContrib;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
     /// <summary>
     /// Contains the logic for editing a single RouteDestination
     /// </summary>
-    public class RouteDestinationVM : CoreEntityVM
+    public class RouteDestinationVM : CoreEntityVM, IDisposable
     {
-        /// <summary>
-        /// The RouteDestination.
-        /// </summary>
-        public RouteDestination RouteDestination { get; set; }
-
         #region Public Properties
 
-
-
         private ContactInfoVM _clientContactInfoVM;
+
         /// <summary>
         /// Gets the ContactInfoVM for the selected route destination's client.
         /// </summary>
@@ -35,6 +32,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         private ContactInfoVM _locationContactInfoVM;
+
         /// <summary>
         /// Gets the ContactInfoVM for the location.
         /// </summary>
@@ -47,6 +45,18 @@ namespace FoundOps.SLClient.UI.ViewModels
                 this.RaisePropertyChanged("LocationContactInfoVM");
             }
         }
+
+        /// <summary>
+        /// The RouteDestination.
+        /// </summary>
+        public RouteDestination RouteDestination { get; set; }
+
+        #endregion
+
+        #region Locals
+
+        //Keep these so we can dispose the property changed subscription
+        private readonly IDisposable _destinationDisposable;
 
         #endregion
 
@@ -61,15 +71,40 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (routeDestination == null)
                 return;
 
-            //Whenever the Client changes, update the ClientContactInfoVM
-            Observable2.FromPropertyChangedPattern(RouteDestination, r => r.Client)
-                .ObserveOnDispatcher().Where(client => client != null && client.OwnedParty != null).Subscribe(client =>
-                    ClientContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, client.OwnedParty.ContactInfoSet));
+            //Initialize the ContactInfoVMs
+            UpdateContactInfoVMs();
 
-            //Whenever the Location changes, update the LocationContactInfoVM
-            Observable2.FromPropertyChangedPattern(RouteDestination, r => r.Location)
-                .ObserveOnDispatcher().Where(loc => loc != null).Subscribe(loc =>
-                    LocationContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, loc.ContactInfoSet));
+            //Whenever the Client/Location/DetailsLoaded property changes update the VMs
+            _destinationDisposable = RouteDestination.FromAnyPropertyChanged().WhereNotNull()
+                .Where(p => p.PropertyName == "DetailsLoaded" || p.PropertyName == "Client" || p.PropertyName == "Location")
+                .Subscribe(_ => UpdateContactInfoVMs());
         }
+
+        #region Logic
+
+        /// <summary>
+        /// Updates the ContactInfoVMs
+        /// </summary>
+        private void UpdateContactInfoVMs()
+        {
+            ClientContactInfoVM = RouteDestination.Client != null && RouteDestination.Client.OwnedParty != null
+                                      ? new ContactInfoVM(ContactInfoType.OwnedParties, RouteDestination.Client.OwnedParty.ContactInfoSet)
+                                      : null;
+
+            LocationContactInfoVM = RouteDestination.Location != null
+                                        ? new ContactInfoVM(ContactInfoType.OwnedParties, RouteDestination.Location.ContactInfoSet)
+                                        : null;
+        }
+
+        /// <summary>
+        /// Disposes the ClientGraph property changed subscription and the Location subscription 
+        /// </summary>
+        public void Dispose()
+        {
+            if (_destinationDisposable != null)
+                _destinationDisposable.Dispose();
+        }
+
+        #endregion
     }
 }

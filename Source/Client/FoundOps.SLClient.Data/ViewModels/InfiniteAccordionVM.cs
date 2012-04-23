@@ -365,7 +365,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             this.RaisePropertyChanged("QueryableCollectionView");
 
             DataManager.EnqueueSubmitOperation(submitOperation =>
-                Observable.Interval(TimeSpan.FromSeconds(1)).Take(1).ObserveOnDispatcher().Subscribe(_ => SelectedEntity = newEntity));
+                  Rxx3.RunDelayed(TimeSpan.FromSeconds(1), ()=> SelectedEntity = newEntity));
 
             return newEntity;
         }

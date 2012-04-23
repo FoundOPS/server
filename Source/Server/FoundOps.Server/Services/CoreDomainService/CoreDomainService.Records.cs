@@ -425,7 +425,19 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
-        /// Gets the locations for  role's business account.
+        /// Gets the locations for role's business account.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="locationsIds">The ids of the Locations to load.</param>
+        [Query(HasSideEffects = true)] //HasSideEffects so a POST is used and a maximum URI length is not thrown
+        public IQueryable<Location> GetLocations(Guid roleId, IEnumerable<Guid> locationsIds)
+        {
+            var locations = GetLocationsToAdministerForRole(roleId).Where(l => locationsIds.Contains(l.Id));
+            return locations;
+        }
+
+        /// <summary>
+        /// Gets the locations for role's business account.
         /// It also includes the ContactInfoSet.
         /// </summary>
         /// <param name="roleId">The role id.</param>

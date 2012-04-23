@@ -211,6 +211,9 @@ namespace FoundOps.SLClient.Data.Services
             });
         }
 
+        /// <summary>
+        /// Setups the current account role properties.
+        /// </summary>
         private void SetupCurrentAccountRoleProperties()
         {
             //Subcribe _roleIdObservable to the distinct RoleIdObserver changes
@@ -228,8 +231,8 @@ namespace FoundOps.SLClient.Data.Services
 
             //Load the current user account
             //Wait 200 milliseconds so MEF can resolve the Manager.Data class (or else a circular dependency error will be thrown)
-            Observable.Interval(TimeSpan.FromMilliseconds(200)).Take(1).ObserveOnDispatcher().Subscribe(_ =>
-            Manager.Data.GetCurrentUserAccount(userAccount => ((BehaviorSubject<UserAccount>)UserAccountObservable).OnNext(userAccount)));
+            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(200), ()=>
+                Manager.Data.GetCurrentUserAccount(userAccount => ((BehaviorSubject<UserAccount>)UserAccountObservable).OnNext(userAccount)));
 
             _currentServiceTemplates = _currentServiceTemplatesSubject.ToProperty(this, x => x.CurrentServiceTemplates);
 

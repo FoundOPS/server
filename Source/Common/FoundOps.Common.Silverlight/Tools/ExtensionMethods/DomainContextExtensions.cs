@@ -20,7 +20,7 @@ namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
         {
             var result = new TaskCompletionSource<IEnumerable<T>>();
 
-            var entityQuery = context.Load(query, lo =>
+            var entityQuery = context.Load(query, LoadBehavior.RefreshCurrent, lo =>
             {
                 if (!lo.IsCanceled)
                     result.TrySetResult(lo.Entities);
