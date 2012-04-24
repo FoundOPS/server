@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using FoundOps.Core.Models.Azure;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Core.Models.CoreEntities;
+using System;
 
 namespace FoundOPS.API.Models
 {
     public class ModelResourceWithLastPoint
     {
-
-        public Guid Id { get; set; }
         public int? CompassHeading { set; get; }
         public Guid? EmployeeId { set; get; }
         public string EntityName { set; get; }
@@ -24,21 +18,19 @@ namespace FoundOPS.API.Models
 
         public static ModelResourceWithLastPoint ConvertToModel(ResourceWithLastPoint modelResource)
         {
-
             var resource = new ModelResourceWithLastPoint
-                                 {
-                                     Id = modelResource.Id,
-                                     CompassHeading = modelResource.CompassHeading,
-                                     EmployeeId = modelResource.EmployeeId,
-                                     EntityName = modelResource.EntityName,
-                                     LastTimeStamp = modelResource.LastTimeStamp,
-                                     Latitude = modelResource.Latitude,
-                                     Longitude = modelResource.Longitude,
-                                     RouteId = modelResource.RouteId,
-                                     Speed = modelResource.Speed,
-                                     TrackSource = modelResource.TrackSource,
-                                     VehicleId = modelResource.VehicleId
-                                 };
+            {
+                CompassHeading = modelResource.CompassHeading,
+                EmployeeId = modelResource.EmployeeId,
+                EntityName = modelResource.EntityName,
+                LastTimeStamp = modelResource.LastTimeStamp,
+                Latitude = modelResource.Latitude,
+                Longitude = modelResource.Longitude,
+                RouteId = modelResource.RouteId,
+                Speed = modelResource.Speed,
+                TrackSource = modelResource.TrackSource,
+                VehicleId = modelResource.VehicleId
+            };
 
             return resource;
         }

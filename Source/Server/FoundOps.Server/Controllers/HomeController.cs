@@ -135,8 +135,8 @@ namespace FoundOps.Server.Controllers
                                 //Sets timeStamp to be 9:00 AM yesterday
                                 var timeStamp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 9, 0, 0);
 
-                                for (var totalCount = 1; totalCount <= 500; totalCount++)
-                                {
+                                //for (var totalCount = 1; totalCount <= 500; totalCount++)
+                                //{
                                     for (var innerCount = 1; innerCount < 100; innerCount++)
                                     {
                                         //Create the object to be stored in the Azure table
@@ -157,10 +157,10 @@ namespace FoundOps.Server.Controllers
                                         //Push to Azure Table
                                         serviceContext.AddObject(tableName, newTrackPoint); 
                                         serviceContext.SaveChangesWithRetries();
-                                        totalCount++;
+                                        //totalCount++;
                                     }
-                                    totalCount--;
-                                }
+                                    //totalCount--;
+                                //}
                             }
                             break;
                         //This would be the 1st, 5th, etc
@@ -174,8 +174,8 @@ namespace FoundOps.Server.Controllers
                                 //Sets timeStamp to be 9:00 AM yesterday
                                 var timeStamp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 9, 0, 0);
 
-                                for (var totalCount = 1; totalCount <= 500; totalCount++)
-                                {
+                                //for (var totalCount = 1; totalCount <= 500; totalCount++)
+                                //{
                                     for (var innerCount = 1; innerCount <= 100; innerCount++)
                                     {
                                         //Create the object to be stored in the Azure table
@@ -196,10 +196,10 @@ namespace FoundOps.Server.Controllers
                                         //Push to Azure Table
                                         serviceContext.AddObject(tableName, newTrackPoint);
                                         serviceContext.SaveChangesWithRetries();
-                                        totalCount++;
+                                        //totalCount++;
                                     }
-                                    totalCount--;
-                                }
+                                    //totalCount--;
+                                //}
                             }
                             break;
                         //This would be the 2nd, 6th, etc
@@ -213,8 +213,8 @@ namespace FoundOps.Server.Controllers
                                 //Sets timeStamp to be 9:00 AM yesterday
                                 var timeStamp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 9, 0, 0);
 
-                                for (var totalCount = 1; totalCount <= 500; totalCount++)
-                                {
+                                //for (var totalCount = 1; totalCount <= 500; totalCount++)
+                                //{
                                     for (var innerCount = 1; innerCount <= 100; innerCount++)
                                     {
                                         //Create the object to be stored in the Azure table
@@ -235,10 +235,10 @@ namespace FoundOps.Server.Controllers
                                         //Push to Azure Table
                                         serviceContext.AddObject(tableName, newTrackPoint);
                                         serviceContext.SaveChangesWithRetries();
-                                        totalCount++;
+                                    //    totalCount++;
                                     }
-                                    totalCount--;
-                                }
+                                    //totalCount--;
+                                //}
                             }
                             break;
                         //This would be the 3rd, 7th, etc
@@ -252,8 +252,8 @@ namespace FoundOps.Server.Controllers
                                 //Sets timeStamp to be 9:00 AM yesterday
                                 var timeStamp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 9, 0, 0);
 
-                                for (var totalCount = 1; totalCount <= 500; totalCount++)
-                                {
+                                //for (var totalCount = 1; totalCount <= 500; totalCount++)
+                                //{
                                     for (var innerCount = 1; innerCount <= 100; innerCount++)
                                     {
                                         //Create the object to be stored in the Azure table
@@ -274,10 +274,10 @@ namespace FoundOps.Server.Controllers
                                         //Push to Azure Table
                                         serviceContext.AddObject(tableName, newTrackPoint);
                                         serviceContext.SaveChangesWithRetries();
-                                        totalCount++;
+                                        //totalCount++;
                                     }
-                                    totalCount--;
-                                }
+                                    //totalCount--;
+                                //}
                             }
                             break;
                     }

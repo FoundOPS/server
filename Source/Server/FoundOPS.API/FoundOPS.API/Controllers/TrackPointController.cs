@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -34,12 +35,16 @@ namespace FoundOPS.API.Controllers
         #region GET
 
         // GET /api/trackpoint/GetTrackPoints?roleId={Guid}&date=Datetime
-        public IQueryable<TrackPoint> GetTrackPoints(Guid? roleId, DateTime? date)
+        public IQueryable<TrackPoint> GetTrackPoints(Guid? roleId, Guid? routeId, DateTime serviceDate)
         {
-            if (roleId == null || date == null)
+            if (roleId == null)
                 return null;
 
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole((Guid) roleId);
+#if DEBUG
+            var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(ba => ba.Id == roleId);
+#else
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+#endif
 
             if (currentBusinessAccount == null)
                 return null;
@@ -52,8 +57,16 @@ namespace FoundOPS.API.Controllers
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
             var tableName = "tp" + currentBusinessAccount.Id.ToString().Replace("-", "");
 
+            var trackPointsDate = serviceDate.Date;
+
+            //&& tp.TimeStampDate == trackPointsDate
+
             //Gets all objects from the Azure table specified on the date requested and returns the result
-            var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).ToArray().Where(tp => tp.TimeStamp.Date == ((DateTime)date).Date);
+            var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).Where(tp => tp.RouteId == routeId).ToArray();
+
+            //var test = new List<TrackPointsHistoryTableDataModel>();
+            //for (var i = 0; i < 4; i++)
+            //    test.AddRange(trackPoints);
 
             //Return the list of converted track points as a queryable
             var modelTrackPoints = trackPoints.Select(TrackPoint.ConvertToModel);
@@ -68,9 +81,11 @@ namespace FoundOPS.API.Controllers
         /// <param name="serviceDate">The requested ServiceDate</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
         //GET /api/trackpoint/GetResourcesWithLatestPoints?roleId={Guid}&date=Datetime
-        [System.Web.Http.HttpGet]
         public IQueryable<ModelResourceWithLastPoint> GetResourcesWithLatestPoints(Guid? roleId, DateTime? serviceDate)
         {
+            if (!serviceDate.HasValue)
+                serviceDate = DateTime.UtcNow.Date;
+
 #if DEBUG
             var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(ba => ba.Id == roleId);
 #else
@@ -115,19 +130,10 @@ namespace FoundOPS.API.Controllers
                         var employees = route.Technicians;
                         foreach (var employee in employees)
                         {
-                            if (employee.LastLatitude == null && employee.LastLongitude == null ||
-                                (employee.LastTimeStamp != null && employee.LastTimeStamp.Value.Date != DateTime.UtcNow.Date))
-                            {
-                                employee.LastLatitude = 40.4599;
-                                employee.LastLongitude = -86.9309;
-                            }
-                            else
-                            {
-                                employee.LastLatitude = employee.LastLatitude + .001;
-                                employee.LastLongitude = employee.LastLongitude + .001;
-                            }
+                            employee.LastLatitude = employee.LastLatitude + .00005;
+                            employee.LastLongitude = employee.LastLongitude + .00005;
 
-                            employee.LastCompassDirection = 45;
+                            employee.LastCompassDirection += 15;
                             employee.LastTimeStamp = DateTime.UtcNow;
                             employee.LastSpeed = random.Next(30, 50);
                             employee.LastSource = "iPhone";
@@ -138,22 +144,13 @@ namespace FoundOPS.API.Controllers
                         employees = route.Technicians;
                         foreach (var employee in employees)
                         {
-                            if (employee.LastLatitude == null && employee.LastLongitude == null ||
-                                (employee.LastTimeStamp != null && employee.LastTimeStamp.Value.Date != DateTime.UtcNow.Date))
-                            {
-                                employee.LastLatitude = 40.4599;
-                                employee.LastLongitude = -86.9309;
-                            }
-                            else
-                            {
-                                employee.LastLatitude = employee.LastLatitude - .001;
-                                employee.LastLongitude = employee.LastLongitude + .001;
-                            }
+                            employee.LastLatitude = employee.LastLatitude - .00005;
+                            employee.LastLongitude = employee.LastLongitude + .00005;
 
-                            employee.LastCompassDirection = 135;
+                            employee.LastCompassDirection += 15;
                             employee.LastTimeStamp = DateTime.UtcNow;
                             employee.LastSpeed = random.Next(30, 50);
-                            employee.LastSource = "iPhone";
+                            employee.LastSource = "Android";
                         }
                         break;
                     //This would be the 2nd, 6th, etc
@@ -161,19 +158,10 @@ namespace FoundOPS.API.Controllers
                         employees = route.Technicians;
                         foreach (var employee in employees)
                         {
-                            if (employee.LastLatitude == null && employee.LastLongitude == null ||
-                                (employee.LastTimeStamp != null && employee.LastTimeStamp.Value.Date != DateTime.UtcNow.Date))
-                            {
-                                employee.LastLatitude = 40.4599;
-                                employee.LastLongitude = -86.9309;
-                            }
-                            else
-                            {
-                                employee.LastLatitude = employee.LastLatitude + .001;
-                                employee.LastLongitude = employee.LastLongitude - .001;
-                            }
+                            employee.LastLatitude = employee.LastLatitude + .00005;
+                            employee.LastLongitude = employee.LastLongitude - .00005;
 
-                            employee.LastCompassDirection = 225;
+                            employee.LastCompassDirection += 15;
                             employee.LastTimeStamp = DateTime.UtcNow;
                             employee.LastSpeed = random.Next(30, 50);
                             employee.LastSource = "iPhone";
@@ -184,22 +172,13 @@ namespace FoundOPS.API.Controllers
                         employees = route.Technicians;
                         foreach (var employee in employees)
                         {
-                            if (employee.LastLatitude == null && employee.LastLongitude == null ||
-                                (employee.LastTimeStamp != null && employee.LastTimeStamp.Value.Date != DateTime.UtcNow.Date))
-                            {
-                                employee.LastLatitude = 40.4599;
-                                employee.LastLongitude = -86.9309;
-                            }
-                            else
-                            {
-                                employee.LastLatitude = employee.LastLatitude - .001;
-                                employee.LastLongitude = employee.LastLongitude - .001;
-                            }
+                            employee.LastLatitude = employee.LastLatitude - .00005;
+                            employee.LastLongitude = employee.LastLongitude - .00005;
 
-                            employee.LastCompassDirection = 315;
+                            employee.LastCompassDirection += 15;
                             employee.LastTimeStamp = DateTime.UtcNow;
                             employee.LastSpeed = random.Next(30, 50);
-                            employee.LastSource = "iPhone";
+                            employee.LastSource = "Android";
                         }
                         break;
 
@@ -211,7 +190,7 @@ namespace FoundOPS.API.Controllers
             _coreEntitiesContainer.SaveChanges();
         }
 
-        #endregion 
+        #endregion
 
         #region POST
 

@@ -41,8 +41,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Year = 2005,
                 OwnerParty = _ownerParty,
                 LastCompassDirection = 30,
-                LastLatitude = 87.46325,
-                LastLongitude = -86.4582,
+                LastLatitude = 40.4589,
+                LastLongitude = -86.92,
                 LastSource = "Catch Me If You Can",
                 LastSpeed = 25.65,
                 LastTimeStamp = DateTime.UtcNow
@@ -60,8 +60,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Year = 2008,
                 OwnerParty = _ownerParty,
                 LastCompassDirection = -15,
-                LastLatitude = 84.3654,
-                LastLongitude = -85.7894,
+                LastLatitude = 40.4599,
+                LastLongitude = -86.94,
                 LastSource = "Find Me",
                 LastSpeed = 48.82,
                 LastTimeStamp = DateTime.UtcNow
@@ -79,8 +79,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Year = 2000,
                 OwnerParty = _ownerParty,
                 LastCompassDirection = 0,
-                LastLatitude = 86.2225,
-                LastLongitude = -89.6589,
+                LastLatitude = 40.4579,
+                LastLongitude = -86.93,
                 LastSource = "US Fleet Tracker",
                 LastSpeed = 15.2,
                 LastTimeStamp = DateTime.UtcNow
