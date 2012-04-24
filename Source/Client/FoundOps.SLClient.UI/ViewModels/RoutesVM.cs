@@ -479,8 +479,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var routedTaskHolders = SimpleRouteCalculator.PopulateRoutes((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, CollectionView.Cast<Route>()).ToArray();
 
                 //Remove the routedTasks from the task board
-                foreach (var taskHoldersToRemove in routedTaskHolders)
-                    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHoldersToRemove);
+                foreach (var taskHolderToRemove in routedTaskHolders)
+                    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolderToRemove);
 
                 //Load the locations/contact info set for the newly populated task that do not have loaded locations
                 //No need to load the regions because they are already loaded (from the filter)
@@ -489,17 +489,17 @@ namespace FoundOps.SLClient.UI.ViewModels
                     .Select(crt => crt.LocationId.Value).Distinct();
 
                 if (!locationIdsToLoad.Any()) return;
+                //Send a TaskLocationsUpdated message. To refresh Region colors for any loaded locations
+                MessageBus.Current.SendMessage(new TaskLocationsUpdated());
+
                 var locationsQuery = DomainContext.GetLocationsQuery(ContextManager.RoleId, locationIdsToLoad);
                 DomainContext.LoadAsync(locationsQuery, cancelLoadLocationDetails).ContinueWith(task =>
                 {
                     if (task.IsCanceled) return;
 
-                    //Send a TaskLocationsUpdated message
+                    //Send a TaskLocationsUpdated message. To refresh Region colors for any loaded locations
                     MessageBus.Current.SendMessage(new TaskLocationsUpdated());
                 }, TaskScheduler.FromCurrentSynchronizationContext());
-
-                //Send a TaskLocationsUpdated message
-                MessageBus.Current.SendMessage(new TaskLocationsUpdated());
             });
 
             //Allow the user to open the route manifests whenever there is one or more route visible

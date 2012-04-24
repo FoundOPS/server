@@ -23,23 +23,25 @@ namespace FoundOps.SLClient.Data.Tools
 
             //Organize the unroutedTaskHolders by ServiceTemplateName
 
+            var taskHoldersToRoute = unroutedTaskHolders.Where(th => th.LocationId.HasValue && th.ServiceName != null).ToArray();
+
             //a) get a collection of unique ServiceTemplate Names (types) from unroutedTaskHolders
-            var distinctServiceTemplates = unroutedTaskHolders.Where(th => th.ServiceName != null).Select(th => th.ServiceName).Distinct().ToArray();
+            //  only choose task holders with a LocationId and a ServiceName
+            var distinctServiceTemplates = taskHoldersToRoute.Select(th => th.ServiceName).Distinct().ToArray();
 
             //b) organize the unroutedTaskHolders into a 2d collection by ServiceTemplate Name 
-            //   only choose task holders with a LocationId and a ServiceName
+            //  only choose task holders with a LocationId and a ServiceName
             var routeTaskHolderCollections =
-                distinctServiceTemplates.Select(serviceTemplateName => unroutedTaskHolders.Where(th => th.LocationId != null && th.ServiceName == serviceTemplateName))
-                .Where(collection=>collection.Any()).ToArray();
+                distinctServiceTemplates.Select(serviceTemplateName => taskHoldersToRoute.Where(th => th.ServiceName == serviceTemplateName));
 
             //Go through each routeTaskHolderCollection and route them
             //(Before routing them, convert them into RouteTasks)
             foreach (var routeTaskHolderCollection in routeTaskHolderCollections)
             {
-                var serviceType = routeTaskHolderCollection.First().ServiceName;
-
                 //Only route tasks with lat/longs
                 var unorganizedTaskHolders = routeTaskHolderCollection.Where(th => th.Longitude.HasValue && th.Latitude.HasValue).ToList();
+
+                var serviceType = unorganizedTaskHolders.First().ServiceName;
 
                 //Before being added to this collection, the TaskHolder will be converted to a RouteTask
                 var organizedRouteTasks = new List<RouteTask>();
