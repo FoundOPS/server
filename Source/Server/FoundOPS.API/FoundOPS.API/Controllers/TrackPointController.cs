@@ -235,7 +235,6 @@ namespace FoundOPS.API.Controllers
         /// <summary>
         /// Used to save TrackPoints from a mobile device
         /// </summary>
-        /// <param name="roleId">The current roleId</param>
         /// <param name="employeeId">The employeeId</param>
         /// <param name="vehicleId">The vehicleId</param>
         /// <param name="modelTrackPoints">The list of TrackPoints being passed from either an Employees device or a device on a Vehicle</param>
@@ -331,8 +330,8 @@ namespace FoundOPS.API.Controllers
         /// </summary>
         /// <param name="currentBusinessAccount">The current BusinessAccount</param>
         /// <param name="trackPoint">The Model TrackPoint to be pushed to AzureTables</param>
-        /// <param name="employeeId">The employeeId</param>
-        /// <param name="vehicleId">The vehicleId</param>
+        /// <param name="employee">The employee</param>
+        /// <param name="vehicle">The vehicle</param>
         /// <param name="routeId">The Id of the Route that the vehicle or employee are currently on</param>
         private void PushTrackPointToAzure(BusinessAccount currentBusinessAccount, TrackPoint trackPoint, Employee employee, Vehicle vehicle, Guid routeId)
         {
@@ -382,7 +381,7 @@ namespace FoundOPS.API.Controllers
                 RouteId = routeId,
                 Latitude = trackPoint.Latitude,
                 Longitude = trackPoint.Longitude,
-                TimeStamp = trackPoint.TimeStamp
+                TimeStamp = trackPoint.TimeStampDate
             };
 
             //Push to Azure Table

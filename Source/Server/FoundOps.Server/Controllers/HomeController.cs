@@ -1,4 +1,5 @@
 using System;
+using System.Data.Services.Client;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -95,7 +96,7 @@ namespace FoundOps.Server.Controllers
 
                 var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(),
                                                                         storageAccount.Credentials);
-                
+
                 var tableClient = storageAccount.CreateCloudTableClient();
 
                 try
@@ -112,7 +113,7 @@ namespace FoundOps.Server.Controllers
 
                 var routes = coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate.Date && r.OwnerBusinessAccountId == businessAccountId).OrderBy(r => r.Id);
 
-                #region Setup Design Data for Historical Track Points 
+                #region Setup Design Data for Historical Track Points
 
                 var numberOfRoutes = routes.Count();
 
@@ -135,19 +136,20 @@ namespace FoundOps.Server.Controllers
                                 //Sets timeStamp to be 9:00 AM yesterday
                                 var timeStamp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 9, 0, 0);
 
-                                //for (var totalCount = 1; totalCount <= 500; totalCount++)
-                                //{
-                                    for (var innerCount = 1; innerCount < 100; innerCount++)
+                                for (var totalCount = 1; totalCount <= 3; totalCount++)
+                                {
+                                    var partitionKey = Guid.NewGuid().ToString();
+                                    for (var innerCount = 1; innerCount < 99; innerCount++)
                                     {
                                         //Create the object to be stored in the Azure table
-                                        var newTrackPoint = new TrackPointsHistoryTableDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
+                                        var newTrackPoint = new TrackPointsHistoryTableDataModel(partitionKey, Guid.NewGuid().ToString())
                                         {
                                             EmployeetId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            TimeStamp = timeStamp
+                                            TimeStampDate = timeStamp.Date
                                         };
 
                                         latitude = latitude + .001;
@@ -155,12 +157,10 @@ namespace FoundOps.Server.Controllers
                                         timeStamp = timeStamp.AddSeconds(30);
 
                                         //Push to Azure Table
-                                        serviceContext.AddObject(tableName, newTrackPoint); 
-                                        serviceContext.SaveChangesWithRetries();
-                                        //totalCount++;
+                                        serviceContext.AddObject(tableName, newTrackPoint);
                                     }
-                                    //totalCount--;
-                                //}
+                                    serviceContext.SaveChangesWithRetries(SaveChangesOptions.Batch);
+                                }
                             }
                             break;
                         //This would be the 1st, 5th, etc
@@ -174,19 +174,21 @@ namespace FoundOps.Server.Controllers
                                 //Sets timeStamp to be 9:00 AM yesterday
                                 var timeStamp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 9, 0, 0);
 
-                                //for (var totalCount = 1; totalCount <= 500; totalCount++)
-                                //{
-                                    for (var innerCount = 1; innerCount <= 100; innerCount++)
+                                for (var totalCount = 1; totalCount <= 3; totalCount++)
+                                {
+                                    var partitionKey = Guid.NewGuid().ToString();
+
+                                    for (var innerCount = 1; innerCount <= 99; innerCount++)
                                     {
                                         //Create the object to be stored in the Azure table
-                                        var newTrackPoint = new TrackPointsHistoryTableDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
+                                        var newTrackPoint = new TrackPointsHistoryTableDataModel(partitionKey, Guid.NewGuid().ToString())
                                         {
                                             EmployeetId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            TimeStamp = timeStamp
+                                            TimeStampDate = timeStamp.Date
                                         };
 
                                         latitude = latitude - .001;
@@ -195,11 +197,10 @@ namespace FoundOps.Server.Controllers
 
                                         //Push to Azure Table
                                         serviceContext.AddObject(tableName, newTrackPoint);
-                                        serviceContext.SaveChangesWithRetries();
-                                        //totalCount++;
                                     }
-                                    //totalCount--;
-                                //}
+                                    serviceContext.SaveChangesWithRetries(SaveChangesOptions.Batch);
+
+                                }
                             }
                             break;
                         //This would be the 2nd, 6th, etc
@@ -213,19 +214,21 @@ namespace FoundOps.Server.Controllers
                                 //Sets timeStamp to be 9:00 AM yesterday
                                 var timeStamp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 9, 0, 0);
 
-                                //for (var totalCount = 1; totalCount <= 500; totalCount++)
-                                //{
-                                    for (var innerCount = 1; innerCount <= 100; innerCount++)
+                                for (var totalCount = 1; totalCount <= 3; totalCount++)
+                                {
+                                    var partitionKey = Guid.NewGuid().ToString();
+
+                                    for (var innerCount = 1; innerCount <= 99; innerCount++)
                                     {
                                         //Create the object to be stored in the Azure table
-                                        var newTrackPoint = new TrackPointsHistoryTableDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
+                                        var newTrackPoint = new TrackPointsHistoryTableDataModel(partitionKey, Guid.NewGuid().ToString())
                                         {
                                             EmployeetId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            TimeStamp = timeStamp
+                                            TimeStampDate = timeStamp.Date
                                         };
 
                                         latitude = latitude + .001;
@@ -234,11 +237,9 @@ namespace FoundOps.Server.Controllers
 
                                         //Push to Azure Table
                                         serviceContext.AddObject(tableName, newTrackPoint);
-                                        serviceContext.SaveChangesWithRetries();
-                                    //    totalCount++;
                                     }
-                                    //totalCount--;
-                                //}
+                                    serviceContext.SaveChangesWithRetries(SaveChangesOptions.Batch);
+                                }
                             }
                             break;
                         //This would be the 3rd, 7th, etc
@@ -252,19 +253,21 @@ namespace FoundOps.Server.Controllers
                                 //Sets timeStamp to be 9:00 AM yesterday
                                 var timeStamp = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 9, 0, 0);
 
-                                //for (var totalCount = 1; totalCount <= 500; totalCount++)
-                                //{
-                                    for (var innerCount = 1; innerCount <= 100; innerCount++)
+                                for (var totalCount = 1; totalCount <= 3; totalCount++)
+                                {
+                                    var partitionKey = Guid.NewGuid().ToString();
+
+                                    for (var innerCount = 1; innerCount <= 99; innerCount++)
                                     {
                                         //Create the object to be stored in the Azure table
-                                        var newTrackPoint = new TrackPointsHistoryTableDataModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
+                                        var newTrackPoint = new TrackPointsHistoryTableDataModel(partitionKey, Guid.NewGuid().ToString())
                                         {
                                             EmployeetId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            TimeStamp = timeStamp
+                                            TimeStampDate = timeStamp.Date
                                         };
 
                                         latitude = latitude - .001;
@@ -273,11 +276,9 @@ namespace FoundOps.Server.Controllers
 
                                         //Push to Azure Table
                                         serviceContext.AddObject(tableName, newTrackPoint);
-                                        serviceContext.SaveChangesWithRetries();
-                                        //totalCount++;
                                     }
-                                    //totalCount--;
-                                //}
+                                    serviceContext.SaveChangesWithRetries(SaveChangesOptions.Batch);
+                                }
                             }
                             break;
                     }
@@ -287,8 +288,8 @@ namespace FoundOps.Server.Controllers
                 #endregion
             }
 
-                return View();
-        } 
+            return View();
+        }
 
         [AddTestUsersThenAuthorize]
         public ActionResult PerformServerOperations()

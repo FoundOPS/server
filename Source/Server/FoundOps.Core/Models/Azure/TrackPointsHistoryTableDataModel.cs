@@ -18,7 +18,19 @@ namespace FoundOps.Core.Models.Azure
         public Guid? EmployeetId { get; set; }
         public Guid? VehicleId { get; set; }
         public Guid RouteId { get; set; }
-        public DateTime TimeStamp { get; set; }
+        private DateTime _timeStampDate;
+        public DateTime TimeStampDate
+        {
+            get { return _timeStampDate; }
+            set
+            {
+                _timeStampDate = value;
+                TimeStampDate = _timeStampDate.Date;
+
+            }
+        }
+
+        public DateTime LastTimeStamp { get; set; }
         public Double Latitude { get; set; }
         public Double Longitude { get; set; }
         

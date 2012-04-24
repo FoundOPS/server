@@ -6,7 +6,18 @@ namespace FoundOPS.API.Models
     public class TrackPoint
     {
         public Guid Id { get; set; }
-        public DateTime TimeStamp { get; set; }
+        public DateTime TimeStampDate { get; set; }
+        private DateTime _lastTimeStamp;
+        public DateTime LastTimeStamp
+        {
+            get { return _lastTimeStamp; }
+            set
+            {
+                _lastTimeStamp = value;
+                TimeStampDate = _lastTimeStamp.Date;
+            }
+        }
+
         public Int32? CompassDirection { get; set; }
         public Double Latitude { get; set; }
         public Double Longitude { get; set; }
@@ -24,7 +35,7 @@ namespace FoundOPS.API.Models
                                  {
                                      CompassDirection = null,
                                      Id = (Guid) trackPointId,
-                                     TimeStamp = modelTrackPoint.TimeStamp,
+                                     LastTimeStamp = modelTrackPoint.LastTimeStamp,
                                      Latitude = modelTrackPoint.Latitude,
                                      Longitude = modelTrackPoint.Longitude,
                                      Speed = null,
