@@ -12,10 +12,16 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (4/15/2012)
+                (4/18/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * OPTIMIZATION: Optimized the server configuration to increase entire applications performance.<LineBreak/>
+            * GENERAL: Validation errors no longer trigger a Server Error, instead they prompt the user.<LineBreak/>
+            * GENERAL: Fixed an issue with the dispatcher not displaying tasks when there are no regions.<LineBreak/>
+            * GENERAL: Fixed adding new regions.<LineBreak/>
+            <LineBreak/>
+            (4/10/2012)<LineBreak/>
             * OPTIMIZATION: Manifest QR code loading.<LineBreak/>
             * GENERAL: Fixed manifest printing/saving bugs.<LineBreak/>
             * GENERAL: Fixed manifest formatting.<LineBreak/>

@@ -95,13 +95,20 @@ namespace FoundOps.Core.Models.CoreEntities
             Observable2.FromPropertyChangedPattern(this, x => x.OwnedParty).ObserveOnDispatcher()
                 .Subscribe(_ => OwnedPartyOperations());
 
+            //Keep the location name synchronized if there is only one location
+            //and it had the same name as the Client
+            var lastDisplayName = this.DisplayName;
             Observable2.FromPropertyChangedPattern(this, x => x.DisplayName).ObserveOnDispatcher()
                 .Subscribe(displayName =>
                                {
                                    if (OwnedParty == null) return;
                                    var defaultLocation = this.OwnedParty.Locations.Count == 1 ? this.OwnedParty.Locations.First() : null;
                                    if (defaultLocation == null) return;
-                                   defaultLocation.Name = displayName;
+
+                                   if (lastDisplayName == defaultLocation.Name)
+                                       defaultLocation.Name = displayName;
+
+                                   lastDisplayName = displayName;
                                });
 
             _initialized = true;

@@ -1,9 +1,9 @@
 using System;
-using System.Data.Services.Client;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
@@ -48,7 +48,7 @@ namespace FoundOps.Server.Controllers
             var random = new Random();
             var version = random.Next(10000).ToString();
 #else
-            var request = (HttpWebRequest)WebRequest.Create("http://fstore.blob.core.windows.net/xaps/version.txt");
+            var request = (HttpWebRequest)WebRequest.Create(AzureTools.BlobStorageUrl + "xaps/version.txt");
 
             // *** Retrieve request info headers
             var response = (HttpWebResponse)request.GetResponse();

@@ -7,13 +7,13 @@ namespace FoundOps.Common.Tools
 #if DEBUG
         public const string AccountName = "opsappdebug";
 #else
-        public const string AccountName = "fstoreroledata";
+        public const string AccountName = "opsapplive";
 #endif
         public const string BlobStorageUrl = @"http://" + AccountName + @".blob.core.windows.net/";
 
         /// <summary>
         /// Builds the container URL. 
-        /// Example url: http://fstoreroledata.blob.core.windows.net/5B15B601-D082-4CAF-BF41-562A20CE1ABB
+        /// Example url: http://opsappdebug.blob.core.windows.net/5B15B601-D082-4CAF-BF41-562A20CE1ABB
         /// </summary>
         /// <param name="ownerPartyId">The owner party id.</param>
         public static string BuildContainerUrl(Guid ownerPartyId)
@@ -23,7 +23,7 @@ namespace FoundOps.Common.Tools
 
         /// <summary>
         /// Builds the file URL.
-        /// Example url: http://fstoreroledata.blob.core.windows.net/5B15B601-D082-4CAF-BF41-562A20CE1ABB/filenameaccesskeyhere
+        /// Example url: http://opsappdebug.blob.core.windows.net/5B15B601-D082-4CAF-BF41-562A20CE1ABB/filenameaccesskeyhere
         /// </summary>
         /// <param name="ownerPartyId">The owner party id.</param>
         /// <param name="fileId">The file id.</param>
