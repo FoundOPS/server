@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Linq;
+using System.Net;
 using System.Reactive.Linq;
 using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.Interfaces;
@@ -33,7 +35,7 @@ namespace FoundOps.Core.Models.CoreEntities
             set
             {
                 //Cannot clear details loaded. This is prevent issues when saving.
-                if(_detailsLoaded)
+                if (_detailsLoaded)
                     return;
 
                 _detailsLoaded = value;
@@ -188,12 +190,12 @@ namespace FoundOps.Core.Models.CoreEntities
 
             var urlConverter = new LocationToUrlConverter();
             var client = new WebClient();
-            client.OpenReadObservable((Uri)urlConverter.Convert(this, null, null, null)).ObserveOnDispatcher()
-                .Subscribe(stream =>
+            client.OpenReadObservable((Uri)urlConverter.Convert(this, null, null, null))
+                //If there is an error return a null stream
+                .OnErrorResumeNext(new Stream[] { null }.ToObservable())
+                .ObserveOnDispatcher().Subscribe(stream =>
                 {
-                    var imageBytes = stream.ReadFully();
-
-                    this.BarcodeImage = imageBytes;
+                    this.BarcodeImage = stream != null ? stream.ReadFully() : null;
                     _barcodeLatitudeLongitudeTuple = new Tuple<decimal?, decimal?>(this.Latitude, this.Longitude);
                     BarcodeLoading = false;
                 });

@@ -6,6 +6,19 @@ using FoundOps.Common.Composite.Entities;
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
+    /// <summary>
+    /// An enum for task statuses.
+    /// </summary>
+    public enum Status
+    {
+        Created = 1,
+        Routed = 2,
+        InProgress = 3,
+        OnHold = 4,
+        Completed = 5,
+        Cancelled = 6
+    }
+
     public partial class RouteTask : IEntityDefaultCreation, ICompositeRaiseEntityPropertyChanged
     {
         #region Implementation of IEntityDefaultCreation
@@ -48,25 +61,14 @@ namespace FoundOps.Core.Models.CoreEntities
 #endif
         #endregion
 
-        public StatusEnum Status
+        public Status Status
         {
-            get { return (StatusEnum)StatusInt; }
+            get { return (Status)StatusInt; }
             set
             {
                 StatusInt = (int)value;
                 CompositeRaiseEntityPropertyChanged("Status");
             }
-        }
-
-        public enum StatusEnum
-        {
-            Created = 1,
-            Routed = 2,
-            InProgress = 3,
-            OnHold = 4,
-            Completed = 5,
-            Cancelled = 6
-
         }
     }
 }

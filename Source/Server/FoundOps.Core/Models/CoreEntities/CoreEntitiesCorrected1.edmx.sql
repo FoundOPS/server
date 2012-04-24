@@ -727,7 +727,7 @@ CREATE TABLE [dbo].[RouteTasks] (
     [BusinessAccountId] uniqueidentifier  NOT NULL,
     [EstimatedDuration] time  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [StatusInt] int  NOT NULL,
+    [StatusInt] int  NOT NULL DEFAULT 5,
     [Date] datetime  NOT NULL,
     [OrderInRouteDestination] int  NOT NULL,
     [RecurringServiceId] uniqueidentifier  NULL
