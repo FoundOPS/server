@@ -236,7 +236,7 @@ BEGIN
 
 	UPDATE @UnroutedOrUncompletedServices
 	SET LocationId =	(
-							SELECT	LocationId
+							SELECT	DISTINCT LocationId
 							FROM	Fields_LocationField t1
 							WHERE	EXISTS
 							(
@@ -250,7 +250,7 @@ BEGIN
 
 	UPDATE @UnroutedOrUncompletedServices
 	SET RegionName =	(
-							SELECT	Name
+							SELECT	DISTINCT Name
 							FROM	Regions t1
 							WHERE	EXISTS
 							(
@@ -273,7 +273,7 @@ BEGIN
 
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientName =	(
-							SELECT t1.Name
+							SELECT DISTINCT t1.Name
 							FROM	Parties_Business t1
 							WHERE	EXISTS
 							(
@@ -286,7 +286,7 @@ BEGIN
 
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientName =	(
-							SELECT t1.Name
+							SELECT DISTINCT  t1.Name
 							FROM	Parties_Business t1
 							WHERE	EXISTS
 							(
@@ -300,21 +300,21 @@ BEGIN
 
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientId =		(
-							SELECT	ClientId
+							SELECT	DISTINCT ClientId
 							FROM	RecurringServices t1
 							WHERE	RecurringServiceId = t1.Id
 							)
 
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientId =		(
-							SELECT	ClientId
+							SELECT	DISTINCT ClientId
 							FROM	Services t1
 							WHERE	ServiceId = t1.Id
 							)
 	WHERE ClientId IS NULL
 
 	UPDATE	@UnroutedOrUncompletedServices
-	SET		StatusInt =		1
+	SET		StatusInt =		0
 	WHERE StatusInt IS NULL
 
 	DECLARE @ServicesForDateTable TABLE
