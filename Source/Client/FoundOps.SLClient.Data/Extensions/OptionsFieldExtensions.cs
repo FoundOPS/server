@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using RiaServicesContrib;
-using System.ComponentModel;
-using System.Reactive.Linq;
+﻿using FoundOps.Common.Silverlight.Models.Collections;
 using FoundOps.Common.Tools;
-using FoundOps.Common.Silverlight.Tools;
+using RiaServicesContrib;
 using RiaServicesContrib.DomainServices.Client;
+using System;
+using System.Linq;
+using System.Reactive.Linq;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace

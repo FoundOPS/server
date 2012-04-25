@@ -59,11 +59,18 @@ namespace FoundOps.SLClient.Data.Services
         /// </summary>
         public bool DomainContextHasChanges { get { return _domainContextHasChangesHelper.Value; } }
 
+
+        private readonly BehaviorSubject<bool> _domainContextIsLoadingSubject = new BehaviorSubject<bool>(false);
+        /// <summary>
+        /// An Observable which pushes whenever the DomainContext is loading.
+        /// </summary>
+        public IObservable<bool> DomainContextIsLoadingObservable { get { return _domainContextIsLoadingSubject.DistinctUntilChanged(); } }
+
         private readonly BehaviorSubject<bool> _domainContextIsSubmittingSubject = new BehaviorSubject<bool>(false);
         /// <summary>
         /// An Observable which pushes whenever the DomainContext is submitting, or stops submitting.
         /// </summary>
-        public IObservable<bool> DomainContextIsSubmittingObservable { get { return _domainContextIsSubmittingSubject; } }
+        public IObservable<bool> DomainContextIsSubmittingObservable { get { return _domainContextIsSubmittingSubject.DistinctUntilChanged(); } }
 
         private readonly ObservableAsPropertyHelper<bool> _domainContextIsSubmittingHelper;
         /// <summary>
@@ -89,11 +96,11 @@ namespace FoundOps.SLClient.Data.Services
             ContextManager = contextManager;
             _coreDomainContext = coreDomainContext;
 
-            _domainContextIsSubmittingHelper = _domainContextIsSubmittingSubject.ToProperty(this, x => x.DomainContextIsSubmitting);
             _domainContextHasChangesHelper = _domainContextHasChangesSubject.ToProperty(this, x => x.DomainContextHasChanges);
+            _domainContextIsSubmittingHelper = _domainContextIsSubmittingSubject.ToProperty(this, x => x.DomainContextIsSubmitting);
 
             //Keep track of domain context changes and domain context is submitting every quarter second (and update this public properties)
-            Observable.Interval(TimeSpan.FromMilliseconds(250)).Subscribe(_ => 
+            Observable.Interval(TimeSpan.FromMilliseconds(250)).Subscribe(_ =>
             {
                 _domainContextHasChangesSubject.OnNext(this.DomainContext.HasChanges);
                 _domainContextIsSubmittingSubject.OnNext(this.DomainContext.IsSubmitting);

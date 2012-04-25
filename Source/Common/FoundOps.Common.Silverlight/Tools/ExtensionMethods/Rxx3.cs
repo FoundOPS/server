@@ -22,9 +22,9 @@ namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
         /// </summary>
         /// <param name="delay">The delayed timespan</param>
         /// <param name="action">The action to run after the delay.</param>
-        public static void RunDelayed(TimeSpan delay, Action action)
+        public static IDisposable RunDelayed(TimeSpan delay, Action action)
         {
-            Observable.Interval(delay).Take(1).ObserveOnDispatcher().Subscribe(_ => action());
+            return Observable.Interval(delay).Take(1).ObserveOnDispatcher().Subscribe(_ => action());
         }
     }
 }

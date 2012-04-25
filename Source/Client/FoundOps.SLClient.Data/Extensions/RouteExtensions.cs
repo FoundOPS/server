@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Silverlight.Tools;
+﻿using FoundOps.Common.Silverlight.Models.Collections;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using RiaServicesContrib;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.Core.Models.CoreEntities
 {

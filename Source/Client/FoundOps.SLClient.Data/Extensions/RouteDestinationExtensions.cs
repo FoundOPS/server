@@ -1,4 +1,4 @@
-﻿using FoundOps.Common.Silverlight.Tools;
+﻿using FoundOps.Common.Silverlight.Models.Collections;
 using FoundOps.Common.Silverlight.Interfaces;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using System.Linq;

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FoundOps.Common.Composite.Tools;
+using System;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Composite.Tools;
 
-namespace FoundOps.Common.Silverlight.Tools
+namespace FoundOps.Common.Silverlight.Models.Collections
 {
     /// <summary>
     /// Keeps an ordered representation of a entity collection.
