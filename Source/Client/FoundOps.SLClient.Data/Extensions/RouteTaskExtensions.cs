@@ -88,7 +88,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 RecurringServiceId = RecurringServiceId
             };
 
-
             if (Client != null)
                 taskHolder.ClientName = Client.DisplayName;
 
