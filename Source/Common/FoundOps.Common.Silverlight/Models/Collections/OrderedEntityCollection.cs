@@ -12,6 +12,8 @@ namespace FoundOps.Common.Silverlight.Models.Collections
     /// <typeparam name="TEntity">The entity collection's type</typeparam>
     public class OrderedEntityCollection<TEntity> : ObservableCollection<TEntity> where TEntity : Entity
     {
+        //Returns the items current ordered entity collection
+        private readonly Func<TEntity, OrderedEntityCollection<TEntity>> _getItemsOrderedEntityCollection;
         private readonly EntityCollection<TEntity> _entityCollection;
         private readonly string _indexPropertyName;
         private readonly bool _zeroIndexed;
@@ -23,8 +25,11 @@ namespace FoundOps.Common.Silverlight.Models.Collections
         /// <param name="entityCollection">The entity collection to order.</param>
         /// <param name="indexPropertyName">Name of the indexing property. Ex. OrderInRoute</param>
         /// <param name="zeroIndexed">A flag signaling if the collection is zero or one indexed.</param>
-        public OrderedEntityCollection(EntityCollection<TEntity> entityCollection, string indexPropertyName, bool zeroIndexed)
+        /// <param name="getItemsOrderedEntityCollection">A method to get the items current ordered entity collection.</param>
+        public OrderedEntityCollection(EntityCollection<TEntity> entityCollection, string indexPropertyName, bool zeroIndexed,
+            Func<TEntity, OrderedEntityCollection<TEntity>> getItemsOrderedEntityCollection)
         {
+            _getItemsOrderedEntityCollection = getItemsOrderedEntityCollection;
             _entityCollection = entityCollection;
             _indexPropertyName = indexPropertyName;
             _zeroIndexed = zeroIndexed;
@@ -95,13 +100,20 @@ namespace FoundOps.Common.Silverlight.Models.Collections
         }
 
         /// <summary>
-        /// Inserts the specified index.
+        /// Inserts the item at the specified index.
         /// </summary>
         /// <param name="index">The index (zero indexed).</param>
         /// <param name="itemToInsert">The item to insert.</param>
         public new void Insert(int index, TEntity itemToInsert)
         {
-            bool alreadyContainsItem = Contains(itemToInsert);
+            var previousOrderedEntityCollection = _getItemsOrderedEntityCollection(itemToInsert);
+            //Before inserting into the OrderedEntityCollection checks if the item it part of a different OrderedEntityCollection
+            //If it is, removes it before adding it to this so the numbering does not get messed.
+            //It would be messed up in the automatic trigger of the EntityCollectionEntityRemoved which is now avoided.
+            if (previousOrderedEntityCollection != null && previousOrderedEntityCollection != this)
+                previousOrderedEntityCollection.Remove(itemToInsert);
+
+            var alreadyContainsItem = Contains(itemToInsert);
             //If this already contains the item. remove it from its position
             if (alreadyContainsItem)
             {
@@ -127,13 +139,17 @@ namespace FoundOps.Common.Silverlight.Models.Collections
         private void UpdateNumbering()
         {
             var i = _zeroIndexed ? 0 : 1;
-            foreach(var item in this)
+            foreach (var item in this)
             {
                 item.SetProperty(_indexPropertyName, i);
                 i++;
             }
         }
 
+        /// <summary>
+        /// Adds the item.
+        /// </summary>
+        /// <param name="item">The item.</param>
         public new void Add(TEntity item)
         {
             this.Insert(this.Count, item);

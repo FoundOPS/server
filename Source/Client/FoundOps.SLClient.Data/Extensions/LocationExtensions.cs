@@ -131,12 +131,20 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #region Initialization
 
+        private Func<SubLocation, OrderedEntityCollection<SubLocation>> GetSubLocationsListWrapper
+        {
+            get
+            {
+                return subLocation => subLocation.Location == null ? null : subLocation.Location.SubLocationsListWrapper;
+            }
+        }
+
         partial void OnCreation()
         {
             //Setup IReactiveNotifyPropertyChanged
             _reactiveHelper = new MakeObjectReactiveHelper(this);
 
-            SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
+            SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false, GetSubLocationsListWrapper);
         }
 
         protected override void OnLoaded(bool isInitialLoad)
@@ -145,7 +153,7 @@ namespace FoundOps.Core.Models.CoreEntities
             _reactiveHelper = new MakeObjectReactiveHelper(this);
 
             if (isInitialLoad)
-                SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
+                SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false, GetSubLocationsListWrapper);
         }
 
         #endregion

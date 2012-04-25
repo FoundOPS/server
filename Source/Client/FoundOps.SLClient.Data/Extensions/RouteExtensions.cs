@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Silverlight.Models.Collections;
+﻿using System;
+using FoundOps.Common.Silverlight.Models.Collections;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using RiaServicesContrib;
 using System.Collections.Generic;
@@ -84,16 +85,24 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
+        private Func<RouteDestination, OrderedEntityCollection<RouteDestination>> GetRouteDestinationsListWrapper
+        {
+            get
+            {
+                return routeDestination => routeDestination.Route == null ? null : routeDestination.Route.RouteDestinationsListWrapper;
+            }
+        }
+
         partial void OnCreation()
         {
-            RouteDestinationsListWrapper = new OrderedEntityCollection<RouteDestination>(this.RouteDestinations, "OrderInRoute", false);
+            RouteDestinationsListWrapper = new OrderedEntityCollection<RouteDestination>(this.RouteDestinations, "OrderInRoute", false, GetRouteDestinationsListWrapper);
         }
 
         protected override void OnLoaded(bool isInitialLoad)
         {
             if (isInitialLoad)
             {
-                RouteDestinationsListWrapper = new OrderedEntityCollection<RouteDestination>(this.RouteDestinations, "OrderInRoute", false);
+                RouteDestinationsListWrapper = new OrderedEntityCollection<RouteDestination>(this.RouteDestinations, "OrderInRoute", false, GetRouteDestinationsListWrapper);
             }
         }
     }

@@ -438,17 +438,16 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         /// </summary>
         /// <param name="draggedItem">The dragged item.</param>
         /// <param name="destination">The destination.</param>
-        /// <param name="routeDraggedTo">The route dragged to.</param>
         /// <param name="placeInRoute">The place in route.</param>
         /// <param name="dropPlacement">The drag placement.</param>
         private void AddToRoute(object draggedItem, object destination, int placeInRoute, DropPlacement dropPlacement)
         {
             //If the current draggedItem is a RouteDestination -> Add it to the Route in the correct position
-            var routeDestination = draggedItem as RouteDestination;
-            if (routeDestination != null)
+            var draggedRouteDestination = draggedItem as RouteDestination;
+            if (draggedRouteDestination != null)
             {
                 if (destination is RouteDestination)
-                    ((RouteDestination)destination).Route.RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
+                    ((RouteDestination)destination).Route.RouteDestinationsListWrapper.Insert(placeInRoute, draggedRouteDestination);
 
                 if (destination is Route && dropPlacement == DropPlacement.After)
                     ((Route)destination).RouteDestinationsListWrapper.Add((RouteDestination)draggedItem);
