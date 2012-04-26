@@ -616,6 +616,15 @@ namespace FoundOps.SLClient.UI.ViewModels
         }
 
         /// <summary>
+        /// Reload the task board after a delete is saved. This is because existing Routes do not have client information.
+        /// Therefore the TaskHolders ClientName would be null.
+        /// </summary>
+        protected override void AfterDeleteSaved()
+        {
+            VM.TaskBoard.ForceReloadTasks.OnNext(true);
+        }
+
+        /// <summary>
         /// Checks to be sure that you are not trying to delete a Route in the past
         /// </summary>
         /// <param name="checkCompleted"></param>

@@ -67,6 +67,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        private readonly Subject<bool> _reloadTasks = new Subject<bool>();
+        /// <summary>
+        /// Used to force reload the tasks.
+        /// </summary>
+        public IObserver<bool> ForceReloadTasks { get { return _reloadTasks; } } 
+
         #endregion
 
         #region Locals
@@ -100,6 +106,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
             .Merge(VM.Routes.SelectedDateObservable.AsGeneric())
             .Merge(DataManager.RejectChangesDueToError)
+            .Merge(_reloadTasks)
             .Throttle(TimeSpan.FromMilliseconds(100))
             .ObserveOnDispatcher().Subscribe(_ =>
             {

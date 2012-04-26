@@ -306,7 +306,7 @@ namespace FoundOps.SLClient.Data.ViewModels
                     DeleteEntity(selectedEntity);
                     OnDeleteEntity(selectedEntity);
 
-                    SaveCommand.Execute(null);
+                    DataManager.EnqueueSubmitOperation(submitOperation => AfterDeleteSaved());
                 }));
 
             #endregion
@@ -503,6 +503,11 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         /// <param name="entityToDelete">The entity to delete.</param>
         protected virtual void OnDeleteEntity(TEntity entityToDelete) { }
+
+        /// <summary>
+        /// Called after an Entity is deleted and saved
+        /// </summary>
+        protected virtual void AfterDeleteSaved() { }
 
         /// <summary>
         /// Logic to execute after navigating from this ViewModel

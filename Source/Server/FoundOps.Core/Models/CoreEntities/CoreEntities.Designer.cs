@@ -909,6 +909,25 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="clientId">No Metadata Documentation available.</param>
         public int DeleteClientBasedOnId(Nullable<global::System.Guid> clientId)
         {
@@ -942,44 +961,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
-        {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
-            {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
-            }
-            else
-            {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
-        {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
-            {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
-            }
-            else
-            {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
         }
     
         /// <summary>
@@ -1053,18 +1034,37 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
         {
-            ObjectParameter serviceProviderContextParameter;
-            if (serviceProviderContext.HasValue)
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
             {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+                providerIdParameter = new ObjectParameter("providerId", providerId);
             }
             else
             {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
             }
     
             ObjectParameter serviceDateParameter;
@@ -1077,7 +1077,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
             }
     
-            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter, serviceDateParameter);
         }
     
         /// <summary>
@@ -1168,18 +1168,18 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
         /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDate)
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
         {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
             {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
             }
             else
             {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
             }
     
             ObjectParameter serviceDateParameter;
@@ -1192,7 +1192,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
             }
     
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter, serviceDateParameter);
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
         }
 
         #endregion
