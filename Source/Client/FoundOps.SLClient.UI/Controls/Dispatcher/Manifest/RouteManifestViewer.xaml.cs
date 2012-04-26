@@ -3,6 +3,7 @@ using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Framework.Views.Controls.CustomFields;
 using FoundOps.SLClient.Data.Models;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using System;
 using System.IO;
@@ -20,6 +21,7 @@ using Telerik.Windows.Documents.FormatProviders.Pdf;
 using Telerik.Windows.Media.Imaging;
 using Telerik.Windows.Media.Imaging.FormatProviders;
 using Border = Telerik.Windows.Documents.Model.Border;
+using Section = Telerik.Windows.Documents.Model.Section;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 {
@@ -450,58 +452,57 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             //check for route manifest options
             if (Settings.IsHeaderVisible)
             {
-                Data.Services.Analytics.Header();
+                Data.Services.Analytics.Track(Event.ManifestOption, detail: "Header");
                 if (Settings.IsRouteNameVisible)
-                    Data.Services.Analytics.RouteName();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Route Name");
                 if (Settings.IsRouteDateVisible)
-                    Data.Services.Analytics.RouteDate();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Route Date");
                 if (Settings.IsAssignedVehiclesVisible)
-                    Data.Services.Analytics.AssignedVehicles();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Assigned Vehicles");
             }
 
             if (Settings.IsSummaryVisible)
             {
-                Data.Services.Analytics.Summary();
+                Data.Services.Analytics.Track(Event.ManifestOption, detail: "Summary");
                 if (Settings.IsRouteSummaryVisible)
-                    Data.Services.Analytics.RouteSummary();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Route Summary");
                 if (Settings.IsScheduledStartTimeVisible)
-                    Data.Services.Analytics.StartTime();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Start Time");
                 if (Settings.IsScheduledEndTimeVisible)
-                    Data.Services.Analytics.EndTime();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "End Time");
                 if (Settings.IsDestinationsSummaryVisible)
-                    Data.Services.Analytics.DestinationsSummary();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Destinations Summary");
                 if (Settings.IsNumberofDestinationsVisible)
-                    Data.Services.Analytics.NumberofDestinations();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Number of Destinations");
                 if (Settings.IsTaskSummaryVisible)
-                    Data.Services.Analytics.TaskSummary();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Task Summary");
                 if (Settings.IsNumberOfTasksVisible)
-                    Data.Services.Analytics.NumberOfTasks();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Number Of Tasks");
             }
 
             if (Settings.IsDestinationsVisible)
             {
-                Data.Services.Analytics.Destinations();
+                Data.Services.Analytics.Track(Event.ManifestOption, detail: "Destinations");
                 if (Settings.IsAddressVisible)
-                    Data.Services.Analytics.Address();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Address");
                 if (Settings.IsContactInfoVisible)
-                    Data.Services.Analytics.ContactInfo();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Contact Info");
                 if (Settings.IsRouteTasksVisible)
-                    Data.Services.Analytics.RouteTasks();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "RouteTasks");
                 if (Settings.Is2DBarcodeVisible)
-                    Data.Services.Analytics.Barcode();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Barcode");
             }
 
             if (Settings.IsFooterVisible)
             {
-                Data.Services.Analytics.Footer();
+                Data.Services.Analytics.Track(Event.ManifestOption, detail: "Footer");
                 if (Settings.IsPageNumbersVisible)
-                    Data.Services.Analytics.PageNumbers();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Page Numbers");
                 if (Settings.IsCustomMessageVisible)
-                    Data.Services.Analytics.CustomMessage();
+                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Custom Message");
             }
-
             //Analytics - Track when manifests are printed
-            Data.Services.Analytics.RouteManifestPrinted(currentTimeOfDay);
+            Data.Services.Analytics.Track(Event.PrintedManifest, detail: currentTimeOfDay);
 
             #endregion
         }

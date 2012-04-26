@@ -204,10 +204,7 @@ namespace FoundOps.SLClient.Data.Services
 
                 //Make sure that there is a context and the context is actually changing
                 if ((nextContextType == currentContextType) || (CurrentContext.Count == 0) || (currentContextType == "")) return;
-                Analytics.ContextChanged(currentContextType, nextContextType);
-
-                //Analytics - Track the context depth
-                Analytics.ContextDepth(CurrentContext.Count);
+                Analytics.Track(Event.ContextChanged, null, String.Format("From {0} to {1}", currentContextType, nextContextType));
             });
         }
 

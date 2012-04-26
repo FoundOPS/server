@@ -365,12 +365,17 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         {
             //If the draggedItem is a RouteDestination, add all its RouteTasks to the TaskBoard
             if (draggedItem is RouteDestination)
-                foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
+            {
+                foreach (var task in ((RouteDestination) draggedItem).RouteTasks)
                     CreateNewRouteTaskAndAddToTaskBoard(task);
-
+                //TODO:add analytic
+            }
             //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
             if (draggedItem is RouteTask)
-                CreateNewRouteTaskAndAddToTaskBoard(((RouteTask)draggedItem));
+            {
+                CreateNewRouteTaskAndAddToTaskBoard(((RouteTask) draggedItem));
+                //TODO:add analytic
+            }
         }
 
         private void CreateNewRouteTaskAndAddToTaskBoard(RouteTask routeTask)
@@ -451,11 +456,14 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             {
                 if (destination is RouteDestination)
                     ((RouteDestination)destination).Route.RouteDestinationsListWrapper.Insert(placeInRoute, draggedRouteDestination);
+                //TODO:add analytic
 
                 if (destination is Route && dropPlacement == DropPlacement.After)
                     ((Route)destination).RouteDestinationsListWrapper.Add((RouteDestination)draggedItem);
+                //TODO:add analytic
                 else if (destination is Route)
                     ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, (RouteDestination)draggedItem);
+                //TODO:add analytic
             }
 
             //If the current draggedItem is a RouteTask -> Either add it to the RouteDestination, or create a new RouteDestination
@@ -467,8 +475,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 {
                     if (destination is Route && dropPlacement == DropPlacement.After)
                         ((Route)destination).RouteDestinationsListWrapper.Add(routeTask.RouteDestination);
+                    //TODO:add analytic
                     else if (destination is Route)
                         ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, routeTask.RouteDestination);
+                    //TODO:add analytic
                 }
                 //This will check the destination and call the correct method to add the RouteTask to the appropriate place
                 else

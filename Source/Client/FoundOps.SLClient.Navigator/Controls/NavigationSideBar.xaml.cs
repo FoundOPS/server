@@ -2,9 +2,11 @@
 using System.Windows;
 using System.ComponentModel;
 using System.Windows.Browser;
+using FoundOps.SLClient.Data.Services;
 using Telerik.Windows.Controls;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Navigator.ViewModels;
+using System;
 
 namespace FoundOps.SLClient.Navigator.Controls
 {
@@ -50,13 +52,9 @@ namespace FoundOps.SLClient.Navigator.Controls
                     r.OwnerParty == NavigationBarVM.SelectedOwnerAccountOfRole &&
                     r.Blocks.Any(b => b == selectedBlock));
 
-            ((NavigationBarVM)DataContext).SelectedRole = selectedRole;
-
-            ((NavigationBarVM)DataContext).BlockClickedOn = selectedBlock;
-
-            //Analytics - Track when a block icon is clicked 
-            Data.Services.Analytics.RadRibbonButtonClick(radButton.CommandParameter.ToString());
-
+            NavigationBarVM.SelectedRole = selectedRole;
+            NavigationBarVM.SetSelectedBlock(selectedBlock);
+            
             //Open the uservoice popup
             if (selectedBlock.Id == BlockConstants.FeedbackSupportBlockId)
             {

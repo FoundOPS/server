@@ -49,13 +49,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Public
 
-        #region Analytics
-        /// <summary>
-        /// Tracks if the auto assign button has been clicked (for analytics)
-        /// </summary>
-        public bool AutoAssignButtonHasBeenClicked { get; set; }
-        #endregion
-
         #region Commands
 
         /// <summary>
