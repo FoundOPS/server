@@ -215,8 +215,12 @@ namespace FoundOps.SLClient.UI.Tools
         /// <param name="dropPlacement">The drop placement.</param>
         public static void AddRouteTaskToRoute(RouteTask routeTask, object destination, int placeInRoute, DropPlacement dropPlacement)
         {
+            //Set RouteTask's Status to Routed
+            routeTask.Status = Status.Routed;
+
             //IF the drag destination is a RouteTask, add the draggedItem to that RouteTask
             var routeTaskDestination = destination as RouteTask;
+
             if (routeTaskDestination != null)
             {
                 AddToRouteTask(routeTaskDestination, routeTask, dropPlacement);

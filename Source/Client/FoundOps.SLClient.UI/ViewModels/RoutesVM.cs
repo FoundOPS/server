@@ -482,6 +482,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 foreach (var taskHolderToRemove in routedTaskHolders)
                     ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolderToRemove);
 
+                //Whenever the Routes are Auto Calculated, save
+                this.SaveCommand.Execute(null);
+
                 //Load the locations/contact info set for the newly populated task that do not have loaded locations
                 //No need to load the regions because they are already loaded (from the filter)
                 cancelLoadLocationDetails.OnNext(true);
@@ -507,6 +510,10 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
             {
+                //If no route is selected, select the first route that is visible
+                if (SelectedEntity == null)
+                    SelectedEntity = CollectionView.OfType<Route>().FirstOrDefault();
+
                 //Whenever the manifests are opened save the Routes
                 this.SaveCommand.Execute(null);
 
@@ -604,6 +611,22 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Delete the Route, RouteDestinations, and RouteTasks
             DataManager.RemoveEntities(new Entity[] { deletedRoute }.Union(deletedRoute.RouteDestinations).Union(tasksForTaskBoard).ToArray());
         }
+
+        /// <summary>
+        /// Checks to be sure that you are not trying to delete a Route in the past
+        /// </summary>
+        /// <param name="checkCompleted"></param>
+        protected override void CheckDelete(Action<bool> checkCompleted)
+        {
+            //If there is no Route selected, you can not delete 
+            if (SelectedEntity == null)
+                checkCompleted(false);
+            //Id the Route's date is in the past, you can not delete
+            else if (SelectedEntity.Date < DateTime.UtcNow.Date)
+                checkCompleted(false);
+            else 
+                checkCompleted(true);
+        } 
 
         #endregion
 

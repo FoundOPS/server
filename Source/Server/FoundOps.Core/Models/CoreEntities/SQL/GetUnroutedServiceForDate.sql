@@ -207,6 +207,32 @@ BEGIN
 									)
 								)
 							)
+	----If a Service from a previous day has already been routed for the given ServiceDate, add it to @PreRoutedServices
+	----This will cause it to not be included in the final output
+	--INSERT INTO @PreRoutedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+	--SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name
+	--FROM	RouteTasks t1
+	--WHERE	EXISTS
+	--		(
+	--			SELECT	* 
+	--			FROM	RouteDestinations t2 
+	--			WHERE	EXISTS 
+	--					(
+	--						SELECT	* 
+	--						FROM	Routes t3 
+	--						WHERE	t3.Id = t2.RouteId 
+	--								AND t3.Date = @serviceDate
+	--					) 
+	--					AND t2.Id = t1.RouteDestinationId
+	--		) 
+	--		AND t1.BusinessAccountId = @serviceProviderIdContext
+	--		AND t1.DelayedChildId IS NULL
+			 
+	----Add all RouteTasks that were put on hold in the past into the table to be returned
+	--INSERT INTO @serviceForDayTable (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+	--SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name 
+	--FROM	RouteTasks t1
+	--WHERE	t1.Date < @serviceDate AND t1.StatusInt = 4 AND t1.BusinessAccountId = @serviceProviderIdContext AND t1.DelayedChildId IS NULL							
 
 	DECLARE @UnroutedOrUncompletedServices TABLE
 	(
@@ -222,7 +248,8 @@ BEGIN
 		AddressLine nvarchar(max),
 		Latitude float,
 		Longitude float,
-		StatusInt int
+		StatusInt int--,
+		--DelayedParentId uniqueidentifier
 	) 
 
 	INSERT INTO @UnroutedOrUncompletedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
@@ -230,9 +257,12 @@ BEGIN
 	EXCEPT
 	SELECT * FROM @PreRoutedServices
 
-	INSERT INTO @UnroutedOrUncompletedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName, StatusInt)
-	SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name, t1.StatusInt FROM RouteTasks t1
-	WHERE	Date < @serviceDate AND t1.StatusInt < 5
+	--UPDATE @UnroutedOrUncompletedServices
+	--SET DelayedParentId =	(
+	--							SELECT	t1.Id
+	--							FROM	RouteTasks t1, @UnroutedOrUncompletedServices
+	--							WHERE	DelayedChildId = 
+	--						)
 
 	UPDATE @UnroutedOrUncompletedServices
 	SET LocationId =	(
