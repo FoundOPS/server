@@ -212,6 +212,7 @@ namespace FoundOps.Core.Models.CoreEntities
             Rxx3.RunDelayed(TimeSpan.FromSeconds(10), () =>
             {
                 if (!BarcodeLoading) return;
+                _barcodeLatitudeLongitudeTuple = null;
                 BarcodeImage = null;
                 BarcodeLoading = false;
             });
