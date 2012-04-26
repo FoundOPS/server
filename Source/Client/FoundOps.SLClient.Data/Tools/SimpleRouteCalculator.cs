@@ -74,6 +74,9 @@ namespace FoundOps.SLClient.Data.Tools
                     unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
 
                     var routeTask = nextTaskHolderToAdd.ChildRouteTask;
+
+                    routeTask.Status = Status.Routed;
+
                     organizedRouteTasks.Add(routeTask);
 
                     lastLatLon = new GeoLocation
@@ -137,6 +140,7 @@ namespace FoundOps.SLClient.Data.Tools
                     //Create a new route destination and add the task to it
                     var newRouteDestination = new RouteDestination
                     {
+                        Id = Guid.NewGuid(),
                         OrderInRoute = route.RouteDestinations.Count + 1,
                         ClientId = routeTask.ClientId,
                         LocationId = routeTask.LocationId

@@ -1053,6 +1053,36 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+            }
+            else
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
@@ -1163,36 +1193,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter, serviceDateParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
-        {
-            ObjectParameter serviceProviderContextParameter;
-            if (serviceProviderContext.HasValue)
-            {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
-            }
-            else
-            {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter serviceDateParameter;
-            if (serviceDate.HasValue)
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
-            }
-            else
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
-            }
-    
-            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
         }
 
         #endregion
@@ -9448,6 +9448,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _RecurringServiceId;
         partial void OnRecurringServiceIdChanging(Nullable<global::System.Guid> value);
         partial void OnRecurringServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> DelayedChildId
+        {
+            get
+            {
+                return _DelayedChildId;
+            }
+            set
+            {
+                OnDelayedChildIdChanging(value);
+                ReportPropertyChanging("DelayedChildId");
+                _DelayedChildId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DelayedChildId");
+                OnDelayedChildIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _DelayedChildId;
+        partial void OnDelayedChildIdChanging(Nullable<global::System.Guid> value);
+        partial void OnDelayedChildIdChanged();
 
         #endregion
 

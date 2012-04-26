@@ -16,6 +16,7 @@ using FoundOps.SLClient.UI.ViewModels;
 using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.TreeView;
+using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
@@ -156,11 +157,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     }
                 }
                 //}
+
+                VM.Routes.DispatcherSave();
             }
 
             e.Handled = true;
-
-            VM.Routes.DispatcherSave();
         }
 
         #region Methods used in OnDropInfo
@@ -417,7 +418,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         }
 
         /// <summary>
-        /// Removes from task board.
+        /// Removes the dragged item from the route.
         /// </summary>
         /// <param name="draggedItem">The dragged item.</param>
         private void RemoveFromRoute(object draggedItem)
@@ -428,13 +429,15 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
             if (draggedItem is RouteTask)
             {
-                var oldRouteDestination = ((RouteTask)draggedItem).RouteDestination;
+                var draggedRouteTask = (RouteTask)draggedItem;
 
-                ((RouteTask)draggedItem).RemoveRouteDestination();
+                var oldRouteDestination = draggedRouteTask.RouteDestination;
 
-                //if the old route destination has 0 tasks, delete it
+                //if the old route destination has no tasks, delete it
                 if (oldRouteDestination.RouteTasks.Count == 0)
                     VM.Routes.DeleteRouteDestination(oldRouteDestination);
+                else
+                    draggedRouteTask.RemoveRouteDestination();
             }
         }
 

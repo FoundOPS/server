@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 04/23/2012 14:33:05
+-- Date Created: 04/26/2012 15:11:12
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -730,10 +730,11 @@ CREATE TABLE [dbo].[RouteTasks] (
     [BusinessAccountId] uniqueidentifier  NOT NULL,
     [EstimatedDuration] time  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [StatusInt] int  NOT NULL DEFAULT 5,
+    [StatusInt] int  NOT NULL,
     [Date] datetime  NOT NULL,
     [OrderInRouteDestination] int  NOT NULL,
-    [RecurringServiceId] uniqueidentifier  NULL
+    [RecurringServiceId] uniqueidentifier  NULL,
+    [DelayedChildId] uniqueidentifier  NULL
 );
 GO
 
