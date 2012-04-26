@@ -4485,7 +4485,7 @@ BEGIN
 	WHERE ClientId IS NULL
 
 	UPDATE	@UnroutedOrUncompletedServices
-	SET		StatusInt =		0
+	SET		StatusInt =		1
 	WHERE StatusInt IS NULL
 
 	DECLARE @ServicesForDateTable TABLE

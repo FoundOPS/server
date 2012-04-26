@@ -34,38 +34,14 @@
                     </telerik:GridViewDataColumn>
                     <!--<telerik:GridViewDataColumn Header="Region"/>-->
                     <!--Location Name-->
-                    <telerik:GridViewDataColumn Header="Location" DataMemberBinding="{Binding LocationName}"> <!--IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}"-->
-                        <telerik:GridViewDataColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding LocationName}"/>
-                            </DataTemplate>
-                        </telerik:GridViewDataColumn.CellTemplate>
-                        <!--<telerik:GridViewDataColumn.CellEditTemplate>
-                            <DataTemplate>
-                                <Controls:RadComboBox IsEditable="True" DisplayMemberPath="Name" SelectedItem="{Binding Location, Mode=TwoWay}" 
-                                                      ItemsSource="{Binding LocationsVM.DomainCollectionView, RelativeSource={RelativeSource AncestorType=Dispatcher1:TaskBoard}}"/>
-                            </DataTemplate>
-                        </telerik:GridViewDataColumn.CellEditTemplate>-->
-                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn Header="Location" DataMemberBinding="{Binding LocationName}" />
                     <!--Region Name-->
-                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding RegionName}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding RegionName}" />
                     <!--Location Address-->
-                    <telerik:GridViewDataColumn Header="Address" IsReadOnly="True" DataMemberBinding="{Binding AddressLine}"/>
-                    <telerik:GridViewDataColumn Header="Client" SortMemberPath="ClientName" > <!--IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}" Width="*"-->
-                        <telerik:GridViewDataColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding ClientName}"/>
-                            </DataTemplate>
-                        </telerik:GridViewDataColumn.CellTemplate>
-                        <!--<telerik:GridViewDataColumn.CellEditTemplate>
-                            <DataTemplate>
-                                <Controls:RadComboBox IsEditable="True" DisplayMemberPath="DisplayName" SelectedItem="{Binding Client, Mode=TwoWay}"
-                                                      ItemsSource="{Binding ClientsVM.DomainCollectionView, RelativeSource={RelativeSource AncestorType=Dispatcher1:TaskBoard}}"/>
-                            </DataTemplate>
-                        </telerik:GridViewDataColumn.CellEditTemplate>-->
-                    </telerik:GridViewDataColumn>
-                    <telerik:GridViewDataColumn Header="Scheduled Date" IsReadOnly="True" DataMemberBinding="{Binding OccurDate}"  DataFormatString="{} {0:MMM dd, yyyy}"/>
-                    <telerik:GridViewDataColumn Header="Status" IsReadOnly="True" DataMemberBinding="{Binding ChildRouteTask.StatusInt, Converter={StaticResource StatusIntToStringConverter}}"/>
+                    <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding AddressLine}"/>
+                    <telerik:GridViewDataColumn Header="Client" DataMemberBinding="{Binding ClientName}" />
+                    <telerik:GridViewDataColumn Header="Scheduled Date" DataMemberBinding="{Binding OccurDate}" DataFormatString="{} {0:MMM dd, yyyy}"/>
+                    <telerik:GridViewDataColumn Header="Status" DataMemberBinding="{Binding StatusInt, Converter={StaticResource StatusIntToStringConverter}}"/>
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
         </Grid>

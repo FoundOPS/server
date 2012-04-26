@@ -76,7 +76,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             //b) the selected route changes and the Is2DBarcodeVisible is true
             VM.Routes.SelectedEntityObservable.AsGeneric()
             .Merge(Observable2.FromPropertyChangedPattern(Settings, x => x.Is2DBarcodeVisible).DistinctUntilChanged().AsGeneric())
-            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
+            .Throttle(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(_ =>
             {
                 if (VM.Routes.SelectedEntity == null || !Settings.Is2DBarcodeVisible)
                     return;
@@ -97,7 +97,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             .Merge(VM.Routes.SelectedEntityObservable.DistinctUntilChanged().AsGeneric())
             .Merge(detailsLoadedObservable)
             .Merge(VM.Routes.SelectedEntityObservable.WhereNotNull().SelectLatest(r =>
-                    r.RouteLocations.Select(rl => Observable2.FromPropertyChangedPattern(rl, x => x.BarcodeLoading).Where(loading => !loading)).Merge()))
+                    r.RouteLocations.Select(rl => Observable2.FromPropertyChangedPattern(rl, x => x.BarcodeLoading).Where(loading => !loading)).Merge()).Throttle(TimeSpan.FromMilliseconds(100)))
             .ObserveOnDispatcher().Subscribe(_updateManifest);
 
             //Update the manifest when this is opened
@@ -196,7 +196,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             }
 
             //Remove the uiElements from the stackpanel so the user does not see it
-            BusyContentStackPanel.Children.Clear();
+            BusyContentStackPanel.Children.Remove(uiElement);
 
             return imageInline;
         }
