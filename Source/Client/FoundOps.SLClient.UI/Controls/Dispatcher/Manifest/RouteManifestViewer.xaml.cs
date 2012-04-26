@@ -1,3 +1,4 @@
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
@@ -71,7 +72,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         {
             InitializeComponent();
 
-
             //Make sure the 2D barcodes are loaded on the routes locations
             //Do this by updating whenever:
             //a) 2D barcode setting is set to true
@@ -95,7 +95,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             //b) the selected entity changed (if the details are loaded)
             //c) the details are loaded
             //d) barcode images are loaded
-            Settings.FromAnyPropertyChanged().AsGeneric()
+            Settings.FromAnyPropertyChanged().Throttle(TimeSpan.FromSeconds(.75)).AsGeneric() //If a setting is changed while the document is updating, it causes a problem
             .Merge(VM.Routes.SelectedEntityObservable.DistinctUntilChanged().AsGeneric())
             .Merge(detailsLoadedObservable)
             .Merge(VM.Routes.SelectedEntityObservable.WhereNotNull().SelectLatest(r =>
@@ -165,7 +165,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
             uiElement.Measure(new Size(double.MaxValue, double.MaxValue));
 
-            Func<ImageInline> tryCreateImageInline = () =>
+            ImageInline imageInline = null;
+
+            //Try to create the image inline
+            try
             {
                 var writableBitmap = new WriteableBitmap((int)uiElement.DesiredSize.Width, (int)uiElement.DesiredSize.Height);
                 writableBitmap.Render(uiElement, null);
@@ -177,24 +180,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 var provider = new PngFormatProvider();
                 provider.Export(radImage, stream);
                 return new ImageInline(stream);
-            };
-
-            ImageInline imageInline = null;
-            //Try to create the image inline 3 times
-            for (var i = 0; i < 3; i++)
+            }
+            catch
             {
-                try
-                {
-                    imageInline = tryCreateImageInline();
-                }
-                catch
-                {
-                    //If there is an error, try again
-                    continue;
-                }
-
-                //If there is not an error, stop trying to create the image inline
-                break;
+                imageInline = new ImageInline();
             }
 
             //Remove the uiElements from the stackpanel so the user does not see it
@@ -276,37 +265,27 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             return footer;
         }
 
-        /// <summary>
-        /// Whether or not the docuent can be updated.
-        /// </summary>
-        private bool CanUpdateDocument()
-        {
-            //Only load the manifest when the viewer is open, it is not printing, and the details are loaded
-            if (!VM.Routes.ManifestOpen || _currentlyPrinting || VM.Routes.SelectedEntity == null || !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
-                return false;
-
-            //If the 2D Barcode is to be displayed and they are still loading: return
-            if (VM.Routes.RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible && VM.Routes.SelectedEntity.RouteLocations.Any(rl => rl.BarcodeLoading))
-                return false;
-
-            return true;
-        }
-
+        private IDisposable _retry;
         private bool _updatingDocument = false;
         /// <summary>
         /// Updates the document.
         /// </summary>
         private void UpdateDocument()
         {
-            if (_updatingDocument)
-            {
-                //Do not update the document while it is updating, try again
-                _updateManifest.OnNext(true);
+            //Only load the manifest when the viewer is open, it is not printing, and the details are loaded
+            if (!VM.Routes.ManifestOpen || _currentlyPrinting || VM.Routes.SelectedEntity == null || !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
                 return;
-            }
 
-            if (!CanUpdateDocument())
-                return;
+            //If the manifest is currently updating or the 2D Barcode is to be displayed and they are still loading
+            //Retry in a second
+            if (_updatingDocument ||
+                (VM.Routes.RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible && VM.Routes.SelectedEntity.RouteLocations.Any(rl => rl.BarcodeLoading)))
+            {
+                if (_retry != null)
+                    _retry.Dispose();
+
+                _retry = Rxx3.RunDelayed(TimeSpan.FromSeconds(1), () => _updateManifest.OnNext(true));
+            }
 
             //Disable printing and saving
             CanPrintOrSave = false;

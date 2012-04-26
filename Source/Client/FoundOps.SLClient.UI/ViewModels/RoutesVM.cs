@@ -222,7 +222,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Setup ObservableAsPropertyHelpers
             _manifestOpenHelper = _manifestOpenSubject.ToProperty(this, x => x.ManifestOpen);
-            _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate, DateTime.UtcNow.Date);
+            _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate, DateTime.Now.Date);
             _selectedRouteDestinationHelper = _selectedRouteDestinationSubject.ToProperty(this, x => x.SelectedRouteDestination);
             _selectedRouteTaskHelper = _selectedRouteTaskSubject.ToProperty(this, x => x.SelectedRouteTask);
             _routeTypesHelper = RouteTypesObservable.ToProperty(this, x => x.RouteTypes);
@@ -452,7 +452,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Date Modifiers
 
-            SetSelectedDayToToday = new RelayCommand(() => this.SelectedDate = DateTime.UtcNow);
+            SetSelectedDayToToday = new RelayCommand(() => this.SelectedDate = DateTime.Now.Date);
             SetSelectedDayOneDayPrevious = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(-1));
             SetSelectedDayOneDayForward = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(1));
 
