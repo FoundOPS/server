@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Tools;
+﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Tools;
 using FoundOps.SLClient.Data.Services;
 using System;
 using System.Reactive.Linq;
@@ -75,14 +76,16 @@ namespace FoundOps.Core.Models.CoreEntities
             this.FromAnyPropertyChanged().Where(e => e.PropertyName == "OccurDate" || e.PropertyName == "RecurringServiceId" || e.PropertyName == "ServiceId")
             .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
             {
+                ServiceHolder.OccurDate = this.OccurDate;
                 ServiceHolder.RecurringServiceId = this.RecurringServiceId;
                 ServiceHolder.ExistingServiceId = this.ServiceId;
             });
 
             //Follow any ServiceHolder property changes and update this TaskHolder
-            this.ServiceHolder.FromAnyPropertyChanged().Where(e => e.PropertyName == "RecurringServiceId" || e.PropertyName == "ExistingServiceId")
+            this.ServiceHolder.FromAnyPropertyChanged().Where(e => e.PropertyName == "OccurDate" || e.PropertyName == "RecurringServiceId" || e.PropertyName == "ExistingServiceId")
             .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
             {
+                this.OccurDate = ServiceHolder.OccurDate;
                 this.RecurringServiceId = ServiceHolder.RecurringServiceId;
                 this.ServiceId = ServiceHolder.ExistingServiceId;
             });

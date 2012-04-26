@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using RiaServicesContrib;
-using System.ComponentModel;
-using System.Reactive.Linq;
+﻿using FoundOps.Common.Silverlight.Models.Collections;
 using FoundOps.Common.Tools;
-using FoundOps.Common.Silverlight.Tools;
+using RiaServicesContrib;
 using RiaServicesContrib.DomainServices.Client;
+using System;
+using System.Linq;
+using System.Reactive.Linq;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
@@ -56,23 +55,31 @@ namespace FoundOps.Core.Models.CoreEntities
 
                 //Everytime the OptionsWrapper collection changes, select all the options' property changed events
                 OptionsWrapper.FromCollectionChanged()
-                    .SelectLatest(e => 
-                        ((OrderedEntityCollection<Option>) e.Sender).Where(o=>o!=null)
-                        .Select(option=> option.FromAnyPropertyChanged()).Merge().Throttle(TimeSpan.FromMilliseconds(250)))
-                        //Notify that ThisField changed
+                    .SelectLatest(e =>
+                        ((OrderedEntityCollection<Option>)e.Sender).Where(o => o != null)
+                        .Select(option => option.FromAnyPropertyChanged()).Merge().Throttle(TimeSpan.FromMilliseconds(250)))
+                    //Notify that ThisField changed
                         .ObserveOnDispatcher().Subscribe(_ => this.CompositeRaiseEntityPropertyChanged("ThisField"));
+            }
+        }
+
+        private Func<Option, OrderedEntityCollection<Option>> GetOptionsWrapper
+        {
+            get
+            {
+                return option => option.OptionsField == null ? null : option.OptionsField.OptionsWrapper;
             }
         }
 
         partial void OnCreation()
         {
-            OptionsWrapper = new OrderedEntityCollection<Option>(this.Options, "Index", true);
+            OptionsWrapper = new OrderedEntityCollection<Option>(this.Options, "Index", true, GetOptionsWrapper);
         }
 
         protected override void OnLoaded(bool isInitialLoad)
         {
             if (isInitialLoad)
-                OptionsWrapper = new OrderedEntityCollection<Option>(this.Options, "Index", true);
+                OptionsWrapper = new OrderedEntityCollection<Option>(this.Options, "Index", true, GetOptionsWrapper);
         }
     }
 }

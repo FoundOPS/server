@@ -1,10 +1,10 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reactive.Linq;
 using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.Interfaces;
-using FoundOps.Common.Silverlight.Tools;
+using FoundOps.Common.Silverlight.Models.Collections;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.SLClient.Data.Converters;
 using ReactiveUI;
@@ -92,8 +92,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 if (this.Latitude == null || this.Longitude == null)
                     return null;
 
-                return new Telerik.Windows.Controls.Map.Location(System.Convert.ToDouble(this.Latitude),
-                                                                 System.Convert.ToDouble(this.Longitude));
+                return new Telerik.Windows.Controls.Map.Location(Convert.ToDouble(this.Latitude), Convert.ToDouble(this.Longitude));
             }
         }
 
@@ -132,12 +131,20 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #region Initialization
 
+        private Func<SubLocation, OrderedEntityCollection<SubLocation>> GetSubLocationsListWrapper
+        {
+            get
+            {
+                return subLocation => subLocation.Location == null ? null : subLocation.Location.SubLocationsListWrapper;
+            }
+        }
+
         partial void OnCreation()
         {
             //Setup IReactiveNotifyPropertyChanged
             _reactiveHelper = new MakeObjectReactiveHelper(this);
 
-            SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
+            SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false, GetSubLocationsListWrapper);
         }
 
         protected override void OnLoaded(bool isInitialLoad)
@@ -146,7 +153,7 @@ namespace FoundOps.Core.Models.CoreEntities
             _reactiveHelper = new MakeObjectReactiveHelper(this);
 
             if (isInitialLoad)
-                SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false);
+                SubLocationsListWrapper = new OrderedEntityCollection<SubLocation>(this.SubLocations, "Number", false, GetSubLocationsListWrapper);
         }
 
         #endregion
@@ -186,19 +193,29 @@ namespace FoundOps.Core.Models.CoreEntities
                 return;
             }
 
+            //Load the barcode
+
             BarcodeLoading = true;
 
             var urlConverter = new LocationToUrlConverter();
             var client = new WebClient();
             client.OpenReadObservable((Uri)urlConverter.Convert(this, null, null, null))
                 //If there is an error return a null stream
-                .OnErrorResumeNext(new Stream[] { null }.ToObservable())
                 .ObserveOnDispatcher().Subscribe(stream =>
                 {
                     this.BarcodeImage = stream != null ? stream.ReadFully() : null;
                     _barcodeLatitudeLongitudeTuple = new Tuple<decimal?, decimal?>(this.Latitude, this.Longitude);
                     BarcodeLoading = false;
                 });
+
+            //If loading the barcode takes more than 10 seconds, set BarcodeLoading = false, and the BarcodeImage = null
+            Rxx3.RunDelayed(TimeSpan.FromSeconds(10), () =>
+            {
+                if (!BarcodeLoading) return;
+                _barcodeLatitudeLongitudeTuple = null;
+                BarcodeImage = null;
+                BarcodeLoading = false;
+            });
         }
 
     }

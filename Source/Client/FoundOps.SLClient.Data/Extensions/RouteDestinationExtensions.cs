@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Silverlight.Tools;
+﻿using System;
+using FoundOps.Common.Silverlight.Models.Collections;
 using FoundOps.Common.Silverlight.Interfaces;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using System.Linq;
@@ -72,9 +73,17 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #region Constructor
 
+        private Func<RouteTask, OrderedEntityCollection<RouteTask>> GetRouteTasksListWrapper
+        {
+            get
+            {
+                return routeTask => routeTask.RouteDestination == null ? null : routeTask.RouteDestination.RouteTasksListWrapper;
+            }
+        }
+
         partial void OnInitializedSilverlight()
         {
-            RouteTasksListWrapper = new OrderedEntityCollection<RouteTask>(this.RouteTasks, "OrderInRouteDestination", false);
+            RouteTasksListWrapper = new OrderedEntityCollection<RouteTask>(this.RouteTasks, "OrderInRouteDestination", false, GetRouteTasksListWrapper);
             this.RouteTasks.EntityAdded += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
             this.RouteTasks.EntityRemoved += (s, e) => this.RaisePropertyChanged("RouteTasksListWrapper");
         }

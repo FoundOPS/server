@@ -92,12 +92,12 @@ namespace FoundOps.SLClient.UI.ViewModels
         private readonly ObservableAsPropertyHelper<bool> _manifestOpenHelper;
         private readonly Subject<bool> _manifestOpenSubject = new Subject<bool>();
         /// <summary>
-        /// An Observable determining when the manifest is open or closed.
+        /// An Observable determining when the manifest is open (and loaded) or closed.
         /// </summary>
         public IObservable<bool> ManifestOpenObservable { get { return _manifestOpenSubject.AsObservable(); } }
 
         /// <summary>
-        /// The SelectedDate.
+        /// Whether or not the manifest is open (and loaded).
         /// </summary>
         public bool ManifestOpen { get { return _manifestOpenHelper.Value; } set { _manifestOpenSubject.OnNext(value); } }
 
@@ -355,7 +355,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     var locationLoaded = false;
 
                     if (selectedRouteDestination.ClientId.HasValue)
-                        DomainContext.LoadAsync(DomainContext.GetClientsWithContactInfoSetQuery(ContextManager.RoleId, new[] { selectedRouteDestination.ClientId.Value }),cancelLastDetailsLoad)
+                        DomainContext.LoadAsync(DomainContext.GetClientsWithContactInfoSetQuery(ContextManager.RoleId, new[] { selectedRouteDestination.ClientId.Value }), cancelLastDetailsLoad)
                           .ContinueWith(task =>
                             {
                                 if (!task.IsCanceled && locationLoaded)
@@ -364,7 +364,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                             }, TaskScheduler.FromCurrentSynchronizationContext());
 
                     if (selectedRouteDestination.LocationId.HasValue)
-                        DomainContext.LoadAsync(DomainContext.GetLocationsWithContactInfoSetQuery(ContextManager.RoleId, new[] { selectedRouteDestination.LocationId.Value }),cancelLastDetailsLoad)
+                        DomainContext.LoadAsync(DomainContext.GetLocationsWithContactInfoSetQuery(ContextManager.RoleId, new[] { selectedRouteDestination.LocationId.Value }), cancelLastDetailsLoad)
                             .ContinueWith(task =>
                             {
                                 if (!task.IsCanceled && clientLoaded)
@@ -373,62 +373,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                             }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
             });
-
-            #endregion
-
-            #region Setup Manifest Details Loading
-
-            var cancelLoadDetails = new Subject<bool>();
-
-            //Load the Route's ServiceTemplates and Fields
-            ManifestOpenObservable.CombineLatest(SelectedEntityObservable)
-                //Where the manifest is open and the SelectedEntity != null
-                .Where(vals => vals.Item1 && vals.Item2 != null)
-                .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
-                    {
-                        cancelLoadDetails.OnNext(true);
-
-                        var clientsLoaded = false;
-                        var locationsLoaded = false;
-                        var fieldsLoaded = false;
-
-                        //Load the Clients/ContactInfoSet of the RouteTasks
-                        var clientsWithContactInfoQuery = DomainContext.GetClientsWithContactInfoSetQuery(ContextManager.RoleId,
-                            SelectedEntity.RouteDestinations.Where(rd => rd.ClientId.HasValue).Select(rd => rd.ClientId.Value));
-
-                        DomainContext.LoadAsync(clientsWithContactInfoQuery, cancelLoadDetails)
-                            .ContinueWith(task =>
-                            {
-                                if (task.IsCanceled) return;
-
-                                clientsLoaded = true;
-                                if (clientsLoaded && locationsLoaded && fieldsLoaded)
-                                    SelectedEntity.ManifestDetailsLoaded = true;
-                            }, TaskScheduler.FromCurrentSynchronizationContext());
-
-                        //Load the Locations/ContactInfoSet of the RouteTasks
-                        var locationsWithContactInfoQuery = DomainContext.GetLocationsWithContactInfoSetQuery(ContextManager.RoleId,
-                            SelectedEntity.RouteDestinations.Where(rd => rd.LocationId.HasValue).Select(rd => rd.LocationId.Value));
-
-                        DomainContext.LoadAsync(locationsWithContactInfoQuery, cancelLoadDetails)
-                            .ContinueWith(task =>
-                            {
-                                if (task.IsCanceled) return;
-
-                                locationsLoaded = true;
-                                if (clientsLoaded && locationsLoaded && fieldsLoaded)
-                                    SelectedEntity.ManifestDetailsLoaded = true;
-                            }, TaskScheduler.FromCurrentSynchronizationContext());
-
-                        //Load the Fields info of the RouteTasks
-                        var serviceHoldersToLoad = SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ParentRouteTaskHolder.ServiceHolder);
-                        ServiceHolder.LoadDetails(serviceHoldersToLoad, cancelLoadDetails, false, () =>
-                        {
-                            fieldsLoaded = true;
-                            if (clientsLoaded && locationsLoaded && fieldsLoaded)
-                                SelectedEntity.ManifestDetailsLoaded = true;
-                        });
-                    });
 
             #endregion
 
@@ -506,8 +450,28 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Allow the user to open the route manifests whenever there is one or more route visible
-            OpenRouteManifests = new ReactiveCommand(routesExist);
+            //and the DomainContext is not loading or submitting
+            var canOpenManifests = routesExist.CombineLatest(DataManager.DomainContextIsSubmittingObservable, DataManager.DomainContextIsLoadingObservable,
+                                                             (areRoutes, isSubmitting, isLoading) => areRoutes && !isSubmitting && !isLoading);
+            OpenRouteManifests = new ReactiveCommand(canOpenManifests);
 
+            SetupManifests();
+
+            #region Date Modifiers
+
+            SetSelectedDayToToday = new RelayCommand(() => this.SelectedDate = DateTime.UtcNow);
+            SetSelectedDayOneDayPrevious = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(-1));
+            SetSelectedDayOneDayForward = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(1));
+
+            #endregion
+        }
+
+        /// <summary>
+        /// Sets up the logic for manifests.
+        /// </summary>
+        private void SetupManifests()
+        {
+            //Setup logic to open the RouteManifestViewer whenever the OpenRouteManifests command is executed
             OpenRouteManifests.ObserveOnDispatcher().Subscribe(_ =>
             {
                 //If no route is selected, select the first route that is visible
@@ -524,13 +488,57 @@ namespace FoundOps.SLClient.UI.ViewModels
                 _routeManifestViewer.Show();
             });
 
-            #region Date Modifiers
+            var cancelLoadDetails = new Subject<bool>();
 
-            SetSelectedDayToToday = new RelayCommand(() => this.SelectedDate = DateTime.UtcNow);
-            SetSelectedDayOneDayPrevious = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(-1));
-            SetSelectedDayOneDayForward = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(1));
+            //Load the Route's ServiceTemplates and Fields
+            //when the manifest is open, the SelectedEntity != null, and the DomainContext is not submitting
+            ManifestOpenObservable.CombineLatest(SelectedEntityObservable, DataManager.DomainContextIsSubmittingObservable,
+                (opened, route, isSubmitting) => opened && route != null && !isSubmitting)
+                .Where(v => v).Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
+                {
+                    cancelLoadDetails.OnNext(true);
 
-            #endregion
+                    var clientsLoaded = false;
+                    var locationsLoaded = false;
+                    var fieldsLoaded = false;
+
+                    //Load the Clients/ContactInfoSet of the RouteTasks
+                    var clientsWithContactInfoQuery = DomainContext.GetClientsWithContactInfoSetQuery(ContextManager.RoleId,
+                        SelectedEntity.RouteDestinations.Where(rd => rd.ClientId.HasValue).Select(rd => rd.ClientId.Value));
+
+                    DomainContext.LoadAsync(clientsWithContactInfoQuery, cancelLoadDetails)
+                        .ContinueWith(task =>
+                        {
+                            if (task.IsCanceled) return;
+
+                            clientsLoaded = true;
+                            if (clientsLoaded && locationsLoaded && fieldsLoaded)
+                                SelectedEntity.ManifestDetailsLoaded = true;
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
+
+                    //Load the Locations/ContactInfoSet of the RouteTasks
+                    var locationsWithContactInfoQuery = DomainContext.GetLocationsWithContactInfoSetQuery(ContextManager.RoleId,
+                        SelectedEntity.RouteDestinations.Where(rd => rd.LocationId.HasValue).Select(rd => rd.LocationId.Value));
+
+                    DomainContext.LoadAsync(locationsWithContactInfoQuery, cancelLoadDetails)
+                        .ContinueWith(task =>
+                        {
+                            if (task.IsCanceled) return;
+
+                            locationsLoaded = true;
+                            if (clientsLoaded && locationsLoaded && fieldsLoaded)
+                                SelectedEntity.ManifestDetailsLoaded = true;
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
+
+                    //Load the Fields info of the RouteTasks
+                    var serviceHoldersToLoad = SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ParentRouteTaskHolder.ServiceHolder);
+                    ServiceHolder.LoadDetails(serviceHoldersToLoad, cancelLoadDetails, false, () =>
+                    {
+                        fieldsLoaded = true;
+                        if (clientsLoaded && locationsLoaded && fieldsLoaded)
+                            SelectedEntity.ManifestDetailsLoaded = true;
+                    });
+                });
         }
 
         #endregion

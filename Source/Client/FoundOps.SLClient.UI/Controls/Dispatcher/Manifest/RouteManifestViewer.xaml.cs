@@ -56,7 +56,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         private bool _currentlyPrinting;
 
+        //A subject that controls when update manifest is triggered
+        private readonly Subject<bool> _updateManifest = new Subject<bool>();
+
         #endregion
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteManifestViewer"/> class.
@@ -65,7 +69,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         {
             InitializeComponent();
 
-            var updateManifest = new Subject<bool>();
 
             //Make sure the 2D barcodes are loaded on the routes locations
             //Do this by updating whenever:
@@ -95,7 +98,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             .Merge(detailsLoadedObservable)
             .Merge(VM.Routes.SelectedEntityObservable.WhereNotNull().SelectLatest(r =>
                     r.RouteLocations.Select(rl => Observable2.FromPropertyChangedPattern(rl, x => x.BarcodeLoading).Where(loading => !loading)).Merge()))
-            .ObserveOnDispatcher().Subscribe(updateManifest);
+            .ObserveOnDispatcher().Subscribe(_updateManifest);
 
             //Update the manifest when this is opened
             Loaded += (s, e) =>
@@ -106,11 +109,21 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 if (VM.Routes.SelectedEntity != null && !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
                     ManifestBusyIndicator.IsBusy = true;
 
-                if (CanUpdateDocument())
-                    updateManifest.OnNext(true);
+                _updateManifest.OnNext(true);
             };
 
-            updateManifest.Throttle(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(_ => UpdateDocument());
+            _updateManifest.Throttle(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(_ =>
+            {
+                try
+                {
+                    UpdateDocument();
+                }
+                catch
+                {
+                    //If there is an issue generating the manifest, try again
+                    _updateManifest.OnNext(true);
+                }
+            });
 
             //Disable printing and saving and show the busy indicator when the details are loading
             detailsLoadedObservable.DistinctUntilChanged().ObserveOnDispatcher().Subscribe(detailsLoaded =>
@@ -150,20 +163,42 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
             uiElement.Measure(new Size(double.MaxValue, double.MaxValue));
 
-            var writableBitmap = new WriteableBitmap((int)uiElement.DesiredSize.Width, (int)uiElement.DesiredSize.Height);
-            writableBitmap.Render(uiElement, null);
-            writableBitmap.Invalidate();
+            Func<ImageInline> tryCreateImageInline = () =>
+            {
+                var writableBitmap = new WriteableBitmap((int)uiElement.DesiredSize.Width, (int)uiElement.DesiredSize.Height);
+                writableBitmap.Render(uiElement, null);
+                writableBitmap.Invalidate();
 
-            var radImage = new RadBitmap(writableBitmap);
+                var radImage = new RadBitmap(writableBitmap);
 
-            var stream = new MemoryStream();
-            var provider = new PngFormatProvider();
-            provider.Export(radImage, stream);
+                var stream = new MemoryStream();
+                var provider = new PngFormatProvider();
+                provider.Export(radImage, stream);
+                return new ImageInline(stream);
+            };
 
-            //Remove it from the stackpanel so the user does not see it
-            BusyContentStackPanel.Children.Remove(uiElement);
+            ImageInline imageInline = null;
+            //Try to create the image inline 3 times
+            for (var i = 0; i < 3; i++)
+            {
+                try
+                {
+                    imageInline = tryCreateImageInline();
+                }
+                catch
+                {
+                    //If there is an error, try again
+                    continue;
+                }
 
-            return new ImageInline(stream);
+                //If there is not an error, stop trying to create the image inline
+                break;
+            }
+
+            //Remove the uiElements from the stackpanel so the user does not see it
+            BusyContentStackPanel.Children.Clear();
+
+            return imageInline;
         }
 
         /// <summary>
@@ -244,7 +279,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         /// </summary>
         private bool CanUpdateDocument()
         {
-            //Only load the manifest when the current viewer is open, is not printing, and the details are loaded
+            //Only load the manifest when the viewer is open, it is not printing, and the details are loaded
             if (!VM.Routes.ManifestOpen || _currentlyPrinting || VM.Routes.SelectedEntity == null || !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
                 return false;
 
@@ -255,15 +290,18 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             return true;
         }
 
-        private IDisposable _lastUpdateSubscription = null;
+        private bool _updatingDocument = false;
         /// <summary>
         /// Updates the document.
         /// </summary>
         private void UpdateDocument()
         {
-            //Cancel the last update
-            if (_lastUpdateSubscription != null)
-                _lastUpdateSubscription.Dispose();
+            if (_updatingDocument)
+            {
+                //Do not update the document while it is updating, try again
+                _updateManifest.OnNext(true);
+                return;
+            }
 
             if (!CanUpdateDocument())
                 return;
@@ -274,9 +312,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             ManifestBusyIndicator.IsBusy = true;
 
             //Wait for the busy indicator to open
-            _lastUpdateSubscription = Observable.Interval(TimeSpan.FromMilliseconds(750)).Take(1).ObserveOnDispatcher()
+            Observable.Interval(TimeSpan.FromMilliseconds(500)).Take(1).ObserveOnDispatcher()
             .Subscribe(_ =>
             {
+                _updatingDocument = true;
+
                 var document = new RadDocument { LayoutMode = DocumentLayoutMode.Paged };
                 var mainSection = new Section { FooterBottomMargin = 0, HeaderTopMargin = 0, ActualPageMargin = new Padding(0, 20, 0, 20) };
                 var bodyParagraph = new Paragraph();
@@ -356,8 +396,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
                 //Allow printing and saving
                 CanPrintOrSave = true;
-            });
 
+                _updatingDocument = false;
+            });
         }
 
         #endregion

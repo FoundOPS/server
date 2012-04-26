@@ -311,16 +311,38 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<Employee> SearchEmployeesForRole(Guid roleId, string searchText)
         {
-            var employees = GetEmployeesForRole(roleId);
+            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            if (businessForRole == null)
+                return null;
+
+            //If the account is a FoundOPS admin return all Employees
+            //Otherwise return the Employees of the specified business account
+            var employees = businessForRole.Id == BusinessAccountsDesignData.FoundOps.Id
+                                     ? ObjectContext.Employees
+                                     : ObjectContext.Employees.Where(c => c.EmployerId == businessForRole.Id);
+
+            var employeesPeople =
+                from employee in employees
+                join person in ObjectContext.Parties.OfType<Person>()
+                    on employee.Id equals person.Id
+                orderby person.LastName + " " + person.FirstName
+                select new { employee, person };
+
 
             if (!String.IsNullOrEmpty(searchText))
-                employees = employees.Where(e =>
-                    e.OwnedPerson.FirstName.StartsWith(searchText) || e.OwnedPerson.LastName.StartsWith(searchText)
-                    || searchText.StartsWith(e.OwnedPerson.FirstName) || searchText.Contains(e.OwnedPerson.LastName));
+                employeesPeople = employeesPeople.Where(ep =>
+                    ep.person.FirstName.StartsWith(searchText) || ep.person.LastName.StartsWith(searchText)
+                    || searchText.StartsWith(ep.person.FirstName) || searchText.Contains(ep.person.LastName));
 
-            return employees.OrderBy(e => e.OwnedPerson.LastName + " " + e.OwnedPerson.FirstName);
+            //TODO: optimize this
+            //See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
+            //http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
+            //Force load OwnedPerson
+            //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
+            employeesPeople.Select(cp => cp.person).ToArray();
+
+            return employeesPeople.Select(i => i.employee);
         }
-
 
         public void InsertEmployee(Employee employee)
         {
