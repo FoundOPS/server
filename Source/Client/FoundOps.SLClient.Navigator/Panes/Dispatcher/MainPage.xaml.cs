@@ -65,9 +65,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         {
             InitializeComponent();
 
-            //var manager = new Manager();
-            //_analytics = manager.Analytics;
-
             //Loads the layout from Isolated Storage
             LoadLayout();
 
@@ -137,19 +134,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
         #region Logic
 
-        #region Analytics
-
-        //Tracks the selected pane in the group containing the route list, schedule view and map view
-        private void MainGroupSelectionChanged(object sender, RoutedEventArgs e)
-        {
-            //if (mainGroup == null)
-            //    return;
-            //
-            //TrackEventAction.Track("RoutePanes", "RoutePanesSelectionChanged", mainGroup.SelectedPane.ToString());
-        }
-
-        #endregion
-
         #region DragAndDrop
 
         //Nothing needs to be done here in this case, everything is handled in OnDragInfo
@@ -202,8 +186,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             VM.Routes.DispatcherSave();
         }
-
-
 
         #region Methods used in Drag/Drop Info
 
@@ -371,7 +353,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             //Remove the RouteTask from the TaskBoard
             ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(((RouteTask)draggedItem).ParentRouteTaskHolder);
-
         }
 
         /// <summary>
@@ -520,7 +501,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             SaveLayout();
 
             //call the analytic for handling layout changing in dispatcher
-            Analytics.DispatcherLayoutChanged();
+            Analytics.Track(Event.DispatcherLayoutChanged);
         }
 
         //Insures the route map stays the correct size
@@ -542,8 +523,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             LoadDefaultLayout();
             SaveLayout();
 
-            //call the analytic for handling layout changing in dispatcher
-            Analytics.DispatcherLayoutReset();
+            //call the analytic for handling layout reset in dispatcher
+            Analytics.Track(Event.DispatcherLayoutReset);
         }
 
         #endregion

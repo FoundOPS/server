@@ -1,7 +1,9 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
+using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 
 namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 {
@@ -18,37 +20,34 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             InitializeComponent();
         }
 
-        private void AddNewRouteClick(object sender, Telerik.Windows.RadRoutedEventArgs e)
+        private void AddNewRouteClick(object sender, RoutedEventArgs routedEventArgs)
         {
             //Analytics - Track when a new route is created
-            Analytics.AddNewRoute();
-        }
-
-        private void AddNewRouteTaskClick(object sender, Telerik.Windows.RadRoutedEventArgs e)
-        {
-            //Analytics - Track when a new route task is created
-            Analytics.AddNewRouteTask();
+            Analytics.Track(Event.AddRoute);
         }
 
         private void AutoCalcRoutesButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
-            //Analytics - Set AutoAsignButtonClickedOn to true
-            VM.Routes.AutoAssignButtonHasBeenClicked = true;
-
             //Analytics - Track when a AutoAsignJobs button is clicked
-            Analytics.AutoAsignJobs();
+            Analytics.Track(Event.AutoAssignJobs);
         }
 
         private void PreviousDayButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
             //Analytics - Track when a AutoAsignJobs button is clicked
-            Analytics.PreviousDay();
+            Analytics.Track(Event.DispatcherPreviousDay);
         }
 
         private void NextDayButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
             //Analytics - Track when a NextDay button is clicked
-            Analytics.NextDay();
+            Analytics.Track(Event.DispatcherNextDay);
+        }
+
+        private void DateChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            //Analytics - Track when the date is changed with the RadDatePicker
+            Analytics.Track(Event.DispatcherChangeDate);
         }
     }
 }

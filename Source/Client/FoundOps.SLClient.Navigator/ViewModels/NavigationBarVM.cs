@@ -165,24 +165,6 @@ namespace FoundOps.SLClient.Navigator.ViewModels
             }
         }
 
-        private bool _aBlockHasBeenClicked;
-        /// <summary>
-        /// Tracks the first block that was clicked (for analytics)
-        /// </summary>
-        public Block BlockClickedOn
-        {
-            set
-            {
-                if (_aBlockHasBeenClicked)
-                    return;
-
-                _aBlockHasBeenClicked = true;
-
-                //Trigger analytic here
-                Data.Services.Analytics.FirstBlockNavigatedTo(value.Name);
-            }
-        }
-
         /// <summary>
         /// Gets or sets the content of the selected block.
         /// </summary>
@@ -199,6 +181,8 @@ namespace FoundOps.SLClient.Navigator.ViewModels
 
         #endregion
 
+        #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationBarVM"/> class.
         /// </summary>
@@ -214,8 +198,6 @@ namespace FoundOps.SLClient.Navigator.ViewModels
              });
         }
 
-        #region NavigationBarVM's Logic
-
         protected override void RegisterCommands()
         {
             NavigateToCommand = new RelayCommand<string>(OnNavigateToHandler, uri => CurrentUserAccount != null && _setupBlocksMappingInMEFContentLoader);
@@ -223,6 +205,33 @@ namespace FoundOps.SLClient.Navigator.ViewModels
 
         protected override void RegisterMessages()
         {
+        }
+
+        #endregion
+
+        #region Logic
+
+        private bool _firstBlockChosen;
+        /// <summary>
+        /// Tracks chosen block analytics
+        /// </summary>
+        public void SetSelectedBlock(Block block)
+        {
+            var blockName = block.Name;
+
+            Section section;
+            if (blockName == "Feedback and Support")
+                section = Section.FeedbackAndSupport;
+            else
+                section = (Section)Enum.Parse(typeof(Section), blockName, true);
+
+            if (!_firstBlockChosen)
+            {
+                Data.Services.Analytics.Track(Event.FirstSectionChosen, section);
+                _firstBlockChosen = true;
+            }
+
+            Data.Services.Analytics.Track(Event.SectionChosen, section);
         }
 
         /// <summary>

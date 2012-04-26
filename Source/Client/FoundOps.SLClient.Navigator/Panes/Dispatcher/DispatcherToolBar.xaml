@@ -1,8 +1,7 @@
 ﻿<UserControl x:Class="FoundOps.SLClient.Navigator.Panes.Dispatcher.DispatcherToolBar" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:Tools="clr-namespace:FoundOps.Common.Silverlight.UI.Tools;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM" d:DesignWidth="850" mc:Ignorable="d">
     <Grid x:Name="LayoutRoot" Background="White">
         <telerik:RadToolBar Height="24" GripVisibility="Collapsed" OverflowButtonVisibility="Collapsed" HorizontalContentAlignment="Left" FlowDirection="LeftToRight">
@@ -12,14 +11,14 @@
                 <Image Source="/FoundOps.Common.Silverlight;component/Resources/LeftArrow.png"/>
             </telerik:RadButton>
             <!--1 day previous-->
-            <telerik:RadDatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay}" />
+            <telerik:RadDatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay}" SelectionChanged="DateChanged"/>
             <!--Bind SelectedDate-->
             <telerik:RadButton Padding="0"  Command="{Binding SetSelectedDayOneDayForward}" Click="NextDayButtonClick">
                 <Image Source="/FoundOps.Common.Silverlight;component/Resources/RightArrow.png"/>
             </telerik:RadButton>
             <!--1 day forward-->
             <telerik:RadToolBarSeparator/>
-            <telerik:RadDropDownButton Visibility="Collapsed">
+            <!--<telerik:RadDropDownButton Visibility="Collapsed">
                 <telerik:RadDropDownButton.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Stretch="Fill" Source="/FoundOps.Common.Silverlight;component/Resources/New.png"/>
@@ -29,11 +28,11 @@
                 <telerik:RadDropDownButton.DropDownContent>
                     <telerik:RadContextMenu Placement="Bottom">
                         <telerik:RadMenuItem Header="Route" Command="{Binding AddCommand}" Click="AddNewRouteClick"/>
-                        <telerik:RadMenuItem Header="Route Task" Command="{Binding AddRouteTask}" Click="AddNewRouteTaskClick"/>
+                        <telerik:RadMenuItem Header="Route Task" Command="{Binding AddRouteTask}"/>
                     </telerik:RadContextMenu>
                 </telerik:RadDropDownButton.DropDownContent>
-            </telerik:RadDropDownButton>
-            <telerik:RadButton Command="{Binding AddCommand}">
+            </telerik:RadDropDownButton>-->
+            <telerik:RadButton Command="{Binding AddCommand}" Click="AddNewRouteClick">
                 <!--Launch a confirmation box-->
                 <StackPanel Orientation="Horizontal">
                     <Image Stretch="Fill" Source="/FoundOps.Common.Silverlight;component/Resources/New.png"/>

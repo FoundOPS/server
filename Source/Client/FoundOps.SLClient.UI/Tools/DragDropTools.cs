@@ -94,6 +94,7 @@ namespace FoundOps.SLClient.UI.Tools
             if ((destination is RouteDestination) && dropPlacement == DropPlacement.In)
             {
                 ((RouteDestination)destination).RouteTasksListWrapper.Add(routeTask);
+                //TODO:add analytic
 
                 //No need to do any of the other logic below, skip to the next iteration of the loop
                 return;
@@ -119,11 +120,13 @@ namespace FoundOps.SLClient.UI.Tools
 
                 //Add the new destination to the Route
                 route.RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
+                //TODO:add analytic
             }
             if (destination is Route)
             {
                 //Add the new destination to the Route
                 ((Route)destination).RouteDestinationsListWrapper.Insert(placeInRoute, newDestination);
+                //TODO:add analytic
             }
         }
 
@@ -188,7 +191,7 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
-        /// Checks the items to be sure that their service s are the same.
+        /// Checks the items to be sure that their services are the same.
         /// </summary>
         /// <param name="payloadCollection">The payload collection.</param>
         /// <returns></returns>
@@ -220,12 +223,14 @@ namespace FoundOps.SLClient.UI.Tools
             if (routeTaskDestination != null)
             {
                 AddToRouteTask(routeTaskDestination, routeTask, dropPlacement);
+                //TODO:add analytic
 
                 //No need to do any of the other logic below, skip to the next iteration of the loop
                 return;
             }
 
             AddRouteTaskToDestinationOrRoute(routeTask, destination, placeInRoute, dropPlacement);
+            //TODO:add analytic
         }
 
         /// <summary>

@@ -68,7 +68,7 @@
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>
             <telerik:RadSplitContainer Orientation="Horizontal">
-                <telerik:RadPaneGroup x:Name="mainGroup" TabStripPlacement="Top" SelectionChanged="MainGroupSelectionChanged">
+                <telerik:RadPaneGroup x:Name="mainGroup" TabStripPlacement="Top">
                     <telerik:RadPane Header="Route List" telerik:RadDocking.SerializationTag="RouteList" CanUserClose="False">
                         <telerik:RadBusyIndicator VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BusyContent="Loading Routes" IsBusy="{Binding RoutesLoading}">
                             <Dispatcher2:RoutesListView x:Name="RoutesListView"/>
