@@ -149,7 +149,7 @@ namespace FoundOps.Server.Controllers
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            TimeStampDate = timeStamp.Date
+                                            LastTimeStamp = timeStamp
                                         };
 
                                         latitude = latitude + .001;
@@ -188,7 +188,7 @@ namespace FoundOps.Server.Controllers
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            TimeStampDate = timeStamp.Date
+                                            LastTimeStamp = timeStamp
                                         };
 
                                         latitude = latitude - .001;
@@ -228,7 +228,7 @@ namespace FoundOps.Server.Controllers
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            TimeStampDate = timeStamp.Date
+                                            LastTimeStamp = timeStamp
                                         };
 
                                         latitude = latitude + .001;
@@ -267,7 +267,7 @@ namespace FoundOps.Server.Controllers
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            TimeStampDate = timeStamp.Date
+                                            LastTimeStamp = timeStamp
                                         };
 
                                         latitude = latitude - .001;
