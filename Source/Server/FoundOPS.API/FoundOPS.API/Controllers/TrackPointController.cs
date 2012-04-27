@@ -43,7 +43,7 @@ namespace FoundOPS.API.Controllers
 #if DEBUG
             var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(ba => ba.Id == roleId);
 #else
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole((Guid)roleId);
 #endif
 
             if (currentBusinessAccount == null)
@@ -59,14 +59,9 @@ namespace FoundOPS.API.Controllers
 
             var trackPointsDate = serviceDate.Date;
 
-            //&& tp.TimeStampDate == trackPointsDate
-
             //Gets all objects from the Azure table specified on the date requested and returns the result
-            var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).Where(tp => tp.RouteId == routeId).ToArray();
-
-            //var test = new List<TrackPointsHistoryTableDataModel>();
-            //for (var i = 0; i < 4; i++)
-            //    test.AddRange(trackPoints);
+            var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).
+                Where(tp => tp.RouteId == routeId && tp.TimeStampDate == trackPointsDate).ToArray();
 
             //Return the list of converted track points as a queryable
             var modelTrackPoints = trackPoints.Select(TrackPoint.ConvertToModel);
@@ -86,10 +81,13 @@ namespace FoundOPS.API.Controllers
             if (!serviceDate.HasValue)
                 serviceDate = DateTime.UtcNow.Date;
 
+            if (roleId == null)
+                return null;
+
 #if DEBUG
             var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(ba => ba.Id == roleId);
 #else
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole((Guid)roleId);
 #endif
 
             if (currentBusinessAccount == null)
@@ -243,7 +241,7 @@ namespace FoundOPS.API.Controllers
         private HttpResponseMessage<TrackPoint[]> PostTrackPointHelper(Guid? employeeId, Guid? vehicleId, TrackPoint[] modelTrackPoints, Guid routeId)
         {
             //Take the list of TrackPoints passed and order them by their TimeStamps
-            var orderedModelTrackPoints = modelTrackPoints.OrderBy(tp => tp.TimeStamp).ToArray();
+            var orderedModelTrackPoints = modelTrackPoints.OrderBy(tp => tp.LastTimeStamp).ToArray(); 
 
             //The last TrackPoint in the list above is the most current and therefore will be stored in the SQL database
             var lastTrackPoint = orderedModelTrackPoints.Last();
@@ -263,7 +261,7 @@ namespace FoundOPS.API.Controllers
                 employee.LastLongitude = lastTrackPoint.Longitude;
                 employee.LastSource = lastTrackPoint.Source;
                 employee.LastSpeed = lastTrackPoint.Speed;
-                employee.LastTimeStamp = lastTrackPoint.TimeStamp;
+                employee.LastTimeStamp = lastTrackPoint.LastTimeStamp;
 
                 currentBusinessAccount = employee.Employer;
 
@@ -276,7 +274,7 @@ namespace FoundOPS.API.Controllers
                 {
                     //If trackpoint's timestamp is more than 30 seconds passed the last one passed to AzureTables
                     //Or the LastPushToAzureTimeStamp is null
-                    if (trackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= employee.LastPushToAzureTimeStamp || employee.LastPushToAzureTimeStamp == null)
+                    if (trackPoint.LastTimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= employee.LastPushToAzureTimeStamp || employee.LastPushToAzureTimeStamp == null)
                         PushTrackPointToAzure(currentBusinessAccount, trackPoint, employee, null, routeId);
                 }
             }
@@ -295,7 +293,7 @@ namespace FoundOPS.API.Controllers
                 vehicle.LastLongitude = lastTrackPoint.Longitude;
                 vehicle.LastSource = lastTrackPoint.Source;
                 vehicle.LastSpeed = lastTrackPoint.Speed;
-                vehicle.LastTimeStamp = lastTrackPoint.TimeStamp;
+                vehicle.LastTimeStamp = lastTrackPoint.LastTimeStamp;
 
                 currentBusinessAccount = vehicle.OwnerParty.ClientOwner.Vendor;
 
@@ -308,7 +306,7 @@ namespace FoundOPS.API.Controllers
                 {
                     //If trackpoint's timestamp is more than 30 seconds passed the last one passed to AzureTables
                     //Or the LastPushToAzureTimeStamp is null
-                    if (trackPoint.TimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= vehicle.LastPushToAzureTimeStamp || vehicle.LastPushToAzureTimeStamp == null)
+                    if (trackPoint.LastTimeStamp.AddSeconds(-(UpdateConstants.TimeBetweenPushesToAzure)) >= vehicle.LastPushToAzureTimeStamp || vehicle.LastPushToAzureTimeStamp == null)
                         PushTrackPointToAzure(currentBusinessAccount, trackPoint, null, vehicle, routeId);
                 }
             }
@@ -361,14 +359,14 @@ namespace FoundOPS.API.Controllers
             {
                 employeeId = employee.Id;
                 vehicleId = null;
-                employee.LastPushToAzureTimeStamp = trackPoint.TimeStamp;
+                employee.LastPushToAzureTimeStamp = trackPoint.LastTimeStamp;
             }
 
             if (vehicle != null)
             {
                 employeeId = null;
                 vehicleId = vehicle.Id;
-                vehicle.LastPushToAzureTimeStamp = trackPoint.TimeStamp;
+                vehicle.LastPushToAzureTimeStamp = trackPoint.LastTimeStamp;
             }
 
             #endregion
@@ -381,7 +379,7 @@ namespace FoundOPS.API.Controllers
                 RouteId = routeId,
                 Latitude = trackPoint.Latitude,
                 Longitude = trackPoint.Longitude,
-                TimeStamp = trackPoint.TimeStampDate
+                LastTimeStamp = trackPoint.LastTimeStamp
             };
 
             //Push to Azure Table
