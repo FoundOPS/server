@@ -30,7 +30,7 @@ namespace FoundOps.SLClient.Data.Services
         //Only tracked on Google Analytics
         ManifestOption,
         PrintedManifest,
-        SectionChosen,
+        SectionChosen
     }
 
     /// <summary>
@@ -147,10 +147,8 @@ namespace FoundOps.SLClient.Data.Services
         public static void Track(Event trackedEvent, Section? section = null, string detail = null)
         {
             //If the section is not specified, try to get it from the event sections dictionary
-            if (!section.HasValue && EventSections.ContainsKey(trackedEvent))
-                section = EventSections[trackedEvent];
-            else
-                section = Section.None;
+            if (!section.HasValue)
+                section = EventSections.ContainsKey(trackedEvent) ? EventSections[trackedEvent] : Section.None;
 
             //Track the event
             TrackHelper(section, trackedEvent, detail);
