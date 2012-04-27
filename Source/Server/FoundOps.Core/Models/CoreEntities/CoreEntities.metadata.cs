@@ -1,6 +1,5 @@
-﻿using System;
-using System.Runtime.Serialization;
-using FoundOps.Core.Models.CoreEntities.Validation;
+﻿using FoundOps.Core.Models.CoreEntities.Validation;
+using System;
 
 // ReSharper disable CheckNamespace
 //Metadata must be in the same namespace as the Entities

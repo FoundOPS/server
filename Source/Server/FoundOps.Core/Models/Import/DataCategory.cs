@@ -6,7 +6,6 @@
     public enum DataCategory
     {
         ClientName,
-        SalespersonName,
         ContactInfoEmailAddressLabel,
         ContactInfoEmailAddressData,
         ContactInfoFaxNumberLabel,
