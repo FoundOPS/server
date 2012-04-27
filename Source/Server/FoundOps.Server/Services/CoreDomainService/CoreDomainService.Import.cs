@@ -95,8 +95,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                     //Get the location associaton
                     var locationAssociation = GetLocationAssociation(locationAssociations, clientAssociations, row);
-
                     var newRecurringService = ImportRowTools.CreateRecurringService(businessAccount, row, clientServiceTemplate, clientAssocation, locationAssociation);
+
+                    this.ObjectContext.RecurringServices.AddObject(newRecurringService);
                 }
             }
 
