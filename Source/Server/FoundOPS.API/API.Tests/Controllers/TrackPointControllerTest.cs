@@ -30,7 +30,7 @@ namespace API.Tests.Controllers
                     CompassDirection = random.Next(0, 359),
                     Latitude = random.Next(-90, 90),
                     Longitude = random.Next(-180, 180),
-                    TimeStamp = DateTime.Now.AddSeconds(10 * i),
+                    LastTimeStamp = DateTime.Now.AddSeconds(10 * i),
                     Speed = random.Next(20, 60),
                 };
 

@@ -61,7 +61,7 @@ namespace FoundOPS.API.Controllers
 
             //Gets all objects from the Azure table specified on the date requested and returns the result
             var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName).
-                Where(tp => tp.RouteId == routeId && tp.TimeStampDate == trackPointsDate).ToArray();
+                Where(tp => tp.TimeStampDate == trackPointsDate).ToArray();
 
             //Return the list of converted track points as a queryable
             var modelTrackPoints = trackPoints.Select(TrackPoint.ConvertToModel);
