@@ -44,6 +44,9 @@
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="Kent.Boogaart.KBCsv">
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
@@ -193,6 +196,7 @@
     <Compile Include="Models\Import\DataCategory.cs" />
     <Compile Include="Models\Import\ImportColumnType.cs" />
     <Compile Include="Models\Import\ImportDestination.cs" />
+    <Compile Include="Models\Import\ImportRowTools.cs" />
     <Compile Include="Models\QuickBooks\QuickBooksXml.cs" />
     <Compile Include="Models\QuickBooks\QuickBooksSession.cs" />
     <Compile Include="Models\QuickBooks\QuickBooksTools.cs" />

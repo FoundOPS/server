@@ -22,11 +22,12 @@
                 <TextBlock VerticalAlignment="Center" Text="Data Source:"/>
                 <TextBlock Margin="5,0" VerticalAlignment="Center" Text="{Binding FileName}"/>
                 <Button VerticalAlignment="Center" Content="Select File" Click="SelectFileButtonClick" Grid.Column="2"/>
+                <TextBlock Margin="5,0" VerticalAlignment="Center" Text="Order to Import: 1. Clients, 2. Locations, 3. Recurring Services"/>
                 <TextBlock Margin="5,0" VerticalAlignment="Center" Text="Destination:"/>
                 <telerik:RadComboBox VerticalAlignment="Center" SelectedIndex="{Binding ImportDestination, Mode=TwoWay, Converter={StaticResource IndexToImportDestinationConverter}}">
                     <telerik:RadComboBoxItem Content="Clients"/>
                     <telerik:RadComboBoxItem Content="Locations"/>
-                    <!--<telerik:RadComboBoxItem Content="Services"/>-->
+                    <telerik:RadComboBoxItem Content="Recurring Services"/>
                 </telerik:RadComboBox>
                 <Button Margin="5,0" VerticalAlignment="Center" Content="Try to Geocode" Command="{Binding TryGeocodeCommand}" />
             </StackPanel>

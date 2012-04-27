@@ -23,7 +23,6 @@
         LocationAddressLineTwo,
         LocationCity,
         LocationState,
-        LocationZipCode,
-        ServiceDate
+        LocationZipCode
     }
 }

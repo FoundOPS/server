@@ -85,72 +85,111 @@ namespace FoundOps.Core.Models.Import
         #region Create Entity Methods
 
         /// <summary>
-        /// For 
+        /// Gets the ContactInfo set from a row's values.
         /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="entity"></param>
-        private static IEnumerable<ContactInfo> GetContactInfoSet<TEntity>(TEntity entity) where TEntity : EntityObject
+        /// <param name="row">The row's categories/values.</param>
+        /// <returns>A contact info set.</returns>
+        private static IEnumerable<ContactInfo> GetContactInfoSet(Tuple<DataCategory, string>[] row)
         {
-            //#region Add contact info to entities
+            //A row can have up to 5 contact infos on it. Seperate those out.
+            var contactInfoSet = new List<ContactInfo>();
 
-            //var contactInfoSet = new List<ContactInfo>();
+            //Email
+            var emailCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoEmailAddressLabel || r.Item1 == DataCategory.ContactInfoEmailAddressData).ToArray();
+            if (emailCategoryValues.Any())
+            {
+                var email = new ContactInfo { Type = "Email Address" };
+                SetProperties(email, emailCategoryValues);
+                contactInfoSet.Add(email);
+            }
 
-            //if (!String.IsNullOrEmpty(contactInfoEmailAddressLabel) || !String.IsNullOrEmpty(contactInfoEmailAddressData))
-            //    contactInfoSet.Add(new ContactInfo { Type = "Email Address", Label = contactInfoEmailAddressLabel ?? "", Data = contactInfoEmailAddressData ?? "" });
+            //Fax
+            var faxCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoFaxNumberLabel || r.Item1 == DataCategory.ContactInfoFaxNumberData).ToArray();
+            if (faxCategoryValues.Any())
+            {
+                var fax = new ContactInfo { Type = "Fax Number" };
+                SetProperties(fax, faxCategoryValues);
+                contactInfoSet.Add(fax);
+            }
 
-            //if (!String.IsNullOrEmpty(contactInfoFaxNumberLabel) || !String.IsNullOrEmpty(contactInfoFaxNumberData))
-            //    contactInfoSet.Add(new ContactInfo { Type = "Fax Number", Label = contactInfoFaxNumberLabel ?? "", Data = contactInfoFaxNumberData ?? "" });
+            //Phone
+            var phoneCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoPhoneNumberLabel || r.Item1 == DataCategory.ContactInfoPhoneNumberData).ToArray();
+            if (phoneCategoryValues.Any())
+            {
+                var phone = new ContactInfo { Type = "Phone Number" };
+                SetProperties(phone, phoneCategoryValues);
+                contactInfoSet.Add(phone);
+            }
 
-            //if (!String.IsNullOrEmpty(contactInfoPhoneNumberLabel) || !String.IsNullOrEmpty(contactInfoPhoneNumberData))
-            //    contactInfoSet.Add(new ContactInfo { Type = "Phone Number", Label = contactInfoPhoneNumberLabel ?? "", Data = contactInfoPhoneNumberData ?? "" });
+            //Other
+            var otherCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoOtherLabel || r.Item1 == DataCategory.ContactInfoOtherData).ToArray();
+            if (otherCategoryValues.Any())
+            {
+                var other = new ContactInfo { Type = "Other" };
+                SetProperties(other, otherCategoryValues);
+                contactInfoSet.Add(other);
+            }
 
-            //if (!String.IsNullOrEmpty(contactInfoOtherLabel) || !String.IsNullOrEmpty(contactInfoOtherData))
-            //    contactInfoSet.Add(new ContactInfo { Type = "Other", Label = contactInfoOtherLabel ?? "", Data = contactInfoOtherData ?? "" });
+            //Website
+            var websiteCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoWebsiteLabel || r.Item1 == DataCategory.ContactInfoWebsiteData).ToArray();
+            if (websiteCategoryValues.Any())
+            {
+                var website = new ContactInfo { Type = "Website" };
+                SetProperties(website, websiteCategoryValues);
+                contactInfoSet.Add(website);
+            }
 
-            //if (!String.IsNullOrEmpty(contactInfoWebsiteLabel) || !String.IsNullOrEmpty(contactInfoWebsiteData))
-            //    contactInfoSet.Add(new ContactInfo { Type = "Website", Label = contactInfoWebsiteLabel ?? "", Data = contactInfoWebsiteData ?? "" });
-
-            //if (newEntity is Location)
-            //{
-            //    foreach (var contactInfo in contactInfoSet)
-            //        ((Location)newEntity).ContactInfoSet.Add(contactInfo);
-            //}
-            //else if (newEntity is Client)
-            //{
-            //    foreach (var contactInfo in contactInfoSet)
-            //        ((Client)newEntity).OwnedParty.ContactInfoSet.Add(contactInfo);
-            //}
-
-            //#endregion
+            return contactInfoSet;
         }
 
         /// <summary>
         /// Creates a client from a set of categories and values.
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
-        /// <param name="categoriesValues">The categories/values used to initialize the client.</param>
+        /// <param name="row">The categories/values used to initialize the client.</param>
         /// <returns>A new client.</returns>
-        public static Client CreateClient(BusinessAccount currentBusinessAccount, IEnumerable<Tuple<DataCategory, string>> categoriesValues)
+        public static Client CreateClient(BusinessAccount currentBusinessAccount, Tuple<DataCategory, string>[] row)
         {
             //Need to create an OwnedParty and set the current business account
             var client = new Client { Vendor = currentBusinessAccount, OwnedParty = new Business() };
 
-            SetProperties(client, categoriesValues);
+            SetProperties(client, row);
+
+            //Add contact info set
+            var contactInfoSet = GetContactInfoSet(row);
+            foreach (var contactInfo in contactInfoSet)
+                client.OwnedParty.ContactInfoSet.Add(contactInfo);
 
             return client;
         }
 
         /// <summary>
         /// Creates the location.
+        /// It will also set the clientAssociation's DefaultBillingLocation to this new location
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
-        /// <param name="categoriesValues">The categories/values used to initialize the client.</param>
+        /// <param name="row">The categories/values used to initialize the client.</param>
         /// <param name="clientAssociation">The (optional) client association.</param>
-        public static Location CreateLocation(BusinessAccount currentBusinessAccount, IEnumerable<Tuple<DataCategory, string>> categoriesValues, Client clientAssociation)
+        public static Location CreateLocation(BusinessAccount currentBusinessAccount, Tuple<DataCategory, string>[] row, Client clientAssociation)
         {
             var location = new Location { OwnerParty = currentBusinessAccount };
 
-            SetProperties(location, categoriesValues);
+            //Set the Location's Party and set the clientAssociation's DefaultBillingLocation to the new location
+            //if the clientAssociation is not null
+            if (clientAssociation != null)
+            {
+                location.Party = clientAssociation.OwnedParty;
+
+                //Set this as the default billing location
+                clientAssociation.DefaultBillingLocation = location;
+            }
+
+            SetProperties(location, row);
+
+            //Add contact info set
+            var contactInfoSet = GetContactInfoSet(row);
+            foreach (var contactInfo in contactInfoSet)
+                location.ContactInfoSet.Add(contactInfo);
 
             return location;
         }
@@ -182,11 +221,22 @@ namespace FoundOps.Core.Models.Import
         #region Helpers
 
         /// <summary>
+        /// Gets the value of a category from a row if it exists.
+        /// </summary>
+        /// <param name="categoriesValues">The rows categories and values</param>
+        /// <param name="category">The category to get the value for.</param>
+        public static string GetCategoryValue(this IEnumerable<Tuple<DataCategory, string>> categoriesValues, DataCategory category)
+        {
+            var categoryValue = categoriesValues.FirstOrDefault(cv => cv.Item1 == category);
+            return categoryValue != null ? categoryValue.Item2 : null;
+        }
+
+        /// <summary>
         /// Matches the categories with values from a datarecord.
         /// </summary>
         /// <param name="categories">The categories from the header record.</param>
         /// <param name="record">The record to extract values from.</param>
-        public static IEnumerable<Tuple<DataCategory, string>> ExtractCategoriesWithValues(DataCategory[] categories, DataRecord record)
+        public static Tuple<DataCategory, string>[] ExtractCategoriesWithValues(DataCategory[] categories, DataRecord record)
         {
             var categoryValues = new List<Tuple<DataCategory, string>>();
 
@@ -198,7 +248,7 @@ namespace FoundOps.Core.Models.Import
                 columnIndex++;
             }
 
-            return categoryValues;
+            return categoryValues.ToArray();
         }
 
         /// <summary>
