@@ -1,4 +1,5 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using Kent.Boogaart.KBCsv;
 using System;
 using System.Collections.Generic;
@@ -79,6 +80,122 @@ namespace FoundOps.Core.Models.Import
 
             #endregion
 
+            #region Repeats
+
+            PropertyCategories.Add(new PropertyCategory<Repeat>(DataCategory.RepeatFrequency, (repeat, val) =>
+            {
+                val = val.ToLower();
+                if (val == "once" || val == "o")
+                    repeat.Frequency = Frequency.Once;
+                else if (val == "daily" || val == "d")
+                    repeat.Frequency = Frequency.Daily;
+                else if (val == "weekly" || val == "w")
+                    repeat.Frequency = Frequency.Weekly;
+                else if (val == "monthly" || val == "m")
+                    repeat.Frequency = Frequency.Monthly;
+                else if (val == "yearly" || val == "y")
+                    repeat.Frequency = Frequency.Yearly;
+            }));
+
+            PropertyCategories.Add(new PropertyCategory<Repeat>(DataCategory.RepeatStartDate, (repeat, val) =>
+            {
+                var startDate = Convert.ToDateTime(val);
+                repeat.StartDate = startDate.Date.ToUniversalTime().Date;
+            }));
+
+            PropertyCategories.Add(new PropertyCategory<Repeat>(DataCategory.RepeatEnd, (repeat, val) =>
+            {
+                if (string.IsNullOrEmpty(val))
+                    return;
+
+                //Try to convert the End to a date
+                try
+                {
+                    var endDate = Convert.ToDateTime(val);
+                    repeat.EndDate = endDate.Date.ToUniversalTime().Date;
+                }
+                catch
+                {
+                    //Try to convert the End to a number
+                    var endAfter = Convert.ToInt32(val);
+                    repeat.EndAfterTimes = endAfter;
+                }
+            }));
+
+            PropertyCategories.Add(new PropertyCategory<Repeat>(DataCategory.RepeatEvery, (repeat, val) =>
+            {
+                if (string.IsNullOrEmpty(val))
+                    return;
+
+                var repeatEvery = Convert.ToInt32(val);
+                repeat.RepeatEveryTimes = repeatEvery;
+            }));
+
+            PropertyCategories.Add(new PropertyCategory<Repeat>(DataCategory.RepeatOn, (repeat, val) =>
+            {
+                val = val.ToLower();
+                val = val.Replace(" ", "");
+                if (repeat.Frequency == Frequency.Weekly)
+                {
+                    var startDayOfWeek = repeat.StartDate.DayOfWeek;
+
+                    //If it is empty assume the Start Date
+                    if (string.IsNullOrEmpty(val))
+                    {
+                        repeat.FrequencyDetailAsWeeklyFrequencyDetail = new[] { startDayOfWeek };
+                        return;
+                    }
+
+                    var dayStrings = val.Split(',');
+                    var daysOfWeek = new List<DayOfWeek>();
+
+                    if (dayStrings.Any(s => s == "s" || s == "su" || s == "sun" || s == "sunday"))
+                        daysOfWeek.Add(DayOfWeek.Sunday);
+
+                    if (dayStrings.Any(s => s == "m" || s == "mo" || s == "mon" || s == "monday"))
+                        daysOfWeek.Add(DayOfWeek.Monday);
+
+                    if (dayStrings.Any(s => s == "t" || s == "tu" || s == "tues" || s == "tuesday"))
+                        daysOfWeek.Add(DayOfWeek.Tuesday);
+
+                    if (dayStrings.Any(s => s == "w" || s == "we" || s == "wed" || s == "wednesday"))
+                        daysOfWeek.Add(DayOfWeek.Wednesday);
+
+                    if (dayStrings.Any(s => s == "r" || s == "th" || s == "tr" || s == "thur" || s == "thurs" || s == "thursday"))
+                        daysOfWeek.Add(DayOfWeek.Thursday);
+
+                    if (dayStrings.Any(s => s == "f" || s == "fr" || s == "fri" || s == "friday"))
+                        daysOfWeek.Add(DayOfWeek.Friday);
+
+                    if (dayStrings.Any(s => s == "s" || s == "sa" || s == "sat" || s == "saturday"))
+                        daysOfWeek.Add(DayOfWeek.Saturday);
+
+                    //Make sure the days include the startdate
+                    if (!daysOfWeek.Contains(startDayOfWeek))
+                        daysOfWeek.Add(startDayOfWeek);
+
+                    repeat.FrequencyDetailAsWeeklyFrequencyDetail = daysOfWeek.OrderBy(e => (int)e).ToArray();
+
+                    return;
+                }
+
+                if (repeat.Frequency == Frequency.Monthly)
+                {
+                    if (string.IsNullOrEmpty(val) || val == "date")
+                    {
+                        repeat.FrequencyDetailAsMonthlyFrequencyDetail = MonthlyFrequencyDetail.OnDayInMonth;
+                    }
+                    else if (val == "day")
+                    {
+                        var detailsAvailable = repeat.AvailableMonthlyFrequencyDetailTypes.ToList();
+                        detailsAvailable.Remove(MonthlyFrequencyDetail.OnDayInMonth);
+                        repeat.FrequencyDetailAsMonthlyFrequencyDetail = detailsAvailable.First();
+                    }
+                }
+            }));
+
+            #endregion
+
             #endregion
         }
 
@@ -96,7 +213,7 @@ namespace FoundOps.Core.Models.Import
 
             //Email
             var emailCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoEmailAddressLabel || r.Item1 == DataCategory.ContactInfoEmailAddressData).ToArray();
-            if (emailCategoryValues.Any())
+            if (emailCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
             {
                 var email = new ContactInfo { Type = "Email Address" };
                 SetProperties(email, emailCategoryValues);
@@ -105,7 +222,7 @@ namespace FoundOps.Core.Models.Import
 
             //Fax
             var faxCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoFaxNumberLabel || r.Item1 == DataCategory.ContactInfoFaxNumberData).ToArray();
-            if (faxCategoryValues.Any())
+            if (faxCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
             {
                 var fax = new ContactInfo { Type = "Fax Number" };
                 SetProperties(fax, faxCategoryValues);
@@ -114,7 +231,7 @@ namespace FoundOps.Core.Models.Import
 
             //Phone
             var phoneCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoPhoneNumberLabel || r.Item1 == DataCategory.ContactInfoPhoneNumberData).ToArray();
-            if (phoneCategoryValues.Any())
+            if (phoneCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
             {
                 var phone = new ContactInfo { Type = "Phone Number" };
                 SetProperties(phone, phoneCategoryValues);
@@ -123,7 +240,7 @@ namespace FoundOps.Core.Models.Import
 
             //Other
             var otherCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoOtherLabel || r.Item1 == DataCategory.ContactInfoOtherData).ToArray();
-            if (otherCategoryValues.Any())
+            if (otherCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
             {
                 var other = new ContactInfo { Type = "Other" };
                 SetProperties(other, otherCategoryValues);
@@ -132,7 +249,7 @@ namespace FoundOps.Core.Models.Import
 
             //Website
             var websiteCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoWebsiteLabel || r.Item1 == DataCategory.ContactInfoWebsiteData).ToArray();
-            if (websiteCategoryValues.Any())
+            if (websiteCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
             {
                 var website = new ContactInfo { Type = "Website" };
                 SetProperties(website, websiteCategoryValues);
@@ -199,21 +316,27 @@ namespace FoundOps.Core.Models.Import
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="categoriesValues">The categories/values used to initialize the client.</param>
-        /// <param name="serviceTemplate">The parent service template.</param>
+        /// <param name="clientServiceTemplate">The parent service template.</param>
         /// <param name="clientAssociation">The client association.</param>
         /// <param name="locationAssociation">The location association.</param>
         /// <returns></returns>
         public static RecurringService CreateRecurringService(BusinessAccount currentBusinessAccount,
-            IEnumerable<Tuple<DataCategory, string>> categoriesValues, ServiceTemplate serviceTemplate, Client clientAssociation, Location locationAssociation)
+            Tuple<DataCategory, string>[] categoriesValues, ServiceTemplate clientServiceTemplate, Client clientAssociation, Location locationAssociation)
         {
-            //TODO
-            //var recurringService = new RecurringService {Client =  clientAssociation, ServiceTemplate = };
+            var recurringService = new RecurringService
+            {
+                Client = clientAssociation,
+                ServiceTemplate = clientServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined)
+            };
+            recurringService.AddRepeat();
 
-            //SetProperties(location, categoriesValues);
+            if (locationAssociation != null)
+                recurringService.ServiceTemplate.SetDestination(locationAssociation);
 
-            //return location;
+            //Set the repeat properties
+            SetProperties(recurringService.Repeat, categoriesValues);
 
-            return null;
+            return recurringService;
         }
 
         #endregion
@@ -225,7 +348,7 @@ namespace FoundOps.Core.Models.Import
         /// </summary>
         /// <param name="categoriesValues">The rows categories and values</param>
         /// <param name="category">The category to get the value for.</param>
-        public static string GetCategoryValue(this IEnumerable<Tuple<DataCategory, string>> categoriesValues, DataCategory category)
+        public static string GetCategoryValue(this Tuple<DataCategory, string>[] categoriesValues, DataCategory category)
         {
             var categoryValue = categoriesValues.FirstOrDefault(cv => cv.Item1 == category);
             return categoryValue != null ? categoryValue.Item2 : null;
@@ -257,15 +380,16 @@ namespace FoundOps.Core.Models.Import
         /// <typeparam name="TEntity">The type of entity.</typeparam>
         /// <param name="entity">The entity to set the properties on.</param>
         /// <param name="categoryValues">The datacategories to set.</param>
-        private static void SetProperties<TEntity>(TEntity entity, IEnumerable<Tuple<DataCategory, string>> categoryValues) where TEntity : EntityObject
+        private static void SetProperties<TEntity>(TEntity entity, Tuple<DataCategory, string>[] categoryValues) where TEntity : EntityObject
         {
-            var entityPropertyCategories = PropertyCategories.OfType<PropertyCategory<TEntity>>().ToArray();
+            var entityPropertyCategories = PropertyCategories.OfType<PropertyCategory<TEntity>>()
+                .Where(pc => categoryValues.Any(cv => cv.Item1 == pc.Category)).ToArray();
 
-            foreach (var categoryValue in categoryValues)
+            //Set the properties in order as they are in the PropertyCategories
+            foreach (var entityPropertyCategory in entityPropertyCategories)
             {
-                var entityPropertyCategory = entityPropertyCategories.FirstOrDefault(pc => pc.Category == categoryValue.Item1);
-                if (entityPropertyCategory != null)
-                    entityPropertyCategory.SetProperty(entity, categoryValue.Item2);
+                var value = categoryValues.First(cv => cv.Item1 == entityPropertyCategory.Category).Item2;
+                entityPropertyCategory.SetProperty(entity, value);
             }
         }
 

@@ -23,6 +23,12 @@
         LocationAddressLineTwo,
         LocationCity,
         LocationState,
-        LocationZipCode
+        LocationZipCode,
+        ServiceType,
+        RepeatFrequency,
+        RepeatStartDate,
+        RepeatEnd,
+        RepeatEvery,
+        RepeatOn
     }
 }

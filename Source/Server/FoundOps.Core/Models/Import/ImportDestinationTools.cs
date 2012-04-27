@@ -72,8 +72,15 @@ namespace FoundOps.Core.Models.Import
             {
                 return new List<ImportColumnType>
                 {
+                   new ImportColumnType("Service Type", DataCategory.ServiceType, Multiplicity.Single),
                    new ImportColumnType("Client Name", DataCategory.ClientName, Multiplicity.Single),
-                   new ImportColumnType("Location Name", DataCategory.LocationName, Multiplicity.Single)
+                   new ImportColumnType("Location Name", DataCategory.LocationName, Multiplicity.Single),
+                   new ImportColumnType("Address Line One", DataCategory.LocationAddressLineOne, Multiplicity.Single),
+                   new ImportColumnType("Repeat Frequency", DataCategory.RepeatFrequency, Multiplicity.Single),
+                   new ImportColumnType("Repeat Start Date", DataCategory.RepeatStartDate, Multiplicity.Single),
+                   new ImportColumnType("Repeat End Date", DataCategory.RepeatEnd, Multiplicity.Single),
+                   new ImportColumnType("Repeat Every", DataCategory.RepeatEvery, Multiplicity.Single),
+                   new ImportColumnType("Repeat On", DataCategory.RepeatOn, Multiplicity.Single)
                 };
             }
         }
