@@ -6,6 +6,7 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
     </ConfigurationSettings>
     <Certificates>
+      <Certificate name="test.foundops.com" thumbprint="e5dd3fe4dc378964892a58528b719869935c2882" thumbprintAlgorithm="sha1" />
       <Certificate name="app.foundops.com" thumbprint="48E8AC3DFA654D11C1C3B28104A4015383166979" thumbprintAlgorithm="sha1" />
       <Certificate name="GoDaddyClass2" thumbprint="2796BAE63F1801E277261BA0D77770028F20EEE4" thumbprintAlgorithm="sha1" />
       <Certificate name="GoDaddySecure" thumbprint="7C4656C3061F7F4C0D67B319A855F60EBC11FC44" thumbprintAlgorithm="sha1" />
