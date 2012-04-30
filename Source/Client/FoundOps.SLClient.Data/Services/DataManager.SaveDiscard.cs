@@ -1,4 +1,5 @@
-﻿using FoundOps.Core.Models.CoreEntities;
+﻿using System.Windows;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.Controls;
 using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Tools;
@@ -91,7 +92,20 @@ namespace FoundOps.SLClient.Data.Services
             _currentSubmitOperation = this.DomainContext.SubmitChanges(
                 submitOperationCallback =>
                 {
-                    //Log error
+                    //If there is a validation error, let the user know
+                    var validationErrors = submitOperationCallback.EntitiesInError.SelectMany(ee => ee.ValidationErrors);
+                    if(validationErrors.Any())
+                    {
+                        var error = validationErrors.ElementAt(0).ErrorMessage;
+
+                        for (var i = 1; i < validationErrors.Count(); i++)
+                            error += " and " + validationErrors.ElementAt(i).ErrorMessage;
+
+                        MessageBox.Show(error, "Please Fix Validation Errors", MessageBoxButton.OK);
+                        return;
+                    }
+
+                    //Log error (if it is not a validation error)
                     if (submitOperationCallback.HasError)
                     {
                         var errorUrl = String.Format("{0}/Error/SaveChangesError", UriExtensions.ThisRootUrl);

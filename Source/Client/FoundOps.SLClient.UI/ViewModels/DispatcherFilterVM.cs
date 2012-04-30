@@ -137,7 +137,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         public bool TaskHolderIncludedInFilter(TaskHolder taskHolder)
         {
             var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == taskHolder.ServiceName);
-            var meetsRegionsFilter = RegionOptions.Any(option => (option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName)) || taskHolder.RegionName == null;
+            var meetsRegionsFilter = RegionOptions.Any(option => (option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName)) || 
+                taskHolder.RegionName == null || !RegionOptions.Any();
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
         }
@@ -157,7 +158,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Only filter by region if there are locations or locations with regions in the route
             var meetsRegionsFilter = !regionsForRoute.Any()
-                || RegionOptions.Any(option => option.IsSelected && regionsForRoute.Contains(((Region)option.Entity).Name));
+                || RegionOptions.Any(option => option.IsSelected && regionsForRoute.Contains(((Region)option.Entity).Name)) || !RegionOptions.Any();
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
         }

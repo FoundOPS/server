@@ -512,6 +512,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 Id = Guid.NewGuid(),
                 Date = SelectedDate,
+                DetailsLoaded = true,
                 OwnerBusinessAccount = (BusinessAccount)ContextManager.OwnerAccount,
                 RouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).First()
             };

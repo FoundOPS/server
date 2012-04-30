@@ -16,10 +16,19 @@ namespace FoundOPS.API.Controllers
         #region Get
 
         // GET /api/route
-        public IQueryable<Route> GetRoutes()
+        public IQueryable<Route> GetRoutes(Guid? roleId)
         {
             //Gets the Current UserAccount
             var currentUser = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).FirstOrDefault();
+
+            if (roleId == null)
+                return null;
+
+#if DEBUG
+            var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(ba => ba.Id == roleId);
+#else
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole((Guid)roleId);
+#endif
 
             if (currentUser == null) 
                 return null;
@@ -32,11 +41,16 @@ namespace FoundOPS.API.Controllers
             //Finds all Routes associated with those Employees
             //Converts the FoundOPS model Routes to the API model Routes
             //Adds those APIRoutes to the list of APIRoutes to return
-            foreach (var employee in currentUser.LinkedEmployees)
-            {
-                var employeeRoutes = _coreEntitiesContainer.Routes.Where(r => r.Date == today && r.Technicians.Select(t => t.Id).Contains(employee.Id)).ToArray(); //SelectMany(r => r.Technicians.Select(t => t.Id)).Where(tId => tId == employee.Id)
-                apiRoutes.AddRange(employeeRoutes.Select(Route.ConvertModel));
-            }
+            //foreach (var employee in currentUser.LinkedEmployees)
+            //{
+            //    var employeeRoutes = _coreEntitiesContainer.Routes.Where(r => r.Date == today && r.Technicians.Select(t => t.Id).Contains(employee.Id) && 
+            //                                                                r.OwnerBusinessAccountId == currentBusinessAccount.Id).ToArray();
+            //    apiRoutes.AddRange(employeeRoutes.Select(Route.ConvertModel));
+            //}
+
+            var routesForBusinessAccount = _coreEntitiesContainer.Routes.Where(r => r.OwnerBusinessAccountId == currentBusinessAccount.Id); 
+
+            apiRoutes.AddRange(routesForBusinessAccount.Select(Route.ConvertModel));
 
             return apiRoutes.AsQueryable();
         }

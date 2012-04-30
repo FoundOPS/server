@@ -82,12 +82,12 @@ namespace FoundOps.Core.Models.CoreEntities
                 ClientId = ClientId,
                 ChildRouteTask = this,
                 OccurDate = Date,
-                LocationId = Location.Id,
                 LocationName = LocationName,
                 ServiceName = Name,
                 ServiceId = ServiceId,
                 RecurringServiceId = RecurringServiceId
             };
+
 
             if (Client != null)
                 taskHolder.ClientName = Client.DisplayName;
@@ -100,6 +100,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 taskHolder.AddressLine = Location.AddressLineOne;
                 taskHolder.Latitude = Location.Latitude;
                 taskHolder.Longitude = Location.Longitude;
+
+                taskHolder.LocationId = Location.Id;
             }
 
             ParentRouteTaskHolder = taskHolder;

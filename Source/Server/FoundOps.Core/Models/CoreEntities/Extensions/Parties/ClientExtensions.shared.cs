@@ -1,8 +1,10 @@
-﻿using System;
-using FoundOps.Common.Composite.Entities;
-using FoundOps.Core.Models.CoreEntities.DesignData;
+﻿using FoundOps.Common.Composite.Entities;
+using System;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class Client : IEntityDefaultCreation, ICompositeRaiseEntityPropertyChanged
     {

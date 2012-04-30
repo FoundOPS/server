@@ -13,7 +13,7 @@ namespace FoundOps.Server.Controllers
 #if DEBUG
         public static string AccountKey = "Wbs5xOmAKdNw8ef9XgRZF2lhE+DYH1uN0qgETVKSCLqIXaaTRjiFIj4sT2cf0iQxUdOAYEej2VI4aPBr7TVOYA==";
 #else
-        public static string AccountKey = "bs7B22OoZr0jKz9xCJFlNacCemDvaTT8pj3yV2PENA6GwYkERELymg+hDOU2Yz+nAkU8IyvS4lDUmzkfkQsCuQ==";
+        public static string AccountKey = "j9CJzOyyBkPmVccwc269o52l283iyGFgX8UMlpyfIMTdF0+Ka14kAAlHJiRC/WhdcrVdO0Kd+MRG/iTdddJATw==";
 #endif
         private const int TimeoutMilliseconds = 5000;
 

@@ -27,7 +27,8 @@ namespace FoundOps.Core.Models.CoreEntities
         void IEntityDefaultCreation.OnCreate()
         {
             Id = Guid.NewGuid();
-            Name = "";
+            //Need to have a name that is not empty, or else Ria Services will convert it to null and throw a validation error
+            Name = "New Region";
             Notes = "";
             OnCreation();
         }
