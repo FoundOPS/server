@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace FoundOps.Core.Models.Azure
@@ -19,15 +20,22 @@ namespace FoundOps.Core.Models.Azure
         public Guid? VehicleId { get; set; }
         public Guid RouteId { get; set; }
 
-        public DateTime TimeStampDate
-        {
-            get { return LastTimeStamp.Date; }
-        }
+        [Obsolete("Do not use setter method")]
+        public DateTime TimeStampDate { get; set; }
 
-        public DateTime LastTimeStamp { get; set; }
+        private DateTime _lastTimeStamp;
+        public DateTime LastTimeStamp
+        {
+            get { return _lastTimeStamp; }
+            set
+            {
+                _lastTimeStamp = value;
+                TimeStampDate = LastTimeStamp.Date;
+            }
+        }
 
         public Double Latitude { get; set; }
         public Double Longitude { get; set; }
-        
+
     }
 }
