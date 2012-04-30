@@ -48,7 +48,12 @@ namespace FoundOPS.API.Models
         /// </summary>
         public String Source { get; set; }
 
-        public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint)
+        /// <summary>
+        /// The Id of the Route that this TrackPoint belongs to
+        /// </summary>
+        public Guid? RouteId { get; set; }
+
+        public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint) 
         {
             var trackPointId = modelTrackPoint.EmployeetId ?? modelTrackPoint.VehicleId;
 
@@ -63,7 +68,8 @@ namespace FoundOPS.API.Models
                                      Latitude = modelTrackPoint.Latitude,
                                      Longitude = modelTrackPoint.Longitude,
                                      Speed = null,
-                                     Source = null
+                                     Source = null,
+                                     RouteId = modelTrackPoint.RouteId
                                  };
 
             return trackPoint;
