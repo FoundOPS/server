@@ -161,6 +161,23 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        private LocationVM _selectedEntityLocationVM;
+        /// <summary>
+        /// Gets or sets the selected entity location VM.
+        /// </summary>
+        /// <value>
+        /// The selected entity location VM.
+        /// </value>
+        public LocationVM SelectedEntityLocationVM
+        {
+            get { return _selectedEntityLocationVM; }
+            set
+            {
+                _selectedEntityLocationVM = value;
+                this.RaisePropertyChanged("SelectedEntityLocationVM");
+            }
+        }
+
         /// <summary>
         /// String to be verified
         /// </summary>
@@ -321,8 +338,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             base.OnSelectedEntityChanged(oldValue, newValue);
 
             if (newValue != null)
+            {
                 //Whenever the SelectedEntity changes setup the ContactInfoVM for that entity
                 SelectedEntityContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, newValue.ContactInfoSet);
+
+                SelectedEntityLocationVM = new LocationVM(((BusinessAccount)newValue).DepotLocation);
+            }
         }
 
         #endregion

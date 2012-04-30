@@ -1,13 +1,14 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.Tools.Location;
+using FoundOps.Common.Silverlight.Extensions.Telerik;
+using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Tools;
+using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.SLClient.UI.Tools;
 using ReactiveUI;
-using System.Windows;
+using System;
 using System.Reactive.Linq;
+using System.Windows;
 using Telerik.Windows.Controls.Map;
-using FoundOps.SLClient.UI.ViewModels;
-using FoundOps.Common.Silverlight.Tools.Location;
-using FoundOps.Common.Silverlight.Extensions.Telerik;
 
 namespace FoundOps.SLClient.UI.Controls.Locations
 {
@@ -16,7 +17,33 @@ namespace FoundOps.SLClient.UI.Controls.Locations
     /// </summary>
     public partial class LocationEdit
     {
-        private LocationsVM LocationsVM { get { return VM.Locations; } }
+        //private LocationsVM LocationsVM { get { return VM.Locations; } }
+
+        #region LocationsVM Dependency Property
+
+        /// <summary>
+        /// EntityToRemoveFromString
+        /// </summary>
+        public LocationVM LocationVM
+        {
+            get { return (LocationVM)GetValue(LocationVMProperty); }
+            set
+            {
+                SetValue(LocationVMProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// AddIsEnabled Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty LocationVMProperty =
+            DependencyProperty.Register(
+                "LocationVM",
+                typeof(LocationVM),
+                typeof(LocationEdit),
+                new PropertyMetadata(null));
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationEdit"/> class.
@@ -31,13 +58,11 @@ namespace FoundOps.SLClient.UI.Controls.Locations
                 .Where(_ => GeocoderResultsListBox.Items.Count > 1).AsGeneric();
 
             // Zoom to BestView when Geocoding is completed (i.e. When Search completes)
-            LocationsVM.SelectedLocationVMObservable.WhereNotNull().SelectLatest(lvm => lvm.GeocodeCompletion).AsGeneric()
-                .Merge(georesultselectionchanged).Throttle(new TimeSpan(0, 0, 0, 1))
-                .ObserveOnDispatcher().Subscribe(_ => InformationLayer.SetBestView());
+            LocationVM.GeocodeCompletion.AsGeneric().Merge(georesultselectionchanged)
+                .Throttle(new TimeSpan(0, 0, 0, 1)).ObserveOnDispatcher().Subscribe(_ => InformationLayer.SetBestView());
 
             // Subscribe to changes of latitude/longitude by changing visual state according to validity.
-            LocationsVM.SelectedLocationVMObservable.WhereNotNull().SelectLatest(lvm => lvm.ValidLatitudeLongitudeState)
-                .Throttle(new TimeSpan(0, 0, 0, 0, 500))
+            LocationVM.ValidLatitudeLongitudeState.Throttle(new TimeSpan(0, 0, 0, 0, 500))
                 .ObserveOnDispatcher().Subscribe(validstate =>
             {
                 if (validstate)
@@ -64,8 +89,8 @@ namespace FoundOps.SLClient.UI.Controls.Locations
 
             //In MapEditMode call ManuallySelectLatitudeLongitude command
             if ((VisualStateGroup.CurrentState == null || VisualStateGroup.CurrentState.Name != "MapDetails") &&
-                LocationsVM.SelectedLocationVM.ManuallySetLatitudeLongitude.CanExecute(latitudeLongitude))
-                LocationsVM.SelectedLocationVM.ManuallySetLatitudeLongitude.Execute(latitudeLongitude);
+                LocationVM.ManuallySetLatitudeLongitude.CanExecute(latitudeLongitude))
+                LocationVM.ManuallySetLatitudeLongitude.Execute(latitudeLongitude);
         }
 
         private void OnLocationSet(LocationSetMessage locationSetMessage)
@@ -84,7 +109,7 @@ namespace FoundOps.SLClient.UI.Controls.Locations
 
         private void MoreDetailsButtonClick(object sender, RoutedEventArgs e)
         {
-            LocationsVM.MoveToDetailsView.Execute(null);
+            //LocationVM.MoveToDetailsView.Execute(null);
         }
 
         private void MapTypeSelectorSelectionChanged(object sender, Telerik.Windows.Controls.SelectionChangedEventArgs e)

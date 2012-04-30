@@ -5,7 +5,7 @@
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Tools="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" d:DesignWidth="650" Foreground="Black" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM">
+             mc:Ignorable="d" d:DesignWidth="650" Foreground="Black">
     <UserControl.Resources>
         <DataTemplate x:Key="GeocoderResultTemplate" >
             <StackPanel>

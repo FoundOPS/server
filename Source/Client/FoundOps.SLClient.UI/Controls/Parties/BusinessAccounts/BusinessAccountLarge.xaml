@@ -84,29 +84,26 @@
                         <!--<Controls1:ImageUpload Grid.Row="1" HorizontalAlignment="Center" Margin="5" ImageData="{Binding , Mode=TwoWay}" />-->
                     </Grid>
                 </toolkit:Expander>
-<toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource LocationBrush}" 
-                                  BorderBrush="{StaticResource LocationBrush}" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools1:GetVM Type=ViewModels:LocationsVM}}">
+                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource LocationBrush}" 
+                                  BorderBrush="{StaticResource LocationBrush}" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:LocationsVM}}">
                     <toolkit:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock TextWrapping="Wrap" Text="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource LocationTitleConverter}}" 
+                            <TextBlock TextWrapping="Wrap" Text="Location" 
                                        Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
-                            <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Locations"
+                            <!--<AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Locations"
                                                            SourceType="{MarkupExtensions:Static MemberType=telerik:Location}"
-                                                           ItemToRemoveDisplayMember="{Binding SelectedEntity.Name, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.DisplayName}"
-                                                           Source="{Tools:GetVM Type=ViewModels:LocationsVM}" Destination="{Binding}"
-                                                           DestinationItemsSource="{Binding LocationsDestinationItemsSource}" />
+                                                           ItemToRemoveDisplayMember="{Binding SelectedEntity.Name, Source={Tools:GetVM Type=CoreEntities:LocationsVM}}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.DisplayName}"
+                                                           Source="{Tools:GetVM Type=CoreEntities:LocationsVM}" Destination="{Binding}"
+                                                           DestinationItemsSource="{Binding LocationsDestinationItemsSource}" />-->
                         </Grid>
                     </toolkit:Expander.Header>
                     <Grid>
-                        <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource NotEqualsVisibilityConverter}, ConverterParameter=1}">
-                            <Clients:ClientLocationsGrid x:Name="LocationsGrid" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
-                        </StackPanel>
-                        <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=1}">
-                            <Locations:LocationEdit DataContext="{Tools:GetVM Type=ViewModels:LocationsVM}" />
+                        <StackPanel>
+                            <Locations:LocationEdit LocationVM="{Binding DataContext.SelectedEntityLocationVM, ElementName=myBusinessAccountLarge}" />
                         </StackPanel>
                     </Grid>
                 </toolkit:Expander>
