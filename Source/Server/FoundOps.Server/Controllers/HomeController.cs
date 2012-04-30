@@ -109,7 +109,7 @@ namespace FoundOps.Server.Controllers
                 }
                 catch { }
 
-                var serviceDate = DateTime.UtcNow.AddDays(-1);
+                var serviceDate = DateTime.UtcNow;
 
                 var routes = coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate.Date && r.OwnerBusinessAccountId == businessAccountId).OrderBy(r => r.Id);
 
