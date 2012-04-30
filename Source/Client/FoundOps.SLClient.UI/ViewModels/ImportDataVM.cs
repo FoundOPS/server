@@ -1,4 +1,3 @@
-using System.Linq;
 using FoundOps.Core.Models.Import;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
@@ -9,6 +8,7 @@ using MEFedMVVM.ViewModelLocator;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.IO;
 using System.Windows;
 using Telerik.Data;
@@ -65,8 +65,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                         return ImportDestinationTools.ClientsColumnTypes;
                     case ImportDestination.Locations:
                         return ImportDestinationTools.LocationsColumnTypes;
-                    case ImportDestination.Services:
-                        return ImportDestinationTools.ServicesColumnTypes;
+                    case ImportDestination.RecurringServices:
+                        return ImportDestinationTools.RecurringServicesColumnTypes;
                     default:
                         return new List<ImportColumnType>();
                 }

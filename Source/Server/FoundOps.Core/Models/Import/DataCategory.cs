@@ -6,7 +6,6 @@
     public enum DataCategory
     {
         ClientName,
-        SalespersonName,
         ContactInfoEmailAddressLabel,
         ContactInfoEmailAddressData,
         ContactInfoFaxNumberLabel,
@@ -25,6 +24,11 @@
         LocationCity,
         LocationState,
         LocationZipCode,
-        ServiceDate
+        ServiceType,
+        RepeatFrequency,
+        RepeatStartDate,
+        RepeatEnd,
+        RepeatEvery,
+        RepeatOn
     }
 }
