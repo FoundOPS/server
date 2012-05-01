@@ -103,111 +103,77 @@ with
           </EntitySetMapping>
 
 3. A. Update Model from Database
-   B. Add back all the Views and Stored Procedures except the table valued functions below: 
+   B. Add back all the Views and Stored Procedures
+   C. In Model Browser delete the Function Imports for the 3 table valued functions: 
       GetServiceHolders, GetResourcesWithLastPoint, GetUnroutedServicesForDate
-   C. In Model Browser delete the 3 table valued functions.
    D. Save EDMX
 
 4. Add Functions back
 
 Add after </EntityContainer> (the one after FK association sets)
 
-        <Function Name="GetServiceHolders" IsComposable="false">
-          <CommandText>
-            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
-            FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
-          </CommandText>
-          <Parameter Name="serviceProviderIdContext"
-                     Mode="In"
-                     Type="uniqueidentifier"/>
-          <Parameter Name="clientIdContext"
-                     Mode="In"
-                     Type="uniqueidentifier"/>
-          <Parameter Name="recurringServiceIdContext"
-                     Mode="In"
-                     Type="uniqueidentifier"/>
-          <Parameter Name="seedDate"
-                     Mode="In"
-                     Type="datetime"/>
-          <Parameter Name="frontBackMinimum"
-                     Mode="In"
-                     Type="int"/>
-          <Parameter Name="getPrevious"
-                     Mode="In"
-                     Type="bit"/>
-          <Parameter Name="getNext"
-                     Mode="In"
-                     Type="bit"/>
-        </Function>
-        <Function Name="GetUnroutedServicesForDate" IsComposable="false">
-          <CommandText>
-            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt
-            FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
-          </CommandText>
-          <Parameter Name="serviceProviderContext"
-                     Mode="In"
-                     Type="uniqueidentifier"/>
-          <Parameter Name="serviceDate"
-                     Mode="In"
-                     Type="datetime"/>
-        </Function>
-		<Function Name="GetResourcesWithLastPoint" IsComposable="false">
-			<CommandText>
-			  SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource
-			  FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId , @serviceDate)
-			</CommandText>
-			<Parameter Name="serviceProviderId"
-					   Mode="In"
-					   Type="uniqueidentifier"/>
-			<Parameter Name="serviceDate"
-					   Mode="In"
-					   Type="datetime"/>
-		</Function>
+      <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+           <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
+           <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
+         </FunctionImport>
+         <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
+           <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
+           <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
+           <Parameter Name="recurringServiceIdContext" Mode="In" Type="Guid" />
+           <Parameter Name="seedDate" Mode="In" Type="DateTime" />
+           <Parameter Name="frontBackMinimum" Mode="In" Type="Int32" />
+           <Parameter Name="getPrevious" Mode="In" Type="Boolean" />
+           <Parameter Name="getNext" Mode="In" Type="Boolean" />
+         </FunctionImport>
+         <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
+           <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
+           <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
+         </FunctionImport>
 
 Add before </EntityContainerMapping>
 
-          <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
-                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
-                <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+           <ResultMapping>
+             <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+               <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+               <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+               <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+               <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
+               <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+               <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+               <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
+               <ScalarProperty Name="Speed" ColumnName="Speed" />
+               <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
+               <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+             </ComplexTypeMapping>
+           </ResultMapping>
+         </FunctionImportMapping>
+         <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
+           <ResultMapping>
+             <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
+               <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+               <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+               <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+               <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+             </ComplexTypeMapping>
+           </ResultMapping>
+         </FunctionImportMapping>
+         <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
+           <ResultMapping>
+             <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
+               <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+               <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+               <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+               <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+               <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+               <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
+               <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+               <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+               <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+               <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+               <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+               <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+               <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
+             </ComplexTypeMapping>
+           </ResultMapping>
+         </FunctionImportMapping>

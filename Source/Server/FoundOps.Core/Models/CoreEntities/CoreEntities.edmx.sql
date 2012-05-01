@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 04/26/2012 15:11:12
+-- Date Created: 05/01/2012 18:26:59
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -17,167 +17,77 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_ContactInfoParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ContactInfoSet] DROP CONSTRAINT [FK_ContactInfoParty];
+IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
 GO
-IF OBJECT_ID(N'[dbo].[FK_RoleBlock_Role]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RoleBlock] DROP CONSTRAINT [FK_RoleBlock_Role];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RoleBlock_Block]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RoleBlock] DROP CONSTRAINT [FK_RoleBlock_Block];
-GO
-IF OBJECT_ID(N'[dbo].[FK_LocationContactInfo]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ContactInfoSet] DROP CONSTRAINT [FK_LocationContactInfo];
-GO
-IF OBJECT_ID(N'[dbo].[FK_LocationParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_LocationParty];
-GO
-IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryVehicle]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[VehicleMaintenanceLog] DROP CONSTRAINT [FK_VehicleMaintenanceLogEntryVehicle];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteVehicle_Route]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteVehicle] DROP CONSTRAINT [FK_RouteVehicle_Route];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteVehicle_Vehicle]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteVehicle] DROP CONSTRAINT [FK_RouteVehicle_Vehicle];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteTaskLocation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskLocation];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteDestinationLocation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteDestinations] DROP CONSTRAINT [FK_RouteDestinationLocation];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteTaskRouteDestination]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskRouteDestination];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteDestinationRoute]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteDestinations] DROP CONSTRAINT [FK_RouteDestinationRoute];
-GO
-IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryLineItem]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[VehicleMaintenanceLineItems] DROP CONSTRAINT [FK_VehicleMaintenanceLogEntryLineItem];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ClientParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientParty];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteTaskClient]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskClient];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ServiceClient]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_ServiceClient];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteDestinationClient]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteDestinations] DROP CONSTRAINT [FK_RouteDestinationClient];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteTaskService]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskService];
-GO
-IF OBJECT_ID(N'[dbo].[FK_BusinessAccountService]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_BusinessAccountService];
-GO
-IF OBJECT_ID(N'[dbo].[FK_BusinessAccountRoute]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Routes] DROP CONSTRAINT [FK_BusinessAccountRoute];
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccount_inherits_Business]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_BusinessAccount] DROP CONSTRAINT [FK_BusinessAccount_inherits_Business];
 GO
 IF OBJECT_ID(N'[dbo].[FK_BusinessAccountClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_BusinessAccountClient];
 GO
-IF OBJECT_ID(N'[dbo].[FK_BusinessAccountRouteTask]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_BusinessAccountRouteTask];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserAccountUserAccountLogEntry]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserAccountLog] DROP CONSTRAINT [FK_UserAccountUserAccountLogEntry];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ServiceTemplateBusinessAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ServiceTemplates] DROP CONSTRAINT [FK_ServiceTemplateBusinessAccount];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RecurringServiceServiceTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RecurringServices] DROP CONSTRAINT [FK_RecurringServiceServiceTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RecurringServiceService]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_RecurringServiceService];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RecurringServiceClient]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RecurringServices] DROP CONSTRAINT [FK_RecurringServiceClient];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ClientServiceTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ServiceTemplates] DROP CONSTRAINT [FK_ClientServiceTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_VehicleParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Vehicles] DROP CONSTRAINT [FK_VehicleParty];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ServiceServiceTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_ServiceServiceTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_PartyRole_Party]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PartyRole] DROP CONSTRAINT [FK_PartyRole_Party];
-GO
-IF OBJECT_ID(N'[dbo].[FK_PartyRole_Role]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PartyRole] DROP CONSTRAINT [FK_PartyRole_Role];
-GO
-IF OBJECT_ID(N'[dbo].[FK_PartyRole1]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Roles] DROP CONSTRAINT [FK_PartyRole1];
-GO
-IF OBJECT_ID(N'[dbo].[FK_LocationParty1]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_LocationParty1];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RegionLocation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_RegionLocation];
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccountInvoice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_BusinessAccountInvoice];
 GO
 IF OBJECT_ID(N'[dbo].[FK_BusinessAccountRegion]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Regions] DROP CONSTRAINT [FK_BusinessAccountRegion];
 GO
-IF OBJECT_ID(N'[dbo].[FK_LocationFile]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Files] DROP CONSTRAINT [FK_LocationFile];
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccountRoute]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Routes] DROP CONSTRAINT [FK_BusinessAccountRoute];
 GO
-IF OBJECT_ID(N'[dbo].[FK_LocationSubLocation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[SubLocations] DROP CONSTRAINT [FK_LocationSubLocation];
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccountRouteTask]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_BusinessAccountRouteTask];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EmployeeUserAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeUserAccount];
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccountService]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_BusinessAccountService];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EmployeeBusinessAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeBusinessAccount];
+IF OBJECT_ID(N'[dbo].[FK_ClientInvoice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_ClientInvoice];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EmployeePerson]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeePerson];
+IF OBJECT_ID(N'[dbo].[FK_ClientLocation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientLocation];
 GO
-IF OBJECT_ID(N'[dbo].[FK_RecurringServiceRepeat]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RecurringServices] DROP CONSTRAINT [FK_RecurringServiceRepeat];
+IF OBJECT_ID(N'[dbo].[FK_ClientParty]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientParty];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EmployeeHistoryEntryEmployee]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EmployeeHistoryEntries] DROP CONSTRAINT [FK_EmployeeHistoryEntryEmployee];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Route]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteEmployee] DROP CONSTRAINT [FK_RouteEmployee_Route];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Employee]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteEmployee] DROP CONSTRAINT [FK_RouteEmployee_Employee];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ServiceTemplateServiceTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ServiceTemplates] DROP CONSTRAINT [FK_ServiceTemplateServiceTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_FieldField]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Fields] DROP CONSTRAINT [FK_FieldField];
-GO
-IF OBJECT_ID(N'[dbo].[FK_OptionsFieldOption]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Options] DROP CONSTRAINT [FK_OptionsFieldOption];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ServiceTemplateField]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Fields] DROP CONSTRAINT [FK_ServiceTemplateField];
-GO
-IF OBJECT_ID(N'[dbo].[FK_LocationFieldLocation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Fields_LocationField] DROP CONSTRAINT [FK_LocationFieldLocation];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ContactPerson]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Contacts] DROP CONSTRAINT [FK_ContactPerson];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ContactParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Contacts] DROP CONSTRAINT [FK_ContactParty];
+IF OBJECT_ID(N'[dbo].[FK_ClientServiceTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ServiceTemplates] DROP CONSTRAINT [FK_ClientServiceTemplate];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ClientTitleClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ClientTitles] DROP CONSTRAINT [FK_ClientTitleClient];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ClientTitleContact]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ClientTitles] DROP CONSTRAINT [FK_ClientTitleContact];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ContactInfoParty]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ContactInfoSet] DROP CONSTRAINT [FK_ContactInfoParty];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ContactParty]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Contacts] DROP CONSTRAINT [FK_ContactParty];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ContactPerson]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Contacts] DROP CONSTRAINT [FK_ContactPerson];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DateTimeField_inherits_Field]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Fields_DateTimeField] DROP CONSTRAINT [FK_DateTimeField_inherits_Field];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EmployeeBusinessAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeBusinessAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EmployeeHistoryEntryEmployee]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EmployeeHistoryEntries] DROP CONSTRAINT [FK_EmployeeHistoryEntryEmployee];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EmployeePerson]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeePerson];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EmployeeUserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeUserAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FieldField]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Fields] DROP CONSTRAINT [FK_FieldField];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FileParty]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Files] DROP CONSTRAINT [FK_FileParty];
 GO
 IF OBJECT_ID(N'[dbo].[FK_InvoiceLocation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_InvoiceLocation];
@@ -191,56 +101,146 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_LineItemInvoice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LineItems] DROP CONSTRAINT [FK_LineItemInvoice];
 GO
-IF OBJECT_ID(N'[dbo].[FK_FileParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Files] DROP CONSTRAINT [FK_FileParty];
-GO
-IF OBJECT_ID(N'[dbo].[FK_PartyPartyImage]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Files_PartyImage] DROP CONSTRAINT [FK_PartyPartyImage];
-GO
-IF OBJECT_ID(N'[dbo].[FK_BusinessAccountInvoice]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_BusinessAccountInvoice];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ClientInvoice]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_ClientInvoice];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ClientLocation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientLocation];
-GO
-IF OBJECT_ID(N'[dbo].[FK_RouteTaskRecurringService]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskRecurringService];
-GO
-IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
-GO
-IF OBJECT_ID(N'[dbo].[FK_BusinessAccount_inherits_Business]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_BusinessAccount] DROP CONSTRAINT [FK_BusinessAccount_inherits_Business];
-GO
-IF OBJECT_ID(N'[dbo].[FK_Person_inherits_Party]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_Person] DROP CONSTRAINT [FK_Person_inherits_Party];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserAccount_inherits_Person]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_UserAccount] DROP CONSTRAINT [FK_UserAccount_inherits_Person];
-GO
-IF OBJECT_ID(N'[dbo].[FK_OptionsField_inherits_Field]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Fields_OptionsField] DROP CONSTRAINT [FK_OptionsField_inherits_Field];
+IF OBJECT_ID(N'[dbo].[FK_LocationContactInfo]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ContactInfoSet] DROP CONSTRAINT [FK_LocationContactInfo];
 GO
 IF OBJECT_ID(N'[dbo].[FK_LocationField_inherits_Field]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fields_LocationField] DROP CONSTRAINT [FK_LocationField_inherits_Field];
 GO
-IF OBJECT_ID(N'[dbo].[FK_PartyImage_inherits_File]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Files_PartyImage] DROP CONSTRAINT [FK_PartyImage_inherits_File];
+IF OBJECT_ID(N'[dbo].[FK_LocationFieldLocation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Fields_LocationField] DROP CONSTRAINT [FK_LocationFieldLocation];
 GO
-IF OBJECT_ID(N'[dbo].[FK_TextBoxField_inherits_Field]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Fields_TextBoxField] DROP CONSTRAINT [FK_TextBoxField_inherits_Field];
+IF OBJECT_ID(N'[dbo].[FK_LocationFile]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Files] DROP CONSTRAINT [FK_LocationFile];
+GO
+IF OBJECT_ID(N'[dbo].[FK_LocationOption_inherits_Option]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Options_LocationOption] DROP CONSTRAINT [FK_LocationOption_inherits_Option];
+GO
+IF OBJECT_ID(N'[dbo].[FK_LocationParty]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_LocationParty];
+GO
+IF OBJECT_ID(N'[dbo].[FK_LocationParty1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_LocationParty1];
+GO
+IF OBJECT_ID(N'[dbo].[FK_LocationSubLocation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[SubLocations] DROP CONSTRAINT [FK_LocationSubLocation];
 GO
 IF OBJECT_ID(N'[dbo].[FK_NumericField_inherits_Field]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fields_NumericField] DROP CONSTRAINT [FK_NumericField_inherits_Field];
 GO
-IF OBJECT_ID(N'[dbo].[FK_DateTimeField_inherits_Field]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Fields_DateTimeField] DROP CONSTRAINT [FK_DateTimeField_inherits_Field];
+IF OBJECT_ID(N'[dbo].[FK_OptionsField_inherits_Field]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Fields_OptionsField] DROP CONSTRAINT [FK_OptionsField_inherits_Field];
 GO
-IF OBJECT_ID(N'[dbo].[FK_LocationOption_inherits_Option]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Options_LocationOption] DROP CONSTRAINT [FK_LocationOption_inherits_Option];
+IF OBJECT_ID(N'[dbo].[FK_OptionsFieldOption]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Options] DROP CONSTRAINT [FK_OptionsFieldOption];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PartyImage_inherits_File]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Files_PartyImage] DROP CONSTRAINT [FK_PartyImage_inherits_File];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PartyPartyImage]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Files_PartyImage] DROP CONSTRAINT [FK_PartyPartyImage];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PartyRole_Party]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PartyRole] DROP CONSTRAINT [FK_PartyRole_Party];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PartyRole_Role]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PartyRole] DROP CONSTRAINT [FK_PartyRole_Role];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PartyRole1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Roles] DROP CONSTRAINT [FK_PartyRole1];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Person_inherits_Party]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_Person] DROP CONSTRAINT [FK_Person_inherits_Party];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RecurringServiceClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RecurringServices] DROP CONSTRAINT [FK_RecurringServiceClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RecurringServiceRepeat]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RecurringServices] DROP CONSTRAINT [FK_RecurringServiceRepeat];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RecurringServiceService]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_RecurringServiceService];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RecurringServiceServiceTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RecurringServices] DROP CONSTRAINT [FK_RecurringServiceServiceTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RegionLocation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_RegionLocation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RoleBlock_Block]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RoleBlock] DROP CONSTRAINT [FK_RoleBlock_Block];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RoleBlock_Role]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RoleBlock] DROP CONSTRAINT [FK_RoleBlock_Role];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteDestinationClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteDestinations] DROP CONSTRAINT [FK_RouteDestinationClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteDestinationLocation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteDestinations] DROP CONSTRAINT [FK_RouteDestinationLocation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteDestinationRoute]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteDestinations] DROP CONSTRAINT [FK_RouteDestinationRoute];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Employee]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteEmployee] DROP CONSTRAINT [FK_RouteEmployee_Employee];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Route]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteEmployee] DROP CONSTRAINT [FK_RouteEmployee_Route];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteTaskClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteTaskLocation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskLocation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteTaskRecurringService]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskRecurringService];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteTaskRouteDestination]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskRouteDestination];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteTaskService]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskService];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteVehicle_Route]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteVehicle] DROP CONSTRAINT [FK_RouteVehicle_Route];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteVehicle_Vehicle]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteVehicle] DROP CONSTRAINT [FK_RouteVehicle_Vehicle];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ServiceClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_ServiceClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ServiceServiceTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_ServiceServiceTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ServiceTemplateBusinessAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ServiceTemplates] DROP CONSTRAINT [FK_ServiceTemplateBusinessAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ServiceTemplateField]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Fields] DROP CONSTRAINT [FK_ServiceTemplateField];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ServiceTemplateServiceTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ServiceTemplates] DROP CONSTRAINT [FK_ServiceTemplateServiceTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TextBoxField_inherits_Field]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Fields_TextBoxField] DROP CONSTRAINT [FK_TextBoxField_inherits_Field];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserAccount_inherits_Person]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_UserAccount] DROP CONSTRAINT [FK_UserAccount_inherits_Person];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserAccountUserAccountLogEntry]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserAccountLog] DROP CONSTRAINT [FK_UserAccountUserAccountLogEntry];
+GO
+IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryLineItem]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[VehicleMaintenanceLineItems] DROP CONSTRAINT [FK_VehicleMaintenanceLogEntryLineItem];
+GO
+IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryVehicle]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[VehicleMaintenanceLog] DROP CONSTRAINT [FK_VehicleMaintenanceLogEntryVehicle];
+GO
+IF OBJECT_ID(N'[dbo].[FK_VehicleParty]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Vehicles] DROP CONSTRAINT [FK_VehicleParty];
 GO
 
 -- --------------------------------------------------
@@ -250,98 +250,68 @@ GO
 IF OBJECT_ID(N'[dbo].[Blocks]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Blocks];
 GO
-IF OBJECT_ID(N'[dbo].[Roles]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Roles];
-GO
-IF OBJECT_ID(N'[dbo].[Parties]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Parties];
-GO
-IF OBJECT_ID(N'[dbo].[ContactInfoSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ContactInfoSet];
-GO
-IF OBJECT_ID(N'[dbo].[Services]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Services];
-GO
-IF OBJECT_ID(N'[dbo].[Fields]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Fields];
-GO
-IF OBJECT_ID(N'[dbo].[Locations]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Locations];
-GO
-IF OBJECT_ID(N'[dbo].[RouteDestinations]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[RouteDestinations];
-GO
-IF OBJECT_ID(N'[dbo].[Routes]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Routes];
-GO
-IF OBJECT_ID(N'[dbo].[UserAccountLog]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserAccountLog];
-GO
-IF OBJECT_ID(N'[dbo].[Vehicles]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Vehicles];
-GO
-IF OBJECT_ID(N'[dbo].[VehicleMaintenanceLog]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[VehicleMaintenanceLog];
-GO
-IF OBJECT_ID(N'[dbo].[VehicleMaintenanceLineItems]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[VehicleMaintenanceLineItems];
-GO
 IF OBJECT_ID(N'[dbo].[Clients]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Clients];
-GO
-IF OBJECT_ID(N'[dbo].[ServiceTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ServiceTemplates];
-GO
-IF OBJECT_ID(N'[dbo].[Repeats]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Repeats];
-GO
-IF OBJECT_ID(N'[dbo].[RecurringServices]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[RecurringServices];
-GO
-IF OBJECT_ID(N'[dbo].[Regions]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Regions];
-GO
-IF OBJECT_ID(N'[dbo].[Files]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Files];
-GO
-IF OBJECT_ID(N'[dbo].[SubLocations]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[SubLocations];
-GO
-IF OBJECT_ID(N'[dbo].[Employees]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Employees];
-GO
-IF OBJECT_ID(N'[dbo].[EmployeeHistoryEntries]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EmployeeHistoryEntries];
-GO
-IF OBJECT_ID(N'[dbo].[Options]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Options];
-GO
-IF OBJECT_ID(N'[dbo].[Contacts]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Contacts];
 GO
 IF OBJECT_ID(N'[dbo].[ClientTitles]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ClientTitles];
 GO
-IF OBJECT_ID(N'[dbo].[Invoices]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Invoices];
+IF OBJECT_ID(N'[dbo].[ContactInfoSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ContactInfoSet];
 GO
-IF OBJECT_ID(N'[dbo].[SalesTerms]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[SalesTerms];
+IF OBJECT_ID(N'[dbo].[Contacts]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Contacts];
 GO
-IF OBJECT_ID(N'[dbo].[LineItems]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[LineItems];
+IF OBJECT_ID(N'[dbo].[EmployeeHistoryEntries]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EmployeeHistoryEntries];
 GO
-IF OBJECT_ID(N'[dbo].[RouteTasks]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[RouteTasks];
+IF OBJECT_ID(N'[dbo].[Employees]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Employees];
 GO
 IF OBJECT_ID(N'[dbo].[Errors]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Errors];
 GO
-IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[PartiesWithName]', 'U') IS NOT NULL
-    DROP TABLE [CoreEntitiesStoreContainer].[PartiesWithName];
+IF OBJECT_ID(N'[dbo].[Fields]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Fields];
 GO
-IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId]', 'U') IS NOT NULL
-    DROP TABLE [CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId];
+IF OBJECT_ID(N'[dbo].[Fields_DateTimeField]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Fields_DateTimeField];
+GO
+IF OBJECT_ID(N'[dbo].[Fields_LocationField]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Fields_LocationField];
+GO
+IF OBJECT_ID(N'[dbo].[Fields_NumericField]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Fields_NumericField];
+GO
+IF OBJECT_ID(N'[dbo].[Fields_OptionsField]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Fields_OptionsField];
+GO
+IF OBJECT_ID(N'[dbo].[Fields_TextBoxField]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Fields_TextBoxField];
+GO
+IF OBJECT_ID(N'[dbo].[Files]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Files];
+GO
+IF OBJECT_ID(N'[dbo].[Files_PartyImage]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Files_PartyImage];
+GO
+IF OBJECT_ID(N'[dbo].[Invoices]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Invoices];
+GO
+IF OBJECT_ID(N'[dbo].[LineItems]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[LineItems];
+GO
+IF OBJECT_ID(N'[dbo].[Locations]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Locations];
+GO
+IF OBJECT_ID(N'[dbo].[Options]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Options];
+GO
+IF OBJECT_ID(N'[dbo].[Options_LocationOption]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Options_LocationOption];
+GO
+IF OBJECT_ID(N'[dbo].[Parties]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Parties];
 GO
 IF OBJECT_ID(N'[dbo].[Parties_Business]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_Business];
@@ -355,38 +325,68 @@ GO
 IF OBJECT_ID(N'[dbo].[Parties_UserAccount]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_UserAccount];
 GO
-IF OBJECT_ID(N'[dbo].[Fields_OptionsField]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Fields_OptionsField];
+IF OBJECT_ID(N'[dbo].[PartyRole]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PartyRole];
 GO
-IF OBJECT_ID(N'[dbo].[Fields_LocationField]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Fields_LocationField];
+IF OBJECT_ID(N'[dbo].[RecurringServices]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RecurringServices];
 GO
-IF OBJECT_ID(N'[dbo].[Files_PartyImage]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Files_PartyImage];
+IF OBJECT_ID(N'[dbo].[Regions]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Regions];
 GO
-IF OBJECT_ID(N'[dbo].[Fields_TextBoxField]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Fields_TextBoxField];
-GO
-IF OBJECT_ID(N'[dbo].[Fields_NumericField]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Fields_NumericField];
-GO
-IF OBJECT_ID(N'[dbo].[Fields_DateTimeField]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Fields_DateTimeField];
-GO
-IF OBJECT_ID(N'[dbo].[Options_LocationOption]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Options_LocationOption];
+IF OBJECT_ID(N'[dbo].[Repeats]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Repeats];
 GO
 IF OBJECT_ID(N'[dbo].[RoleBlock]', 'U') IS NOT NULL
     DROP TABLE [dbo].[RoleBlock];
 GO
-IF OBJECT_ID(N'[dbo].[RouteVehicle]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[RouteVehicle];
+IF OBJECT_ID(N'[dbo].[Roles]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Roles];
 GO
-IF OBJECT_ID(N'[dbo].[PartyRole]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[PartyRole];
+IF OBJECT_ID(N'[dbo].[RouteDestinations]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RouteDestinations];
 GO
 IF OBJECT_ID(N'[dbo].[RouteEmployee]', 'U') IS NOT NULL
     DROP TABLE [dbo].[RouteEmployee];
+GO
+IF OBJECT_ID(N'[dbo].[Routes]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Routes];
+GO
+IF OBJECT_ID(N'[dbo].[RouteTasks]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RouteTasks];
+GO
+IF OBJECT_ID(N'[dbo].[RouteVehicle]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RouteVehicle];
+GO
+IF OBJECT_ID(N'[dbo].[SalesTerms]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[SalesTerms];
+GO
+IF OBJECT_ID(N'[dbo].[Services]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Services];
+GO
+IF OBJECT_ID(N'[dbo].[ServiceTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ServiceTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[SubLocations]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[SubLocations];
+GO
+IF OBJECT_ID(N'[dbo].[UserAccountLog]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserAccountLog];
+GO
+IF OBJECT_ID(N'[dbo].[VehicleMaintenanceLineItems]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[VehicleMaintenanceLineItems];
+GO
+IF OBJECT_ID(N'[dbo].[VehicleMaintenanceLog]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[VehicleMaintenanceLog];
+GO
+IF OBJECT_ID(N'[dbo].[Vehicles]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Vehicles];
+GO
+IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[PartiesWithName]', 'U') IS NOT NULL
+    DROP TABLE [CoreEntitiesStoreContainer].[PartiesWithName];
+GO
+IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId]', 'U') IS NOT NULL
+    DROP TABLE [CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId];
 GO
 
 -- --------------------------------------------------
@@ -469,7 +469,8 @@ CREATE TABLE [dbo].[Locations] (
     [Latitude] decimal(11,8)  NULL,
     [City] nvarchar(max)  NULL,
     [PartyId] uniqueidentifier  NULL,
-    [RegionId] uniqueidentifier  NULL
+    [RegionId] uniqueidentifier  NULL,
+    [BusinessAccountId] uniqueidentifier  NULL
 );
 GO
 
@@ -697,7 +698,7 @@ CREATE TABLE [dbo].[Invoices] (
     [CustomerId] nvarchar(max)  NULL,
     [CreateTime] nvarchar(max)  NULL,
     [LastUpdatedTime] nvarchar(max)  NULL,
-    [BusinessAccountId] uniqueidentifier  NULL,
+    [BusinessAccountIdForDepot] uniqueidentifier  NULL,
     [ClientId] uniqueidentifier  NULL
 );
 GO
@@ -1958,10 +1959,10 @@ ADD CONSTRAINT [FK_PartyPartyImage]
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [BusinessAccountId] in table 'Invoices'
+-- Creating foreign key on [BusinessAccountIdForDepot] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [FK_BusinessAccountInvoice]
-    FOREIGN KEY ([BusinessAccountId])
+    FOREIGN KEY ([BusinessAccountIdForDepot])
     REFERENCES [dbo].[Parties_BusinessAccount]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -1969,7 +1970,7 @@ ADD CONSTRAINT [FK_BusinessAccountInvoice]
 -- Creating non-clustered index for FOREIGN KEY 'FK_BusinessAccountInvoice'
 CREATE INDEX [IX_FK_BusinessAccountInvoice]
 ON [dbo].[Invoices]
-    ([BusinessAccountId]);
+    ([BusinessAccountIdForDepot]);
 GO
 
 -- Creating foreign key on [ClientId] in table 'Invoices'
@@ -2014,13 +2015,27 @@ ON [dbo].[RouteTasks]
     ([RecurringServiceId]);
 GO
 
+-- Creating foreign key on [BusinessAccountId] in table 'Locations'
+ALTER TABLE [dbo].[Locations]
+ADD CONSTRAINT [FK_BusinessAccountLocation]
+    FOREIGN KEY ([BusinessAccountId])
+    REFERENCES [dbo].[Parties_BusinessAccount]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_BusinessAccountLocation'
+CREATE INDEX [IX_FK_BusinessAccountLocation]
+ON [dbo].[Locations]
+    ([BusinessAccountId]);
+GO
+
 -- Creating foreign key on [Id] in table 'Parties_Business'
 ALTER TABLE [dbo].[Parties_Business]
 ADD CONSTRAINT [FK_Business_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'
@@ -2029,7 +2044,7 @@ ADD CONSTRAINT [FK_BusinessAccount_inherits_Business]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Business]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Person'
@@ -2038,7 +2053,7 @@ ADD CONSTRAINT [FK_Person_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_UserAccount'
@@ -2047,7 +2062,7 @@ ADD CONSTRAINT [FK_UserAccount_inherits_Person]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Person]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_OptionsField'
@@ -2056,7 +2071,7 @@ ADD CONSTRAINT [FK_OptionsField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_LocationField'
@@ -2065,7 +2080,7 @@ ADD CONSTRAINT [FK_LocationField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Files_PartyImage'
@@ -2074,7 +2089,7 @@ ADD CONSTRAINT [FK_PartyImage_inherits_File]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Files]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_TextBoxField'
@@ -2083,7 +2098,7 @@ ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_NumericField'
@@ -2092,7 +2107,7 @@ ADD CONSTRAINT [FK_NumericField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_DateTimeField'
@@ -2101,7 +2116,7 @@ ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Options_LocationOption'
@@ -2110,7 +2125,7 @@ ADD CONSTRAINT [FK_LocationOption_inherits_Option]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Options]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------
