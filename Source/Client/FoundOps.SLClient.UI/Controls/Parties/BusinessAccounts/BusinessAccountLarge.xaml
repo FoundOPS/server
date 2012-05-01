@@ -92,7 +92,7 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock TextWrapping="Wrap" Text="Location" 
+                            <TextBlock TextWrapping="Wrap" Text="Depot Location" 
                                        Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
                             <!--<AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Locations"
                                                            SourceType="{MarkupExtensions:Static MemberType=telerik:Location}"
@@ -101,11 +101,7 @@
                                                            DestinationItemsSource="{Binding LocationsDestinationItemsSource}" />-->
                         </Grid>
                     </toolkit:Expander.Header>
-                    <Grid>
-                        <StackPanel>
-                            <Locations:LocationEdit LocationVM="{Binding DataContext.SelectedEntityLocationVM, ElementName=myBusinessAccountLarge}" />
-                        </StackPanel>
-                    </Grid>
+                    <Locations:LocationEdit LocationVM="{Binding DataContext.SelectedEntityLocationVM, ElementName=myBusinessAccountLarge}" />
                 </toolkit:Expander>
                 <ContactInfo:ContactInfoEdit HorizontalAlignment="Stretch" ContactInfoVM="{Binding DataContext.SelectedEntityContactInfoVM, ElementName=myBusinessAccountLarge}" />
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">

@@ -19,22 +19,44 @@ namespace FoundOps.SLClient.UI.Controls.Locations
     {
         //private LocationsVM LocationsVM { get { return VM.Locations; } }
 
-        #region LocationsVM Dependency Property
+        #region LocationVM Dependency Property
 
         /// <summary>
-        /// EntityToRemoveFromString
+        /// LocationVM
         /// </summary>
         public LocationVM LocationVM
         {
             get { return (LocationVM)GetValue(LocationVMProperty); }
             set
             {
+                LocationVMPropertyChanged(value);
                 SetValue(LocationVMProperty, value);
             }
         }
 
+        private void LocationVMPropertyChanged(LocationVM locationVM)
+        {
+            // Zoom to BestView when selection changed on  geocode results (when there is more than just the one default option).
+            var georesultselectionchanged = Observable.FromEventPattern<System.Windows.Controls.SelectionChangedEventArgs>(GeocoderResultsListBox, "SelectionChanged")
+                .Where(_ => GeocoderResultsListBox.Items.Count > 1).AsGeneric();
+
+            // Zoom to BestView when Geocoding is completed (i.e. When Search completes)
+            locationVM.GeocodeCompletion.AsGeneric().Merge(georesultselectionchanged)
+                .Throttle(new TimeSpan(0, 0, 0, 1)).ObserveOnDispatcher().Subscribe(_ => InformationLayer.SetBestView());
+
+            // Subscribe to changes of latitude/longitude by changing visual state according to validity.
+            locationVM.ValidLatitudeLongitudeState.Throttle(new TimeSpan(0, 0, 0, 0, 500))
+                .ObserveOnDispatcher().Subscribe(validstate =>
+                {
+                    if (validstate)
+                        VisualStateManager.GoToState(this, "MapDetails", false);
+                    else
+                        VisualStateManager.GoToState(this, "MapSearch", true);
+                });
+        }
+
         /// <summary>
-        /// AddIsEnabled Dependency Property.
+        /// LocationVM Dependency Property.
         /// </summary>
         public static readonly DependencyProperty LocationVMProperty =
             DependencyProperty.Register(
@@ -52,24 +74,6 @@ namespace FoundOps.SLClient.UI.Controls.Locations
         {
             InitializeComponent();
             if (System.ComponentModel.DesignerProperties.IsInDesignTool) return;
-
-            // Zoom to BestView when selection changed on  geocode results (when there is more than just the one default option).
-            var georesultselectionchanged = Observable.FromEventPattern<System.Windows.Controls.SelectionChangedEventArgs>(GeocoderResultsListBox, "SelectionChanged")
-                .Where(_ => GeocoderResultsListBox.Items.Count > 1).AsGeneric();
-
-            // Zoom to BestView when Geocoding is completed (i.e. When Search completes)
-            LocationVM.GeocodeCompletion.AsGeneric().Merge(georesultselectionchanged)
-                .Throttle(new TimeSpan(0, 0, 0, 1)).ObserveOnDispatcher().Subscribe(_ => InformationLayer.SetBestView());
-
-            // Subscribe to changes of latitude/longitude by changing visual state according to validity.
-            LocationVM.ValidLatitudeLongitudeState.Throttle(new TimeSpan(0, 0, 0, 0, 500))
-                .ObserveOnDispatcher().Subscribe(validstate =>
-            {
-                if (validstate)
-                    VisualStateManager.GoToState(this, "MapDetails", false);
-                else
-                    VisualStateManager.GoToState(this, "MapSearch", true);
-            });
 
             //Initializes the MapView to the RoadView setting via OSM
             this.MapTypeSelector.SelectedIndex = 0;
