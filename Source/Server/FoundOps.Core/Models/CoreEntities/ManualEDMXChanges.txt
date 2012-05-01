@@ -1,4 +1,6 @@
-1. After generating database from model need to fix the PartiesWithName view in the CoreEntities.edmx
+After generating database from model need to fix a couple of things in the CoreEntities.edmx:
+
+1. Fix the PartiesWithName view
 
 Replace
     <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />
@@ -49,7 +51,7 @@ with
       </EntityTypeMapping>
     </EntitySetMapping>
 
-2. After generating database from model need to fix the ServiceTemplatesWithVendorId view in the CoreEntities.edmx
+2. Fix the ServiceTemplatesWithVendorId view in the CoreEntities.edmx
 
 Replace
     <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.Store.ServiceTemplateWithVendorIds" store:Type="Tables" Schema="dbo" />
@@ -100,7 +102,13 @@ with
             </EntityTypeMapping>
           </EntitySetMapping>
 
-3. Add Functions back
+3. A. Update Model from Database
+   B. Add back all the Views and Stored Procedures except the table valued functions below: 
+      GetServiceHolders, GetResourcesWithLastPoint, GetUnroutedServicesForDate
+   C. In Model Browser delete the 3 table valued functions.
+   D. Save EDMX
+
+4. Add Functions back
 
 Add after </EntityContainer> (the one after FK association sets)
 
@@ -158,16 +166,6 @@ Add after </EntityContainer> (the one after FK association sets)
 
 Add before </EntityContainerMapping>
 
-          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
@@ -187,7 +185,17 @@ Add before </EntityContainerMapping>
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-		  <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
@@ -196,9 +204,10 @@ Add before </EntityContainerMapping>
                 <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="LastTimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
                 <ScalarProperty Name="Speed" ColumnName="Speed" />
                 <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -38,6 +38,7 @@ namespace FoundOps.SLClient.Data.Services
     /// </summary>
     public enum Section
     {
+        BusinessAccounts,
         Clients,
         Contacts,
         Dispatcher,
@@ -105,6 +106,7 @@ namespace FoundOps.SLClient.Data.Services
             EventSections.Add(Event.PrintedManifest, Section.Dispatcher);
 
             //Set the string value of each Section's name
+            SectionNames.Add(Section.BusinessAccounts, "Business Accounts");
             SectionNames.Add(Section.Contacts, "Contacts");
             SectionNames.Add(Section.Clients, "Clients");
             SectionNames.Add(Section.Dispatcher, "Dispatcher");

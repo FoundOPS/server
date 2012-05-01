@@ -182,7 +182,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             ManuallySelectGeocoderResult = new GeocoderResult { Name = ManuallySelectLocationString, AddressLineOne = ClickOnTheMapString };
 
             //Update the Geocoder properties
-            if (entity.Latitude != null && entity.Longitude != null)
+            if (entity != null && entity.Latitude != null && entity.Longitude != null)
             {
                 ManuallySelectGeocoderResult.Latitude = entity.Latitude.Value.ToString();
                 ManuallySelectGeocoderResult.Longitude = entity.Longitude.Value.ToString();
@@ -192,6 +192,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
 
             #endregion
+
+            if (entity == null)
+                return;
 
             //Set the default SearchText
             SearchText = string.Format("{0}, {1}, {2}, {3}", entity.AddressLineOne, entity.City, entity.State, entity.ZipCode);

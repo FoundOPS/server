@@ -342,7 +342,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Whenever the SelectedEntity changes setup the ContactInfoVM for that entity
                 SelectedEntityContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, newValue.ContactInfoSet);
 
-                SelectedEntityLocationVM = new LocationVM(((BusinessAccount)newValue).DepotLocation);
+                //SelectedEntityLocationVM = new LocationVM(((BusinessAccount)newValue).Depots.FirstOrDefault());
             }
         }
 

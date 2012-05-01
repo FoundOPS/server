@@ -56,7 +56,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 //Choose the right set of ServiceTemplates
                 var serviceTemplates = businessAccount == GotGrease ? ServiceTemplatesDesignData.OilGreaseCompanyServiceTemplates :
-                                                                                               ServiceTemplatesDesignData.SameDayDeliveryCompanyServiceTemplates;
+                                                                      ServiceTemplatesDesignData.SameDayDeliveryCompanyServiceTemplates;
 
                 foreach (var serviceTemplate in serviceTemplates)
                 {

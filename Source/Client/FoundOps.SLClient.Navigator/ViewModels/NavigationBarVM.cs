@@ -222,6 +222,8 @@ namespace FoundOps.SLClient.Navigator.ViewModels
             Section section;
             if (blockName == "Feedback and Support")
                 section = Section.FeedbackAndSupport;
+            else if (blockName == "Business Accounts")
+                section = Section.BusinessAccounts;
             else
                 section = (Section)Enum.Parse(typeof(Section), blockName, true);
 
