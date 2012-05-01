@@ -2,22 +2,24 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+Use Core
+GO
 IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
 DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
 GO
-/****************************************************************************************************************************************************
+/*****************************************************************************************************************************************************************************************************************
 * FUNCTION GetUnroutedServicesForDate will take the context provided and find all the services that are scheduled for that day
 ** Input Parameters **
 * @serviceProviderIdContext - The BusinessAccount context
 * @firstDateToLookForServices - The reference date to look for services
 ** Output Parameters: **
 * @ServicesTableToReturn - Ex. below
-* RecurringServiceId                     | ServiceId                              | OccurDate
-* -----------------------------------------------------------------------------------------
-* {036BD670-39A5-478F-BFA3-AD312E3F7F47} |                                        | 1/1/2012 <-- Generated service
-* {B30A43AD-655A-449C-BD4E-951F8F988718} |                                        | 1/1/2012 <-- Existing service
-* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | {FC222C74-EFEA-4B45-93FB-B042E6D6DB0D} | 1/2/2012 <-- Existing service with a RecurringService parent **
-***************************************************************************************************************************************************/
+* RecurringServiceId| ServiceId | OccurDate									| ServiceName | ClientName		| ClientId  | RegionName | LocationName    | LocationId | AddressLine   | Latitude	| Longitude
+* ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* {GUID}			|           | 1/1/2012 <-- Generated service			| Oil		  | Seltzer Factory | {GUID}	| South		 | Seltzer Factory | {GUID}		| 123 Fake St	| 47.456	| -86.166
+* {GUID}			|           | 1/1/2012 <-- Existing service				| Direct	  |	GotGrease?		| {GUID}	| North		 | GotGrease?	   | {GUID} 	| 6789 Help Ln	| 43.265	| -89.254	
+* {GUID}			| {GUID}	| 1/2/2012 <-- Existing service w/ RS parent| Regular     | AB Couriers		| {GUID}	| West		 | AB Couriers	   | {GUID}		| 4953 Joe Way	| 44.165	| -79.365	
+****************************************************************************************************************************************************************************************************************/
 CREATE FUNCTION [dbo].[GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
 @serviceDate date)

@@ -2,10 +2,25 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
+Use Core
+GO
 IF OBJECT_ID(N'[dbo].[GetPreviousOccurrence]', N'FN') IS NOT NULL
 DROP FUNCTION [dbo].[GetPreviousOccurrence]
 GO
+/****************************************************************************************************************************************************
+* FUNCTION GetNextOccurence will take in a Service schedule and return the date that that Service was scheduled to occur that is on or before the OnOrBeforeDate
+** Input Parameters **
+* @onOrBeforeDate - The first date the can be accepted as a response
+* @startDate - The StartDate of the Repeat
+* @endDate - The EndDate of the Repeat
+* @endAfterTimes - The number of times the Service is scheduled to occur before it ends
+* @frequencyInt - Corresponds to the type of schedule (Once, Daily, Weekly, Monthly or Yearly)
+* @repeatEveryTimes - Corresponds to how often the Service is sceduled to repeat (ex. a value of 2 would mean that it repeats every 2 days, weeks, months or years)
+* @FrequencyDetailInt - Corresponds to weekly and monthly schedules only. For Weekly it is equal to a list of numbers that correspond to days of the week (ex. 1237 would mean that the service happens on Monday, Tuesday, Wednesday and Sunday)
+*						For Monthly it corresponds to when during the month the Service is schedule (ex. LastDayOfMonth, FirstOfDayOfMonth, ThirdOfDayOfMonth, etc.)
+** Output Parameters  **
+*  DateTime - The date of the most recently scheduled Service occurrence on or before the OnOrBeforeDate
+***************************************************************************************************************************************************/
     Create FUNCTION [dbo].[GetPreviousOccurrence]
     (@OnOrBeforeDate datetime,
     @startDate datetime,

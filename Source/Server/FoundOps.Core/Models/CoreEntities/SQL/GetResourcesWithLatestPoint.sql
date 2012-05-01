@@ -7,6 +7,21 @@ GO
 IF OBJECT_ID(N'[dbo].[GetResourcesWithLatestPoint]', N'FN') IS NOT NULL
 DROP FUNCTION [dbo].[GetResourcesWithLatestPoint]
 GO
+/****************************************************************************************************************************************************
+* FUNCTION GetResourcesWithLatestPoint will take a BusinessAccount Id and find all Employees and Vehicles associated with it that are on Routes for the today.
+* It will then find all the required information from those Employees and Vehicles and return them in a table as depicted below.
+** Input Parameters **
+* @serviceProviderId - The BusinessAccount Id that will be used to find all Employees and Vehicles
+* @serviceDate - The date the you want to get Resource and Locations for
+** Output Parameters: **
+* @ServicesTableToReturn - Ex. below
+* EmployeeId		| VehicleId | EntityName			| CompassHeading | Latitude	| Longitude	| LastTimeStamp	| Speed	| TrackSource	| RouteId
+* ---------------------------------------------------------------------------------------------------------------------------------------------------
+* {GUID}			|           | Bob Black <- Employee	| 186			 | 47.456	| -86.166	| DateTime		| 46.32	| iPhone		| {GUID}
+* {GUID}			|           | Jane Doe <- Employee	| 45			 | 43.265	| -89.254	| DateTime		| 25.13	| Android		| {GUID}
+* {GUID}			| {GUID}	| 372 0925 <- Vehicle	| 321			 | 44.165	| -79.365	| Datetime		| 32.89	| Windows Phone	| {GUID}
+*****************************************************************************************************************************************************/
+
 CREATE FUNCTION [dbo].[GetResourcesWithLatestPoint]
 (@serviceProviderId uniqueidentifier,
 @serviceDate date)
