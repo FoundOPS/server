@@ -1,5 +1,5 @@
-﻿using System;
-using FoundOps.Core.Models.Azure;
+﻿using FoundOps.Core.Models.Azure;
+using System;
 
 namespace FoundOPS.API.Models
 {
@@ -13,15 +13,15 @@ namespace FoundOPS.API.Models
         /// <summary>
         /// The Date of the TrackPoint. On Get, it pulls LastTimeStamp.Date
         /// </summary>
-        public DateTime TimeStampDate
+        public DateTime CollectedDate
         {
-            get { return LastTimeStamp.Date; }
+            get { return CollectedTimeStamp.Date; }
         }
 
         /// <summary>
         /// The DateTime of this TrackPoint
         /// </summary>
-        public DateTime LastTimeStamp { get; set; }
+        public DateTime CollectedTimeStamp { get; set; }
 
         /// <summary>
         /// The compass heading of this TrackPoint
@@ -55,7 +55,7 @@ namespace FoundOPS.API.Models
 
         public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint) 
         {
-            var trackPointId = modelTrackPoint.EmployeetId ?? modelTrackPoint.VehicleId;
+            var trackPointId = modelTrackPoint.EmployeeId ?? modelTrackPoint.VehicleId;
 
             if(trackPointId == null) 
                 return null;
@@ -64,7 +64,7 @@ namespace FoundOPS.API.Models
                                  {
                                      CompassDirection = null,
                                      Id = (Guid) trackPointId,
-                                     LastTimeStamp = modelTrackPoint.LastTimeStamp,
+                                     CollectedTimeStamp = modelTrackPoint.CollectedTimeStamp,
                                      Latitude = modelTrackPoint.Latitude,
                                      Longitude = modelTrackPoint.Longitude,
                                      Speed = null,

@@ -1,59 +1,68 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
+using Route = FoundOPS.API.Models.Route;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
-using Route = FoundOPS.API.Models.Route;
 
 namespace FoundOPS.API.Controllers
 {
-    //[Authorize]
+#if !DEBUG
+    [Authorize]
+#endif
+    /// <summary>
+    /// An api controller which exposes Routes.
+    /// </summary>
     public class RoutesController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
 
         #region Get
 
-        // GET /api/route
+        // GET /api/route <- User must be authenticated and have Routes for today
+        // GET /api/route?roleId={Guid}
+        /// <summary>
+        /// Returns Routes & RouteDestinations & RouteDestinations.Client & Client.OwnedParty.ContactInfoSet
+        /// & RouteDestinations.Location & Location.ContactInfoSet.
+        /// Ordered by name.
+        /// </summary>
+        /// <param name="roleId">If the roleId has a value, it will find routes for a business account. Otherwise it will find routes for the current user account.</param>
         public IQueryable<Route> GetRoutes(Guid? roleId)
         {
-            //Gets the Current UserAccount
-            var currentUser = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).FirstOrDefault();
-
-#if DEBUG
-            var currentBusinessAccount = _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(ba => ba.Id == roleId);
-#else
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole((Guid)roleId);
-#endif
-
-            if (currentUser == null)
-                return null;
-
             var apiRoutes = new List<Route>();
 
+            //Get the UtcDate of today
             var today = DateTime.UtcNow.Date;
 
-            //Used in the mobile app to pull all Routes assigned to a UserAccount
-            if (roleId == null)
+            IEnumerable<FoundOps.Core.Models.CoreEntities.Route> loadedRoutes;
+
+            //If there is a roleId: return the Routes for the role's BusinessAccount (Map View)
+            //Otherwise: return the current user account's Routes (Mobile Application)
+            if (roleId.HasValue)
             {
-                //Finds all LinkedEmployees for the UserAccount
-                //Finds all Routes associated with those Employees
-                //Converts the FoundOPS model Routes to the API model Routes
-                //Adds those APIRoutes to the list of APIRoutes to return
-                foreach (var employeeRoutes in currentUser.LinkedEmployees.Select(employee => _coreEntitiesContainer.Routes
-                                                .Where(r => r.Technicians.Select(t => t.Id).Contains(employee.Id) && r.Date == today).ToArray()))
-                    apiRoutes.AddRange(employeeRoutes.Select(Route.ConvertModel));
+                //TODO: When EF5 fixes inherited projections: add .Include("Routes.RouteDestinations.Client.OwnedParty.ContactInfoSet")
+                loadedRoutes = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId.Value).Include(ba => ba.Routes)
+                    .Include("Routes.RouteDestinations").Include("Routes.RouteDestinations.Client")
+                    .Include("Routes.RouteDestinations.Location").Include("Routes.RouteDestinations.Location.ContactInfoSet")
+                    .SelectMany(ba => ba.Routes).Where(r => r.Date == today);
             }
-            //Will be used in the dispatcher for MapView 
             else
             {
-                var routesForBusinessAccount = _coreEntitiesContainer.Routes.Where(r => r.OwnerBusinessAccountId == currentBusinessAccount.Id);
-
-                apiRoutes.AddRange(routesForBusinessAccount.Select(Route.ConvertModel));
+                //Finds all LinkedEmployees for the CurrentUserAccount
+                //Finds all Routes (today) associated with those Employees
+                loadedRoutes = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer)
+                               .SelectMany(cu => cu.LinkedEmployees)
+                               .SelectMany(e => e.Routes).Where(r => r.Date == today);
             }
 
-            return apiRoutes.AsQueryable();
+            //Converts the FoundOPS model Routes to the API model Routes
+            //Adds those APIRoutes to the list of APIRoutes to return
+            apiRoutes.AddRange(loadedRoutes.Select(Route.ConvertModel));
+
+            //Order the routes by name
+            return apiRoutes.OrderBy(r => r.Name).AsQueryable();
         }
 
         #endregion
