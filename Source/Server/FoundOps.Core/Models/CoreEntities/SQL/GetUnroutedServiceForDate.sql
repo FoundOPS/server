@@ -7,22 +7,20 @@ GO
 IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
 DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
 GO
-/*****************************************************************************************************************************************************************************************************************
+/*****************************************************************************************************************************************************************************************************************************
 * FUNCTION GetUnroutedServicesForDate will take the context provided and find all the services that are scheduled for that day
 ** Input Parameters **
 * @serviceProviderIdContext - The BusinessAccount context
-* @firstDateToLookForServices - The reference date to look for services
 ** Output Parameters: **
 * @ServicesTableToReturn - Ex. below
-* RecurringServiceId| ServiceId | OccurDate									| ServiceName | ClientName		| ClientId  | RegionName | LocationName    | LocationId | AddressLine   | Latitude	| Longitude
-* ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-* {GUID}			|           | 1/1/2012 <-- Generated service			| Oil		  | Seltzer Factory | {GUID}	| South		 | Seltzer Factory | {GUID}		| 123 Fake St	| 47.456	| -86.166
-* {GUID}			|           | 1/1/2012 <-- Existing service				| Direct	  |	GotGrease?		| {GUID}	| North		 | GotGrease?	   | {GUID} 	| 6789 Help Ln	| 43.265	| -89.254	
-* {GUID}			| {GUID}	| 1/2/2012 <-- Existing service w/ RS parent| Regular     | AB Couriers		| {GUID}	| West		 | AB Couriers	   | {GUID}		| 4953 Joe Way	| 44.165	| -79.365	
-****************************************************************************************************************************************************************************************************************/
+* RecurringServiceId| ServiceId | OccurDate									| ServiceName | ClientName		| ClientId  | RegionName | LocationName    | LocationId | AddressLine   | Latitude	| Longitude	| StatusInt
+* ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* {GUID}			|           | 1/1/2012 <-- Generated service			| Oil		  | Seltzer Factory | {GUID}	| South		 | Seltzer Factory | {GUID}		| 123 Fake St	| 47.456	| -86.166	| 3	
+* {GUID}			|           | 1/1/2012 <-- Existing service				| Direct	  |	GotGrease?		| {GUID}	| North		 | GotGrease?	   | {GUID} 	| 6789 Help Ln	| 43.265	| -89.254	| 2	
+* {GUID}			| {GUID}	| 1/2/2012 <-- Existing service w/ RS parent| Regular     | AB Couriers		| {GUID}	| West		 | AB Couriers	   | {GUID}		| 4953 Joe Way	| 44.165	| -79.365	| 4	
+****************************************************************************************************************************************************************************************************************************/
 CREATE FUNCTION [dbo].[GetUnroutedServicesForDate]
-(@serviceProviderIdContext uniqueidentifier,
-@serviceDate date)
+(@serviceProviderIdContext uniqueidentifier)
 RETURNS @ServicesTableToReturn TABLE
 	(
 		RecurringServiceId uniqueidentifier,
@@ -41,6 +39,9 @@ RETURNS @ServicesTableToReturn TABLE
 	) 
 AS
 BEGIN
+
+	DECLARE @serviceDate datetime
+	SET @serviceDate = CONVERT (date, GETUTCDATE())
 
 	--Stores the Recurring Services that are associated with the lowest context provided
 	DECLARE @TempGenServiceTable TABLE
