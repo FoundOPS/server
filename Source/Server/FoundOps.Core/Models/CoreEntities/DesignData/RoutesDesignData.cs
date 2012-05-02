@@ -1,4 +1,5 @@
-﻿using FoundOps.Core.Models.CoreEntities.Extensions.Services;
+﻿using FoundOps.Common.Composite.Tools;
+using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
     public class RoutesDesignData
     {
-        public IEnumerable<Route> DesignRoutes { get; private set; }
+        public IList<Route> DesignRoutes { get; private set; }
 
         private readonly BusinessAccount _ownerBusinessAccount;
         private readonly ClientsDesignData _clientsDesignData;
@@ -16,6 +17,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private readonly Random _random = new Random();
         private readonly string[] _routeNames = { "SF Bay Area", "Shelter Island", "North Side", "South Side" };
+        private readonly Status[] _statuses = { Status.Routed, Status.InProgress, Status.Completed, Status.Cancelled, Status.OnHold };
 
         public RoutesDesignData()
             : this(new BusinessAccountsDesignData().GotGrease)
@@ -34,7 +36,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         /// <param name="clientsDesignData">The clients design data.</param>
         /// <param name="vehiclesDesignData">The vehicles design data.</param>
         /// <param name="employeesDesignData">The employees design data.</param>
-        public RoutesDesignData(BusinessAccount ownerBusinessAccount, ClientsDesignData clientsDesignData, VehiclesDesignData vehiclesDesignData, 
+        public RoutesDesignData(BusinessAccount ownerBusinessAccount, ClientsDesignData clientsDesignData, VehiclesDesignData vehiclesDesignData,
             EmployeesDesignData employeesDesignData)
         {
             _ownerBusinessAccount = ownerBusinessAccount;
@@ -42,238 +44,99 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             _vehiclesDesignData = vehiclesDesignData;
             _employeesDesignData = employeesDesignData;
 
-            InitializeRoutes();
+            InitializeRoutes(ownerBusinessAccount);
+        }
 
-            foreach (var route in DesignRoutes)
-                route.OwnerBusinessAccount = ownerBusinessAccount;
+        /// <summary>
+        /// Create routes from yesterday until tomorrow for the current service provider.
+        /// </summary>
+        private void InitializeRoutes(BusinessAccount ownerBusinessAccount)
+        {
+            DesignRoutes = new List<Route>();
+
+            var serviceTemplates = _ownerBusinessAccount.ServiceTemplates.Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined).ToArray();
+
+            //Create three routes for yesterday
+            for (int i = 0; i <= 3; i++)
+                CreateRoute(DateTime.UtcNow.AddDays(-1), serviceTemplates.RandomItem(), ownerBusinessAccount, i);
+
+            //Create three routes for today
+            for (int i = 0; i <= 3; i++)
+                CreateRoute(DateTime.UtcNow, serviceTemplates.RandomItem(), ownerBusinessAccount, i);
+
+            //Create three routes for tomorrow
+            for (int i = 0; i <= 3; i++)
+                CreateRoute(DateTime.UtcNow.AddDays(1), serviceTemplates.RandomItem(), ownerBusinessAccount, i);
         }
 
 
         /// <summary>
         /// Creates a route from a service template and date. Uses a random route name.
         /// </summary>
-        /// <param name="date"></param>
-        /// <param name="serviceTemplate"></param>
-        /// <returns></returns>
-        private Route CreateRoute(DateTime date, ServiceTemplate serviceTemplate)
+        private void CreateRoute(DateTime date, ServiceTemplate serviceTemplate, BusinessAccount ownerBusinessAccount, int clientIndex)
         {
-            var newRoute =new Route
+            var newRoute = new Route
             {
                 Id = Guid.NewGuid(),
-                Name = _routeNames.ElementAt(_random.Next(4)),
-                Date = date,
-                RouteType = serviceTemplate.Name
+                Name = _routeNames.RandomItem(),
+                Date = date.Date,
+                RouteType = serviceTemplate.Name,
+                OwnerBusinessAccount = ownerBusinessAccount
             };
 
-            newRoute.Technicians.Add(_employeesDesignData.DesignEmployees.ElementAt(_random.Next(3)));
-            newRoute.Vehicles.Add(_vehiclesDesignData.DesignVehicles.ElementAt(_random.Next(3)));
+            //Add employees to the Route
+            newRoute.Technicians.Add(_employeesDesignData.DesignEmployees.RandomItem());
 
+            //Add vehicles to the Route
+            newRoute.Vehicles.Add(_vehiclesDesignData.DesignVehicles.RandomItem());
 
-        }
-
-        private void InitializeRoutes()
-        {
-            var serviceTemplates = _ownerBusinessAccount.ServiceTemplates.Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined);
-
-            //Create three routes for yesterday
-            for (int i = 0; i < 3; i++)
-                CreateRoute(DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)), serviceTemplates.ElementAt(_random.Next(3)));
-
-            //Create three routes for today
-            for (int i = 0; i < 3; i++)
-                CreateRoute(DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)), serviceTemplates.ElementAt(_random.Next(3)));
-
-            #region Yesterday's Routes
-
-            AddRouteDestinationsRouteOne(YesterdayDesignRouteOne, serviceTemplate);
-            YesterdayDesignRouteOne.Technicians.Add(_employeesDesignData.DesignEmployee);
-            YesterdayDesignRouteOne.Vehicles.Add(_vehiclesDesignData.DesignVehicle);
-
-            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
-                .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                .ElementAt(1);
-
-            YesterdayDesignRouteTwo = new Route
-            {
-                Id = Guid.NewGuid(),
-                Name = "Shelter Island",
-                Date = DateTime.UtcNow.AddDays(-1).Date,
-                RouteType = serviceTemplate.Name
-            };
-
-            AddRouteDestinationsRouteTwo(YesterdayDesignRouteTwo, serviceTemplate);
-            YesterdayDesignRouteTwo.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
-            YesterdayDesignRouteTwo.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
-
-            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
-                .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                .ElementAt(2);
-
-            YesterdayDesignRouteThree = new Route
-            {
-                Id = Guid.NewGuid(),
-                Name = "North Side",
-                Date = DateTime.UtcNow.AddDays(-1).Date,
-                RouteType = serviceTemplate.Name
-            };
-            AddRouteDestinationsRouteThree(YesterdayDesignRouteThree, serviceTemplate);
-            YesterdayDesignRouteThree.Technicians.Add(_employeesDesignData.DesignEmployee);
-            YesterdayDesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
-
-            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
-                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                            .ElementAt(1);
-
-            YesterdayDesignRouteFour = new Route
-            {
-                Id = Guid.NewGuid(),
-                Name = "South Side",
-                Date = DateTime.UtcNow.AddDays(-1).Date,
-                RouteType = serviceTemplate.Name
-            };
-            AddRouteDestinationsRouteFour(YesterdayDesignRouteFour, serviceTemplate);
-            YesterdayDesignRouteFour.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
-            YesterdayDesignRouteFour.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
-
-            #endregion
-
-            #region Today's Routes
-
-            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
-                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                            .ElementAt(0);
-
-            DesignRoute = new Route
-                              {
-                                  Id = Guid.NewGuid(),
-                                  Name = "SF Bay Area",
-                                  Date = DateTime.UtcNow.Date,
-                                  RouteType = serviceTemplate.Name
-                              };
-            AddRouteDestinationsRouteOne(DesignRoute, serviceTemplate);
-            DesignRoute.Technicians.Add(_employeesDesignData.DesignEmployee);
-            DesignRoute.Vehicles.Add(_vehiclesDesignData.DesignVehicle);
-
-            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
-                .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                .ElementAt(1);
-
-            DesignRouteTwo = new Route
-                                 {
-                                     Id = Guid.NewGuid(),
-                                     Name = "Shelter Island",
-                                     Date = DateTime.UtcNow.Date,
-                                     RouteType = serviceTemplate.Name
-                                 };
-
-            AddRouteDestinationsRouteTwo(DesignRouteTwo, serviceTemplate);
-            DesignRouteTwo.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
-            DesignRouteTwo.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
-
-            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
-                .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                .ElementAt(2);
-
-            DesignRouteFour = new Route
-            {
-                Id = Guid.NewGuid(),
-                Name = "North Side",
-                Date = DateTime.UtcNow.Date,
-                RouteType = serviceTemplate.Name
-            };
-            AddRouteDestinationsRouteThree(DesignRouteFour, serviceTemplate);
-            DesignRouteFour.Technicians.Add(_employeesDesignData.DesignEmployee);
-            DesignRouteFour.Vehicles.Add(_vehiclesDesignData.DesignVehicleTwo);
-
-            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
-                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                            .ElementAt(1);
-
-            DesignRouteFive = new Route
-            {
-                Id = Guid.NewGuid(),
-                Name = "South Side",
-                Date = DateTime.UtcNow.Date,
-                RouteType = serviceTemplate.Name
-            };
-            AddRouteDestinationsRouteFour(DesignRouteFive, serviceTemplate);
-            DesignRouteFive.Technicians.Add(_employeesDesignData.DesignEmployeeTwo);
-            DesignRouteFive.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
-
-            #endregion
-
-            #region Tomorrow's Routes
-
-            serviceTemplate = _ownerBusinessAccount.ServiceTemplates
-                            .Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
-                            .ElementAt(2);
-
-            DesignRouteThree = new Route
-                                   {
-                                       Id = Guid.NewGuid(),
-                                       Name = "Purdue",
-                                       Date = DateTime.UtcNow.Date.AddDays(1),
-                                       RouteType = serviceTemplate.Name
-                                   };
-
-            AddRouteDestinationsRouteOne(DesignRouteThree, serviceTemplate);
-            DesignRouteThree.Technicians.Add(_employeesDesignData.DesignEmployeeThree);
-            DesignRouteThree.Vehicles.Add(_vehiclesDesignData.DesignVehicleThree);
-
-            #endregion
-
-            DesignRoutes = new List<Route> { DesignRoute, DesignRouteTwo, DesignRouteThree, DesignRouteFour, DesignRouteFive, 
-                                             YesterdayDesignRouteOne, YesterdayDesignRouteTwo, YesterdayDesignRouteThree, YesterdayDesignRouteFour};
-        }
-
-        private void AddRouteDestinations(Route route, ServiceTemplate serviceTemplate, int minClient, int maxClient)
-        {
             var orderInRoute = 1;
 
-            for (var i = minClient; i <= maxClient; i++)
+            var startingClientIndex = clientIndex * 6;
+
+            //Create Services and RouteTasks, add them to the Route
+            for (var i = startingClientIndex; i <= (startingClientIndex + 5); i++)
             {
                 //Prevents you from trying to add a client that doesnt exist in Design Data
                 if (i > _clientsDesignData.DesignClients.Count())
-                    continue;
+                    break;
 
-                var routeTask = CreateRouteTaskAndService(1, route.Date, _clientsDesignData.DesignClients.ElementAt(i).OwnedParty.Locations.ElementAt(0),
-                    _clientsDesignData.DesignClients.ElementAt(i), route.RouteType, new TimeSpan(0, 15, 0), _ownerBusinessAccount, serviceTemplate, Status.Created);
+                var currentClient = _clientsDesignData.DesignClients.ElementAt(i);
+
+                //Take the first location from the client
+                var currentLocation = currentClient.OwnedParty.Locations.ElementAt(0);
+
+                var newService = new Service
+                {
+                    ServiceDate = newRoute.Date,
+                    ServiceTemplate = serviceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
+                    Client = currentClient,
+                    ServiceProvider = ownerBusinessAccount
+                };
+
+                newService.ServiceTemplate.SetDestination(currentLocation);
+
+                var routeTask = new RouteTask
+                {
+                    OrderInRouteDestination = 1,
+                    Date = newRoute.Date,
+                    Location = currentClient.OwnedParty.Locations.ElementAt(0),
+                    Client = currentClient,
+                    Name = newRoute.RouteType,
+                    EstimatedDuration = new TimeSpan(0, _random.Next(25), 0),
+                    OwnerBusinessAccount = ownerBusinessAccount,
+                    Service = newService,
+                    Status = _statuses.RandomItem()
+                };
 
                 var routeDestination = new RouteDestination { OrderInRoute = orderInRoute };
                 routeDestination.RouteTasks.Add(routeTask);
-                route.RouteDestinations.Add(routeDestination);
+                newRoute.RouteDestinations.Add(routeDestination);
 
                 orderInRoute++;
             }
-        }
 
-        private RouteTask CreateRouteTaskAndService(int orderInRouteDestination, DateTime date, Location location, Client designClient, string routeType,
-                                                    TimeSpan timeSpan, BusinessAccount ownerBusinessAccount, ServiceTemplate serviceTemplate, Status status)
-        {
-            var newService = new Service
-            {
-                ServiceDate = date,
-                ServiceTemplate = serviceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
-                Client = designClient,
-                ServiceProvider = ownerBusinessAccount
-            };
-
-            newService.ServiceTemplate.SetDestination(location);
-
-            var task = new RouteTask
-            {
-                OrderInRouteDestination = orderInRouteDestination,
-                Date = date,
-                Location = location,
-                Client = designClient,
-                Name = routeType,
-                EstimatedDuration = timeSpan,
-                OwnerBusinessAccount = ownerBusinessAccount,
-                Service = newService,
-                Status = status
-            };
-
-            return task;
+            DesignRoutes.Add(newRoute);
         }
     }
 }

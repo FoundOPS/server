@@ -62,15 +62,14 @@ namespace FoundOps.Common.Composite.Tools
             }
         }
 
+        private static readonly Random Random = new Random();
         /// <summary>
         /// Returns a random item.
         /// </summary>
         /// <param name="source">The source.</param>
         public static T RandomItem<T>(this IEnumerable<T> source)
         {
-            var random = new Random();
-
-            return source.ElementAt(source.Count() - 1 - random.Next(source.Count()));
+            return source.ElementAt(Random.Next(source.Count()));
         }
         
         /// <summary>
