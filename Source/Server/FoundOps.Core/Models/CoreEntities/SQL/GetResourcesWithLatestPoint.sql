@@ -23,8 +23,7 @@ GO
 *****************************************************************************************************************************************************/
 
 CREATE FUNCTION [dbo].[GetResourcesWithLatestPoint]
-(@serviceProviderId uniqueidentifier,
-@serviceDate date)
+(@serviceProviderId uniqueidentifier)
 RETURNS @EmployeeVehicleTableToReturn TABLE
 	(
 		EmployeeId uniqueidentifier,
@@ -40,6 +39,9 @@ RETURNS @EmployeeVehicleTableToReturn TABLE
 	) 
 AS
 BEGIN
+
+	DECLARE @serviceDate datetime
+	SET @serviceDate = CONVERT (date, GETUTCDATE())
 
 	DECLARE @RoutesForDate TABLE
 	(

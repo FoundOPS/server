@@ -3375,8 +3375,7 @@ GO
 *****************************************************************************************************************************************************/
 
 CREATE FUNCTION [dbo].[GetResourcesWithLatestPoint]
-(@serviceProviderId uniqueidentifier,
-@serviceDate date)
+(@serviceProviderId uniqueidentifier)
 RETURNS @EmployeeVehicleTableToReturn TABLE
 	(
 		EmployeeId uniqueidentifier,
@@ -3392,6 +3391,9 @@ RETURNS @EmployeeVehicleTableToReturn TABLE
 	) 
 AS
 BEGIN
+
+	DECLARE @serviceDate datetime
+	SET @serviceDate = CONVERT (date, GETUTCDATE())
 
 	DECLARE @RoutesForDate TABLE
 	(
@@ -4327,7 +4329,8 @@ GO
 * {GUID}			| {GUID}	| 1/2/2012 <-- Existing service w/ RS parent| Regular     | AB Couriers		| {GUID}	| West		 | AB Couriers	   | {GUID}		| 4953 Joe Way	| 44.165	| -79.365	| 4	
 ****************************************************************************************************************************************************************************************************************************/
 CREATE FUNCTION [dbo].[GetUnroutedServicesForDate]
-(@serviceProviderIdContext uniqueidentifier)
+(@serviceProviderIdContext uniqueidentifier,
+@serviceDate date)
 RETURNS @ServicesTableToReturn TABLE
 	(
 		RecurringServiceId uniqueidentifier,
@@ -4346,9 +4349,6 @@ RETURNS @ServicesTableToReturn TABLE
 	) 
 AS
 BEGIN
-
-	DECLARE @serviceDate datetime
-	SET @serviceDate = CONVERT (date, GETUTCDATE())
 
 	--Stores the Recurring Services that are associated with the lowest context provided
 	DECLARE @TempGenServiceTable TABLE

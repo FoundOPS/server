@@ -414,7 +414,7 @@
         <Function Name="GetResourcesWithLastPoint" IsComposable="false">
           <CommandText>
             SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource
-            FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId , @serviceDate)
+            FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
           </CommandText>
           <Parameter Name="serviceProviderId"
                  Mode="In"
@@ -2270,7 +2270,6 @@
           </AssociationSet>
           <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
-            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />

@@ -114,7 +114,6 @@ Add after </EntityContainer> (the one after FK association sets)
 
       <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
-           <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
          </FunctionImport>
          <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
            <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
