@@ -144,12 +144,12 @@ namespace FoundOps.Server.Controllers
                                         //Create the object to be stored in the Azure table
                                         var newTrackPoint = new TrackPointsHistoryTableDataModel(partitionKey, Guid.NewGuid().ToString())
                                         {
-                                            EmployeetId = employee.Id,
+                                            EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            LastTimeStamp = timeStamp
+                                            CollectedTimeStamp = timeStamp
                                         };
 
                                         latitude = latitude + .001;
@@ -183,12 +183,12 @@ namespace FoundOps.Server.Controllers
                                         //Create the object to be stored in the Azure table
                                         var newTrackPoint = new TrackPointsHistoryTableDataModel(partitionKey, Guid.NewGuid().ToString())
                                         {
-                                            EmployeetId = employee.Id,
+                                            EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            LastTimeStamp = timeStamp
+                                            CollectedTimeStamp = timeStamp
                                         };
 
                                         latitude = latitude - .001;
@@ -223,12 +223,12 @@ namespace FoundOps.Server.Controllers
                                         //Create the object to be stored in the Azure table
                                         var newTrackPoint = new TrackPointsHistoryTableDataModel(partitionKey, Guid.NewGuid().ToString())
                                         {
-                                            EmployeetId = employee.Id,
+                                            EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            LastTimeStamp = timeStamp
+                                            CollectedTimeStamp = timeStamp
                                         };
 
                                         latitude = latitude + .001;
@@ -262,12 +262,12 @@ namespace FoundOps.Server.Controllers
                                         //Create the object to be stored in the Azure table
                                         var newTrackPoint = new TrackPointsHistoryTableDataModel(partitionKey, Guid.NewGuid().ToString())
                                         {
-                                            EmployeetId = employee.Id,
+                                            EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            LastTimeStamp = timeStamp
+                                            CollectedTimeStamp = timeStamp
                                         };
 
                                         latitude = latitude - .001;

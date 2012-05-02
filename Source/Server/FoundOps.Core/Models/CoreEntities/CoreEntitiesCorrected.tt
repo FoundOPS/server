@@ -482,6 +482,21 @@ ADD CONSTRAINT [FK_LocationFieldLocation]
     REFERENCES [dbo].[Locations]
         ([Id])
     ON DELETE SET NULL ON UPDATE NO ACTION;");
+
+	//26.
+	oldTextArray.Add(@"ALTER TABLE [dbo].[RouteTasks]
+ADD CONSTRAINT [FK_RouteTaskRecurringService]
+    FOREIGN KEY ([RecurringServiceId])
+    REFERENCES [dbo].[RecurringServices]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;");
+	
+	newTextArray.Add(@"ALTER TABLE [dbo].[RouteTasks]
+ADD CONSTRAINT [FK_RouteTaskRecurringService]
+    FOREIGN KEY ([RecurringServiceId])
+    REFERENCES [dbo].[RecurringServices]
+        ([Id])
+    ON DELETE SET NULL ON UPDATE NO ACTION;");
 	
 	//27. Remove generated PartiesWithName table (it is created as a View)
 
