@@ -1,6 +1,7 @@
 ﻿using FoundOps.Common.Silverlight.Tools.Location;
 using FoundOps.Common.Silverlight.Extensions.Telerik;
 using FoundOps.Common.Tools;
+using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using ReactiveUI;
 using System;
@@ -139,7 +140,8 @@ namespace FoundOps.SLClient.UI.Controls.Locations
 
         private void MoreDetailsButtonClick(object sender, RoutedEventArgs e)
         {
-            //LocationVM.MoveToDetailsView.Execute(null);
+            if (VM.Locations.SelectedLocationVM == LocationVM)
+                VM.Locations.MoveToDetailsView.Execute(null);
         }
 
         /// <summary>

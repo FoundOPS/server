@@ -7,7 +7,6 @@
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:SLMultiBinding="clr-namespace:SLMultiBinding;assembly=SLMultiBinding"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI" 
              xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools" 
-             xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices"
              mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400" 
              Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--IMPORTANT: DO NOT REMOVE "xmls:ViewModels". It is needed for GetVM-->
@@ -36,7 +35,7 @@
         </Border>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel>
-                <Locations1:LocationEdit />
+                <Locations1:LocationEdit LocationVM="{Binding SelectedLocationVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <ContactInfo:ContactInfoEdit IsEnabled="{Binding SelectedEntity.DetailsLoaded}" ContactInfoVM="{Binding SelectedLocationVM.ContactInfoVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <my1:ClientLinkLarge IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}">
                     <SLMultiBinding:BindingUtil.MultiBindings>
@@ -53,16 +52,6 @@
                 </my1:ClientLinkLarge>
                 <Regions1:RegionLinkLarge IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SelectedRegion="{Binding SelectedEntity.Region, Mode=TwoWay, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <Locations1:SubLocations IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SubLocationsVM="{Binding SelectedSubLocationsVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}"/>
-                <!--<toolkit:Expander Margin="5" IsExpanded="True" 
-                                  BorderBrush="{StaticResource ServiceBrush}" Foreground="{StaticResource ServiceBrush}" Style="{StaticResource ExpanderStyle}"
-                                  IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
-                    <toolkit:Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Services" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ServiceBrush}" />
-                        </StackPanel>
-                    </toolkit:Expander.Header>
-                    <Services:ServicesGrid x:Name="ServicesGrid" IsMainGrid="False" />
-                </toolkit:Expander>-->
             </StackPanel>
         </ScrollViewer>
     </Grid>
