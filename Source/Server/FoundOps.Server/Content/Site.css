@@ -1,4 +1,4 @@
-﻿/* FoundOps Colors
+/* FoundOps Colors
    Orange - #D9591E
    Red - #991A36
    Blue - #488FCD
@@ -92,26 +92,19 @@ h3{
 }
 #loginPage, #captchaPage, #resetPage{
     position: relative;
-    top: -155px;
-    left: 0px;
+    top: -80px;
     padding: 30px 30px 15px 30px;
-    height: 320px;
     width: 540px;
-    border: 2px solid #666;
     margin: 0 auto;
     margin-top: 25px;
-    margin-bottom: 50px;
+    margin-bottom: 120px;
     background-color: #ffffff;
 }
 #captchaPage{
-    height: 440px;
     width: 540px;
 }
-#resetPage{
-    height: 320px;
-}
 #loginPage{
-    top: -30px;
+    margin-bottom: 120px;
 }
 #main{
     position: relative;
