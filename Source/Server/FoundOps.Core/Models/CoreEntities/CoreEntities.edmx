@@ -419,9 +419,6 @@
           <Parameter Name="serviceProviderId"
                  Mode="In"
                  Type="uniqueidentifier"/>
-          <Parameter Name="serviceDate"
-                 Mode="In"
-                 Type="datetime"/>
         </Function>
         <EntityType Name="Blocks">
           <Key>
