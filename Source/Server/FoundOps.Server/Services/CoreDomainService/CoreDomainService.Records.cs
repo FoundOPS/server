@@ -442,7 +442,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
-            var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id).OrderBy(l => l.Name);
+            var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id && !loc.BusinessAccountIdIfDepot.HasValue).OrderBy(l => l.Name);
             return locations;
         }
 
@@ -522,7 +522,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                                         "Address 1", "Address 2", "City", "State", "Zip Code",
                                         "Latitude", "Longitude");
 
-            var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id);
+            var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id && !loc.BusinessAccountIdIfDepot.HasValue);
 
             //Add client context if it exists
             if (clientId != Guid.Empty)

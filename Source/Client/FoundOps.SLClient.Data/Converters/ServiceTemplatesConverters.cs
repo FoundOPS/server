@@ -20,7 +20,7 @@ namespace FoundOps.SLClient.Data.Converters
             if (serviceProvider == null)
                 return AddDeleteMode.AddDelete;
 
-            return serviceProvider.Id == BusinessAccountsDesignData.FoundOps.Id ? AddDeleteMode.AddDelete: AddDeleteMode.AddItemDelete;
+            return serviceProvider.Id == BusinessAccountsConstants.FoundOpsId ? AddDeleteMode.AddDelete: AddDeleteMode.AddItemDelete;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

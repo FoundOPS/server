@@ -3,8 +3,14 @@ using System.Collections.Generic;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
+    /// <summary>
+    /// BusinessAccount constants to be used outside of design data.
+    /// </summary>
     public static class BusinessAccountsConstants
     {
+        /// <summary>
+        /// The FoundOPS's BusinessAccount Id
+        /// </summary>
         public static Guid FoundOpsId = new Guid("5606A728-B99F-4AA1-B0CD-0AB38A649000");
     }
 
@@ -21,6 +27,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         public IEnumerable<BusinessAccount> DesignServiceProviders { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BusinessAccountsDesignData"/> class.
+        /// </summary>
         public BusinessAccountsDesignData()
         {
             InitializeBusinessAccounts();
@@ -53,6 +62,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
 
             DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, OrenKosherSteakhouse };
+
+            //Add Depots
+            foreach(var serviceProvider in DesignServiceProviders)
+            {
+                serviceProvider.Depots.Add(new Location { Name = "Depot", AddressLineOne = "1305 Cumberland Ave", City = "West Lafayette", State = "IN", ZipCode = "47906",
+                    OwnerParty = serviceProvider, Latitude = (decimal?) 40.460335, Longitude = (decimal?) (-86.929840)});
+            }
 
             //Add ServiceTemplates
             foreach (var businessAccount in new[] { GotGrease, ABCouriers, OrenKosherSteakhouse })

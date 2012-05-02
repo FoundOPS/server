@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FoundOps.Common.Composite.Tools;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
+using System;
 using System.Linq;
 using System.Collections.Generic;
-using FoundOps.Common.Composite.Tools;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.Data.Tools
 {
@@ -48,17 +49,19 @@ namespace FoundOps.SLClient.Data.Tools
 
                 var calculator = new OrthodromicDistanceCalculator();
 
-                //TODO: Allow the depot to be set
-                //Initializes the start location of GotGrease? Warehouse
-                const double lastLatitude = 37.724942;
-                const double lastLongitude = 122.460465;
+                //If there is not a depot set. Default to FoundOPS, 1305 Cumberland Ave, 47906: 40.460335, -86.929840
+                var depot = new GeoLocation { Latitude = 40.460335, Longitude = -86.929840 };
 
-                var lastLatLon = new GeoLocation
+                //Try to get the depot from the business account
+                var ownerBusinessAccount = Manager.Context.OwnerAccount as BusinessAccount;
+                if (ownerBusinessAccount != null && ownerBusinessAccount.Depots.Any())
                 {
-                    Latitude = lastLatitude,
-                    Longitude = lastLongitude
-                };
+                    var depotLocation = ownerBusinessAccount.Depots.First();
+                    if (depotLocation.Latitude.HasValue && depotLocation.Longitude.HasValue)
+                        depot = new GeoLocation { Latitude = (double)depotLocation.Latitude.Value, Longitude = (double)depotLocation.Longitude.Value };
+                }
 
+                var lastLatLon = depot;
                 //Order the unorganized route tasks by location
                 while (unorganizedTaskHolders.Count > 0)
                 {

@@ -7,16 +7,14 @@
              xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI" 
              xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI"
              xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
-             xmlns:BusinessAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations"
-             xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" mc:Ignorable="d" d:DesignWidth="400" 
+             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
+             xmlns:BusinessAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" mc:Ignorable="d" d:DesignWidth="400" 
              ViewModelLocator:ViewModelLocator.SharedViewModel="BusinessAccountsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!-- Note: You cannot remove CoreEntities, it is used by GetVM-->
     <UserControl.Resources>
         <BusinessAccounts:ServiceTemplateAddModeConverter x:Name="ServiceTemplateAddModeConverter" />
+        <BusinessAccounts:FoundOPSVisibilityConverter x:Key="FoundOPSVisibilityConverter" />
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
@@ -85,15 +83,14 @@
                     </Grid>
                 </toolkit:Expander>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" Foreground="{StaticResource LocationBrush}" 
-                                  BorderBrush="{StaticResource LocationBrush}" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}, Source={Tools:GetVM Type=CoreEntities:LocationsVM}}">
+                                  BorderBrush="{StaticResource LocationBrush}" Visibility="{Binding Id, Converter={StaticResource FoundOPSVisibilityConverter}}">
                     <toolkit:Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock TextWrapping="Wrap" Text="Depot Location" 
-                                       Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
+                            <TextBlock TextWrapping="Wrap" Text="Depot Location" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
                             <!--<AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Locations"
                                                            SourceType="{MarkupExtensions:Static MemberType=telerik:Location}"
                                                            ItemToRemoveDisplayMember="{Binding SelectedEntity.Name, Source={Tools:GetVM Type=CoreEntities:LocationsVM}}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.DisplayName}"
@@ -101,7 +98,7 @@
                                                            DestinationItemsSource="{Binding LocationsDestinationItemsSource}" />-->
                         </Grid>
                     </toolkit:Expander.Header>
-                    <Locations:LocationEdit LocationVM="{Binding DataContext.SelectedEntityLocationVM, ElementName=myBusinessAccountLarge}" />
+                    <Locations:LocationEdit  LocationVM="{Binding DataContext.SelectedDepotLocationVM, ElementName=myBusinessAccountLarge}" />
                 </toolkit:Expander>
                 <ContactInfo:ContactInfoEdit HorizontalAlignment="Stretch" ContactInfoVM="{Binding DataContext.SelectedEntityContactInfoVM, ElementName=myBusinessAccountLarge}" />
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">

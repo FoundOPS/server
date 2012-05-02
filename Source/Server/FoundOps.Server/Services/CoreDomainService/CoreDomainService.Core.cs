@@ -69,7 +69,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         #region Businesses and BusinessAccounts
 
         /// <summary>
-        /// Gets all the BusinessAccounts
+        /// Gets all the BusinessAccounts and their Depots
         /// </summary>
         /// <param name="roleId"></param>
         /// <returns></returns>
@@ -80,7 +80,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Make sure current account is a FoundOPS account
             return businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id
                        ? null
-                       : this.ObjectContext.Parties.OfType<BusinessAccount>().OrderBy(b => b.Name);
+                       : this.ObjectContext.Parties.OfType<BusinessAccount>().Include(ba => ba.Depots).OrderBy(b => b.Name);
         }
 
         /// <summary>
@@ -100,13 +100,13 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessAccountQueryable = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId).Include(ba => ba.ContactInfoSet)
                 .Include(ba => ba.ServiceTemplates).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties");
 
-            var a = 
+            var a =
                 (from businessAccount in businessAccountQueryable
-                //Force load the details
-                from serviceTemplate in businessAccount.ServiceTemplates
-                from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                select new { businessAccount, serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
+                 //Force load the details
+                 from serviceTemplate in businessAccount.ServiceTemplates
+                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                 select new { businessAccount, serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
 
             var businessAccountWithDetails = businessAccountQueryable.FirstOrDefault();
             if (businessAccountWithDetails == null)
@@ -118,8 +118,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             return businessAccountWithDetails;
         }
 
-
-        #endregion
 
         #region BusinessAccount
 
@@ -189,6 +187,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             //TODO: When quickbooks is setup
             //QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
         }
+
+        #endregion
 
         #endregion
 
@@ -315,9 +315,18 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region Party
 
+        /// <summary>
+        /// Returns the party for the current role. If it is a BusinessAccount it will include the Depots.
+        /// </summary>
         public Party PartyForRole(Guid roleId)
         {
-            return this.ObjectContext.OwnerPartyOfRole(roleId);
+            var ownerParty = this.ObjectContext.OwnerPartyOfRole(roleId);
+
+            var businessAccount = ownerParty as BusinessAccount;
+            if (businessAccount != null)
+                (businessAccount).Depots.Load();
+            
+            return ownerParty;
         }
 
         public Party PartyToAdministerForRole(Guid roleId)
