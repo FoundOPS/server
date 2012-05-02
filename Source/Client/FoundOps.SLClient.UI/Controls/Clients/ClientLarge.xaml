@@ -3,14 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:RecurringServices="clr-namespace:FoundOps.Framework.Views.Controls.Services.RecurringServices" 
-             xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo"
-             xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate" 
+             xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
              xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Converters2="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:Converters3="clr-namespace:FoundOps.SLClient.UI.Converters;assembly=FoundOps.SLClient.Data"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+             xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
     <!--IMPORTANT: DO NOT REMOVE "xmls:ViewModels". It is needed for GetVM-->
     <UserControl.Resources>
@@ -99,7 +99,7 @@
                             <Clients:ClientLocationsGrid x:Name="LocationsGrid" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding SelectedEntity.OwnedParty.Locations.Count, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=1}">
-                            <!--<Locations:LocationEdit DataContext="{Tools1:GetVM Type=ViewModels:LocationsVM}" />-->
+                            <Locations:LocationEdit LocationVM="{Binding SelectedLocationVM, Source={Tools1:GetVM Type=ViewModels:LocationsVM}}" />
                         </StackPanel>
                     </Grid>
                 </toolkit:Expander>

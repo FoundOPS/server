@@ -28,7 +28,7 @@
             </Icons:PinPointIcon>
         </DataTemplate>
     </UserControl.Resources>
-    <Grid x:Name="LayoutRoot" DataContext="{Binding DataContext.SelectedLocationVM, ElementName=myLocationEdit}" MinWidth="550">
+    <Grid x:Name="LayoutRoot" DataContext="{Binding LocationVM, ElementName=myLocationEdit}" MinWidth="550">
         <!--Visibility="{Binding Converter={StaticResource VisibilityConverter}, Path=DataContext.SelectedLocationVM, ElementName=myLocationEdit}"-->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
