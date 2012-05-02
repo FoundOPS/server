@@ -1393,7 +1393,7 @@ ADD CONSTRAINT [FK_RouteTaskService]
     FOREIGN KEY ([ServiceId])
     REFERENCES [dbo].[Services]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskService'
 CREATE INDEX [IX_FK_RouteTaskService]
