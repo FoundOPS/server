@@ -5094,24 +5094,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Guid> BusinessAccountIdForDepot
+        public Nullable<global::System.Guid> BusinessAccountId
         {
             get
             {
-                return _BusinessAccountIdForDepot;
+                return _BusinessAccountId;
             }
             set
             {
-                OnBusinessAccountIdForDepotChanging(value);
-                ReportPropertyChanging("BusinessAccountIdForDepot");
-                _BusinessAccountIdForDepot = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("BusinessAccountIdForDepot");
-                OnBusinessAccountIdForDepotChanged();
+                OnBusinessAccountIdChanging(value);
+                ReportPropertyChanging("BusinessAccountId");
+                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BusinessAccountId");
+                OnBusinessAccountIdChanged();
             }
         }
-        private Nullable<global::System.Guid> _BusinessAccountIdForDepot;
-        partial void OnBusinessAccountIdForDepotChanging(Nullable<global::System.Guid> value);
-        partial void OnBusinessAccountIdForDepotChanged();
+        private Nullable<global::System.Guid> _BusinessAccountId;
+        partial void OnBusinessAccountIdChanging(Nullable<global::System.Guid> value);
+        partial void OnBusinessAccountIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5852,24 +5852,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Guid> BusinessAccountId
+        public Nullable<global::System.Guid> BusinessAccountIdIfDepot
         {
             get
             {
-                return _BusinessAccountId;
+                return _BusinessAccountIdIfDepot;
             }
             set
             {
-                OnBusinessAccountIdChanging(value);
-                ReportPropertyChanging("BusinessAccountId");
-                _BusinessAccountId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("BusinessAccountId");
-                OnBusinessAccountIdChanged();
+                OnBusinessAccountIdIfDepotChanging(value);
+                ReportPropertyChanging("BusinessAccountIdIfDepot");
+                _BusinessAccountIdIfDepot = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BusinessAccountIdIfDepot");
+                OnBusinessAccountIdIfDepotChanged();
             }
         }
-        private Nullable<global::System.Guid> _BusinessAccountId;
-        partial void OnBusinessAccountIdChanging(Nullable<global::System.Guid> value);
-        partial void OnBusinessAccountIdChanged();
+        private Nullable<global::System.Guid> _BusinessAccountIdIfDepot;
+        partial void OnBusinessAccountIdIfDepotChanging(Nullable<global::System.Guid> value);
+        partial void OnBusinessAccountIdIfDepotChanged();
 
         #endregion
 
@@ -6185,7 +6185,7 @@ namespace FoundOps.Core.Models.CoreEntities
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "BusinessAccountLocation", "BusinessAccount")]
-        public BusinessAccount BusinessAccountWhereDepot
+        public BusinessAccount BusinessAccountIfDepot
         {
             get
             {
@@ -6201,7 +6201,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<BusinessAccount> BusinessAccountWhereDepotReference
+        public EntityReference<BusinessAccount> BusinessAccountIfDepotReference
         {
             get
             {

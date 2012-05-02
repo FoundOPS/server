@@ -610,7 +610,7 @@
           <Property Name="CustomerId" Type="nvarchar(max)" />
           <Property Name="CreateTime" Type="nvarchar(max)" />
           <Property Name="LastUpdatedTime" Type="nvarchar(max)" />
-          <Property Name="BusinessAccountIdForDepot" Type="uniqueidentifier" />
+          <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="LineItems">
@@ -638,7 +638,7 @@
           <Property Name="City" Type="nvarchar(max)" />
           <Property Name="PartyId" Type="uniqueidentifier" />
           <Property Name="RegionId" Type="uniqueidentifier" />
-          <Property Name="BusinessAccountId" Type="uniqueidentifier" />
+          <Property Name="BusinessAccountIdIfDepot" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Options">
           <Key>
@@ -974,7 +974,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Invoices">
-              <PropertyRef Name="BusinessAccountIdForDepot" />
+              <PropertyRef Name="BusinessAccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -986,7 +986,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Locations">
-              <PropertyRef Name="BusinessAccountId" />
+              <PropertyRef Name="BusinessAccountIdIfDepot" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2427,8 +2427,8 @@
           <NavigationProperty Name="LocationFieldsWhereValue" Relationship="CoreEntities.LocationFieldLocation" FromRole="Location" ToRole="LocationField" />
           <NavigationProperty Name="Invoices" Relationship="CoreEntities.InvoiceLocation" FromRole="Location" ToRole="Invoice" />
           <NavigationProperty Name="ClientsWhereBillingLocation" Relationship="CoreEntities.ClientLocation" FromRole="Location" ToRole="Client" />
-          <NavigationProperty Name="BusinessAccountWhereDepot" Relationship="CoreEntities.BusinessAccountLocation" FromRole="Location" ToRole="BusinessAccount" />
-          <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
+          <NavigationProperty Name="BusinessAccountIfDepot" Relationship="CoreEntities.BusinessAccountLocation" FromRole="Location" ToRole="BusinessAccount" />
+          <Property Type="Guid" Name="BusinessAccountIdIfDepot" Nullable="true" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -3368,7 +3368,7 @@
           <Property Type="String" Name="LastUpdatedTime" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="LineItems" Relationship="CoreEntities.LineItemInvoice" FromRole="Invoice" ToRole="LineItem" />
           <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.BusinessAccountInvoice" FromRole="Invoice" ToRole="BusinessAccount" />
-          <Property Type="Guid" Name="BusinessAccountIdForDepot" Nullable="true" />
+          <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
           <NavigationProperty Name="Client" Relationship="CoreEntities.ClientInvoice" FromRole="Invoice" ToRole="Client" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
         </EntityType>
@@ -3477,7 +3477,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Invoice">
-              <PropertyRef Name="BusinessAccountIdForDepot" />
+              <PropertyRef Name="BusinessAccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3584,7 +3584,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Location">
-              <PropertyRef Name="BusinessAccountId" />
+              <PropertyRef Name="BusinessAccountIdIfDepot" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3754,7 +3754,7 @@
                 <ScalarProperty Name="City" ColumnName="City" />
                 <ScalarProperty Name="PartyId" ColumnName="PartyId" />
                 <ScalarProperty Name="RegionId" ColumnName="RegionId" />
-                <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
+                <ScalarProperty Name="BusinessAccountIdIfDepot" ColumnName="BusinessAccountIdIfDepot" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4011,7 +4011,7 @@
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="BusinessAccountIdForDepot" ColumnName="BusinessAccountIdForDepot" />
+                <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4181,7 +4181,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="CoreEntities" ZoomLevel="20" >
+      <Diagram Name="CoreEntities" ZoomLevel="97" >
         <EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="23.625" PointY="22.875" Height="2.7494921874999818" />
         <EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="21.375" PointY="23.125" Height="2.5571907552083246" />
         <EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="18.75" PointY="22.875" Height="2.7494921875000102" />

@@ -470,7 +470,7 @@ CREATE TABLE [dbo].[Locations] (
     [City] nvarchar(max)  NULL,
     [PartyId] uniqueidentifier  NULL,
     [RegionId] uniqueidentifier  NULL,
-    [BusinessAccountId] uniqueidentifier  NULL
+    [BusinessAccountIdIfDepot] uniqueidentifier  NULL
 );
 GO
 
@@ -698,7 +698,7 @@ CREATE TABLE [dbo].[Invoices] (
     [CustomerId] nvarchar(max)  NULL,
     [CreateTime] nvarchar(max)  NULL,
     [LastUpdatedTime] nvarchar(max)  NULL,
-    [BusinessAccountIdForDepot] uniqueidentifier  NULL,
+    [BusinessAccountId] uniqueidentifier  NULL,
     [ClientId] uniqueidentifier  NULL
 );
 GO
@@ -1959,10 +1959,10 @@ ADD CONSTRAINT [FK_PartyPartyImage]
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [BusinessAccountIdForDepot] in table 'Invoices'
+-- Creating foreign key on [BusinessAccountId] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [FK_BusinessAccountInvoice]
-    FOREIGN KEY ([BusinessAccountIdForDepot])
+    FOREIGN KEY ([BusinessAccountId])
     REFERENCES [dbo].[Parties_BusinessAccount]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -1970,7 +1970,7 @@ ADD CONSTRAINT [FK_BusinessAccountInvoice]
 -- Creating non-clustered index for FOREIGN KEY 'FK_BusinessAccountInvoice'
 CREATE INDEX [IX_FK_BusinessAccountInvoice]
 ON [dbo].[Invoices]
-    ([BusinessAccountIdForDepot]);
+    ([BusinessAccountId]);
 GO
 
 -- Creating foreign key on [ClientId] in table 'Invoices'
@@ -2015,10 +2015,10 @@ ON [dbo].[RouteTasks]
     ([RecurringServiceId]);
 GO
 
--- Creating foreign key on [BusinessAccountId] in table 'Locations'
+-- Creating foreign key on [[BusinessAccountIdIfDepot]] in table 'Locations'
 ALTER TABLE [dbo].[Locations]
 ADD CONSTRAINT [FK_BusinessAccountLocation]
-    FOREIGN KEY ([BusinessAccountId])
+    FOREIGN KEY ([BusinessAccountIdIfDepot])
     REFERENCES [dbo].[Parties_BusinessAccount]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -2026,7 +2026,7 @@ ADD CONSTRAINT [FK_BusinessAccountLocation]
 -- Creating non-clustered index for FOREIGN KEY 'FK_BusinessAccountLocation'
 CREATE INDEX [IX_FK_BusinessAccountLocation]
 ON [dbo].[Locations]
-    ([BusinessAccountId]);
+    ([BusinessAccountIdIfDepot]);
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Business'
