@@ -47,6 +47,9 @@ namespace FoundOps.Core.Models.CoreEntities
             }
 
             [Include]
+            public EntityCollection<Location> Depots { get; set; }
+
+            [Include]
             public EntityCollection<ServiceTemplate> ServiceTemplates { get; set; }
         }
     }

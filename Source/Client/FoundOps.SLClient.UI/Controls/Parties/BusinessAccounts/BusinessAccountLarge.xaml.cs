@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
@@ -35,7 +36,31 @@ namespace FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts
             if (serviceProvider == null)
                 return AddMode.None;
 
-            return serviceProvider.Id == BusinessAccountsDesignData.FoundOps.Id ? AddMode.Add : AddMode.AddExisting;
+            return serviceProvider.Id == BusinessAccountsConstants.FoundOpsId ? AddMode.Add : AddMode.AddExisting;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// A converter that will return Collapsed if the guid == FoundOPS.Id
+    /// </summary>
+    public class FoundOPSVisibilityConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var guid = value as Guid?;
+            if (!guid.HasValue)
+                return Visibility.Collapsed;
+
+            return guid.Value == BusinessAccountsConstants.FoundOpsId ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -100,7 +100,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Find if the BusinessAccount context is FoundOPS
                 var serviceProvider = ContextManager.GetContext<BusinessAccount>();
                 if (serviceProvider == null ||
-                    serviceProvider.Id != BusinessAccountsDesignData.FoundOps.Id)
+                    serviceProvider.Id != BusinessAccountsConstants.FoundOpsId)
                     throw new NotImplementedException("New service templates should inherit from a FoundOPS template.");
 
                 var newServiceTemplate = new ServiceTemplate

@@ -1,7 +1,7 @@
-using System.Windows;
 using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Tools;
@@ -12,6 +12,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -161,20 +162,17 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
-        private LocationVM _selectedEntityLocationVM;
+        private LocationVM _selectedDepotLocationVM;
         /// <summary>
-        /// Gets or sets the selected entity location VM.
+        /// Gets or sets the selected depot location VM.
         /// </summary>
-        /// <value>
-        /// The selected entity location VM.
-        /// </value>
-        public LocationVM SelectedEntityLocationVM
+        public LocationVM SelectedDepotLocationVM
         {
-            get { return _selectedEntityLocationVM; }
+            get { return _selectedDepotLocationVM; }
             set
             {
-                _selectedEntityLocationVM = value;
-                this.RaisePropertyChanged("SelectedEntityLocationVM");
+                _selectedDepotLocationVM = value;
+                this.RaisePropertyChanged("SelectedDepotLocationVM");
             }
         }
 
@@ -337,12 +335,20 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             base.OnSelectedEntityChanged(oldValue, newValue);
 
-            if (newValue != null)
-            {
-                //Whenever the SelectedEntity changes setup the ContactInfoVM for that entity
-                SelectedEntityContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, newValue.ContactInfoSet);
+            var businessAccount = newValue as BusinessAccount;
 
-                //SelectedEntityLocationVM = new LocationVM(((BusinessAccount)newValue).Depots.FirstOrDefault());
+            if (businessAccount != null)
+            {
+                //Whenever the SelectedEntity changes setup the ContactInfoVM and DepotLocationVM for that entity
+
+                SelectedEntityContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, businessAccount.ContactInfoSet);
+
+                //If there is not a depot: set one up
+                if (!businessAccount.Depots.Any() && businessAccount.Id != BusinessAccountsConstants.FoundOpsId)
+                    businessAccount.Depots.Add(new Location { OwnerParty = ContextManager.OwnerAccount });
+
+                //Now there will only be one depot per business account
+                SelectedDepotLocationVM = new LocationVM(businessAccount.Depots.FirstOrDefault());
             }
         }
 
