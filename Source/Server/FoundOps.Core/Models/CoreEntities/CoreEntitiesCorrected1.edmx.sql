@@ -2002,7 +2002,7 @@ ADD CONSTRAINT [FK_RouteTaskRecurringService]
     FOREIGN KEY ([RecurringServiceId])
     REFERENCES [dbo].[RecurringServices]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_RouteTaskRecurringService'
 CREATE INDEX [IX_FK_RouteTaskRecurringService]
@@ -2139,6 +2139,15 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+USE Core
+GO
+/****************************************************************************************************************************************************
+* FUNCTION CheckServiceTemplateForChildren will check a ServiceTemplate to see if it has any child ServiceTemplates
+** Input Parameters **
+* @serviceTemplateId - The Id of the Service Template that you want to check 
+** Output Parameters: **
+* INT - Will be '0' if there are no children and will be '1' if children exist
+***************************************************************************************************************************************************/
 CREATE FUNCTION [dbo].[CheckServiceTemplateForChildren]
 (
 	-- Add the parameters for the function here
@@ -2182,10 +2191,16 @@ GO
 
 GO
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+USE Core
+GO
 IF OBJECT_ID(N'[dbo].[DeleteBasicPartyBasedOnId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].DeleteBasicPartyBasedOnId
 GO
---This procedure deletes a Business Account
+--This procedure deletes all the basic info held on a Party (Locations, Contacts, ContactInfoSet, Roles, Vehicles and Files)
 CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 		(@providerId uniqueidentifier)
 	AS
@@ -2221,7 +2236,13 @@ GO
 IF OBJECT_ID(N'[dbo].[DeleteBusinessAccountBasedOnId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].DeleteBusinessAccountBasedOnId
 GO
---This procedure deletes a Business Account
+/****************************************************************************************************************************************************
+* FUNCTION DeleteBusinessAccountBasedOnId will delete a BusinessAccount and all entities associated with it
+* Follows the following progression to delete: RouteEmployee, RouteVehicle, Routes, RouteTasks, Services, ServiceTemplates, Clients, Locations
+* Regions, Contacts, ContactInfoSet, Roles, Vehicles, Files, Employees and finally it deletes the BusinessAccount itself 
+** Input Parameters **
+* @providerId - The BusinessAccount Id
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		(@providerId uniqueidentifier)
 
@@ -2264,6 +2285,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		ClientId uniqueidentifier
 	)
 
+	--Finds all Clients that are associated with the BusinessAccount
 	INSERT INTO @ClientIdsForServiceProvider
 	SELECT Id FROM Clients
 	WHERE	VendorId = @providerId
@@ -2271,6 +2293,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DECLARE @ClientRowCount int
 	SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
 
+	--Iterates through @ClientIdsForServiceProvider and calls DeleteClientBasedOnId on each
 	WHILE @ClientRowCount > 0
 	BEGIN
 			SET @ClientId = (SELECT MIN(ClientId) FROM @ClientIdsForServiceProvider)
@@ -2292,6 +2315,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		LocationId uniqueidentifier
 	)
 
+	--Finds all Locations that are associated with the BusinessAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
 	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
@@ -2299,6 +2323,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
 
+	--Iterates through @LocationIdsForServiceProvider and calls DeleteLocationBasedOnId on each
 	WHILE @LocationRowCount > 0
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
@@ -2341,12 +2366,22 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 
 GO
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 USE Core
 GO
 IF OBJECT_ID(N'[dbo].[DeleteClientBasedOnId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].DeleteClientBasedOnId
 GO
---This procedure deletes a Business Account
+/****************************************************************************************************************************************************
+* FUNCTION DeleteClientBasedOnId will delete a Client and all entities associated with it
+* Follows the following progression to delete: RouteDestinations, RouteTasks, Services, ServiceTemplates, RecurringServices, Locations 
+* ClientTitles, Parties_Business and finally the Client itself
+** Input Parameters **
+* @clientId - The Client Id to be deleted
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteClientBasedOnId
 		(@clientId uniqueidentifier)
 
@@ -2367,6 +2402,9 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	DELETE FROM RecurringServices
 	WHERE ClientId = @clientId
 
+-------------------------------------------------------------------------------------------------------------------------
+--Delete Locations for Client
+-------------------------------------------------------------------------------------------------------------------------
 	DECLARE @LocationId uniqueidentifier
 	
 	DECLARE @LocationIdsForClient TABLE
@@ -2374,6 +2412,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 		LocationId uniqueidentifier
 	)
 
+	--Finds all Locations that are associated with the Client
 	INSERT INTO @LocationIdsForClient
 	SELECT Id FROM Locations
 	WHERE	PartyId = @clientId
@@ -2381,6 +2420,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	DECLARE @RowCount int
 	SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
 
+	--Iterates through @LocationIdsForClient and calls DeleteLocationBasedOnId on each
 	WHILE @RowCount > 0
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForClient)
@@ -2392,6 +2432,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 
 			SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
 	END
+-------------------------------------------------------------------------------------------------------------------------
 
 	DELETE FROM ClientTitles
 	WHERE ClientId = @clientId
@@ -2407,13 +2448,22 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 
 GO
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 USE Core
 GO
 
 IF OBJECT_ID(N'[dbo].[DeleteLocationBasedOnId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].[DeleteLocationBasedOnId]
 GO
---This procedure deletes a Business Account
+/****************************************************************************************************************************************************
+* FUNCTION DeleteLocationBasedOnId will delete a Location and all entities associated with it
+* Follows the following progression to delete: RouteTasks, SubLocations, ContactInfoSet, RouteDestinations and finally the Location itself
+** Input Parameters **
+* @locationId - The Location Id to be deleted
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteLocationBasedOnId
 		(@locationId uniqueidentifier)
 
@@ -2449,7 +2499,12 @@ GO
 IF OBJECT_ID(N'[dbo].[DeleteRecurringService]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].[DeleteRecurringService]
 GO
---This procedure deletes a Business Account
+/****************************************************************************************************************************************************
+* FUNCTION DeleteRecurringService will delete a RecurringService and all entities associated with it
+* Follows the following progression to delete: Services, ServiceTemplates, Repeats and finally the RecurringService itself
+** Input Parameters **
+* @recurringServiceId - The RecurringService Id to be deleted
+***************************************************************************************************************************************************/
 CREATE PROCEDURE [dbo].[DeleteRecurringService]
 		(@recurringServiceId uniqueidentifier)
 
@@ -2462,8 +2517,10 @@ CREATE PROCEDURE [dbo].[DeleteRecurringService]
 
 	DECLARE @serviceTemplateId uniqueidentifier
 
+	--Find the ServiceTemplate that correspods to the Recurring Service  
 	SET		@serviceTemplateId = (SELECT Id FROM ServiceTemplates WHERE Id = @recurringServiceId)
 
+	--Delete the ServiceTemplate found above
 	EXEC	[dbo].[DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId]	@parentTemplateId = @serviceTemplateId
 
 	DELETE
@@ -2479,9 +2536,24 @@ CREATE PROCEDURE [dbo].[DeleteRecurringService]
 
 GO
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+USE Core
+GO
 IF OBJECT_ID(N'[dbo].[DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
 GO
+/****************************************************************************************************************************************************
+* FUNCTION DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId will delete a ServiceTemplate and all child ServiceTemplates associated with it
+* Begins by using a CTE(Common Table Expression) to find all chlid ServiceTemplates. It does this by making the CTE self referencing so it becomes recursive
+* Since the CTE will only last for one operation (it is not actually stored as an abject) we save it into a teemporary table for later use.
+* After we have this table, we do a series of Semi-Joins to find RouteTasks, Services, RecurringServices and ServiceTemplates that have an Id that exists in the table
+* Finally we drop the temp table so it can be recreated later.
+** Input Parameters **
+* @parentTemplateId - The ServiceTemplalate Id to use to find children ServiceTemplates
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
 		(@parentTemplateId uniqueidentifier)
 	AS
@@ -2569,10 +2641,25 @@ CREATE PROCEDURE dbo.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
 
 GO
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+USE Core
+GO
 IF OBJECT_ID(N'[dbo].[DeleteServiceTemplatesAndChildrenBasedOnContextId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].[DeleteServiceTemplatesAndChildrenBasedOnContextId]
 GO
---This procedure deletes all service templates and child service templates
+/****************************************************************************************************************************************************
+* FUNCTION DeleteServiceTemplatesAndChildrenBasedOnContextId will delete all ServiceTemplates on a Client or BusinessAccount and all child ServiceTemplates associated with them
+* Begins by using a CTE(Common Table Expression) to find all chlid ServiceTemplates. It does this by making the CTE self referencing so it becomes recursive
+* Since the CTE will only last for one operation (it is not actually stored as an abject) we save it into a teemporary table for later use.
+* After we have this table, we do a series of Semi-Joins to find RouteTasks, Services, RecurringServices and ServiceTemplates that have an Id that exists in the table
+* Finally we drop the temp table so it can be recreated later.
+** Input Parameters **
+* @serviceProviderId - The BusinessAccount Id to use to find all ServiceTemplates for
+* @ownerClientId - The Client Id to use to find all ServiceTemplates for
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId
 		(@serviceProviderId uniqueidentifier,
 		@ownerClientId uniqueidentifier)
@@ -2680,10 +2767,21 @@ CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId
 
 GO
 
---This procedure deletes a User Account
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+USE Core
+GO
 IF OBJECT_ID(N'[dbo].[DeleteUserAccountBasedOnId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].[DeleteUserAccountBasedOnId]
 GO
+/****************************************************************************************************************************************************
+* FUNCTION DeleteUserAccountBasedOnId will delete a UserAccount and all entities associated with it
+* Follows the following progression to delete: Locations, Contacts, ContactInfoSet, Roles, Vehicles, Files, UserAccountLog and finally the UserAccount itself 
+** Input Parameters **
+* @providerId - The UserAccount Id to be deleted
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 		(@providerId uniqueidentifier)
 
@@ -2700,6 +2798,7 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 		LocationId uniqueidentifier
 	)
 
+	--Finds all Locations that are associated with the UserAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
 	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
@@ -2707,6 +2806,7 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
 
+	--Iterates through @LocationIdsForServiceProvider and calls DeleteLocationBasedOnId on each
 	WHILE @LocationRowCount > 0
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
@@ -2750,10 +2850,25 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
+Use Core
+Go
 IF OBJECT_ID(N'[dbo].[GetNextOccurence]', N'FN') IS NOT NULL
 DROP FUNCTION [dbo].[GetNextOccurence]
 GO
+/****************************************************************************************************************************************************
+* FUNCTION GetNextOccurence will take in a Service schedule and return the next date that that Service is scheduled to occur that is on or after the OnOrAfterDate
+** Input Parameters **
+* @onOrAfterDate - The first date the can be accepted as a response
+* @startDate - The StartDate of the Repeat
+* @endDate - The EndDate of the Repeat
+* @endAfterTimes - The number of times the Service is scheduled to occur before it ends
+* @frequencyInt - Corresponds to the type of schedule (Once, Daily, Weekly, Monthly or Yearly)
+* @repeatEveryTimes - Corresponds to how often the Service is sceduled to repeat (ex. a value of 2 would mean that it repeats every 2 days, weeks, months or years)
+* @FrequencyDetailInt - Corresponds to weekly and monthly schedules only. For Weekly it is equal to a list of numbers that correspond to days of the week (ex. 1237 would mean that the service happens on Monday, Tuesday, Wednesday and Sunday)
+*						For Monthly it corresponds to when during the month the Service is schedule (ex. LastDayOfMonth, FirstOfDayOfMonth, ThirdOfDayOfMonth, etc.)
+** Output Parameters  **
+*  DateTime - The date of the next scheduled Service occurrence
+***************************************************************************************************************************************************/
     Create FUNCTION [dbo].[GetNextOccurence]
     (@onOrAfterDate datetime,
     @startDate datetime,
@@ -2998,10 +3113,25 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-
+Use Core
+GO
 IF OBJECT_ID(N'[dbo].[GetPreviousOccurrence]', N'FN') IS NOT NULL
 DROP FUNCTION [dbo].[GetPreviousOccurrence]
 GO
+/****************************************************************************************************************************************************
+* FUNCTION GetNextOccurence will take in a Service schedule and return the date that that Service was scheduled to occur that is on or before the OnOrBeforeDate
+** Input Parameters **
+* @onOrBeforeDate - The first date the can be accepted as a response
+* @startDate - The StartDate of the Repeat
+* @endDate - The EndDate of the Repeat
+* @endAfterTimes - The number of times the Service is scheduled to occur before it ends
+* @frequencyInt - Corresponds to the type of schedule (Once, Daily, Weekly, Monthly or Yearly)
+* @repeatEveryTimes - Corresponds to how often the Service is sceduled to repeat (ex. a value of 2 would mean that it repeats every 2 days, weeks, months or years)
+* @FrequencyDetailInt - Corresponds to weekly and monthly schedules only. For Weekly it is equal to a list of numbers that correspond to days of the week (ex. 1237 would mean that the service happens on Monday, Tuesday, Wednesday and Sunday)
+*						For Monthly it corresponds to when during the month the Service is schedule (ex. LastDayOfMonth, FirstOfDayOfMonth, ThirdOfDayOfMonth, etc.)
+** Output Parameters  **
+*  DateTime - The date of the most recently scheduled Service occurrence on or before the OnOrBeforeDate
+***************************************************************************************************************************************************/
     Create FUNCTION [dbo].[GetPreviousOccurrence]
     (@OnOrBeforeDate datetime,
     @startDate datetime,
@@ -3229,6 +3359,21 @@ GO
 IF OBJECT_ID(N'[dbo].[GetResourcesWithLatestPoint]', N'FN') IS NOT NULL
 DROP FUNCTION [dbo].[GetResourcesWithLatestPoint]
 GO
+/****************************************************************************************************************************************************
+* FUNCTION GetResourcesWithLatestPoint will take a BusinessAccount Id and find all Employees and Vehicles associated with it that are on Routes for the today.
+* It will then find all the required information from those Employees and Vehicles and return them in a table as depicted below.
+** Input Parameters **
+* @serviceProviderId - The BusinessAccount Id that will be used to find all Employees and Vehicles
+* @serviceDate - The date the you want to get Resource and Locations for
+** Output Parameters: **
+* @ServicesTableToReturn - Ex. below
+* EmployeeId		| VehicleId | EntityName			| CompassHeading | Latitude	| Longitude	| LastTimeStamp	| Speed	| TrackSource	| RouteId
+* ---------------------------------------------------------------------------------------------------------------------------------------------------
+* {GUID}			|           | Bob Black <- Employee	| 186			 | 47.456	| -86.166	| DateTime		| 46.32	| iPhone		| {GUID}
+* {GUID}			|           | Jane Doe <- Employee	| 45			 | 43.265	| -89.254	| DateTime		| 25.13	| Android		| {GUID}
+* {GUID}			| {GUID}	| 372 0925 <- Vehicle	| 321			 | 44.165	| -79.365	| Datetime		| 32.89	| Windows Phone	| {GUID}
+*****************************************************************************************************************************************************/
+
 CREATE FUNCTION [dbo].[GetResourcesWithLatestPoint]
 (@serviceProviderId uniqueidentifier,
 @serviceDate date)
@@ -4164,22 +4309,24 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+Use Core
+GO
 IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
 DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
 GO
-/****************************************************************************************************************************************************
+/*****************************************************************************************************************************************************************************************************************
 * FUNCTION GetUnroutedServicesForDate will take the context provided and find all the services that are scheduled for that day
 ** Input Parameters **
 * @serviceProviderIdContext - The BusinessAccount context
 * @firstDateToLookForServices - The reference date to look for services
 ** Output Parameters: **
 * @ServicesTableToReturn - Ex. below
-* RecurringServiceId                     | ServiceId                              | OccurDate
-* -----------------------------------------------------------------------------------------
-* {036BD670-39A5-478F-BFA3-AD312E3F7F47} |                                        | 1/1/2012 <-- Generated service
-* {B30A43AD-655A-449C-BD4E-951F8F988718} |                                        | 1/1/2012 <-- Existing service
-* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | {FC222C74-EFEA-4B45-93FB-B042E6D6DB0D} | 1/2/2012 <-- Existing service with a RecurringService parent **
-***************************************************************************************************************************************************/
+* RecurringServiceId| ServiceId | OccurDate									| ServiceName | ClientName		| ClientId  | RegionName | LocationName    | LocationId | AddressLine   | Latitude	| Longitude
+* ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+* {GUID}			|           | 1/1/2012 <-- Generated service			| Oil		  | Seltzer Factory | {GUID}	| South		 | Seltzer Factory | {GUID}		| 123 Fake St	| 47.456	| -86.166
+* {GUID}			|           | 1/1/2012 <-- Existing service				| Direct	  |	GotGrease?		| {GUID}	| North		 | GotGrease?	   | {GUID} 	| 6789 Help Ln	| 43.265	| -89.254	
+* {GUID}			| {GUID}	| 1/2/2012 <-- Existing service w/ RS parent| Regular     | AB Couriers		| {GUID}	| West		 | AB Couriers	   | {GUID}		| 4953 Joe Way	| 44.165	| -79.365	
+****************************************************************************************************************************************************************************************************************/
 CREATE FUNCTION [dbo].[GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
 @serviceDate date)
@@ -4769,19 +4916,19 @@ IF OBJECT_ID(N'[dbo].[Split]', N'FN') IS NOT NULL
 DROP FUNCTION [dbo].[Split]
 GO
 /****************************************************************************************************************************************************
-		* FUNCTION Split will convert the comma separated string of dates ()
-		** Input Parameters **
-		* @Id - RecurringServiceId
-		* @sInputList - List of delimited ExcludedDates
-		* @sDelimiter - -- Delimiter that separates ExcludedDates
-		** Output Parameters: **
-		*  @List TABLE (Id uniqueidentifier, ExcludedDate VARCHAR(8000)) - Ex. below
-		* Id                                     | ExcludedDate
-		* -----------------------------------------------------------------------------------------
-		* {036BD670-39A5-478F-BFA3-AD312E3F7F47} | 1/1/2012
-		* {B30A43AD-655A-449C-BD4E-951F8F988718} | 1/1/2012
-		* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | 1/2/2012
-		***************************************************************************************************************************************************/
+* FUNCTION Split will convert the comma separated string of dates ()
+** Input Parameters **
+* @Id - RecurringServiceId
+* @sInputList - List of delimited ExcludedDates
+* @sDelimiter - -- Delimiter that separates ExcludedDates
+** Output Parameters: **
+*  @List TABLE (Id uniqueidentifier, ExcludedDate VARCHAR(8000)) - Ex. below
+* Id                                     | ExcludedDate
+* -----------------------------------------------------------------------------------------
+* {036BD670-39A5-478F-BFA3-AD312E3F7F47} | 1/1/2012
+* {B30A43AD-655A-449C-BD4E-951F8F988718} | 1/1/2012
+* {03DB9F9B-2FF6-4398-B984-533FB3E19C50} | 1/2/2012
+***************************************************************************************************************************************************/
 CREATE FUNCTION dbo.Split(
 	@Id			uniqueidentifier --RecurringServiceId
   , @sInputList VARCHAR(8000) -- List of delimited ExcludedDates

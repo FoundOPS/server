@@ -30,6 +30,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         {
             GotGrease = new BusinessAccount
             {
+                Id = new Guid("8528E50D-E2B9-4779-9B29-759DBEA53B61"),
                 Name = "GotGrease?",
                 QuickBooksEnabled = true,
                 MaxRoutes = 10
@@ -37,6 +38,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             ABCouriers = new BusinessAccount
             {
+                Id = new Guid("3281B373-101F-415A-B708-14B9BA95A618"),
                 Name = "AB Couriers",
                 QuickBooksEnabled = true,
                 MaxRoutes = 10
@@ -44,6 +46,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             OrenKosherSteakhouse = new BusinessAccount
             {
+                Id = new Guid("62047896-B2A1-49E4-BA10-72F0667B1DB0"),
                 Name = "Oren's Kosher Steakhouse",
                 QuickBooksEnabled = true,
                 MaxRoutes = 10

@@ -110,12 +110,28 @@ namespace FoundOps.Core.Tools
             return ownerParty;
         }
 
+
+        /// <summary>
+        /// Gets the BusinessAccount owner of a role.
+        /// It will return one entity as an IQueryable for performance.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="roleId">The role id.</param>
+        /// <returns></returns>
+        public static IQueryable<BusinessAccount> BusinessAccountOwnerOfRoleQueryable(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
+        {
+            var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer)
+                             where role.Id == roleId
+                             select role.OwnerParty;
+
+            return ownerParty.OfType<BusinessAccount>();
+        }
+
         /// <summary>
         /// Gets the BusinessAccount owner of a role.
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <param name="roleId">The role id.</param>
-        /// <returns></returns>
         public static BusinessAccount BusinessAccountOwnerOfRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
         {
             var accountForRole = coreEntitiesContainer.OwnerPartyOfRole(roleId);
@@ -123,6 +139,7 @@ namespace FoundOps.Core.Tools
             if (!(accountForRole is BusinessAccount)) return null;
 
             var ownerParty = (BusinessAccount)accountForRole;
+
             return ownerParty;
         }
 

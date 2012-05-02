@@ -1,7 +1,22 @@
-﻿IF OBJECT_ID(N'[dbo].[DeleteServiceTemplatesAndChildrenBasedOnContextId]', N'FN') IS NOT NULL
+﻿SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+USE Core
+GO
+IF OBJECT_ID(N'[dbo].[DeleteServiceTemplatesAndChildrenBasedOnContextId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].[DeleteServiceTemplatesAndChildrenBasedOnContextId]
 GO
---This procedure deletes all service templates and child service templates
+/****************************************************************************************************************************************************
+* FUNCTION DeleteServiceTemplatesAndChildrenBasedOnContextId will delete all ServiceTemplates on a Client or BusinessAccount and all child ServiceTemplates associated with them
+* Begins by using a CTE(Common Table Expression) to find all chlid ServiceTemplates. It does this by making the CTE self referencing so it becomes recursive
+* Since the CTE will only last for one operation (it is not actually stored as an abject) we save it into a teemporary table for later use.
+* After we have this table, we do a series of Semi-Joins to find RouteTasks, Services, RecurringServices and ServiceTemplates that have an Id that exists in the table
+* Finally we drop the temp table so it can be recreated later.
+** Input Parameters **
+* @serviceProviderId - The BusinessAccount Id to use to find all ServiceTemplates for
+* @ownerClientId - The Client Id to use to find all ServiceTemplates for
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId
 		(@serviceProviderId uniqueidentifier,
 		@ownerClientId uniqueidentifier)

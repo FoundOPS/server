@@ -1,7 +1,13 @@
-﻿IF OBJECT_ID(N'[dbo].[DeleteBasicPartyBasedOnId]', N'FN') IS NOT NULL
+﻿SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+USE Core
+GO
+IF OBJECT_ID(N'[dbo].[DeleteBasicPartyBasedOnId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].DeleteBasicPartyBasedOnId
 GO
---This procedure deletes a Business Account
+--This procedure deletes all the basic info held on a Party (Locations, Contacts, ContactInfoSet, Roles, Vehicles and Files)
 CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 		(@providerId uniqueidentifier)
 	AS

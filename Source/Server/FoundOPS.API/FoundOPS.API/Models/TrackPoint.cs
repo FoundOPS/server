@@ -1,21 +1,61 @@
-﻿using System;
-using FoundOps.Core.Models.Azure;
+﻿using FoundOps.Core.Models.Azure;
+using System;
 
 namespace FoundOPS.API.Models
 {
     public class TrackPoint
     {
+        /// <summary>
+        /// The Id of this TrackPoint
+        /// </summary>
         public Guid Id { get; set; }
-        public DateTime TimeStamp { get; set; }
+
+        /// <summary>
+        /// The Date of the TrackPoint. On Get, it pulls LastTimeStamp.Date
+        /// </summary>
+        public DateTime CollectedDate
+        {
+            get { return CollectedTimeStamp.Date; }
+        }
+
+        /// <summary>
+        /// The DateTime of this TrackPoint
+        /// </summary>
+        public DateTime CollectedTimeStamp { get; set; }
+
+        /// <summary>
+        /// The compass heading of this TrackPoint
+        /// </summary>
         public Int32? CompassDirection { get; set; }
+
+        /// <summary>
+        /// The latitude of this TrackPoint
+        /// </summary>
         public Double Latitude { get; set; }
+
+        /// <summary>
+        /// The longitude of this TrackPoint
+        /// </summary>
         public Double Longitude { get; set; }
+
+        /// <summary>
+        /// The speed of this TrackPoint
+        /// </summary>
         public Double? Speed { get; set; }
+
+        /// <summary>
+        /// The source of this TrackPoint (iPhone, Android, WindowsPhone, etc.)
+        /// </summary>
         public String Source { get; set; }
 
-        public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint)
+        /// <summary>
+        /// The Id of the Route that this TrackPoint belongs to
+        /// </summary>
+        public Guid? RouteId { get; set; }
+
+        public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint) 
         {
-            var trackPointId = modelTrackPoint.EmployeetId ?? modelTrackPoint.VehicleId;
+            var trackPointId = modelTrackPoint.EmployeeId ?? modelTrackPoint.VehicleId;
 
             if(trackPointId == null) 
                 return null;
@@ -24,11 +64,12 @@ namespace FoundOPS.API.Models
                                  {
                                      CompassDirection = null,
                                      Id = (Guid) trackPointId,
-                                     TimeStamp = modelTrackPoint.TimeStamp,
+                                     CollectedTimeStamp = modelTrackPoint.CollectedTimeStamp,
                                      Latitude = modelTrackPoint.Latitude,
                                      Longitude = modelTrackPoint.Longitude,
                                      Speed = null,
-                                     Source = null
+                                     Source = null,
+                                     RouteId = modelTrackPoint.RouteId
                                  };
 
             return trackPoint;

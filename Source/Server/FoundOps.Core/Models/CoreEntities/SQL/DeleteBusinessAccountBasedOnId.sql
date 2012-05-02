@@ -3,7 +3,13 @@ GO
 IF OBJECT_ID(N'[dbo].[DeleteBusinessAccountBasedOnId]', N'FN') IS NOT NULL
 DROP PROCEDURE [dbo].DeleteBusinessAccountBasedOnId
 GO
---This procedure deletes a Business Account
+/****************************************************************************************************************************************************
+* FUNCTION DeleteBusinessAccountBasedOnId will delete a BusinessAccount and all entities associated with it
+* Follows the following progression to delete: RouteEmployee, RouteVehicle, Routes, RouteTasks, Services, ServiceTemplates, Clients, Locations
+* Regions, Contacts, ContactInfoSet, Roles, Vehicles, Files, Employees and finally it deletes the BusinessAccount itself 
+** Input Parameters **
+* @providerId - The BusinessAccount Id
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		(@providerId uniqueidentifier)
 
@@ -46,6 +52,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		ClientId uniqueidentifier
 	)
 
+	--Finds all Clients that are associated with the BusinessAccount
 	INSERT INTO @ClientIdsForServiceProvider
 	SELECT Id FROM Clients
 	WHERE	VendorId = @providerId
@@ -53,6 +60,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DECLARE @ClientRowCount int
 	SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
 
+	--Iterates through @ClientIdsForServiceProvider and calls DeleteClientBasedOnId on each
 	WHILE @ClientRowCount > 0
 	BEGIN
 			SET @ClientId = (SELECT MIN(ClientId) FROM @ClientIdsForServiceProvider)
@@ -74,6 +82,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		LocationId uniqueidentifier
 	)
 
+	--Finds all Locations that are associated with the BusinessAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
 	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
@@ -81,6 +90,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
 
+	--Iterates through @LocationIdsForServiceProvider and calls DeleteLocationBasedOnId on each
 	WHILE @LocationRowCount > 0
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
