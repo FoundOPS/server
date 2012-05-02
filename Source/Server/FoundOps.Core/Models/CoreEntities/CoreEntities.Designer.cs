@@ -1282,30 +1282,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String FileName
-        {
-            get
-            {
-                return _FileName;
-            }
-            set
-            {
-                OnFileNameChanging(value);
-                ReportPropertyChanging("FileName");
-                _FileName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("FileName");
-                OnFileNameChanged();
-            }
-        }
-        private global::System.String _FileName;
-        partial void OnFileNameChanging(global::System.String value);
-        partial void OnFileNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String NavigateUri

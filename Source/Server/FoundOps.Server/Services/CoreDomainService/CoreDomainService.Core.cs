@@ -33,21 +33,19 @@ namespace FoundOps.Server.Services.CoreDomainService
     {
         protected override bool PersistChangeSet()
         {
-            //var original = this.ChangeSet.GetOriginal(this.ChangeSet.ChangeSetEntries.FirstOrDefault().Entity);
-
-            //if (original != ChangeSet.ChangeSetEntries.FirstOrDefault())
-            //     original = this.ChangeSet.ChangeSetEntries.FirstOrDefault();
-
             //Get any files that were just deleted
-            var deletedFiles =
-              this.ChangeSet.ChangeSetEntries.Where(cse => cse.Entity is File && cse.Operation == DomainOperation.Delete)
-                .Select(cse => cse.Entity as File);
+            var deletedFiles = this.ChangeSet.ChangeSetEntries.Where(cse => cse.Entity is File && cse.Operation == DomainOperation.Delete)
+                .Select(cse => cse.Entity as File).ToArray();
 
-            //Delete the files from cloud storage
-            foreach (var fileToDelete in deletedFiles)
-                FileController.DeleteBlobHelper(fileToDelete.OwnerParty.Id, fileToDelete.Id);
+            var persistedChangeSet = base.PersistChangeSet();
+            if (persistedChangeSet)
+            {
+                //Delete the files from cloud storage
+                foreach (var fileToDelete in deletedFiles)
+                    FileController.DeleteBlobHelper(fileToDelete.OwnerParty.Id, fileToDelete.Id);
+            }
 
-            return base.PersistChangeSet();
+            return persistedChangeSet;
         }
 
         [Query]
@@ -150,39 +148,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             throw new InvalidOperationException("Deleting BusinessAccounts has been temporarily disabled...Sorry Patrick");
             //ObjectContext.DeleteBusinessAccountBasedOnId(businessAccountToDelete.Id);
-
-            #region NOT USED TO DELETE ANYMORE
-
-            //businessAccountToDelete.ServicesToProvide.Load();
-            //foreach (var service in businessAccountToDelete.ServicesToProvide.ToList())
-            //    this.DeleteService(service);
-
-            ////Stored procedure that will find all ServiceTemplates on this BusinessAccount
-            ////Then it will find all of the children of those ServiceTemplates
-            ////Then it will delete all of them
-            //ObjectContext.DeleteServiceTemplatesAndChildrenBasedOnBusinessAccountId(businessAccountToDelete.Id);
-
-            //businessAccountToDelete.Employees.Load();
-            //foreach (var employee in businessAccountToDelete.Employees.ToList())
-            //    this.DeleteEmployee(employee);
-
-            //businessAccountToDelete.Regions.Load();
-            //foreach (var region in businessAccountToDelete.Regions.ToList())
-            //    this.DeleteRegion(region);
-
-            //businessAccountToDelete.RouteTasks.Load();
-            //foreach (var routeTask in businessAccountToDelete.RouteTasks.ToList())
-            //    this.DeleteRouteTask(routeTask);
-
-            //businessAccountToDelete.Routes.Load();
-            //foreach (var route in businessAccountToDelete.Routes.ToList())
-            //    this.DeleteRoute(route);
-
-            //businessAccountToDelete.Clients.Load();
-            //foreach (var client in businessAccountToDelete.Clients.ToList())
-            //    this.DeleteClient(client);
-
-            #endregion
 
             //TODO: When quickbooks is setup
             //QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
@@ -325,7 +290,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessAccount = ownerParty as BusinessAccount;
             if (businessAccount != null)
                 (businessAccount).Depots.Load();
-            
+
             return ownerParty;
         }
 
@@ -387,58 +352,6 @@ namespace FoundOps.Server.Services.CoreDomainService
                 DeleteBusinessAccount(businessAccountToDelete);
             else if (userAccountToDelete != null)
                 ObjectContext.DeleteUserAccountBasedOnId(userAccountToDelete.Id);
-
-            #region NOT USED TO DELETE ANYMORE
-            //party.Locations.Load();
-            //party.OwnedLocations.Load();
-            //party.ClientOwnerReference.Load();
-            //party.Contacts.Load();
-            //party.ContactInfoSet.Load();
-            //party.OwnedRoles.Load();
-            //party.Vehicles.Load();
-            //party.OwnedFiles.Load();
-
-            //party.RoleMembership.Load();
-            //party.RoleMembership.Clear();
-
-            //var accountLocations = party.OwnedLocations.ToArray();
-            //foreach (var location in accountLocations)
-            //    this.DeleteLocation(location);
-
-            //var partyLocations = party.Locations.ToArray();
-            //foreach (var location in partyLocations)
-            //    this.DeleteLocation(location);
-
-            //var contacts = party.Contacts.ToArray();
-            //foreach (var contact in contacts)
-            //    this.DeleteContact(contact);
-
-            //var contactInfoSetToRemove = party.ContactInfoSet.ToArray();
-            //foreach (var contactInfo in contactInfoSetToRemove)
-            //    this.DeleteContactInfo(contactInfo);
-
-            //var ownedRolesToDelete = party.OwnedRoles.ToArray();
-            //foreach (var ownedRole in ownedRolesToDelete)
-            //    this.DeleteRole(ownedRole);
-
-            //var vehicles = party.Vehicles.ToArray();
-            //foreach (var vehicle in vehicles)
-            //    this.DeleteVehicle(vehicle);
-
-            //var files = party.OwnedFiles.ToArray();
-            //foreach (var file in files)
-            //    this.DeleteFile(file);
-
-            //if ((party.EntityState != EntityState.Detached))
-            //{
-            //    this.ObjectContext.ObjectStateManager.ChangeObjectState(party, EntityState.Deleted);
-            //}
-            //else
-            //{
-            //    this.ObjectContext.Parties.Attach(party);
-            //    this.ObjectContext.Parties.DeleteObject(party);
-            //}
-            #endregion
         }
 
         #endregion

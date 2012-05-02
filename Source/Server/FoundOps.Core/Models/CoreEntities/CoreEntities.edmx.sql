@@ -397,7 +397,6 @@ GO
 CREATE TABLE [dbo].[Blocks] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [FileName] nvarchar(max)  NULL,
     [NavigateUri] nvarchar(max)  NOT NULL,
     [Icon] varbinary(max)  NULL,
     [Link] nvarchar(max)  NOT NULL,
