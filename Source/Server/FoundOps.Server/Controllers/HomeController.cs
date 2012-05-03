@@ -1,6 +1,4 @@
-using System.IO;
-using System.Net;
-using FoundOps.Common.Tools;
+using FoundOps.Core.Models;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Tools;
@@ -10,6 +8,11 @@ using System;
 using System.Data.Services.Client;
 using System.Linq;
 using System.Web.Mvc;
+#if !DEBUG //RELEASE or TESTRELEASE
+using System.IO;
+using System.Net;
+using FoundOps.Common.Tools;
+#endif
 
 namespace FoundOps.Server.Controllers
 {

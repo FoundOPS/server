@@ -39,7 +39,6 @@ namespace FoundOps.Server
         protected void Application_Start(object sender, EventArgs e)
         {
 #if DEBUG
-            IsDebugMode = true;
             RootApplicationUrl = "http://localhost:31820";
             RootFrontSiteUrl = "http://localhost:55206";
 #elif TESTRELEASE
