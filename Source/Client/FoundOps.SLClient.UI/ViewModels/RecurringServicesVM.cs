@@ -1,4 +1,7 @@
-﻿using FoundOps.Core.Models.CoreEntities;
+﻿using System.IO;
+using System.Reactive.Subjects;
+using System.Windows.Controls;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Tools;
@@ -115,6 +118,35 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Refresh Services
             VM.Services.ForceRefresh();
+        }
+
+        #endregion
+
+        #region Export to CSV
+
+        /// <summary>
+        /// Exports to a CSV file.
+        /// NOTE: Must be called directly in a user initiated event handler (like a click) for security purposes for SaveFileDialog. Therefore it cannot be executed from a command.
+        /// </summary>
+        public void ExportToCSV()
+        {
+            var csvLoadedObservable = new ReplaySubject<byte[]>();
+
+            //Load the CSV
+            DomainContext.GetRecurringServicesCSVForRole(ContextManager.RoleId, 
+                loadedCSV => csvLoadedObservable.OnNext(loadedCSV.Value), null);
+
+            var fileName = String.Format("RecurringServicesExport {0}.csv", DateTime.UtcNow.ToString("MM'-'dd'-'yyyy"));
+            var saveFileDialog = new SaveFileDialog { DefaultFileName = fileName, DefaultExt = ".csv", Filter = "CSV File|*.csv" };
+
+            if (saveFileDialog.ShowDialog() != true) return;
+
+            csvLoadedObservable.Take(1).ObserveOnDispatcher().Subscribe(csvByteArray =>
+            {
+                var fileWriter = new BinaryWriter(saveFileDialog.OpenFile());
+                fileWriter.Write(csvByteArray);
+                fileWriter.Close();
+            });
         }
 
         #endregion

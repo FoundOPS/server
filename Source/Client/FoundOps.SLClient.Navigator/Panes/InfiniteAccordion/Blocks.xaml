@@ -12,16 +12,13 @@
              xmlns:RecurringServices1="clr-namespace:FoundOps.SLClient.UI.Controls.Services.RecurringServices;assembly=FoundOps.SLClient.UI" xmlns:Vehicles1="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles;assembly=FoundOps.SLClient.UI"
              xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services;assembly=FoundOps.SLClient.UI" xmlns:EmployeeHistory1="clr-namespace:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory;assembly=FoundOps.SLClient.UI" 
              xmlns:ServiceTemplate1="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate;assembly=FoundOps.SLClient.UI" xmlns:Maintenance1="clr-namespace:FoundOps.SLClient.UI.Controls.Vehicles.Maintenance;assembly=FoundOps.SLClient.UI"  
-             xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:AdministrativeConsole="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts;assembly=FoundOps.SLClient.UI"
              xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts;assembly=FoundOps.SLClient.UI"
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools;assembly=FoundOps.SLClient.UI" xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI"
              xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher;assembly=FoundOps.SLClient.UI"
              xmlns:Routes="clr-namespace:FoundOps.Framework.Views.Controls.Routes;assembly=FoundOps.SLClient.UI">
-    <UserControl.Resources>
-        <Converters:ServiceTemplatesAddDeleteModeConverter x:Key="ServiceTemplatesAddDeleteModeConverter"/>
-    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -244,14 +241,17 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock TextWrapping="Wrap" Text="Recurring Services" Margin="5,3,5,3" FontSize="13" Foreground="White" />
-                                    <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
+                                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                        <AddEditDelete:AddDelete Grid.Column="1" AddDeleteMode="AddItemDelete" AddItemCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
                                                 CommandParameter="{Binding SelectedEntity}" ItemsSource="{Binding ServiceTemplatesForContext, Source={Tools1:GetVM Type=CoreEntities:ServiceTemplatesVM}}">
-                                        <AddEditDelete:AddDelete.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Name}"/>
-                                            </DataTemplate>
-                                        </AddEditDelete:AddDelete.ItemTemplate>
-                                    </AddEditDelete:AddDelete>
+                                            <AddEditDelete:AddDelete.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}"/>
+                                                </DataTemplate>
+                                            </AddEditDelete:AddDelete.ItemTemplate>
+                                        </AddEditDelete:AddDelete>
+                                        <Controls:CsvButton Margin="5,3,5,3" Content="CSV" ToolTipService.ToolTip="Export to CSV" Click="ExportRecurringServicesCSV_OnClick" />
+                                    </StackPanel>
                                 </Grid>
                             </Border>
                             <RecurringServices1:RecurringServicesGrid x:Name="RecurringServicesGrid" Grid.Row="1" IsMainGrid="True" />
