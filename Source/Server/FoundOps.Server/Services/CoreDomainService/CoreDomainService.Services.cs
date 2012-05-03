@@ -1,15 +1,16 @@
 using System.Data.Entity;
+using System.IO;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.Core.Tools;
 using System;
 using System.Data;
-using System.Data.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.DomainServices.EntityFramework;
 using System.ServiceModel.DomainServices.Server;
+using Kent.Boogaart.KBCsv;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -283,6 +284,56 @@ namespace FoundOps.Server.Services.CoreDomainService
             recurringServices.SelectMany(rs => rs.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
 
             return recurringServices;
+        }
+
+        /// <summary>
+        /// Gets the RecurringServices CSV for a role.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        public byte[] GetRecurringServicesCSVForRole(Guid roleId)
+        {
+            var memoryStream = new MemoryStream();
+
+            var csvWriter = new CsvWriter(memoryStream);
+
+            csvWriter.WriteHeaderRecord("Service Type", "Service Destination", "Frequency",
+                                        "Start Date", "End Date", "Repeat Every", "Repeat On");
+
+            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Include(rs=>rs.Repeat).Include(rs=>rs.ServiceTemplate);
+
+            //Load LocationFields for destination information
+
+            var records = from rs in recurringServices
+                          select new
+                          {
+                              RecurringService = rs,
+                              ServiceType = rs.ServiceTemplate.Name,
+                              rs.Repeat.Frequency,
+                              rs.Repeat.StartDate,
+                              RepeatEvery=  rs.Repeat.RepeatEveryTimes
+                          };
+
+            foreach (var record in records.ToArray())
+            {
+                var destination = record.RecurringService.ServiceTemplate.GetDestination();
+                string serviceDestination = destination != null ? destination.Name : null;
+
+                var repeatEndDate = record.RecurringService.Repeat.EndDate;
+                string endDate = repeatEndDate.HasValue ? repeatEndDate.Value.ToString() : null;
+
+                string repeatOn;
+
+                //Convert frequency detail to:  day or date
+                csvWriter.WriteDataRecord(record.ServiceType, serviceDestination, record.Frequency,
+                    record.StartDate, endDate, record.RepeatEvery);
+            }
+                
+            csvWriter.Close();
+
+            var csv = memoryStream.ToArray();
+            memoryStream.Dispose();
+
+            return csv;
         }
 
         public void InsertRecurringService(RecurringService recurringService)

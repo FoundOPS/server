@@ -45,9 +45,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         public FieldsVM()
             : base(new[] { typeof(ServiceTemplate) }, false)
         {
-            //Can only delete if the selected field is not required
-            this.SelectedEntityObservable.Where(se => se != null)
-                .Select(selectedField => !selectedField.Required).Subscribe(CanDeleteSubject);
+            //TODO Setup deleting..
+            CanDeleteSubject.OnNext(false);
+            //// Can only delete if the selected field is not required
+            //this.SelectedEntityObservable.Where(se => se != null)
+            //    .Select(selectedField => !selectedField.Required).Subscribe(CanDeleteSubject);
 
             //Whenever the ServiceTemplateContext changes or the details are loaded
             //a) update the Fields DCV

@@ -49,6 +49,7 @@ namespace FoundOps.Core.Models.Import
                    new ImportColumnType("State", DataCategory.LocationState, Multiplicity.Single),
                    new ImportColumnType("Zip Code", DataCategory.LocationZipCode, Multiplicity.Single),
                    new ImportColumnType("Client Name", DataCategory.ClientName, Multiplicity.Single),
+                   new ImportColumnType("Region Name", DataCategory.RegionName, Multiplicity.Single),
                    new ImportColumnType("Email Address Label", DataCategory.ContactInfoEmailAddressLabel, Multiplicity.Multiple),
                    new ImportColumnType("Email Address", DataCategory.ContactInfoEmailAddressData, Multiplicity.Multiple),
                    new ImportColumnType("Fax Number Label", DataCategory.ContactInfoFaxNumberLabel, Multiplicity.Multiple),

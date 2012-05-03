@@ -287,9 +287,10 @@ namespace FoundOps.Core.Models.Import
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="row">The categories/values used to initialize the client.</param>
         /// <param name="clientAssociation">The (optional) client association.</param>
-        public static Location CreateLocation(BusinessAccount currentBusinessAccount, Tuple<DataCategory, string>[] row, Client clientAssociation)
+        /// <param name="regionAssociation"> </param>
+        public static Location CreateLocation(BusinessAccount currentBusinessAccount, Tuple<DataCategory, string>[] row, Client clientAssociation, Region regionAssociation)
         {
-            var location = new Location { OwnerParty = currentBusinessAccount };
+            var location = new Location { OwnerParty = currentBusinessAccount, Region = regionAssociation };
 
             //Set the Location's Party and set the clientAssociation's DefaultBillingLocation to the new location
             //if the clientAssociation is not null
