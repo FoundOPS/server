@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="FoundOps.Core.Azure" generation="1" functional="0" release="0" Id="66d6bec4-33b7-4228-962b-8f143440b171" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="FoundOps.Core.Azure" generation="1" functional="0" release="0" Id="ead02895-0d99-45ca-b9e0-e7d6727ea557" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="FoundOps.Core.AzureGroup" generation="1" functional="0" release="0">
       <componentports>
@@ -103,14 +103,14 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="afdc31f0-28c3-4c93-8e49-dfc61e546e8d" ref="Microsoft.RedDog.Contract\ServiceContract\FoundOps.Core.AzureContract@ServiceDefinition.build">
+    <implementation Id="b28537c1-4fc7-4de0-822c-28ae43b18a4e" ref="Microsoft.RedDog.Contract\ServiceContract\FoundOps.Core.AzureContract@ServiceDefinition.build">
       <interfacereferences>
-        <interfaceReference Id="bf719f2d-2a40-454c-8eed-fb11e38ef680" ref="Microsoft.RedDog.Contract\Interface\FoundOps.Server:Endpoint1@ServiceDefinition.build">
+        <interfaceReference Id="b58cc867-6266-4730-8adc-fc39164f8933" ref="Microsoft.RedDog.Contract\Interface\FoundOps.Server:Endpoint1@ServiceDefinition.build">
           <inPort>
             <inPortMoniker name="/FoundOps.Core.Azure/FoundOps.Core.AzureGroup/FoundOps.Server:Endpoint1" />
           </inPort>
         </interfaceReference>
-        <interfaceReference Id="2ed3e6c6-12d8-4ff7-9b3d-c3cf84108b77" ref="Microsoft.RedDog.Contract\Interface\FoundOps.Server:Endpoint2@ServiceDefinition.build">
+        <interfaceReference Id="3b09e435-3859-4915-a85d-8c11387b5003" ref="Microsoft.RedDog.Contract\Interface\FoundOps.Server:Endpoint2@ServiceDefinition.build">
           <inPort>
             <inPortMoniker name="/FoundOps.Core.Azure/FoundOps.Core.AzureGroup/FoundOps.Server:Endpoint2" />
           </inPort>
