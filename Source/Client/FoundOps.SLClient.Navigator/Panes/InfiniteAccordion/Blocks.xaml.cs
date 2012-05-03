@@ -101,5 +101,10 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         {
             VM.Locations.ExportToCSV();
         }
+
+        private void ExportRecurringServicesCSV_OnClick(object sender, RoutedEventArgs e)
+        {
+            VM.RecurringServices.ExportToCSV();
+        }
     }
 }

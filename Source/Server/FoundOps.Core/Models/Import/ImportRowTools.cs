@@ -155,7 +155,7 @@ namespace FoundOps.Core.Models.Import
                     if (dayStrings.Any(s => s == "m" || s == "mo" || s == "mon" || s == "monday"))
                         daysOfWeek.Add(DayOfWeek.Monday);
 
-                    if (dayStrings.Any(s => s == "t" || s == "tu" || s == "tues" || s == "tuesday"))
+                    if (dayStrings.Any(s => s == "t" || s == "tu" || s == "tue" || s == "tues" || s == "tuesday"))
                         daysOfWeek.Add(DayOfWeek.Tuesday);
 
                     if (dayStrings.Any(s => s == "w" || s == "we" || s == "wed" || s == "wednesday"))
@@ -188,7 +188,8 @@ namespace FoundOps.Core.Models.Import
                     else if (val == "day")
                     {
                         var detailsAvailable = repeat.AvailableMonthlyFrequencyDetailTypes.ToList();
-                        detailsAvailable.Remove(MonthlyFrequencyDetail.OnDayInMonth);
+                        if (detailsAvailable.Count() > 1)
+                            detailsAvailable.Remove(MonthlyFrequencyDetail.OnDayInMonth);
                         repeat.FrequencyDetailAsMonthlyFrequencyDetail = detailsAvailable.First();
                     }
                 }
