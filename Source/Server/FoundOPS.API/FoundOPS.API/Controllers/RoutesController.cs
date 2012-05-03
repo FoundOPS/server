@@ -65,6 +65,21 @@ namespace FoundOPS.API.Controllers
             return apiRoutes.OrderBy(r => r.Name).AsQueryable();
         }
 
+        /// <summary>
+        /// Gets the depot Location(s) for a BusinessAccount based on the roleId
+        /// </summary>
+        /// <param name="roleId">Used to get the BusinessAccount</param>
+        public IQueryable<Location> GetDepots(Guid roleId)
+        {
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();
+
+            if(currentBusinessAccount == null)
+                ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+
+            return currentBusinessAccount.Depots.AsQueryable(); 
+        }
+
+
         #endregion
     }
 }
