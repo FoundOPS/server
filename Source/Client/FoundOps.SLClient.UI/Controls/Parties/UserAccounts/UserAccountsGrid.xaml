@@ -4,7 +4,7 @@
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
              mc:Ignorable="d" d:DesignHeight="50" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="UserAccountsVM"
              IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
-    <telerik:RadGridView x:Name="UserAccountsRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
+    <telerik:RadGridView x:Name="UserAccountsRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" CanUserSortColumns="False"
                 RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding DisplayName}" Width="*"/>

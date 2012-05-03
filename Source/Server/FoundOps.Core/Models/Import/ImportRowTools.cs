@@ -188,7 +188,8 @@ namespace FoundOps.Core.Models.Import
                     else if (val == "day")
                     {
                         var detailsAvailable = repeat.AvailableMonthlyFrequencyDetailTypes.ToList();
-                        detailsAvailable.Remove(MonthlyFrequencyDetail.OnDayInMonth);
+                        if (detailsAvailable.Count() > 1)
+                            detailsAvailable.Remove(MonthlyFrequencyDetail.OnDayInMonth);
                         repeat.FrequencyDetailAsMonthlyFrequencyDetail = detailsAvailable.First();
                     }
                 }

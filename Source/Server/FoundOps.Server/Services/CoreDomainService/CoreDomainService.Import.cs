@@ -146,8 +146,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var locationName = row.GetCategoryValue(DataCategory.LocationName);
             Location associatedLocation = null;
-            if (locationName != null)
-                associatedLocation = locationAssociations.FirstOrDefault(l => l.Name == locationName);
 
             var clientName = row.GetCategoryValue(DataCategory.ClientName);
             var locationAddressLineOne = row.GetCategoryValue(DataCategory.LocationAddressLineOne);
@@ -156,6 +154,8 @@ namespace FoundOps.Server.Services.CoreDomainService
                 var clientId = clientAssociations.First(c => c.Item2 == clientName).Item1.Id;
                 associatedLocation = locationAssociations.FirstOrDefault(l => l.AddressLineOne == locationAddressLineOne && l.PartyId == clientId);
             }
+            else if (locationName != null)
+                associatedLocation = locationAssociations.FirstOrDefault(l => l.Name == locationName);
 
             return associatedLocation;
         }
