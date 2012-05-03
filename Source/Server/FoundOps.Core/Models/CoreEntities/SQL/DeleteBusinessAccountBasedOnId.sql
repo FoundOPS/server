@@ -32,6 +32,9 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		WHERE OwnerBusinessAccountId = @providerId
 	)
 
+	DELETE FROM Locations
+	WHERE BusinessAccountIdIfDepot = @providerId
+
 	DELETE FROM Routes
 	WHERE OwnerBusinessAccountId = @providerId
 
