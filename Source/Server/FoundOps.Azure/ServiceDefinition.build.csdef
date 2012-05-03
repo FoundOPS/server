@@ -9,7 +9,7 @@
   **********************************************************************************************
 -->
 <ServiceDefinition name="FoundOps.Core.Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
-  <WebRole name="FoundOps.Server" vmsize="Medium">
+  <WebRole name="FoundOps.Server" vmsize="Small">
     <Sites>
       <Site name="Web">
         <Bindings>
@@ -20,15 +20,15 @@
     </Sites>
     <Endpoints>
       <InputEndpoint name="Endpoint1" protocol="http" port="80" />
-      <InputEndpoint name="Endpoint2" protocol="https" port="443" certificate="app.foundops.com" />
+      <!--<InputEndpoint name="Endpoint2" protocol="https" port="443" certificate="app.foundops.com" />-->
+      <InputEndpoint name="Endpoint2" protocol="https" port="443" certificate="test.foundops.com" />
     </Endpoints>
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
     <Certificates>
-      <Certificate name="app.foundops.com" storeLocation="LocalMachine" storeName="My" />
-      <Certificate name="GoDaddyClass2" storeLocation="LocalMachine" storeName="Trust" />
-      <Certificate name="GoDaddySecure" storeLocation="LocalMachine" storeName="Trust" />
+      <!--<Certificate name="app.foundops.com" storeLocation="LocalMachine" storeName="My" />-->
+      <Certificate name="test.foundops.com" storeLocation="LocalMachine" storeName="My" />
     </Certificates>
   </WebRole>
 </ServiceDefinition>

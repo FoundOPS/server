@@ -61,13 +61,13 @@ namespace FoundOps.SLClient.Data.Services
     {
         #region Constants
 
-#if DEBUG
+#if RELEASE
+        //This is the Production Totango Service Id
+        private const string TotangoServiceId = "SP-1268-01";
+#else //if DEBUG or TESTRELEASE
         //The ServiceId for the Totango account
         //This is the Development Totango Service Id
         private const string TotangoServiceId = "SP-12680-01";
-#else
-        //This is the Production Totango Service Id
-        private const string TotangoServiceId = "SP-1268-01";
 #endif
 
         /// <summary>

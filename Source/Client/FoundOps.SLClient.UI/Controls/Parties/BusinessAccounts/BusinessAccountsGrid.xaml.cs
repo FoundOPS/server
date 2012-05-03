@@ -22,10 +22,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts
         {
             InitializeComponent();
 
-#if DEBUG
-            if(DesignerProperties.IsInDesignTool)
-                return;
-#endif
+            if(DesignerProperties.IsInDesignTool) return;
 
             BusinessAccountsVM.DependentWhenVisible(this);
         }

@@ -217,8 +217,19 @@
             <param name="splashscreensource" value="#splashScreen" />
             <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged" />
             @{
-                var xapSource = Global.IsDebugMode ? Url.Content("/ClientBin/FoundOps.SLClient.Navigator.xap")
-                                    : Url.Content("http://opsapplive.blob.core.windows.net/xaps/FoundOps.SLClient.Navigator.xap");
+                var xapSource = "";
+                switch (Global.Mode)
+                {
+                    case "DEBUG":
+                        xapSource = Url.Content("/ClientBin/FoundOps.SLClient.Navigator.xap");
+                        break;
+                    case "TESTRELEASE":
+                        xapSource = Url.Content("http://opsapptest.blob.core.windows.net/xaps/FoundOps.SLClient.Navigator.xap");
+                        break;
+                    case "RELEASE":
+                        xapSource = Url.Content("http://opsapplive.blob.core.windows.net/xaps/FoundOps.SLClient.Navigator.xap");
+                        break;
+                }
 
                 //Setup version
                 var sourceParam = xapSource + "?ignore=" + Model;

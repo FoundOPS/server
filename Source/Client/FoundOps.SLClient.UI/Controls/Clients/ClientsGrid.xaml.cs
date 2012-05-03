@@ -26,10 +26,7 @@ namespace FoundOps.SLClient.UI.Controls.Clients
         {
             InitializeComponent();
 
-#if DEBUG
-            if (DesignerProperties.IsInDesignTool)
-                return;
-#endif
+            if (DesignerProperties.IsInDesignTool) return;
 
             this.DependentWhenVisible(VM.Clients);
 

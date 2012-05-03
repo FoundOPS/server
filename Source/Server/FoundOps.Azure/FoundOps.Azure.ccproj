@@ -41,7 +41,7 @@
   <!-- Items for the project -->
   <ItemGroup>
     <ServiceDefinition Include="ServiceDefinition.csdef" />
-    <ServiceConfiguration Include="ServiceConfiguration.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.Default.cscfg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FoundOps.Server\FoundOps.Server.csproj">
@@ -58,11 +58,15 @@
   </ItemGroup>
   <ItemGroup>
     <PublishProfile Include="Profiles\FoundOpsProduction.azurePubxml" />
+    <PublishProfile Include="Profiles\FoundOpsTest.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\1.6\</CloudExtensionsDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'TestRelease' ">
+    <OutputPath>bin\TestRelease\</OutputPath>
   </PropertyGroup>
   <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
 </Project>

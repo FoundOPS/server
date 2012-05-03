@@ -25,9 +25,9 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
+#if DEBUG
         public static void ClearCreateCoreEntitiesDatabase()
         {
-#if DEBUG
             var clearFile = new FileInfo(ClearCoreEntitiesDatabaseScriptLocation);
             var createFile = new FileInfo(CreateCoreEntitiesDatabaseScriptLocation);
             string clearScript = clearFile.OpenText().ReadToEnd();
@@ -40,7 +40,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
             clearFile.OpenText().Close();
             createFile.OpenText().Close();
-#endif
         }
 
         public static void PopulateBlocks(CoreEntitiesContainer coreEntitiesContainer)
@@ -54,7 +53,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         public static void ClearCreateCoreEntitiesDatabaseAndPopulateDesignData()
         {
-#if DEBUG
             ClearCreateCoreEntitiesDatabase();
 
             var container = new CoreEntitiesContainer(ContainerConnectionString);
@@ -126,8 +124,7 @@ namespace FoundOps.Core.Models.CoreEntities
             }
 
             container.SaveChanges();
-#endif
         }
-
+#endif
     }
 }

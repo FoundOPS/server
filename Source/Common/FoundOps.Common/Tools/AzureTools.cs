@@ -6,7 +6,9 @@ namespace FoundOps.Common.Tools
     {
 #if DEBUG
         public const string AccountName = "opsappdebug";
-#else
+#elif TESTRELEASE
+        public const string AccountName = "opsapptest";
+#elif RELEASE
         public const string AccountName = "opsapplive";
 #endif
         public const string BlobStorageUrl = @"http://" + AccountName + @".blob.core.windows.net/";
