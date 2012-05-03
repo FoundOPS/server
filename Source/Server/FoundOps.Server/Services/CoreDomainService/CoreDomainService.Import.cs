@@ -52,6 +52,12 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (importDestination == ImportDestination.RecurringServices)
                 locationAssociations = LoadLocationAssociations(currentRoleId, rows);
 
+            //If the destination is Locations
+            //Load region associations
+            Region[] regionAssociations = null;
+            if (importDestination == ImportDestination.Locations)
+                regionAssociations = LoadCreateRegionAssociations(currentRoleId, businessAccount, rows);
+
             #endregion
 
             if (importDestination == ImportDestination.Clients)
@@ -72,7 +78,8 @@ namespace FoundOps.Server.Services.CoreDomainService
                 foreach (var row in rows)
                 {
                     var clientAssocation = GetClientAssociation(clientAssociations, row);
-                    var newLocation = ImportRowTools.CreateLocation(businessAccount, row, clientAssocation);
+                    var regionAssociation = GetRegionAssociation(regionAssociations, row);
+                    var newLocation = ImportRowTools.CreateLocation(businessAccount, row, clientAssocation, regionAssociation);
                     this.ObjectContext.Locations.AddObject(newLocation);
                 }
             }
@@ -154,6 +161,22 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
+        /// Gets the Region association from the loaded regionAssociations and a row's Categories/Associations (if there is one).
+        /// It used the DataCategory.RegionName to find the Region.
+        /// </summary>
+        /// <param name="regionAssociations">The loaded region associations</param>
+        /// <param name="row">The row's categories/values.</param>
+        private static Region GetRegionAssociation(Region[] regionAssociations, Tuple<DataCategory, string>[] row)
+        {
+            var regionName = row.GetCategoryValue(DataCategory.RegionName);
+            if (string.IsNullOrEmpty(regionName))
+                return null;
+
+            var region = regionAssociations.First(ca => ca.Name == regionName);
+            return region;
+        }
+
+        /// <summary>
         /// Loads the client associations and names from a set of rows.
         /// It uses the DataCategory.ClientName to find the client.
         /// </summary>
@@ -219,38 +242,31 @@ namespace FoundOps.Server.Services.CoreDomainService
             return associatedLocationsFromName.Union(associatedLocationsFromAddressLineOne).Distinct().ToArray();
         }
 
-        //foreach (var locationClientAssociation in locationClientAssociationsToHookup)
-        //{
-        //    var associatedClient =
-        //        associatedClients.FirstOrDefault(c => c.ChildName == locationClientAssociation.Item2);
 
-        //    if (associatedClient == null) continue;
-        //    //If the associatedClient was found set the Location's PartyId to this Client's (OwnerParty) Id
-        //    //and set the associatedClient's DefaultBillingLocation to the associatedLocation
+        /// <summary>
+        /// Loads the Region associations from a set of rows. If there is not a region for a name it will create a new one.
+        /// It uses the DataCategory.RegionName to find/create the regions.
+        /// </summary>
+        /// <param name="roleId">The role id.</param>
+        /// <param name="serviceProvider">The service provider (in case this needs to create new regions).</param>
+        /// <param name="rows">The rows of Tuple&lt;DataCategory,string&gt;[]"</param>
+        /// <returns></returns>
+        private Region[] LoadCreateRegionAssociations(Guid roleId, BusinessAccount serviceProvider, Tuple<DataCategory, string>[][] rows)
+        {
+            //Get the distinct region names from the rows' DataCategory.RegionName values
+            var regionNamesToLoad = rows.Select(cvs =>
+            {
+                var regionNameCategoryValue = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.RegionName);
+                return regionNameCategoryValue == null ? null : regionNameCategoryValue.Item2;
+            }).Distinct().Where(cn => cn != null).ToArray();
 
-        //    locationClientAssociation.Item1.PartyId = associatedClient.client.Id;
-        //    associatedClient.client.DefaultBillingLocationId = locationClientAssociation.Item1.Id;
-        //}
+            var loadedRegionsFromName = GetRegionsForServiceProvider(roleId).Where(r => regionNamesToLoad.Contains(r.Name)).ToArray();
 
-        //    var locationNamesToLoad = clientLocationAssociationsToHookup.Select(cl => cl.Item2).Distinct();
+            //Create a new region for any region name that did not exist
+            var newRegions = regionNamesToLoad.Except(loadedRegionsFromName.Select(r => r.Name)).Select(newRegionName => 
+                new Region {Id = Guid.NewGuid(), BusinessAccount = serviceProvider, Name = newRegionName});
 
-        //    //Load all the associatedLocations
-        //    var associatedLocations = (from location in this.ObjectContext.Locations.Where(l => l.OwnerPartyId == businessAccount.Id)
-        //                               where locationNamesToLoad.Contains(location.Name)
-        //                               select location).ToArray();
-
-        //    foreach (var clientLocationAssociation in clientLocationAssociationsToHookup)
-        //    {
-        //        var associatedLocation = associatedLocations.FirstOrDefault(l => l.Name == clientLocationAssociation.Item2);
-
-        //        if (associatedLocation == null) continue;
-        //        //If the associatedLocation was found set it's PartyId to this Client's (OwnerParty) Id
-        //        //and set the Client's DefaultBillingLocation to the associatedLocation
-
-        //        associatedLocation.PartyId = clientLocationAssociation.Item1.Id;
-        //        clientLocationAssociation.Item1.DefaultBillingLocationId = clientLocationAssociation.Item1.Id;
-        //    }
-        //}
-
+            return loadedRegionsFromName.Union(newRegions).ToArray();
+        }
     }
 }

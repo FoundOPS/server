@@ -24,6 +24,7 @@
         LocationCity,
         LocationState,
         LocationZipCode,
+        RegionName,
         ServiceType,
         RepeatFrequency,
         RepeatStartDate,
