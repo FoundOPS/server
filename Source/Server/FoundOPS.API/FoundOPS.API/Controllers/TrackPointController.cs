@@ -85,7 +85,7 @@ namespace FoundOPS.API.Controllers
 #endif
 
             //Calls the sql function to pull all the necessary information for a ResourcesWithTrackPoint
-            var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id, DateTime.UtcNow.Date);
+            var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id);
 
             var modelResources = resourcesWithTrackPoint.Select(ModelResourceWithLastPoint.ConvertToModel);
             return modelResources.AsQueryable();
