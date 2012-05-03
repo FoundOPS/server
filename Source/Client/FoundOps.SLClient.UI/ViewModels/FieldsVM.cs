@@ -42,7 +42,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Initializes a new instance of the <see cref="FieldsVM"/> class.
         /// </summary>
         [ImportingConstructor]
-        public FieldsVM() : base(new[] { typeof(ServiceTemplate)}, false )
+        public FieldsVM()
+            : base(new[] { typeof(ServiceTemplate) }, false)
         {
             //Can only delete if the selected field is not required
             this.SelectedEntityObservable.Where(se => se != null)
@@ -78,6 +79,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             var serviceTemplateContext = ContextManager.GetContext<ServiceTemplate>();
             if (serviceTemplateContext == null)
                 throw new NotSupportedException("FieldsVM is setup to work only when there is a ServiceTemplate Context");
+
+            if (serviceTemplateContext.ServiceTemplateLevel != ServiceTemplateLevel.FoundOpsDefined)
+                throw new NotSupportedException("Cannot add new Fields to a non FoundOPS level Service Template");
 
             var param = (string)commandParameter;
             Field fieldToAdd;
