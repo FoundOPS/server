@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
 using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.TreeView;
@@ -288,6 +290,73 @@ namespace FoundOps.SLClient.UI.Tools
                 return CommonErrorConstants.RouteLacksCapabilities;
 
             return CommonErrorConstants.Valid;
+        }
+
+        /// <summary>
+        /// Regenerate a RouteTask and add it to the TaskBoard
+        /// </summary>
+        /// <param name="routeTask">The RouteTask to regenerate and add to the TaskBoard</param>
+        public static void CreateNewRouteTaskAndAddToTaskBoard(RouteTask routeTask)  
+        {
+
+            //Create a new RouteTask to be saved as the ChildRouteTask of the TaskHolder
+            var newRouteTask = new RouteTask
+            {
+                Id = Guid.NewGuid(),
+                BusinessAccountId = routeTask.BusinessAccountId,
+                Client = routeTask.Client,
+                ClientId = routeTask.ClientId,
+                Date = routeTask.Date,
+                EstimatedDuration = routeTask.EstimatedDuration,
+                Location = routeTask.Location,
+                LocationId = routeTask.LocationId,
+                Name = routeTask.Name,
+                OwnerBusinessAccount = routeTask.OwnerBusinessAccount,
+                ParentRecurringService = routeTask.ParentRecurringService,
+                ParentRouteTaskHolder = routeTask.ParentRouteTaskHolder,
+                RecurringServiceId = routeTask.RecurringServiceId,
+                RouteDestination = null,
+                RouteDestinationId = null,
+                Service = routeTask.Service,
+                ServiceId = routeTask.ServiceId,
+                Status = Status.Unrouted
+            };
+
+            var taskHolder = routeTask.ParentRouteTaskHolder;
+
+            taskHolder.ChildRouteTask = null;
+            taskHolder.ChildRouteTask = newRouteTask;
+
+            Manager.Data.DetachEntities(new[] { newRouteTask });
+
+            VM.Routes.DeleteRouteTask(routeTask);
+            
+            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);
+        }
+
+        /// <summary>
+        /// Removes the dragged item from the route.
+        /// </summary>
+        /// <param name="draggedItem">The dragged item.</param>
+        /// <param name="routeDestination"> </param>
+        public static void RemoveFromRoute(object draggedItem)
+        {
+            //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely
+            if (draggedItem is RouteDestination)
+                VM.Routes.DeleteRouteDestination((RouteDestination)draggedItem);
+
+            if (draggedItem is RouteTask)
+            {
+                var draggedRouteTask = (RouteTask)draggedItem;
+
+                var oldRouteDestination = draggedRouteTask.RouteDestination;
+
+                //if the old route destination has no tasks, delete it
+                if (oldRouteDestination == null || oldRouteDestination.RouteTasks.Count == 0)
+                    VM.Routes.DeleteRouteDestination(oldRouteDestination);
+                else 
+                    draggedRouteTask.RemoveRouteDestination();
+            }
         }
     }
 }

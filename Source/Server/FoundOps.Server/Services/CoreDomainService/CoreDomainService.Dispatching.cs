@@ -206,7 +206,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             this.ObjectContext.DetachExistingAndAttach(routeDestination);
 
             routeDestination.RouteTasks.Load();
-            routeDestination.RouteTasks.Clear();
+
+            if (routeDestination.RouteTasks.Any())
+                routeDestination.RouteTasks.Clear();
 
             this.ObjectContext.RouteDestinations.DeleteObject(routeDestination);
         }
@@ -219,7 +221,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// Returns the scheduled RouteTasks for the day based on the ServiceProvider that are not in a route.
         /// </summary>
         /// <param name="roleId">The role id.</param>
-        /// <param name="serviceDate">The service date.</param>
+        /// <param name="serviceDate">The service date.</param>  
         [Query]
         public IQueryable<TaskHolder> GetUnroutedServices(Guid roleId, DateTime serviceDate)
         {

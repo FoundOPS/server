@@ -1,8 +1,8 @@
 ﻿<sdk:Page x:Class="FoundOps.SLClient.Navigator.Panes.Dispatcher.MainPage" x:Name="myDispatcherMainPage"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
-        xmlns:Dispatcher1="clr-namespace:FoundOps.Framework.Views.Controls.Dispatcher;assembly=FoundOps.SLClient.UI" xmlns:Dispatcher2="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher;assembly=FoundOps.SLClient.UI" 
+        xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+          xmlns:Dispatcher2="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher;assembly=FoundOps.SLClient.UI" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.Navigator.Panes.Dispatcher"
           xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools;assembly=FoundOps.SLClient.UI"
           xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels;assembly=FoundOps.SLClient.UI"
@@ -61,7 +61,7 @@
                     </telerik:RadPane>
                     <telerik:RadPane x:Name="TaskDetailsPane" telerik:RadDocking.SerializationTag="Task" Visibility="Visible" Header="Task" ContextMenuTemplate="{x:Null}" CanUserClose="False" 
                                          IsEnabled="{Binding SelectedRouteTask, Converter={StaticResource ExistsBoolConverter}}">
-                        <Dispatcher1:TaskDetails Visibility="{Binding DataContext.SelectedRouteTask,
+                        <Dispatcher2:TaskDetails Visibility="{Binding DataContext.SelectedRouteTask,
                             RelativeSource={RelativeSource AncestorType=Dispatcher:MainPage}, Converter={StaticResource VisibilityConverter}}"
                                                        IsEnabled="{Binding SelectedRouteTask.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:RoutesVM}}" />
                     </telerik:RadPane>

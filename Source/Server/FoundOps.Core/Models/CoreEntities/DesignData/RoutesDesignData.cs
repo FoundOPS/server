@@ -18,7 +18,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private readonly Random _random = new Random();
         private readonly string[] _routeNames = { "SF Bay Area", "Shelter Island", "North Side", "South Side" };
-        private readonly Status[] _statuses = { Status.Routed, Status.InProgress, Status.Completed, Status.Cancelled, Status.OnHold };
+        private readonly Status[] _statuses = { Status.Routed, Status.InProgress, Status.Completed, Status.Incomplete, Status.OnHold };
 
         public RoutesDesignData()
             : this(new BusinessAccountsDesignData().GotGrease)

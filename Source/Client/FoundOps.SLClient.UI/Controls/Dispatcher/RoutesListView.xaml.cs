@@ -149,7 +149,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                     if (e.Options.Destination is TaskBoard)
                     {
                         AddToTaskBoard(draggedItem);
-                        RemoveFromRoute(draggedItem);
+                        DragDropTools.RemoveFromRoute(draggedItem); 
                     }
                     else
                     {
@@ -367,81 +367,18 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             if (draggedItem is RouteDestination)
             {
                 foreach (var task in ((RouteDestination) draggedItem).RouteTasks)
-                    CreateNewRouteTaskAndAddToTaskBoard(task);
+                    DragDropTools.CreateNewRouteTaskAndAddToTaskBoard(task);
                 //TODO:add analytic
             }
             //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
             if (draggedItem is RouteTask)
             {
-                CreateNewRouteTaskAndAddToTaskBoard(((RouteTask) draggedItem));
+                DragDropTools.CreateNewRouteTaskAndAddToTaskBoard(((RouteTask) draggedItem));
                 //TODO:add analytic
             }
         }
 
-        private void CreateNewRouteTaskAndAddToTaskBoard(RouteTask routeTask)
-        {
-            var oldRouteTask = routeTask;
-
-            //Create a new RouteTask to be saved as the ChildRouteTask of the TaskHolder
-            var newRouteTask = new RouteTask
-            {
-                Id = Guid.NewGuid(),
-                BusinessAccountId = oldRouteTask.BusinessAccountId,
-                Client = oldRouteTask.Client,
-                ClientId = oldRouteTask.ClientId,
-                Date = oldRouteTask.Date,
-                EstimatedDuration = oldRouteTask.EstimatedDuration,
-                Location = oldRouteTask.Location,
-                LocationId = oldRouteTask.LocationId,
-                Name = oldRouteTask.Name,
-                OwnerBusinessAccount = oldRouteTask.OwnerBusinessAccount,
-                ParentRecurringService = oldRouteTask.ParentRecurringService,
-                ParentRouteTaskHolder = oldRouteTask.ParentRouteTaskHolder,
-                RecurringServiceId = oldRouteTask.RecurringServiceId,
-                RouteDestination = null,
-                RouteDestinationId = null,
-                Service = oldRouteTask.Service,
-                ServiceId = oldRouteTask.ServiceId,
-                Status = Status.Created
-            };
-
-            VM.Routes.DeleteRouteTask(oldRouteTask);
-
-            var taskHolder = routeTask.ParentRouteTaskHolder;
-
-            taskHolder.ChildRouteTask = null;
-            taskHolder.ChildRouteTask = newRouteTask;
-
-            Manager.Data.DetachEntities(new[] { newRouteTask });
-
-            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(routeTask.ParentRouteTaskHolder);
-        }
-
-        /// <summary>
-        /// Removes the dragged item from the route.
-        /// </summary>
-        /// <param name="draggedItem">The dragged item.</param>
-        private void RemoveFromRoute(object draggedItem)
-        {
-            //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely
-            if (draggedItem is RouteDestination)
-                VM.Routes.DeleteRouteDestination((RouteDestination)draggedItem);
-
-            if (draggedItem is RouteTask)
-            {
-                var draggedRouteTask = (RouteTask)draggedItem;
-
-                var oldRouteDestination = draggedRouteTask.RouteDestination;
-
-                //if the old route destination has no tasks, delete it
-                if (oldRouteDestination.RouteTasks.Count == 0)
-                    VM.Routes.DeleteRouteDestination(oldRouteDestination);
-                else
-                    draggedRouteTask.RemoveRouteDestination();
-            }
-        }
-
-        /// <summary>
+        /// <summary> 
         /// Adds to route.
         /// </summary>
         /// <param name="draggedItem">The dragged item.</param>
