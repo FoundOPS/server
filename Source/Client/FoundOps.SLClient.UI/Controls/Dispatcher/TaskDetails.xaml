@@ -30,7 +30,7 @@
             <TextBlock TextAlignment="Center" Text="Status" FontWeight="Bold" FontSize="12" Margin="0,5,0,0"/>
             <Controls:RadComboBox x:Name="StatusComboBox" Grid.Column="2"
                 ItemsSource="{Binding Status, Mode=OneTime, Converter={StaticResource EnumValuesConverter}}"
-                SelectedItem="{Binding Status, Mode=TwoWay}" SelectionChanged="StatusComboBoxSelectionChanged"/>           
+                SelectedItem="{Binding Status, Mode=TwoWay}" SelectionChanged="StatusComboBoxSelectionChanged" />           
         </StackPanel>
     </ScrollViewer>
 </UserControl>
