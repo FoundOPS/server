@@ -146,6 +146,7 @@
     <Compile Include="Models\CoreEntities\Extensions\Dispatching\ResourceWithLastPoint.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Dispatching\RouteTask.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Dispatching\TaskHolder.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\TaskStatusExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Core\RoleExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountExtensions.cs" />

@@ -273,5 +273,33 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         #endregion
+
+        #region TaskStatus
+
+        public IQueryable<TaskStatus> GetTaskStatus()
+        {
+            throw new NotSupportedException("Exists solely to generate TaskStatus' in the clients data project");
+        }
+
+        public void InsertTaskStatus(TaskStatus taskStatus)
+        {
+            if ((taskStatus.EntityState != EntityState.Detached))
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(taskStatus, EntityState.Added);
+            else
+                this.ObjectContext.TaskStatus.AddObject(taskStatus);
+        }
+
+        public void UpdateTaskStatus(TaskStatus taskStatus)
+        {
+            this.ObjectContext.TaskStatus.AttachAsModified(taskStatus);
+        }
+
+        public void DeleteTaskStatus(TaskStatus taskStatus)
+        {
+            this.ObjectContext.DetachExistingAndAttach(taskStatus);
+            this.ObjectContext.TaskStatus.DeleteObject(taskStatus);
+        }
+
+        #endregion
     }
 }

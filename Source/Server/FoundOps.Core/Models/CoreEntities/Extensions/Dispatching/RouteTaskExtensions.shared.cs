@@ -61,14 +61,14 @@ namespace FoundOps.Core.Models.CoreEntities
 #endif
         #endregion
 
-        public Status Status
-        {
-            get { return (Status)StatusInt; }
-            set
-            {
-                StatusInt = (int)value;
-                CompositeRaiseEntityPropertyChanged("Status");
-            }
-        }
+        //public Status Status
+        //{
+        //    get { return (Status)StatusInt; }
+        //    set
+        //    {
+        //        StatusInt = (int)value;
+        //        CompositeRaiseEntityPropertyChanged("Status");
+        //    }
+        //}
     }
 }

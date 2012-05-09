@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
@@ -15,8 +16,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
         private void StatusComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var status = ((Status)((RadComboBox)sender).SelectedItem);
-            if (status == Status.Incomplete || status == Status.Unrouted)
+            var status = ((int)((RadComboBox)sender).SelectedItem).ToString(CultureInfo.InvariantCulture);
+            if (status.Contains("1"))// This would mean that the status requires the task to be out of a route
             {
                 var selectedRouteTask = VM.Routes.SelectedRouteTask;
 

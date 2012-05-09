@@ -730,9 +730,10 @@ namespace FoundOps.Core.Models.CoreEntities
             }
 
             return null;
-        }
 
             #endregion
+        }
+
 
         private DateTime? CheckDateAvailability(DateTime? endDate, DateTime newOnOrAfterDate)
         {

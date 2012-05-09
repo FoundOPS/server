@@ -126,8 +126,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     Name = newRoute.RouteType,
                     EstimatedDuration = new TimeSpan(0, _random.Next(25), 0),
                     OwnerBusinessAccount = ownerBusinessAccount,
-                    Service = newService,
-                    Status = _statuses.RandomItem()
+                    Service = newService//,
+                    //Status = _statuses.RandomItem()
                 };
 
                 var routeDestination = new RouteDestination { OrderInRoute = orderInRoute };

@@ -221,7 +221,7 @@ namespace FoundOps.SLClient.UI.Tools
         public static void AddRouteTaskToRoute(RouteTask routeTask, object destination, int placeInRoute, DropPlacement dropPlacement)
         {
             //Set RouteTask's Status to Routed
-            routeTask.Status = Status.Routed;
+            //routeTask.Status = Status.Routed;
 
             //IF the drag destination is a RouteTask, add the draggedItem to that RouteTask
             var routeTaskDestination = destination as RouteTask;
@@ -318,8 +318,8 @@ namespace FoundOps.SLClient.UI.Tools
                 RouteDestination = null,
                 RouteDestinationId = null,
                 Service = routeTask.Service,
-                ServiceId = routeTask.ServiceId,
-                Status = Status.Unrouted
+                ServiceId = routeTask.ServiceId//,
+                //Status = Status.Unrouted
             };
 
             var taskHolder = routeTask.ParentRouteTaskHolder;
