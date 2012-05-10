@@ -1,3 +1,4 @@
+using System.Data.Entity;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.Import;
 using FoundOps.Core.Tools;
@@ -141,21 +142,21 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="locationAssociations">The loaded location associations.</param>
         /// <param name="clientAssociations">The loaded client associations</param>
         /// <param name="row">The row's categories/values.</param>
-        /// <returns></returns>
         private static Location GetLocationAssociation(Location[] locationAssociations, Tuple<Client, string>[] clientAssociations, Tuple<DataCategory, string>[] row)
         {
             var locationName = row.GetCategoryValue(DataCategory.LocationName);
             Location associatedLocation = null;
-            if (locationName != null)
-                associatedLocation = locationAssociations.FirstOrDefault(l => l.Name == locationName);
 
             var clientName = row.GetCategoryValue(DataCategory.ClientName);
             var locationAddressLineOne = row.GetCategoryValue(DataCategory.LocationAddressLineOne);
-            if (clientName != null && locationAddressLineOne != null && associatedLocation == null)
+            if (clientName != null && locationAddressLineOne != null)
             {
                 var clientId = clientAssociations.First(c => c.Item2 == clientName).Item1.Id;
                 associatedLocation = locationAssociations.FirstOrDefault(l => l.AddressLineOne == locationAddressLineOne && l.PartyId == clientId);
             }
+
+            if (associatedLocation == null && locationName != null)
+                associatedLocation = locationAssociations.FirstOrDefault(l => l.Name == locationName);
 
             return associatedLocation;
         }
@@ -193,6 +194,13 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return clientNameCategoryValue == null ? null : clientNameCategoryValue.Item2;
             }).Distinct().Where(cn => cn != null).ToArray();
 
+            var allClients =
+                 (from client in ObjectContext.Clients.Where(c => c.VendorId == businessAccount.Id)
+                  //Need to get the Clients names
+                  join p in ObjectContext.PartiesWithNames
+                      on client.Id equals p.Id
+                  select new { p.ChildName, client }).ToArray();
+
             //TODO: When importing people clients, fix the ChildName logic below (probably setup 2 left joins)
             //Load all the associatedClients
             var associatedClients =
@@ -200,7 +208,8 @@ namespace FoundOps.Server.Services.CoreDomainService
                  //Need to get the Clients names
                  join p in ObjectContext.PartiesWithNames
                      on client.Id equals p.Id
-                 where clientNamesToLoad.Contains(p.ChildName)
+                 join clientName in clientNamesToLoad
+                 on p.ChildName equals clientName
                  select new { p.ChildName, client }).ToArray();
 
             if (includeAvailableServices)
@@ -227,17 +236,25 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return locationNameCategoryValue == null ? null : locationNameCategoryValue.Item2;
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var associatedLocationsFromName = GetLocationsToAdministerForRole(roleId).Where(l => locationNamesToLoad.Contains(l.Name)).ToArray();
+            var associatedLocationsFromName =
+                (from location in GetLocationsToAdministerForRole(roleId)
+                 join name in locationNamesToLoad
+                 on location.Name equals name
+                 select location).ToArray();
 
             //Get the distinct addresses from the DataCategory.LocationAddressLineOne category of the rows
             var addressesToLoad = rows.Select(cvs =>
             {
-                           var addressLineOneCategoryValue = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationAddressLineOne);
+                var addressLineOneCategoryValue = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationAddressLineOne);
                 var addressLineOne = addressLineOneCategoryValue == null ? null : addressLineOneCategoryValue.Item2;
                 return addressLineOne;
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var associatedLocationsFromAddressLineOne = GetLocationsToAdministerForRole(roleId).Where(l => addressesToLoad.Contains(l.AddressLineOne)).ToArray();
+            var associatedLocationsFromAddressLineOne =
+                (from location in GetLocationsToAdministerForRole(roleId)
+                 join addressLineOne in addressesToLoad
+                     on location.AddressLineOne equals addressLineOne
+                 select location).ToArray();
 
             return associatedLocationsFromName.Union(associatedLocationsFromAddressLineOne).Distinct().ToArray();
         }
@@ -260,11 +277,15 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return regionNameCategoryValue == null ? null : regionNameCategoryValue.Item2;
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var loadedRegionsFromName = GetRegionsForServiceProvider(roleId).Where(r => regionNamesToLoad.Contains(r.Name)).ToArray();
+            var loadedRegionsFromName =
+                (from region in GetRegionsForServiceProvider(roleId)
+                 join name in regionNamesToLoad
+                 on region.Name equals name
+                 select region).ToArray();
 
             //Create a new region for any region name that did not exist
-            var newRegions = regionNamesToLoad.Except(loadedRegionsFromName.Select(r => r.Name)).Select(newRegionName => 
-                new Region {Id = Guid.NewGuid(), BusinessAccount = serviceProvider, Name = newRegionName});
+            var newRegions = regionNamesToLoad.Except(loadedRegionsFromName.Select(r => r.Name)).Select(newRegionName =>
+                new Region { Id = Guid.NewGuid(), BusinessAccount = serviceProvider, Name = newRegionName });
 
             return loadedRegionsFromName.Union(newRegions).ToArray();
         }

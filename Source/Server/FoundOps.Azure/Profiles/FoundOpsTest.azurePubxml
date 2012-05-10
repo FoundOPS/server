@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AzureCredentials>Subscription-1</AzureCredentials>
+    <AzureDeploymentLabel>FoundOps.Azure</AzureDeploymentLabel>
+    <AzureSlot>Production</AzureSlot>
+    <AzureEnableWebDeploy>False</AzureEnableWebDeploy>
+    <AzureHostedServiceName>testops</AzureHostedServiceName>
+    <AzureHostedServiceLabel>FoundOps-Test</AzureHostedServiceLabel>
+    <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
+    <AzureEnableProfiling>False</AzureEnableProfiling>
+    <AzureServiceConfiguration>Default</AzureServiceConfiguration>
+    <AzureSolutionConfiguration>TestRelease</AzureSolutionConfiguration>
+    <AzureStorageAccountName>opsapptest</AzureStorageAccountName>
+    <AzureStorageAccountLabel>opsapptest</AzureStorageAccountLabel>
+    <AzureAppendTimestampToDeploymentLabel>True</AzureAppendTimestampToDeploymentLabel>
+    <AzureAllowUpgrade>True</AzureAllowUpgrade>
+    <AzureEnableRemoteDesktop>False</AzureEnableRemoteDesktop>
+  </PropertyGroup>
+</Project>

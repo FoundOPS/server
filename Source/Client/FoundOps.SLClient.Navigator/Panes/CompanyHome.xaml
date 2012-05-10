@@ -12,10 +12,15 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (4/26/2012)
+                (5/3/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * RECURRING SERVICES: Now you can export recurring services.
+            * ADMIN TOOLS: Now you can import recurring services.
+            * GENERAL: Small bug fixes.
+            <LineBreak/>
+            (4/26/2012)<LineBreak/>
             * DISPATCHER: Added status to route tasks. More coming in the next update.<LineBreak/>
             * DISPATCHER: Now you can edit and save service information from the dispatcher when you click on a task.<LineBreak/>
             * DISPATCHER: Fixed region colors not showing up in dispatcher.<LineBreak/>
@@ -27,31 +32,6 @@
             * GENERAL: Validation errors no longer trigger a Server Error, instead they prompt the user.<LineBreak/>
             * DISPATCHER: Fixed an issue with the dispatcher not displaying tasks when there are no regions.<LineBreak/>
             * REGIONS: Fixed adding new regions.<LineBreak/>
-            <LineBreak/>
-            (4/10/2012)<LineBreak/>
-            * OPTIMIZATION: Manifest QR code loading.<LineBreak/>
-            * OPTIMIZATION: Dispatcher fields loading.<LineBreak/>
-            * GENERAL: Fixed manifest printing/saving bugs.<LineBreak/>
-            * GENERAL: Fixed manifest formatting.<LineBreak/>
-            * GENERAL: Fixed duplicate Available Services showing up.<LineBreak/>
-            * GENERAL: Fixed items details greying out after save.<LineBreak/>
-            * GENERAL: Small fixes.<LineBreak/>
-            <LineBreak/>
-            (4/5/2012)<LineBreak/>
-            * GENERAL: Small fixes.<LineBreak/>
-            <LineBreak/>
-            (4/4/2012)<LineBreak/>
-            * OPTIMIZATION: Dispatcher, Employees, Locations, Services, and Vehicles.<LineBreak/>
-            * GENERAL: Overall system stability improvements. <LineBreak/>
-            * DISPATCHER: Added the ability to filter routes by region. <LineBreak/>
-            * DISPATCHER: The filter now also filters tasks. Only visible tasks and routes<LineBreak/>
-            * will be assigned when you click "Auto Assign Jobs".<LineBreak/>
-            * DISPATCHER: Added fields to manifests.<LineBreak/>
-            * DISPATCHER: Fixed manifest formatting.<LineBreak/>
-            * DISPATCHER: Dragging and dropping now automatically saves.<LineBreak/>
-            * DISPATCHER: Fixed crashing issue when printing manifests.<LineBreak/>
-            * SERVICES: Can now edit today's and future service dates.<LineBreak/>
-            * SERVICES: Fixed issues adding and editing individual services.<LineBreak/>
         </TextBlock>
     </Grid>
 </sdk:Page>

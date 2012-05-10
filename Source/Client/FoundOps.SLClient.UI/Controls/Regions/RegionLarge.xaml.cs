@@ -15,10 +15,7 @@ namespace FoundOps.SLClient.UI.Controls.Regions
         {
             InitializeComponent();
 
-#if DEBUG
-            if (DesignerProperties.IsInDesignTool)
-                return;
-#endif
+            if (DesignerProperties.IsInDesignTool) return;
 
             //Initializes the MapView to the RoadView setting via OSM
             this.MapTypeSelector.SelectedIndex = 0;

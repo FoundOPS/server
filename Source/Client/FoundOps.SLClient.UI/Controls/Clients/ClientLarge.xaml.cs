@@ -57,10 +57,8 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             // Required to initialize variables
             InitializeComponent();
 
-#if DEBUG
-            if (DesignerProperties.IsInDesignTool)
-                return;
-#endif
+            if (DesignerProperties.IsInDesignTool) return;
+
             this.DependentWhenVisible(VM.Locations);
 
             LocationsGrid.LocationsRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent, new EventHandler<RadRoutedEventArgs>(OnCellDoubleClick), true);

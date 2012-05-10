@@ -6,7 +6,13 @@ namespace FoundOps.Server
 {
     public class Global : System.Web.HttpApplication
     {
-        public static bool IsDebugMode;
+#if DEBUG
+        public static string Mode = "DEBUG";
+#elif TESTRELEASE
+        public static string Mode = "TESTRELEASE";
+#elif RELEASE
+        public static string Mode = "RELEASE";
+#endif
 
         public static string RootApplicationUrl;
         public static string RootFrontSiteUrl;
@@ -33,10 +39,12 @@ namespace FoundOps.Server
         protected void Application_Start(object sender, EventArgs e)
         {
 #if DEBUG
-            IsDebugMode = true;
             RootApplicationUrl = "http://localhost:31820";
             RootFrontSiteUrl = "http://localhost:55206";
-#else
+#elif TESTRELEASE
+            RootApplicationUrl = "https://test.foundops.com";
+            RootFrontSiteUrl = "http://foundops.com";
+#elif RELEASE
             RootApplicationUrl = "https://app.foundops.com";
             RootFrontSiteUrl = "http://foundops.com";
 #endif

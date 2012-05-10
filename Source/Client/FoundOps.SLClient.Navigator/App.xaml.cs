@@ -62,7 +62,7 @@ namespace FoundOps.SLClient.Navigator
             // For production applications this error handling should be replaced with something that will 
             // report the error to the website and stop the application.
             e.Handled = true;
-#if DEBUG
+#if! RELEASE //(DEBUG or TESTRELEASE)
             ErrorWindow.CreateNew(e.ExceptionObject);
 #endif
 

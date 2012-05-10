@@ -1,12 +1,12 @@
-using System.Data.Entity;
-using System.IO;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.Core.Tools;
 using System;
 using System.Data;
+using System.Data.Entity;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceModel.DomainServices.EntityFramework;
 using System.ServiceModel.DomainServices.Server;
@@ -59,9 +59,10 @@ namespace FoundOps.Server.Services.CoreDomainService
             servicesForRole = servicesForRole.Include(s => s.Client).Include(s => s.Client.OwnedParty).Include(s => s.RecurringServiceParent)
                 .Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields);
 
-            //Force Load LocationField's Location
+            //Force Load LocationField's Location/OptionsField Options
             //TODO: Optimize by IQueryable
             servicesForRole.SelectMany(s => s.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
+            servicesForRole.SelectMany(s => s.ServiceTemplate.Fields).OfType<OptionsField>().SelectMany(of => of.Options).ToArray();
 
             return servicesForRole;
         }
@@ -244,15 +245,14 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client)
-                .Where(v => v.Client.VendorId == businessForRole.Id);
+            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.VendorId == businessForRole.Id);
 
             return recurringServices.OrderBy(rs => rs.ClientId);
         }
 
         /// <summary>
         /// Gets the RecurringService details.
-        /// It includes the Client.OwnedParty, ServiceTemplate and Fields.
+        /// It includes the Client.OwnedParty, ServiceTemplate and Fields (LocationField and OptionsField).
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="recurringServiceId">The recurring service id.</param>
@@ -261,15 +261,16 @@ namespace FoundOps.Server.Services.CoreDomainService
             var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Where(rs => rs.Id == recurringServiceId)
                 .Include(c => c.Client.OwnedParty).Include(rs => rs.ServiceTemplate).Include(rs => rs.ServiceTemplate.Fields);
 
-            //Force Load LocationField's Location
+            //Force Load LocationField's Location/OptionsField Options
             recurringServices.SelectMany(s => s.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
+            recurringServices.SelectMany(s => s.ServiceTemplate.Fields).OfType<OptionsField>().SelectMany(of => of.Options).ToArray();
 
             return recurringServices.FirstOrDefault();
         }
 
         /// <summary>
         /// Gets the RecurringService details.
-        /// It includes the Client.OwnedParty, ServiceTemplate and Fields.
+        /// It includes the Client.OwnedParty, ServiceTemplate and Fields (LocationField and OptionsField).
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="recurringServiceIds">The ids of the RecurringServices to load.</param>
@@ -279,9 +280,10 @@ namespace FoundOps.Server.Services.CoreDomainService
             var recurringServices = RecurringServicesForServiceProviderOptimized(roleId)
                 .Where(rs => recurringServiceIds.Contains(rs.Id)).Include(c => c.Client.OwnedParty).Include(rs => rs.ServiceTemplate).Include(rs => rs.ServiceTemplate.Fields);
 
-            //Force Load LocationField's Location
+            //Force Load LocationField's Location/OptionsField Options
             //TODO: Optimize by IQueryable
             recurringServices.SelectMany(rs => rs.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
+            recurringServices.SelectMany(s => s.ServiceTemplate.Fields).OfType<OptionsField>().SelectMany(of => of.Options).ToArray();
 
             return recurringServices;
         }
@@ -296,38 +298,113 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var csvWriter = new CsvWriter(memoryStream);
 
-            csvWriter.WriteHeaderRecord("Service Type", "Service Destination", "Frequency",
+            csvWriter.WriteHeaderRecord("Service Type", "Client", "Location", "Address Line 1", "Frequency",
                                         "Start Date", "End Date", "Repeat Every", "Repeat On");
 
-            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Include(rs=>rs.Repeat).Include(rs=>rs.ServiceTemplate);
+            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Include(rs => rs.Repeat).Include(rs => rs.ServiceTemplate);
 
-            //Load LocationFields for destination information
+            //Force Load LocationField's Location
+            //TODO: Optimize by IQueryable
+            recurringServices.SelectMany(rs => rs.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
 
+            //join RecurringServices with client names
             var records = from rs in recurringServices
+                          join p in ObjectContext.PartiesWithNames
+                              on rs.ClientId equals p.Id
+                          orderby p.ChildName
                           select new
                           {
                               RecurringService = rs,
                               ServiceType = rs.ServiceTemplate.Name,
-                              rs.Repeat.Frequency,
-                              rs.Repeat.StartDate,
-                              RepeatEvery=  rs.Repeat.RepeatEveryTimes
+                              ClientName = p.ChildName
                           };
 
             foreach (var record in records.ToArray())
             {
+                //Get destination information from LocationField
                 var destination = record.RecurringService.ServiceTemplate.GetDestination();
-                string serviceDestination = destination != null ? destination.Name : null;
+                var locationName = "";
+                var address = "";
+                if (destination != null)
+                {
+                    locationName = destination.Name;
+                    address = destination.AddressLineOne;
+                }
 
-                var repeatEndDate = record.RecurringService.Repeat.EndDate;
-                string endDate = repeatEndDate.HasValue ? repeatEndDate.Value.ToString() : null;
+                var repeat = record.RecurringService.Repeat;
 
-                string repeatOn;
+                //Select proper end date info
+                var endDate = "";
+                if (repeat.EndDate.HasValue)
+                    endDate = repeat.EndDate.Value.ToShortDateString();
+                else if (repeat.EndAfterTimes.HasValue)
+                    endDate = repeat.EndAfterTimes.Value.ToString();
+
+                #region setup RepeatOn string
+
+                var frequency = repeat.Frequency;
+                var repeatOn = "";
+                if (frequency == Frequency.Weekly)
+                {
+                    var weeklyFrequencyDetail = repeat.FrequencyDetailAsWeeklyFrequencyDetail;
+                    //Build a weekly frequency string
+                    if (weeklyFrequencyDetail.Any(fd => fd == DayOfWeek.Sunday))
+                        repeatOn += "Sun";
+                    if (weeklyFrequencyDetail.Any(fd => fd == DayOfWeek.Monday))
+                    {
+                        if (repeatOn.ToCharArray().Any())
+                            repeatOn += ",";
+                        repeatOn += "Mon";
+                    }
+                    if (weeklyFrequencyDetail.Any(fd => fd == DayOfWeek.Tuesday))
+                    {
+                        if (repeatOn.ToCharArray().Any())
+                            repeatOn += ",";
+                        repeatOn += "Tues";
+                    }
+                    if (weeklyFrequencyDetail.Any(fd => fd == DayOfWeek.Wednesday))
+                    {
+                        if (repeatOn.ToCharArray().Any())
+                            repeatOn += ",";
+                        repeatOn += "Wed";
+                    }
+                    if (weeklyFrequencyDetail.Any(fd => fd == DayOfWeek.Thursday))
+                    {
+                        if (repeatOn.ToCharArray().Any())
+                            repeatOn += ",";
+                        repeatOn += "Thur";
+                    }
+                    if (weeklyFrequencyDetail.Any(fd => fd == DayOfWeek.Friday))
+                    {
+                        if (repeatOn.ToCharArray().Any())
+                            repeatOn += ",";
+                        repeatOn += "Fri";
+                    }
+                     if (weeklyFrequencyDetail.Any(fd => fd == DayOfWeek.Saturday))
+                    {
+                        if (repeatOn.ToCharArray().Any())
+                            repeatOn += ",";
+                        repeatOn += "Sat";
+                    }
+                }
+                else if (frequency == Frequency.Monthly)
+                {
+                    var monthlyFrequencyDetail = repeat.FrequencyDetailAsMonthlyFrequencyDetail;
+                    if (monthlyFrequencyDetail.HasValue)
+                        repeatOn = monthlyFrequencyDetail.Value == MonthlyFrequencyDetail.OnDayInMonth ? "Date" : "Day";
+                    else
+                        repeatOn = "Date";
+                }
+
+                #endregion
 
                 //Convert frequency detail to:  day or date
-                csvWriter.WriteDataRecord(record.ServiceType, serviceDestination, record.Frequency,
-                    record.StartDate, endDate, record.RepeatEvery);
+                //"Service Type", "Client", "Location", "Address", "Frequency"
+                csvWriter.WriteDataRecord(record.ServiceType, record.ClientName, locationName, address, frequency.ToString(),
+                    //"Start Date", "End Date", "Repeat Every", "Repeat On"
+                   repeat.StartDate.ToShortDateString(), endDate, repeat.RepeatEveryTimes.ToString(), repeatOn);
             }
-                
+
             csvWriter.Close();
 
             var csv = memoryStream.ToArray();

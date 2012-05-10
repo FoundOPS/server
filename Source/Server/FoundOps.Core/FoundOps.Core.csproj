@@ -34,9 +34,13 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestRelease|AnyCPU'">
+    <OutputPath>bin\TestRelease\</OutputPath>
+    <DefineConstants>TESTRELEASE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevDefined.OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a3261f5b4697e67d, processorArchitecture=MSIL">
@@ -228,6 +232,7 @@
     </Content>
     <Content Include="Models\CoreEntities\ManualEDMXChanges.txt" />
     <Content Include="Models\CoreEntities\SQL\CheckServiceTemplateForChildren.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteFieldAndChildrenBasedOnFieldId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteRecurringService.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteBasicPartyBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteBusinessAccountBasedOnId.sql" />

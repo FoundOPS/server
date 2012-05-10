@@ -65,7 +65,7 @@ namespace FoundOPS.API.Controllers
             //Return the list of converted track points as a queryable
             var modelTrackPoints = trackPoints.Select(TrackPoint.ConvertToModel);
 
-            return modelTrackPoints.AsQueryable();
+            return modelTrackPoints.OrderBy(tp => tp.CollectedTimeStamp).AsQueryable();
         }
 
         //GET /api/trackpoint/GetResourcesWithLatestPoints?roleId={Guid}&date=Datetime

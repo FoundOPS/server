@@ -28,10 +28,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         {
             InitializeComponent();
 
-#if DEBUG
-            if (DesignerProperties.IsInDesignTool)
-                return;
-#endif
+            if (DesignerProperties.IsInDesignTool) return;
 
             UserAccountsVM.DependentWhenVisible(this);
 

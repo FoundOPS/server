@@ -13,7 +13,12 @@ namespace FoundOps.Core.Models.Azure
         /// The AccountKey for the opsappdebug storage account.
         /// </summary>
         public static string AccountKey = "Wbs5xOmAKdNw8ef9XgRZF2lhE+DYH1uN0qgETVKSCLqIXaaTRjiFIj4sT2cf0iQxUdOAYEej2VI4aPBr7TVOYA==";
-#else
+#elif TESTRELEASE
+          /// <summary>
+        /// The AccountKey for the opsapptest storage account.
+        /// </summary>
+        public static string AccountKey = "dlAT4qEtm7gsWrOKuIIRgyJvYkwimkBwRo9mWvyhDGF6aISFu3jBYnCn/qgsHwsn0+3chbZ/mEWgDyAYI2gyPA==";
+#elif RELEASE
         /// <summary>
         /// The AccountKey for the opsapplive storage account.
         /// </summary>

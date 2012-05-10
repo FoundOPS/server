@@ -146,8 +146,8 @@ namespace FoundOps.Server.Services.CoreDomainService
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
 
-            throw new InvalidOperationException("Deleting BusinessAccounts has been temporarily disabled...Sorry Patrick");
-            //ObjectContext.DeleteBusinessAccountBasedOnId(businessAccountToDelete.Id);
+            //throw new InvalidOperationException("Deleting BusinessAccounts has been temporarily disabled...Sorry Patrick");
+            ObjectContext.DeleteBusinessAccountBasedOnId(businessAccountToDelete.Id);
 
             //TODO: When quickbooks is setup
             //QuickBooksTools.DeleteAzureTable(businessAccountToDelete.Id);
