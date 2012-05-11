@@ -94,7 +94,7 @@ Add after </EntityContainer> (the one after FK association sets)
       </Function>
       <Function Name="GetUnroutedServicesForDate" IsComposable="false">
         <CommandText>
-          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt
+          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusName
           FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
         </CommandText>
         <Parameter Name="serviceProviderContext"

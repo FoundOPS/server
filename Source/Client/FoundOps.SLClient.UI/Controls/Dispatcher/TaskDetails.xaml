@@ -29,8 +29,8 @@
             <CustomFields:FieldSmall Margin="0,5,0,0" ServiceTemplate="{Binding ParentRouteTaskHolder.ServiceHolder.Service.ServiceTemplate}"/>
             <TextBlock TextAlignment="Center" Text="Status" FontWeight="Bold" FontSize="12" Margin="0,5,0,0"/>
             <Controls:RadComboBox x:Name="StatusComboBox" Grid.Column="2"
-                ItemsSource="{Binding Status, Mode=OneTime, Converter={StaticResource EnumValuesConverter}}"
-                SelectedItem="{Binding Status, Mode=TwoWay}" SelectionChanged="StatusComboBoxSelectionChanged" />           
+                ItemsSource="{Binding RouteDestination.Route.OwnerBusinessAccount.TaskStatus, Mode=OneTime}"
+                SelectedItem="{Binding TaskStatus, Mode=TwoWay}" DisplayMemberPath="Name" SelectionChanged="StatusComboBoxSelectionChanged" />           
         </StackPanel>
     </ScrollViewer>
 </UserControl>

@@ -16,11 +16,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
         private void StatusComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var status = ((int)((RadComboBox)sender).SelectedItem).ToString(CultureInfo.InvariantCulture);
-            if (status.Contains("1"))// This would mean that the status requires the task to be out of a route
-            {
-                var selectedRouteTask = VM.Routes.SelectedRouteTask;
+            var selectedRouteTask = VM.Routes.SelectedRouteTask;
 
+            var status = selectedRouteTask.TaskStatus;
+            if (status.StatusDetailInt.ToString().Contains("1"))// This would mean that the status requires the task to be out of a route
+            {
                 var destination = selectedRouteTask.RouteDestination;
 
                 var lastRouteTask = destination.Route.RouteDestinationsListWrapper.LastOrDefault();

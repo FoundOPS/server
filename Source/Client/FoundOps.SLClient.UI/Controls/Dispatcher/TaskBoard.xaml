@@ -41,7 +41,7 @@
                     <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding AddressLine}"/>
                     <telerik:GridViewDataColumn Header="Client" DataMemberBinding="{Binding ClientName}" />
                     <telerik:GridViewDataColumn Header="Scheduled Date" DataMemberBinding="{Binding OccurDate}" DataFormatString="{} {0:MMM dd, yyyy}"/>
-                    <telerik:GridViewDataColumn Header="Status" DataMemberBinding="{Binding StatusInt, Converter={StaticResource StatusIntToStringConverter}}"/>
+                    <telerik:GridViewDataColumn Header="Status" DataMemberBinding="{Binding StatusName}"/>
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
         </Grid>

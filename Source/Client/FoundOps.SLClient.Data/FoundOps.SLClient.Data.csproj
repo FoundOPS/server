@@ -251,6 +251,9 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\SubLocationsDesignData.cs">
       <Link>DesignData\SubLocationsDesignData.cs</Link>
     </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\TaskStatusDesignData.cs">
+      <Link>DesignData\TaskStatusDesignData.cs</Link>
+    </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\UserAccountsDesignData.cs">
       <Link>DesignData\UserAccountsDesignData.cs</Link>
     </Compile>

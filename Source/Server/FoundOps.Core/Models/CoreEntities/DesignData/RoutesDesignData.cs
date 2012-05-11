@@ -18,7 +18,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private readonly Random _random = new Random();
         private readonly string[] _routeNames = { "SF Bay Area", "Shelter Island", "North Side", "South Side" };
-        private readonly Status[] _statuses = { Status.Routed, Status.InProgress, Status.Completed, Status.Incomplete, Status.OnHold };
 
         public RoutesDesignData()
             : this(new BusinessAccountsDesignData().GotGrease)
@@ -126,8 +125,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     Name = newRoute.RouteType,
                     EstimatedDuration = new TimeSpan(0, _random.Next(25), 0),
                     OwnerBusinessAccount = ownerBusinessAccount,
-                    Service = newService//,
-                    //Status = _statuses.RandomItem()
+                    Service = newService,
+                    TaskStatus = ownerBusinessAccount.TaskStatus.FirstOrDefault(ts => ts.StatusDetailInt.ToString().Contains('4'))
                 };
 
                 var routeDestination = new RouteDestination { OrderInRoute = orderInRoute };

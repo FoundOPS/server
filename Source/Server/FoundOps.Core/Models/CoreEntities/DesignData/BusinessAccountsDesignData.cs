@@ -63,24 +63,36 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, GenericOilCollector };
 
-            //Add Depots
-            foreach(var serviceProvider in DesignServiceProviders)
-            {
-                serviceProvider.Depots.Add(new Location { Name = "Depot", AddressLineOne = "1305 Cumberland Ave", City = "West Lafayette", State = "IN", ZipCode = "47906",
-                    BusinessAccount = serviceProvider, Latitude = (decimal?) 40.460335, Longitude = (decimal?) (-86.929840)});
-            }
 
             //Add ServiceTemplates
-            foreach (var businessAccount in new[] { GotGrease, ABCouriers, GenericOilCollector })
+            foreach (var serviceProvider in new[] { GotGrease, ABCouriers, GenericOilCollector })
             {
+                //Add task statuses
+                var taskStatusDesignData = new TaskStatusDesignData();
+                foreach (var taskStatus in taskStatusDesignData.DesignStatus)
+                    serviceProvider.TaskStatus.Add(taskStatus);
+
+                //Add depot
+                serviceProvider.Depots.Add(new Location
+                {
+                    Name = "Depot",
+                    AddressLineOne = "1305 Cumberland Ave",
+                    City = "West Lafayette",
+                    State = "IN",
+                    ZipCode = "47906",
+                    OwnerParty = serviceProvider,
+                    Latitude = (decimal?)40.460335,
+                    Longitude = (decimal?)(-86.929840)
+                });     
+
                 //Choose the right set of ServiceTemplates
-                var serviceTemplates = businessAccount == ABCouriers ? ServiceTemplatesDesignData.SameDayDeliveryCompanyServiceTemplates :
+                var serviceTemplates = serviceProvider == ABCouriers ? ServiceTemplatesDesignData.SameDayDeliveryCompanyServiceTemplates :
                                                                       ServiceTemplatesDesignData.OilGreaseCompanyServiceTemplates;
 
                 foreach (var serviceTemplate in serviceTemplates)
                 {
                     var serviceTemplateChild = serviceTemplate.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
-                    serviceTemplateChild.OwnerServiceProvider = businessAccount;
+                    serviceTemplateChild.OwnerServiceProvider = serviceProvider;
                 }
             }
         }
