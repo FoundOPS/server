@@ -79,6 +79,15 @@ namespace FoundOPS.API.Controllers
             return currentBusinessAccount.Depots.AsQueryable(); 
         }
 
+        //public IQueryable<Status> GetStatuses(Guid roleId)
+        //{
+        //    var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();
+
+        //    if (currentBusinessAccount == null)
+        //        ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+
+        //    return currentBusinessAccount..AsQueryable(); 
+        //}
 
         #endregion
     }
