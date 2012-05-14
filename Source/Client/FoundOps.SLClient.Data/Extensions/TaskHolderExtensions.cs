@@ -129,14 +129,13 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = Guid.NewGuid(),
                 BusinessAccountId = Manager.Context.OwnerAccount.Id,
-                ClientId = ClientId,
                 Date = OccurDate,
                 LocationId = LocationId,
                 Name = ServiceName,
                 ParentRouteTaskHolder = this,
                 ServiceId = ServiceId,
                 RecurringServiceId = RecurringServiceId//,
-                //StatusInt = StatusInt
+                //TaskStatus =  
             };
 
             this.ChildRouteTask = routedTask;

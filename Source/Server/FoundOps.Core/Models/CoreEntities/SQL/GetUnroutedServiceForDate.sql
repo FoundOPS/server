@@ -209,14 +209,14 @@ BEGIN
 								)
 							)
 			 
-	--Add all RouteTasks that were put on hold in the past into the table to be returned
-	INSERT INTO @serviceForDayTable (RecurringServiceId, ServiceId, OccurDate, ServiceName)
-	SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name 
-	FROM	RouteTasks t1
-	WHERE	t1.Date < @serviceDate AND t1.BusinessAccountId = @serviceProviderIdContext AND t1.DelayedChildId IS NULL
-	AND EXISTS (
-				SELECT Id FROM TaskStatus t2 WHERE BusinessAccountId = @serviceProviderIdContext AND (StatusDetailInt = 1 OR StatusDetailInt = 3 OR StatusDetailInt = 13) AND t1.TaskStatusId = t2.Id
-				)						
+	----Add all RouteTasks that were put on hold in the past into the table to be returned
+	--INSERT INTO @serviceForDayTable (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+	--SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name 
+	--FROM	RouteTasks t1
+	--WHERE	t1.Date < @serviceDate AND t1.BusinessAccountId = @serviceProviderIdContext AND t1.DelayedChildId IS NULL
+	--AND EXISTS (
+	--			SELECT Id FROM TaskStatus t2 WHERE BusinessAccountId = @serviceProviderIdContext AND (StatusDetailInt = 1 OR StatusDetailInt = 3 OR StatusDetailInt = 13) AND t1.TaskStatusId = t2.Id
+	--			)						
 
 	DECLARE @UnroutedOrUncompletedServices TABLE
 	(
