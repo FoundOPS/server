@@ -1,6 +1,7 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Route = FoundOPS.API.Models.Route;
+using Location = FoundOPS.API.Models.Location;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -76,7 +77,7 @@ namespace FoundOPS.API.Controllers
             if(currentBusinessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            return currentBusinessAccount.Depots.AsQueryable(); 
+            return currentBusinessAccount.Depots.Select(Location.ConvertModel).AsQueryable(); 
         }
 
         //public IQueryable<Status> GetStatuses(Guid roleId)
