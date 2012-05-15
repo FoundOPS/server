@@ -79,6 +79,11 @@ namespace FoundOps.SLClient.Data.Services
         /// </summary>
         public Party OwnerAccount { get { return _ownerAccount.Value; } }
 
+        /// <summary>
+        /// Gets the current service provider (if the OwnerAccount is a BusinessAccount).
+        /// </summary>
+        public BusinessAccount ServiceProvider { get { return _ownerAccount.Value as BusinessAccount; } }
+
         private readonly Subject<IEnumerable<ServiceTemplate>> _currentServiceTemplatesSubject = new Subject<IEnumerable<ServiceTemplate>>();
         /// <summary>
         /// Pushes the current ServiceProvider's ServiceTemplates

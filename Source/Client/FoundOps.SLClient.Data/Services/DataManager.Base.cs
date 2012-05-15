@@ -100,7 +100,7 @@ namespace FoundOps.SLClient.Data.Services
             _domainContextIsSubmittingHelper = _domainContextIsSubmittingSubject.ToProperty(this, x => x.DomainContextIsSubmitting);
 
             //Keep track of domain context changes and domain context is submitting every quarter second (and update this public properties)
-            Observable.Interval(TimeSpan.FromMilliseconds(250)).Subscribe(_ =>
+            Observable.Interval(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
             {
                 _domainContextHasChangesSubject.OnNext(this.DomainContext.HasChanges);
                 _domainContextIsSubmittingSubject.OnNext(this.DomainContext.IsSubmitting);

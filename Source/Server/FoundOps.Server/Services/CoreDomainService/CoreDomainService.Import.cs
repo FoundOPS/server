@@ -1,3 +1,4 @@
+using System.Data.Entity;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.Import;
 using FoundOps.Core.Tools;
@@ -141,7 +142,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="locationAssociations">The loaded location associations.</param>
         /// <param name="clientAssociations">The loaded client associations</param>
         /// <param name="row">The row's categories/values.</param>
-        /// <returns></returns>
         private static Location GetLocationAssociation(Location[] locationAssociations, Tuple<Client, string>[] clientAssociations, Tuple<DataCategory, string>[] row)
         {
             var locationName = row.GetCategoryValue(DataCategory.LocationName);
@@ -149,12 +149,13 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var clientName = row.GetCategoryValue(DataCategory.ClientName);
             var locationAddressLineOne = row.GetCategoryValue(DataCategory.LocationAddressLineOne);
-            if (clientName != null && locationAddressLineOne != null && associatedLocation == null)
+            if (clientName != null && locationAddressLineOne != null)
             {
                 var clientId = clientAssociations.First(c => c.Item2 == clientName).Item1.Id;
                 associatedLocation = locationAssociations.FirstOrDefault(l => l.AddressLineOne == locationAddressLineOne && l.PartyId == clientId);
             }
-            else if (locationName != null)
+
+            if (associatedLocation == null && locationName != null)
                 associatedLocation = locationAssociations.FirstOrDefault(l => l.Name == locationName);
 
             return associatedLocation;
@@ -227,17 +228,23 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return locationNameCategoryValue == null ? null : locationNameCategoryValue.Item2;
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var associatedLocationsFromName = GetLocationsToAdministerForRole(roleId).Where(l => locationNamesToLoad.Contains(l.Name)).ToArray();
+            var associatedLocationsFromName =
+                (from location in GetLocationsToAdministerForRole(roleId)
+                 where locationNamesToLoad.Contains(location.Name)
+                 select location).ToArray();
 
             //Get the distinct addresses from the DataCategory.LocationAddressLineOne category of the rows
             var addressesToLoad = rows.Select(cvs =>
             {
-                           var addressLineOneCategoryValue = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationAddressLineOne);
+                var addressLineOneCategoryValue = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationAddressLineOne);
                 var addressLineOne = addressLineOneCategoryValue == null ? null : addressLineOneCategoryValue.Item2;
                 return addressLineOne;
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var associatedLocationsFromAddressLineOne = GetLocationsToAdministerForRole(roleId).Where(l => addressesToLoad.Contains(l.AddressLineOne)).ToArray();
+            var associatedLocationsFromAddressLineOne =
+                (from location in GetLocationsToAdministerForRole(roleId)
+                 where addressesToLoad.Contains(location.AddressLineOne)
+                 select location).ToArray();
 
             return associatedLocationsFromName.Union(associatedLocationsFromAddressLineOne).Distinct().ToArray();
         }
@@ -260,11 +267,14 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return regionNameCategoryValue == null ? null : regionNameCategoryValue.Item2;
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var loadedRegionsFromName = GetRegionsForServiceProvider(roleId).Where(r => regionNamesToLoad.Contains(r.Name)).ToArray();
+            var loadedRegionsFromName =
+                (from region in GetRegionsForServiceProvider(roleId)
+                 where regionNamesToLoad.Contains(region.Name)
+                 select region).ToArray();
 
             //Create a new region for any region name that did not exist
-            var newRegions = regionNamesToLoad.Except(loadedRegionsFromName.Select(r => r.Name)).Select(newRegionName => 
-                new Region {Id = Guid.NewGuid(), BusinessAccount = serviceProvider, Name = newRegionName});
+            var newRegions = regionNamesToLoad.Except(loadedRegionsFromName.Select(r => r.Name)).Select(newRegionName =>
+                new Region { Id = Guid.NewGuid(), BusinessAccount = serviceProvider, Name = newRegionName });
 
             return loadedRegionsFromName.Union(newRegions).ToArray();
         }
