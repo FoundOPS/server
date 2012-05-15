@@ -241,6 +241,7 @@
     <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplatesAndChildrenBasedOnContextId.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\DeleteFields.sql" />
+    <Content Include="Models\CoreEntities\SQL Tools\GetGotGreaseRoleId.sql" />
     <Content Include="Models\CoreEntities\SQL\GetNextOccurence.sql" />
     <Content Include="Models\CoreEntities\SQL\GetPreviousOccurance.sql" />
     <Content Include="Models\CoreEntities\SQL\GetResourcesWithLatestPoint.sql" />
