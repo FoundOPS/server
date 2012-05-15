@@ -1,4 +1,4 @@
-﻿using FoundOPS.API.Models;
+using FoundOPS.API.Models;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using FoundOps.Core.Models.Azure;

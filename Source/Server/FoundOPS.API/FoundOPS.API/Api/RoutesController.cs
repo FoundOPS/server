@@ -1,4 +1,4 @@
-﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
 using System.Collections.Generic;
