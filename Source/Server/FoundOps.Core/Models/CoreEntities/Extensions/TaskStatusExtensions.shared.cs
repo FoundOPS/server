@@ -10,7 +10,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             get
             {
-                return IntegerToStatusDetail(StatusDetailInt);
+                return IntegerToStatusDetail(DefaultTypeInt);
             }
             set
             {
@@ -18,74 +18,43 @@ namespace FoundOps.Core.Models.CoreEntities
 
                 if (detailsForStatusDetails == null || detailsForStatusDetails.Any())
                 {
-                    StatusDetailInt = null;
+                    DefaultTypeInt = null;
                     return;
                 }
 
-                var statusDetailString = "";
+                //Join the integers of the distinct status details
+                //Ex { OutOfRoute, CreatedDefault } = 13
+                var statusDetailString = String.Join("", detailsForStatusDetails.Distinct().Select(d => ((int) d).ToString()));
 
-                if (detailsForStatusDetails.Contains(StatusDetail.OutOfRoute))
-                    statusDetailString += "1";
-
-                if (detailsForStatusDetails.Contains(StatusDetail.InRoute))
-                    statusDetailString += "2";
-
-                if (detailsForStatusDetails.Contains(StatusDetail.CreatedDefault))
-                    statusDetailString += "3";
-
-                if (detailsForStatusDetails.Contains(StatusDetail.RoutedDefault))
-                    statusDetailString += "4";
-
-                if (detailsForStatusDetails.Contains(StatusDetail.CompletedDefault))
-                    statusDetailString += "5";
-
-                StatusDetailInt = Convert.ToInt32(statusDetailString);
+                DefaultTypeInt = Convert.ToInt32(statusDetailString);
             }
         }
 
-        private StatusDetail[] IntegerToStatusDetail(int? statusDetailInt)
+        private StatusDetail[] IntegerToStatusDetail(int? defaultTypeInt)
         {
             var detailsForStatusDetails = new ObservableCollection<StatusDetail>();
 
-            if (statusDetailInt == null)
+            if (defaultTypeInt == null)
                 return detailsForStatusDetails.ToArray();
 
-            var statusDetailString = statusDetailInt.ToString();
+            //Split the integers and convert them to the StatusDetail enum
+            var statusDetailString = ((StatusDetail)Convert.ToInt32(defaultTypeInt.ToString().Split(Convert.ToChar(""))));
 
-            if (statusDetailString.Contains("1"))
-                detailsForStatusDetails.Add(StatusDetail.OutOfRoute);
-
-            if (statusDetailString.Contains("2"))
-                detailsForStatusDetails.Add(StatusDetail.InRoute);
-
-            if (statusDetailString.Contains("3"))
+            if (statusDetailString == StatusDetail.CreatedDefault)
                 detailsForStatusDetails.Add(StatusDetail.CreatedDefault);
 
-            if (statusDetailString.Contains("4"))
+            if (statusDetailString == StatusDetail.RoutedDefault)
                 detailsForStatusDetails.Add(StatusDetail.RoutedDefault);
 
-            if (statusDetailString.Contains("5"))
+            if (statusDetailString == StatusDetail.CompletedDefault)
                 detailsForStatusDetails.Add(StatusDetail.CompletedDefault);
 
             return detailsForStatusDetails.ToArray();
         }
 
-        public void AddStatusToTaskStatus(StatusDetail statusDetail)
+        public TaskStatus GetDefaultTaskStatus(BusinessAccount businessAccount, StatusDetail detail)
         {
-            var detailString = StatusDetailInt.ToString();
-
-            if(statusDetail == StatusDetail.OutOfRoute)
-                detailString += "1";
-            if(statusDetail == StatusDetail.InRoute)
-                detailString += "2";
-            if(statusDetail == StatusDetail.CreatedDefault)
-                detailString += "3";
-            if(statusDetail == StatusDetail.RoutedDefault)
-                detailString += "4";
-            if(statusDetail == StatusDetail.CompletedDefault)
-                detailString += "5";
-
-            StatusDetailInt = Convert.ToInt32(detailString);
+            return businessAccount.TaskStatuses.FirstOrDefault(ts => ts.StatusDetails.Contains(detail));
         }
     }
 
@@ -94,10 +63,8 @@ namespace FoundOps.Core.Models.CoreEntities
     /// </summary>
     public enum StatusDetail
     {
-        OutOfRoute = 1,
-        InRoute = 2,
-        CreatedDefault = 3,
-        RoutedDefault = 4,
-        CompletedDefault = 5
+        CreatedDefault = 1,
+        RoutedDefault = 2,
+        CompletedDefault = 3
     }
 }

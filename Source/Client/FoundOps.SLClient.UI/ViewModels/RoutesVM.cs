@@ -680,7 +680,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Get the ParentRouteTaskHolder
                 var taskHolder = routeTask.ParentRouteTaskHolder;
 
-                taskHolder.StatusInt = (int)Status.Created;
+                //Sets that RouteTasks Status to be the Created Default for the OwnerBusinessAccount
+                routeTask.TaskStatus = routeTask.TaskStatus.GetDefaultTaskStatus(routeTask.OwnerBusinessAccount, StatusDetail.CreatedDefault);
 
                 //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
                 ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);

@@ -70,7 +70,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 //Add task statuses
                 var taskStatusDesignData = new TaskStatusDesignData();
                 foreach (var taskStatus in taskStatusDesignData.DesignStatus)
-                    serviceProvider.TaskStatus.Add(taskStatus);
+                    serviceProvider.TaskStatuses.Add(taskStatus);
 
                 //Add depot
                 serviceProvider.Depots.Add(new Location

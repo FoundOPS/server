@@ -319,15 +319,15 @@ BEGIN
 							)
 	WHERE ClientId IS NULL
 
-	UPDATE	@UnroutedOrUncompletedServices
-	SET		StatusName =	(
-							SELECT Name 
-							FROM TaskStatus t1
-							WHERE BusinessAccountId = @serviceProviderIdContext
-							AND (t1.StatusDetailInt = 13 
-								OR t1.StatusDetailInt = 3)
-							)
-	WHERE StatusName IS NULL
+	--UPDATE	@UnroutedOrUncompletedServices
+	--SET		StatusName =	(
+	--						SELECT Name 
+	--						FROM TaskStatus t1
+	--						WHERE BusinessAccountId = @serviceProviderIdContext
+	--						AND (t1.StatusDetailInt = 13 
+	--							OR t1.StatusDetailInt = 3)
+	--						)
+	--WHERE StatusName IS NULL
 
 	DECLARE @ServicesForDateTable TABLE
 		(

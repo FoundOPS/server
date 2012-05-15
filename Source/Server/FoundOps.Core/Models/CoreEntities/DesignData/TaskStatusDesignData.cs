@@ -5,7 +5,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
     public class TaskStatusDesignData
     {
-        public static string[] DesignColors = new[] { "FFFF0000", "FF00FF00", "FF0000FF", "FFFFFF00", "FFFF00FF", "FF00FFFF" };
+        public static string[] DesignColors = new[] { "FFFF00", "FF0000", "FFA500", "4682B4", "00FF00", "FF00FF" };
 
         public IEnumerable<TaskStatus> DesignStatus = new List<TaskStatus>
                                                    {
@@ -14,42 +14,48 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                                                Id = Guid.NewGuid(),
                                                                Name = "UnRouted",
                                                                Color = DesignColors[0],
-                                                               StatusDetailInt = 13
+                                                               RouteRequired = false,
+                                                               DefaultTypeInt = ((int)StatusDetail.CreatedDefault)
                                                            },
                                                            new TaskStatus
                                                            {
                                                                Id = Guid.NewGuid(),
                                                                Name = "Routed",
                                                                Color = DesignColors[1],
-                                                               StatusDetailInt = 24
+                                                               RouteRequired = true,
+                                                               DefaultTypeInt = ((int)StatusDetail.RoutedDefault)
                                                            },
                                                            new TaskStatus
                                                            {
                                                                Id = Guid.NewGuid(),
                                                                Name = "In Progress",
                                                                Color = DesignColors[2],
-                                                               StatusDetailInt = 2
+                                                               RouteRequired = true,
+                                                               DefaultTypeInt = null
                                                            },
                                                            new TaskStatus
                                                            {
                                                                Id = Guid.NewGuid(),
                                                                Name = "On Hold",
                                                                Color = DesignColors[3],
-                                                               StatusDetailInt = null
+                                                               RouteRequired = false,
+                                                               DefaultTypeInt = null
                                                            },
                                                            new TaskStatus
                                                            {
                                                                Id = Guid.NewGuid(),
                                                                Name = "Incomplete",
                                                                Color = DesignColors[4],
-                                                               StatusDetailInt = 1
+                                                               RouteRequired = false,
+                                                               DefaultTypeInt = null
                                                            },
                                                            new TaskStatus
                                                            {
                                                                Id = Guid.NewGuid(),
                                                                Name = "Completed",
                                                                Color = DesignColors[5],
-                                                               StatusDetailInt = 25
+                                                               RouteRequired = true,
+                                                               DefaultTypeInt = ((int)StatusDetail.CompletedDefault)
                                                            },
                                                    };
     }

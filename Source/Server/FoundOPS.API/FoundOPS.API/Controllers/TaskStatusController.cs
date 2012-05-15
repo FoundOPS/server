@@ -39,6 +39,11 @@ namespace FoundOPS.API.Controllers
 
         public void UpdateTaskStatus(TaskStatus taskStatus)
         {
+            var original = _coreEntitiesContainer.TaskStatus.FirstOrDefault(ts => ts.Id == taskStatus.Id);
+
+            if(original == null || original.DefaultTypeInt.HasValue)
+                throw new InvalidOperationException("This Status is a default and it's details cannot be changed.");
+
             _coreEntitiesContainer.TaskStatus.AttachAsModified(TaskStatus.ConvertFromModel(taskStatus)); 
         }
 
@@ -65,8 +70,8 @@ namespace FoundOPS.API.Controllers
             if (currentBusinessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            return currentBusinessAccount.TaskStatus.Select(TaskStatus.ConvertModel).AsQueryable(); 
-        } 
+            return currentBusinessAccount.TaskStatuses.Select(TaskStatus.ConvertModel).AsQueryable(); 
+        }  
          
         #endregion
     }

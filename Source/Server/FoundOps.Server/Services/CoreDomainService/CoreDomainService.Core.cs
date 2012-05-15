@@ -113,6 +113,64 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region BusinessAccount
 
+        private void InsertBusinessAccount(BusinessAccount account)
+        {
+            var defaultStatuses = AddDefaultTaskStatuses();
+
+            //Add the default statuses to the BusinessAccount
+            foreach (var status in defaultStatuses)
+                account.TaskStatuses.Add(status);
+            
+            if ((account.EntityState != EntityState.Detached))
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(account, EntityState.Added);
+            }
+            else
+            {
+                this.ObjectContext.Parties.AddObject(account);
+            }
+        }
+
+        private IEnumerable<TaskStatus> AddDefaultTaskStatuses()
+        {
+            var taskStatuses = new List<TaskStatus> {};
+
+            var taskStatus = new TaskStatus
+                                 {
+                                     Id = Guid.NewGuid(),
+                                     Name = "Created",
+                                     Color = "FFFF00",
+                                     DefaultTypeInt = ((int) StatusDetail.CreatedDefault),
+                                     RouteRequired = false
+                                 };
+            
+            taskStatuses.Add(taskStatus);
+
+            taskStatus = new TaskStatus
+            {
+                Id = Guid.NewGuid(),
+                Name = "Routed",
+                Color = "FFFFFF",
+                DefaultTypeInt = ((int)StatusDetail.RoutedDefault),
+                RouteRequired = true
+            };
+
+            taskStatuses.Add(taskStatus);
+
+            taskStatus = new TaskStatus
+            {
+                Id = Guid.NewGuid(),
+                Name = "Completed",
+                Color = "32CD32",
+                DefaultTypeInt = ((int)StatusDetail.CompletedDefault),
+                RouteRequired = true
+            };
+
+            taskStatuses.Add(taskStatus);
+
+            return taskStatuses.ToArray();
+        } 
+
         private void UpdateBusinessAccount(BusinessAccount account)
         {
             //Only FoundOPS admin accounts or a user with admin capabilities for the current account can update the account
@@ -297,13 +355,18 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void InsertParty(Party account)
         {
-            if ((account.EntityState != EntityState.Detached))
+            if (account is BusinessAccount)
+                InsertBusinessAccount((BusinessAccount)account); 
+            else 
             {
-                this.ObjectContext.ObjectStateManager.ChangeObjectState(account, EntityState.Added);
-            }
-            else
-            {
-                this.ObjectContext.Parties.AddObject(account);
+                if ((account.EntityState != EntityState.Detached))
+                {
+                    this.ObjectContext.ObjectStateManager.ChangeObjectState(account, EntityState.Added);
+                }
+                else
+                {
+                    this.ObjectContext.Parties.AddObject(account);
+                }
             }
         }
 
