@@ -194,13 +194,6 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return clientNameCategoryValue == null ? null : clientNameCategoryValue.Item2;
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var allClients =
-                 (from client in ObjectContext.Clients.Where(c => c.VendorId == businessAccount.Id)
-                  //Need to get the Clients names
-                  join p in ObjectContext.PartiesWithNames
-                      on client.Id equals p.Id
-                  select new { p.ChildName, client }).ToArray();
-
             //TODO: When importing people clients, fix the ChildName logic below (probably setup 2 left joins)
             //Load all the associatedClients
             var associatedClients =
@@ -208,8 +201,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                  //Need to get the Clients names
                  join p in ObjectContext.PartiesWithNames
                      on client.Id equals p.Id
-                 join clientName in clientNamesToLoad
-                 on p.ChildName equals clientName
+                 where clientNamesToLoad.Contains(p.ChildName)
                  select new { p.ChildName, client }).ToArray();
 
             if (includeAvailableServices)
@@ -238,8 +230,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var associatedLocationsFromName =
                 (from location in GetLocationsToAdministerForRole(roleId)
-                 join name in locationNamesToLoad
-                 on location.Name equals name
+                 where locationNamesToLoad.Contains(location.Name)
                  select location).ToArray();
 
             //Get the distinct addresses from the DataCategory.LocationAddressLineOne category of the rows
@@ -252,8 +243,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var associatedLocationsFromAddressLineOne =
                 (from location in GetLocationsToAdministerForRole(roleId)
-                 join addressLineOne in addressesToLoad
-                     on location.AddressLineOne equals addressLineOne
+                 where addressesToLoad.Contains(location.AddressLineOne)
                  select location).ToArray();
 
             return associatedLocationsFromName.Union(associatedLocationsFromAddressLineOne).Distinct().ToArray();
@@ -279,8 +269,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var loadedRegionsFromName =
                 (from region in GetRegionsForServiceProvider(roleId)
-                 join name in regionNamesToLoad
-                 on region.Name equals name
+                 where regionNamesToLoad.Contains(region.Name)
                  select region).ToArray();
 
             //Create a new region for any region name that did not exist

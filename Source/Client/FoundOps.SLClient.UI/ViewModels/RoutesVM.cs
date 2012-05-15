@@ -627,15 +627,14 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Checks to be sure that you are not trying to delete a Route in the past
         /// </summary>
-        /// <param name="checkCompleted"></param>
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
-            //If there is no Route selected, you can not delete 
-            if (SelectedEntity == null)
-                checkCompleted(false);
-            //Id the Route's date is in the past, you can not delete
-            else if (SelectedEntity.Date < DateTime.UtcNow.Date)
-                checkCompleted(false);
+            //Id the Route's date is in the past you can not delete
+            if (SelectedEntity.Date < DateTime.UtcNow.Date)
+            {
+                 MessageBox.Show("You cannot delete Routes in the past.");
+                 checkCompleted(false);
+            }
             else
                 checkCompleted(true);
         }
