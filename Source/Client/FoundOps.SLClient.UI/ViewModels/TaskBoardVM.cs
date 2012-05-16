@@ -19,6 +19,17 @@ using System.Threading.Tasks;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
+    //What needs to get done:
+    //Convert this entire VM to use RouteTasks instead of TaskHolders
+    //Convert the TaskBoard to be using only RouteTasks
+    //Check the load function for the TaskBoard
+    //Check bindings in the TaskBoard
+    //Fix SimpleRouteCalculator
+    //Check out drag and drop code
+    //Look into whether it makes sense to keep some sort of SQL function for the TaskBoard
+        //Remove GetUnroutedServices function from the model and from the manual changes file
+    //Look for anywhere else in the code that uses TaskHolders
+
     /// <summary>
     /// Logic for populating the TaskBoard.
     /// </summary>
