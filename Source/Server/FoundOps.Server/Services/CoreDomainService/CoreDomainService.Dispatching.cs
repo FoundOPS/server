@@ -228,6 +228,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessAccount = ObjectContext.Owner(roleId).First();
 
             var unroutedServicesForDate = ObjectContext.GetUnroutedServicesForDate(businessAccount.Id, serviceDate);
+            //return routetasks; 
+
 
             return unroutedServicesForDate.AsQueryable();
         }

@@ -16,29 +16,29 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
         private void StatusComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //var selectedRouteTask = VM.Routes.SelectedRouteTask;
+            var selectedRouteTask = VM.Routes.SelectedRouteTask;
 
-            //var status = selectedRouteTask.TaskStatus;
-            //if (status.StatusDetailInt.ToString().Contains("1"))// This would mean that the status requires the task to be out of a route
-            //{
-            //    var destination = selectedRouteTask.RouteDestination;
+            var status = selectedRouteTask.TaskStatus;
+            if (!status.RouteRequired)// This would mean that the status requires the task to be out of a route
+            {
+                var destination = selectedRouteTask.RouteDestination;
 
-            //    var lastRouteTask = destination.Route.RouteDestinationsListWrapper.LastOrDefault();
+                var lastRouteTask = destination.Route.RouteDestinationsListWrapper.LastOrDefault();
 
-            //    selectedRouteTask.RemoveRouteDestination();
+                selectedRouteTask.RemoveRouteDestination();
 
-            //    DragDropTools.RemoveFromRoute(selectedRouteTask);
+                DragDropTools.RemoveFromRoute(selectedRouteTask);
 
-            //    if (destination.RouteTasks.Count == 0)
-            //        VM.Routes.DeleteRouteDestination(destination);
+                if (destination.RouteTasks.Count == 0)
+                    VM.Routes.DeleteRouteDestination(destination);
 
-            //    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(selectedRouteTask.ParentRouteTaskHolder);
+                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(selectedRouteTask.ParentRouteTaskHolder);
 
-            //    if (lastRouteTask != null)
-            //        VM.Routes.SelectedRouteTask = lastRouteTask.RouteTasks.FirstOrDefault();
+                if (lastRouteTask != null)
+                    VM.Routes.SelectedRouteTask = lastRouteTask.RouteTasks.FirstOrDefault();
 
-            //    VM.Routes.DispatcherSave();
-            //}
+                VM.Routes.DispatcherSave();
+            }
         }
     }
 }
