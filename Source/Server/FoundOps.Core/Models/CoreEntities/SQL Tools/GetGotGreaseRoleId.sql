@@ -1,6 +1,6 @@
 ﻿USE Core
 GO
 
-	SELECT Id
-	FROM Roles
-	WHERE OwnerPartyId = '8528E50D-E2B9-4779-9B29-759DBEA53B61'
+SELECT        Parties_Business.Name, Roles.Id AS 'RoleId'
+FROM          Parties_Business INNER JOIN Roles ON Parties_Business.Id = Roles.OwnerPartyId
+WHERE        (Parties_Business.Name = N'GotGrease?')
