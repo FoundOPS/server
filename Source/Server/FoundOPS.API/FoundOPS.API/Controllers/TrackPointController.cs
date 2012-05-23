@@ -278,7 +278,7 @@ namespace FoundOPS.API.Controllers
 
                 #region Save the last TrackPoint passed to the database
 
-                employee.LastCompassDirection = lastTrackPoint.CompassDirection;
+                employee.LastCompassDirection = lastTrackPoint.Heading;
                 employee.LastLatitude = lastTrackPoint.Latitude;
                 employee.LastLongitude = lastTrackPoint.Longitude;
                 employee.LastSource = lastTrackPoint.Source;
@@ -308,7 +308,7 @@ namespace FoundOPS.API.Controllers
 
                 #region Save the last TrackPoint passed to the database
 
-                vehicle.LastCompassDirection = lastTrackPoint.CompassDirection;
+                vehicle.LastCompassDirection = lastTrackPoint.Heading;
                 vehicle.LastLatitude = lastTrackPoint.Latitude;
                 vehicle.LastLongitude = lastTrackPoint.Longitude;
                 vehicle.LastSource = lastTrackPoint.Source;

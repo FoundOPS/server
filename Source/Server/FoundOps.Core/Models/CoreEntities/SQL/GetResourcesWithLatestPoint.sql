@@ -35,7 +35,8 @@ RETURNS @EmployeeVehicleTableToReturn TABLE
 		LastTimeStamp datetime,
 		Speed decimal(18,8),
 		TrackSource nvarchar(max),
-		RouteId uniqueidentifier
+		RouteId uniqueidentifier,
+		Accuracy int
 	) 
 AS
 BEGIN

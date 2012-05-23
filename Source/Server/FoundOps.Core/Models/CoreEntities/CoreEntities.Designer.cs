@@ -1054,8 +1054,47 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBasicPartyBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteBasicPartyBasedOnId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="parentFieldId">No Metadata Documentation available.</param>
+        public int DeleteFieldAndChildrenBasedOnFieldId(Nullable<global::System.Guid> parentFieldId)
+        {
+            ObjectParameter parentFieldIdParameter;
+            if (parentFieldId.HasValue)
+            {
+                parentFieldIdParameter = new ObjectParameter("parentFieldId", parentFieldId);
+            }
+            else
+            {
+                parentFieldIdParameter = new ObjectParameter("parentFieldId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteFieldAndChildrenBasedOnFieldId", parentFieldIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDate)
         {
             ObjectParameter serviceProviderIdParameter;
             if (serviceProviderId.HasValue)
@@ -1067,7 +1106,17 @@ namespace FoundOps.Core.Models.CoreEntities
                 serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter, serviceDateParameter);
         }
     
         /// <summary>
@@ -3618,6 +3667,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.DateTime> _LastPushToAzureTimeStamp;
         partial void OnLastPushToAzureTimeStampChanging(Nullable<global::System.DateTime> value);
         partial void OnLastPushToAzureTimeStampChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> LastAccuracy
+        {
+            get
+            {
+                return _LastAccuracy;
+            }
+            set
+            {
+                OnLastAccuracyChanging(value);
+                ReportPropertyChanging("LastAccuracy");
+                _LastAccuracy = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastAccuracy");
+                OnLastAccuracyChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _LastAccuracy;
+        partial void OnLastAccuracyChanging(Nullable<global::System.Int32> value);
+        partial void OnLastAccuracyChanged();
 
         #endregion
 
@@ -11894,6 +11967,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.DateTime> _LastPushToAzureTimeStamp;
         partial void OnLastPushToAzureTimeStampChanging(Nullable<global::System.DateTime> value);
         partial void OnLastPushToAzureTimeStampChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> LastAccuracy
+        {
+            get
+            {
+                return _LastAccuracy;
+            }
+            set
+            {
+                OnLastAccuracyChanging(value);
+                ReportPropertyChanging("LastAccuracy");
+                _LastAccuracy = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastAccuracy");
+                OnLastAccuracyChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _LastAccuracy;
+        partial void OnLastAccuracyChanging(Nullable<global::System.Int32> value);
+        partial void OnLastAccuracyChanged();
 
         #endregion
 
@@ -12444,10 +12541,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new ResourceWithLastPoint object.
         /// </summary>
         /// <param name="lastTimeStamp">Initial value of the LastTimeStamp property.</param>
-        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.DateTime lastTimeStamp)
+        /// <param name="accuracy">Initial value of the Accuracy property.</param>
+        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.DateTime lastTimeStamp, global::System.Int32 accuracy)
         {
             ResourceWithLastPoint resourceWithLastPoint = new ResourceWithLastPoint();
             resourceWithLastPoint.LastTimeStamp = lastTimeStamp;
+            resourceWithLastPoint.Accuracy = accuracy;
             return resourceWithLastPoint;
         }
 
@@ -12694,6 +12793,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _RouteId;
         partial void OnRouteIdChanging(Nullable<global::System.Guid> value);
         partial void OnRouteIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Accuracy
+        {
+            get
+            {
+                return _Accuracy;
+            }
+            set
+            {
+                OnAccuracyChanging(value);
+                ReportPropertyChanging("Accuracy");
+                _Accuracy = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Accuracy");
+                OnAccuracyChanged();
+            }
+        }
+        private global::System.Int32 _Accuracy;
+        partial void OnAccuracyChanging(global::System.Int32 value);
+        partial void OnAccuracyChanged();
 
         #endregion
 

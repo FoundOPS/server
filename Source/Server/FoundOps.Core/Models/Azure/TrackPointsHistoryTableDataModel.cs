@@ -50,11 +50,17 @@ namespace FoundOps.Core.Models.Azure
         /// <summary>
         /// The latitude where this was collected.
         /// </summary>
-        public Double Latitude { get; set; }
+        public decimal? Latitude { get; set; }
 
         /// <summary>
         /// The longitude where this was collected.
         /// </summary>
-        public Double Longitude { get; set; }
+        public decimal? Longitude { get; set; }
+
+        /// <summary>
+        /// The Accuracy of the GPS coordinates from PhoneGap
+        /// In Meters
+        /// </summary>
+        public int Accuracy { get; set; }
     }
 }
