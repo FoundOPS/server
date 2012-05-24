@@ -6,9 +6,19 @@ namespace FoundOPS.API.Models
     {
         public Guid Id { get; set; }
 
+        /// <summary>
+        /// The place occupied by this Destinationin the Route
+        /// </summary>
         public int OrderInRoute { get; set; }
 
+        /// <summary>
+        /// The Client associated with the Destination
+        /// </summary>
         public Client Client { get; set; }
+
+        /// <summary>
+        /// The location of the RouteDestination
+        /// </summary>
         public Location Location { get; set; }
 
         public static RouteDestination ConvertModel(FoundOps.Core.Models.CoreEntities.RouteDestination routeDestinationModel)

@@ -4,7 +4,14 @@ namespace FoundOPS.API.Models
 {
     public class Client
     {
+        /// <summary>
+        /// The name of the Client
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The list of ContactInfo associated with this Client
+        /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
         public Client()

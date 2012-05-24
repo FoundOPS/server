@@ -141,8 +141,8 @@ namespace FoundOps.Server.Controllers
                                             EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
-                                            Latitude = latitude,
-                                            Longitude = longitude,
+                                            Latitude = (decimal?) latitude,
+                                            Longitude = (decimal?) longitude,
                                             CollectedTimeStamp = timeStamp
                                         };
 
@@ -180,8 +180,8 @@ namespace FoundOps.Server.Controllers
                                             EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
-                                            Latitude = latitude,
-                                            Longitude = longitude,
+                                            Latitude = (decimal?) latitude,
+                                            Longitude = (decimal?) longitude,
                                             CollectedTimeStamp = timeStamp
                                         };
 
@@ -220,8 +220,8 @@ namespace FoundOps.Server.Controllers
                                             EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
-                                            Latitude = latitude,
-                                            Longitude = longitude,
+                                            Latitude = (decimal?) latitude,
+                                            Longitude = (decimal?) longitude,
                                             CollectedTimeStamp = timeStamp
                                         };
 
@@ -259,8 +259,8 @@ namespace FoundOps.Server.Controllers
                                             EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
-                                            Latitude = latitude,
-                                            Longitude = longitude,
+                                            Latitude = (decimal?) latitude,
+                                            Longitude = (decimal?) longitude,
                                             CollectedTimeStamp = timeStamp
                                         };
 
