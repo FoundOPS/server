@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using ResourceWithLastPoint = FoundOPS.API.Models.ResourceWithLastPoint;
 using TrackPoint = FoundOPS.API.Models.TrackPoint;
 
 namespace FoundOPS.API.Controllers
@@ -74,7 +75,7 @@ namespace FoundOPS.API.Controllers
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
-        public IQueryable<ModelResourceWithLastPoint> GetResourcesWithLatestPoints(Guid roleId)
+        public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid roleId)
         {
             var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
 
@@ -87,7 +88,7 @@ namespace FoundOPS.API.Controllers
             //Calls the sql function to pull all the necessary information for a ResourcesWithTrackPoint
             var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id);
 
-            var modelResources = resourcesWithTrackPoint.Select(ModelResourceWithLastPoint.ConvertToModel);
+            var modelResources = resourcesWithTrackPoint.Select(ResourceWithLastPoint.ConvertToModel);
             return modelResources.AsQueryable();
         }
 
