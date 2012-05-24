@@ -279,10 +279,10 @@ namespace FoundOPS.API.Controllers
                 #region Save the last TrackPoint passed to the database
 
                 employee.LastCompassDirection = lastTrackPoint.Heading;
-                employee.LastLatitude = lastTrackPoint.Latitude;
-                employee.LastLongitude = lastTrackPoint.Longitude;
+                employee.LastLatitude = (double?) lastTrackPoint.Latitude;
+                employee.LastLongitude = (double?) lastTrackPoint.Longitude;
                 employee.LastSource = lastTrackPoint.Source;
-                employee.LastSpeed = lastTrackPoint.Speed;
+                employee.LastSpeed = (double?) lastTrackPoint.Speed;
                 employee.LastTimeStamp = lastTrackPoint.CollectedTimeStamp;
 
                 #endregion
@@ -309,10 +309,10 @@ namespace FoundOPS.API.Controllers
                 #region Save the last TrackPoint passed to the database
 
                 vehicle.LastCompassDirection = lastTrackPoint.Heading;
-                vehicle.LastLatitude = lastTrackPoint.Latitude;
-                vehicle.LastLongitude = lastTrackPoint.Longitude;
+                vehicle.LastLatitude = (double?) lastTrackPoint.Latitude;
+                vehicle.LastLongitude = (double?) lastTrackPoint.Longitude;
                 vehicle.LastSource = lastTrackPoint.Source;
-                vehicle.LastSpeed = lastTrackPoint.Speed;
+                vehicle.LastSpeed = (double?) lastTrackPoint.Speed;
                 vehicle.LastTimeStamp = lastTrackPoint.CollectedTimeStamp;
 
                 #endregion
