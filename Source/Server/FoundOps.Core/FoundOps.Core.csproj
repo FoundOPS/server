@@ -221,6 +221,7 @@
     <Compile Include="Tools\AsyncHelper.cs" />
     <Compile Include="Tools\AuthenticationLogic.cs" />
     <Compile Include="Tools\ExceptionHelper.cs" />
+    <Compile Include="Tools\ServerManagement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
