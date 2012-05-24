@@ -221,7 +221,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets the contacts block.
         /// </summary>
-        public static Block ContactsBlock { get; private set; }
+        //public static Block ContactsBlock { get; private set; }
         /// <summary>
         /// Gets the dispatcher block.
         /// </summary>
@@ -277,12 +277,12 @@ namespace FoundOps.Core.Models.CoreEntities
                 NavigateUri = "Clients"
             };
 
-            ContactsBlock = new Block
-            {
-                Id = BlockConstants.ContactsBlockId,
-                Name = "Contacts",
-                NavigateUri = "Contacts"
-            };
+            //ContactsBlock = new Block
+            //{
+            //    Id = BlockConstants.ContactsBlockId,
+            //    Name = "Contacts",
+            //    NavigateUri = "Contacts"
+            //};
 
             DispatcherBlock = new Block
             {
@@ -353,7 +353,7 @@ namespace FoundOps.Core.Models.CoreEntities
             ManagerBlocks = new List<Block>
             {
                ClientsBlock,
-               ContactsBlock,
+               //ContactsBlock,
                EmployeesBlock,
                ServicesBlock,
                LocationsBlock,
