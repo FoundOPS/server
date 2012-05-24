@@ -1,9 +1,8 @@
-﻿using FoundOps.Core.Models.CoreEntities;
-using System;
+﻿using System;
 
 namespace FoundOPS.API.Models
 {
-    public class ModelResourceWithLastPoint
+    public class ResourceWithLastPoint
     {
         public int? CompassHeading { get; set; }
         public Guid? EmployeeId { get; set; }
@@ -16,9 +15,9 @@ namespace FoundOPS.API.Models
         public string TrackSource { get; set; }
         public Guid? VehicleId { get; set; }
 
-        public static ModelResourceWithLastPoint ConvertToModel(ResourceWithLastPoint modelResource)
+        public static ResourceWithLastPoint ConvertToModel(FoundOps.Core.Models.CoreEntities.ResourceWithLastPoint modelResource)
         {
-            var resource = new ModelResourceWithLastPoint
+            var resource = new ResourceWithLastPoint
             {
                 CompassHeading = modelResource.CompassHeading,
                 EmployeeId = modelResource.EmployeeId,

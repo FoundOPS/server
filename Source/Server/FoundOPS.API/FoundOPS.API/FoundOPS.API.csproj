@@ -123,7 +123,7 @@
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\Location.cs" />
-    <Compile Include="Models\ModelResourceWithLastPoint.cs" />
+    <Compile Include="Models\ResourceWithLastPoint.cs" />
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\RouteDestination.cs" />
     <Compile Include="Models\TrackPoint.cs" />
