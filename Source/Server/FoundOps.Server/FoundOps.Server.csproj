@@ -234,7 +234,6 @@
     </Compile>
     <Compile Include="Tools\AddTestUsersThenAuthorize.cs" />
     <Compile Include="Tools\ImageHelpers.cs" />
-    <Compile Include="Tools\ServerManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Core.cs" />
   </ItemGroup>
