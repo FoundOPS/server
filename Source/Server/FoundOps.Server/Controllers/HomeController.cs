@@ -82,9 +82,10 @@ namespace FoundOps.Server.Controllers
             if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
             {
                 CoreEntitiesServerManagement.ClearCreateHistoricalTrackPoints();
+                return View();
             }
 
-            return View();
+            throw new Exception("Invalid attempted access logged for investigation.");
         }
 #endif
     }
