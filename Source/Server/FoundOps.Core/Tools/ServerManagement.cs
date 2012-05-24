@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Server.Tools
+namespace FoundOps.Core.Tools
 {
 #if DEBUG
     public static class ServerManagement
