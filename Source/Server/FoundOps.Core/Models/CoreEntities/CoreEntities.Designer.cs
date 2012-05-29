@@ -12530,12 +12530,10 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new ResourceWithLastPoint object.
         /// </summary>
         /// <param name="lastTimeStamp">Initial value of the LastTimeStamp property.</param>
-        /// <param name="accuracy">Initial value of the Accuracy property.</param>
-        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.DateTime lastTimeStamp, global::System.Int32 accuracy)
+        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.DateTime lastTimeStamp)
         {
             ResourceWithLastPoint resourceWithLastPoint = new ResourceWithLastPoint();
             resourceWithLastPoint.LastTimeStamp = lastTimeStamp;
-            resourceWithLastPoint.Accuracy = accuracy;
             return resourceWithLastPoint;
         }
 
@@ -12786,9 +12784,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 Accuracy
+        public Nullable<global::System.Int32> Accuracy
         {
             get
             {
@@ -12803,8 +12801,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnAccuracyChanged();
             }
         }
-        private global::System.Int32 _Accuracy;
-        partial void OnAccuracyChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _Accuracy;
+        partial void OnAccuracyChanging(Nullable<global::System.Int32> value);
         partial void OnAccuracyChanged();
 
         #endregion

@@ -57,7 +57,7 @@ namespace FoundOPS.API.Models
         /// The accuracy of the GPS coordinates from PhoneGap
         /// In Meters
         /// </summary>
-        public int Accuracy { get; set; }
+        public int? Accuracy { get; set; }
 
         public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint) 
         {
@@ -71,8 +71,8 @@ namespace FoundOPS.API.Models
                                      Heading = null,
                                      Id = (Guid) trackPointId,
                                      CollectedTimeStamp = modelTrackPoint.CollectedTimeStamp,
-                                     Latitude = modelTrackPoint.Latitude, 
-                                     Longitude = modelTrackPoint.Longitude,
+                                     Latitude = (decimal?) modelTrackPoint.Latitude, 
+                                     Longitude = (decimal?) modelTrackPoint.Longitude,
                                      Speed = null,
                                      Source = null,
                                      RouteId = modelTrackPoint.RouteId,

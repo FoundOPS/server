@@ -141,9 +141,10 @@ namespace FoundOps.Server.Controllers
                                             EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
-                                            Latitude = (decimal?) latitude,
-                                            Longitude = (decimal?) longitude,
-                                            CollectedTimeStamp = timeStamp
+                                            Latitude = latitude,
+                                            Longitude = longitude,
+                                            CollectedTimeStamp = timeStamp,
+                                            Accuracy = 1
                                         };
 
                                         latitude = latitude + .001;
@@ -180,9 +181,10 @@ namespace FoundOps.Server.Controllers
                                             EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
-                                            Latitude = (decimal?) latitude,
-                                            Longitude = (decimal?) longitude,
-                                            CollectedTimeStamp = timeStamp
+                                            Latitude = latitude,
+                                            Longitude = longitude,
+                                            CollectedTimeStamp = timeStamp,
+                                            Accuracy = 2
                                         };
 
                                         latitude = latitude - .001;
@@ -220,9 +222,10 @@ namespace FoundOps.Server.Controllers
                                             EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
-                                            Latitude = (decimal?) latitude,
-                                            Longitude = (decimal?) longitude,
-                                            CollectedTimeStamp = timeStamp
+                                            Latitude = latitude,
+                                            Longitude = longitude,
+                                            CollectedTimeStamp = timeStamp,
+                                            Accuracy = 3
                                         };
 
                                         latitude = latitude + .001;
@@ -259,9 +262,10 @@ namespace FoundOps.Server.Controllers
                                             EmployeeId = employee.Id,
                                             VehicleId = null,
                                             RouteId = route.Id,
-                                            Latitude = (decimal?) latitude,
-                                            Longitude = (decimal?) longitude,
-                                            CollectedTimeStamp = timeStamp
+                                            Latitude = latitude,
+                                            Longitude = longitude,
+                                            CollectedTimeStamp = timeStamp,
+                                            Accuracy = 4
                                         };
 
                                         latitude = latitude - .001;

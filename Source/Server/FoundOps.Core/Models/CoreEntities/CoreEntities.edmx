@@ -410,7 +410,7 @@
       </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId
+          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId, Accuracy
           FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
         </CommandText>
         <Parameter Name="serviceProviderId"
@@ -3541,7 +3541,7 @@
           <Property Type="Decimal" Name="Speed" Nullable="true" />
           <Property Type="String" Name="TrackSource" Nullable="true" />
           <Property Type="Guid" Name="RouteId" Nullable="true" />
-          <Property Type="Int32" Name="Accuracy" Nullable="false" />
+          <Property Type="Int32" Name="Accuracy" Nullable="true" />
         </ComplexType>
         <Association Name="BusinessAccountLocation">
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />

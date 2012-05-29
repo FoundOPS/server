@@ -124,21 +124,21 @@ namespace FoundOPS.API.Controllers
                         //This would be the 4th, 8th, etc
                         case 0:
                             employee.LastLatitude = employee.LastLatitude + .00005;
-                            employee.LastLongitude = employee.LastLongitude + .00005;
+                            employee.LastLongitude = employee.LastLongitude + .00007;
                             break;
                         //This would be the 1st, 5th, etc
                         case 1:
                             employee.LastLatitude = employee.LastLatitude - .00005;
-                            employee.LastLongitude = employee.LastLongitude + .00005;
+                            employee.LastLongitude = employee.LastLongitude + .00003;
                             break;
                         //This would be the 2nd, 6th, etc
                         case 2:
-                            employee.LastLatitude = employee.LastLatitude + .00005;
+                            employee.LastLatitude = employee.LastLatitude + .00002;
                             employee.LastLongitude = employee.LastLongitude - .00005;
                             break;
                         //This would be the 3rd, 7th, etc
                         case 3:
-                            employee.LastLatitude = employee.LastLatitude - .00005;
+                            employee.LastLatitude = employee.LastLatitude - .00006;
                             employee.LastLongitude = employee.LastLongitude - .00005;
                             break;
                     }
@@ -387,8 +387,8 @@ namespace FoundOPS.API.Controllers
                 EmployeeId = employeeId,
                 VehicleId = vehicleId,
                 RouteId = routeId,
-                Latitude = trackPoint.Latitude,
-                Longitude = trackPoint.Longitude,
+                Latitude = (double?) trackPoint.Latitude,
+                Longitude = (double?) trackPoint.Longitude,
                 CollectedTimeStamp = trackPoint.CollectedTimeStamp
             };
 
