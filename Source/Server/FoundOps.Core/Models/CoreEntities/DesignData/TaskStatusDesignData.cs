@@ -5,7 +5,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
     public class TaskStatusDesignData
     {
-        public static string[] DesignColors = new[] { "FFFF00", "FF0000", "FFA500", "4682B4", "00FF00", "FF00FF" };
+        public static string[] DesignColors = new[] { "#FFFF00", "#FF0000", "#FFA500", "#4682B4", "#00FF00", "#FF00FF" };
 
         public IEnumerable<TaskStatus> DesignStatus = new List<TaskStatus>
                                                    {

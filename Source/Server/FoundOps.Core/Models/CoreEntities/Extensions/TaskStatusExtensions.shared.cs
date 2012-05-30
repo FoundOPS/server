@@ -22,11 +22,14 @@ namespace FoundOps.Core.Models.CoreEntities
                     return;
                 }
 
+                DefaultTypeInt = null;
+
                 //Join the integers of the distinct status details
                 //Ex { OutOfRoute, CreatedDefault } = 13
                 var statusDetailString = String.Join("", detailsForStatusDetails.Distinct().Select(d => ((int) d).ToString()));
-
-                DefaultTypeInt = Convert.ToInt32(statusDetailString);
+                
+                if(statusDetailString != "")
+                    DefaultTypeInt = Convert.ToInt32(statusDetailString);
             }
         }
 
@@ -38,16 +41,20 @@ namespace FoundOps.Core.Models.CoreEntities
                 return detailsForStatusDetails.ToArray();
 
             //Split the integers and convert them to the StatusDetail enum
-            var statusDetailString = ((StatusDetail)Convert.ToInt32(defaultTypeInt.ToString().Split(Convert.ToChar(""))));
+            var statusDetailString = defaultTypeInt.ToString().ToCharArray()
+                                    .Select(sd => ((StatusDetail)Convert.ToInt32(sd))).ToArray();
 
-            if (statusDetailString == StatusDetail.CreatedDefault)
-                detailsForStatusDetails.Add(StatusDetail.CreatedDefault);
+            foreach (var statusDetail in statusDetailString)
+            {
+                if (statusDetail == StatusDetail.CreatedDefault)
+                    detailsForStatusDetails.Add(StatusDetail.CreatedDefault);
 
-            if (statusDetailString == StatusDetail.RoutedDefault)
-                detailsForStatusDetails.Add(StatusDetail.RoutedDefault);
+                if (statusDetail == StatusDetail.RoutedDefault)
+                    detailsForStatusDetails.Add(StatusDetail.RoutedDefault);
 
-            if (statusDetailString == StatusDetail.CompletedDefault)
-                detailsForStatusDetails.Add(StatusDetail.CompletedDefault);
+                if (statusDetail == StatusDetail.CompletedDefault)
+                    detailsForStatusDetails.Add(StatusDetail.CompletedDefault);
+            }
 
             return detailsForStatusDetails.ToArray();
         }

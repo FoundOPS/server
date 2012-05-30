@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Data.Objects;
 using System.Linq;
 using System.ServiceModel.DomainServices.EntityFramework;
 using FoundOps.Common.NET;
@@ -27,10 +28,9 @@ namespace FoundOPS.API.Controllers
         {
             var status = TaskStatus.ConvertFromModel(taskStatus);
 
-            if (status.EntityState == EntityState.Detached)
-                _coreEntitiesContainer.ObjectStateManager.ChangeObjectState(status, EntityState.Added);
-            else
-                _coreEntitiesContainer.TaskStatus.AddObject(status);        
+            _coreEntitiesContainer.TaskStatus.AddObject(status);
+
+            _coreEntitiesContainer.SaveChanges();
         }
 
         #endregion
@@ -41,10 +41,26 @@ namespace FoundOPS.API.Controllers
         {
             var original = _coreEntitiesContainer.TaskStatus.FirstOrDefault(ts => ts.Id == taskStatus.Id);
 
-            if(original == null || original.DefaultTypeInt.HasValue)
-                throw new InvalidOperationException("This Status is a default and it's details cannot be changed.");
+            if(original == null)
+                throw new UpdateException("This is bad. Somehow you updated an object that doesn't exist yet...");
 
-            _coreEntitiesContainer.TaskStatus.AttachAsModified(TaskStatus.ConvertFromModel(taskStatus)); 
+            var convertedTaskStatus = TaskStatus.ConvertFromModel(taskStatus);
+
+            original.BusinessAccountId = convertedTaskStatus.BusinessAccountId;
+            original.Color = convertedTaskStatus.Color;
+            original.DefaultTypeInt = convertedTaskStatus.DefaultTypeInt;
+            original.Name = convertedTaskStatus.Name;
+            original.RouteRequired = convertedTaskStatus.RouteRequired;
+
+            if (convertedTaskStatus.RouteTasks != original.RouteTasks)
+            {
+                original.RouteTasks.Clear();
+
+                foreach (var routeTask in convertedTaskStatus.RouteTasks)
+                    original.RouteTasks.Add(routeTask);
+            
+            }
+            _coreEntitiesContainer.SaveChanges();
         }
 
         #endregion
@@ -55,8 +71,10 @@ namespace FoundOPS.API.Controllers
         {
             var status = TaskStatus.ConvertFromModel(taskStatus);
 
-            _coreEntitiesContainer.DetachExistingAndAttach(status);  
-            _coreEntitiesContainer.TaskStatus.DeleteObject(status); 
+            _coreEntitiesContainer.DetachExistingAndAttach(status);
+            _coreEntitiesContainer.TaskStatus.DeleteObject(status);
+
+            _coreEntitiesContainer.SaveChanges();
         }
 
         #endregion
@@ -70,9 +88,9 @@ namespace FoundOPS.API.Controllers
             if (currentBusinessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            return currentBusinessAccount.TaskStatuses.Select(TaskStatus.ConvertModel).AsQueryable(); 
-        }  
-         
+            return currentBusinessAccount.TaskStatuses.Select(TaskStatus.ConvertModel).AsQueryable();
+        }
+
         #endregion
     }
 }
