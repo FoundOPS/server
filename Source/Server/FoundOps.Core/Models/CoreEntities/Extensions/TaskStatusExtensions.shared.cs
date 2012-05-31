@@ -70,7 +70,7 @@ namespace FoundOps.Core.Models.CoreEntities
     /// </summary>
     public enum StatusDetail
     {
-        CreatedDefault = 1,
+        CreatedDefault = 1, //If you change this, also change it in the SQL function that fills the TaskBoard
         RoutedDefault = 2,
         CompletedDefault = 3
     }

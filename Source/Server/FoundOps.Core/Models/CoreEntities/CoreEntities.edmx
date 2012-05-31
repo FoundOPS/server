@@ -370,6 +370,18 @@
                Mode="In"
                Type="uniqueidentifier"/>
       </Function>
+      <Function Name="GetServicesToBeCreatedForDate" IsComposable="false">
+        <CommandText>
+          SELECT Id, ClientId, ServiceProviderId, RecurringServiceId, ServiceDate
+          FROM dbo.GetServicesToBeCreatedForDate (@ServiceProviderId , @serviceDate)
+        </CommandText>
+        <Parameter Name="ServiceProviderId"
+               Mode="In"
+               Type="uniqueidentifier"/>
+        <Parameter Name="serviceDate"
+               Mode="In"
+               Type="datetime"/>
+      </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />

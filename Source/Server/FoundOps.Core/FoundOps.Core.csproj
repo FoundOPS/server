@@ -241,6 +241,7 @@
     <Content Include="Models\CoreEntities\SQL\GetNextOccurence.sql" />
     <Content Include="Models\CoreEntities\SQL\GetPreviousOccurance.sql" />
     <Content Include="Models\CoreEntities\SQL\GetResourcesWithLatestPoint.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetServicesToBeCreatedForDate.sql" />
     <Content Include="Models\CoreEntities\SQL\GetUnroutedServiceForDate.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\TestFunctionForRecurringServices.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\SchedulerTests.sql" />
