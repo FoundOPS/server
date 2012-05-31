@@ -100,7 +100,7 @@ BEGIN
 	DELETE FROM @TempGenServiceTableWithNextOccurrence
 	WHERE NextDate IS NULL OR NextDate <> @serviceDate
 
-	--This table will store all Existing Services after to the OnOrAfterDate
+	--This table will store all Existing Services after the OnOrAfterDate
 	DECLARE @TempNextExistingServiceTable TABLE
 	(ServiceId uniqueidentifier,
 	RecurringServiceId uniqueidentifier,

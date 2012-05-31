@@ -32,7 +32,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 if (destination.RouteTasks.Count == 0)
                     VM.Routes.DeleteRouteDestination(destination);
 
-                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(selectedRouteTask.ParentRouteTaskHolder);
+                ((ObservableCollection<RouteTask>)VM.TaskBoard.CollectionView.SourceCollection).Add(selectedRouteTask);
 
                 if (lastRouteTask != null)
                     VM.Routes.SelectedRouteTask = lastRouteTask.RouteTasks.FirstOrDefault();

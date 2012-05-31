@@ -1,5 +1,8 @@
+using System;
+using System.Reactive.Linq;
 using FoundOps.Common.Silverlight.Interfaces;
 using FoundOps.Common.Silverlight.UI.Interfaces;
+using FoundOps.Common.Tools;
 
 //Partial class must be part of same namespace
 // ReSharper disable CheckNamespace
@@ -45,66 +48,72 @@ namespace FoundOps.Core.Models.CoreEntities
                 if (Location != null)
                     return Location.Name;
 
-                return ParentRouteTaskHolder != null ? ParentRouteTaskHolder.LocationName : "";
+                return Location != null ? Location.Name : "";
             }
         }
 
-        private TaskHolder _parentRouteTaskHolder;
+        private ServiceHolder _serviceHolder;
         /// <summary>
-        /// This is the link to the parent RouteTaskHolder.
-        /// It will have a value if this was recently generated.
+        /// The ServiceHolder.
         /// </summary>
-        public TaskHolder ParentRouteTaskHolder
-        {
-            get { return _parentRouteTaskHolder; }
-            set
+        public ServiceHolder ServiceHolder 
+        { 
+            get { return _serviceHolder; } 
+            set 
             {
-                _parentRouteTaskHolder = value;
-                this.RaisePropertyChanged("TaskHolder");
+                _serviceHolder = value;
+                this.RaisePropertyChanged("ServiceHolder");
             }
         }
 
         #endregion
 
-        #region Logic
+        #region Initialization
+
+        partial void OnCreation()
+        {
+            InitializeHelper();
+        }
+
+        protected override void OnLoaded(bool isInitialLoad)
+        {
+            if (isInitialLoad)
+                InitializeHelper();
+
+            base.OnLoaded(isInitialLoad);
+        }
 
         /// <summary>
-        /// Sets up the ParentRouteTask holder if there is not one yet.
-        /// This is used when loading existing RouteTasks.
+        /// Sets up the ServiceHolder on this RouteTask 
+        /// Also, sets up tracking changes on that ServiceHolder and moving those changes to the RouteTask
         /// </summary>
-        public void SetupTaskHolder()
+        private void InitializeHelper()
         {
-            if (this.ParentRouteTaskHolder != null)
-                return;
+            //Initialize the ServiceHolder
+            ServiceHolder = new ServiceHolder { ExistingServiceId = ServiceId, OccurDate = Date, RecurringServiceId = RecurringServiceId };
 
-            var taskHolder = new TaskHolder
+            //Follow property changes and update the ServiceHolder
+            this.FromAnyPropertyChanged().Where(e => e.PropertyName == "OccurDate" || e.PropertyName == "RecurringServiceId" || e.PropertyName == "ServiceId")
+            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
             {
-                ClientId = ClientId,
-                ChildRouteTask = this,
-                OccurDate = Date,
-                LocationName = LocationName,
-                ServiceName = Name,
-                ServiceId = ServiceId,
-                RecurringServiceId = RecurringServiceId
-            };
+                ServiceHolder.OccurDate = this.Date;
+                ServiceHolder.RecurringServiceId = this.RecurringServiceId;
+                ServiceHolder.ExistingServiceId = this.ServiceId;
+            });
 
-            if (Client != null)
-                taskHolder.ClientName = Client.Name;
-
-            if (Location != null)
+            //Follow any ServiceHolder property changes and update this RouteTask
+            this.ServiceHolder.FromAnyPropertyChanged().Where(e => e.PropertyName == "OccurDate" || e.PropertyName == "RecurringServiceId" || e.PropertyName == "ExistingServiceId")
+            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher().Subscribe(_ =>
             {
-                if (Location.Region != null)
-                    taskHolder.RegionName = Location.Region.Name;
-
-                taskHolder.AddressLine = Location.AddressLineOne;
-                taskHolder.Latitude = Location.Latitude;
-                taskHolder.Longitude = Location.Longitude;
-
-                taskHolder.LocationId = Location.Id;
-            }
-
-            ParentRouteTaskHolder = taskHolder;
+                this.Date = ServiceHolder.OccurDate;
+                this.RecurringServiceId = ServiceHolder.RecurringServiceId;
+                this.ServiceId = ServiceHolder.ExistingServiceId;
+            });
         }
+
+        #endregion
+
+        #region Logic
 
         ///<summary>
         /// Remove this RouteTask from it's route destination.

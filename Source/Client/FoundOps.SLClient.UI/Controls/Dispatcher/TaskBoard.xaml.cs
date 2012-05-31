@@ -28,34 +28,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             get { return this.TaskBoardRadGridView; }
         }
 
-        #region Locals
-
-        /// <summary>
-        /// Gets the clients VM. Must be public so the xaml can bind to it.
-        /// </summary>
-        public ClientsVM ClientsVM
-        {
-            get { return VM.Clients; }
-        }
-
-        /// <summary>
-        /// Gets the locations VM. Must be public so the xaml can bind to it.
-        /// </summary>
-        public LocationsVM LocationsVM
-        {
-            get { return VM.Locations; }
-        }
-
-        /// <summary>
-        /// Gets the routes VM. Must be public so the xaml can bind to it.
-        /// </summary>
-        public RoutesVM RoutesVM
-        {
-            get { return VM.Routes; }
-        }
-
-        #endregion
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskBoard"/> class.
         /// </summary>
@@ -63,66 +35,18 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         {
             InitializeComponent();
 
-            this.DependentWhenVisible(RoutesVM);
-            this.DependentWhenVisible(ClientsVM);
-            this.DependentWhenVisible(LocationsVM);
+            this.DependentWhenVisible(VM.Routes);
+            this.DependentWhenVisible(VM.Clients);
+            this.DependentWhenVisible(VM.Locations);
 
             if (DesignerProperties.IsInDesignTool)
                 return;
 
             //Whenever the ClientsVM or LocationsVM stops loading rebind the TaskBoardRadGridView
-            ClientsVM.IsLoadingObservable.Where(isLoading => !isLoading)
-                .Merge(LocationsVM.IsLoadingObservable.Where(isLoading => !isLoading))
+            VM.Clients.IsLoadingObservable.Where(isLoading => !isLoading)
+                .Merge(VM.Locations.IsLoadingObservable.Where(isLoading => !isLoading))
                 .Subscribe(isLoading => this.TaskBoardRadGridView.Rebind());
-
-            //RadDragAndDropManager.AddDragQueryHandler(TaskBoardRadGridView, OnDragQuery);
-            //RadDragAndDropManager.AddDropQueryHandler(TaskBoardRadGridView, OnDropQuery);
-            //RadDragAndDropManager.AddDragInfoHandler(TaskBoardRadGridView, OnDragInfo);
-            //RadDragAndDropManager.AddDropInfoHandler(TaskBoardRadGridView, OnDropInfo);
         }
-
-        //private void OnDropInfo(object sender, DragDropEventArgs e)
-        //{
-        //    e.Handled = true;
-        //}
-
-        //private void OnDragInfo(object sender, DragDropEventArgs e)
-        //{
-        //    var draggedItems = e.Options.Source.DataContext as IEnumerable<object>;
-
-        //    if (e.Options.Status == DragStatus.DragInProgress)
-        //    {
-        //        //////Set up a drag cue:
-        //        //var cue = e.Options.DragCue as TreeViewDragCue;
-        //        //cue.DragTooltipContent = null;
-        //        //cue.DragActionContent = String.Format("Test");
-        //        //cue.IsDropPossible = false;
-        //        ////Here we need to choose a template for the items:
-        //        //e.Options.DragCue = cue;
-        //    }
-        //    else if (e.Options.Status == DragStatus.DragComplete)
-        //    {
-        //        foreach (var draggedItem in draggedItems)
-        //        {
-        //            var routesVm = e.Options.Destination.DataContext as RoutesVM;
-
-        //            if (routesVm != null) routesVm.UnroutedTasks.Remove(draggedItem as RouteTask);
-        //        }
-        //    }
-        //}
-
-        //private void OnDropQuery(object sender, DragDropQueryEventArgs e)
-        //{
-        //    e.QueryResult = false;
-        //    e.Handled = true;
-        //}
-
-        //private void OnDragQuery(object sender, DragDropQueryEventArgs e)
-        //{
-        //    e.QueryResult = true;
-        //    e.Handled = true;
-        //}
-
         //Logic
 
         private void TaskBoardRadGridViewBeginningEdit(object sender, Telerik.Windows.Controls.GridViewBeginningEditRoutedEventArgs e)
@@ -138,7 +62,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         //Manually handle TaskBoardRadGridViewSelectionChanged for RouteTask to choose the last task for details
         private void TaskBoardRadGridViewSelectionChanged(object sender, SelectionChangeEventArgs e)
         {
-            VM.TaskBoard.SelectedTasks = TaskBoardRadGridView.SelectedItems.Cast<TaskHolder>();
+            VM.TaskBoard.SelectedRouteTasks = TaskBoardRadGridView.SelectedItems.Cast<RouteTask>();
         }
     }
 }

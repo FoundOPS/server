@@ -338,11 +338,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                         {
                             var routeTask = manifestFieldsControl.DataContext as RouteTask;
 
-                            if (routeTask == null || routeTask.ParentRouteTaskHolder.ServiceHolder == null
-                                || routeTask.ParentRouteTaskHolder.ServiceHolder.Service == null)
+                            if (routeTask == null || routeTask.ServiceHolder == null
+                                || routeTask.ServiceHolder.Service == null)
                                 continue;
 
-                            var serviceTemplate = routeTask.ParentRouteTaskHolder.ServiceHolder.Service.ServiceTemplate;
+                            var serviceTemplate = routeTask.ServiceHolder.Service.ServiceTemplate;
 
                             manifestFieldsControl.ServiceTemplate = serviceTemplate;
                             manifestFieldsControl.UpdateLayout();

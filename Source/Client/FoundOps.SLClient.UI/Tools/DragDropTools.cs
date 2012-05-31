@@ -176,17 +176,17 @@ namespace FoundOps.SLClient.UI.Tools
             if (payloadCheck is RouteDestination)
             {
                 var routetask = ((RouteDestination)payloadCheck).RouteTasks.FirstOrDefault();
-                if (routetask == null || routetask.ParentRouteTaskHolder.ServiceName == null)
+                if (routetask == null || routetask.Name == null)
                     return null;
 
-                return routetask.ParentRouteTaskHolder.ServiceName;
+                return routetask.Name;
             }
             if (payloadCheck is RouteTask)
             {
-                if (((RouteTask)payloadCheck).ParentRouteTaskHolder.ServiceName == null)
+                if (((RouteTask)payloadCheck).Name == null)
                     return null;
 
-                return ((RouteTask)payloadCheck).ParentRouteTaskHolder.ServiceName;
+                return ((RouteTask)payloadCheck).Name;
             }
 
             return null;
@@ -197,15 +197,17 @@ namespace FoundOps.SLClient.UI.Tools
         /// </summary>
         /// <param name="payloadCollection">The payload collection.</param>
         /// <returns></returns>
-        public static object CheckItemsForService(IEnumerable<object> payloadCollection)
+        public static RouteTask CheckItemsForService(IEnumerable<RouteTask> payloadCollection)
         {
-            var payloadCheck = payloadCollection.FirstOrDefault();
+            var routeTaskCollection = payloadCollection.ToArray();
+
+            var payloadCheck = routeTaskCollection.FirstOrDefault();
             
             int count = 0;
 
-            foreach (var serviceObject in payloadCollection.OfType<RouteTask>().TakeWhile(serviceObject => (serviceObject).Service == null))
+            foreach (var serviceObject in routeTaskCollection.TakeWhile(serviceObject => (serviceObject).Service == null))
             {
-                payloadCheck = (payloadCollection.ElementAt(count));
+                payloadCheck = (routeTaskCollection.ElementAt(count));
                 count++;
             }
             return payloadCheck;
@@ -299,7 +301,7 @@ namespace FoundOps.SLClient.UI.Tools
         public static void CreateNewRouteTaskAndAddToTaskBoard(RouteTask routeTask)  
         {
 
-            //Create a new RouteTask to be saved as the ChildRouteTask of the TaskHolder
+            //Create a new RouteTask to be saved
             var newRouteTask = new RouteTask
             {
                 Id = Guid.NewGuid(),
@@ -311,7 +313,6 @@ namespace FoundOps.SLClient.UI.Tools
                 Name = routeTask.Name,
                 OwnerBusinessAccount = routeTask.OwnerBusinessAccount,
                 ParentRecurringService = routeTask.ParentRecurringService,
-                ParentRouteTaskHolder = routeTask.ParentRouteTaskHolder,
                 RecurringServiceId = routeTask.RecurringServiceId,
                 RouteDestination = null,
                 RouteDestinationId = null,
@@ -320,16 +321,11 @@ namespace FoundOps.SLClient.UI.Tools
                 //Status = Status.Unrouted
             };
 
-            var taskHolder = routeTask.ParentRouteTaskHolder;
-
-            taskHolder.ChildRouteTask = null;
-            taskHolder.ChildRouteTask = newRouteTask;
-
             Manager.Data.DetachEntities(new[] { newRouteTask });
 
             VM.Routes.DeleteRouteTask(routeTask);
             
-            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);
+            ((ObservableCollection<RouteTask>)VM.TaskBoard.CollectionView.SourceCollection).Add(routeTask);
         }
 
         /// <summary>

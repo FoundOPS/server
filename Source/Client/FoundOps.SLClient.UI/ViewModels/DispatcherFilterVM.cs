@@ -129,15 +129,15 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Public
 
         /// <summary>
-        /// Returns whether the taskHolder is included in the current filter.
+        /// Returns whether the routeTask is included in the current filter.
         /// </summary>
-        /// <param name="taskHolder">The taskHolder to check.</param>
+        /// <param name="routeTask">The routeTask to check.</param>
         /// <returns></returns>
-        public bool TaskHolderIncludedInFilter(TaskHolder taskHolder)
+        public bool RouteTaskIncludedInFilter(RouteTask routeTask)
         {
-            var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == taskHolder.ServiceName);
-            var meetsRegionsFilter = RegionOptions.Any(option => (option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName)) ||
-                taskHolder.RegionName == null || !RegionOptions.Any();
+            var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == routeTask.Name);
+            var meetsRegionsFilter = RegionOptions.Any(option => (option.IsSelected && ((Region)option.Entity).Name == routeTask.Location.Region.Name)) ||
+                routeTask.Location.Region.Name == null || !RegionOptions.Any();
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
         }

@@ -128,12 +128,12 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 //{
                 //    var destinations = draggedItems.OfType<RouteDestination>().ToArray();
                 //    var routeTasks = draggedItems.OfType<RouteTask>().ToArray();
-                //    var taskHolders = routeTasks.Select(rt => rt.ParentRouteTaskHolder);
+                //    var tHs = routeTasks.Select(rt => rt.ParentRouteTH);
 
-                //    var allTaskHoldersToAdd = taskHolders.Union(destinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.ParentRouteTaskHolder)));
+                //    var allTHsToAdd = tHs.Union(destinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.ParentRouteTH)));
 
-                //    //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
-                //    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).AddRange(allTaskHoldersToAdd);
+                //    //Add the TH back to VM.TaskBoard.LoadedTHs 
+                //    ((ObservableCollection<TH>)VM.TaskBoard.CollectionView.SourceCollection).AddRange(allTHsToAdd);
 
                 //    //Delete the Route, RouteDestinations, and RouteTasks
                 //    foreach (var routeDestination in destinations)
@@ -265,7 +265,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                 //FirstOrDefault might be null but the second might have a service 
                 if (payloadCheck is RouteTask)
-                    payloadCheck = DragDropTools.CheckItemsForService(payloadCollection);
+                    payloadCheck = DragDropTools.CheckItemsForService(payloadCollection.Cast<RouteTask>());
             }
 
             #endregion
