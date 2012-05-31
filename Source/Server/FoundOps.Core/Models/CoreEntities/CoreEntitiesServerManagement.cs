@@ -202,7 +202,8 @@ namespace FoundOps.Core.Models.CoreEntities
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            CollectedTimeStamp = timeStamp
+                                            CollectedTimeStamp = timeStamp,
+                                            Accuracy = 1
                                         };
 
                                         latitude = latitude + .001;
@@ -241,7 +242,8 @@ namespace FoundOps.Core.Models.CoreEntities
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            CollectedTimeStamp = timeStamp
+                                            CollectedTimeStamp = timeStamp,
+                                            Accuracy = 1
                                         };
 
                                         latitude = latitude - .001;
@@ -281,7 +283,8 @@ namespace FoundOps.Core.Models.CoreEntities
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            CollectedTimeStamp = timeStamp
+                                            CollectedTimeStamp = timeStamp,
+                                            Accuracy = 2
                                         };
 
                                         latitude = latitude + .001;
@@ -320,7 +323,8 @@ namespace FoundOps.Core.Models.CoreEntities
                                             RouteId = route.Id,
                                             Latitude = latitude,
                                             Longitude = longitude,
-                                            CollectedTimeStamp = timeStamp
+                                            CollectedTimeStamp = timeStamp,
+                                            Accuracy = 3
                                         };
 
                                         latitude = latitude - .001;

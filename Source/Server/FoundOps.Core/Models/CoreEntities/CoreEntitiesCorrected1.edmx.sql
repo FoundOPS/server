@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 05/01/2012 18:26:59
+-- Date Created: 05/23/2012 13:39:13
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -29,6 +29,9 @@ IF OBJECT_ID(N'[dbo].[FK_BusinessAccountClient]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_BusinessAccountInvoice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_BusinessAccountInvoice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccountLocation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_BusinessAccountLocation];
 GO
 IF OBJECT_ID(N'[dbo].[FK_BusinessAccountRegion]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Regions] DROP CONSTRAINT [FK_BusinessAccountRegion];
@@ -519,7 +522,8 @@ CREATE TABLE [dbo].[Vehicles] (
     [LastSpeed] float  NULL,
     [LastSource] nvarchar(max)  NULL,
     [OwnerPartyId] uniqueidentifier  NOT NULL,
-    [LastPushToAzureTimeStamp] datetime  NULL
+    [LastPushToAzureTimeStamp] datetime  NULL,
+    [LastAccuracy] int  NULL
 );
 GO
 
@@ -637,7 +641,8 @@ CREATE TABLE [dbo].[Employees] (
     [LastTimeStamp] datetime  NULL,
     [LastSpeed] float  NULL,
     [LastSource] nvarchar(max)  NULL,
-    [LastPushToAzureTimeStamp] datetime  NULL
+    [LastPushToAzureTimeStamp] datetime  NULL,
+    [LastAccuracy] int  NULL
 );
 GO
 
@@ -2009,7 +2014,7 @@ ON [dbo].[RouteTasks]
     ([RecurringServiceId]);
 GO
 
--- Creating foreign key on [[BusinessAccountIdIfDepot]] in table 'Locations'
+-- Creating foreign key on [BusinessAccountIdIfDepot] in table 'Locations'
 ALTER TABLE [dbo].[Locations]
 ADD CONSTRAINT [FK_BusinessAccountLocation]
     FOREIGN KEY ([BusinessAccountIdIfDepot])
@@ -2029,7 +2034,7 @@ ADD CONSTRAINT [FK_Business_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'
@@ -2038,7 +2043,7 @@ ADD CONSTRAINT [FK_BusinessAccount_inherits_Business]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Business]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Person'
@@ -2047,7 +2052,7 @@ ADD CONSTRAINT [FK_Person_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_UserAccount'
@@ -2056,7 +2061,7 @@ ADD CONSTRAINT [FK_UserAccount_inherits_Person]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Person]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_OptionsField'
@@ -2067,7 +2072,6 @@ ADD CONSTRAINT [FK_OptionsField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
-GO
 
 -- Creating foreign key on [Id] in table 'Fields_LocationField'
 ALTER TABLE [dbo].[Fields_LocationField]
@@ -2077,7 +2081,6 @@ ADD CONSTRAINT [FK_LocationField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
-GO
 
 -- Creating foreign key on [Id] in table 'Files_PartyImage'
 ALTER TABLE [dbo].[Files_PartyImage]
@@ -2085,7 +2088,7 @@ ADD CONSTRAINT [FK_PartyImage_inherits_File]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Files]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_TextBoxField'
@@ -2096,7 +2099,6 @@ ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
-GO
 
 -- Creating foreign key on [Id] in table 'Fields_NumericField'
 ALTER TABLE [dbo].[Fields_NumericField]
@@ -2105,7 +2107,6 @@ ADD CONSTRAINT [FK_NumericField_inherits_Field]
     REFERENCES [dbo].[Fields]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_DateTimeField'
@@ -2116,7 +2117,6 @@ ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
-GO
 
 -- Creating foreign key on [Id] in table 'Options_LocationOption'
 ALTER TABLE [dbo].[Options_LocationOption]
@@ -2125,7 +2125,6 @@ ADD CONSTRAINT [FK_LocationOption_inherits_Option]
     REFERENCES [dbo].[Options]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
 GO
 
 -- --------------------------------------------------
@@ -2264,6 +2263,9 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		WHERE OwnerBusinessAccountId = @providerId
 	)
 
+	DELETE FROM Locations
+	WHERE BusinessAccountIdIfDepot = @providerId
+
 	DELETE FROM Routes
 	WHERE OwnerBusinessAccountId = @providerId
 
@@ -2317,7 +2319,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	--Finds all Locations that are associated with the BusinessAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
-	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId OR BusinessAccountIdIfDepot = @providerId
+	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
 
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
@@ -3436,13 +3438,14 @@ RETURNS @EmployeeVehicleTableToReturn TABLE
 		EmployeeId uniqueidentifier,
 		VehicleId uniqueidentifier,
 		EntityName nvarchar(max),
-		CompassHeading int,
+		Heading int,
 		Latitude decimal(18,8),
 		Longitude decimal(18,8),
-		LastTimeStamp datetime,
+		CollectedTimeStamp datetime,
 		Speed decimal(18,8),
-		TrackSource nvarchar(max),
-		RouteId uniqueidentifier
+		Source nvarchar(max),
+		RouteId uniqueidentifier,
+		Accuracy int
 	) 
 AS
 BEGIN
@@ -3493,12 +3496,12 @@ BEGIN
 --Combine @EmployeesForRoutesForDate and @VehiclesForRoutesForDate into the final output table
 --Most of the data for the output table needs to be pulled from either the Employees or Vehicles tables, this requires a simple combination of INSERT, SELECT and WHERE
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	INSERT INTO @EmployeeVehicleTableToReturn (VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId)
-	SELECT t1.Id, t1.VehicleId, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId FROM Vehicles t1, @VehiclesForRoutesForDate t2 
+	INSERT INTO @EmployeeVehicleTableToReturn (VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy)
+	SELECT t1.Id, t1.VehicleId, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId, t1.LastAccuracy FROM Vehicles t1, @VehiclesForRoutesForDate t2 
 	WHERE t1.Id = t2.VehicleId
 
-	INSERT INTO @EmployeeVehicleTableToReturn (EmployeeId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId)
-	SELECT t1.Id, t2.EmployeeName, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId FROM Employees t1, @EmployeesForRoutesForDate t2 
+	INSERT INTO @EmployeeVehicleTableToReturn (EmployeeId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy)
+	SELECT t1.Id, t2.EmployeeName, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId, t1.LastAccuracy FROM Employees t1, @EmployeesForRoutesForDate t2 
 	WHERE t1.Id = t2.EmployeeId
 
 RETURN 

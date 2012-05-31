@@ -2,33 +2,40 @@
 
 namespace FoundOPS.API.Models
 {
-    public class ResourceWithLastPoint
+    public class ResourceWithLastPoint : TrackPoint
     {
-        public int? CompassHeading { get; set; }
+        /// <summary>
+        /// The Id of the Employee being tracked
+        /// Null if the object being tracked is a Vehicle
+        /// </summary>
         public Guid? EmployeeId { get; set; }
+        
+        /// <summary>
+        /// The name of the object being tracked (ex: Bob Block or License Plate of Vehicle)
+        /// </summary>
         public string EntityName { get; set; }
-        public DateTime LastTimeStamp { get; set; }
-        public decimal? Latitude { get; set; }
-        public decimal? Longitude { get; set; }
-        public Guid? RouteId { get; set; }
-        public decimal? Speed { get; set; }
-        public string TrackSource { get; set; }
+        
+        /// <summary>
+        /// The Id of the Vehicle being tracked
+        /// Null if the object being tracked is a Employee
+        /// </summary>
         public Guid? VehicleId { get; set; }
 
         public static ResourceWithLastPoint ConvertToModel(FoundOps.Core.Models.CoreEntities.ResourceWithLastPoint modelResource)
         {
             var resource = new ResourceWithLastPoint
             {
-                CompassHeading = modelResource.CompassHeading,
+                Heading = modelResource.Heading,
                 EmployeeId = modelResource.EmployeeId,
                 EntityName = modelResource.EntityName,
-                LastTimeStamp = modelResource.LastTimeStamp,
+                CollectedTimeStamp = modelResource.CollectedTimeStamp,
                 Latitude = modelResource.Latitude,
                 Longitude = modelResource.Longitude,
                 RouteId = modelResource.RouteId,
                 Speed = modelResource.Speed,
-                TrackSource = modelResource.TrackSource,
-                VehicleId = modelResource.VehicleId
+                Source = modelResource.TrackSource,
+                VehicleId = modelResource.VehicleId,
+                Accuracy = modelResource.Accuracy
             };
 
             return resource;

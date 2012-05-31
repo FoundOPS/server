@@ -266,7 +266,6 @@
     <None Include="App.Config" />
     <None Include="Models\CoreEntities\CoreEntitiesCorrected.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CoreEntitiesCorrected1.edmx.sql</LastGenOutput>
     </None>
     <None Include="Models\CoreEntities\M2M4RiaEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -26,22 +26,22 @@ namespace FoundOPS.API.Models
         /// <summary>
         /// The compass heading of this TrackPoint
         /// </summary>
-        public Int32? CompassDirection { get; set; }
+        public Int32? Heading { get; set; }
 
         /// <summary>
         /// The latitude of this TrackPoint
         /// </summary>
-        public Double Latitude { get; set; }
+        public decimal? Latitude { get; set; }
 
         /// <summary>
         /// The longitude of this TrackPoint
         /// </summary>
-        public Double Longitude { get; set; }
+        public decimal? Longitude { get; set; }
 
         /// <summary>
         /// The speed of this TrackPoint
         /// </summary>
-        public Double? Speed { get; set; }
+        public decimal? Speed { get; set; }
 
         /// <summary>
         /// The source of this TrackPoint (iPhone, Android, WindowsPhone, etc.)
@@ -53,6 +53,12 @@ namespace FoundOPS.API.Models
         /// </summary>
         public Guid? RouteId { get; set; }
 
+        /// <summary>
+        /// The accuracy of the GPS coordinates from PhoneGap
+        /// In Meters
+        /// </summary>
+        public int? Accuracy { get; set; }
+
         public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint) 
         {
             var trackPointId = modelTrackPoint.EmployeeId ?? modelTrackPoint.VehicleId;
@@ -62,14 +68,15 @@ namespace FoundOPS.API.Models
 
             var trackPoint = new TrackPoint
                                  {
-                                     CompassDirection = null,
+                                     Heading = null,
                                      Id = (Guid) trackPointId,
                                      CollectedTimeStamp = modelTrackPoint.CollectedTimeStamp,
-                                     Latitude = modelTrackPoint.Latitude,
-                                     Longitude = modelTrackPoint.Longitude,
+                                     Latitude = (decimal?) modelTrackPoint.Latitude, 
+                                     Longitude = (decimal?) modelTrackPoint.Longitude,
                                      Speed = null,
                                      Source = null,
-                                     RouteId = modelTrackPoint.RouteId
+                                     RouteId = modelTrackPoint.RouteId,
+                                     Accuracy = modelTrackPoint.Accuracy
                                  };
 
             return trackPoint;
