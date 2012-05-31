@@ -12,7 +12,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                                        new TaskStatus
                                                            {
                                                                Id = Guid.NewGuid(),
-                                                               Name = "UnRouted",
+                                                               Name = "Unrouted",
                                                                Color = DesignColors[0],
                                                                RouteRequired = false,
                                                                DefaultTypeInt = ((int)StatusDetail.CreatedDefault)
