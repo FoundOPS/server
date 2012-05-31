@@ -3438,12 +3438,12 @@ RETURNS @EmployeeVehicleTableToReturn TABLE
 		EmployeeId uniqueidentifier,
 		VehicleId uniqueidentifier,
 		EntityName nvarchar(max),
-		CompassHeading int,
+		Heading int,
 		Latitude decimal(18,8),
 		Longitude decimal(18,8),
-		LastTimeStamp datetime,
+		CollectedTimeStamp datetime,
 		Speed decimal(18,8),
-		TrackSource nvarchar(max),
+		Source nvarchar(max),
 		RouteId uniqueidentifier,
 		Accuracy int
 	) 
@@ -3496,11 +3496,11 @@ BEGIN
 --Combine @EmployeesForRoutesForDate and @VehiclesForRoutesForDate into the final output table
 --Most of the data for the output table needs to be pulled from either the Employees or Vehicles tables, this requires a simple combination of INSERT, SELECT and WHERE
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	INSERT INTO @EmployeeVehicleTableToReturn (VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId, Accuracy)
+	INSERT INTO @EmployeeVehicleTableToReturn (VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy)
 	SELECT t1.Id, t1.VehicleId, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId, t1.LastAccuracy FROM Vehicles t1, @VehiclesForRoutesForDate t2 
 	WHERE t1.Id = t2.VehicleId
 
-	INSERT INTO @EmployeeVehicleTableToReturn (EmployeeId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId, Accuracy)
+	INSERT INTO @EmployeeVehicleTableToReturn (EmployeeId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy)
 	SELECT t1.Id, t2.EmployeeName, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId, t1.LastAccuracy FROM Employees t1, @EmployeesForRoutesForDate t2 
 	WHERE t1.Id = t2.EmployeeId
 

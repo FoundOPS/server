@@ -410,7 +410,7 @@
       </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId, Accuracy
+          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, ource, RouteId, Accuracy
           FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
         </CommandText>
         <Parameter Name="serviceProviderId"
@@ -3534,10 +3534,10 @@
           <Property Type="Guid" Name="EmployeeId" Nullable="true" />
           <Property Type="Guid" Name="VehicleId" Nullable="true" />
           <Property Type="String" Name="EntityName" Nullable="true" />
-          <Property Type="Int32" Name="CompassHeading" Nullable="true" />
+          <Property Type="Int32" Name="Heading" Nullable="true" />
           <Property Type="Decimal" Name="Latitude" Nullable="true" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" />
-          <Property Type="DateTime" Name="LastTimeStamp" Nullable="false" />
+          <Property Type="DateTime" Name="CollectedTimeStamp" Nullable="false" />
           <Property Type="Decimal" Name="Speed" Nullable="true" />
           <Property Type="String" Name="TrackSource" Nullable="true" />
           <Property Type="Guid" Name="RouteId" Nullable="true" />
@@ -4127,10 +4127,10 @@
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
                 <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="CompassHeading" ColumnName="CompassHeading" />
+                <ScalarProperty Name="Heading" ColumnName="Heading" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
+                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
                 <ScalarProperty Name="Speed" ColumnName="Speed" />
                 <ScalarProperty Name="TrackSource" ColumnName="TrackSource" />
                 <ScalarProperty Name="RouteId" ColumnName="RouteId" />

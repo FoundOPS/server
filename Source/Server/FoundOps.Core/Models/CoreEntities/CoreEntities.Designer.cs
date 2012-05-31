@@ -12529,11 +12529,11 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Create a new ResourceWithLastPoint object.
         /// </summary>
-        /// <param name="lastTimeStamp">Initial value of the LastTimeStamp property.</param>
-        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.DateTime lastTimeStamp)
+        /// <param name="collectedTimeStamp">Initial value of the CollectedTimeStamp property.</param>
+        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.DateTime collectedTimeStamp)
         {
             ResourceWithLastPoint resourceWithLastPoint = new ResourceWithLastPoint();
-            resourceWithLastPoint.LastTimeStamp = lastTimeStamp;
+            resourceWithLastPoint.CollectedTimeStamp = collectedTimeStamp;
             return resourceWithLastPoint;
         }
 
@@ -12618,24 +12618,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> CompassHeading
+        public Nullable<global::System.Int32> Heading
         {
             get
             {
-                return _CompassHeading;
+                return _Heading;
             }
             set
             {
-                OnCompassHeadingChanging(value);
-                ReportPropertyChanging("CompassHeading");
-                _CompassHeading = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("CompassHeading");
-                OnCompassHeadingChanged();
+                OnHeadingChanging(value);
+                ReportPropertyChanging("Heading");
+                _Heading = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Heading");
+                OnHeadingChanged();
             }
         }
-        private Nullable<global::System.Int32> _CompassHeading;
-        partial void OnCompassHeadingChanging(Nullable<global::System.Int32> value);
-        partial void OnCompassHeadingChanged();
+        private Nullable<global::System.Int32> _Heading;
+        partial void OnHeadingChanging(Nullable<global::System.Int32> value);
+        partial void OnHeadingChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12690,24 +12690,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.DateTime LastTimeStamp
+        public global::System.DateTime CollectedTimeStamp
         {
             get
             {
-                return _LastTimeStamp;
+                return _CollectedTimeStamp;
             }
             set
             {
-                OnLastTimeStampChanging(value);
-                ReportPropertyChanging("LastTimeStamp");
-                _LastTimeStamp = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LastTimeStamp");
-                OnLastTimeStampChanged();
+                OnCollectedTimeStampChanging(value);
+                ReportPropertyChanging("CollectedTimeStamp");
+                _CollectedTimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CollectedTimeStamp");
+                OnCollectedTimeStampChanged();
             }
         }
-        private global::System.DateTime _LastTimeStamp;
-        partial void OnLastTimeStampChanging(global::System.DateTime value);
-        partial void OnLastTimeStampChanged();
+        private global::System.DateTime _CollectedTimeStamp;
+        partial void OnCollectedTimeStampChanging(global::System.DateTime value);
+        partial void OnCollectedTimeStampChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
