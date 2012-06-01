@@ -33,7 +33,7 @@ namespace FoundOPS.API.Models
                 Longitude = modelResource.Longitude,
                 RouteId = modelResource.RouteId,
                 Speed = modelResource.Speed,
-                Source = modelResource.TrackSource,
+                Source = modelResource.Source,
                 VehicleId = modelResource.VehicleId,
                 Accuracy = modelResource.Accuracy
             };
