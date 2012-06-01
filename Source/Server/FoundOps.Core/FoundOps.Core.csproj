@@ -231,11 +231,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
     </Content>
-    <Content Include="Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
-    </Content>
     <Content Include="Models\CoreEntities\ManualEDMXChanges.txt" />
     <Content Include="Models\CoreEntities\SQL\CheckServiceTemplateForChildren.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteFieldAndChildrenBasedOnFieldId.sql" />

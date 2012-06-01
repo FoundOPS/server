@@ -911,6 +911,25 @@ namespace FoundOps.Core.Models.CoreEntities
         /// No Metadata Documentation available.
         /// </summary>
         /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBasicPartyBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteBasicPartyBasedOnId", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
         public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
         {
             ObjectParameter providerIdParameter;
@@ -943,6 +962,25 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction("DeleteClientBasedOnId", clientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="parentFieldId">No Metadata Documentation available.</param>
+        public int DeleteFieldAndChildrenBasedOnFieldId(Nullable<global::System.Guid> parentFieldId)
+        {
+            ObjectParameter parentFieldIdParameter;
+            if (parentFieldId.HasValue)
+            {
+                parentFieldIdParameter = new ObjectParameter("parentFieldId", parentFieldId);
+            }
+            else
+            {
+                parentFieldIdParameter = new ObjectParameter("parentFieldId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteFieldAndChildrenBasedOnFieldId", parentFieldIdParameter);
         }
     
         /// <summary>
@@ -1054,39 +1092,20 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteBasicPartyBasedOnId(Nullable<global::System.Guid> providerId)
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
         {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
             {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
             }
             else
             {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction("DeleteBasicPartyBasedOnId", providerIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="parentFieldId">No Metadata Documentation available.</param>
-        public int DeleteFieldAndChildrenBasedOnFieldId(Nullable<global::System.Guid> parentFieldId)
-        {
-            ObjectParameter parentFieldIdParameter;
-            if (parentFieldId.HasValue)
-            {
-                parentFieldIdParameter = new ObjectParameter("parentFieldId", parentFieldId);
-            }
-            else
-            {
-                parentFieldIdParameter = new ObjectParameter("parentFieldId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteFieldAndChildrenBasedOnFieldId", parentFieldIdParameter);
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
     
         /// <summary>
@@ -1202,25 +1221,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
-        {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
-            }
-            else
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
 
         #endregion
