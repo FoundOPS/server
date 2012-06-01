@@ -409,7 +409,7 @@
       </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId
+          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
           FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
         </CommandText>
         <Parameter Name="serviceProviderId" Type="uniqueidentifier" Mode="In" />
