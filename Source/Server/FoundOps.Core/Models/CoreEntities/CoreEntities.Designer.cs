@@ -1092,25 +1092,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
-        {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
-            }
-            else
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
@@ -1221,6 +1202,25 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
 
         #endregion
@@ -12738,24 +12738,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String TrackSource
+        public global::System.String Source
         {
             get
             {
-                return _TrackSource;
+                return _Source;
             }
             set
             {
-                OnTrackSourceChanging(value);
-                ReportPropertyChanging("TrackSource");
-                _TrackSource = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("TrackSource");
-                OnTrackSourceChanged();
+                OnSourceChanging(value);
+                ReportPropertyChanging("Source");
+                _Source = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Source");
+                OnSourceChanged();
             }
         }
-        private global::System.String _TrackSource;
-        partial void OnTrackSourceChanging(global::System.String value);
-        partial void OnTrackSourceChanged();
+        private global::System.String _Source;
+        partial void OnSourceChanging(global::System.String value);
+        partial void OnSourceChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
