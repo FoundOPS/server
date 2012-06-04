@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace FoundOps.Core.Models.Import
 {
@@ -75,8 +75,8 @@ namespace FoundOps.Core.Models.Import
                 {
                    new ImportColumnType("Service Type", DataCategory.ServiceType, Multiplicity.Single),
                    new ImportColumnType("Client Name", DataCategory.ClientName, Multiplicity.Single),
-                   new ImportColumnType("Location Name", DataCategory.LocationName, Multiplicity.Single),
-                   new ImportColumnType("Address Line One", DataCategory.LocationAddressLineOne, Multiplicity.Single),
+                   new ImportColumnType("Location Latitude", DataCategory.LocationLatitude, Multiplicity.Single),
+                   new ImportColumnType("Location Longitude", DataCategory.LocationLongitude, Multiplicity.Single),
                    new ImportColumnType("Repeat Frequency", DataCategory.RepeatFrequency, Multiplicity.Single),
                    new ImportColumnType("Repeat Start Date", DataCategory.RepeatStartDate, Multiplicity.Single),
                    new ImportColumnType("Repeat End Date", DataCategory.RepeatEnd, Multiplicity.Single),
