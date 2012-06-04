@@ -102,7 +102,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                     }
 
                     //Get the location associaton
-                    var locationAssociation = GetLocationAssociation(locationAssociations, clientAssociations, row);
+                    var locationAssociation = GetLocationAssociation(locationAssociations, row);
                     var newRecurringService = ImportRowTools.CreateRecurringService(businessAccount, row, clientServiceTemplate, clientAssocation, locationAssociation);
 
                     this.ObjectContext.RecurringServices.AddObject(newRecurringService);
@@ -136,24 +136,24 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
-        /// Gets the Location association from the loaded clientAssociations and a row's Categories/Associations (if there is one).
-        /// It uses the DataCategory.LocationName or DataCategory.ClientName and DataCategory.LocationAddressLineOne to find the locations.
+        /// Gets the Location association from the loaded locationAssociations.
+        /// It uses the DataCategory.LocationLatitude and DataCategory.LocationLongitude to find the location.
         /// </summary>
         /// <param name="locationAssociations">The loaded location associations.</param>
-        /// <param name="clientAssociations">The loaded client associations</param>
         /// <param name="row">The row's categories/values.</param>
-        private static Location GetLocationAssociation(Location[] locationAssociations, Tuple<Client, string>[] clientAssociations, Tuple<DataCategory, string>[] row)
+        private static Location GetLocationAssociation(Location[] locationAssociations, Tuple<DataCategory, string>[] row)
         {
             var locationName = row.GetCategoryValue(DataCategory.LocationName);
             Location associatedLocation = null;
 
-            var clientName = row.GetCategoryValue(DataCategory.ClientName);
-            var locationAddressLineOne = row.GetCategoryValue(DataCategory.LocationAddressLineOne);
-            if (clientName != null && locationAddressLineOne != null)
-            {
-                var clientId = clientAssociations.First(c => c.Item2 == clientName).Item1.Id;
-                associatedLocation = locationAssociations.FirstOrDefault(l => l.AddressLineOne == locationAddressLineOne && l.PartyId == clientId);
-            }
+            var locationLatitude = row.GetCategoryValue(DataCategory.LocationLatitude);
+            var locationLongitude = row.GetCategoryValue(DataCategory.LocationLongitude);
+            if (locationLatitude != null && locationLongitude != null)
+                associatedLocation =
+                    locationAssociations.FirstOrDefault(
+                        c =>
+                        c.Latitude == Convert.ToDecimal(locationLatitude) &&
+                        c.Longitude == Convert.ToDecimal(locationLongitude));
 
             if (associatedLocation == null && locationName != null)
                 associatedLocation = locationAssociations.FirstOrDefault(l => l.Name == locationName);
@@ -214,39 +214,37 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         /// <summary>
         /// Loads the Location associations from a set of rows.
-        /// It uses the DataCategory.LocationName or the DataCategory.LocationAddressLineOne to find the locations.
+        /// It uses the DataCategory.LocationLatitude or the DataCategory.LocationLongitude to find the locations.
         /// </summary>
         /// <param name="roleId">The role id.</param>
         /// <param name="rows">The rows of Tuple&lt;DataCategory,string&gt;[]"</param>
         /// <returns></returns>
         private Location[] LoadLocationAssociations(Guid roleId, Tuple<DataCategory, string>[][] rows)
         {
-            //Get the distinct location names from the rows' DataCategory.LocationName values
-            var locationNamesToLoad = rows.Select(cvs =>
+            //Get the distinct latitude/longitudes from the rows
+            var latsToLoad = rows.Select(cvs =>
             {
-                var locationNameCategoryValue = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationName);
-                return locationNameCategoryValue == null ? null : locationNameCategoryValue.Item2;
+                var latString = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationLatitude);
+                if (latString == null || string.IsNullOrEmpty(latString.Item2))
+                    return null;
+               return (decimal?) Convert.ToDecimal(latString.Item2);
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var associatedLocationsFromName =
-                (from location in GetLocationsToAdministerForRole(roleId)
-                 where locationNamesToLoad.Contains(location.Name)
-                 select location).ToArray();
-
-            //Get the distinct addresses from the DataCategory.LocationAddressLineOne category of the rows
-            var addressesToLoad = rows.Select(cvs =>
+            var lngsToLoad = rows.Select(cvs =>
             {
-                var addressLineOneCategoryValue = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationAddressLineOne);
-                var addressLineOne = addressLineOneCategoryValue == null ? null : addressLineOneCategoryValue.Item2;
-                return addressLineOne;
+                var lngString = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationLongitude);
+                if (lngString == null || string.IsNullOrEmpty(lngString.Item2))
+                    return null;
+                return (decimal?)Convert.ToDecimal(lngString.Item2);
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var associatedLocationsFromAddressLineOne =
+            var associatedLocations =
                 (from location in GetLocationsToAdministerForRole(roleId)
-                 where addressesToLoad.Contains(location.AddressLineOne)
+                 where latsToLoad.Contains(location.Latitude)
+                 where lngsToLoad.Contains(location.Longitude)
                  select location).ToArray();
 
-            return associatedLocationsFromName.Union(associatedLocationsFromAddressLineOne).Distinct().ToArray();
+            return associatedLocations.ToArray();
         }
 
 
