@@ -147,6 +147,7 @@
     <None Include="Snapshots\FoundOps.Database.Core_20120410_12-23-40.dacpac" />
     <None Include="Snapshots\FoundOps.Database.Core_20120415_03-20-59.dacpac" />
     <None Include="Snapshots\FoundOps.Database.Core_20120426_07-52-40.dacpac" />
+    <None Include="Snapshots\FoundOps.Database.Core_20120604_08-00-38.dacpac" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\RouteEmployee.sql">
@@ -357,5 +358,6 @@
     <Build Include="dbo\Stored Procedures\DeleteBasicPartyBasedOnId.sql" />
     <Build Include="dbo\Stored Procedures\DeleteRecurringService.sql" />
     <Build Include="dbo\Functions\GetResourcesWithLatestPoint.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteFieldAndChildrenBasedOnFieldId.sql" />
   </ItemGroup>
 </Project>

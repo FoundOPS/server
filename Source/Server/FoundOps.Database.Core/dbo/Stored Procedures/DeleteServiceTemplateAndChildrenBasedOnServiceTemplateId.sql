@@ -1,4 +1,13 @@
-﻿CREATE PROCEDURE dbo.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
+﻿/****************************************************************************************************************************************************
+* FUNCTION DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId will delete a ServiceTemplate and all child ServiceTemplates associated with it
+* Begins by using a CTE(Common Table Expression) to find all chlid ServiceTemplates. It does this by making the CTE self referencing so it becomes recursive
+* Since the CTE will only last for one operation (it is not actually stored as an abject) we save it into a teemporary table for later use.
+* After we have this table, we do a series of Semi-Joins to find RouteTasks, Services, RecurringServices and ServiceTemplates that have an Id that exists in the table
+* Finally we drop the temp table so it can be recreated later.
+** Input Parameters **
+* @parentTemplateId - The ServiceTemplalate Id to use to find children ServiceTemplates
+***************************************************************************************************************************************************/
+CREATE PROCEDURE dbo.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
 		(@parentTemplateId uniqueidentifier)
 	AS
 

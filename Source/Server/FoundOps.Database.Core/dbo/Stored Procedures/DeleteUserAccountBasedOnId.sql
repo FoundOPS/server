@@ -1,4 +1,10 @@
-﻿CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
+﻿/****************************************************************************************************************************************************
+* FUNCTION DeleteUserAccountBasedOnId will delete a UserAccount and all entities associated with it
+* Follows the following progression to delete: Locations, Contacts, ContactInfoSet, Roles, Vehicles, Files, UserAccountLog and finally the UserAccount itself 
+** Input Parameters **
+* @providerId - The UserAccount Id to be deleted
+***************************************************************************************************************************************************/
+CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 		(@providerId uniqueidentifier)
 
 	AS
@@ -14,6 +20,7 @@
 		LocationId uniqueidentifier
 	)
 
+	--Finds all Locations that are associated with the UserAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
 	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
@@ -21,6 +28,7 @@
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
 
+	--Iterates through @LocationIdsForServiceProvider and calls DeleteLocationBasedOnId on each
 	WHILE @LocationRowCount > 0
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)

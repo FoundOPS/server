@@ -263,6 +263,9 @@
     <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
     <Content Include="ClientBin\System.Xml.Linq.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.Data.zip" />
+    <None Include="disableTimeout.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Services\M2M4RiaLinqToEntitiesDomainService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>M2M4RiaLinqToEntitiesDomainService.g.cs</LastGenOutput>

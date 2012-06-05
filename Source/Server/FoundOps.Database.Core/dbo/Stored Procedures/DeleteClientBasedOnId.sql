@@ -1,4 +1,10 @@
-﻿--This procedure deletes a Business Account
+﻿/****************************************************************************************************************************************************
+* FUNCTION DeleteClientBasedOnId will delete a Client and all entities associated with it
+* Follows the following progression to delete: RouteDestinations, RouteTasks, Services, ServiceTemplates, RecurringServices, Locations 
+* ClientTitles, Parties_Business and finally the Client itself
+** Input Parameters **
+* @clientId - The Client Id to be deleted
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteClientBasedOnId
 		(@clientId uniqueidentifier)
 
@@ -19,6 +25,9 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	DELETE FROM RecurringServices
 	WHERE ClientId = @clientId
 
+-------------------------------------------------------------------------------------------------------------------------
+--Delete Locations for Client
+-------------------------------------------------------------------------------------------------------------------------
 	DECLARE @LocationId uniqueidentifier
 	
 	DECLARE @LocationIdsForClient TABLE
@@ -26,6 +35,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 		LocationId uniqueidentifier
 	)
 
+	--Finds all Locations that are associated with the Client
 	INSERT INTO @LocationIdsForClient
 	SELECT Id FROM Locations
 	WHERE	PartyId = @clientId
@@ -33,6 +43,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	DECLARE @RowCount int
 	SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
 
+	--Iterates through @LocationIdsForClient and calls DeleteLocationBasedOnId on each
 	WHILE @RowCount > 0
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForClient)
@@ -44,6 +55,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 
 			SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
 	END
+-------------------------------------------------------------------------------------------------------------------------
 
 	DELETE FROM ClientTitles
 	WHERE ClientId = @clientId

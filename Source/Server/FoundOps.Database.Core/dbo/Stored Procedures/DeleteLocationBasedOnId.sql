@@ -1,4 +1,9 @@
-﻿--This procedure deletes a Business Account
+﻿/****************************************************************************************************************************************************
+* FUNCTION DeleteLocationBasedOnId will delete a Location and all entities associated with it
+* Follows the following progression to delete: RouteTasks, SubLocations, ContactInfoSet, RouteDestinations and finally the Location itself
+** Input Parameters **
+* @locationId - The Location Id to be deleted
+***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteLocationBasedOnId
 		(@locationId uniqueidentifier)
 

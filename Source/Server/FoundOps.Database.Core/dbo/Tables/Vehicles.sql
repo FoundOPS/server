@@ -16,9 +16,12 @@
     [LastSource]               NVARCHAR (MAX)   NULL,
     [OwnerPartyId]             UNIQUEIDENTIFIER NOT NULL,
     [LastPushToAzureTimeStamp] DATETIME         NULL,
+    [LastAccuracy]             INT              NULL,
     CONSTRAINT [PK_Vehicles] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_VehicleParty] FOREIGN KEY ([OwnerPartyId]) REFERENCES [dbo].[Parties] ([Id])
 );
+
+
 
 
 

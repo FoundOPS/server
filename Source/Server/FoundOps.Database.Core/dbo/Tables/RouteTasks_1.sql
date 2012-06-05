@@ -8,7 +8,7 @@
     [BusinessAccountId]       UNIQUEIDENTIFIER NOT NULL,
     [EstimatedDuration]       TIME (7)         NOT NULL,
     [Name]                    NVARCHAR (MAX)   NOT NULL,
-    [StatusInt]               INT              NOT NULL  ,
+    [StatusInt]               INT              NOT NULL,
     [Date]                    DATETIME         NOT NULL,
     [OrderInRouteDestination] INT              NOT NULL,
     [RecurringServiceId]      UNIQUEIDENTIFIER NULL,
@@ -17,10 +17,12 @@
     CONSTRAINT [FK_BusinessAccountRouteTask] FOREIGN KEY ([BusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
     CONSTRAINT [FK_RouteTaskClient] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Clients] ([Id]),
     CONSTRAINT [FK_RouteTaskLocation] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]),
-    CONSTRAINT [FK_RouteTaskRecurringService] FOREIGN KEY ([RecurringServiceId]) REFERENCES [dbo].[RecurringServices] ([Id]),
+    CONSTRAINT [FK_RouteTaskRecurringService] FOREIGN KEY ([RecurringServiceId]) REFERENCES [dbo].[RecurringServices] ([Id]) ON DELETE SET NULL,
     CONSTRAINT [FK_RouteTaskRouteDestination] FOREIGN KEY ([RouteDestinationId]) REFERENCES [dbo].[RouteDestinations] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_RouteTaskService] FOREIGN KEY ([ServiceId]) REFERENCES [dbo].[Services] ([Id])
+    CONSTRAINT [FK_RouteTaskService] FOREIGN KEY ([ServiceId]) REFERENCES [dbo].[Services] ([Id]) ON DELETE SET NULL
 );
+
+
 
 
 

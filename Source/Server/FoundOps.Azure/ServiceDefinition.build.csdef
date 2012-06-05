@@ -26,6 +26,9 @@
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
+    <Startup>
+      <Task commandLine="disableTimeout.cmd" executionContext="elevated" />
+    </Startup>
     <Certificates>
       <Certificate name="app.foundops.com" storeLocation="LocalMachine" storeName="My" />
       <!--<Certificate name="test.foundops.com" storeLocation="LocalMachine" storeName="My" />-->
