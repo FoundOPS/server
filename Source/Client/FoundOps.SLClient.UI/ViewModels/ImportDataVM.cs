@@ -268,7 +268,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     MessageBox.Show("Data Imported");
                 else
                 {
-                    MessageBox.Show("There was a problem with the last import, please try again.");
+                    MessageBox.Show(invokeOp.Error.Message);
                     Manager.Data.DomainContext.RejectChanges();
                 }
 

@@ -1,4 +1,5 @@
-﻿using FoundOps.Core.Models.CoreEntities;
+﻿using System.Collections;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using Kent.Boogaart.KBCsv;
 using System;
@@ -205,25 +206,25 @@ namespace FoundOps.Core.Models.Import
         /// <summary>
         /// Gets the ContactInfo set from a row's values.
         /// </summary>
-        /// <param name="row">The row's categories/values.</param>
+        /// <param name="importRow">The row's categories/values.</param>
         /// <returns>A contact info set.</returns>
-        private static IEnumerable<ContactInfo> GetContactInfoSet(Tuple<DataCategory, string>[] row)
+        private static IEnumerable<ContactInfo> GetContactInfoSet(ImportRow importRow)
         {
             //A row can have up to 5 contact infos on it. Seperate those out.
             var contactInfoSet = new List<ContactInfo>();
 
             //Email
-            var emailCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoEmailAddressLabel || r.Item1 == DataCategory.ContactInfoEmailAddressData).ToArray();
-            if (emailCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
+            var emailCategoryCells = importRow.Where(r => r.DataCategory == DataCategory.ContactInfoEmailAddressLabel || r.DataCategory == DataCategory.ContactInfoEmailAddressData).ToArray();
+            if (emailCategoryCells.Any(ecv => !string.IsNullOrEmpty(ecv.Value)))
             {
                 var email = new ContactInfo { Type = "Email Address" };
-                SetProperties(email, emailCategoryValues);
+                SetProperties(email, emailCategoryCells);
                 contactInfoSet.Add(email);
             }
 
             //Fax
-            var faxCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoFaxNumberLabel || r.Item1 == DataCategory.ContactInfoFaxNumberData).ToArray();
-            if (faxCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
+            var faxCategoryValues = importRow.Where(r => r.DataCategory == DataCategory.ContactInfoFaxNumberLabel || r.DataCategory == DataCategory.ContactInfoFaxNumberData).ToArray();
+            if (faxCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Value)))
             {
                 var fax = new ContactInfo { Type = "Fax Number" };
                 SetProperties(fax, faxCategoryValues);
@@ -231,8 +232,8 @@ namespace FoundOps.Core.Models.Import
             }
 
             //Phone
-            var phoneCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoPhoneNumberLabel || r.Item1 == DataCategory.ContactInfoPhoneNumberData).ToArray();
-            if (phoneCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
+            var phoneCategoryValues = importRow.Where(r => r.DataCategory == DataCategory.ContactInfoPhoneNumberLabel || r.DataCategory == DataCategory.ContactInfoPhoneNumberData).ToArray();
+            if (phoneCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Value)))
             {
                 var phone = new ContactInfo { Type = "Phone Number" };
                 SetProperties(phone, phoneCategoryValues);
@@ -240,8 +241,8 @@ namespace FoundOps.Core.Models.Import
             }
 
             //Other
-            var otherCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoOtherLabel || r.Item1 == DataCategory.ContactInfoOtherData).ToArray();
-            if (otherCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
+            var otherCategoryValues = importRow.Where(r => r.DataCategory == DataCategory.ContactInfoOtherLabel || r.DataCategory == DataCategory.ContactInfoOtherData).ToArray();
+            if (otherCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Value)))
             {
                 var other = new ContactInfo { Type = "Other" };
                 SetProperties(other, otherCategoryValues);
@@ -249,8 +250,8 @@ namespace FoundOps.Core.Models.Import
             }
 
             //Website
-            var websiteCategoryValues = row.Where(r => r.Item1 == DataCategory.ContactInfoWebsiteLabel || r.Item1 == DataCategory.ContactInfoWebsiteData).ToArray();
-            if (websiteCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Item2)))
+            var websiteCategoryValues = importRow.Where(r => r.DataCategory == DataCategory.ContactInfoWebsiteLabel || r.DataCategory == DataCategory.ContactInfoWebsiteData).ToArray();
+            if (websiteCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Value)))
             {
                 var website = new ContactInfo { Type = "Website" };
                 SetProperties(website, websiteCategoryValues);
@@ -264,17 +265,17 @@ namespace FoundOps.Core.Models.Import
         /// Creates a client from a set of categories and values.
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
-        /// <param name="row">The categories/values used to initialize the client.</param>
+        /// <param name="importRow">The categories/values used to initialize the client.</param>
         /// <returns>A new client.</returns>
-        public static Client CreateClient(BusinessAccount currentBusinessAccount, Tuple<DataCategory, string>[] row)
+        public static Client CreateClient(BusinessAccount currentBusinessAccount, ImportRow importRow)
         {
             //Need to create an OwnedParty and set the current business account
             var client = new Client { Vendor = currentBusinessAccount, OwnedParty = new Business() };
 
-            SetProperties(client, row);
+            SetProperties(client, importRow);
 
             //Add contact info set
-            var contactInfoSet = GetContactInfoSet(row);
+            var contactInfoSet = GetContactInfoSet(importRow);
             foreach (var contactInfo in contactInfoSet)
                 client.OwnedParty.ContactInfoSet.Add(contactInfo);
 
@@ -286,10 +287,10 @@ namespace FoundOps.Core.Models.Import
         /// It will also set the clientAssociation's DefaultBillingLocation to this new location
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
-        /// <param name="row">The categories/values used to initialize the client.</param>
+        /// <param name="importRow">The categories/values used to initialize the client.</param>
         /// <param name="clientAssociation">The (optional) client association.</param>
-        /// <param name="regionAssociation"> </param>
-        public static Location CreateLocation(BusinessAccount currentBusinessAccount, Tuple<DataCategory, string>[] row, Client clientAssociation, Region regionAssociation)
+        /// <param name="regionAssociation">The region association.</param>
+        public static Location CreateLocation(BusinessAccount currentBusinessAccount, ImportRow importRow, Client clientAssociation, Region regionAssociation)
         {
             var location = new Location { OwnerParty = currentBusinessAccount, Region = regionAssociation };
 
@@ -303,10 +304,10 @@ namespace FoundOps.Core.Models.Import
                 clientAssociation.DefaultBillingLocation = location;
             }
 
-            SetProperties(location, row);
+            SetProperties(location, importRow);
 
             //Add contact info set
-            var contactInfoSet = GetContactInfoSet(row);
+            var contactInfoSet = GetContactInfoSet(importRow);
             foreach (var contactInfo in contactInfoSet)
                 location.ContactInfoSet.Add(contactInfo);
 
@@ -317,13 +318,12 @@ namespace FoundOps.Core.Models.Import
         /// Creates the recurring service.
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
-        /// <param name="categoriesValues">The categories/values used to initialize the client.</param>
+        /// <param name="importRow">The categories/values used to initialize the client.</param>
         /// <param name="clientServiceTemplate">The parent service template.</param>
         /// <param name="clientAssociation">The client association.</param>
         /// <param name="locationAssociation">The location association.</param>
-        /// <returns></returns>
         public static RecurringService CreateRecurringService(BusinessAccount currentBusinessAccount,
-            Tuple<DataCategory, string>[] categoriesValues, ServiceTemplate clientServiceTemplate, Client clientAssociation, Location locationAssociation)
+            ImportRow importRow, ServiceTemplate clientServiceTemplate, Client clientAssociation, Location locationAssociation)
         {
             var recurringService = new RecurringService
             {
@@ -336,7 +336,7 @@ namespace FoundOps.Core.Models.Import
                 recurringService.ServiceTemplate.SetDestination(locationAssociation);
 
             //Set the repeat properties
-            SetProperties(recurringService.Repeat, categoriesValues);
+            SetProperties(recurringService.Repeat, importRow);
 
             return recurringService;
         }
@@ -346,34 +346,53 @@ namespace FoundOps.Core.Models.Import
         #region Helpers
 
         /// <summary>
-        /// Gets the value of a category from a row if it exists.
+        /// Gets the ImportCell for a category.
         /// </summary>
-        /// <param name="categoriesValues">The rows categories and values</param>
-        /// <param name="category">The category to get the value for.</param>
-        public static string GetCategoryValue(this Tuple<DataCategory, string>[] categoriesValues, DataCategory category)
+        /// <param name="importRow">The import row.</param>
+        /// <param name="category">The category to get the cell for.</param>
+        public static ImportCell GetCell(this ImportRow importRow, DataCategory category)
         {
-            var categoryValue = categoriesValues.FirstOrDefault(cv => cv.Item1 == category);
-            return categoryValue != null ? categoryValue.Item2 : null;
+            return importRow.FirstOrDefault(cell => cell.DataCategory == category);
+        }
+
+        /// <summary>
+        /// Throws the exception.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="row">The row.</param>
+        public static Exception Exception(string message, ImportRow row)
+        {
+            var exceptionMessage = Environment.NewLine + "Row {" + row.RowIndex + "}" + ": " + message;
+            var rowCellsDetails = row.Select(c => c.DataCategory.ToString() + ": " + c.Value);
+
+            exceptionMessage += "." + Environment.NewLine + rowCellsDetails.Aggregate((current, next) => current + ", " + next);
+
+            return new Exception(exceptionMessage);
         }
 
         /// <summary>
         /// Matches the categories with values from a datarecord.
         /// </summary>
+        /// <param name="rowIndex">Index of the row.</param>
         /// <param name="categories">The categories from the header record.</param>
         /// <param name="record">The record to extract values from.</param>
-        public static Tuple<DataCategory, string>[] ExtractCategoriesWithValues(DataCategory[] categories, DataRecord record)
+        /// <returns>An ImportRow</returns>
+        public static ImportRow ExtractCategoriesWithValues(int rowIndex, DataCategory[] categories, DataRecord record)
         {
-            var categoryValues = new List<Tuple<DataCategory, string>>();
+            var categoryValues = new List<ImportCell>();
 
-            //Go through each value and setup the category value tuple
-            int columnIndex = 0;
+            //Go through each value and setup the import cell
+            var columnIndex = 0;
             foreach (var value in record.Values)
             {
-                categoryValues.Add(new Tuple<DataCategory, string>(categories.ElementAt(columnIndex), value));
+                categoryValues.Add(new ImportCell(categories.ElementAt(columnIndex), value, rowIndex, columnIndex));
                 columnIndex++;
             }
 
-            return categoryValues.ToArray();
+            var row = new ImportRow(rowIndex);
+            row.AddRange(categoryValues);
+
+            return row;
         }
 
         /// <summary>
@@ -381,16 +400,17 @@ namespace FoundOps.Core.Models.Import
         /// </summary>
         /// <typeparam name="TEntity">The type of entity.</typeparam>
         /// <param name="entity">The entity to set the properties on.</param>
-        /// <param name="categoryValues">The datacategories to set.</param>
-        private static void SetProperties<TEntity>(TEntity entity, Tuple<DataCategory, string>[] categoryValues) where TEntity : EntityObject
+        /// <param name="importRow">The categories/values used to initialize the client.
+        /// Not an import row, to allow the cells to be filtered</param>
+        private static void SetProperties<TEntity>(TEntity entity, IEnumerable<ImportCell> importRow) where TEntity : EntityObject
         {
             var entityPropertyCategories = PropertyCategories.OfType<PropertyCategory<TEntity>>()
-                .Where(pc => categoryValues.Any(cv => cv.Item1 == pc.Category)).ToArray();
+                .Where(pc => importRow.Any(cv => cv.DataCategory == pc.Category)).ToArray();
 
             //Set the properties in order as they are in the PropertyCategories
             foreach (var entityPropertyCategory in entityPropertyCategories)
             {
-                var value = categoryValues.First(cv => cv.Item1 == entityPropertyCategory.Category).Item2;
+                var value = importRow.First(cv => cv.DataCategory == entityPropertyCategory.Category).Value;
                 entityPropertyCategory.SetProperty(entity, value);
             }
         }
@@ -423,6 +443,43 @@ namespace FoundOps.Core.Models.Import
         {
             Category = category;
             SetProperty = setProperty;
+        }
+    }
+
+    /// <summary>
+    /// Represents a single cell of a import row
+    /// </summary>
+    public class ImportCell
+    {
+        public DataCategory DataCategory { get; set; }
+        public string Value { get; set; }
+
+        public ImportCell(DataCategory dataCategory, string value, int rowIndex, int columnIndex)
+        {
+            this.DataCategory = dataCategory;
+            this.Value = value;
+        }
+    }
+
+    /// <summary>
+    /// Represents an import row
+    /// </summary>
+    public class ImportRow : List<ImportCell>
+    {
+        /// <summary>
+        /// Gets or sets the index of the row.
+        /// </summary>
+        /// <value>
+        /// The index of the row.
+        /// </value>
+        public int RowIndex { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImportRow"/> class.
+        /// </summary>
+        public ImportRow(int rowIndex)
+        {
+            this.RowIndex = rowIndex;
         }
     }
 }

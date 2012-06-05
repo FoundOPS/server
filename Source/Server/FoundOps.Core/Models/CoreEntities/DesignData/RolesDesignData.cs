@@ -93,7 +93,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 if (serviceProvider == _businessAccountsDesignData.ABCouriers)
                     ABCouriersAdministratorRole = defaultServiceProviderRole;
 
-                if (serviceProvider == _businessAccountsDesignData.OrenKosherSteakhouse)
+                if (serviceProvider == _businessAccountsDesignData.GenericOilCollector)
                     OrensKosherSteakhouseAdministratorRole = defaultServiceProviderRole;
             }
 

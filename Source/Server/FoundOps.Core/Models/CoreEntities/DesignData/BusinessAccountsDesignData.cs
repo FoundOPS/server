@@ -23,7 +23,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         public BusinessAccount GotGrease { get; private set; }
         public BusinessAccount ABCouriers { get; private set; }
-        public BusinessAccount OrenKosherSteakhouse { get; private set; }
+        public BusinessAccount GenericOilCollector { get; private set; }
 
         public IEnumerable<BusinessAccount> DesignServiceProviders { get; private set; }
 
@@ -53,15 +53,15 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 MaxRoutes = 10
             };
 
-            OrenKosherSteakhouse = new BusinessAccount
+            GenericOilCollector = new BusinessAccount
             {
                 Id = new Guid("62047896-B2A1-49E4-BA10-72F0667B1DB0"),
-                Name = "Oren's Kosher Steakhouse",
+                Name = "Generic Oil Collector",
                 QuickBooksEnabled = true,
                 MaxRoutes = 10
             };
 
-            DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, OrenKosherSteakhouse };
+            DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, GenericOilCollector };
 
             //Add Depots
             foreach(var serviceProvider in DesignServiceProviders)
@@ -71,11 +71,11 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             }
 
             //Add ServiceTemplates
-            foreach (var businessAccount in new[] { GotGrease, ABCouriers, OrenKosherSteakhouse })
+            foreach (var businessAccount in new[] { GotGrease, ABCouriers, GenericOilCollector })
             {
                 //Choose the right set of ServiceTemplates
-                var serviceTemplates = businessAccount == GotGrease ? ServiceTemplatesDesignData.OilGreaseCompanyServiceTemplates :
-                                                                      ServiceTemplatesDesignData.SameDayDeliveryCompanyServiceTemplates;
+                var serviceTemplates = businessAccount == ABCouriers ? ServiceTemplatesDesignData.SameDayDeliveryCompanyServiceTemplates :
+                                                                      ServiceTemplatesDesignData.OilGreaseCompanyServiceTemplates;
 
                 foreach (var serviceTemplate in serviceTemplates)
                 {

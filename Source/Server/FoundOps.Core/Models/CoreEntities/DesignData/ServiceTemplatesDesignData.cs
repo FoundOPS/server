@@ -46,7 +46,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             OilServiceTemplate = new ServiceTemplate
             {
                 Id = new Guid("{8ADDFE8A-7376-4AC4-8312-C7152148F1A5}"),
-                Name = "Oil",
+                Name = "WVO Collection",
                 ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined,
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoice

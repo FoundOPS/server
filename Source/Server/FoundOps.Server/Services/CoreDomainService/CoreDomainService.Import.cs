@@ -1,4 +1,3 @@
-using System.Data.Entity;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.Import;
 using FoundOps.Core.Tools;
@@ -16,22 +15,33 @@ namespace FoundOps.Server.Services.CoreDomainService
     /// </summary>
     public partial class CoreDomainService
     {
+        /// <summary>
+        /// Imports the entities.
+        /// </summary>
+        /// <param name="currentRoleId">The current role id.</param>
+        /// <param name="importDestination">The import destination.</param>
+        /// <param name="dataCSV">The data CSV.</param>
+        /// <returns></returns>
         public bool ImportEntities(Guid currentRoleId, ImportDestination importDestination, byte[] dataCSV)
         {
             var businessAccount = ObjectContext.BusinessAccountOwnerOfRole(currentRoleId);
             if (businessAccount == null)
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
-
-            Tuple<DataCategory, string>[][] rows;
+            //row index, column index, DataCategory, value
+            var rows = new List<ImportRow>();
 
             using (var csv = new CsvReader(new MemoryStream(dataCSV)))
             {
                 var headerRecord = csv.ReadHeaderRecord();
                 var categories = headerRecord.Values.Select(v => (DataCategory)Enum.Parse(typeof(DataCategory), v)).ToArray();
 
-                //Setup a Tuple<Category, string>[] for each row (DataRecord)
-                //This will be used by the CreateEntity method
-                rows = csv.DataRecords.Select(record => ImportRowTools.ExtractCategoriesWithValues(categories, record)).ToArray();
+                //setup a Tuple (DataRecord) for each row 
+                var rowIndex = 0;
+                foreach (var dataRecord in csv.DataRecords)
+                {
+                    rows.Add(ImportRowTools.ExtractCategoriesWithValues(rowIndex, categories, dataRecord));
+                    rowIndex++;
+                }
             }
 
             #region Load the necessary associations
@@ -61,52 +71,68 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             #endregion
 
-            if (importDestination == ImportDestination.Clients)
+            switch (importDestination)
             {
-                foreach (var row in rows)
-                {
-                    var newClient = ImportRowTools.CreateClient(businessAccount, row);
-
-                    //Add the available services
-                    foreach (var serviceTemplate in serviceProviderServiceTemplates)
-                        newClient.ServiceTemplates.Add(serviceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined));
-
-                    this.ObjectContext.Clients.AddObject(newClient);
-                }
-            }
-            else if (importDestination == ImportDestination.Locations)
-            {
-                foreach (var row in rows)
-                {
-                    var clientAssocation = GetClientAssociation(clientAssociations, row);
-                    var regionAssociation = GetRegionAssociation(regionAssociations, row);
-                    var newLocation = ImportRowTools.CreateLocation(businessAccount, row, clientAssocation, regionAssociation);
-                    this.ObjectContext.Locations.AddObject(newLocation);
-                }
-            }
-            else if (importDestination == ImportDestination.RecurringServices)
-            {
-                foreach (var row in rows)
-                {
-                    var clientAssocation = GetClientAssociation(clientAssociations, row);
-
-                    //Get the service template associaton
-                    var serviceTemplateName = row.GetCategoryValue(DataCategory.ServiceType);
-
-                    var clientServiceTemplate = clientAssocation.ServiceTemplates.FirstOrDefault(st => st.Name == serviceTemplateName);
-                    //If the Client does not have the available service add it to the client
-                    if (clientServiceTemplate == null)
+                case ImportDestination.Clients:
+                    foreach (var row in rows)
                     {
-                        clientServiceTemplate = serviceProviderServiceTemplates.First(st => st.Name == serviceTemplateName).MakeChild(ServiceTemplateLevel.ClientDefined);
-                        clientAssocation.ServiceTemplates.Add(clientServiceTemplate);
+                        var newClient = ImportRowTools.CreateClient(businessAccount, row);
+
+                        if (!serviceProviderServiceTemplates.Any())
+                            throw new Exception("This account does not have any service templates yet");
+
+                        //Add the available services
+                        foreach (var serviceTemplate in serviceProviderServiceTemplates)
+                            newClient.ServiceTemplates.Add(serviceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined));
+
+                        this.ObjectContext.Clients.AddObject(newClient);
                     }
+                    break;
+                case ImportDestination.Locations:
+                    foreach (var row in rows)
+                    {
+                        var clientAssocation = GetClientAssociation(clientAssociations, row);
+                        var regionAssociation = GetRegionAssociation(regionAssociations, row);
+                        var newLocation = ImportRowTools.CreateLocation(businessAccount, row, clientAssocation, regionAssociation);
+                        this.ObjectContext.Locations.AddObject(newLocation);
+                    }
+                    break;
+                case ImportDestination.RecurringServices:
+                    {
+                        foreach (var row in rows)
+                        {
+                            //Get the service template associaton
+                            var serviceTemplateCell = row.GetCell(DataCategory.ServiceType);
+                            if (serviceTemplateCell == null)
+                                throw ImportRowTools.Exception("ServiceType not set", row);
 
-                    //Get the location associaton
-                    var locationAssociation = GetLocationAssociation(locationAssociations, row);
-                    var newRecurringService = ImportRowTools.CreateRecurringService(businessAccount, row, clientServiceTemplate, clientAssocation, locationAssociation);
+                            var clientAssocation = GetClientAssociation(clientAssociations, row);
 
-                    this.ObjectContext.RecurringServices.AddObject(newRecurringService);
-                }
+                            var serviceTemplateName = serviceTemplateCell.Value;
+
+                            var clientServiceTemplate = clientAssocation.ServiceTemplates.FirstOrDefault(st => st.Name == serviceTemplateName);
+
+                            //If the Client does not have the available service add it to the client
+                            if (clientServiceTemplate == null)
+                            {
+                                var serviceProviderServiceTemplate = serviceProviderServiceTemplates.FirstOrDefault(st => st.Name == serviceTemplateName);
+
+                                if (serviceProviderServiceTemplate == null)
+                                    throw ImportRowTools.Exception(String.Format("ServiceType '{0}' not found on this provider", serviceTemplateName), row);
+
+                                clientServiceTemplate = serviceProviderServiceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
+
+                                clientAssocation.ServiceTemplates.Add(clientServiceTemplate);
+                            }
+
+                            //Get the location associaton
+                            var locationAssociation = GetLocationAssociation(locationAssociations, row);
+                            var newRecurringService = ImportRowTools.CreateRecurringService(businessAccount, row, clientServiceTemplate, clientAssocation, locationAssociation);
+
+                            this.ObjectContext.RecurringServices.AddObject(newRecurringService);
+                        }
+                    }
+                    break;
             }
 
             this.ObjectContext.SaveChanges();
@@ -120,17 +146,21 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         /// <param name="clientAssociations">The loaded clientAssociations</param>
         /// <param name="row">The row's categories/values.</param>
-        private static Client GetClientAssociation(IEnumerable<Tuple<Client, string>> clientAssociations, Tuple<DataCategory, string>[] row)
+        private static Client GetClientAssociation(IEnumerable<Tuple<Client, string>> clientAssociations, ImportRow row)
         {
-            //Get the client association if there is one
-            var clientName = row.GetCategoryValue(DataCategory.ClientName);
+            //Get the client association
+            var clientNameCell = row.GetCell(DataCategory.ClientName);
+            if (clientNameCell == null)
+                throw ImportRowTools.Exception("Client not set", row);
+
             Client associatedClient = null;
-            if (clientName != null)
-            {
-                var clientTuple = clientAssociations.FirstOrDefault(ca => ca.Item2 == clientName);
-                if (clientTuple != null)
-                    associatedClient = clientTuple.Item1;
-            }
+            var clientTuple = clientAssociations.FirstOrDefault(ca => ca.Item2 == clientNameCell.Value);
+
+            if (clientTuple != null)
+                associatedClient = clientTuple.Item1;
+
+            if (associatedClient == null)
+                throw ImportRowTools.Exception(String.Format("Could not find Client '{0}'", clientNameCell.Value), row);
 
             return associatedClient;
         }
@@ -140,23 +170,29 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// It uses the DataCategory.LocationLatitude and DataCategory.LocationLongitude to find the location.
         /// </summary>
         /// <param name="locationAssociations">The loaded location associations.</param>
-        /// <param name="row">The row's categories/values.</param>
-        private static Location GetLocationAssociation(Location[] locationAssociations, Tuple<DataCategory, string>[] row)
+        /// <param name="importRow">The row's categories/values.</param>
+        /// <returns></returns>
+        private static Location GetLocationAssociation(IEnumerable<Location> locationAssociations, ImportRow importRow)
         {
-            var locationName = row.GetCategoryValue(DataCategory.LocationName);
             Location associatedLocation = null;
 
-            var locationLatitude = row.GetCategoryValue(DataCategory.LocationLatitude);
-            var locationLongitude = row.GetCategoryValue(DataCategory.LocationLongitude);
-            if (locationLatitude != null && locationLongitude != null)
-                associatedLocation =
-                    locationAssociations.FirstOrDefault(
-                        c =>
-                        c.Latitude == Convert.ToDecimal(locationLatitude) &&
-                        c.Longitude == Convert.ToDecimal(locationLongitude));
+            var locationLatitude = importRow.GetCell(DataCategory.LocationLatitude);
+            var locationLongitude = importRow.GetCell(DataCategory.LocationLongitude);
+            if (locationLatitude == null)
+                throw ImportRowTools.Exception("Latitude not set", importRow);
 
-            if (associatedLocation == null && locationName != null)
-                associatedLocation = locationAssociations.FirstOrDefault(l => l.Name == locationName);
+            if (locationLongitude == null)
+                throw ImportRowTools.Exception("Longitude not set", importRow);
+
+            associatedLocation =
+                locationAssociations.FirstOrDefault(
+                    c =>
+                    c.Latitude == Convert.ToDecimal(locationLatitude.Value) &&
+                    c.Longitude == Convert.ToDecimal(locationLongitude.Value));
+
+            if (associatedLocation == null)
+                throw ImportRowTools.Exception(
+                    String.Format("Could not find Location with latitude '{0}', longitude '{1}'", locationLatitude, locationLongitude), importRow);
 
             return associatedLocation;
         }
@@ -167,13 +203,13 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         /// <param name="regionAssociations">The loaded region associations</param>
         /// <param name="row">The row's categories/values.</param>
-        private static Region GetRegionAssociation(Region[] regionAssociations, Tuple<DataCategory, string>[] row)
+        private static Region GetRegionAssociation(IEnumerable<Region> regionAssociations, ImportRow row)
         {
-            var regionName = row.GetCategoryValue(DataCategory.RegionName);
-            if (string.IsNullOrEmpty(regionName))
+            var regionNameCell = row.GetCell(DataCategory.RegionName);
+            if (regionNameCell == null || string.IsNullOrEmpty(regionNameCell.Value))
                 return null;
 
-            var region = regionAssociations.First(ca => ca.Name == regionName);
+            var region = regionAssociations.First(ca => ca.Name == regionNameCell.Value);
             return region;
         }
 
@@ -183,15 +219,15 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         /// <param name="roleId">The current role id</param>
         /// <param name="businessAccount">The current business account</param>
-        /// <param name="rows">The rows of Tuple&lt;DataCategory,string&gt;[]"</param>
+        /// <param name="importRows">The import rows"</param>
         /// <param name="includeAvailableServices">if set to <c>true</c> [include client service templates].</param>
-        private Tuple<Client, string>[] LoadClientAssociations(Guid roleId, BusinessAccount businessAccount, Tuple<DataCategory, string>[][] rows, bool includeAvailableServices)
+        private Tuple<Client, string>[] LoadClientAssociations(Guid roleId, BusinessAccount businessAccount, IEnumerable<ImportRow> importRows, bool includeAvailableServices)
         {
             //Get the distinct client names from the rows' DataCategory.ClientName values
-            var clientNamesToLoad = rows.Select(cvs =>
+            var clientNamesToLoad = importRows.Select(importRow =>
             {
-                var clientNameCategoryValue = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.ClientName);
-                return clientNameCategoryValue == null ? null : clientNameCategoryValue.Item2;
+                var clientNameCategoryValue = importRow.FirstOrDefault(cv => cv.DataCategory == DataCategory.ClientName);
+                return clientNameCategoryValue == null ? null : clientNameCategoryValue.Value;
             }).Distinct().Where(cn => cn != null).ToArray();
 
             //TODO: When importing people clients, fix the ChildName logic below (probably setup 2 left joins)
@@ -217,25 +253,25 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// It uses the DataCategory.LocationLatitude or the DataCategory.LocationLongitude to find the locations.
         /// </summary>
         /// <param name="roleId">The role id.</param>
-        /// <param name="rows">The rows of Tuple&lt;DataCategory,string&gt;[]"</param>
+        /// <param name="importRows">The import rows"</param>
         /// <returns></returns>
-        private Location[] LoadLocationAssociations(Guid roleId, Tuple<DataCategory, string>[][] rows)
+        private Location[] LoadLocationAssociations(Guid roleId, IEnumerable<ImportRow> importRows)
         {
             //Get the distinct latitude/longitudes from the rows
-            var latsToLoad = rows.Select(cvs =>
+            var latsToLoad = importRows.Select(importRow =>
             {
-                var latString = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationLatitude);
-                if (latString == null || string.IsNullOrEmpty(latString.Item2))
+                var latString = importRow.FirstOrDefault(cv => cv.DataCategory == DataCategory.LocationLatitude);
+                if (latString == null || string.IsNullOrEmpty(latString.Value))
                     return null;
-               return (decimal?) Convert.ToDecimal(latString.Item2);
+                return (decimal?)Convert.ToDecimal(latString.Value);
             }).Distinct().Where(cn => cn != null).ToArray();
 
-            var lngsToLoad = rows.Select(cvs =>
+            var lngsToLoad = importRows.Select(cvs =>
             {
-                var lngString = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.LocationLongitude);
-                if (lngString == null || string.IsNullOrEmpty(lngString.Item2))
+                var lngString = cvs.FirstOrDefault(cv => cv.DataCategory == DataCategory.LocationLongitude);
+                if (lngString == null || string.IsNullOrEmpty(lngString.Value))
                     return null;
-                return (decimal?)Convert.ToDecimal(lngString.Item2);
+                return (decimal?)Convert.ToDecimal(lngString.Value);
             }).Distinct().Where(cn => cn != null).ToArray();
 
             var associatedLocations =
@@ -254,15 +290,15 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         /// <param name="roleId">The role id.</param>
         /// <param name="serviceProvider">The service provider (in case this needs to create new regions).</param>
-        /// <param name="rows">The rows of Tuple&lt;DataCategory,string&gt;[]"</param>
+        /// <param name="rows">The import rows"</param>
         /// <returns></returns>
-        private Region[] LoadCreateRegionAssociations(Guid roleId, BusinessAccount serviceProvider, Tuple<DataCategory, string>[][] rows)
+        private Region[] LoadCreateRegionAssociations(Guid roleId, BusinessAccount serviceProvider, IEnumerable<ImportRow> rows)
         {
             //Get the distinct region names from the rows' DataCategory.RegionName values
             var regionNamesToLoad = rows.Select(cvs =>
             {
-                var regionNameCategoryValue = cvs.FirstOrDefault(cv => cv.Item1 == DataCategory.RegionName);
-                return regionNameCategoryValue == null ? null : regionNameCategoryValue.Item2;
+                var regionNameCategoryValue = cvs.FirstOrDefault(cv => cv.DataCategory == DataCategory.RegionName);
+                return regionNameCategoryValue == null ? null : regionNameCategoryValue.Value;
             }).Distinct().Where(cn => cn != null).ToArray();
 
             var loadedRegionsFromName =
