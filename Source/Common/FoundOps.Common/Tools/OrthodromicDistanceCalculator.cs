@@ -16,6 +16,13 @@ namespace FoundOps.Common.Composite.Tools
         public double OrthodromicDistance(GeoLocation locationA, GeoLocation locationB, FormulaType formula)
         {
             var distance = (c_AverageRadiusForSphericalApproximationOfEarth * ArcLength(locationA, locationB, formula));
+
+            //TODO LOG if NAN
+            //if(double.IsNaN(distance))
+            //{
+            //    Log Error
+            //}
+
             return distance;
         }
 
@@ -23,28 +30,12 @@ namespace FoundOps.Common.Composite.Tools
         {
             switch (formula)
             {
-                case FormulaType.SphericalLawOfCosinesFormula:
-                    return ArcLengthSphericalLawOfCosines(locationA, locationB);
-
-                case FormulaType.HaversineFormula:
-                    return ArcLengthHaversineFormula(locationA, locationB);
-
                 case FormulaType.VincentyFormula:
                     return ArcLengthVincentyFormula(locationA, locationB);
 
                 default:
                     return 0;
             }
-        }
-
-        private double ArcLengthSphericalLawOfCosines(GeoLocation locationA, GeoLocation locationB)
-        {
-            return Math.Acos((Math.Sin(locationA.LatitudeRad) * Math.Sin(locationB.LatitudeRad)) + (Math.Sin(locationA.LatitudeRad) * Math.Sin(locationB.LatitudeRad) * Math.Cos(Diff(locationA.LongitudeRad, locationB.LongitudeRad))));
-        }
-
-        private double ArcLengthHaversineFormula(GeoLocation locationA, GeoLocation locationB)
-        {
-            return 2 * Math.Asin(Math.Sqrt((Sin2(Diff(locationA.LatitudeRad, locationB.LatitudeRad) / 2)) + (Math.Cos(locationA.LatitudeRad) * Math.Cos(locationB.LatitudeRad) * Sin2(Diff(locationA.LongitudeRad, locationB.LongitudeRad) / 2))));
         }
 
         private double ArcLengthVincentyFormula(GeoLocation locationA, GeoLocation locationB)

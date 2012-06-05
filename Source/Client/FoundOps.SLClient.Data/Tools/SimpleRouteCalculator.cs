@@ -71,7 +71,7 @@ namespace FoundOps.SLClient.Data.Tools
                             {
                                 Latitude = Convert.ToDouble(th.Latitude),
                                 Longitude = Convert.ToDouble(th.Longitude)
-                            }, OrthodromicDistanceCalculator.FormulaType.SphericalLawOfCosinesFormula));
+                            }, OrthodromicDistanceCalculator.FormulaType.VincentyFormula));
 
                     //Add the nextRouteTaskToAdd to the organized list and remove it from the unorganized list
                     unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
