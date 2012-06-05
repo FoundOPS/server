@@ -55,8 +55,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 ClientId = this.ClientId,
                 Client = this.Client,
                 RecurringServiceParent = this,
-                ServiceProviderId = this.Client.VendorId,
-                ServiceProvider = this.Client.Vendor,
+                ServiceProviderId = this.Client.BusinessAccount.Id,
+                ServiceProvider = this.Client.BusinessAccount,
                 ServiceTemplate = this.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined)
             };
         }

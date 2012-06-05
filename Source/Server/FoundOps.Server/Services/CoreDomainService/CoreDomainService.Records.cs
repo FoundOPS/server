@@ -39,7 +39,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole == null) return null;
 
             var clients =
-              from c in ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id)
+              from c in ObjectContext.Clients.Where(c => c.BusinessAccountId == businessForRole.Id)
               join p in ObjectContext.PartiesWithNames
                   on c.Id equals p.Id
               orderby p.ChildName
@@ -69,7 +69,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole == null) return null;
 
             //Load contact info
-            var client = ObjectContext.Clients.Where(c => c.VendorId == businessForRole.Id && c.Id == clientId)
+            var client = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessForRole.Id && c.Id == clientId)
                 .Include(c => c.OwnedParty).Include(c => c.OwnedParty.ContactInfoSet).Include("RecurringServices")
                 .Include("RecurringServices.Repeat").Include("RecurringServices.ServiceTemplate").FirstOrDefault();
 
@@ -105,7 +105,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var ownerParty = ObjectContext.OwnerPartyOfRole(roleId);
             var clientsWithDisplayName =
-                from c in ObjectContext.Clients.Where(c => c.VendorId == ownerParty.Id)
+                from c in ObjectContext.Clients.Where(c => c.BusinessAccountId == ownerParty.Id)
                 join p in ObjectContext.PartiesWithNames
                     on c.Id equals p.Id
                 orderby p.ChildName
@@ -149,7 +149,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var clientTitles =
                 ((ObjectQuery<ClientTitle>)
                  this.ObjectContext.ClientTitles.Include("Client").Where(
-                     clientTitle => clientTitle.Client.VendorId == businessForRole.Id)).Include("Client.OwnedParty");
+                     clientTitle => clientTitle.Client.BusinessAccountId == businessForRole.Id)).Include("Client.OwnedParty");
 
             return clientTitles;
         }

@@ -37,7 +37,6 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteTaskService", "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), "Service", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Service), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountService", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Service", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Service), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountRoute", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountClient", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountRouteTask", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "UserAccountUserAccountLogEntry", "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.UserAccount), "UserAccountLogEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.UserAccountLogEntry), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceTemplateBusinessAccount", "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
@@ -59,7 +58,6 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "EmployeePerson", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Employee), "Person", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Person), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RecurringServiceRepeat", "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), "Repeat", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Repeat), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeHistoryEntryEmployee", "EmployeeHistoryEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.EmployeeHistoryEntry), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Employee), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "RouteEmployee", "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee))]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceTemplateServiceTemplate", "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), "ServiceTemplate1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "FieldField", "Field", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Field), "Field1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Field), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "OptionsFieldOption", "OptionsField", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.OptionsField), "Option", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Option), true)]
@@ -80,6 +78,8 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientLocation", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteTaskRecurringService", "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountLocation", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeRoute", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee), "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route))]
+[assembly: EdmRelationshipAttribute("CoreEntities", "ClientBusinessAccount", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 
 #endregion
 
@@ -1092,6 +1092,25 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
@@ -1202,25 +1221,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
-        {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
-            }
-            else
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
 
         #endregion
@@ -1747,28 +1747,6 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "BusinessAccountClient", "Client")]
-        public EntityCollection<Client> Clients
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Client>("CoreEntities.BusinessAccountClient", "Client");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Client>("CoreEntities.BusinessAccountClient", "Client", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "BusinessAccountRouteTask", "RouteTask")]
         public EntityCollection<RouteTask> RouteTasks
         {
@@ -1894,6 +1872,28 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "ClientBusinessAccount", "Client")]
+        public EntityCollection<Client> Clients
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Client>("CoreEntities.ClientBusinessAccount", "Client");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Client>("CoreEntities.ClientBusinessAccount", "Client", value);
+                }
+            }
+        }
 
         #endregion
 
@@ -1914,13 +1914,11 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="dateAdded">Initial value of the DateAdded property.</param>
-        /// <param name="vendorId">Initial value of the VendorId property.</param>
-        public static Client CreateClient(global::System.Guid id, global::System.DateTime dateAdded, global::System.Guid vendorId)
+        public static Client CreateClient(global::System.Guid id, global::System.DateTime dateAdded)
         {
             Client client = new Client();
             client.Id = id;
             client.DateAdded = dateAdded;
-            client.VendorId = vendorId;
             return client;
         }
 
@@ -2006,30 +2004,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid VendorId
-        {
-            get
-            {
-                return _VendorId;
-            }
-            set
-            {
-                OnVendorIdChanging(value);
-                ReportPropertyChanging("VendorId");
-                _VendorId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("VendorId");
-                OnVendorIdChanged();
-            }
-        }
-        private global::System.Guid _VendorId;
-        partial void OnVendorIdChanging(global::System.Guid value);
-        partial void OnVendorIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public Nullable<global::System.Guid> DefaultBillingLocationId
@@ -2050,6 +2024,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _DefaultBillingLocationId;
         partial void OnDefaultBillingLocationIdChanging(Nullable<global::System.Guid> value);
         partial void OnDefaultBillingLocationIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> BusinessAccountId
+        {
+            get
+            {
+                return _BusinessAccountId;
+            }
+            set
+            {
+                OnBusinessAccountIdChanging(value);
+                ReportPropertyChanging("BusinessAccountId");
+                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BusinessAccountId");
+                OnBusinessAccountIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _BusinessAccountId;
+        partial void OnBusinessAccountIdChanging(Nullable<global::System.Guid> value);
+        partial void OnBusinessAccountIdChanged();
 
         #endregion
 
@@ -2156,44 +2154,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<RouteDestination>("CoreEntities.RouteDestinationClient", "RouteDestination", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "BusinessAccountClient", "BusinessAccount")]
-        public BusinessAccount Vendor
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.BusinessAccountClient", "BusinessAccount").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.BusinessAccountClient", "BusinessAccount").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<BusinessAccount> VendorReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.BusinessAccountClient", "BusinessAccount");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<BusinessAccount>("CoreEntities.BusinessAccountClient", "BusinessAccount", value);
                 }
             }
         }
@@ -2320,6 +2280,44 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Location>("CoreEntities.ClientLocation", "Location", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "ClientBusinessAccount", "BusinessAccount")]
+        public BusinessAccount BusinessAccount
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.ClientBusinessAccount", "BusinessAccount").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.ClientBusinessAccount", "BusinessAccount").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<BusinessAccount> BusinessAccountReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.ClientBusinessAccount", "BusinessAccount");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<BusinessAccount>("CoreEntities.ClientBusinessAccount", "BusinessAccount", value);
                 }
             }
         }
@@ -3828,18 +3826,18 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RouteEmployee", "Route")]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeeRoute", "Route")]
         public EntityCollection<Route> Routes
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Route>("CoreEntities.RouteEmployee", "Route");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Route>("CoreEntities.EmployeeRoute", "Route");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Route>("CoreEntities.RouteEmployee", "Route", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Route>("CoreEntities.EmployeeRoute", "Route", value);
                 }
             }
         }
@@ -8890,18 +8888,18 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RouteEmployee", "Employee")]
-        public EntityCollection<Employee> Technicians
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeeRoute", "Employee")]
+        public EntityCollection<Employee> Employees
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Employee>("CoreEntities.RouteEmployee", "Employee");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Employee>("CoreEntities.EmployeeRoute", "Employee");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Employee>("CoreEntities.RouteEmployee", "Employee", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Employee>("CoreEntities.EmployeeRoute", "Employee", value);
                 }
             }
         }
@@ -10761,12 +10759,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new ServiceTemplateWithVendorId object.
         /// </summary>
         /// <param name="serviceTemplateId">Initial value of the ServiceTemplateId property.</param>
-        /// <param name="vendorId">Initial value of the VendorId property.</param>
-        public static ServiceTemplateWithVendorId CreateServiceTemplateWithVendorId(global::System.Guid serviceTemplateId, global::System.Guid vendorId)
+        /// <param name="businessAccountId">Initial value of the BusinessAccountId property.</param>
+        public static ServiceTemplateWithVendorId CreateServiceTemplateWithVendorId(global::System.Guid serviceTemplateId, global::System.Guid businessAccountId)
         {
             ServiceTemplateWithVendorId serviceTemplateWithVendorId = new ServiceTemplateWithVendorId();
             serviceTemplateWithVendorId.ServiceTemplateId = serviceTemplateId;
-            serviceTemplateWithVendorId.VendorId = vendorId;
+            serviceTemplateWithVendorId.BusinessAccountId = businessAccountId;
             return serviceTemplateWithVendorId;
         }
 
@@ -10806,27 +10804,27 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Guid VendorId
+        public global::System.Guid BusinessAccountId
         {
             get
             {
-                return _VendorId;
+                return _BusinessAccountId;
             }
             set
             {
-                if (_VendorId != value)
+                if (_BusinessAccountId != value)
                 {
-                    OnVendorIdChanging(value);
-                    ReportPropertyChanging("VendorId");
-                    _VendorId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("VendorId");
-                    OnVendorIdChanged();
+                    OnBusinessAccountIdChanging(value);
+                    ReportPropertyChanging("BusinessAccountId");
+                    _BusinessAccountId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("BusinessAccountId");
+                    OnBusinessAccountIdChanged();
                 }
             }
         }
-        private global::System.Guid _VendorId;
-        partial void OnVendorIdChanging(global::System.Guid value);
-        partial void OnVendorIdChanged();
+        private global::System.Guid _BusinessAccountId;
+        partial void OnBusinessAccountIdChanging(global::System.Guid value);
+        partial void OnBusinessAccountIdChanged();
 
         #endregion
 

@@ -463,7 +463,7 @@ namespace FoundOps.SLClient.UI.Tools
                               ServiceDate = ServiceDateToGenerate,
                               Client = RecurringServiceToGenerateFrom.Client,
                               RecurringServiceParent = RecurringServiceToGenerateFrom,
-                              ServiceProviderId = RecurringServiceToGenerateFrom.Client.VendorId,
+                              ServiceProviderId = RecurringServiceToGenerateFrom.Client.BusinessAccount.Id,
                               Generated = true
                           };
         }

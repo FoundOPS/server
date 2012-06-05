@@ -48,7 +48,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             foreach (var client in DesignClients)
             {
-                client.Vendor = serviceProvider;
+                client.BusinessAccount = serviceProvider;
 
                 //Add all Service Templates as AvailableServiceTemplates
                 foreach (var availableServiceTemplate in availableServiceTemplates)

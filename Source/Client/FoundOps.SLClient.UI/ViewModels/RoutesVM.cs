@@ -591,8 +591,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void OnDeleteEntity(Route deletedRoute)
         {
             //Remove the Employees and Vehicles
-            foreach (var employee in deletedRoute.Technicians.ToArray())
-                deletedRoute.Technicians.Remove(employee);
+            foreach (var employee in deletedRoute.Employees.ToArray())
+                deletedRoute.Employees.Remove(employee);
             foreach (var vehicle in deletedRoute.Vehicles.ToArray())
                 deletedRoute.Vehicles.Remove(vehicle);
 

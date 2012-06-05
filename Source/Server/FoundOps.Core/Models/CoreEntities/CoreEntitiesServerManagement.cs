@@ -26,7 +26,7 @@ namespace FoundOps.Core.Models.CoreEntities
             RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
 
         private static readonly string CreateCoreEntitiesDatabaseScriptLocation =
-            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected.edmx.sql";
+            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql";
 
         #endregion
 
@@ -180,7 +180,7 @@ namespace FoundOps.Core.Models.CoreEntities
                     {
                         //This would be the 4th, 8th, etc
                         case 0:
-                            var employees = route.Technicians;
+                            var employees = route.Employees;
                             foreach (var employee in employees)
                             {
                                 var latitude = 40.4599;
@@ -219,7 +219,7 @@ namespace FoundOps.Core.Models.CoreEntities
                             break;
                         //This would be the 1st, 5th, etc
                         case 1:
-                            employees = route.Technicians;
+                            employees = route.Employees;
                             foreach (var employee in employees)
                             {
                                 var latitude = 40.4599;
@@ -260,7 +260,7 @@ namespace FoundOps.Core.Models.CoreEntities
                             break;
                         //This would be the 2nd, 6th, etc
                         case 2:
-                            employees = route.Technicians;
+                            employees = route.Employees;
                             foreach (var employee in employees)
                             {
                                 var latitude = 40.4599;
@@ -300,7 +300,7 @@ namespace FoundOps.Core.Models.CoreEntities
                             break;
                         //This would be the 3rd, 7th, etc
                         case 3:
-                            employees = route.Technicians;
+                            employees = route.Employees;
                             foreach (var employee in employees)
                             {
                                 var latitude = 40.4599;

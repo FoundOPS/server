@@ -245,7 +245,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
-            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.VendorId == businessForRole.Id);
+            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.BusinessAccountId == businessForRole.Id);
 
             return recurringServices.OrderBy(rs => rs.ClientId);
         }

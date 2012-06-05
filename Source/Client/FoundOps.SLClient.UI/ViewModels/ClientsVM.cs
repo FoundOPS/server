@@ -189,7 +189,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void OnAddEntity(Client newClient)
         {
             newClient.OwnedParty = new Business { Name = "" };
-            newClient.Vendor = (BusinessAccount)this.ContextManager.OwnerAccount;
+            newClient.BusinessAccount = (BusinessAccount)this.ContextManager.OwnerAccount;
 
             //Add a default Location
             //Set the OwnerParty to the current OwnerAccount

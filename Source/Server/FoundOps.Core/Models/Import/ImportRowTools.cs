@@ -269,7 +269,7 @@ namespace FoundOps.Core.Models.Import
         public static Client CreateClient(BusinessAccount currentBusinessAccount, Tuple<DataCategory, string>[] row)
         {
             //Need to create an OwnedParty and set the current business account
-            var client = new Client { Vendor = currentBusinessAccount, OwnedParty = new Business() };
+            var client = new Client { BusinessAccount = currentBusinessAccount, OwnedParty = new Business() };
 
             SetProperties(client, row);
 

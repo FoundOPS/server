@@ -58,7 +58,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	--Finds all Clients that are associated with the BusinessAccount
 	INSERT INTO @ClientIdsForServiceProvider
 	SELECT Id FROM Clients
-	WHERE	VendorId = @providerId
+	WHERE	BusinessAccountId = @providerId
 
 	DECLARE @ClientRowCount int
 	SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)

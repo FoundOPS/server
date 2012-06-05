@@ -44,7 +44,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         /// <summary>
         /// Gets the route details.
-        /// It includes the Vehicles, Technicians and Technicians.OwnedPerson.
+        /// It includes the Vehicles, Employees and Employees.OwnedPerson.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="routeId">The employee id.</param>
@@ -53,10 +53,10 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var route = ObjectContext.Routes.Where(r => r.OwnerBusinessAccount.Id == businessForRole.Id && r.Id == routeId)
-                    .Include("Vehicles").Include("Technicians").First();
+                    .Include("Vehicles").Include("Employees").First();
 
             //Force load technician's OwnedPerson
-            (from employee in route.Technicians
+            (from employee in route.Employees
              join person in ObjectContext.Parties.OfType<Person>()
                  on employee.Id equals person.Id
              select new { employee, person }).ToArray();
@@ -96,20 +96,20 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var routes = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id)
-                          .Include("Vehicles").Include("Technicians").Include("RouteDestinations");
+                          .Include("Vehicles").Include("Employees").Include("RouteDestinations");
 
             if (vehicleId != Guid.Empty)
                 routes = routes.Where(r => r.Vehicles.Any(v => v.Id == vehicleId));
 
             if (employeeId != Guid.Empty)
-                routes = routes.Where(r => r.Technicians.Any(t => t.Id == employeeId));
+                routes = routes.Where(r => r.Employees.Any(t => t.Id == employeeId));
 
             //TODO: optimize this
             //See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
             //http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
             //Force load OwnedPerson
             //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            (from t in routes.SelectMany(r => r.Technicians)
+            (from t in routes.SelectMany(r => r.Employees)
              join p in this.ObjectContext.Parties
                  on t.Id equals p.Id
              select p).ToArray();

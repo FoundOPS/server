@@ -391,7 +391,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
             }
 
-            public EntityCollection<UserAccount> Technicians { get; set; }
+            public EntityCollection<UserAccount> Employees { get; set; }
 
             [Include]
             public EntityCollection<RouteDestination> RouteDestinations { get; set; }

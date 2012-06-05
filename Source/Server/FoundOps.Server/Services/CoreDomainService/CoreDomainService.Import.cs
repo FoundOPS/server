@@ -197,7 +197,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //TODO: When importing people clients, fix the ChildName logic below (probably setup 2 left joins)
             //Load all the associatedClients
             var associatedClients =
-                (from client in ObjectContext.Clients.Where(c => c.VendorId == businessAccount.Id)
+                (from client in ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id)
                  //Need to get the Clients names
                  join p in ObjectContext.PartiesWithNames
                      on client.Id equals p.Id

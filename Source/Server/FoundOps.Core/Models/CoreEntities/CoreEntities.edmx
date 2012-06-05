@@ -12,6 +12,7 @@
           <EntitySet Name="ContactInfoSet" EntityType="CoreEntities.Store.ContactInfoSet" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Contacts" EntityType="CoreEntities.Store.Contacts" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.Store.EmployeeHistoryEntries" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EmployeeRoute" EntityType="CoreEntities.Store.EmployeeRoute" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Employees" EntityType="CoreEntities.Store.Employees" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Errors" EntityType="CoreEntities.Store.Errors" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Fields" EntityType="CoreEntities.Store.Fields" store:Type="Tables" Schema="dbo" />
@@ -39,7 +40,6 @@
           <EntitySet Name="RoleBlock" EntityType="CoreEntities.Store.RoleBlock" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Roles" EntityType="CoreEntities.Store.Roles" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RouteDestinations" EntityType="CoreEntities.Store.RouteDestinations" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RouteEmployee" EntityType="CoreEntities.Store.RouteEmployee" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Routes" EntityType="CoreEntities.Store.Routes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RouteTasks" EntityType="CoreEntities.Store.RouteTasks" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RouteVehicle" EntityType="CoreEntities.Store.RouteVehicle" store:Type="Tables" Schema="dbo" />
@@ -60,7 +60,7 @@
           <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId">
             <DefiningQuery>SELECT 
       [ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId], 
-      [ServiceTemplatesWithVendorId].[VendorId] AS [VendorId]
+      [ServiceTemplatesWithVendorId].[BusinessAccountId] AS [BusinessAccountId]
       FROM [dbo].[ServiceTemplatesWithVendorId] AS [ServiceTemplatesWithVendorId]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Business_inherits_Party" Association="CoreEntities.Store.FK_Business_inherits_Party">
@@ -70,10 +70,6 @@
           <AssociationSet Name="FK_BusinessAccount_inherits_Business" Association="CoreEntities.Store.FK_BusinessAccount_inherits_Business">
             <End Role="Parties_Business" EntitySet="Parties_Business" />
             <End Role="Parties_BusinessAccount" EntitySet="Parties_BusinessAccount" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BusinessAccountClient" Association="CoreEntities.Store.FK_BusinessAccountClient">
-            <End Role="Parties_BusinessAccount" EntitySet="Parties_BusinessAccount" />
-            <End Role="Clients" EntitySet="Clients" />
           </AssociationSet>
           <AssociationSet Name="FK_BusinessAccountInvoice" Association="CoreEntities.Store.FK_BusinessAccountInvoice">
             <End Role="Parties_BusinessAccount" EntitySet="Parties_BusinessAccount" />
@@ -98,6 +94,10 @@
           <AssociationSet Name="FK_BusinessAccountService" Association="CoreEntities.Store.FK_BusinessAccountService">
             <End Role="Parties_BusinessAccount" EntitySet="Parties_BusinessAccount" />
             <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClientBusinessAccount" Association="CoreEntities.Store.FK_ClientBusinessAccount">
+            <End Role="Parties_BusinessAccount" EntitySet="Parties_BusinessAccount" />
+            <End Role="Clients" EntitySet="Clients" />
           </AssociationSet>
           <AssociationSet Name="FK_ClientInvoice" Association="CoreEntities.Store.FK_ClientInvoice">
             <End Role="Clients" EntitySet="Clients" />
@@ -150,6 +150,14 @@
           <AssociationSet Name="FK_EmployeePerson" Association="CoreEntities.Store.FK_EmployeePerson">
             <End Role="Parties_Person" EntitySet="Parties_Person" />
             <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeRoute_Employee" Association="CoreEntities.Store.FK_EmployeeRoute_Employee">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="EmployeeRoute" EntitySet="EmployeeRoute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeRoute_Route" Association="CoreEntities.Store.FK_EmployeeRoute_Route">
+            <End Role="Routes" EntitySet="Routes" />
+            <End Role="EmployeeRoute" EntitySet="EmployeeRoute" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeUserAccount" Association="CoreEntities.Store.FK_EmployeeUserAccount">
             <End Role="Parties_UserAccount" EntitySet="Parties_UserAccount" />
@@ -287,14 +295,6 @@
             <End Role="Routes" EntitySet="Routes" />
             <End Role="RouteDestinations" EntitySet="RouteDestinations" />
           </AssociationSet>
-          <AssociationSet Name="FK_RouteEmployee_Employee" Association="CoreEntities.Store.FK_RouteEmployee_Employee">
-            <End Role="Employees" EntitySet="Employees" />
-            <End Role="RouteEmployee" EntitySet="RouteEmployee" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RouteEmployee_Route" Association="CoreEntities.Store.FK_RouteEmployee_Route">
-            <End Role="Routes" EntitySet="Routes" />
-            <End Role="RouteEmployee" EntitySet="RouteEmployee" />
-          </AssociationSet>
           <AssociationSet Name="FK_RouteTaskClient" Association="CoreEntities.Store.FK_RouteTaskClient">
             <End Role="Clients" EntitySet="Clients" />
             <End Role="RouteTasks" EntitySet="RouteTasks" />
@@ -409,10 +409,12 @@
       </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
+          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId
           FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
         </CommandText>
-        <Parameter Name="serviceProviderId" Type="uniqueidentifier" Mode="In" />
+        <Parameter Name="serviceProviderId"
+               Mode="In"
+               Type="uniqueidentifier"/>
       </Function>
         <EntityType Name="Blocks">
           <Key>
@@ -433,8 +435,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DateAdded" Type="datetime" Nullable="false" />
           <Property Name="Salesperson" Type="nvarchar(max)" />
-          <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DefaultBillingLocationId" Type="uniqueidentifier" />
+          <Property Name="BusinessAccountId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="ClientTitles">
           <Key>
@@ -475,6 +477,14 @@
           <Property Name="Summary" Type="nvarchar(max)" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="EmployeeId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeRoute">
+          <Key>
+            <PropertyRef Name="Employees_Id" />
+            <PropertyRef Name="Routes_Id" />
+          </Key>
+          <Property Name="Employees_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Routes_Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Employees">
           <Key>
@@ -760,14 +770,6 @@
           <Property Name="RouteId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ClientId" Type="uniqueidentifier" />
         </EntityType>
-        <EntityType Name="RouteEmployee">
-          <Key>
-            <PropertyRef Name="Routes_Id" />
-            <PropertyRef Name="Technicians_Id" />
-          </Key>
-          <Property Name="Routes_Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Technicians_Id" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
         <EntityType Name="Routes">
           <Key>
             <PropertyRef Name="Id" />
@@ -917,13 +919,15 @@
         <EntityType Name="ServiceTemplatesWithVendorId">
           <Key>
             <PropertyRef Name="ServiceTemplateId" />
-            <PropertyRef Name="VendorId" />
+            <PropertyRef Name="BusinessAccountId" />
           </Key>
           <Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <Association Name="FK_Business_inherits_Party">
-          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="1" />
+          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Parties_Business" Type="CoreEntities.Store.Parties_Business" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Parties">
@@ -935,7 +939,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BusinessAccount_inherits_Business">
-          <End Role="Parties_Business" Type="CoreEntities.Store.Parties_Business" Multiplicity="1" />
+          <End Role="Parties_Business" Type="CoreEntities.Store.Parties_Business" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Parties_BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Parties_Business">
@@ -943,18 +949,6 @@
             </Principal>
             <Dependent Role="Parties_BusinessAccount">
               <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BusinessAccountClient">
-          <End Role="Parties_BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="1" />
-          <End Role="Clients" Type="CoreEntities.Store.Clients" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parties_BusinessAccount">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Clients">
-              <PropertyRef Name="VendorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1027,6 +1021,18 @@
             </Principal>
             <Dependent Role="Services">
               <PropertyRef Name="ServiceProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClientBusinessAccount">
+          <End Role="Parties_BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
+          <End Role="Clients" Type="CoreEntities.Store.Clients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parties_BusinessAccount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clients">
+              <PropertyRef Name="BusinessAccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1189,6 +1195,30 @@
             </Principal>
             <Dependent Role="Employees">
               <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeRoute_Employee">
+          <End Role="Employees" Type="CoreEntities.Store.Employees" Multiplicity="1" />
+          <End Role="EmployeeRoute" Type="CoreEntities.Store.EmployeeRoute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeRoute">
+              <PropertyRef Name="Employees_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeRoute_Route">
+          <End Role="Routes" Type="CoreEntities.Store.Routes" Multiplicity="1" />
+          <End Role="EmployeeRoute" Type="CoreEntities.Store.EmployeeRoute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Routes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeRoute">
+              <PropertyRef Name="Routes_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1427,7 +1457,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PartyImage_inherits_File">
-          <End Role="Files" Type="CoreEntities.Store.Files" Multiplicity="1" />
+          <End Role="Files" Type="CoreEntities.Store.Files" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Files_PartyImage" Type="CoreEntities.Store.Files_PartyImage" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Files">
@@ -1491,7 +1523,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Person_inherits_Party">
-          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="1" />
+          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Parties_Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Parties">
@@ -1627,32 +1661,6 @@
             </Principal>
             <Dependent Role="RouteDestinations">
               <PropertyRef Name="RouteId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RouteEmployee_Employee">
-          <End Role="Employees" Type="CoreEntities.Store.Employees" Multiplicity="1" />
-          <End Role="RouteEmployee" Type="CoreEntities.Store.RouteEmployee" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employees">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RouteEmployee">
-              <PropertyRef Name="Technicians_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RouteEmployee_Route">
-          <End Role="Routes" Type="CoreEntities.Store.Routes" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="RouteEmployee" Type="CoreEntities.Store.RouteEmployee" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Routes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RouteEmployee">
-              <PropertyRef Name="Routes_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1821,7 +1829,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserAccount_inherits_Person">
-          <End Role="Parties_Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="1" />
+          <End Role="Parties_Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Parties_UserAccount" Type="CoreEntities.Store.Parties_UserAccount" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Parties_Person">
@@ -2003,10 +2013,6 @@
             <End Role="BusinessAccount" EntitySet="Parties" />
             <End Role="Route" EntitySet="Routes" />
           </AssociationSet>
-          <AssociationSet Name="BusinessAccountClient" Association="CoreEntities.BusinessAccountClient">
-            <End Role="BusinessAccount" EntitySet="Parties" />
-            <End Role="Client" EntitySet="Clients" />
-          </AssociationSet>
           <AssociationSet Name="BusinessAccountRouteTask" Association="CoreEntities.BusinessAccountRouteTask">
             <End Role="BusinessAccount" EntitySet="Parties" />
             <End Role="RouteTask" EntitySet="RouteTasks" />
@@ -2097,10 +2103,6 @@
           <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.EmployeeHistoryEntry" />
           <AssociationSet Name="EmployeeHistoryEntryEmployee" Association="CoreEntities.EmployeeHistoryEntryEmployee">
             <End Role="EmployeeHistoryEntry" EntitySet="EmployeeHistoryEntries" />
-            <End Role="Employee" EntitySet="Employees" />
-          </AssociationSet>
-          <AssociationSet Name="RouteEmployee" Association="CoreEntities.RouteEmployee">
-            <End Role="Route" EntitySet="Routes" />
             <End Role="Employee" EntitySet="Employees" />
           </AssociationSet>
           <AssociationSet Name="ServiceTemplateServiceTemplate" Association="CoreEntities.ServiceTemplateServiceTemplate">
@@ -2194,32 +2196,43 @@
             <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
           <FunctionImport Name="DeleteBasicPartyBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteBusinessAccountBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteClientBasedOnId">
-            <Parameter Name="clientId" Mode="In" Type="Guid" />
+          <Parameter Name="clientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteFieldAndChildrenBasedOnFieldId">
-            <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
+          <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteLocationBasedOnId">
-            <Parameter Name="locationId" Mode="In" Type="Guid" />
+          <Parameter Name="locationId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteRecurringService">
-            <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
+          <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId">
-            <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
+          <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplatesAndChildrenBasedOnContextId">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="ownerClientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserAccountBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <AssociationSet Name="EmployeeRoute" Association="CoreEntities.EmployeeRoute">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Route" EntitySet="Routes" />
+          </AssociationSet>
+          <AssociationSet Name="ClientBusinessAccount" Association="CoreEntities.ClientBusinessAccount">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="BusinessAccount" EntitySet="Parties" />
+          </AssociationSet>
+          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+          <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
@@ -2233,9 +2246,6 @@
           <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
             <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
             <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
-            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Block">
@@ -2466,8 +2476,8 @@
           <NavigationProperty Name="RouteDestinations" Relationship="CoreEntities.RouteDestinationRoute" FromRole="Route" ToRole="RouteDestination" />
           <NavigationProperty Name="OwnerBusinessAccount" Relationship="CoreEntities.BusinessAccountRoute" FromRole="Route" ToRole="BusinessAccount" />
           <Property Type="Guid" Name="OwnerBusinessAccountId" Nullable="false" />
-          <NavigationProperty Name="Technicians" Relationship="CoreEntities.RouteEmployee" FromRole="Route" ToRole="Employee" />
           <Property Type="String" Name="RouteType" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Employees" Relationship="CoreEntities.EmployeeRoute" FromRole="Route" ToRole="Employee" />
         </EntityType>
         <EntityType Name="UserAccountLogEntry">
           <Key>
@@ -2641,14 +2651,14 @@
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.RouteTaskClient" FromRole="Client" ToRole="RouteTask" />
           <NavigationProperty Name="ServicesToRecieve" Relationship="CoreEntities.ServiceClient" FromRole="Client" ToRole="Service" />
           <NavigationProperty Name="RouteDestinations" Relationship="CoreEntities.RouteDestinationClient" FromRole="Client" ToRole="RouteDestination" />
-          <NavigationProperty Name="Vendor" Relationship="CoreEntities.BusinessAccountClient" FromRole="Client" ToRole="BusinessAccount" />
-          <Property Type="Guid" Name="VendorId" Nullable="false" />
           <NavigationProperty Name="RecurringServices" Relationship="CoreEntities.RecurringServiceClient" FromRole="Client" ToRole="RecurringService" />
           <NavigationProperty Name="ServiceTemplates" Relationship="CoreEntities.ClientServiceTemplate" FromRole="Client" ToRole="ServiceTemplate" />
           <NavigationProperty Name="ClientTitles" Relationship="CoreEntities.ClientTitleClient" FromRole="Client" ToRole="ClientTitle" />
           <NavigationProperty Name="Invoices" Relationship="CoreEntities.ClientInvoice" FromRole="Client" ToRole="Invoice" />
           <NavigationProperty Name="DefaultBillingLocation" Relationship="CoreEntities.ClientLocation" FromRole="Client" ToRole="Location" />
           <Property Type="Guid" Name="DefaultBillingLocationId" Nullable="true" />
+          <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.ClientBusinessAccount" FromRole="Client" ToRole="BusinessAccount" />
+          <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
         </EntityType>
         <Association Name="ClientParty">
           <End Type="CoreEntities.Client" Multiplicity="0..1" Role="Client" />
@@ -2713,7 +2723,6 @@
         <EntityType Name="BusinessAccount" BaseType="CoreEntities.Business" >
           <NavigationProperty Name="ServicesToProvide" Relationship="CoreEntities.BusinessAccountService" FromRole="BusinessAccount" ToRole="Service" />
           <NavigationProperty Name="Routes" Relationship="CoreEntities.BusinessAccountRoute" FromRole="BusinessAccount" ToRole="Route" />
-          <NavigationProperty Name="Clients" Relationship="CoreEntities.BusinessAccountClient" FromRole="BusinessAccount" ToRole="Client" />
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.BusinessAccountRouteTask" FromRole="BusinessAccount" ToRole="RouteTask" />
           <NavigationProperty Name="ServiceTemplates" Relationship="CoreEntities.ServiceTemplateBusinessAccount" FromRole="BusinessAccount" ToRole="ServiceTemplate" />
           <NavigationProperty Name="Regions" Relationship="CoreEntities.BusinessAccountRegion" FromRole="BusinessAccount" ToRole="Region" />
@@ -2726,6 +2735,7 @@
           <NavigationProperty Name="Invoices" Relationship="CoreEntities.BusinessAccountInvoice" FromRole="BusinessAccount" ToRole="Invoice" />
           <Property Type="Int32" Name="MaxRoutes" Nullable="false" DefaultValue="1" />
           <NavigationProperty Name="Depots" Relationship="CoreEntities.BusinessAccountLocation" FromRole="BusinessAccount" ToRole="Location" />
+          <NavigationProperty Name="Clients" Relationship="CoreEntities.ClientBusinessAccount" FromRole="BusinessAccount" ToRole="Client" />
         </EntityType>
         <Association Name="BusinessAccountService">
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
@@ -2748,18 +2758,6 @@
             </Principal>
             <Dependent Role="Route">
               <PropertyRef Name="OwnerBusinessAccountId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="BusinessAccountClient">
-          <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
-          <End Type="CoreEntities.Client" Role="Client" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BusinessAccount">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Client">
-              <PropertyRef Name="VendorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3053,7 +3051,6 @@
           <Property Type="Guid" Name="EmployerId" Nullable="false" />
           <NavigationProperty Name="OwnedPerson" Relationship="CoreEntities.EmployeePerson" FromRole="Employee" ToRole="Person" />
           <NavigationProperty Name="EmployeeHistoryEntries" Relationship="CoreEntities.EmployeeHistoryEntryEmployee" FromRole="Employee" ToRole="EmployeeHistoryEntry" />
-          <NavigationProperty Name="Routes" Relationship="CoreEntities.RouteEmployee" FromRole="Employee" ToRole="Route" />
           <Property Type="Int32" Name="LastCompassDirection" Nullable="true" />
           <Property Type="Double" Name="LastLongitude" Nullable="true" />
           <Property Type="Double" Name="LastLatitude" Nullable="true" />
@@ -3062,6 +3059,7 @@
           <Property Type="String" Name="LastSource" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="DateTime" Name="LastPushToAzureTimeStamp" Nullable="true" Precision="3" />
           <Property Type="Int32" Name="LastAccuracy" Nullable="true" />
+          <NavigationProperty Name="Routes" Relationship="CoreEntities.EmployeeRoute" FromRole="Employee" ToRole="Route" />
         </EntityType>
         <Association Name="EmployeeUserAccount">
           <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
@@ -3147,10 +3145,6 @@
               <PropertyRef Name="EmployeeId" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="RouteEmployee">
-          <End Type="CoreEntities.Route" Role="Route" Multiplicity="*" />
-          <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
         </Association>
         <Association Name="ServiceTemplateServiceTemplate">
           <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate" Multiplicity="0..1" />
@@ -3479,10 +3473,10 @@
         <EntityType Name="ServiceTemplateWithVendorId">
           <Key>
             <PropertyRef Name="ServiceTemplateId" />
-            <PropertyRef Name="VendorId" />
+            <PropertyRef Name="BusinessAccountId" />
           </Key>
           <Property Type="Guid" Name="ServiceTemplateId" Nullable="false" />
-          <Property Type="Guid" Name="VendorId" Nullable="false" />
+          <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
         </EntityType>
         <ComplexType Name="ServiceHolder" >
           <Property Type="Guid" Name="RecurringServiceId" Nullable="true" />
@@ -3539,6 +3533,22 @@
             </Principal>
             <Dependent Role="Location">
               <PropertyRef Name="BusinessAccountIdIfDepot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EmployeeRoute">
+          <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
+          <End Type="CoreEntities.Route" Role="Route" Multiplicity="*" />
+        </Association>
+        <Association Name="ClientBusinessAccount">
+          <End Type="CoreEntities.Client" Role="Client" Multiplicity="*" />
+          <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessAccount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="BusinessAccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3798,8 +3808,8 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
           <ScalarProperty Name="Salesperson" ColumnName="Salesperson" />
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
           <ScalarProperty Name="DefaultBillingLocationId" ColumnName="DefaultBillingLocationId" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -4033,8 +4043,8 @@
     <EntitySetMapping Name="ServiceTemplateWithVendorIds">
       <EntityTypeMapping TypeName="CoreEntities.ServiceTemplateWithVendorId">
         <MappingFragment StoreEntitySet="ServiceTemplatesWithVendorId">
-          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
           <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -4062,12 +4072,12 @@
         <ScalarProperty Name="Id" ColumnName="RoleMembership_Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="RouteEmployee" TypeName="CoreEntities.RouteEmployee" StoreEntitySet="RouteEmployee">
+    <AssociationSetMapping Name="EmployeeRoute" TypeName="CoreEntities.EmployeeRoute" StoreEntitySet="EmployeeRoute">
+      <EndProperty Name="Employee">
+        <ScalarProperty Name="Id" ColumnName="Employees_Id" />
+      </EndProperty>
       <EndProperty Name="Route">
         <ScalarProperty Name="Id" ColumnName="Routes_Id" />
-      </EndProperty>
-      <EndProperty Name="Employee">
-        <ScalarProperty Name="Id" ColumnName="Technicians_Id" />
       </EndProperty>
     </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="DeleteBasicPartyBasedOnId" FunctionName="CoreEntities.Store.DeleteBasicPartyBasedOnId" />
@@ -4079,53 +4089,10 @@
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" FunctionName="CoreEntities.Store.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" />
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplatesAndChildrenBasedOnContextId" FunctionName="CoreEntities.Store.DeleteServiceTemplatesAndChildrenBasedOnContextId" />
           <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
-          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
-                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
-                <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="Heading" ColumnName="Heading" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-  </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders" />
+          <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate" />
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint" />
+          </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
@@ -4412,13 +4379,6 @@
           <ConnectorPoint PointX="4.666666666666667" PointY="204.50934895833333" />
           <ConnectorPoint PointX="4.5" PointY="204.50934895833333" />
         </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.BusinessAccountClient">
-          <ConnectorPoint PointX="10.236985221354168" PointY="211.5" />
-          <ConnectorPoint PointX="10.236985221354168" PointY="199.73005387044114" />
-          <ConnectorPoint PointX="10.208333333333334" PointY="199.73005387044114" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="199.73005387044114" />
-          <ConnectorPoint PointX="7.625" PointY="199.73005387044114" />
-        </AssociationConnector>
         <AssociationConnector Association="CoreEntities.BusinessAccountRouteTask">
           <ConnectorPoint PointX="10.15625" PointY="215.21099934895833" />
           <ConnectorPoint PointX="10.15625" PointY="220.07643191145832" />
@@ -4662,15 +4622,6 @@
           <ConnectorPoint PointX="5.9687474999999832" PointY="212.375" />
           <ConnectorPoint PointX="5.9687474999999832" PointY="210.53790364583333" />
         </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RouteEmployee">
-          <ConnectorPoint PointX="4.09375" PointY="205.38409505208333" />
-          <ConnectorPoint PointX="4.09375" PointY="206.65625" />
-          <ConnectorPoint PointX="4.666666666666667" PointY="206.65625" />
-          <ConnectorPoint PointX="4.833333333333333" PointY="206.65625" />
-          <ConnectorPoint PointX="4.916666666666667" PointY="206.65625" />
-          <ConnectorPoint PointX="5.083333333333333" PointY="206.65625" />
-          <ConnectorPoint PointX="5.25" PointY="206.65625" />
-        </AssociationConnector>
         <AssociationConnector Association="CoreEntities.ServiceTemplateServiceTemplate">
           <ConnectorPoint PointX="15.128557692307693" PointY="193.5" />
           <ConnectorPoint PointX="15.128557692307693" PointY="193.25" />
@@ -4901,6 +4852,8 @@
           <ConnectorPoint PointX="15.152344781250001" PointY="28.75" />
           <ConnectorPoint PointX="15.152344781250001" PointY="27.701315104166667" />
         </AssociationConnector>
+        <AssociationConnector Association="CoreEntities.EmployeeRoute" />
+        <AssociationConnector Association="CoreEntities.ClientBusinessAccount" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
