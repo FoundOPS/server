@@ -302,7 +302,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
             #region Generates the XML body of the Post call
 
-            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.DisplayName;
+            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.Name;
 
             var clientXML = GetEntityList(currentBusinessAccount, "customers", filter);
 
@@ -358,7 +358,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
             #region Generates the XML body of the Post call
 
-            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.DisplayName;
+            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.Name;
 
             var clientXML = GetEntityList(currentBusinessAccount, "customers", filter);
 
@@ -414,7 +414,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
             #region Generates the XML body of the Post call
 
-            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.DisplayName;
+            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.Name;
 
             var clientXML = GetEntityList(currentBusinessAccount, "customers", filter);
 

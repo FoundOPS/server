@@ -19,18 +19,17 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         /// Initializes a new instance of the <see cref="LocationsDesignData"/> class.
         /// </summary>
         public LocationsDesignData()
-            : this(new PartyDesignData().DesignBusinessAccount, new ClientsDesignData().DesignClient, new RegionsDesignData().DesignRegions, 0, 5)
+            : this(new ClientsDesignData().DesignClient, new RegionsDesignData().DesignRegions, 0, 5)
         { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationsDesignData"/> class.
         /// </summary>
-        /// <param name="ownerParty">The party that created the locations.</param>
         /// <param name="client">The client that resides at the locations.</param>
         /// <param name="regions">The regions for the locations.</param>
         /// <param name="startIndex">The first location to add</param>
         /// <param name="numberItems">The number of locations to add</param>
-        public LocationsDesignData(Party ownerParty, Client client, IEnumerable<Region> regions, int startIndex, int numberItems)
+        public LocationsDesignData(Client client, IEnumerable<Region> regions, int startIndex, int numberItems)
         {
             InitializeLocations();
 
@@ -42,18 +41,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             foreach (var location in locationsToConsider)
             {
                 //Assign location to client
-                client.OwnedParty.Locations.Add(location);
+                client.Locations.Add(location);
 
                 //Add SubLocations
                 var subLocationsDesignData = new SubLocationsDesignData();
                 foreach (var subLocation in subLocationsDesignData.DesignSubLocations)
                     location.SubLocations.Add(subLocation);
-            }
-
-            //Go through each location and assign it's OwnerParty and a Region
-            foreach (var location in locationsToConsider)
-            {
-                location.OwnerParty = ownerParty;
 
                 //Setup the Region on the location to be a random Rsegion
                 location.Region = regions.ElementAt(random.Next(0, 8));

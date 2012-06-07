@@ -202,9 +202,6 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\ContactInfoDesignData.cs">
       <Link>DesignData\ContactInfoDesignData.cs</Link>
     </Compile>
-    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\ContactsDesignData.cs">
-      <Link>DesignData\ContactsDesignData.cs</Link>
-    </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\EmployeeHistoryDesignData.cs">
       <Link>DesignData\EmployeeHistoryDesignData.cs</Link>
     </Compile>
@@ -271,7 +268,6 @@
     <Compile Include="Converters\ClientConverters.cs" />
     <Compile Include="Converters\ContactInfoConverters.cs" />
     <Compile Include="Converters\FieldConverters.cs" />
-    <Compile Include="Converters\OwnerPartyToClientConverter.cs" />
     <Compile Include="Converters\LocationConverters.cs" />
     <Compile Include="Converters\RepeatConverters.cs" />
     <Compile Include="Converters\ServiceTemplatesConverters.cs" />

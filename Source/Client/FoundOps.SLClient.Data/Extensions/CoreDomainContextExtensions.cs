@@ -19,6 +19,10 @@ namespace FoundOps.Server.Services.CoreDomainService
     public enum ContactInfoType
     {
         /// <summary>
+        /// Clients' Contact Info
+        /// </summary>
+        Clients,
+        /// <summary>
         /// Locations' Contact Info
         /// </summary>
         Locations,
@@ -86,6 +90,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             Action contactInfoDataServicesChanged = () =>
             {
+                RaisePropertyChanged("ClientsContactInfoDataService");
                 RaisePropertyChanged("LocationsContactInfoDataService");
                 RaisePropertyChanged("PartyContactInfoDataService");
             };
@@ -101,7 +106,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var changes = GetChangeSet();
 
-            var changesRejectedArgs =  new ChangedRejectedEventArgs(this,changes.AddedEntities.ToArray(), changes.ModifiedEntities.ToArray());
+            var changesRejectedArgs = new ChangedRejectedEventArgs(this, changes.AddedEntities.ToArray(), changes.ModifiedEntities.ToArray());
 
             //https://github.com/FoundOPS/FoundOPS/wiki/Files
             //Remove inserted files from cloud storage that are now going to be removed
@@ -129,13 +134,26 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
+        /// Gets the Clients ContactInfoDataService.
+        /// </summary>
+        /// <param name="currentBusinessAccountId">The current business account id.</param>
+        /// <returns></returns>
+        public IContactInfoDataService ClientsContactInfoDataService(Guid currentBusinessAccountId)
+        {
+            var clientContactInfos = this.ContactInfos.Where(ci => ci.Client != null && ci.Client.BusinessAccountId == currentBusinessAccountId);
+            return
+                new ContactInfoDataService(
+                    clientContactInfos.Select(ci => ci.Type).Union(_contactInfoTypes).Distinct().Where(s => s != null).OrderBy(s => s),
+                    clientContactInfos.Select(ci => ci.Label).Distinct().Where(s => s != null).OrderBy(s => s));
+        }
+
+        /// <summary>
         /// Gets the Locations ContactInfoDataService.
         /// </summary>
-        /// <param name="currentRoleId">The current role id.</param>
-        /// <returns></returns>
-        public IContactInfoDataService LocationsContactInfoDataService(Guid currentRoleId)
+        /// <param name="currentBusinessAccountId">The current business account id.</param>
+        public IContactInfoDataService LocationsContactInfoDataService(Guid currentBusinessAccountId)
         {
-            var locationContactInfos = this.ContactInfos.Where(ci => ci.Location != null && ci.Location.OwnerPartyId == currentRoleId);
+            var locationContactInfos = this.ContactInfos.Where(ci => ci.Location != null && ci.Location.BusinessAccountId == currentBusinessAccountId);
             return
                 new ContactInfoDataService(
                     locationContactInfos.Select(ci => ci.Type).Union(_contactInfoTypes).Distinct().Where(s => s != null).OrderBy(s => s),
@@ -145,9 +163,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <summary>
         /// Gets the Party ContactInfoDataService.
         /// </summary>
-        /// <param name="currentRoleId">The current role id.</param>
-        /// <returns></returns>
-        public IContactInfoDataService PartyContactInfoDataService(Guid currentRoleId)
+        /// <param name="currentBusinessAccountId">The current business account id.</param>
+        public IContactInfoDataService PartyContactInfoDataService(Guid currentBusinessAccountId)
         {
             var partyContactInfos = this.ContactInfos.Where(ci => ci.PartyId != Guid.Empty);
             return

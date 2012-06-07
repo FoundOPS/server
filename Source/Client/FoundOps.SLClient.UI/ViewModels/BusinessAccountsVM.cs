@@ -345,7 +345,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 //If there is not a depot: set one up
                 if (!businessAccount.Depots.Any() && businessAccount.Id != BusinessAccountsConstants.FoundOpsId)
-                    businessAccount.Depots.Add(new Location { OwnerParty = ContextManager.OwnerAccount });
+                    businessAccount.Depots.Add(new Location { BusinessAccount = ContextManager.ServiceProvider });
 
                 //Now there will only be one depot per business account
                 SelectedDepotLocationVM = new LocationVM(businessAccount.Depots.FirstOrDefault());

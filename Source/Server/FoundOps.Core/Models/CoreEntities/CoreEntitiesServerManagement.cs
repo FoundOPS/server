@@ -26,7 +26,7 @@ namespace FoundOps.Core.Models.CoreEntities
             RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
 
         private static readonly string CreateCoreEntitiesDatabaseScriptLocation =
-            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql";
+            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected.edmx.sql";
 
         #endregion
 
@@ -96,34 +96,35 @@ namespace FoundOps.Core.Models.CoreEntities
                 foreach (var employee in employeesDesignData.DesignEmployees)
                     serviceProvider.Employees.Add(employee);
 
+                //container.SaveChanges();
+
                 //Add Vehicles (and Vehicle Maintenance, and VehicleTypes)
                 var vehiclesDesignData = new VehiclesDesignData(serviceProvider);
                 foreach (var vehicle in vehiclesDesignData.DesignVehicles)
                     serviceProvider.Vehicles.Add(vehicle);
+
+                //container.SaveChanges();
 
                 //Add Regions
                 var regionsDesignData = new RegionsDesignData();
                 foreach (var region in regionsDesignData.DesignRegions)
                     serviceProvider.Regions.Add(region);
 
+                //container.SaveChanges();
+
                 //Add Clients (and ContactInfo, Locations, and RecurringServices)
                 var clientsDesignData = new ClientsDesignData(serviceProvider, regionsDesignData);
                 foreach (var client in clientsDesignData.DesignClients)
                     serviceProvider.Clients.Add(client);
-
-                //Add Contacts
-                var contactsDesignData = new ContactsDesignData(clientsDesignData);
-                foreach (var contact in contactsDesignData.DesignContacts)
-                    serviceProvider.Contacts.Add(contact);
-
-                //container.SaveChanges();
+                
+                container.SaveChanges();
 
                 //Add Routes (with RouteTasks, Vehicles, Technicians)
                 var routesDesignData = new RoutesDesignData(serviceProvider, clientsDesignData, vehiclesDesignData, employeesDesignData);
                 foreach (var route in routesDesignData.DesignRoutes)
                     serviceProvider.Routes.Add(route);
 
-                //container.SaveChanges();
+                container.SaveChanges();
 
                 //Add Services
                 var servicesDesignData = new ServicesDesignData(serviceProvider, clientsDesignData.DesignClient, serviceProvider.ServiceTemplates);

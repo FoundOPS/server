@@ -89,7 +89,7 @@ namespace FoundOps.Core.Models.CoreEntities
             };
 
             if (Client != null)
-                taskHolder.ClientName = Client.DisplayName;
+                taskHolder.ClientName = Client.Name;
 
             if (Location != null)
             {

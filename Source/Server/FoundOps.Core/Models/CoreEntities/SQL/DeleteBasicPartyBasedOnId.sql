@@ -14,8 +14,7 @@ CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 	BEGIN
 
 	DELETE FROM Locations
-	WHERE		OwnerPartyId = @providerId
-	OR			PartyId = @providerId
+	WHERE		PartyId = @providerId
 
 	DELETE FROM Contacts
 	WHERE		OwnerPartyId = @providerId

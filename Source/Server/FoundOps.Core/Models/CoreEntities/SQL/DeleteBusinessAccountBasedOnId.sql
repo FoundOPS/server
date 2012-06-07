@@ -88,7 +88,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	--Finds all Locations that are associated with the BusinessAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
-	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
+	WHERE	PartyId = @providerId
 
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)

@@ -104,7 +104,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 var currentClient = _clientsDesignData.DesignClients.ElementAt(i);
 
                 //Take the first location from the client
-                var currentLocation = currentClient.OwnedParty.Locations.ElementAt(0);
+                var currentLocation = currentClient.Locations.ElementAt(0);
 
                 var newService = new Service
                 {
@@ -120,7 +120,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 {
                     OrderInRouteDestination = 1,
                     Date = newRoute.Date,
-                    Location = currentClient.OwnedParty.Locations.ElementAt(0),
+                    Location = currentClient.Locations.ElementAt(0),
                     Client = currentClient,
                     Name = newRoute.RouteType,
                     EstimatedDuration = new TimeSpan(0, _random.Next(25), 0),

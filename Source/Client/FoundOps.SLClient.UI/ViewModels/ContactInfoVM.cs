@@ -80,12 +80,15 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Update the ContactInfoDataService whenever the LocationsContactInfoDataService or the PartyContactInfoDataService changes
             Manager.Data.DomainContext.FromAnyPropertyChanged()
-                .Where(pce => pce.PropertyName == "LocationsContactInfoDataService" || pce.PropertyName == "PartyContactInfoDataService")
+                .Where(pce => pce.PropertyName == "LocationsContactInfoDataService" || pce.PropertyName == "PartyContactInfoDataService" || pce.PropertyName == "ClientsContactInfoDataService")
                 .AsGeneric().AndNow().SubscribeOnDispatcher().Subscribe(_ =>
                 {
                     if (Manager.Context.OwnerAccount != null)
                         switch (contactInfoType)
                         {
+                            case ContactInfoType.Clients:
+                                ContactInfoDataService = Manager.Data.DomainContext.ClientsContactInfoDataService(Manager.Context.OwnerAccount.Id);
+                                break;
                             case ContactInfoType.Locations:
                                 ContactInfoDataService = Manager.Data.DomainContext.LocationsContactInfoDataService(Manager.Context.OwnerAccount.Id);
                                 break;

@@ -96,9 +96,9 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             if (currentClient == null || location == null) return;
 
             //Prevents race condition issue when changing Client context
-            if (!currentClient.OwnedParty.Locations.Any(l => l.Id == location.Id)) return;
+            if (!currentClient.Locations.Any(l => l.Id == location.Id)) return;
 
-            currentClient.DefaultBillingLocation = location;
+            location.IsDefaultBillingLocation = true;
         }
     }
 }

@@ -67,7 +67,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             foreach(var serviceProvider in DesignServiceProviders)
             {
                 serviceProvider.Depots.Add(new Location { Name = "Depot", AddressLineOne = "1305 Cumberland Ave", City = "West Lafayette", State = "IN", ZipCode = "47906",
-                    OwnerParty = serviceProvider, Latitude = (decimal?) 40.460335, Longitude = (decimal?) (-86.929840)});
+                    BusinessAccount = serviceProvider, Latitude = (decimal?) 40.460335, Longitude = (decimal?) (-86.929840)});
             }
 
             //Add ServiceTemplates

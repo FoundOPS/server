@@ -82,34 +82,6 @@
                         <Clients1:ClientSmall />
                     </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
-                <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Contact">
-                    <InfiniteAccordion:ThirdsListDetails.List>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Border Background="{StaticResource EmployeeBrush}">
-                                <Grid DataContext="{Binding DataContext, ElementName=ContactsGrid}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock TextWrapping="Wrap" Text="Contacts" Margin="5,3,5,3" FontSize="13" Foreground="White" />
-                                    <AddEditDelete:AddDelete Grid.Column="1" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"
-                                                CommandParameter="{Binding SelectedClientOwnedBusinessVM.Entity}" />
-                                </Grid>
-                            </Border>
-                            <Contacts1:ContactsGrid x:Name="ContactsGrid" IsMainGrid="True" Grid.Row="1" />
-                        </Grid>
-                    </InfiniteAccordion:ThirdsListDetails.List>
-                    <InfiniteAccordion:ThirdsListDetails.Details>
-                        <Contacts:ContactLarge />
-                    </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <Contacts:ContactSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
-                </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Employee">
                     <InfiniteAccordion:ThirdsListDetails.List>
                         <Grid>

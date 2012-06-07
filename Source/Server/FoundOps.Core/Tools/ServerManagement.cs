@@ -27,7 +27,7 @@ namespace FoundOps.Core.Tools
             foreach (var recurringService in recurringServicesWithoutLocations)
             {
                 var locationField = recurringService.ServiceTemplate.Fields.OfType<LocationField>().First();
-                locationField.Value = recurringService.Client.OwnedParty.Locations.FirstOrDefault();
+                locationField.Value = recurringService.Client.Locations.FirstOrDefault();
             }
 
             coreEntitiesContainer.SaveChanges();

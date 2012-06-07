@@ -70,7 +70,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Load contact info
             var client = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessForRole.Id && c.Id == clientId)
-                .Include(c => c.OwnedParty).Include(c => c.OwnedParty.ContactInfoSet).Include("RecurringServices")
+                .Include(c => c.ContactInfoSet).Include("RecurringServices")
                 .Include("RecurringServices.Repeat").Include("RecurringServices.ServiceTemplate").FirstOrDefault();
 
             if (client == null) return null;
@@ -91,7 +91,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Query(HasSideEffects = true)] //HasSideEffects so a POST is used and a maximum URI length is not thrown
         public IQueryable<Client> GetClientsWithContactInfoSet(Guid roleId, IEnumerable<Guid> clientsIds)
         {
-            var clients = GetClientsForRole(roleId).Where(c => clientsIds.Contains(c.Id)).Include(c => c.OwnedParty.ContactInfoSet);
+            var clients = GetClientsForRole(roleId).Where(c => clientsIds.Contains(c.Id)).Include(c => c.ContactInfoSet);
             return clients;
         }
 
@@ -442,7 +442,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
-            var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id && !loc.BusinessAccountIdIfDepot.HasValue).OrderBy(l => l.Name);
+            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == partyForRole.Id && !loc.BusinessAccountIdIfDepot.HasValue).OrderBy(l => l.Name);
             return locations;
         }
 
@@ -497,7 +497,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
-            var location = ObjectContext.Locations.Where(l => l.Id == locationId && l.OwnerPartyId == partyForRole.Id)
+            var location = ObjectContext.Locations.Where(l => l.Id == locationId && l.BusinessAccountId == partyForRole.Id) 
                 .Include("Party.ClientOwner").Include("Region").Include("SubLocations").Include("ContactInfoSet").FirstOrDefault();
 
             return location;
@@ -522,7 +522,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                                         "Address 1", "Address 2", "City", "State", "Zip Code",
                                         "Latitude", "Longitude");
 
-            var locations = ObjectContext.Locations.Where(loc => loc.OwnerPartyId == partyForRole.Id && !loc.BusinessAccountIdIfDepot.HasValue);
+            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == partyForRole.Id && !loc.BusinessAccountIdIfDepot.HasValue); 
 
             //Add client context if it exists
             if (clientId != Guid.Empty)

@@ -36,11 +36,11 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 recurringService.Client = client;
 
                 //Set the desination to the next location of the client
-                recurringService.ServiceTemplate.SetDestination(client.OwnedParty.Locations.ElementAtOrDefault(locationIndex));
+                recurringService.ServiceTemplate.SetDestination(client.Locations.ElementAtOrDefault(locationIndex));
 
                 locationIndex++;
 
-                if (locationIndex >= client.OwnedParty.Locations.Count)
+                if (locationIndex >= client.Locations.Count)
                     locationIndex = 0;
             }
         }

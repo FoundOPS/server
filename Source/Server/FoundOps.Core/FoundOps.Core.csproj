@@ -126,7 +126,6 @@
     <Compile Include="Models\CoreEntities\DesignData\BusinessAccountsDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\ClientsDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\ContactInfoDesignData.cs" />
-    <Compile Include="Models\CoreEntities\DesignData\ContactsDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\EmployeeHistoryDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\EmployeesDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\FieldsDesignData.cs" />
@@ -171,7 +170,6 @@
     <Compile Include="Models\CoreEntities\Extensions\Locations\SubLocationExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\BusinessExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\ClientExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Parties\ClientTitleExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\ContactExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeHistoryExtensions.shared.cs" />
@@ -226,7 +224,7 @@
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
     <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
-    <Content Include="Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql">
+    <Content Include="Models\CoreEntities\CoreEntitiesCorrected.edmx.sql">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
@@ -266,7 +264,7 @@
     <None Include="App.Config" />
     <None Include="Models\CoreEntities\CoreEntitiesCorrected.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CoreEntitiesCorrected1.edmx.sql</LastGenOutput>
+      <LastGenOutput>CoreEntitiesCorrected.edmx.sql</LastGenOutput>
     </None>
     <None Include="Models\CoreEntities\M2M4RiaEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

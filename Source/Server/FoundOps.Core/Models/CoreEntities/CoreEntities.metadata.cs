@@ -64,7 +64,10 @@ namespace FoundOps.Core.Models.CoreEntities
             }
 
             [Include]
-            public Party OwnedParty { get; set; }
+            public EntityCollection<ContactInfo> ContactInfoSet { get; set; }
+
+            [Include]
+            public EntityCollection<Location> Locations { get; set; }
 
             [Include]
             public EntityCollection<RecurringService> RecurringServices { get; set; }
@@ -285,9 +288,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
             [Include]
             public EntityCollection<Location> Locations { get; set; }
-
-            [Include]
-            public Client ClientOwner { get; set; }
 
             public EntityCollection<Role> RoleMembership { get; set; }
 

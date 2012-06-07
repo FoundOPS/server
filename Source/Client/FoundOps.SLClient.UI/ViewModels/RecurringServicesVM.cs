@@ -77,8 +77,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             newRecurringService.Client = clientContext;
 
             //If there is only one location, try to set the destination (assuming this Service Template has a destination field)
-            if (clientContext.OwnedParty.Locations.Count == 1)
-                newRecurringService.ServiceTemplate.SetDestination(clientContext.OwnedParty.Locations.First());
+            if (clientContext.Locations.Count == 1)
+                newRecurringService.ServiceTemplate.SetDestination(clientContext.Locations.First());
 
             return newRecurringService;
         }

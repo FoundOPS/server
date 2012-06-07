@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/05/2012 13:45:51
+-- Date Created: 06/07/2012 12:09:26
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -30,9 +30,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_LocationContactInfo]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ContactInfoSet] DROP CONSTRAINT [FK_LocationContactInfo];
 GO
-IF OBJECT_ID(N'[dbo].[FK_LocationParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_LocationParty];
-GO
 IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryVehicle]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[VehicleMaintenanceLog] DROP CONSTRAINT [FK_VehicleMaintenanceLogEntryVehicle];
 GO
@@ -56,9 +53,6 @@ IF OBJECT_ID(N'[dbo].[FK_RouteDestinationRoute]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryLineItem]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[VehicleMaintenanceLineItems] DROP CONSTRAINT [FK_VehicleMaintenanceLogEntryLineItem];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ClientParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientParty];
 GO
 IF OBJECT_ID(N'[dbo].[FK_RouteTaskClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskClient];
@@ -165,12 +159,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ContactParty]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Contacts] DROP CONSTRAINT [FK_ContactParty];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ClientTitleClient]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ClientTitles] DROP CONSTRAINT [FK_ClientTitleClient];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ClientTitleContact]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ClientTitles] DROP CONSTRAINT [FK_ClientTitleContact];
-GO
 IF OBJECT_ID(N'[dbo].[FK_InvoiceLocation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_InvoiceLocation];
 GO
@@ -195,9 +183,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ClientInvoice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_ClientInvoice];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ClientLocation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientLocation];
-GO
 IF OBJECT_ID(N'[dbo].[FK_RouteTaskRecurringService]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskRecurringService];
 GO
@@ -212,6 +197,15 @@ IF OBJECT_ID(N'[dbo].[FK_EmployeeRoute_Route]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ClientBusinessAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientBusinessAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_LocationBusinessAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_LocationBusinessAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ClientLocation1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_ClientLocation1];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ClientContactInfo]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ContactInfoSet] DROP CONSTRAINT [FK_ClientContactInfo];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
@@ -323,9 +317,6 @@ GO
 IF OBJECT_ID(N'[dbo].[Contacts]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Contacts];
 GO
-IF OBJECT_ID(N'[dbo].[ClientTitles]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ClientTitles];
-GO
 IF OBJECT_ID(N'[dbo].[Invoices]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Invoices];
 GO
@@ -433,7 +424,8 @@ CREATE TABLE [dbo].[ContactInfoSet] (
     [Data] nvarchar(max)  NULL,
     [PartyId] uniqueidentifier  NULL,
     [LocationId] uniqueidentifier  NULL,
-    [ContactId] uniqueidentifier  NULL
+    [ContactId] uniqueidentifier  NULL,
+    [ClientId] uniqueidentifier  NULL
 );
 GO
 
@@ -462,7 +454,6 @@ GO
 -- Creating table 'Locations'
 CREATE TABLE [dbo].[Locations] (
     [Id] uniqueidentifier  NOT NULL,
-    [OwnerPartyId] uniqueidentifier  NULL,
     [Name] nvarchar(max)  NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [Longitude] decimal(11,8)  NULL,
@@ -473,7 +464,10 @@ CREATE TABLE [dbo].[Locations] (
     [City] nvarchar(max)  NULL,
     [PartyId] uniqueidentifier  NULL,
     [RegionId] uniqueidentifier  NULL,
-    [BusinessAccountIdIfDepot] uniqueidentifier  NULL
+    [BusinessAccountIdIfDepot] uniqueidentifier  NULL,
+    [BusinessAccountId] uniqueidentifier  NULL,
+    [ClientId] uniqueidentifier  NULL,
+    [IsDefaultBillingLocation] bit  NULL
 );
 GO
 
@@ -557,8 +551,8 @@ CREATE TABLE [dbo].[Clients] (
     [Id] uniqueidentifier  NOT NULL,
     [DateAdded] datetime  NOT NULL,
     [Salesperson] nvarchar(max)  NULL,
-    [DefaultBillingLocationId] uniqueidentifier  NULL,
-    [BusinessAccountId] uniqueidentifier  NULL
+    [BusinessAccountId] uniqueidentifier  NULL,
+    [Name] nvarchar(max)  NULL
 );
 GO
 
@@ -680,15 +674,6 @@ CREATE TABLE [dbo].[Contacts] (
 );
 GO
 
--- Creating table 'ClientTitles'
-CREATE TABLE [dbo].[ClientTitles] (
-    [Id] uniqueidentifier  NOT NULL,
-    [Title] nvarchar(max)  NOT NULL,
-    [ClientId] uniqueidentifier  NULL,
-    [ContactId] uniqueidentifier  NOT NULL
-);
-GO
-
 -- Creating table 'Invoices'
 CREATE TABLE [dbo].[Invoices] (
     [Id] uniqueidentifier  NOT NULL,
@@ -757,7 +742,12 @@ GO
 
 
 
-
+-- Creating table 'ServiceTemplateWithVendorIds'
+CREATE TABLE [dbo].[ServiceTemplateWithVendorIds] (
+    [ServiceTemplateId] uniqueidentifier  NOT NULL,
+    [BusinessAccountId] uniqueidentifier  NOT NULL
+);
+GO
 
 -- Creating table 'Parties_Business'
 CREATE TABLE [dbo].[Parties_Business] (
@@ -1032,12 +1022,6 @@ ADD CONSTRAINT [PK_Contacts]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'ClientTitles'
-ALTER TABLE [dbo].[ClientTitles]
-ADD CONSTRAINT [PK_ClientTitles]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [PK_Invoices]
@@ -1070,7 +1054,11 @@ GO
 
 
 
-
+-- Creating primary key on [ServiceTemplateId], [BusinessAccountId] in table 'ServiceTemplateWithVendorIds'
+ALTER TABLE [dbo].[ServiceTemplateWithVendorIds]
+ADD CONSTRAINT [PK_ServiceTemplateWithVendorIds]
+    PRIMARY KEY CLUSTERED ([ServiceTemplateId], [BusinessAccountId] ASC);
+GO
 
 -- Creating primary key on [Id] in table 'Parties_Business'
 ALTER TABLE [dbo].[Parties_Business]
@@ -1220,20 +1208,6 @@ ON [dbo].[ContactInfoSet]
     ([LocationId]);
 GO
 
--- Creating foreign key on [OwnerPartyId] in table 'Locations'
-ALTER TABLE [dbo].[Locations]
-ADD CONSTRAINT [FK_LocationParty]
-    FOREIGN KEY ([OwnerPartyId])
-    REFERENCES [dbo].[Parties]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_LocationParty'
-CREATE INDEX [IX_FK_LocationParty]
-ON [dbo].[Locations]
-    ([OwnerPartyId]);
-GO
-
 -- Creating foreign key on [VehicleId] in table 'VehicleMaintenanceLog'
 ALTER TABLE [dbo].[VehicleMaintenanceLog]
 ADD CONSTRAINT [FK_VehicleMaintenanceLogEntryVehicle]
@@ -1342,15 +1316,6 @@ GO
 CREATE INDEX [IX_FK_VehicleMaintenanceLogEntryLineItem]
 ON [dbo].[VehicleMaintenanceLineItems]
     ([VehicleMaintenanceLogEntryId]);
-GO
-
--- Creating foreign key on [Id] in table 'Clients'
-ALTER TABLE [dbo].[Clients]
-ADD CONSTRAINT [FK_ClientParty]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [ClientId] in table 'RouteTasks'
@@ -1821,35 +1786,6 @@ ON [dbo].[Contacts]
     ([OwnerPartyId]);
 GO
 
--- Creating foreign key on [ClientId] in table 'ClientTitles'
-ALTER TABLE [dbo].[ClientTitles]
-ADD CONSTRAINT [FK_ClientTitleClient]
-    FOREIGN KEY ([ClientId])
-    REFERENCES [dbo].[Clients]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ClientTitleClient'
-CREATE INDEX [IX_FK_ClientTitleClient]
-ON [dbo].[ClientTitles]
-    ([ClientId]);
-GO
-
--- Creating foreign key on [ContactId] in table 'ClientTitles'
-ALTER TABLE [dbo].[ClientTitles]
-ADD CONSTRAINT [FK_ClientTitleContact]
-    FOREIGN KEY ([ContactId])
-    REFERENCES [dbo].[Contacts]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ClientTitleContact'
-CREATE INDEX [IX_FK_ClientTitleContact]
-ON [dbo].[ClientTitles]
-    ([ContactId]);
-GO
-
 -- Creating foreign key on [LocationId] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [FK_InvoiceLocation]
@@ -1953,20 +1889,6 @@ ON [dbo].[Invoices]
     ([ClientId]);
 GO
 
--- Creating foreign key on [DefaultBillingLocationId] in table 'Clients'
-ALTER TABLE [dbo].[Clients]
-ADD CONSTRAINT [FK_ClientLocation]
-    FOREIGN KEY ([DefaultBillingLocationId])
-    REFERENCES [dbo].[Locations]
-        ([Id])
-    ON DELETE SET NULL ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ClientLocation'
-CREATE INDEX [IX_FK_ClientLocation]
-ON [dbo].[Clients]
-    ([DefaultBillingLocationId]);
-GO
-
 -- Creating foreign key on [RecurringServiceId] in table 'RouteTasks'
 ALTER TABLE [dbo].[RouteTasks]
 ADD CONSTRAINT [FK_RouteTaskRecurringService]
@@ -2030,6 +1952,48 @@ ADD CONSTRAINT [FK_ClientBusinessAccount]
 CREATE INDEX [IX_FK_ClientBusinessAccount]
 ON [dbo].[Clients]
     ([BusinessAccountId]);
+GO
+
+-- Creating foreign key on [BusinessAccountId] in table 'Locations'
+ALTER TABLE [dbo].[Locations]
+ADD CONSTRAINT [FK_LocationBusinessAccount]
+    FOREIGN KEY ([BusinessAccountId])
+    REFERENCES [dbo].[Parties_BusinessAccount]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_LocationBusinessAccount'
+CREATE INDEX [IX_FK_LocationBusinessAccount]
+ON [dbo].[Locations]
+    ([BusinessAccountId]);
+GO
+
+-- Creating foreign key on [ClientId] in table 'Locations'
+ALTER TABLE [dbo].[Locations]
+ADD CONSTRAINT [FK_ClientLocation1]
+    FOREIGN KEY ([ClientId])
+    REFERENCES [dbo].[Clients]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ClientLocation1'
+CREATE INDEX [IX_FK_ClientLocation1]
+ON [dbo].[Locations]
+    ([ClientId]);
+GO
+
+-- Creating foreign key on [ClientId] in table 'ContactInfoSet'
+ALTER TABLE [dbo].[ContactInfoSet]
+ADD CONSTRAINT [FK_ClientContactInfo]
+    FOREIGN KEY ([ClientId])
+    REFERENCES [dbo].[Clients]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ClientContactInfo'
+CREATE INDEX [IX_FK_ClientContactInfo]
+ON [dbo].[ContactInfoSet]
+    ([ClientId]);
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Business'
@@ -2209,8 +2173,7 @@ CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 	BEGIN
 
 	DELETE FROM Locations
-	WHERE		OwnerPartyId = @providerId
-	OR			PartyId = @providerId
+	WHERE		PartyId = @providerId
 
 	DELETE FROM Contacts
 	WHERE		OwnerPartyId = @providerId
@@ -2323,7 +2286,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	--Finds all Locations that are associated with the BusinessAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
-	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
+	WHERE	PartyId = @providerId
 
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
@@ -2862,7 +2825,7 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	--Finds all Locations that are associated with the UserAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
-	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
+	WHERE	PartyId = @providerId
 
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)

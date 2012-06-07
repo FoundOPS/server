@@ -263,18 +263,6 @@
     <Compile Include="Controls\ContactInfo\ContactInfoView.xaml.cs">
       <DependentUpon>ContactInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Contacts\ClientTitleGrid.xaml.cs">
-      <DependentUpon>ClientTitleGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Contacts\ContactLarge.xaml.cs">
-      <DependentUpon>ContactLarge.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Contacts\ContactsGrid.xaml.cs">
-      <DependentUpon>ContactsGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Contacts\ContactSmall.xaml.cs">
-      <DependentUpon>ContactSmall.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CustomFields\Define\CheckBoxDefine.xaml.cs">
       <DependentUpon>CheckBoxDefine.xaml</DependentUpon>
     </Compile>
@@ -641,22 +629,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ContactInfo\ContactInfoView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Contacts\ClientTitleGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Contacts\ContactLarge.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Contacts\ContactsGrid.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Contacts\ContactSmall.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

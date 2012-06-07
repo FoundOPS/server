@@ -12,7 +12,6 @@
     <!--IMPORTANT: DO NOT REMOVE "xmls:ViewModels". It is needed for GetVM-->
     <UserControl.Resources>
         <Converters:LocationToStringConverter x:Key="LocationToStringConverter" />
-        <Converters:OwnerPartyToClientConverter x:Key="OwnerPartyToClientConverter" />
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White">
@@ -37,19 +36,7 @@
             <StackPanel>
                 <Locations1:LocationEdit LocationVM="{Binding SelectedLocationVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <ContactInfo:ContactInfoEdit IsEnabled="{Binding SelectedEntity.DetailsLoaded}" ContactInfoVM="{Binding SelectedLocationVM.ContactInfoVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
-                <my1:ClientLinkLarge IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}">
-                    <SLMultiBinding:BindingUtil.MultiBindings>
-                        <SLMultiBinding:MultiBindings>
-                            <SLMultiBinding:MultiBinding TargetProperty="SelectedClient" Converter="{StaticResource OwnerPartyToClientConverter}" Mode="TwoWay">
-                                <SLMultiBinding:BindingCollection>
-                                    <Binding Path="SelectedEntity.Party" Mode="TwoWay" Source="{Tools:GetVM Type=ViewModels:LocationsVM}"/>
-                                    <Binding Path="SelectedEntity.Party.ClientOwner" Source="{Tools:GetVM Type=ViewModels:LocationsVM}"/>
-                                    <Binding Path="SelectedEntity.DetailsLoaded" Mode="TwoWay" Source="{Tools:GetVM Type=ViewModels:LocationsVM}"/>
-                                </SLMultiBinding:BindingCollection>
-                            </SLMultiBinding:MultiBinding>
-                        </SLMultiBinding:MultiBindings>
-                    </SLMultiBinding:BindingUtil.MultiBindings>
-                </my1:ClientLinkLarge>
+                <my1:ClientLinkLarge SelectedClient="{Binding SelectedEntity.Client}"  IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <Regions1:RegionLinkLarge IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SelectedRegion="{Binding SelectedEntity.Region, Mode=TwoWay, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <Locations1:SubLocations IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SubLocationsVM="{Binding SelectedSubLocationsVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}"/>
             </StackPanel>

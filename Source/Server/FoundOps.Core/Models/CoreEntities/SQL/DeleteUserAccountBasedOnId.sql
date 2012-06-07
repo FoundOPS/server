@@ -32,7 +32,7 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	--Finds all Locations that are associated with the UserAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
-	WHERE	OwnerPartyId = @providerId OR PartyId = @providerId
+	WHERE	PartyId = @providerId
 
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
