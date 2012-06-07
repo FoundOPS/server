@@ -274,7 +274,6 @@
     <Compile Include="ExportContext.cs" />
     <Compile Include="Extensions\AddressExtensions.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
-    <Compile Include="Extensions\ClientTitleExtensions.cs" />
     <Compile Include="Extensions\TaskHolderExtensions.cs" />
     <Compile Include="Extensions\ServiceHolderExtensions.cs" />
     <Compile Include="Extensions\EmployeeExtensions.cs" />

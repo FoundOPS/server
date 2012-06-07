@@ -36,28 +36,6 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         /// <summary>
-        /// Gets the ClientTitlesVM.
-        /// </summary>
-        public static ClientTitlesVM ClientTitles
-        {
-            get
-            {
-                return (ClientTitlesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ClientTitlesVM", null, CreationPolicy.Shared).Value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the ContactsVM.
-        /// </summary>
-        public static ContactsVM Contacts
-        {
-            get
-            {
-                return (ContactsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("ContactsVM", null, CreationPolicy.Shared).Value;
-            }
-        }
-
-        /// <summary>
         /// Gets the EmployeesVM.
         /// </summary>
         public static EmployeesVM Employees

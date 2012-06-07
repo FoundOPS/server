@@ -170,7 +170,6 @@
     <Compile Include="Models\CoreEntities\Extensions\Locations\SubLocationExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\BusinessExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\ClientExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Parties\ContactExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeHistoryExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\PartyExtensions.shared.cs" />

@@ -38,8 +38,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(BusinessAccount).ToString();
             else if (navigateToUriString.Contains("Clients"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Client).ToString();
-            else if (navigateToUriString.Contains("Contacts"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Contact).ToString();
             else if (navigateToUriString.Contains("Employees"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Employee).ToString();
             else if (navigateToUriString.Contains("Locations"))

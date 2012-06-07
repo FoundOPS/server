@@ -4,868 +4,850 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl" Alias="Self" Namespace="CoreEntities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008">
+    <Schema Namespace="CoreEntities.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
   <EntityContainer Name="CoreEntitiesStoreContainer">
-    <EntitySet Name="Blocks" EntityType="CoreEntities.Store.Blocks" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Roles" EntityType="CoreEntities.Store.Roles" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Parties" EntityType="CoreEntities.Store.Parties" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="ContactInfoSet" EntityType="CoreEntities.Store.ContactInfoSet" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Services" EntityType="CoreEntities.Store.Services" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Fields" EntityType="CoreEntities.Store.Fields" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Locations" EntityType="CoreEntities.Store.Locations" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="RouteDestinations" EntityType="CoreEntities.Store.RouteDestinations" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Routes" EntityType="CoreEntities.Store.Routes" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="UserAccountLog" EntityType="CoreEntities.Store.UserAccountLog" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Vehicles" EntityType="CoreEntities.Store.Vehicles" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="VehicleMaintenanceLog" EntityType="CoreEntities.Store.VehicleMaintenanceLog" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="VehicleMaintenanceLineItems" EntityType="CoreEntities.Store.VehicleMaintenanceLineItems" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Clients" EntityType="CoreEntities.Store.Clients" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="ServiceTemplates" EntityType="CoreEntities.Store.ServiceTemplates" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Repeats" EntityType="CoreEntities.Store.Repeats" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="RecurringServices" EntityType="CoreEntities.Store.RecurringServices" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Regions" EntityType="CoreEntities.Store.Regions" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Files" EntityType="CoreEntities.Store.Files" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="SubLocations" EntityType="CoreEntities.Store.SubLocations" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Employees" EntityType="CoreEntities.Store.Employees" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.Store.EmployeeHistoryEntries" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Options" EntityType="CoreEntities.Store.Options" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Contacts" EntityType="CoreEntities.Store.Contacts" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="ClientTitles" EntityType="CoreEntities.Store.ClientTitles" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Invoices" EntityType="CoreEntities.Store.Invoices" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="SalesTerms" EntityType="CoreEntities.Store.SalesTerms" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="LineItems" EntityType="CoreEntities.Store.LineItems" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="RouteTasks" EntityType="CoreEntities.Store.RouteTasks" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Errors" EntityType="CoreEntities.Store.Errors" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.Store.ServiceTemplateWithVendorIds" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Parties_Business" EntityType="CoreEntities.Store.Parties_Business" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Parties_BusinessAccount" EntityType="CoreEntities.Store.Parties_BusinessAccount" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Parties_Person" EntityType="CoreEntities.Store.Parties_Person" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Parties_UserAccount" EntityType="CoreEntities.Store.Parties_UserAccount" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Fields_OptionsField" EntityType="CoreEntities.Store.Fields_OptionsField" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Fields_LocationField" EntityType="CoreEntities.Store.Fields_LocationField" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Files_PartyImage" EntityType="CoreEntities.Store.Files_PartyImage" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Fields_TextBoxField" EntityType="CoreEntities.Store.Fields_TextBoxField" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Fields_NumericField" EntityType="CoreEntities.Store.Fields_NumericField" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Fields_DateTimeField" EntityType="CoreEntities.Store.Fields_DateTimeField" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Options_LocationOption" EntityType="CoreEntities.Store.Options_LocationOption" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="RoleBlock" EntityType="CoreEntities.Store.RoleBlock" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="RouteVehicle" EntityType="CoreEntities.Store.RouteVehicle" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="PartyRole" EntityType="CoreEntities.Store.PartyRole" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="EmployeeRoute" EntityType="CoreEntities.Store.EmployeeRoute" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Blocks" EntityType="CoreEntities.Store.Blocks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Roles" EntityType="CoreEntities.Store.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Parties" EntityType="CoreEntities.Store.Parties" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ContactInfoSet" EntityType="CoreEntities.Store.ContactInfoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Services" EntityType="CoreEntities.Store.Services" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Fields" EntityType="CoreEntities.Store.Fields" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Locations" EntityType="CoreEntities.Store.Locations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RouteDestinations" EntityType="CoreEntities.Store.RouteDestinations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Routes" EntityType="CoreEntities.Store.Routes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserAccountLog" EntityType="CoreEntities.Store.UserAccountLog" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Vehicles" EntityType="CoreEntities.Store.Vehicles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="VehicleMaintenanceLog" EntityType="CoreEntities.Store.VehicleMaintenanceLog" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="VehicleMaintenanceLineItems" EntityType="CoreEntities.Store.VehicleMaintenanceLineItems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Clients" EntityType="CoreEntities.Store.Clients" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ServiceTemplates" EntityType="CoreEntities.Store.ServiceTemplates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Repeats" EntityType="CoreEntities.Store.Repeats" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RecurringServices" EntityType="CoreEntities.Store.RecurringServices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Regions" EntityType="CoreEntities.Store.Regions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Files" EntityType="CoreEntities.Store.Files" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SubLocations" EntityType="CoreEntities.Store.SubLocations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Employees" EntityType="CoreEntities.Store.Employees" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.Store.EmployeeHistoryEntries" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Options" EntityType="CoreEntities.Store.Options" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Contacts" EntityType="CoreEntities.Store.Contacts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Invoices" EntityType="CoreEntities.Store.Invoices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SalesTerms" EntityType="CoreEntities.Store.SalesTerms" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="LineItems" EntityType="CoreEntities.Store.LineItems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RouteTasks" EntityType="CoreEntities.Store.RouteTasks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Errors" EntityType="CoreEntities.Store.Errors" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.Store.PartiesWithNames" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.Store.ServiceTemplateWithVendorIds" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Parties_Business" EntityType="CoreEntities.Store.Parties_Business" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Parties_BusinessAccount" EntityType="CoreEntities.Store.Parties_BusinessAccount" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Parties_Person" EntityType="CoreEntities.Store.Parties_Person" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Parties_UserAccount" EntityType="CoreEntities.Store.Parties_UserAccount" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Fields_OptionsField" EntityType="CoreEntities.Store.Fields_OptionsField" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Fields_LocationField" EntityType="CoreEntities.Store.Fields_LocationField" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Files_PartyImage" EntityType="CoreEntities.Store.Files_PartyImage" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Fields_TextBoxField" EntityType="CoreEntities.Store.Fields_TextBoxField" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Fields_NumericField" EntityType="CoreEntities.Store.Fields_NumericField" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Fields_DateTimeField" EntityType="CoreEntities.Store.Fields_DateTimeField" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Options_LocationOption" EntityType="CoreEntities.Store.Options_LocationOption" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RoleBlock" EntityType="CoreEntities.Store.RoleBlock" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RouteVehicle" EntityType="CoreEntities.Store.RouteVehicle" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PartyRole" EntityType="CoreEntities.Store.PartyRole" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EmployeeRoute" EntityType="CoreEntities.Store.EmployeeRoute" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="ContactInfoParty" Association="CoreEntities.Store.ContactInfoParty">
-      <End EntitySet="ContactInfoSet" Role="ContactInfo" />
-      <End EntitySet="Parties" Role="Party" />
+      <End Role="ContactInfo" EntitySet="ContactInfoSet" />
+      <End Role="Party" EntitySet="Parties" />
     </AssociationSet>
     <AssociationSet Name="FK_RoleBlock_Role" Association="CoreEntities.Store.FK_RoleBlock_Role">
-      <End EntitySet="Roles" Role="Role" />
-      <End EntitySet="RoleBlock" Role="RoleBlock" />
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="RoleBlock" EntitySet="RoleBlock" />
     </AssociationSet>
     <AssociationSet Name="FK_RoleBlock_Block" Association="CoreEntities.Store.FK_RoleBlock_Block">
-      <End EntitySet="Blocks" Role="Block" />
-      <End EntitySet="RoleBlock" Role="RoleBlock" />
+      <End Role="Block" EntitySet="Blocks" />
+      <End Role="RoleBlock" EntitySet="RoleBlock" />
     </AssociationSet>
     <AssociationSet Name="LocationContactInfo" Association="CoreEntities.Store.LocationContactInfo">
-      <End EntitySet="Locations" Role="Location" />
-      <End EntitySet="ContactInfoSet" Role="ContactInfo" />
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="ContactInfo" EntitySet="ContactInfoSet" />
     </AssociationSet>
     <AssociationSet Name="VehicleMaintenanceLogEntryVehicle" Association="CoreEntities.Store.VehicleMaintenanceLogEntryVehicle">
-      <End EntitySet="VehicleMaintenanceLog" Role="VehicleMaintenanceLogEntry" />
-      <End EntitySet="Vehicles" Role="Vehicle" />
+      <End Role="VehicleMaintenanceLogEntry" EntitySet="VehicleMaintenanceLog" />
+      <End Role="Vehicle" EntitySet="Vehicles" />
     </AssociationSet>
     <AssociationSet Name="FK_RouteVehicle_Route" Association="CoreEntities.Store.FK_RouteVehicle_Route">
-      <End EntitySet="Routes" Role="Route" />
-      <End EntitySet="RouteVehicle" Role="RouteVehicle" />
+      <End Role="Route" EntitySet="Routes" />
+      <End Role="RouteVehicle" EntitySet="RouteVehicle" />
     </AssociationSet>
     <AssociationSet Name="FK_RouteVehicle_Vehicle" Association="CoreEntities.Store.FK_RouteVehicle_Vehicle">
-      <End EntitySet="Vehicles" Role="Vehicle" />
-      <End EntitySet="RouteVehicle" Role="RouteVehicle" />
+      <End Role="Vehicle" EntitySet="Vehicles" />
+      <End Role="RouteVehicle" EntitySet="RouteVehicle" />
     </AssociationSet>
     <AssociationSet Name="RouteTaskLocation" Association="CoreEntities.Store.RouteTaskLocation">
-      <End EntitySet="RouteTasks" Role="RouteTask" />
-      <End EntitySet="Locations" Role="Location" />
+      <End Role="RouteTask" EntitySet="RouteTasks" />
+      <End Role="Location" EntitySet="Locations" />
     </AssociationSet>
     <AssociationSet Name="RouteDestinationLocation" Association="CoreEntities.Store.RouteDestinationLocation">
-      <End EntitySet="RouteDestinations" Role="RouteDestination" />
-      <End EntitySet="Locations" Role="Location" />
+      <End Role="RouteDestination" EntitySet="RouteDestinations" />
+      <End Role="Location" EntitySet="Locations" />
     </AssociationSet>
     <AssociationSet Name="RouteTaskRouteDestination" Association="CoreEntities.Store.RouteTaskRouteDestination">
-      <End EntitySet="RouteTasks" Role="RouteTask" />
-      <End EntitySet="RouteDestinations" Role="RouteDestination" />
+      <End Role="RouteTask" EntitySet="RouteTasks" />
+      <End Role="RouteDestination" EntitySet="RouteDestinations" />
     </AssociationSet>
     <AssociationSet Name="RouteDestinationRoute" Association="CoreEntities.Store.RouteDestinationRoute">
-      <End EntitySet="RouteDestinations" Role="RouteDestination" />
-      <End EntitySet="Routes" Role="Route" />
+      <End Role="RouteDestination" EntitySet="RouteDestinations" />
+      <End Role="Route" EntitySet="Routes" />
     </AssociationSet>
     <AssociationSet Name="VehicleMaintenanceLogEntryLineItem" Association="CoreEntities.Store.VehicleMaintenanceLogEntryLineItem">
-      <End EntitySet="VehicleMaintenanceLog" Role="VehicleMaintenanceLogEntry" />
-      <End EntitySet="VehicleMaintenanceLineItems" Role="LineItem" />
+      <End Role="VehicleMaintenanceLogEntry" EntitySet="VehicleMaintenanceLog" />
+      <End Role="LineItem" EntitySet="VehicleMaintenanceLineItems" />
     </AssociationSet>
     <AssociationSet Name="RouteTaskClient" Association="CoreEntities.Store.RouteTaskClient">
-      <End EntitySet="RouteTasks" Role="RouteTask" />
-      <End EntitySet="Clients" Role="Client" />
+      <End Role="RouteTask" EntitySet="RouteTasks" />
+      <End Role="Client" EntitySet="Clients" />
     </AssociationSet>
     <AssociationSet Name="ServiceClient" Association="CoreEntities.Store.ServiceClient">
-      <End EntitySet="Services" Role="Service" />
-      <End EntitySet="Clients" Role="Client" />
+      <End Role="Service" EntitySet="Services" />
+      <End Role="Client" EntitySet="Clients" />
     </AssociationSet>
     <AssociationSet Name="RouteDestinationClient" Association="CoreEntities.Store.RouteDestinationClient">
-      <End EntitySet="RouteDestinations" Role="RouteDestination" />
-      <End EntitySet="Clients" Role="Client" />
+      <End Role="RouteDestination" EntitySet="RouteDestinations" />
+      <End Role="Client" EntitySet="Clients" />
     </AssociationSet>
     <AssociationSet Name="RouteTaskService" Association="CoreEntities.Store.RouteTaskService">
-      <End EntitySet="RouteTasks" Role="RouteTask" />
-      <End EntitySet="Services" Role="Service" />
+      <End Role="RouteTask" EntitySet="RouteTasks" />
+      <End Role="Service" EntitySet="Services" />
     </AssociationSet>
     <AssociationSet Name="BusinessAccountService" Association="CoreEntities.Store.BusinessAccountService">
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
-      <End EntitySet="Services" Role="Service" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
+      <End Role="Service" EntitySet="Services" />
     </AssociationSet>
     <AssociationSet Name="BusinessAccountRoute" Association="CoreEntities.Store.BusinessAccountRoute">
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
-      <End EntitySet="Routes" Role="Route" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
+      <End Role="Route" EntitySet="Routes" />
     </AssociationSet>
     <AssociationSet Name="BusinessAccountRouteTask" Association="CoreEntities.Store.BusinessAccountRouteTask">
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
-      <End EntitySet="RouteTasks" Role="RouteTask" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
+      <End Role="RouteTask" EntitySet="RouteTasks" />
     </AssociationSet>
     <AssociationSet Name="UserAccountUserAccountLogEntry" Association="CoreEntities.Store.UserAccountUserAccountLogEntry">
-      <End EntitySet="Parties_UserAccount" Role="UserAccount" />
-      <End EntitySet="UserAccountLog" Role="UserAccountLogEntry" />
+      <End Role="UserAccount" EntitySet="Parties_UserAccount" />
+      <End Role="UserAccountLogEntry" EntitySet="UserAccountLog" />
     </AssociationSet>
     <AssociationSet Name="ServiceTemplateBusinessAccount" Association="CoreEntities.Store.ServiceTemplateBusinessAccount">
-      <End EntitySet="ServiceTemplates" Role="ServiceTemplate" />
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
     </AssociationSet>
     <AssociationSet Name="RecurringServiceServiceTemplate" Association="CoreEntities.Store.RecurringServiceServiceTemplate">
-      <End EntitySet="RecurringServices" Role="RecurringService" />
-      <End EntitySet="ServiceTemplates" Role="ServiceTemplate" />
+      <End Role="RecurringService" EntitySet="RecurringServices" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
     </AssociationSet>
     <AssociationSet Name="RecurringServiceService" Association="CoreEntities.Store.RecurringServiceService">
-      <End EntitySet="RecurringServices" Role="RecurringService" />
-      <End EntitySet="Services" Role="Service" />
+      <End Role="RecurringService" EntitySet="RecurringServices" />
+      <End Role="Service" EntitySet="Services" />
     </AssociationSet>
     <AssociationSet Name="RecurringServiceClient" Association="CoreEntities.Store.RecurringServiceClient">
-      <End EntitySet="RecurringServices" Role="RecurringService" />
-      <End EntitySet="Clients" Role="Client" />
+      <End Role="RecurringService" EntitySet="RecurringServices" />
+      <End Role="Client" EntitySet="Clients" />
     </AssociationSet>
     <AssociationSet Name="ClientServiceTemplate" Association="CoreEntities.Store.ClientServiceTemplate">
-      <End EntitySet="Clients" Role="Client" />
-      <End EntitySet="ServiceTemplates" Role="ServiceTemplate" />
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
     </AssociationSet>
     <AssociationSet Name="VehicleParty" Association="CoreEntities.Store.VehicleParty">
-      <End EntitySet="Vehicles" Role="Vehicle" />
-      <End EntitySet="Parties" Role="Party" />
+      <End Role="Vehicle" EntitySet="Vehicles" />
+      <End Role="Party" EntitySet="Parties" />
     </AssociationSet>
     <AssociationSet Name="ServiceServiceTemplate" Association="CoreEntities.Store.ServiceServiceTemplate">
-      <End EntitySet="Services" Role="Service" />
-      <End EntitySet="ServiceTemplates" Role="ServiceTemplate" />
+      <End Role="Service" EntitySet="Services" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
     </AssociationSet>
     <AssociationSet Name="FK_PartyRole_Party" Association="CoreEntities.Store.FK_PartyRole_Party">
-      <End EntitySet="Parties" Role="Party" />
-      <End EntitySet="PartyRole" Role="PartyRole" />
+      <End Role="Party" EntitySet="Parties" />
+      <End Role="PartyRole" EntitySet="PartyRole" />
     </AssociationSet>
     <AssociationSet Name="FK_PartyRole_Role" Association="CoreEntities.Store.FK_PartyRole_Role">
-      <End EntitySet="Roles" Role="Role" />
-      <End EntitySet="PartyRole" Role="PartyRole" />
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="PartyRole" EntitySet="PartyRole" />
     </AssociationSet>
     <AssociationSet Name="PartyRole1" Association="CoreEntities.Store.PartyRole1">
-      <End EntitySet="Parties" Role="Party" />
-      <End EntitySet="Roles" Role="Role" />
+      <End Role="Party" EntitySet="Parties" />
+      <End Role="Role" EntitySet="Roles" />
     </AssociationSet>
     <AssociationSet Name="LocationParty1" Association="CoreEntities.Store.LocationParty1">
-      <End EntitySet="Locations" Role="Location" />
-      <End EntitySet="Parties" Role="Party" />
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="Party" EntitySet="Parties" />
     </AssociationSet>
     <AssociationSet Name="RegionsLocation" Association="CoreEntities.Store.RegionLocation">
-      <End EntitySet="Regions" Role="Regions" />
-      <End EntitySet="Locations" Role="Location" />
+      <End Role="Regions" EntitySet="Regions" />
+      <End Role="Location" EntitySet="Locations" />
     </AssociationSet>
     <AssociationSet Name="BusinessAccountRegion" Association="CoreEntities.Store.BusinessAccountRegion">
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
-      <End EntitySet="Regions" Role="Region" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
+      <End Role="Region" EntitySet="Regions" />
     </AssociationSet>
     <AssociationSet Name="LocationFile" Association="CoreEntities.Store.LocationFile">
-      <End EntitySet="Locations" Role="Location" />
-      <End EntitySet="Files" Role="File" />
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="File" EntitySet="Files" />
     </AssociationSet>
     <AssociationSet Name="LocationSubLocation" Association="CoreEntities.Store.LocationSubLocation">
-      <End EntitySet="Locations" Role="Location" />
-      <End EntitySet="SubLocations" Role="SubLocation" />
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="SubLocation" EntitySet="SubLocations" />
     </AssociationSet>
     <AssociationSet Name="EmployeeUserAccount" Association="CoreEntities.Store.EmployeeUserAccount">
-      <End EntitySet="Employees" Role="Employee" />
-      <End EntitySet="Parties_UserAccount" Role="UserAccount" />
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="UserAccount" EntitySet="Parties_UserAccount" />
     </AssociationSet>
     <AssociationSet Name="EmployeeBusinessAccount" Association="CoreEntities.Store.EmployeeBusinessAccount">
-      <End EntitySet="Employees" Role="Employee" />
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
     </AssociationSet>
     <AssociationSet Name="EmployeePerson" Association="CoreEntities.Store.EmployeePerson">
-      <End EntitySet="Employees" Role="Employee" />
-      <End EntitySet="Parties_Person" Role="Person" />
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Person" EntitySet="Parties_Person" />
     </AssociationSet>
     <AssociationSet Name="RecurringServiceRepeat" Association="CoreEntities.Store.RecurringServiceRepeat">
-      <End EntitySet="RecurringServices" Role="RecurringService" />
-      <End EntitySet="Repeats" Role="Repeat" />
+      <End Role="RecurringService" EntitySet="RecurringServices" />
+      <End Role="Repeat" EntitySet="Repeats" />
     </AssociationSet>
     <AssociationSet Name="EmployeeHistoryEntryEmployee" Association="CoreEntities.Store.EmployeeHistoryEntryEmployee">
-      <End EntitySet="EmployeeHistoryEntries" Role="EmployeeHistoryEntry" />
-      <End EntitySet="Employees" Role="Employee" />
+      <End Role="EmployeeHistoryEntry" EntitySet="EmployeeHistoryEntries" />
+      <End Role="Employee" EntitySet="Employees" />
     </AssociationSet>
     <AssociationSet Name="ServiceTemplateServiceTemplate" Association="CoreEntities.Store.ServiceTemplateServiceTemplate">
-      <End EntitySet="ServiceTemplates" Role="ServiceTemplate" />
-      <End EntitySet="ServiceTemplates" Role="ServiceTemplate1" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
+      <End Role="ServiceTemplate1" EntitySet="ServiceTemplates" />
     </AssociationSet>
     <AssociationSet Name="FieldField" Association="CoreEntities.Store.FieldField">
-      <End EntitySet="Fields" Role="Field" />
-      <End EntitySet="Fields" Role="Field1" />
+      <End Role="Field" EntitySet="Fields" />
+      <End Role="Field1" EntitySet="Fields" />
     </AssociationSet>
     <AssociationSet Name="OptionsFieldOption" Association="CoreEntities.Store.OptionsFieldOption">
-      <End EntitySet="Fields_OptionsField" Role="OptionsField" />
-      <End EntitySet="Options" Role="Option" />
+      <End Role="OptionsField" EntitySet="Fields_OptionsField" />
+      <End Role="Option" EntitySet="Options" />
     </AssociationSet>
     <AssociationSet Name="ServiceTemplateField" Association="CoreEntities.Store.ServiceTemplateField">
-      <End EntitySet="ServiceTemplates" Role="ServiceTemplate" />
-      <End EntitySet="Fields" Role="Field" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
+      <End Role="Field" EntitySet="Fields" />
     </AssociationSet>
     <AssociationSet Name="LocationFieldLocation" Association="CoreEntities.Store.LocationFieldLocation">
-      <End EntitySet="Fields_LocationField" Role="LocationField" />
-      <End EntitySet="Locations" Role="Location" />
+      <End Role="LocationField" EntitySet="Fields_LocationField" />
+      <End Role="Location" EntitySet="Locations" />
     </AssociationSet>
     <AssociationSet Name="ContactPerson" Association="CoreEntities.Store.ContactPerson">
-      <End EntitySet="Contacts" Role="Contact" />
-      <End EntitySet="Parties_Person" Role="Person" />
+      <End Role="Contact" EntitySet="Contacts" />
+      <End Role="Person" EntitySet="Parties_Person" />
     </AssociationSet>
     <AssociationSet Name="ContactParty" Association="CoreEntities.Store.ContactParty">
-      <End EntitySet="Contacts" Role="Contact" />
-      <End EntitySet="Parties" Role="Party" />
-    </AssociationSet>
-    <AssociationSet Name="ClientTitleClient" Association="CoreEntities.Store.ClientTitleClient">
-      <End EntitySet="ClientTitles" Role="ClientTitle" />
-      <End EntitySet="Clients" Role="Client" />
-    </AssociationSet>
-    <AssociationSet Name="ClientTitleContact" Association="CoreEntities.Store.ClientTitleContact">
-      <End EntitySet="ClientTitles" Role="ClientTitle" />
-      <End EntitySet="Contacts" Role="Contact" />
+      <End Role="Contact" EntitySet="Contacts" />
+      <End Role="Party" EntitySet="Parties" />
     </AssociationSet>
     <AssociationSet Name="InvoiceLocation" Association="CoreEntities.Store.InvoiceLocation">
-      <End EntitySet="Invoices" Role="Invoice" />
-      <End EntitySet="Locations" Role="Location" />
+      <End Role="Invoice" EntitySet="Invoices" />
+      <End Role="Location" EntitySet="Locations" />
     </AssociationSet>
     <AssociationSet Name="InvoiceSalesTerm" Association="CoreEntities.Store.InvoiceSalesTerm">
-      <End EntitySet="Invoices" Role="Invoice" />
-      <End EntitySet="SalesTerms" Role="SalesTerm" />
+      <End Role="Invoice" EntitySet="Invoices" />
+      <End Role="SalesTerm" EntitySet="SalesTerms" />
     </AssociationSet>
     <AssociationSet Name="InvoiceServiceTemplate" Association="CoreEntities.Store.InvoiceServiceTemplate">
-      <End EntitySet="Invoices" Role="Invoice" />
-      <End EntitySet="ServiceTemplates" Role="ServiceTemplate" />
+      <End Role="Invoice" EntitySet="Invoices" />
+      <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
     </AssociationSet>
     <AssociationSet Name="LineItemInvoice" Association="CoreEntities.Store.LineItemInvoice">
-      <End EntitySet="LineItems" Role="LineItem" />
-      <End EntitySet="Invoices" Role="Invoice" />
+      <End Role="LineItem" EntitySet="LineItems" />
+      <End Role="Invoice" EntitySet="Invoices" />
     </AssociationSet>
     <AssociationSet Name="FileParty" Association="CoreEntities.Store.FileParty">
-      <End EntitySet="Files" Role="File" />
-      <End EntitySet="Parties" Role="Party" />
+      <End Role="File" EntitySet="Files" />
+      <End Role="Party" EntitySet="Parties" />
     </AssociationSet>
     <AssociationSet Name="PartyPartyImage" Association="CoreEntities.Store.PartyPartyImage">
-      <End EntitySet="Parties" Role="Party" />
-      <End EntitySet="Files_PartyImage" Role="PartyImage" />
+      <End Role="Party" EntitySet="Parties" />
+      <End Role="PartyImage" EntitySet="Files_PartyImage" />
     </AssociationSet>
     <AssociationSet Name="BusinessAccountInvoice" Association="CoreEntities.Store.BusinessAccountInvoice">
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
-      <End EntitySet="Invoices" Role="Invoice" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
+      <End Role="Invoice" EntitySet="Invoices" />
     </AssociationSet>
     <AssociationSet Name="ClientInvoice" Association="CoreEntities.Store.ClientInvoice">
-      <End EntitySet="Clients" Role="Client" />
-      <End EntitySet="Invoices" Role="Invoice" />
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="Invoice" EntitySet="Invoices" />
     </AssociationSet>
     <AssociationSet Name="RouteTaskRecurringService" Association="CoreEntities.Store.RouteTaskRecurringService">
-      <End EntitySet="RouteTasks" Role="RouteTask" />
-      <End EntitySet="RecurringServices" Role="RecurringService" />
+      <End Role="RouteTask" EntitySet="RouteTasks" />
+      <End Role="RecurringService" EntitySet="RecurringServices" />
     </AssociationSet>
     <AssociationSet Name="BusinessAccountLocation" Association="CoreEntities.Store.BusinessAccountLocation">
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
-      <End EntitySet="Locations" Role="Location" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
+      <End Role="Location" EntitySet="Locations" />
     </AssociationSet>
     <AssociationSet Name="FK_EmployeeRoute_Employee" Association="CoreEntities.Store.FK_EmployeeRoute_Employee">
-      <End EntitySet="Employees" Role="Employee" />
-      <End EntitySet="EmployeeRoute" Role="EmployeeRoute" />
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="EmployeeRoute" EntitySet="EmployeeRoute" />
     </AssociationSet>
     <AssociationSet Name="FK_EmployeeRoute_Route" Association="CoreEntities.Store.FK_EmployeeRoute_Route">
-      <End EntitySet="Routes" Role="Route" />
-      <End EntitySet="EmployeeRoute" Role="EmployeeRoute" />
+      <End Role="Route" EntitySet="Routes" />
+      <End Role="EmployeeRoute" EntitySet="EmployeeRoute" />
     </AssociationSet>
     <AssociationSet Name="ClientBusinessAccount" Association="CoreEntities.Store.ClientBusinessAccount">
-      <End EntitySet="Clients" Role="Client" />
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
     </AssociationSet>
     <AssociationSet Name="LocationBusinessAccount" Association="CoreEntities.Store.LocationBusinessAccount">
-      <End EntitySet="Locations" Role="Location" />
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
     </AssociationSet>
     <AssociationSet Name="ClientLocation1" Association="CoreEntities.Store.ClientLocation1">
-      <End EntitySet="Clients" Role="Client" />
-      <End EntitySet="Locations" Role="Location" />
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="Location" EntitySet="Locations" />
     </AssociationSet>
     <AssociationSet Name="ClientContactInfo" Association="CoreEntities.Store.ClientContactInfo">
-      <End EntitySet="Clients" Role="Client" />
-      <End EntitySet="ContactInfoSet" Role="ContactInfo" />
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="ContactInfo" EntitySet="ContactInfoSet" />
     </AssociationSet>
     <AssociationSet Name="FK_Business_inherits_Party" Association="CoreEntities.Store.FK_Business_inherits_Party">
-      <End EntitySet="Parties" Role="Party" />
-      <End EntitySet="Parties_Business" Role="Business" />
+      <End Role="Party" EntitySet="Parties" />
+      <End Role="Business" EntitySet="Parties_Business" />
     </AssociationSet>
     <AssociationSet Name="FK_BusinessAccount_inherits_Business" Association="CoreEntities.Store.FK_BusinessAccount_inherits_Business">
-      <End EntitySet="Parties_Business" Role="Business" />
-      <End EntitySet="Parties_BusinessAccount" Role="BusinessAccount" />
+      <End Role="Business" EntitySet="Parties_Business" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
     </AssociationSet>
     <AssociationSet Name="FK_Person_inherits_Party" Association="CoreEntities.Store.FK_Person_inherits_Party">
-      <End EntitySet="Parties" Role="Party" />
-      <End EntitySet="Parties_Person" Role="Person" />
+      <End Role="Party" EntitySet="Parties" />
+      <End Role="Person" EntitySet="Parties_Person" />
     </AssociationSet>
     <AssociationSet Name="FK_UserAccount_inherits_Person" Association="CoreEntities.Store.FK_UserAccount_inherits_Person">
-      <End EntitySet="Parties_Person" Role="Person" />
-      <End EntitySet="Parties_UserAccount" Role="UserAccount" />
+      <End Role="Person" EntitySet="Parties_Person" />
+      <End Role="UserAccount" EntitySet="Parties_UserAccount" />
     </AssociationSet>
     <AssociationSet Name="FK_OptionsField_inherits_Field" Association="CoreEntities.Store.FK_OptionsField_inherits_Field">
-      <End EntitySet="Fields" Role="Field" />
-      <End EntitySet="Fields_OptionsField" Role="OptionsField" />
+      <End Role="Field" EntitySet="Fields" />
+      <End Role="OptionsField" EntitySet="Fields_OptionsField" />
     </AssociationSet>
     <AssociationSet Name="FK_LocationField_inherits_Field" Association="CoreEntities.Store.FK_LocationField_inherits_Field">
-      <End EntitySet="Fields" Role="Field" />
-      <End EntitySet="Fields_LocationField" Role="LocationField" />
+      <End Role="Field" EntitySet="Fields" />
+      <End Role="LocationField" EntitySet="Fields_LocationField" />
     </AssociationSet>
     <AssociationSet Name="FK_PartyImage_inherits_File" Association="CoreEntities.Store.FK_PartyImage_inherits_File">
-      <End EntitySet="Files" Role="File" />
-      <End EntitySet="Files_PartyImage" Role="PartyImage" />
+      <End Role="File" EntitySet="Files" />
+      <End Role="PartyImage" EntitySet="Files_PartyImage" />
     </AssociationSet>
     <AssociationSet Name="FK_TextBoxField_inherits_Field" Association="CoreEntities.Store.FK_TextBoxField_inherits_Field">
-      <End EntitySet="Fields" Role="Field" />
-      <End EntitySet="Fields_TextBoxField" Role="TextBoxField" />
+      <End Role="Field" EntitySet="Fields" />
+      <End Role="TextBoxField" EntitySet="Fields_TextBoxField" />
     </AssociationSet>
     <AssociationSet Name="FK_NumericField_inherits_Field" Association="CoreEntities.Store.FK_NumericField_inherits_Field">
-      <End EntitySet="Fields" Role="Field" />
-      <End EntitySet="Fields_NumericField" Role="NumericField" />
+      <End Role="Field" EntitySet="Fields" />
+      <End Role="NumericField" EntitySet="Fields_NumericField" />
     </AssociationSet>
     <AssociationSet Name="FK_DateTimeField_inherits_Field" Association="CoreEntities.Store.FK_DateTimeField_inherits_Field">
-      <End EntitySet="Fields" Role="Field" />
-      <End EntitySet="Fields_DateTimeField" Role="DateTimeField" />
+      <End Role="Field" EntitySet="Fields" />
+      <End Role="DateTimeField" EntitySet="Fields_DateTimeField" />
     </AssociationSet>
     <AssociationSet Name="FK_LocationOption_inherits_Option" Association="CoreEntities.Store.FK_LocationOption_inherits_Option">
-      <End EntitySet="Options" Role="Option" />
-      <End EntitySet="Options_LocationOption" Role="LocationOption" />
+      <End Role="Option" EntitySet="Options" />
+      <End Role="LocationOption" EntitySet="Options_LocationOption" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Blocks">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Name" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="NavigateUri" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="Icon" Nullable="true" Type="varbinary(max)" />
-    <Property Name="Link" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="LoginNotRequired" Nullable="false" Type="bit" />
-    <Property Name="HideFromNavigation" Nullable="false" Type="bit" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="NavigateUri" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Icon" Type="varbinary(max)" Nullable="true" />
+    <Property Name="Link" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LoginNotRequired" Type="bit" Nullable="false" />
+    <Property Name="HideFromNavigation" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="Roles">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Name" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Description" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="OwnerPartyId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="RoleTypeInt" Nullable="false" DefaultValue="0" Type="smallint" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="OwnerPartyId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="RoleTypeInt" Type="smallint" Nullable="false" DefaultValue="0" />
   </EntityType>
   <EntityType Name="Parties">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="ContactInfoSet">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Type" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="Label" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Data" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="PartyId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="LocationId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ContactId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ClientId" Nullable="true" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Label" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Data" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PartyId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="LocationId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="ContactId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="ClientId" Type="uniqueidentifier" Nullable="true" />
   </EntityType>
   <EntityType Name="Services">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="ClientId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="ServiceProviderId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="RecurringServiceId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ServiceDate" Nullable="false" Type="datetime" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ClientId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ServiceProviderId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RecurringServiceId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="ServiceDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="Fields">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Name" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="Group" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="Required" Nullable="false" Type="bit" />
-    <Property Name="Tooltip" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="ParentFieldId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ServiceTemplateId" Nullable="true" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Group" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Required" Type="bit" Nullable="false" />
+    <Property Name="Tooltip" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ParentFieldId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="true" />
   </EntityType>
   <EntityType Name="Locations">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Name" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="AddressLineOne" Nullable="true" DefaultValue="" Type="nvarchar(max)" />
-    <Property Name="Longitude" Nullable="true" Precision="11" Scale="8" Type="decimal" />
-    <Property Name="ZipCode" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="AddressLineTwo" Nullable="true" DefaultValue="" Type="nvarchar(max)" />
-    <Property Name="State" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Latitude" Nullable="true" Precision="11" Scale="8" Type="decimal" />
-    <Property Name="City" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="PartyId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="RegionId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="BusinessAccountIdIfDepot" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="BusinessAccountId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ClientId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="IsDefaultBillingLocation" Nullable="true" Type="bit" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="AddressLineOne" Type="nvarchar(max)" Nullable="true" DefaultValue="" />
+    <Property Name="Longitude" Type="decimal" Nullable="true" Precision="11" Scale="8" />
+    <Property Name="ZipCode" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="AddressLineTwo" Type="nvarchar(max)" Nullable="true" DefaultValue="" />
+    <Property Name="State" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Latitude" Type="decimal" Nullable="true" Precision="11" Scale="8" />
+    <Property Name="City" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="PartyId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="RegionId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="BusinessAccountIdIfDepot" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="ClientId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="IsDefaultBillingLocation" Type="bit" Nullable="true" />
   </EntityType>
   <EntityType Name="RouteDestinations">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="OrderInRoute" Nullable="false" Type="int" />
-    <Property Name="LocationId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="RouteId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="ClientId" Nullable="true" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="OrderInRoute" Type="int" Nullable="false" />
+    <Property Name="LocationId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="RouteId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ClientId" Type="uniqueidentifier" Nullable="true" />
   </EntityType>
   <EntityType Name="Routes">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Name" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Date" Nullable="false" Type="datetime" />
-    <Property Name="StartTime" Nullable="false" Type="datetime" />
-    <Property Name="EndTime" Nullable="false" Type="datetime" />
-    <Property Name="OwnerBusinessAccountId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="RouteType" Nullable="false" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="StartTime" Type="datetime" Nullable="false" />
+    <Property Name="EndTime" Type="datetime" Nullable="false" />
+    <Property Name="OwnerBusinessAccountId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RouteType" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="UserAccountLog">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="TypeId" Nullable="true" Type="int" />
-    <Property Name="TimeStamp" Nullable="false" Type="datetime" />
-    <Property Name="UserAccountId" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="TypeId" Type="int" Nullable="true" />
+    <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+    <Property Name="UserAccountId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Vehicles">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="VehicleId" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Mileage" Nullable="true" Type="int" />
-    <Property Name="LicensePlate" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="VIN" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Year" Nullable="true" Type="int" />
-    <Property Name="Make" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Model" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Notes" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="LastCompassDirection" Nullable="true" Type="int" />
-    <Property Name="LastLongitude" Nullable="true" Type="float" />
-    <Property Name="LastLatitude" Nullable="true" Type="float" />
-    <Property Name="LastTimeStamp" Nullable="true" Type="datetime" />
-    <Property Name="LastSpeed" Nullable="true" Type="float" />
-    <Property Name="LastSource" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="OwnerPartyId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="LastPushToAzureTimeStamp" Nullable="true" Type="datetime" />
-    <Property Name="LastAccuracy" Nullable="true" Type="int" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="VehicleId" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Mileage" Type="int" Nullable="true" />
+    <Property Name="LicensePlate" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="VIN" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Year" Type="int" Nullable="true" />
+    <Property Name="Make" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Model" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Notes" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LastCompassDirection" Type="int" Nullable="true" />
+    <Property Name="LastLongitude" Type="float" Nullable="true" />
+    <Property Name="LastLatitude" Type="float" Nullable="true" />
+    <Property Name="LastTimeStamp" Type="datetime" Nullable="true" />
+    <Property Name="LastSpeed" Type="float" Nullable="true" />
+    <Property Name="LastSource" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="OwnerPartyId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LastPushToAzureTimeStamp" Type="datetime" Nullable="true" />
+    <Property Name="LastAccuracy" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="VehicleMaintenanceLog">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Date" Nullable="true" Type="datetime" />
-    <Property Name="Mileage" Nullable="true" Type="int" />
-    <Property Name="ServicedBy" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Comments" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="VehicleId" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="true" />
+    <Property Name="Mileage" Type="int" Nullable="true" />
+    <Property Name="ServicedBy" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Comments" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="VehicleId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="VehicleMaintenanceLineItems">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Type" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Cost" Nullable="true" Precision="12" Scale="2" Type="decimal" />
-    <Property Name="Details" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="VehicleMaintenanceLogEntryId" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Type" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Cost" Type="decimal" Nullable="true" Precision="12" Scale="2" />
+    <Property Name="Details" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="VehicleMaintenanceLogEntryId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Clients">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="DateAdded" Nullable="false" Type="datetime" />
-    <Property Name="Salesperson" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="BusinessAccountId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="Name" Nullable="true" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="DateAdded" Type="datetime" Nullable="false" />
+    <Property Name="Salesperson" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ServiceTemplates">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="OwnerServiceProviderId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="OwnerClientId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="OwnerServiceTemplateId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="LevelInt" Nullable="false" Type="smallint" />
-    <Property Name="Name" Nullable="true" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="OwnerServiceProviderId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="OwnerClientId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="OwnerServiceTemplateId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="LevelInt" Type="smallint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Repeats">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="EndDate" Nullable="true" Type="datetime" />
-    <Property Name="EndAfterTimes" Nullable="true" Type="int" />
-    <Property Name="RepeatEveryTimes" Nullable="false" Type="int" />
-    <Property Name="FrequencyInt" Nullable="false" Type="int" />
-    <Property Name="FrequencyDetailInt" Nullable="true" Type="int" />
-    <Property Name="StartDate" Nullable="false" Type="datetime" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="EndDate" Type="datetime" Nullable="true" />
+    <Property Name="EndAfterTimes" Type="int" Nullable="true" />
+    <Property Name="RepeatEveryTimes" Type="int" Nullable="false" />
+    <Property Name="FrequencyInt" Type="int" Nullable="false" />
+    <Property Name="FrequencyDetailInt" Type="int" Nullable="true" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="RecurringServices">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="ClientId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="ExcludedDatesString" Nullable="true" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ClientId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ExcludedDatesString" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Regions">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Name" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="BusinessAccountId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="Color" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Notes" Nullable="true" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="Color" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Notes" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Files">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Data" Nullable="false" Type="tinyint" />
-    <Property Name="Name" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="LocationId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="PartyId" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Data" Type="tinyint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LocationId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="PartyId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="SubLocations">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Name" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="Longitude" Nullable="true" Precision="11" Scale="8" Type="decimal" />
-    <Property Name="Latitude" Nullable="true" Precision="11" Scale="8" Type="decimal" />
-    <Property Name="Notes" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="LocationId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="Number" Nullable="false" Type="int" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Longitude" Type="decimal" Nullable="true" Precision="11" Scale="8" />
+    <Property Name="Latitude" Type="decimal" Nullable="true" Precision="11" Scale="8" />
+    <Property Name="Notes" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LocationId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="Number" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Employees">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="AddressLineOne" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="AddressLineTwo" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="City" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Comments" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="State" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="ZipCode" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Permissions" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="HireDate" Nullable="true" Type="datetime" />
-    <Property Name="SSN" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="LinkedUserAccountId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="EmployerId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="LastCompassDirection" Nullable="true" Type="int" />
-    <Property Name="LastLongitude" Nullable="true" Type="float" />
-    <Property Name="LastLatitude" Nullable="true" Type="float" />
-    <Property Name="LastTimeStamp" Nullable="true" Type="datetime" />
-    <Property Name="LastSpeed" Nullable="true" Type="float" />
-    <Property Name="LastSource" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="LastPushToAzureTimeStamp" Nullable="true" Type="datetime" />
-    <Property Name="LastAccuracy" Nullable="true" Type="int" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="AddressLineOne" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="AddressLineTwo" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="City" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Comments" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="State" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ZipCode" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Permissions" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="HireDate" Type="datetime" Nullable="true" />
+    <Property Name="SSN" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LinkedUserAccountId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="EmployerId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LastCompassDirection" Type="int" Nullable="true" />
+    <Property Name="LastLongitude" Type="float" Nullable="true" />
+    <Property Name="LastLatitude" Type="float" Nullable="true" />
+    <Property Name="LastTimeStamp" Type="datetime" Nullable="true" />
+    <Property Name="LastSpeed" Type="float" Nullable="true" />
+    <Property Name="LastSource" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LastPushToAzureTimeStamp" Type="datetime" Nullable="true" />
+    <Property Name="LastAccuracy" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="EmployeeHistoryEntries">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Date" Nullable="true" Type="datetime" />
-    <Property Name="Type" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Summary" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Notes" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="EmployeeId" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="true" />
+    <Property Name="Type" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Summary" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Notes" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="EmployeeId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Options">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Name" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="IsChecked" Nullable="false" DefaultValue="false" Type="bit" />
-    <Property Name="OptionsFieldId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Index" Nullable="false" DefaultValue="0" Type="int" />
-    <Property Name="Tooltip" Nullable="true" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsChecked" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="OptionsFieldId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Index" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="Tooltip" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Contacts">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Notes" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="OwnerPartyId" Nullable="false" Type="uniqueidentifier" />
-  </EntityType>
-  <EntityType Name="ClientTitles">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Title" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="ClientId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ContactId" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Notes" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="OwnerPartyId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Invoices">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="LocationId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="FixedScheduleOptionInt" Nullable="true" Type="int" />
-    <Property Name="RelativeScheduleDays" Nullable="true" Type="int" />
-    <Property Name="ScheduleModeInt" Nullable="false" Type="int" />
-    <Property Name="SalesTermId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="Memo" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="DueDate" Nullable="true" Type="datetime" />
-    <Property Name="SyncToken" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="CustomerId" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="CreateTime" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="LastUpdatedTime" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="BusinessAccountId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ClientId" Nullable="true" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LocationId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="FixedScheduleOptionInt" Type="int" Nullable="true" />
+    <Property Name="RelativeScheduleDays" Type="int" Nullable="true" />
+    <Property Name="ScheduleModeInt" Type="int" Nullable="false" />
+    <Property Name="SalesTermId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="Memo" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="DueDate" Type="datetime" Nullable="true" />
+    <Property Name="SyncToken" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CustomerId" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CreateTime" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LastUpdatedTime" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="ClientId" Type="uniqueidentifier" Nullable="true" />
   </EntityType>
   <EntityType Name="SalesTerms">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="DueDays" Nullable="true" Type="int" />
-    <Property Name="Name" Nullable="false" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="DueDays" Type="int" Nullable="true" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="LineItems">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="InvoiceId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Description" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Amount" Nullable="true" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="InvoiceId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Amount" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="RouteTasks">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="LocationId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="RouteDestinationId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ClientId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ServiceId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="ReadOnly" Nullable="false" Type="bit" />
-    <Property Name="BusinessAccountId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="EstimatedDuration" Nullable="false" Precision="7" Type="time" />
-    <Property Name="Name" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="StatusInt" Nullable="false" Type="int" />
-    <Property Name="Date" Nullable="false" Type="datetime" />
-    <Property Name="OrderInRouteDestination" Nullable="false" Type="int" />
-    <Property Name="RecurringServiceId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="DelayedChildId" Nullable="true" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="LocationId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="RouteDestinationId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="ClientId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="ServiceId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="ReadOnly" Type="bit" Nullable="false" />
+    <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="EstimatedDuration" Type="time" Nullable="false" Precision="7" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="StatusInt" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="OrderInRouteDestination" Type="int" Nullable="false" />
+    <Property Name="RecurringServiceId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="DelayedChildId" Type="uniqueidentifier" Nullable="true" />
   </EntityType>
   <EntityType Name="Errors">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Date" Nullable="true" Type="datetime" />
-    <Property Name="BusinessName" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="UserEmail" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="ErrorText" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="InnerException" Nullable="true" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="true" />
+    <Property Name="BusinessName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="UserEmail" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ErrorText" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="InnerException" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="PartiesWithNames">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="ChildName" Nullable="true" Type="nvarchar(max)" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ChildName" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ServiceTemplateWithVendorIds">
     <Key>
       <PropertyRef Name="ServiceTemplateId" />
       <PropertyRef Name="BusinessAccountId" />
     </Key>
-    <Property Name="ServiceTemplateId" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="BusinessAccountId" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Parties_Business">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Name" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Parties_BusinessAccount">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="QuickBooksEnabled" Nullable="false" DefaultValue="false" Type="bit" />
-    <Property Name="QuickBooksAccessToken" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="QuickBooksAccessTokenSecret" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="RouteManifestSettings" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="QuickBooksSessionXml" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="MaxRoutes" Nullable="false" DefaultValue="1" Type="int" />
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="QuickBooksEnabled" Type="bit" Nullable="false" DefaultValue="false" />
+    <Property Name="QuickBooksAccessToken" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="QuickBooksAccessTokenSecret" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="RouteManifestSettings" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="QuickBooksSessionXml" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="MaxRoutes" Type="int" Nullable="false" DefaultValue="1" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Parties_Person">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="FirstName" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="LastName" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="MiddleInitial" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="GenderInt" Nullable="true" Type="smallint" />
-    <Property Name="DateOfBirth" Nullable="true" Type="datetime" />
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="MiddleInitial" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="GenderInt" Type="smallint" Nullable="true" />
+    <Property Name="DateOfBirth" Type="datetime" Nullable="true" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Parties_UserAccount">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="PasswordHash" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="EmailAddress" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="LastActivity" Nullable="true" Type="datetime" />
-    <Property Name="CreationDate" Nullable="false" Type="datetime" />
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="PasswordHash" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="EmailAddress" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastActivity" Type="datetime" Nullable="true" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Fields_OptionsField">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="AllowMultipleSelection" Nullable="false" Type="bit" />
-    <Property Name="TypeInt" Nullable="false" Type="smallint" />
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="AllowMultipleSelection" Type="bit" Nullable="false" />
+    <Property Name="TypeInt" Type="smallint" Nullable="false" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Fields_LocationField">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="LocationId" Nullable="true" Type="uniqueidentifier" />
-    <Property Name="LocationFieldTypeInt" Nullable="false" Type="smallint" />
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="LocationId" Type="uniqueidentifier" Nullable="true" />
+    <Property Name="LocationFieldTypeInt" Type="smallint" Nullable="false" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Files_PartyImage">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Fields_TextBoxField">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="IsMultiline" Nullable="false" Type="bit" />
-    <Property Name="Value" Nullable="true" Type="nvarchar(max)" />
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="IsMultiline" Type="bit" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Fields_NumericField">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Mask" Nullable="false" Type="nvarchar(max)" />
-    <Property Name="DecimalPlaces" Nullable="false" Type="int" />
-    <Property Name="Minimum" Nullable="false" Precision="16" Scale="6" Type="decimal" />
-    <Property Name="Maximum" Nullable="false" Precision="16" Scale="6" Type="decimal" />
-    <Property Name="Value" Nullable="true" Precision="16" Scale="6" Type="decimal" />
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Mask" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DecimalPlaces" Type="int" Nullable="false" />
+    <Property Name="Minimum" Type="decimal" Nullable="false" Precision="16" Scale="6" />
+    <Property Name="Maximum" Type="decimal" Nullable="false" Precision="16" Scale="6" />
+    <Property Name="Value" Type="decimal" Nullable="true" Precision="16" Scale="6" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Fields_DateTimeField">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Earliest" Nullable="false" Type="datetime" />
-    <Property Name="Latest" Nullable="false" Type="datetime" />
-    <Property Name="TypeInt" Nullable="false" Type="smallint" />
-    <Property Name="Value" Nullable="true" Type="datetime" />
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Earliest" Type="datetime" Nullable="false" />
+    <Property Name="Latest" Type="datetime" Nullable="false" />
+    <Property Name="TypeInt" Type="smallint" Nullable="false" />
+    <Property Name="Value" Type="datetime" Nullable="true" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Options_LocationOption">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="RoleBlock">
     <Key>
       <PropertyRef Name="Roles_Id" />
       <PropertyRef Name="Blocks_Id" />
     </Key>
-    <Property Name="Roles_Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Blocks_Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Roles_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Blocks_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="RouteVehicle">
     <Key>
       <PropertyRef Name="Routes_Id" />
       <PropertyRef Name="Vehicles_Id" />
     </Key>
-    <Property Name="Routes_Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Vehicles_Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Routes_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Vehicles_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="PartyRole">
     <Key>
       <PropertyRef Name="MemberParties_Id" />
       <PropertyRef Name="RoleMembership_Id" />
     </Key>
-    <Property Name="MemberParties_Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="RoleMembership_Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="MemberParties_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="RoleMembership_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="EmployeeRoute">
     <Key>
       <PropertyRef Name="Employees_Id" />
       <PropertyRef Name="Routes_Id" />
     </Key>
-    <Property Name="Employees_Id" Nullable="false" Type="uniqueidentifier" />
-    <Property Name="Routes_Id" Nullable="false" Type="uniqueidentifier" />
+    <Property Name="Employees_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Routes_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <Association Name="ContactInfoParty">
-    <End Type="CoreEntities.Store.ContactInfoSet" Multiplicity="*" Role="ContactInfo" />
-    <End Type="CoreEntities.Store.Parties" Multiplicity="0..1" Role="Party" />
+    <End Role="ContactInfo" Type="CoreEntities.Store.ContactInfoSet" Multiplicity="*" />
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -876,8 +858,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="LocationContactInfo">
-    <End Type="CoreEntities.Store.Locations" Multiplicity="0..1" Role="Location" />
-    <End Type="CoreEntities.Store.ContactInfoSet" Multiplicity="*" Role="ContactInfo" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="0..1" />
+    <End Role="ContactInfo" Type="CoreEntities.Store.ContactInfoSet" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Location">
         <PropertyRef Name="Id" />
@@ -888,8 +870,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="VehicleMaintenanceLogEntryVehicle">
-    <End Type="CoreEntities.Store.VehicleMaintenanceLog" Multiplicity="*" Role="VehicleMaintenanceLogEntry" />
-    <End Type="CoreEntities.Store.Vehicles" Multiplicity="1" Role="Vehicle" />
+    <End Role="VehicleMaintenanceLogEntry" Type="CoreEntities.Store.VehicleMaintenanceLog" Multiplicity="*" />
+    <End Role="Vehicle" Type="CoreEntities.Store.Vehicles" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Vehicle">
         <PropertyRef Name="Id" />
@@ -900,8 +882,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RouteTaskLocation">
-    <End Type="CoreEntities.Store.RouteTasks" Multiplicity="*" Role="RouteTask" />
-    <End Type="CoreEntities.Store.Locations" Multiplicity="0..1" Role="Location" />
+    <End Role="RouteTask" Type="CoreEntities.Store.RouteTasks" Multiplicity="*" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Location">
         <PropertyRef Name="Id" />
@@ -912,8 +894,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RouteDestinationLocation">
-    <End Type="CoreEntities.Store.RouteDestinations" Multiplicity="*" Role="RouteDestination" />
-    <End Type="CoreEntities.Store.Locations" Multiplicity="0..1" Role="Location" />
+    <End Role="RouteDestination" Type="CoreEntities.Store.RouteDestinations" Multiplicity="*" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Location">
         <PropertyRef Name="Id" />
@@ -924,8 +906,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RouteTaskRouteDestination">
-    <End Type="CoreEntities.Store.RouteTasks" Multiplicity="*" Role="RouteTask" />
-    <End Type="CoreEntities.Store.RouteDestinations" Multiplicity="0..1" Role="RouteDestination" />
+    <End Role="RouteTask" Type="CoreEntities.Store.RouteTasks" Multiplicity="*" />
+    <End Role="RouteDestination" Type="CoreEntities.Store.RouteDestinations" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="RouteDestination">
         <PropertyRef Name="Id" />
@@ -936,8 +918,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RouteDestinationRoute">
-    <End Type="CoreEntities.Store.RouteDestinations" Multiplicity="*" Role="RouteDestination" />
-    <End Type="CoreEntities.Store.Routes" Multiplicity="1" Role="Route" />
+    <End Role="RouteDestination" Type="CoreEntities.Store.RouteDestinations" Multiplicity="*" />
+    <End Role="Route" Type="CoreEntities.Store.Routes" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Route">
         <PropertyRef Name="Id" />
@@ -948,8 +930,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="VehicleMaintenanceLogEntryLineItem">
-    <End Type="CoreEntities.Store.VehicleMaintenanceLog" Multiplicity="1" Role="VehicleMaintenanceLogEntry" />
-    <End Type="CoreEntities.Store.VehicleMaintenanceLineItems" Multiplicity="*" Role="LineItem" />
+    <End Role="VehicleMaintenanceLogEntry" Type="CoreEntities.Store.VehicleMaintenanceLog" Multiplicity="1" />
+    <End Role="LineItem" Type="CoreEntities.Store.VehicleMaintenanceLineItems" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="VehicleMaintenanceLogEntry">
         <PropertyRef Name="Id" />
@@ -960,8 +942,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RouteTaskClient">
-    <End Type="CoreEntities.Store.RouteTasks" Multiplicity="*" Role="RouteTask" />
-    <End Type="CoreEntities.Store.Clients" Multiplicity="0..1" Role="Client" />
+    <End Role="RouteTask" Type="CoreEntities.Store.RouteTasks" Multiplicity="*" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
@@ -972,8 +954,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ServiceClient">
-    <End Type="CoreEntities.Store.Services" Multiplicity="*" Role="Service" />
-    <End Type="CoreEntities.Store.Clients" Multiplicity="1" Role="Client" />
+    <End Role="Service" Type="CoreEntities.Store.Services" Multiplicity="*" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
@@ -984,8 +966,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RouteDestinationClient">
-    <End Type="CoreEntities.Store.RouteDestinations" Multiplicity="*" Role="RouteDestination" />
-    <End Type="CoreEntities.Store.Clients" Multiplicity="0..1" Role="Client" />
+    <End Role="RouteDestination" Type="CoreEntities.Store.RouteDestinations" Multiplicity="*" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
@@ -996,8 +978,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RouteTaskService">
-    <End Type="CoreEntities.Store.RouteTasks" Multiplicity="*" Role="RouteTask" />
-    <End Type="CoreEntities.Store.Services" Multiplicity="0..1" Role="Service" />
+    <End Role="RouteTask" Type="CoreEntities.Store.RouteTasks" Multiplicity="*" />
+    <End Role="Service" Type="CoreEntities.Store.Services" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Service">
         <PropertyRef Name="Id" />
@@ -1008,8 +990,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="BusinessAccountService">
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="1" Role="BusinessAccount" />
-    <End Type="CoreEntities.Store.Services" Multiplicity="*" Role="Service" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="1" />
+    <End Role="Service" Type="CoreEntities.Store.Services" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1020,8 +1002,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="BusinessAccountRoute">
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="1" Role="BusinessAccount" />
-    <End Type="CoreEntities.Store.Routes" Multiplicity="*" Role="Route" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="1" />
+    <End Role="Route" Type="CoreEntities.Store.Routes" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1032,8 +1014,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="BusinessAccountRouteTask">
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="1" Role="BusinessAccount" />
-    <End Type="CoreEntities.Store.RouteTasks" Multiplicity="*" Role="RouteTask" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="1" />
+    <End Role="RouteTask" Type="CoreEntities.Store.RouteTasks" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1044,8 +1026,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="UserAccountUserAccountLogEntry">
-    <End Type="CoreEntities.Store.Parties_UserAccount" Multiplicity="1" Role="UserAccount" />
-    <End Type="CoreEntities.Store.UserAccountLog" Multiplicity="*" Role="UserAccountLogEntry" />
+    <End Role="UserAccount" Type="CoreEntities.Store.Parties_UserAccount" Multiplicity="1" />
+    <End Role="UserAccountLogEntry" Type="CoreEntities.Store.UserAccountLog" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="UserAccount">
         <PropertyRef Name="Id" />
@@ -1056,8 +1038,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ServiceTemplateBusinessAccount">
-    <End Type="CoreEntities.Store.ServiceTemplates" Multiplicity="*" Role="ServiceTemplate" />
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" Role="BusinessAccount" />
+    <End Role="ServiceTemplate" Type="CoreEntities.Store.ServiceTemplates" Multiplicity="*" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1068,8 +1050,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RecurringServiceServiceTemplate">
-    <End Type="CoreEntities.Store.RecurringServices" Multiplicity="0..1" Role="RecurringService" />
-    <End Type="CoreEntities.Store.ServiceTemplates" Multiplicity="1" Role="ServiceTemplate" />
+    <End Role="RecurringService" Type="CoreEntities.Store.RecurringServices" Multiplicity="0..1" />
+    <End Role="ServiceTemplate" Type="CoreEntities.Store.ServiceTemplates" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="ServiceTemplate">
         <PropertyRef Name="Id" />
@@ -1080,8 +1062,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RecurringServiceService">
-    <End Type="CoreEntities.Store.RecurringServices" Multiplicity="0..1" Role="RecurringService" />
-    <End Type="CoreEntities.Store.Services" Multiplicity="*" Role="Service" />
+    <End Role="RecurringService" Type="CoreEntities.Store.RecurringServices" Multiplicity="0..1" />
+    <End Role="Service" Type="CoreEntities.Store.Services" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="RecurringService">
         <PropertyRef Name="Id" />
@@ -1092,8 +1074,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RecurringServiceClient">
-    <End Type="CoreEntities.Store.RecurringServices" Multiplicity="*" Role="RecurringService" />
-    <End Type="CoreEntities.Store.Clients" Multiplicity="1" Role="Client" />
+    <End Role="RecurringService" Type="CoreEntities.Store.RecurringServices" Multiplicity="*" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
@@ -1104,8 +1086,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ClientServiceTemplate">
-    <End Type="CoreEntities.Store.Clients" Multiplicity="0..1" Role="Client" />
-    <End Type="CoreEntities.Store.ServiceTemplates" Multiplicity="*" Role="ServiceTemplate" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="0..1" />
+    <End Role="ServiceTemplate" Type="CoreEntities.Store.ServiceTemplates" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
@@ -1116,8 +1098,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="VehicleParty">
-    <End Type="CoreEntities.Store.Vehicles" Multiplicity="*" Role="Vehicle" />
-    <End Type="CoreEntities.Store.Parties" Multiplicity="1" Role="Party" />
+    <End Role="Vehicle" Type="CoreEntities.Store.Vehicles" Multiplicity="*" />
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -1128,8 +1110,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ServiceServiceTemplate">
-    <End Type="CoreEntities.Store.Services" Multiplicity="0..1" Role="Service" />
-    <End Type="CoreEntities.Store.ServiceTemplates" Multiplicity="1" Role="ServiceTemplate" />
+    <End Role="Service" Type="CoreEntities.Store.Services" Multiplicity="0..1" />
+    <End Role="ServiceTemplate" Type="CoreEntities.Store.ServiceTemplates" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="ServiceTemplate">
         <PropertyRef Name="Id" />
@@ -1140,8 +1122,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="PartyRole1">
-    <End Type="CoreEntities.Store.Parties" Multiplicity="0..1" Role="Party" />
-    <End Type="CoreEntities.Store.Roles" Multiplicity="*" Role="Role" />
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="0..1" />
+    <End Role="Role" Type="CoreEntities.Store.Roles" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -1152,8 +1134,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="LocationParty1">
-    <End Type="CoreEntities.Store.Locations" Multiplicity="*" Role="Location" />
-    <End Type="CoreEntities.Store.Parties" Multiplicity="0..1" Role="Party" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="*" />
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -1164,8 +1146,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RegionLocation">
-    <End Type="CoreEntities.Store.Regions" Multiplicity="0..1" Role="Regions" />
-    <End Type="CoreEntities.Store.Locations" Multiplicity="*" Role="Location" />
+    <End Role="Regions" Type="CoreEntities.Store.Regions" Multiplicity="0..1" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Regions">
         <PropertyRef Name="Id" />
@@ -1176,8 +1158,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="BusinessAccountRegion">
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" Role="BusinessAccount" />
-    <End Type="CoreEntities.Store.Regions" Multiplicity="*" Role="Region" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
+    <End Role="Region" Type="CoreEntities.Store.Regions" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1188,8 +1170,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="LocationFile">
-    <End Type="CoreEntities.Store.Locations" Multiplicity="0..1" Role="Location" />
-    <End Type="CoreEntities.Store.Files" Multiplicity="*" Role="File" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="0..1" />
+    <End Role="File" Type="CoreEntities.Store.Files" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Location">
         <PropertyRef Name="Id" />
@@ -1200,8 +1182,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="LocationSubLocation">
-    <End Type="CoreEntities.Store.Locations" Multiplicity="0..1" Role="Location" />
-    <End Type="CoreEntities.Store.SubLocations" Multiplicity="*" Role="SubLocation" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="0..1" />
+    <End Role="SubLocation" Type="CoreEntities.Store.SubLocations" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Location">
         <PropertyRef Name="Id" />
@@ -1212,8 +1194,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="EmployeeUserAccount">
-    <End Type="CoreEntities.Store.Employees" Multiplicity="*" Role="Employee" />
-    <End Type="CoreEntities.Store.Parties_UserAccount" Multiplicity="0..1" Role="UserAccount" />
+    <End Role="Employee" Type="CoreEntities.Store.Employees" Multiplicity="*" />
+    <End Role="UserAccount" Type="CoreEntities.Store.Parties_UserAccount" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="UserAccount">
         <PropertyRef Name="Id" />
@@ -1224,8 +1206,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="EmployeeBusinessAccount">
-    <End Type="CoreEntities.Store.Employees" Multiplicity="*" Role="Employee" />
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="1" Role="BusinessAccount" />
+    <End Role="Employee" Type="CoreEntities.Store.Employees" Multiplicity="*" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1236,8 +1218,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="EmployeePerson">
-    <End Type="CoreEntities.Store.Employees" Multiplicity="0..1" Role="Employee" />
-    <End Type="CoreEntities.Store.Parties_Person" Multiplicity="1" Role="Person" />
+    <End Role="Employee" Type="CoreEntities.Store.Employees" Multiplicity="0..1" />
+    <End Role="Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Person">
         <PropertyRef Name="Id" />
@@ -1248,8 +1230,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RecurringServiceRepeat">
-    <End Type="CoreEntities.Store.RecurringServices" Multiplicity="0..1" Role="RecurringService" />
-    <End Type="CoreEntities.Store.Repeats" Multiplicity="1" Role="Repeat" />
+    <End Role="RecurringService" Type="CoreEntities.Store.RecurringServices" Multiplicity="0..1" />
+    <End Role="Repeat" Type="CoreEntities.Store.Repeats" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Repeat">
         <PropertyRef Name="Id" />
@@ -1260,8 +1242,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="EmployeeHistoryEntryEmployee">
-    <End Type="CoreEntities.Store.EmployeeHistoryEntries" Multiplicity="*" Role="EmployeeHistoryEntry" />
-    <End Type="CoreEntities.Store.Employees" Multiplicity="1" Role="Employee" />
+    <End Role="EmployeeHistoryEntry" Type="CoreEntities.Store.EmployeeHistoryEntries" Multiplicity="*" />
+    <End Role="Employee" Type="CoreEntities.Store.Employees" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Employee">
         <PropertyRef Name="Id" />
@@ -1272,8 +1254,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ServiceTemplateServiceTemplate">
-    <End Type="CoreEntities.Store.ServiceTemplates" Multiplicity="0..1" Role="ServiceTemplate" />
-    <End Type="CoreEntities.Store.ServiceTemplates" Multiplicity="*" Role="ServiceTemplate1" />
+    <End Role="ServiceTemplate" Type="CoreEntities.Store.ServiceTemplates" Multiplicity="0..1" />
+    <End Role="ServiceTemplate1" Type="CoreEntities.Store.ServiceTemplates" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="ServiceTemplate">
         <PropertyRef Name="Id" />
@@ -1284,8 +1266,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FieldField">
-    <End Type="CoreEntities.Store.Fields" Multiplicity="0..1" Role="Field" />
-    <End Type="CoreEntities.Store.Fields" Multiplicity="*" Role="Field1" />
+    <End Role="Field" Type="CoreEntities.Store.Fields" Multiplicity="0..1" />
+    <End Role="Field1" Type="CoreEntities.Store.Fields" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Field">
         <PropertyRef Name="Id" />
@@ -1296,8 +1278,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="OptionsFieldOption">
-    <End Type="CoreEntities.Store.Fields_OptionsField" Multiplicity="1" Role="OptionsField" />
-    <End Type="CoreEntities.Store.Options" Multiplicity="*" Role="Option" />
+    <End Role="OptionsField" Type="CoreEntities.Store.Fields_OptionsField" Multiplicity="1" />
+    <End Role="Option" Type="CoreEntities.Store.Options" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="OptionsField">
         <PropertyRef Name="Id" />
@@ -1308,8 +1290,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ServiceTemplateField">
-    <End Type="CoreEntities.Store.ServiceTemplates" Multiplicity="0..1" Role="ServiceTemplate" />
-    <End Type="CoreEntities.Store.Fields" Multiplicity="*" Role="Field" />
+    <End Role="ServiceTemplate" Type="CoreEntities.Store.ServiceTemplates" Multiplicity="0..1" />
+    <End Role="Field" Type="CoreEntities.Store.Fields" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="ServiceTemplate">
         <PropertyRef Name="Id" />
@@ -1320,8 +1302,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="LocationFieldLocation">
-    <End Type="CoreEntities.Store.Fields_LocationField" Multiplicity="*" Role="LocationField" />
-    <End Type="CoreEntities.Store.Locations" Multiplicity="0..1" Role="Location" />
+    <End Role="LocationField" Type="CoreEntities.Store.Fields_LocationField" Multiplicity="*" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Location">
         <PropertyRef Name="Id" />
@@ -1332,8 +1314,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ContactPerson">
-    <End Type="CoreEntities.Store.Contacts" Multiplicity="0..1" Role="Contact" />
-    <End Type="CoreEntities.Store.Parties_Person" Multiplicity="1" Role="Person" />
+    <End Role="Contact" Type="CoreEntities.Store.Contacts" Multiplicity="0..1" />
+    <End Role="Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Person">
         <PropertyRef Name="Id" />
@@ -1344,8 +1326,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ContactParty">
-    <End Type="CoreEntities.Store.Contacts" Multiplicity="*" Role="Contact" />
-    <End Type="CoreEntities.Store.Parties" Multiplicity="1" Role="Party" />
+    <End Role="Contact" Type="CoreEntities.Store.Contacts" Multiplicity="*" />
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -1355,33 +1337,9 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="ClientTitleClient">
-    <End Type="CoreEntities.Store.ClientTitles" Multiplicity="*" Role="ClientTitle" />
-    <End Type="CoreEntities.Store.Clients" Multiplicity="0..1" Role="Client" />
-    <ReferentialConstraint>
-      <Principal Role="Client">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="ClientTitle">
-        <PropertyRef Name="ClientId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ClientTitleContact">
-    <End Type="CoreEntities.Store.ClientTitles" Multiplicity="*" Role="ClientTitle" />
-    <End Type="CoreEntities.Store.Contacts" Multiplicity="1" Role="Contact" />
-    <ReferentialConstraint>
-      <Principal Role="Contact">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="ClientTitle">
-        <PropertyRef Name="ContactId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="InvoiceLocation">
-    <End Type="CoreEntities.Store.Invoices" Multiplicity="*" Role="Invoice" />
-    <End Type="CoreEntities.Store.Locations" Multiplicity="0..1" Role="Location" />
+    <End Role="Invoice" Type="CoreEntities.Store.Invoices" Multiplicity="*" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Location">
         <PropertyRef Name="Id" />
@@ -1392,8 +1350,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="InvoiceSalesTerm">
-    <End Type="CoreEntities.Store.Invoices" Multiplicity="*" Role="Invoice" />
-    <End Type="CoreEntities.Store.SalesTerms" Multiplicity="0..1" Role="SalesTerm" />
+    <End Role="Invoice" Type="CoreEntities.Store.Invoices" Multiplicity="*" />
+    <End Role="SalesTerm" Type="CoreEntities.Store.SalesTerms" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="SalesTerm">
         <PropertyRef Name="Id" />
@@ -1404,8 +1362,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="InvoiceServiceTemplate">
-    <End Type="CoreEntities.Store.Invoices" Multiplicity="0..1" Role="Invoice" />
-    <End Type="CoreEntities.Store.ServiceTemplates" Multiplicity="1" Role="ServiceTemplate" />
+    <End Role="Invoice" Type="CoreEntities.Store.Invoices" Multiplicity="0..1" />
+    <End Role="ServiceTemplate" Type="CoreEntities.Store.ServiceTemplates" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="ServiceTemplate">
         <PropertyRef Name="Id" />
@@ -1416,8 +1374,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="LineItemInvoice">
-    <End Type="CoreEntities.Store.LineItems" Multiplicity="*" Role="LineItem" />
-    <End Type="CoreEntities.Store.Invoices" Multiplicity="1" Role="Invoice" />
+    <End Role="LineItem" Type="CoreEntities.Store.LineItems" Multiplicity="*" />
+    <End Role="Invoice" Type="CoreEntities.Store.Invoices" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Invoice">
         <PropertyRef Name="Id" />
@@ -1428,8 +1386,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FileParty">
-    <End Type="CoreEntities.Store.Files" Multiplicity="*" Role="File" />
-    <End Type="CoreEntities.Store.Parties" Multiplicity="1" Role="Party" />
+    <End Role="File" Type="CoreEntities.Store.Files" Multiplicity="*" />
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -1440,8 +1398,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="PartyPartyImage">
-    <End Type="CoreEntities.Store.Parties" Multiplicity="1" Role="Party" />
-    <End Type="CoreEntities.Store.Files_PartyImage" Multiplicity="0..1" Role="PartyImage" />
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="1" />
+    <End Role="PartyImage" Type="CoreEntities.Store.Files_PartyImage" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -1452,8 +1410,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="BusinessAccountInvoice">
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" Role="BusinessAccount" />
-    <End Type="CoreEntities.Store.Invoices" Multiplicity="*" Role="Invoice" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
+    <End Role="Invoice" Type="CoreEntities.Store.Invoices" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1464,8 +1422,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ClientInvoice">
-    <End Type="CoreEntities.Store.Clients" Multiplicity="0..1" Role="Client" />
-    <End Type="CoreEntities.Store.Invoices" Multiplicity="*" Role="Invoice" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="0..1" />
+    <End Role="Invoice" Type="CoreEntities.Store.Invoices" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
@@ -1476,8 +1434,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="RouteTaskRecurringService">
-    <End Type="CoreEntities.Store.RouteTasks" Multiplicity="*" Role="RouteTask" />
-    <End Type="CoreEntities.Store.RecurringServices" Multiplicity="0..1" Role="RecurringService" />
+    <End Role="RouteTask" Type="CoreEntities.Store.RouteTasks" Multiplicity="*" />
+    <End Role="RecurringService" Type="CoreEntities.Store.RecurringServices" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="RecurringService">
         <PropertyRef Name="Id" />
@@ -1488,8 +1446,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="BusinessAccountLocation">
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" Role="BusinessAccount" />
-    <End Type="CoreEntities.Store.Locations" Multiplicity="*" Role="Location" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1500,8 +1458,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ClientBusinessAccount">
-    <End Type="CoreEntities.Store.Clients" Multiplicity="*" Role="Client" />
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" Role="BusinessAccount" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="*" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1512,8 +1470,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="LocationBusinessAccount">
-    <End Type="CoreEntities.Store.Locations" Multiplicity="*" Role="Location" />
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" Role="BusinessAccount" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="*" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="BusinessAccount">
         <PropertyRef Name="Id" />
@@ -1524,8 +1482,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ClientLocation1">
-    <End Type="CoreEntities.Store.Clients" Multiplicity="0..1" Role="Client" />
-    <End Type="CoreEntities.Store.Locations" Multiplicity="*" Role="Location" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="0..1" />
+    <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
@@ -1536,8 +1494,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="ClientContactInfo">
-    <End Type="CoreEntities.Store.Clients" Multiplicity="0..1" Role="Client" />
-    <End Type="CoreEntities.Store.ContactInfoSet" Multiplicity="*" Role="ContactInfo" />
+    <End Role="Client" Type="CoreEntities.Store.Clients" Multiplicity="0..1" />
+    <End Role="ContactInfo" Type="CoreEntities.Store.ContactInfoSet" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
@@ -1548,8 +1506,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_RoleBlock_Role">
-    <End Type="CoreEntities.Store.Roles" Multiplicity="1" Role="Role" />
-    <End Type="CoreEntities.Store.RoleBlock" Multiplicity="*" Role="RoleBlock" />
+    <End Role="Role" Type="CoreEntities.Store.Roles" Multiplicity="1" />
+    <End Role="RoleBlock" Type="CoreEntities.Store.RoleBlock" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Role">
         <PropertyRef Name="Id" />
@@ -1560,8 +1518,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_RoleBlock_Block">
-    <End Type="CoreEntities.Store.RoleBlock" Multiplicity="*" Role="RoleBlock" />
-    <End Type="CoreEntities.Store.Blocks" Multiplicity="1" Role="Block" />
+    <End Role="RoleBlock" Type="CoreEntities.Store.RoleBlock" Multiplicity="*" />
+    <End Role="Block" Type="CoreEntities.Store.Blocks" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Block">
         <PropertyRef Name="Id" />
@@ -1572,8 +1530,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_RouteVehicle_Route">
-    <End Type="CoreEntities.Store.Routes" Multiplicity="1" Role="Route" />
-    <End Type="CoreEntities.Store.RouteVehicle" Multiplicity="*" Role="RouteVehicle" />
+    <End Role="Route" Type="CoreEntities.Store.Routes" Multiplicity="1" />
+    <End Role="RouteVehicle" Type="CoreEntities.Store.RouteVehicle" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Route">
         <PropertyRef Name="Id" />
@@ -1584,8 +1542,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_RouteVehicle_Vehicle">
-    <End Type="CoreEntities.Store.RouteVehicle" Multiplicity="*" Role="RouteVehicle" />
-    <End Type="CoreEntities.Store.Vehicles" Multiplicity="1" Role="Vehicle" />
+    <End Role="RouteVehicle" Type="CoreEntities.Store.RouteVehicle" Multiplicity="*" />
+    <End Role="Vehicle" Type="CoreEntities.Store.Vehicles" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Vehicle">
         <PropertyRef Name="Id" />
@@ -1596,8 +1554,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_PartyRole_Party">
-    <End Type="CoreEntities.Store.Parties" Multiplicity="1" Role="Party" />
-    <End Type="CoreEntities.Store.PartyRole" Multiplicity="*" Role="PartyRole" />
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="1" />
+    <End Role="PartyRole" Type="CoreEntities.Store.PartyRole" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -1608,8 +1566,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_PartyRole_Role">
-    <End Type="CoreEntities.Store.PartyRole" Multiplicity="*" Role="PartyRole" />
-    <End Type="CoreEntities.Store.Roles" Multiplicity="1" Role="Role" />
+    <End Role="PartyRole" Type="CoreEntities.Store.PartyRole" Multiplicity="*" />
+    <End Role="Role" Type="CoreEntities.Store.Roles" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Role">
         <PropertyRef Name="Id" />
@@ -1620,8 +1578,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_EmployeeRoute_Employee">
-    <End Type="CoreEntities.Store.Employees" Multiplicity="1" Role="Employee" />
-    <End Type="CoreEntities.Store.EmployeeRoute" Multiplicity="*" Role="EmployeeRoute" />
+    <End Role="Employee" Type="CoreEntities.Store.Employees" Multiplicity="1" />
+    <End Role="EmployeeRoute" Type="CoreEntities.Store.EmployeeRoute" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Employee">
         <PropertyRef Name="Id" />
@@ -1632,8 +1590,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_EmployeeRoute_Route">
-    <End Type="CoreEntities.Store.EmployeeRoute" Multiplicity="*" Role="EmployeeRoute" />
-    <End Type="CoreEntities.Store.Routes" Multiplicity="1" Role="Route" />
+    <End Role="EmployeeRoute" Type="CoreEntities.Store.EmployeeRoute" Multiplicity="*" />
+    <End Role="Route" Type="CoreEntities.Store.Routes" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Route">
         <PropertyRef Name="Id" />
@@ -1644,10 +1602,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Business_inherits_Party">
-    <End Type="CoreEntities.Store.Parties" Multiplicity="1" Role="Party">
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Parties_Business" Multiplicity="0..1" Role="Business" />
+    <End Role="Business" Type="CoreEntities.Store.Parties_Business" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -1658,10 +1616,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_BusinessAccount_inherits_Business">
-    <End Type="CoreEntities.Store.Parties_Business" Multiplicity="1" Role="Business">
+    <End Role="Business" Type="CoreEntities.Store.Parties_Business" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" Role="BusinessAccount" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Business">
         <PropertyRef Name="Id" />
@@ -1672,10 +1630,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Person_inherits_Party">
-    <End Type="CoreEntities.Store.Parties" Multiplicity="1" Role="Party">
+    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Parties_Person" Multiplicity="0..1" Role="Person" />
+    <End Role="Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Party">
         <PropertyRef Name="Id" />
@@ -1686,10 +1644,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_UserAccount_inherits_Person">
-    <End Type="CoreEntities.Store.Parties_Person" Multiplicity="1" Role="Person">
+    <End Role="Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Parties_UserAccount" Multiplicity="0..1" Role="UserAccount" />
+    <End Role="UserAccount" Type="CoreEntities.Store.Parties_UserAccount" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Person">
         <PropertyRef Name="Id" />
@@ -1700,10 +1658,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_OptionsField_inherits_Field">
-    <End Type="CoreEntities.Store.Fields" Multiplicity="1" Role="Field">
+    <End Role="Field" Type="CoreEntities.Store.Fields" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Fields_OptionsField" Multiplicity="0..1" Role="OptionsField" />
+    <End Role="OptionsField" Type="CoreEntities.Store.Fields_OptionsField" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Field">
         <PropertyRef Name="Id" />
@@ -1714,10 +1672,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_LocationField_inherits_Field">
-    <End Type="CoreEntities.Store.Fields" Multiplicity="1" Role="Field">
+    <End Role="Field" Type="CoreEntities.Store.Fields" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Fields_LocationField" Multiplicity="0..1" Role="LocationField" />
+    <End Role="LocationField" Type="CoreEntities.Store.Fields_LocationField" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Field">
         <PropertyRef Name="Id" />
@@ -1728,10 +1686,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_PartyImage_inherits_File">
-    <End Type="CoreEntities.Store.Files" Multiplicity="1" Role="File">
+    <End Role="File" Type="CoreEntities.Store.Files" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Files_PartyImage" Multiplicity="0..1" Role="PartyImage" />
+    <End Role="PartyImage" Type="CoreEntities.Store.Files_PartyImage" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="File">
         <PropertyRef Name="Id" />
@@ -1742,10 +1700,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_TextBoxField_inherits_Field">
-    <End Type="CoreEntities.Store.Fields" Multiplicity="1" Role="Field">
+    <End Role="Field" Type="CoreEntities.Store.Fields" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Fields_TextBoxField" Multiplicity="0..1" Role="TextBoxField" />
+    <End Role="TextBoxField" Type="CoreEntities.Store.Fields_TextBoxField" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Field">
         <PropertyRef Name="Id" />
@@ -1756,10 +1714,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_NumericField_inherits_Field">
-    <End Type="CoreEntities.Store.Fields" Multiplicity="1" Role="Field">
+    <End Role="Field" Type="CoreEntities.Store.Fields" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Fields_NumericField" Multiplicity="0..1" Role="NumericField" />
+    <End Role="NumericField" Type="CoreEntities.Store.Fields_NumericField" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Field">
         <PropertyRef Name="Id" />
@@ -1770,10 +1728,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_DateTimeField_inherits_Field">
-    <End Type="CoreEntities.Store.Fields" Multiplicity="1" Role="Field">
+    <End Role="Field" Type="CoreEntities.Store.Fields" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Fields_DateTimeField" Multiplicity="0..1" Role="DateTimeField" />
+    <End Role="DateTimeField" Type="CoreEntities.Store.Fields_DateTimeField" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Field">
         <PropertyRef Name="Id" />
@@ -1784,10 +1742,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_LocationOption_inherits_Option">
-    <End Type="CoreEntities.Store.Options" Multiplicity="1" Role="Option">
+    <End Role="Option" Type="CoreEntities.Store.Options" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Type="CoreEntities.Store.Options_LocationOption" Multiplicity="0..1" Role="LocationOption" />
+    <End Role="LocationOption" Type="CoreEntities.Store.Options_LocationOption" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Option">
         <PropertyRef Name="Id" />
@@ -2001,15 +1959,6 @@
           <AssociationSet Name="ContactParty" Association="CoreEntities.ContactParty">
             <End Role="Contact" EntitySet="Contacts" />
             <End Role="Party" EntitySet="Parties" />
-          </AssociationSet>
-          <EntitySet Name="ClientTitles" EntityType="CoreEntities.ClientTitle" />
-          <AssociationSet Name="ClientTitleClient" Association="CoreEntities.ClientTitleClient">
-            <End EntitySet="ClientTitles" Role="ClientTitle" />
-            <End EntitySet="Clients" Role="Client" />
-          </AssociationSet>
-          <AssociationSet Name="ClientTitleContact" Association="CoreEntities.ClientTitleContact">
-            <End EntitySet="ClientTitles" Role="ClientTitle" />
-            <End EntitySet="Contacts" Role="Contact" />
           </AssociationSet>
           <EntitySet Name="Invoices" EntityType="CoreEntities.Invoice" />
           <AssociationSet Name="InvoiceLocation" Association="CoreEntities.InvoiceLocation">
@@ -2509,7 +2458,6 @@
           <NavigationProperty Name="RouteDestinations" Relationship="CoreEntities.RouteDestinationClient" FromRole="Client" ToRole="RouteDestination" />
           <NavigationProperty Name="RecurringServices" Relationship="CoreEntities.RecurringServiceClient" FromRole="Client" ToRole="RecurringService" />
           <NavigationProperty Name="ServiceTemplates" Relationship="CoreEntities.ClientServiceTemplate" FromRole="Client" ToRole="ServiceTemplate" />
-          <NavigationProperty Name="ClientTitles" Relationship="CoreEntities.ClientTitleClient" FromRole="Client" ToRole="ClientTitle" />
           <NavigationProperty Name="Invoices" Relationship="CoreEntities.ClientInvoice" FromRole="Client" ToRole="Invoice" />
           <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.ClientBusinessAccount" FromRole="Client" ToRole="BusinessAccount" />
           <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
@@ -3079,7 +3027,6 @@
           <NavigationProperty Name="OwnedPerson" Relationship="CoreEntities.ContactPerson" FromRole="Contact" ToRole="Person" />
           <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.ContactParty" FromRole="Contact" ToRole="Party" />
           <Property Type="Guid" Name="OwnerPartyId" Nullable="false" />
-          <NavigationProperty Name="ClientTitles" Relationship="CoreEntities.ClientTitleContact" FromRole="Contact" ToRole="ClientTitle" />
         </EntityType>
         <Association Name="ContactPerson">
           <End Type="CoreEntities.Contact" Role="Contact" Multiplicity="0..1" />
@@ -3102,41 +3049,6 @@
             </Principal>
             <Dependent Role="Contact">
               <PropertyRef Name="OwnerPartyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ClientTitle">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" Type="Guid" />
-          <Property Name="Title" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
-          <NavigationProperty Name="Client" Relationship="CoreEntities.ClientTitleClient" FromRole="ClientTitle" ToRole="Client" />
-          <Property Name="ClientId" Nullable="true" Type="Guid" />
-          <NavigationProperty Name="Contact" Relationship="CoreEntities.ClientTitleContact" FromRole="ClientTitle" ToRole="Contact" />
-          <Property Name="ContactId" Nullable="false" Type="Guid" />
-        </EntityType>
-        <Association Name="ClientTitleClient">
-          <End Type="CoreEntities.ClientTitle" Multiplicity="*" Role="ClientTitle" />
-          <End Type="CoreEntities.Client" Multiplicity="0..1" Role="Client" />
-          <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ClientTitle">
-              <PropertyRef Name="ClientId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ClientTitleContact">
-          <End Type="CoreEntities.ClientTitle" Multiplicity="*" Role="ClientTitle" />
-          <End Type="CoreEntities.Contact" Multiplicity="1" Role="Contact" />
-          <ReferentialConstraint>
-            <Principal Role="Contact">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ClientTitle">
-              <PropertyRef Name="ContactId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3427,7 +3339,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-  <EntityContainerMapping CdmEntityContainer="CoreEntitiesContainer" StorageEntityContainer="CoreEntitiesStoreContainer">
+  <EntityContainerMapping StorageEntityContainer="CoreEntitiesStoreContainer" CdmEntityContainer="CoreEntitiesContainer">
     <EntitySetMapping Name="Blocks">
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Block)">
         <MappingFragment StoreEntitySet="Blocks">
@@ -3824,16 +3736,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ClientTitles">
-      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.ClientTitle)">
-        <MappingFragment StoreEntitySet="ClientTitles">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Title" ColumnName="Title" />
-          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-          <ScalarProperty Name="ContactId" ColumnName="ContactId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Invoices">
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Invoice)">
         <MappingFragment StoreEntitySet="Invoices">
@@ -3973,7 +3875,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="CoreEntities" ZoomLevel="97" >
+      <Diagram Name="CoreEntities" ZoomLevel="59" >
         <EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="23.625" PointY="22.875" Height="2.5571907552083353" />
         <EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="21.375" PointY="23.125" Height="2.5571907552083246" />
         <EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="18.75" PointY="22.875" Height="2.7494921875000102" />
@@ -4513,74 +4415,6 @@
           <ConnectorPoint PointX="16.333333333333332" PointY="22.547955822738086" />
           <ConnectorPoint PointX="16.166666666666668" PointY="22.547955822738086" />
           <ConnectorPoint PointX="15.75" PointY="22.547955822738086" />
-        </AssociationConnector>
-        <EntityTypeShape Height="1.7879850260416674" EntityType="CoreEntities.Contact" PointX="6.25" PointY="24.375" Width="1.5" />
-        <AssociationConnector Association="CoreEntities.ContactPerson">
-          <ConnectorPoint PointX="3.8749999999999942" PointY="209.29758789062498" />
-          <ConnectorPoint PointX="4.25" PointY="209.67258789062498" />
-          <ConnectorPoint PointX="4.25" PointY="217.01813778244349" />
-          <ConnectorPoint PointX="4.666666666666667" PointY="217.01813778244349" />
-          <ConnectorPoint PointX="4.833333333333333" PointY="217.01813778244349" />
-          <ConnectorPoint PointX="7.041666666666667" PointY="217.01813778244349" />
-          <ConnectorPoint PointX="7.208333333333333" PointY="217.01813778244349" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="217.01813778244349" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="217.01813778244349" />
-          <ConnectorPoint PointX="10.072916666666666" PointY="217.01813778244349" />
-          <ConnectorPoint PointX="10.239583333333334" PointY="217.01813778244349" />
-          <ConnectorPoint PointX="10.25" PointY="217.01813778244349" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.ContactParty">
-          <ConnectorPoint PointX="7" PointY="24.375" />
-          <ConnectorPoint PointX="7" PointY="23.375" />
-          <ConnectorPoint PointX="8.0104166666666661" PointY="23.375" />
-          <ConnectorPoint PointX="8.1770833333333339" PointY="23.375" />
-          <ConnectorPoint PointX="8.1822941666666669" PointY="23.375" />
-          <ConnectorPoint PointX="8.3489608333333347" PointY="23.375" />
-          <ConnectorPoint PointX="8.7916666666666661" PointY="23.375" />
-          <ConnectorPoint PointX="8.9583333333333339" PointY="23.375" />
-          <ConnectorPoint PointX="11.5" PointY="23.375" />
-          <ConnectorPoint PointX="11.5" PointY="25.989889322916667" />
-          <ConnectorPoint PointX="12.666666666666666" PointY="25.989889322916667" />
-          <ConnectorPoint PointX="12.833333333333334" PointY="25.989889322916667" />
-          <ConnectorPoint PointX="13.541666666666666" PointY="25.989889322916667" />
-          <ConnectorPoint PointX="13.708333333333334" PointY="25.989889322916667" />
-          <ConnectorPoint PointX="13.75" PointY="25.989889322916667" />
-          <ConnectorPoint PointX="13.75" PointY="21.625" />
-          <ConnectorPoint PointX="13.947915416666666" PointY="21.625" />
-          <ConnectorPoint PointX="14.208335833333335" PointY="21.625" />
-          <ConnectorPoint PointX="14.744790416666666" PointY="21.625" />
-          <ConnectorPoint PointX="14.911457083333334" PointY="21.625" />
-          <ConnectorPoint PointX="15.326823854166666" PointY="21.625" />
-          <ConnectorPoint PointX="15.493490520833333" PointY="21.625" />
-          <ConnectorPoint PointX="16.166666666666668" PointY="21.625" />
-          <ConnectorPoint PointX="16.333333333333332" PointY="21.625" />
-          <ConnectorPoint PointX="18.026044791666667" PointY="21.625" />
-          <ConnectorPoint PointX="18.223963958333332" PointY="21.625" />
-          <ConnectorPoint PointX="18.3125" PointY="21.625" />
-          <ConnectorPoint PointX="18.3125" PointY="25.142644856770829" />
-          <ConnectorPoint PointX="18.338544791666667" PointY="25.142644856770829" />
-          <ConnectorPoint PointX="18.638022395833328" PointY="25.142644856770829" />
-          <ConnectorPoint PointX="18.75" PointY="25.142644856770829" />
-        </AssociationConnector>
-        <EntityTypeShape Height="1.4033821614583246" EntityType="CoreEntities.ClientTitle" PointX="6.25" PointY="27.875" Width="1.5" />
-        <AssociationConnector Association="CoreEntities.ClientTitleClient">
-          <ConnectorPoint PointX="3.875" PointY="211.4687505" />
-          <ConnectorPoint PointX="4.166666666666667" PointY="211.4687505" />
-          <ConnectorPoint PointX="4.333333333333333" PointY="211.4687505" />
-          <ConnectorPoint PointX="4.666666666666667" PointY="211.4687505" />
-          <ConnectorPoint PointX="4.833333333333333" PointY="211.4687505" />
-          <ConnectorPoint PointX="5.88541416666665" PointY="211.4687505" />
-          <ConnectorPoint PointX="6.0520808333333163" PointY="211.4687505" />
-          <ConnectorPoint PointX="7" PointY="211.4687505" />
-          <ConnectorPoint PointX="7" PointY="204.89369791666667" />
-          <ConnectorPoint PointX="5.75" PointY="204.89369791666667" />
-          <ConnectorPoint PointX="5.75" PointY="200.52830078124998" />
-          <ConnectorPoint PointX="6.875" PointY="200.52830078124998" />
-          <ConnectorPoint PointX="6.875" PointY="200.15330078124998" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.ClientTitleContact">
-          <ConnectorPoint PointX="3.0937474999999974" PointY="210.625" />
-          <ConnectorPoint PointX="3.0937474999999974" PointY="209.29758789062498" />
         </AssociationConnector>
         <EntityTypeShape EntityType="CoreEntities.Invoice" Width="1.5" PointX="13.75" PointY="4.25" Height="3.9033007812499818" />
         <AssociationConnector Association="CoreEntities.InvoiceLocation">

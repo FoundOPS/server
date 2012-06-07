@@ -528,8 +528,6 @@
     <Compile Include="Tools\VM.cs" />
     <Compile Include="ViewModels\BusinessAccountsVM.cs" />
     <Compile Include="ViewModels\ContactInfoVM.cs" />
-    <Compile Include="ViewModels\ContactsVM.cs" />
-    <Compile Include="ViewModels\ClientTitlesVM.cs" />
     <Compile Include="ViewModels\BusinessAccountSettingsVM.cs" />
     <Compile Include="ViewModels\DispatcherFilterVM.cs" />
     <Compile Include="ViewModels\Interfaces.cs" />
