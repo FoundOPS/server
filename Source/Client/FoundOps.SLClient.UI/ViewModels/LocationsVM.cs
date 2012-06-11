@@ -170,7 +170,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            var contextRelationshipFilters = new[] { new ContextRelationshipFilter("PartyId", typeof (Client), v => ((Client) v).Id), 
+            var contextRelationshipFilters = new[] { new ContextRelationshipFilter("ClientId", typeof (Client), v => ((Client) v).Id), 
                                                      new ContextRelationshipFilter("RegionId", typeof (Region), v => ((Region) v).Id) };
 
             //Force load the entities when in a related types view

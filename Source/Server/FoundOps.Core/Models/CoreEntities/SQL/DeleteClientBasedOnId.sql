@@ -47,7 +47,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	--Finds all Locations that are associated with the Client
 	INSERT INTO @LocationIdsForClient
 	SELECT Id FROM Locations
-	WHERE	PartyId = @clientId
+	WHERE	ClientId = @clientId
 
 	DECLARE @RowCount int
 	SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
@@ -66,11 +66,8 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	END
 -------------------------------------------------------------------------------------------------------------------------
 
-	DELETE FROM ClientTitles
+	DELETE FROM ContactInfoSet
 	WHERE ClientId = @clientId
-
-	DELETE FROM Parties_Business
-	WHERE Id = @clientId
 
 	DELETE FROM Clients
 	WHERE Id = @clientId

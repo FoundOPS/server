@@ -8,11 +8,11 @@
             <toolkit:Expander.Header>
                 <TextBlock Text="Client" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource ClientBrush}" />
             </toolkit:Expander.Header>
-            <sdk:AutoCompleteBox x:Name="ClientsAutoCompleteBox" Margin="5,3,5,3" MinWidth="100" ValueMemberPath="OwnedParty.DisplayName" 
+            <sdk:AutoCompleteBox x:Name="ClientsAutoCompleteBox" Margin="5,3,5,3" MinWidth="100" ValueMemberPath="Name" 
                                  SelectedItem="{Binding SelectedClient, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Clients:ClientLinkLarge}}">
                 <sdk:AutoCompleteBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding OwnedParty.DisplayName}"/>
+                        <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>
                 </sdk:AutoCompleteBox.ItemTemplate>
             </sdk:AutoCompleteBox>

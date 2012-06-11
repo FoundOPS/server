@@ -34,25 +34,27 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<Client> GetClientsForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
-            if (businessForRole == null) return null;
+            if (businessAccount == null) return null;
 
-            var clients =
-              from c in ObjectContext.Clients.Where(c => c.BusinessAccountId == businessForRole.Id)
-              join p in ObjectContext.PartiesWithNames
-                  on c.Id equals p.Id
-              orderby p.ChildName
-              select c;
+
+            var clients = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id);
+
+            //var clients = from c in ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id)
+            //  join p in ObjectContext.PartiesWithNames
+            //      on c.Id equals p.Id
+            //  orderby p.ChildName
+            //  select c;
 
             //Client's images are not currently used, so this can be commented out
             //TODO: Figure a way to force load OwnedParty.PartyImage. 
             //(from c in clients
             // join pi in this.ObjectContext.Files.OfType<PartyImage>()
-            //     on c.OwnedParty.PartyImage.Id equals pi.Id
+            //     on c.PartyImage.Id equals pi.Id
             // select pi).ToArray();
 
-            return clients.Include("OwnedParty");
+            return clients.OrderBy(c=>c.Name);
         }
 
         /// <summary>
@@ -64,19 +66,19 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="clientId">The client id.</param>
         public Client GetClientDetailsForRole(Guid roleId, Guid clientId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
-            if (businessForRole == null) return null;
+            if (businessAccount == null) return null;
 
             //Load contact info
-            var client = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessForRole.Id && c.Id == clientId)
-                .Include(c => c.ContactInfoSet).Include("RecurringServices")
+            var client = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id && c.Id == clientId)
+                .Include("ContactInfoSet").Include("RecurringServices")
                 .Include("RecurringServices.Repeat").Include("RecurringServices.ServiceTemplate").FirstOrDefault();
 
             if (client == null) return null;
 
             //Load clients ServiceTemplates
-            GetClientServiceTemplates(businessForRole.Id, client.Id).ToArray();
+            GetClientServiceTemplates(businessAccount.Id, client.Id).ToArray();
 
             return client;
         }
@@ -84,7 +86,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         /// <summary>
         /// Returns the clients for the current role.
-        /// It also includes the Client.OwnedParty and Client.OwnedParty.ContactInfoSet
+        /// It also includes the Client.ContactInfoSet
         /// </summary>
         /// <param name="roleId">The role id.</param>
         /// <param name="clientsIds">The ids of the Clients to load.</param>
@@ -103,18 +105,13 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<Client> SearchClientsForRole(Guid roleId, string searchText)
         {
-            var ownerParty = ObjectContext.OwnerPartyOfRole(roleId);
-            var clientsWithDisplayName =
-                from c in ObjectContext.Clients.Where(c => c.BusinessAccountId == ownerParty.Id)
-                join p in ObjectContext.PartiesWithNames
-                    on c.Id equals p.Id
-                orderby p.ChildName
-                select new { c, p.ChildName };
+            var businessAccount = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var clientsWithDisplayName = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id);
 
             if (!String.IsNullOrEmpty(searchText))
-                clientsWithDisplayName = clientsWithDisplayName.Where(cdn => cdn.ChildName.StartsWith(searchText));
+                clientsWithDisplayName = clientsWithDisplayName.Where(cdn => cdn.Name.StartsWith(searchText));
 
-            return clientsWithDisplayName.Select(c => c.c).Include("OwnedParty");
+            return clientsWithDisplayName;
         }
 
         public void InsertClient(Client client)
@@ -393,8 +390,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
-            var location = ObjectContext.Locations.Where(l => l.Id == locationId && l.BusinessAccountId == partyForRole.Id) 
-                .Include("Party.ClientOwner").Include("Region").Include("SubLocations").Include("ContactInfoSet").FirstOrDefault();
+            var location = ObjectContext.Locations.Where(l => l.Id == locationId && l.BusinessAccountId == partyForRole.Id)
+                .Include(l => l.Client).Include(l => l.Region).Include(l => l.SubLocations).Include(l => l.ContactInfoSet).FirstOrDefault();
 
             return location;
         }

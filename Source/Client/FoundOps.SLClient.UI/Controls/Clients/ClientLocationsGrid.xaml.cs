@@ -98,6 +98,9 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             //Prevents race condition issue when changing Client context
             if (!currentClient.Locations.Any(l => l.Id == location.Id)) return;
 
+            foreach (var l in currentClient.Locations)
+                l.IsDefaultBillingLocation = false;
+
             location.IsDefaultBillingLocation = true;
         }
     }

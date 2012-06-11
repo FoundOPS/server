@@ -31,7 +31,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         /// <param name="numberItems">The number of locations to add</param>
         public LocationsDesignData(Client client, IEnumerable<Region> regions, int startIndex, int numberItems)
         {
-            InitializeLocations();
+            InitializeLocations(client.BusinessAccountId.Value);
 
             var random = new Random();
 
@@ -53,7 +53,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             }
         }
 
-        private void InitializeLocations()
+        private void InitializeLocations(Guid businessAccountId)
         {
             _designLocations.Add(new Location
             {
@@ -63,7 +63,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47901",
                 Latitude = (decimal?)40.418414,
-                Longitude = (decimal?)-86.894219
+                Longitude = (decimal?)-86.894219,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -74,7 +75,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "46970-3668",
                 Latitude = (decimal?)40.671159,
-                Longitude = (decimal?)-86.145577
+                Longitude = (decimal?)-86.145577,
+                BusinessAccountId = businessAccountId
 
             });
 
@@ -86,7 +88,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "46901-6220",
                 Latitude = (decimal?)40.476616,
-                Longitude = (decimal?)-86.119251
+                Longitude = (decimal?)-86.119251,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -97,7 +100,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47904-3158",
                 Latitude = (decimal?)40.417552,
-                Longitude = (decimal?)-86.859526
+                Longitude = (decimal?)-86.859526,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -108,7 +112,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47905-5111",
                 Latitude = (decimal?)40.3955,
-                Longitude = (decimal?)-86.855914
+                Longitude = (decimal?)-86.855914,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -119,7 +124,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "46041-9429",
                 Latitude = (decimal?)40.278846,
-                Longitude = (decimal?)-86.479537
+                Longitude = (decimal?)-86.479537,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -130,7 +136,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47901-1261",
                 Latitude = (decimal?)40.419119,
-                Longitude = (decimal?)-86.894604
+                Longitude = (decimal?)-86.894604,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -141,7 +148,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "46901-5457",
                 Latitude = (decimal?)40.477384,
-                Longitude = (decimal?)-86.131005
+                Longitude = (decimal?)-86.131005,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -152,7 +160,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47901-1446",
                 Latitude = (decimal?)40.419142,
-                Longitude = (decimal?)-86.891727
+                Longitude = (decimal?)-86.891727,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -163,7 +172,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47901-1603",
                 Latitude = (decimal?)40.417224,
-                Longitude = (decimal?)-86.893046
+                Longitude = (decimal?)-86.893046,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -175,7 +185,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47933-1710",
                 Latitude = (decimal?)40.041696,
-                Longitude = (decimal?)-86.901095
+                Longitude = (decimal?)-86.901095,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -186,7 +197,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "46204-2127",
                 Latitude = (decimal?)39.769887,
-                Longitude = (decimal?)-86.154359
+                Longitude = (decimal?)-86.154359,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -197,7 +209,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47906-3210",
                 Latitude = (decimal?)40.422081,
-                Longitude = (decimal?)-86.903569
+                Longitude = (decimal?)-86.903569,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -208,7 +221,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                           State = "IN",
                                           ZipCode = "47905-4819",
                                           Latitude = (decimal?)40.417733,
-                                          Longitude = (decimal?)-86.824187
+                                          Longitude = (decimal?)-86.824187,
+                                          BusinessAccountId = businessAccountId
                                       });
 
             _designLocations.Add(new Location
@@ -219,7 +233,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47905-2219",
                 Latitude = (decimal?)40.395504,
-                Longitude = (decimal?)-86.868527
+                Longitude = (decimal?)-86.868527,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -230,7 +245,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47905-5201",
                 Latitude = (decimal?)40.388618,
-                Longitude = (decimal?)-86.838981
+                Longitude = (decimal?)-86.838981,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -241,7 +257,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47933-1710",
                 Latitude = (decimal?)40.041694,
-                Longitude = (decimal?)-86.901216
+                Longitude = (decimal?)-86.901216,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -252,7 +269,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "46204-2803",
                 Latitude = (decimal?)39.768098,
-                Longitude = (decimal?)-86.159864
+                Longitude = (decimal?)-86.159864,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -263,7 +281,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47928-8024",
                 Latitude = (decimal?)39.968641,
-                Longitude = (decimal?)-87.472417
+                Longitude = (decimal?)-87.472417,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -274,7 +293,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47906-3218",
                 Latitude = (decimal?)40.422733,
-                Longitude = (decimal?)-86.902758
+                Longitude = (decimal?)-86.902758,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -285,7 +305,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47905-9464",
                 Latitude = (decimal?)40.388141,
-                Longitude = (decimal?)-86.837137
+                Longitude = (decimal?)-86.837137,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -296,7 +317,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47909",
                 Latitude = (decimal?)40.368191,
-                Longitude = (decimal?)-86.860466
+                Longitude = (decimal?)-86.860466,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -307,7 +329,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47933-2007",
                 Latitude = (decimal?)40.046804,
-                Longitude = (decimal?)-86.879933
+                Longitude = (decimal?)-86.879933,
+                BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
@@ -318,7 +341,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47933-9424",
                 Latitude = (decimal?)40.012145,
-                Longitude = (decimal?)-86.903825
+                Longitude = (decimal?)-86.903825,
+                BusinessAccountId = businessAccountId
             });
 
             foreach (var location in DesignLocations)

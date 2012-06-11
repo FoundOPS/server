@@ -170,7 +170,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var routeDestination = ObjectContext.RouteDestinations.Where(rd => rd.RouteTasks.FirstOrDefault().BusinessAccountId == businessForRole.Id && rd.Id == destinationId)
-                .Include("Client.OwnedParty.ContactInfoSet").FirstOrDefault();
+                .Include("Client.ContactInfoSet").FirstOrDefault();
 
             return routeDestination;
         }
@@ -231,7 +231,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var routeTask = ObjectContext.RouteTasks.Where(rt => rt.BusinessAccountId == businessForRole.Id && rt.Id == routeTaskId)
-                .Include("Client").Include("Client.OwnedParty").Include("Client.OwnedParty.ContactInfoSet").Include("Location").Include("Service").FirstOrDefault();
+                .Include("Client").Include("Client.ContactInfoSet").Include("Location").Include("Service").FirstOrDefault();
 
             //Load the ServiceTemplate for the Service
             if (routeTask.ServiceId.HasValue)

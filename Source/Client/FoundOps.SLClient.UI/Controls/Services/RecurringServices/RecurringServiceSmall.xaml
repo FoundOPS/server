@@ -11,7 +11,7 @@
             <StackPanel Orientation="Horizontal" Margin="5,3" VerticalAlignment="Center">
                 <TextBlock TextWrapping="Wrap" Text="{Binding ServiceTemplate.Name}" FontSize="13" Foreground="White" VerticalAlignment="Center"/>
                 <TextBlock TextWrapping="Wrap" Text=" - " FontSize="13" Foreground="White" VerticalAlignment="Center"/>
-                <TextBlock TextWrapping="Wrap" Text="{Binding Client.OwnedParty.DisplayName}" FontSize="13" Foreground="White" VerticalAlignment="Center"/>
+                <TextBlock TextWrapping="Wrap" Text="{Binding Client.Name}" FontSize="13" Foreground="White" VerticalAlignment="Center"/>
             </StackPanel>
         </Border>
         <Grid Grid.Row="1" HorizontalAlignment="Center">

@@ -201,6 +201,9 @@ namespace FoundOps.Core.Models.CoreEntities
             public EntityCollection<ContactInfo> ContactInfoSet { get; set; }
 
             [Include]
+            public Client Client { get; set; }
+
+            [Include]
             public Party Party { get; set; }
 
             [Include]

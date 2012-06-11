@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/07/2012 12:09:26
+-- Date Created: 06/07/2012 12:18:28
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -2383,7 +2383,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	--Finds all Locations that are associated with the Client
 	INSERT INTO @LocationIdsForClient
 	SELECT Id FROM Locations
-	WHERE	PartyId = @clientId
+	WHERE	ClientId = @clientId
 
 	DECLARE @RowCount int
 	SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
@@ -2402,11 +2402,8 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	END
 -------------------------------------------------------------------------------------------------------------------------
 
-	DELETE FROM ClientTitles
+	DELETE FROM ContactInfoSet
 	WHERE ClientId = @clientId
-
-	DELETE FROM Parties_Business
-	WHERE Id = @clientId
 
 	DELETE FROM Clients
 	WHERE Id = @clientId

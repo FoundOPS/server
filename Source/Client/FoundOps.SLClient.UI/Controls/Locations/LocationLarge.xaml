@@ -4,7 +4,7 @@
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" 
              xmlns:Locations1="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
              xmlns:Regions1="clr-namespace:FoundOps.SLClient.UI.Controls.Regions" xmlns:my1="clr-namespace:FoundOps.SLClient.UI.Controls.Clients"
-             xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:SLMultiBinding="clr-namespace:SLMultiBinding;assembly=SLMultiBinding"
+             xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI" 
              xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools" 
              mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="LocationsVM" d:DesignWidth="400" 
@@ -36,7 +36,8 @@
             <StackPanel>
                 <Locations1:LocationEdit LocationVM="{Binding SelectedLocationVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <ContactInfo:ContactInfoEdit IsEnabled="{Binding SelectedEntity.DetailsLoaded}" ContactInfoVM="{Binding SelectedLocationVM.ContactInfoVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
-                <my1:ClientLinkLarge SelectedClient="{Binding SelectedEntity.Client}"  IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
+                <my1:ClientLinkLarge SelectedClient="{Binding SelectedEntity.Client, Mode=TwoWay, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" 
+                                     IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <Regions1:RegionLinkLarge IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SelectedRegion="{Binding SelectedEntity.Region, Mode=TwoWay, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" />
                 <Locations1:SubLocations IsEnabled="{Binding SelectedEntity.DetailsLoaded, Source={Tools:GetVM Type=ViewModels:LocationsVM}}" SubLocationsVM="{Binding SelectedSubLocationsVM, Source={Tools:GetVM Type=ViewModels:LocationsVM}}"/>
             </StackPanel>

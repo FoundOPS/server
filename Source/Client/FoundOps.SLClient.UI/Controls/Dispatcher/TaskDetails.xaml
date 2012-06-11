@@ -12,7 +12,7 @@
     </UserControl.Resources>
     <ScrollViewer x:Name="LayoutRoot" DataContext="{Binding SelectedRouteTask}">
         <StackPanel>
-            <TextBlock Text="{Binding Client.OwnedParty.DisplayName}" FontWeight="Bold" TextAlignment="Center" />
+            <TextBlock Text="{Binding Client.Name}" FontWeight="Bold" TextAlignment="Center" />
             <Grid HorizontalAlignment="Center" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{StaticResource ExtraSmallLabelColumn}" />
