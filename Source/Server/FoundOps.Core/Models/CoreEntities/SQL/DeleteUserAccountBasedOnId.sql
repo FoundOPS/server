@@ -19,41 +19,6 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	AS
 	BEGIN
 
--------------------------------------------------------------------------------------------------------------------------
---Delete Locations for ServiceProvider
--------------------------------------------------------------------------------------------------------------------------	
-	DECLARE @LocationId uniqueidentifier
-
-	DECLARE @LocationIdsForServiceProvider TABLE
-	(
-		LocationId uniqueidentifier
-	)
-
-	--Finds all Locations that are associated with the UserAccount
-	INSERT INTO @LocationIdsForServiceProvider
-	SELECT Id FROM Locations
-	WHERE	PartyId = @providerId
-
-	DECLARE @LocationRowCount int
-	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
-
-	--Iterates through @LocationIdsForServiceProvider and calls DeleteLocationBasedOnId on each
-	WHILE @LocationRowCount > 0
-	BEGIN
-			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
-
-			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationRowCount
-
-			DELETE FROM @LocationIdsForServiceProvider
-			WHERE LocationId = @LocationId
-
-			SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
-	END
--------------------------------------------------------------------------------------------------------------------------
-
-	DELETE FROM Contacts
-	WHERE		OwnerPartyId = @providerId
-
 	DELETE FROM ContactInfoSet
 	WHERE		PartyId = @providerId
 

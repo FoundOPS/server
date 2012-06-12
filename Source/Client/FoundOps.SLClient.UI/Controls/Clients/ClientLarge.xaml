@@ -95,7 +95,7 @@
                     </toolkit:Expander.Header>
                     <Grid>
                         <StackPanel Visibility="{Binding SelectedEntity.Locations.Count, Converter={StaticResource NotEqualsVisibilityConverter}, ConverterParameter=1}">
-                            <Clients:ClientLocationsGrid x:Name="LocationsGrid" ParentContextVM="{Binding DataContext, ElementName=myClientDetailsLarge}" MaxHeight="150"/>
+                            <Clients:ClientLocationsGrid x:Name="LocationsGrid" MaxHeight="150"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding SelectedEntity.Locations.Count, Converter={StaticResource EqualsVisibilityConverter}, ConverterParameter=1}">
                             <Locations:LocationEdit LocationVM="{Binding SelectedLocationVM, Source={Tools1:GetVM Type=ViewModels:LocationsVM}}" />

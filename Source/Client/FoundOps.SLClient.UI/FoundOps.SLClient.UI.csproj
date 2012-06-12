@@ -530,9 +530,6 @@
     <Compile Include="ViewModels\ContactInfoVM.cs" />
     <Compile Include="ViewModels\BusinessAccountSettingsVM.cs" />
     <Compile Include="ViewModels\DispatcherFilterVM.cs" />
-    <Compile Include="ViewModels\Interfaces.cs" />
-    <Compile Include="ViewModels\PartySettingsVM.cs" />
-    <Compile Include="ViewModels\PartyVM.cs" />
     <Compile Include="ViewModels\RouteDestinationVM.cs" />
     <Compile Include="ViewModels\RouteScheduleVM.cs" />
     <Compile Include="ViewModels\RoutesDragDropVM.cs" />

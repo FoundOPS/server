@@ -1,10 +1,8 @@
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
-using PropertyMetadata = System.Windows.PropertyMetadata;
 using System;
 using System.ComponentModel;
-using System.Windows;
 using Telerik.Windows;
 using Telerik.Windows.Controls.GridView;
 
@@ -46,29 +44,6 @@ namespace FoundOps.SLClient.UI.Controls.Locations
             if (!IsMainGrid)
                 ((IProvideContext)this.DataContext).MoveToDetailsView.Execute(null);
         }
-
-        #region ParentContextVM Dependency Property
-
-        /// <summary>
-        /// ParentContextVM
-        /// </summary>
-        public IAddDeleteSelectedLocation ParentContextVM
-        {
-            get { return (IAddDeleteSelectedLocation)GetValue(ParentContextVMProperty); }
-            set { SetValue(ParentContextVMProperty, value); }
-        }
-
-        /// <summary>
-        /// ParentContextVM Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty ParentContextVMProperty =
-            DependencyProperty.Register(
-                "ParentContextVM",
-                typeof(IAddDeleteSelectedLocation),
-                typeof(LocationsGrid),
-                new PropertyMetadata(null));
-
-        #endregion
 
         #region Implementation of INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

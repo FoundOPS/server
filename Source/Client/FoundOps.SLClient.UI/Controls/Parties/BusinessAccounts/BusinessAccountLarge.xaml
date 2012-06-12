@@ -100,7 +100,6 @@
                     </toolkit:Expander.Header>
                     <Locations:LocationEdit  LocationVM="{Binding DataContext.SelectedDepotLocationVM, ElementName=myBusinessAccountLarge}" />
                 </toolkit:Expander>
-                <ContactInfo:ContactInfoEdit HorizontalAlignment="Stretch" ContactInfoVM="{Binding DataContext.SelectedEntityContactInfoVM, ElementName=myBusinessAccountLarge}" />
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">
                     <toolkit:Expander.Header>
                         <Grid DataContext="{Tools:GetVM Type=CoreEntities:BusinessAccountsVM}">

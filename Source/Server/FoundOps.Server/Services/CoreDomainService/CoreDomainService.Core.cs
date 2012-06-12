@@ -95,8 +95,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
                 return null;
 
-            var businessAccountQueryable = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId).Include(ba => ba.ContactInfoSet)
-                .Include(ba => ba.ServiceTemplates).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties");
+            var businessAccountQueryable = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId)
+                                    .Include(ba => ba.ServiceTemplates).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties");
 
             var a =
                 (from businessAccount in businessAccountQueryable
@@ -176,11 +176,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             var accountsCurrentUserCanAdministerOfSameType = (IEnumerable<Party>)generic.Invoke
                   (null, new object[] { accountsCurrentUserCanAdminister });
 
-            foreach (var accountCurrentUserCanAdministerOfSameType in accountsCurrentUserCanAdministerOfSameType)
-            {
-                accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Load();
-                contactInfoLabels.AddRange(accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Select(ci => ci.Label));
-            }
+            //foreach (var accountCurrentUserCanAdministerOfSameType in accountsCurrentUserCanAdministerOfSameType)
+            //{
+                //accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Load();
+                //contactInfoLabels.AddRange(accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Select(ci => ci.Label));
+            //}
 
             contactInfoLabels = new List<string>(contactInfoLabels.Distinct());
 
@@ -196,9 +196,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (currentParty == null)
                 return contactInfoTypes.OrderBy(s => s);
 
-            currentParty.ContactInfoSet.Load();
+            //currentParty.ContactInfoSet.Load();
 
-            contactInfoTypes.AddRange(currentParty.ContactInfoSet.Select(ci => ci.Type));
+            //contactInfoTypes.AddRange(currentParty.ContactInfoSet.Select(ci => ci.Type));
             contactInfoTypes = new List<string>(contactInfoTypes.Distinct());
 
             return contactInfoTypes.OrderBy(s => s);
@@ -300,7 +300,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 AuthenticationLogic.AdministratorRoles(this.ObjectContext.RolesCurrentUserHasAccessTo()).FirstOrDefault(r => r.Id == roleId);
 
             var ownerParty = role.OwnerParty;
-            ownerParty.ContactInfoSet.Load();
+            //ownerParty.ContactInfoSet.Load();
             return role.OwnerParty;
         }
 

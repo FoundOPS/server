@@ -152,7 +152,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (clientName != null && locationAddressLineOne != null)
             {
                 var clientId = clientAssociations.First(c => c.Item2 == clientName).Item1.Id;
-                associatedLocation = locationAssociations.FirstOrDefault(l => l.AddressLineOne == locationAddressLineOne && l.PartyId == clientId);
+                associatedLocation = locationAssociations.FirstOrDefault(l => l.AddressLineOne == locationAddressLineOne && l.ClientId == clientId);
             }
 
             if (associatedLocation == null && locationName != null)

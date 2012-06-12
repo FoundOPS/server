@@ -23,29 +23,6 @@ namespace FoundOps.SLClient.UI.Controls.Clients
 
         //Public
 
-        #region ParentContextVM Dependency Property
-
-        /// <summary>
-        /// ParentContextVM
-        /// </summary>
-        public IAddDeleteSelectedLocation ParentContextVM
-        {
-            get { return (IAddDeleteSelectedLocation)GetValue(ParentContextVMProperty); }
-            set { SetValue(ParentContextVMProperty, value); }
-        }
-
-        /// <summary>
-        /// ParentContextVM Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty ParentContextVMProperty =
-            DependencyProperty.Register(
-                "ParentContextVM",
-                typeof(IAddDeleteSelectedLocation),
-                typeof(ClientLocationsGrid),
-                new PropertyMetadata(null));
-
-        #endregion
-
         /// <summary>
         /// Gets the locations VM.
         /// </summary>

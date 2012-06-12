@@ -13,12 +13,6 @@ CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 	AS
 	BEGIN
 
-	DELETE FROM Locations
-	WHERE		PartyId = @providerId
-
-	DELETE FROM Contacts
-	WHERE		OwnerPartyId = @providerId
-
 	DELETE FROM ContactInfoSet
 	WHERE		PartyId = @providerId
 

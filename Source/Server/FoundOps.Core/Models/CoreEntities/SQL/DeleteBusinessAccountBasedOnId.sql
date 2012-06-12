@@ -16,7 +16,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	AS
 	BEGIN
 
-	DELETE FROM RouteEmployee
+	DELETE FROM EmployeeRoute
 	WHERE EXISTS
 	(
 		SELECT Id
@@ -88,7 +88,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	--Finds all Locations that are associated with the BusinessAccount
 	INSERT INTO @LocationIdsForServiceProvider
 	SELECT Id FROM Locations
-	WHERE	PartyId = @providerId
+	WHERE	BusinessAccountId = @providerId OR BusinessAccountIdIfDepot = @providerId
 
 	DECLARE @LocationRowCount int
 	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
@@ -109,9 +109,6 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 
 	DELETE FROM Regions
 	WHERE BusinessAccountId = @providerId
-
-	DELETE FROM Contacts
-	WHERE		OwnerPartyId = @providerId
 
 	DELETE FROM ContactInfoSet
 	WHERE		PartyId = @providerId

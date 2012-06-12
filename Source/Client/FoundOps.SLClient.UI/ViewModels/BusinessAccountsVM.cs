@@ -145,23 +145,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        private ContactInfoVM _selectedEntityContactInfoVM;
-        /// <summary>
-        /// Gets or sets the selected entity contact info VM.
-        /// </summary>
-        /// <value>
-        /// The selected entity contact info VM.
-        /// </value>
-        public ContactInfoVM SelectedEntityContactInfoVM
-        {
-            get { return _selectedEntityContactInfoVM; }
-            set
-            {
-                _selectedEntityContactInfoVM = value;
-                this.RaisePropertyChanged("SelectedEntityContactInfoVM");
-            }
-        }
-
         private LocationVM _selectedDepotLocationVM;
         /// <summary>
         /// Gets or sets the selected depot location VM.
@@ -341,7 +324,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 //Whenever the SelectedEntity changes setup the ContactInfoVM and DepotLocationVM for that entity
 
-                SelectedEntityContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, businessAccount.ContactInfoSet);
+                //SelectedEntityContactInfoVM = new ContactInfoVM(ContactInfoType.OwnedParties, businessAccount.ContactInfoSet);
 
                 //If there is not a depot: set one up
                 if (!businessAccount.Depots.Any() && businessAccount.Id != BusinessAccountsConstants.FoundOpsId)

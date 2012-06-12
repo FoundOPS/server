@@ -182,11 +182,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             var employee = ObjectContext.Employees.FirstOrDefault(e => e.Id == employeeId && e.EmployerId == partyForRole.Id);
             if (employee == null) return null;
 
-            //Force load contact info set
-            var contactInfoSet =
-                this.ObjectContext.Parties.OfType<Person>().Where(p => p.Id == employee.Id).Select(p => p.ContactInfoSet)
-                    .FirstOrDefault();
-
             //Force load party image
             var partyImage = this.ObjectContext.Files.OfType<PartyImage>().FirstOrDefault(pi => pi.PartyId == employeeId);
 
@@ -419,7 +414,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Add client context if it exists
             if (clientId != Guid.Empty)
-                locations = locations.Where(loc => loc.PartyId == clientId);
+                locations = locations.Where(loc => loc.ClientId == clientId);
 
             //Add region context if it exists
             if (regionId != Guid.Empty)
@@ -427,14 +422,14 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var records = from loc in locations
                           //Get the Clients names
-                          join p in ObjectContext.PartiesWithNames
-                              on loc.Party.Id equals p.Id
+                          join c in ObjectContext.Clients
+                              on loc.Client.Id equals c.Id
                           orderby loc.Name
-                          select new
+                          select new 
                           {
                               loc.Name,
                               RegionName = loc.Region.Name,
-                              ClientName = p.ChildName,
+                              ClientName = c.Name,
                               loc.AddressLineOne,
                               loc.AddressLineTwo,
                               loc.City,

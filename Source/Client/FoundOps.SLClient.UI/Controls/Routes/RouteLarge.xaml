@@ -68,7 +68,7 @@
                         </StackPanel>
                     </toolkit:Expander.Header>
                     <telerik:RadGridView x:Name="EmployeesGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
-                        RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding Technicians}">
+                        RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding Employees}">
                         <telerik:RadGridView.Columns>
                             <telerik:GridViewDataColumn Header="First Name" DataMemberBinding="{Binding OwnedPerson.FirstName}"/>
                             <telerik:GridViewDataColumn Header="Last Name" DataMemberBinding="{Binding OwnedPerson.LastName}" Width="*"/>

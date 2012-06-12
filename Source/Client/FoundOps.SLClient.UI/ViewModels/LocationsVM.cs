@@ -158,7 +158,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //If the search is happening in a recurring service context, filter by the recurring service's client
                     var recurringServiceContext = ContextManager.GetContext<RecurringService>();
                     if (recurringServiceContext != null && recurringServiceContext.ClientId != Guid.Empty)
-                        query = query.Where(l => l.PartyId == recurringServiceContext.ClientId);
+                        query = query.Where(l => l.ClientId == recurringServiceContext.ClientId);
                     return query;
                 });
 

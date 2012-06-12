@@ -129,9 +129,6 @@ namespace FoundOps.Core.Models.CoreEntities
             //Does not work for import
             //[StringLength(13, MinimumLength = 0, ErrorMessage = "The Label value cannot exceed 13 characters.")]
             public String Label { get; set; }
-
-            [Include]
-            public Party Party { get; set; }
         }
     }
 
@@ -202,9 +199,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
             [Include]
             public Client Client { get; set; }
-
-            [Include]
-            public Party Party { get; set; }
 
             [Include]
             public Region Region { get; set; }
@@ -285,12 +279,6 @@ namespace FoundOps.Core.Models.CoreEntities
             protected PartyMetadata()
             {
             }
-
-            [Include]
-            public EntityCollection<ContactInfo> ContactInfoSet { get; set; }
-
-            [Include]
-            public EntityCollection<Location> Locations { get; set; }
 
             public EntityCollection<Role> RoleMembership { get; set; }
 

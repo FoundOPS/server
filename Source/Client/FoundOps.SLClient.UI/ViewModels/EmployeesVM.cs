@@ -35,12 +35,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
-        private readonly ObservableAsPropertyHelper<PartyVM> _selectedEmployeePersonVM;
-        /// <summary>
-        /// Gets the selected Employee's PartyVM
-        /// </summary>
-        public PartyVM SelectedEmployeePersonVM { get { return _selectedEmployeePersonVM.Value; } }
-
         #endregion
 
         #region Constructor
@@ -52,11 +46,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         public EmployeesVM()
         {
             SetupDataLoading();
-
-            //Setup the selected Employee's OwnedPerson PartyVM whenever the selected employee changes
-            _selectedEmployeePersonVM =
-                SelectedEntityObservable.Where(se => se != null && se.OwnedPerson != null).Select(se => new PartyVM(se.OwnedPerson))
-                .ToProperty(this, x => x.SelectedEmployeePersonVM);
 
             #region Implementation of IAddToDeleteFromSource<Employee>
 

@@ -3,11 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
-             xmlns:EmployeeHistory="clr-namespace:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory" xmlns:Person="clr-namespace:FoundOps.SLClient.UI.Controls.Account.Person"
+             xmlns:EmployeeHistory="clr-namespace:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory"
              xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files" xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM" 
+             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts"
+             xmlns:Person="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.Person" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM" 
              d:DesignWidth="400" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
@@ -62,7 +63,7 @@
                             <RowDefinition Height="{StaticResource DetailRowHeight}"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Person:PersonDetailsEdit Grid.ColumnSpan="5" PersonVM="{Binding DataContext.SelectedEmployeePersonVM, ElementName=myEmployeeLarge}"/>
+                        <Person:PersonDetailsEdit Grid.ColumnSpan="5" Person="{Binding DataContext.SelectedEntity.OwnedPerson, ElementName=myEmployeeLarge}"/>
                         <TextBlock Text="SSN:" Grid.Row="2" TextAlignment="Right"/>
                         <Telerik:RadMaskedTextBox Mask="AAA-AA-AAAA" Grid.Row="2" Grid.Column="2" Value="{Binding SSN, Mode=TwoWay}"/>
                         <TextBlock Text="Address:" Grid.Row="4" TextAlignment="Right"/>
@@ -91,8 +92,6 @@
                         </Telerik:RadComboBox>-->
                     </Grid>
                 </toolkit:Expander>
-                <ContactInfo:ContactInfoEdit x:Name="contactInfoEdit1" IsEnabled="{Binding DataContext.SelectedEntity.DetailsLoaded, ElementName=myEmployeeLarge}"
-                                             ContactInfoVM="{Binding DataContext.SelectedEmployeePersonVM.ContactInfoVM, ElementName=myEmployeeLarge}"/>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource EmployeeBrush}">
                     <toolkit:Expander.Header>
                         <StackPanel Orientation="Horizontal">

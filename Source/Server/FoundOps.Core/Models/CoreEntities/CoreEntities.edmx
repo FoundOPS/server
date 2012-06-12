@@ -9,7 +9,6 @@
           <EntitySet Name="Blocks" EntityType="CoreEntities.Store.Blocks" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Clients" EntityType="CoreEntities.Store.Clients" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ContactInfoSet" EntityType="CoreEntities.Store.ContactInfoSet" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Contacts" EntityType="CoreEntities.Store.Contacts" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.Store.EmployeeHistoryEntries" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmployeeRoute" EntityType="CoreEntities.Store.EmployeeRoute" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Employees" EntityType="CoreEntities.Store.Employees" store:Type="Tables" Schema="dbo" />
@@ -114,18 +113,6 @@
             <End Role="Clients" EntitySet="Clients" />
             <End Role="ServiceTemplates" EntitySet="ServiceTemplates" />
           </AssociationSet>
-          <AssociationSet Name="FK_ContactInfoParty" Association="CoreEntities.Store.FK_ContactInfoParty">
-            <End Role="Parties" EntitySet="Parties" />
-            <End Role="ContactInfoSet" EntitySet="ContactInfoSet" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ContactParty" Association="CoreEntities.Store.FK_ContactParty">
-            <End Role="Parties" EntitySet="Parties" />
-            <End Role="Contacts" EntitySet="Contacts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ContactPerson" Association="CoreEntities.Store.FK_ContactPerson">
-            <End Role="Parties_Person" EntitySet="Parties_Person" />
-            <End Role="Contacts" EntitySet="Contacts" />
-          </AssociationSet>
           <AssociationSet Name="FK_DateTimeField_inherits_Field" Association="CoreEntities.Store.FK_DateTimeField_inherits_Field">
             <End Role="Fields" EntitySet="Fields" />
             <End Role="Fields_DateTimeField" EntitySet="Fields_DateTimeField" />
@@ -201,10 +188,6 @@
           <AssociationSet Name="FK_LocationOption_inherits_Option" Association="CoreEntities.Store.FK_LocationOption_inherits_Option">
             <End Role="Options" EntitySet="Options" />
             <End Role="Options_LocationOption" EntitySet="Options_LocationOption" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LocationParty1" Association="CoreEntities.Store.FK_LocationParty1">
-            <End Role="Parties" EntitySet="Parties" />
-            <End Role="Locations" EntitySet="Locations" />
           </AssociationSet>
           <AssociationSet Name="FK_LocationSubLocation" Association="CoreEntities.Store.FK_LocationSubLocation">
             <End Role="Locations" EntitySet="Locations" />
@@ -439,16 +422,7 @@
           <Property Name="Data" Type="nvarchar(max)" />
           <Property Name="PartyId" Type="uniqueidentifier" />
           <Property Name="LocationId" Type="uniqueidentifier" />
-          <Property Name="ContactId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
-        </EntityType>
-        <EntityType Name="Contacts">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Notes" Type="nvarchar(max)" />
-          <Property Name="OwnerPartyId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="EmployeeHistoryEntries">
           <Key>
@@ -619,7 +593,6 @@
           <Property Name="State" Type="nvarchar(max)" />
           <Property Name="Latitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="City" Type="nvarchar(max)" />
-          <Property Name="PartyId" Type="uniqueidentifier" />
           <Property Name="RegionId" Type="uniqueidentifier" />
           <Property Name="BusinessAccountIdIfDepot" Type="uniqueidentifier" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
@@ -1069,42 +1042,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ContactInfoParty">
-          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="0..1" />
-          <End Role="ContactInfoSet" Type="CoreEntities.Store.ContactInfoSet" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parties">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ContactInfoSet">
-              <PropertyRef Name="PartyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ContactParty">
-          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="1" />
-          <End Role="Contacts" Type="CoreEntities.Store.Contacts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parties">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Contacts">
-              <PropertyRef Name="OwnerPartyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ContactPerson">
-          <End Role="Parties_Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="1" />
-          <End Role="Contacts" Type="CoreEntities.Store.Contacts" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Parties_Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Contacts">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DateTimeField_inherits_Field">
           <End Role="Fields" Type="CoreEntities.Store.Fields" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1344,18 +1281,6 @@
             </Principal>
             <Dependent Role="Options_LocationOption">
               <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LocationParty1">
-          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="0..1" />
-          <End Role="Locations" Type="CoreEntities.Store.Locations" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parties">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Locations">
-              <PropertyRef Name="PartyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1890,10 +1815,6 @@
           <EntitySet Name="Roles" EntityType="CoreEntities.Role" />
           <EntitySet Name="Parties" EntityType="CoreEntities.Party" />
           <EntitySet Name="ContactInfoSet" EntityType="CoreEntities.ContactInfo" />
-          <AssociationSet Name="ContactInfoParty" Association="CoreEntities.ContactInfoParty">
-            <End Role="ContactInfo" EntitySet="ContactInfoSet" />
-            <End Role="Party" EntitySet="Parties" />
-          </AssociationSet>
           <AssociationSet Name="RoleBlock" Association="CoreEntities.RoleBlock">
             <End Role="Role" EntitySet="Roles" />
             <End Role="Block" EntitySet="Blocks" />
@@ -2011,10 +1932,6 @@
             <End Role="Party" EntitySet="Parties" />
             <End Role="Role" EntitySet="Roles" />
           </AssociationSet>
-          <AssociationSet Name="LocationParty1" Association="CoreEntities.LocationParty1">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="Party" EntitySet="Parties" />
-          </AssociationSet>
           <EntitySet Name="Regions" EntityType="CoreEntities.Region" />
           <AssociationSet Name="RegionsLocation" Association="CoreEntities.RegionLocation">
             <End Role="Regions" EntitySet="Regions" />
@@ -2076,15 +1993,6 @@
           <AssociationSet Name="LocationFieldLocation" Association="CoreEntities.LocationFieldLocation">
             <End Role="LocationField" EntitySet="Fields" />
             <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-          <EntitySet Name="Contacts" EntityType="CoreEntities.Contact" />
-          <AssociationSet Name="ContactPerson" Association="CoreEntities.ContactPerson">
-            <End Role="Contact" EntitySet="Contacts" />
-            <End Role="Person" EntitySet="Parties" />
-          </AssociationSet>
-          <AssociationSet Name="ContactParty" Association="CoreEntities.ContactParty">
-            <End Role="Contact" EntitySet="Contacts" />
-            <End Role="Party" EntitySet="Parties" />
           </AssociationSet>
           <EntitySet Name="Invoices" EntityType="CoreEntities.Invoice" />
           <AssociationSet Name="InvoiceLocation" Association="CoreEntities.InvoiceLocation">
@@ -2181,8 +2089,9 @@
           <FunctionImport Name="DeleteUserAccountBasedOnId">
             <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
-          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
-            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
+          <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
+            <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
+            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
@@ -2193,9 +2102,8 @@
             <Parameter Name="getPrevious" Mode="In" Type="Boolean" />
             <Parameter Name="getNext" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
-            <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
-            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
+          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Block">
@@ -2233,12 +2141,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.ContactInfoParty" FromRole="Party" ToRole="ContactInfo" />
           <NavigationProperty Name="Vehicles" Relationship="CoreEntities.VehicleParty" FromRole="Party" ToRole="Vehicle" />
           <NavigationProperty Name="RoleMembership" Relationship="CoreEntities.PartyRole" FromRole="Party" ToRole="Role" />
           <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.PartyRole1" FromRole="Party" ToRole="Role" />
-          <NavigationProperty Name="Locations" Relationship="CoreEntities.LocationParty1" FromRole="Party" ToRole="Location" />
-          <NavigationProperty Name="Contacts" Relationship="CoreEntities.ContactParty" FromRole="Party" ToRole="Contact" />
           <NavigationProperty Name="OwnedFiles" Relationship="CoreEntities.FileParty" FromRole="Party" ToRole="File" />
           <NavigationProperty Name="PartyImage" Relationship="CoreEntities.PartyPartyImage" FromRole="Party" ToRole="PartyImage" />
         </EntityType>
@@ -2249,7 +2154,6 @@
           <Property Type="Int16" Name="GenderInt" Nullable="true" />
           <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
           <NavigationProperty Name="OwnerEmployee" Relationship="CoreEntities.EmployeePerson" FromRole="Person" ToRole="Employee" />
-          <NavigationProperty Name="OwnerContact" Relationship="CoreEntities.ContactPerson" FromRole="Person" ToRole="Contact" />
         </EntityType>
         <EntityType Name="Business" BaseType="CoreEntities.Party" >
           <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2262,26 +2166,12 @@
           <Property Type="String" Name="Type" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Label" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Data" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Party" Relationship="CoreEntities.ContactInfoParty" FromRole="ContactInfo" ToRole="Party" />
           <Property Type="Guid" Name="PartyId" Nullable="true" />
           <NavigationProperty Name="Location" Relationship="CoreEntities.LocationContactInfo" FromRole="ContactInfo" ToRole="Location" />
           <Property Type="Guid" Name="LocationId" Nullable="true" />
-          <Property Type="Guid" Name="ContactId" Nullable="true" />
           <NavigationProperty Name="Client" Relationship="CoreEntities.ClientContactInfo" FromRole="ContactInfo" ToRole="Client" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
         </EntityType>
-        <Association Name="ContactInfoParty">
-          <End Type="CoreEntities.ContactInfo" Role="ContactInfo" Multiplicity="*" />
-          <End Type="CoreEntities.Party" Role="Party" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Party">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ContactInfo">
-              <PropertyRef Name="PartyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="RoleBlock">
           <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
           <End Type="CoreEntities.Block" Role="Block" Multiplicity="*" />
@@ -2315,12 +2205,6 @@
           <Property Type="String" Name="City" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.RouteTaskLocation" FromRole="Location" ToRole="RouteTask" />
           <NavigationProperty Name="RouteDestinations" Relationship="CoreEntities.RouteDestinationLocation" FromRole="Location" ToRole="RouteDestination" />
-          <NavigationProperty Name="Party" Relationship="CoreEntities.LocationParty1" FromRole="Location" ToRole="Party" >
-            <Documentation>
-              <LongDescription>The actual party at this location</LongDescription>
-            </Documentation>
-          </NavigationProperty>
-          <Property Type="Guid" Name="PartyId" Nullable="true" />
           <NavigationProperty Name="Region" Relationship="CoreEntities.RegionLocation" FromRole="Location" ToRole="Regions" />
           <Property Type="Guid" Name="RegionId" Nullable="true" />
           <NavigationProperty Name="Files" Relationship="CoreEntities.LocationFile" FromRole="Location" ToRole="File" />
@@ -2854,18 +2738,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="LocationParty1">
-          <End Type="CoreEntities.Location" Role="Location" Multiplicity="*" />
-          <End Type="CoreEntities.Party" Role="Party" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Party">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Location">
-              <PropertyRef Name="PartyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Region">
           <Key>
             <PropertyRef Name="Id" />
@@ -3141,40 +3013,6 @@
             </Principal>
             <Dependent Role="LocationField">
               <PropertyRef Name="LocationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Contact">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="String" Name="Notes" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="OwnedPerson" Relationship="CoreEntities.ContactPerson" FromRole="Contact" ToRole="Person" />
-          <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.ContactParty" FromRole="Contact" ToRole="Party" />
-          <Property Type="Guid" Name="OwnerPartyId" Nullable="false" />
-        </EntityType>
-        <Association Name="ContactPerson">
-          <End Type="CoreEntities.Contact" Role="Contact" Multiplicity="0..1" />
-          <End Type="CoreEntities.Person" Role="Person" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Contact">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ContactParty">
-          <End Type="CoreEntities.Contact" Role="Contact" Multiplicity="*" />
-          <End Type="CoreEntities.Party" Role="Party" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="Party">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Contact">
-              <PropertyRef Name="OwnerPartyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3542,7 +3380,6 @@
           <ScalarProperty Name="Data" ColumnName="Data" />
           <ScalarProperty Name="PartyId" ColumnName="PartyId" />
           <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-          <ScalarProperty Name="ContactId" ColumnName="ContactId" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3623,7 +3460,6 @@
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="Latitude" ColumnName="Latitude" />
           <ScalarProperty Name="City" ColumnName="City" />
-          <ScalarProperty Name="PartyId" ColumnName="PartyId" />
           <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="BusinessAccountIdIfDepot" ColumnName="BusinessAccountIdIfDepot" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
@@ -3853,15 +3689,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Contacts">
-      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Contact)">
-        <MappingFragment StoreEntitySet="Contacts">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Notes" ColumnName="Notes" />
-          <ScalarProperty Name="OwnerPartyId" ColumnName="OwnerPartyId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Invoices">
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Invoice)">
         <MappingFragment StoreEntitySet="Invoices">
@@ -3990,33 +3817,6 @@
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" FunctionName="CoreEntities.Store.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" />
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplatesAndChildrenBasedOnContextId" FunctionName="CoreEntities.Store.DeleteServiceTemplatesAndChildrenBasedOnContextId" />
           <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="Heading" ColumnName="Heading" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
@@ -4033,6 +3833,33 @@
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
                 <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+                <ScalarProperty Name="Heading" ColumnName="Heading" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -4083,16 +3910,6 @@
           <ConnectorPoint PointX="18.125" PointY="209.375" />
         </InheritanceConnector>
         <EntityTypeShape EntityType="CoreEntities.ContactInfo" Width="1.5" PointX="16.5" PointY="23" Height="2.557190755208353" />
-        <AssociationConnector Association="CoreEntities.ContactInfoParty">
-          <ConnectorPoint PointX="18" PointY="24.374746093749998" />
-          <ConnectorPoint PointX="18.010417916666668" PointY="24.374746093749998" />
-          <ConnectorPoint PointX="18.208335833333336" PointY="24.374746093749998" />
-          <ConnectorPoint PointX="18.276044166666669" PointY="24.374746093749998" />
-          <ConnectorPoint PointX="18.442710833333333" PointY="24.374746093749998" />
-          <ConnectorPoint PointX="18.447916666666668" PointY="24.374746093749998" />
-          <ConnectorPoint PointX="18.614583333333332" PointY="24.374746093749998" />
-          <ConnectorPoint PointX="18.75" PointY="24.374746093749998" />
-        </AssociationConnector>
         <AssociationConnector Association="CoreEntities.RoleBlock">
           <ConnectorPoint PointX="22.875" PointY="24.278595377604169" />
           <ConnectorPoint PointX="23.625" PointY="24.278595377604169" />
@@ -4424,18 +4241,6 @@
           <ConnectorPoint PointX="16.75" PointY="206.66949233214061" />
           <ConnectorPoint PointX="17.5" PointY="206.66949233214061" />
         </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.LocationParty1">
-          <ConnectorPoint PointX="15.75" PointY="22.90625" />
-          <ConnectorPoint PointX="16.166666666666668" PointY="22.90625" />
-          <ConnectorPoint PointX="16.333333333333332" PointY="22.90625" />
-          <ConnectorPoint PointX="18.010417916666668" PointY="22.90625" />
-          <ConnectorPoint PointX="18.208335833333336" PointY="22.90625" />
-          <ConnectorPoint PointX="18.276044166666669" PointY="22.90625" />
-          <ConnectorPoint PointX="18.442710833333333" PointY="22.90625" />
-          <ConnectorPoint PointX="18.447916666666668" PointY="22.90625" />
-          <ConnectorPoint PointX="18.614583333333332" PointY="22.90625" />
-          <ConnectorPoint PointX="18.75" PointY="22.90625" />
-        </AssociationConnector>
         <EntityTypeShape EntityType="CoreEntities.Region" Width="1.5" PointX="12" PointY="23.125" Height="2.3648893229166674" />
         <AssociationConnector Association="CoreEntities.RegionLocation">
           <ConnectorPoint PointX="9.625" PointY="207.05744466145833" />
@@ -4693,7 +4498,7 @@
         <AssociationConnector Association="CoreEntities.LocationBusinessAccount" />
         <AssociationConnector Association="CoreEntities.ClientLocation1" />
         <AssociationConnector Association="CoreEntities.ClientContactInfo" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

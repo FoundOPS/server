@@ -35,7 +35,7 @@
                 <telerik:GridViewDataColumn Header="Technicians">
                     <telerik:GridViewDataColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Technicians, Converter={StaticResource RouteLogTechniciansConverter}}"/>
+                            <TextBlock Text="{Binding Employees, Converter={StaticResource RouteLogTechniciansConverter}}"/>
                         </DataTemplate>
                     </telerik:GridViewDataColumn.CellTemplate>
                 </telerik:GridViewDataColumn>
