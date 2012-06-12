@@ -1,12 +1,6 @@
 using FoundOps.Core.Models;
-using FoundOps.Core.Models.Azure;
-using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Tools;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
 using System;
-using System.Data.Services.Client;
-using System.Linq;
 using System.Web.Mvc;
 #if !DEBUG //RELEASE or TESTRELEASE
 using System.IO;
@@ -57,36 +51,10 @@ namespace FoundOps.Server.Controllers
             return View((object)version);
         }
 
-#if DEBUG
-
-        /// <summary>
-        /// Clear, create database, and populate design data.
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult CCDAPDD()
+        [AddTestUsersThenAuthorize]
+        public ActionResult MapView()
         {
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
-            {
-                CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
-                return View();
-            }
-
-            throw new Exception("Invalid attempted access logged for investigation.");
+            return View();
         }
-
-#endif
-
-#if !RELEASE
-        public ActionResult ClearCreateHistoricalTrackPoints()
-        {
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
-            {
-                CoreEntitiesServerManagement.ClearCreateHistoricalTrackPoints();
-                return View();
-            }
-
-            throw new Exception("Invalid attempted access logged for investigation.");
-        }
-#endif
     }
 }

@@ -80,11 +80,8 @@
                             <Dispatcher2:RouteScheduleView/>
                         </telerik:RadBusyIndicator>
                     </telerik:RadPane>-->
-                    <telerik:RadPane Header="Route Map" Visibility="Visible" telerik:RadDocking.SerializationTag="RouteMap" x:Name="RouteMapPane" 
-                                     CanUserClose="False" SizeChanged="RouteMapPaneSizeChanged">
-                        <telerik:RadBusyIndicator VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BusyContent="Loading Routes" IsBusy="{Binding RoutesLoading}">
-                            <Dispatcher2:RouteMapView x:Name="RouteMapView" />
-                        </telerik:RadBusyIndicator>
+                    <telerik:RadPane Header="Route Map" telerik:RadDocking.SerializationTag="RouteMap" x:Name="RouteMapPane" CanUserClose="False">
+                        <telerik:RadHtmlPlaceholder x:Name="map" SourceUrl="MapView" KeepContentInMemory="True" />
                     </telerik:RadPane>
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>

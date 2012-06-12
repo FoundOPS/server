@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Windows;
 using System.Reactive.Linq;
 
@@ -25,6 +26,15 @@ namespace FoundOps.Common.Silverlight.Tools.ExtensionMethods
         public static IDisposable RunDelayed(TimeSpan delay, Action action)
         {
             return Observable.Interval(delay).Take(1).ObserveOnDispatcher().Subscribe(_ => action());
+        }
+
+        /// <summary>
+        /// An observable that pushes whenever the FrameworkElement is loaded to the page.
+        /// </summary>
+        /// <param name="element">The framework element.</param>
+        public static IObservable<EventPattern<RoutedEventArgs>> LoadedObservable(this FrameworkElement element)
+        {
+            return Observable.FromEventPattern<RoutedEventHandler, RoutedEventArgs>(h => element.Loaded += h, h => element.Loaded -= h);
         }
     }
 }

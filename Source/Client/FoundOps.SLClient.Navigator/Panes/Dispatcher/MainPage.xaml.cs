@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows;
 using System.Collections;
 using System.Reactive.Linq;
+using System.Windows.Browser;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using System.Windows.Controls;
 using FoundOps.SLClient.Data.Services;
@@ -130,6 +132,40 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                         #endregion
                     }
                 });
+
+            //           SelectRoute(RoutesVM.SelectedRouteVM.Route.Id.ToString());
+            //
+            //protected void SelectRoute(string routeId)
+            //{
+            //    // Get the IFrame from the HtmlPresenter 
+            //    var iframe = (HtmlElement)map.HtmlPresenter.Children[0];
+            //    // Set an ID to the IFrame so that can be used later when calling the javascript 
+            //    iframe.SetAttribute("id", "mapIFrame");
+
+            //    // Code to be executed
+            //    var code = "document.getElementById('mapIFrame').contentWindow.map.setSelectedRoute('" + routeId + "');";
+            //    HtmlPage.Window.Eval(code);
+            //}
+
+            //When the map view is opened, set the role id
+            var lastRoleId = "";
+            map.LoadedObservable().Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
+            {
+                var roleId = Manager.Context.RoleId.ToString();
+
+                // Get the IFrame from the HtmlPresenter 
+                var iframe = (HtmlElement)map.HtmlPresenter.Children[0];
+                // Set an ID to the IFrame so that can be used later when calling the javascript 
+                iframe.SetAttribute("id", "mapIFrame");
+
+                if (lastRoleId != roleId)
+                {
+                    // Code to be executed
+                    var code = "document.getElementById('mapIFrame').contentWindow.map.setRoleId('" + roleId + "');";
+                    HtmlPage.Window.Eval(code);
+                    lastRoleId = roleId;
+                }
+            });
         }
 
         #region Logic
@@ -502,15 +538,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             //call the analytic for handling layout changing in dispatcher
             Analytics.Track(Event.DispatcherLayoutChanged);
-        }
-
-        //Insures the route map stays the correct size
-        private void RouteMapPaneSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //if (RouteMapView.Content as FrameworkElement == null) return;
-
-            //((FrameworkElement)RouteMapView.Content).Width = RouteMapPane.Width * .99;
-            //((FrameworkElement)RouteMapView.Content).Height = RouteMapPane.Height * .99;
         }
 
         #endregion

@@ -185,20 +185,32 @@
     </Content>
     <Content Include="ClientBin\FoundOps.SLClient.Navigator.xap" />
     <Content Include="ClientBin\version.txt" />
+    <Content Include="Content\android.png" />
+    <Content Include="Content\apple.png" />
     <Content Include="Content\bgGradient.png" />
     <Content Include="Content\BlankPhoto.png" />
+    <Content Include="Content\depot.png" />
     <Content Include="Content\facebook.png" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\footerBg.png" />
     <Content Include="Content\headerBg.png" />
+    <Content Include="Content\leaflet.css" />
+    <Content Include="Content\leaflet.ie.css" />
     <Content Include="Content\linkedin.png" />
+    <Content Include="Content\mapIE.css" />
     <Content Include="Content\navLogo.png" />
+    <Content Include="Content\outerCircle.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\SiteLogo.png" />
     <Content Include="Content\TouchIcon.png" />
+    <Content Include="Content\truck.png" />
     <Content Include="Content\twitter.png" />
+    <Content Include="Content\zoom-in.png" />
+    <Content Include="Content\zoom-out.png" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.6.1.min.js" />
+    <Content Include="Scripts\map.js" />
+    <Content Include="Scripts\require-jquery.js" />
     <Content Include="Scripts\Silverlight.js" />
     <Content Include="Scripts\userVoice.js" />
     <Content Include="Silverlight.js" />
@@ -215,6 +227,7 @@
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QuickBooksController.cs" />
+    <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\WorkFlowController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -226,7 +239,7 @@
     <Compile Include="Services\CoreDomainService\CoreDomainService.ServiceTemplates.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Invoicing.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Records.cs" />
-    <Compile Include="Services\DomainServiceTools.cs" />
+    <Compile Include="Views\DomainServiceTools.cs" />
     <Compile Include="Services\M2M4RiaLinqToEntitiesDomainService.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -263,6 +276,8 @@
     <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
     <Content Include="ClientBin\System.Xml.Linq.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.Data.zip" />
+    <None Include="Content\PTS55F.eot" />
+    <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -277,7 +292,7 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordSuccess.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Home\CCDAPDD.cshtml" />
+    <Content Include="Views\Tools\CCDAPDD.cshtml" />
     <Content Include="Views\Home\PerformServerOperations.cshtml" />
     <Content Include="Views\Home\Silverlight.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
@@ -286,7 +301,8 @@
     <Content Include="Views\QuickBooks\OAuthGrantHandler.cshtml" />
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\WorkFlow\TimeCheck.cshtml" />
-    <Content Include="Views\Home\ClearCreateHistoricalTrackPoints.cshtml" />
+    <Content Include="Views\Tools\ClearCreateHistoricalTrackPoints.cshtml" />
+    <Content Include="Views\Home\MapView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
