@@ -40,7 +40,7 @@
             <TextBlock Text="Recurring Services" HorizontalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2"/>
             <RecurringServices:RecurringServicesLinkSmall Grid.Row="2" Grid.ColumnSpan="2"/>
             <TextBlock Text="Locations" HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="3" FontWeight="Bold"/>
-            <Locations:LocationLinkSmall Grid.Row="4" Grid.ColumnSpan="2" Locations="{Binding SelectedEntity.OwnedParty.Locations}"/>
+            <Locations:LocationLinkSmall Grid.Row="4" Grid.ColumnSpan="2" Locations="{Binding SelectedEntity.Locations}"/>
         </Grid>
     </Grid>
 </UserControl>

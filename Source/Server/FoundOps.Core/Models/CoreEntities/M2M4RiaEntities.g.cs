@@ -198,37 +198,9 @@ namespace FoundOps.Core.Models.CoreEntities
         public Party Party { get; set; }
     }
     [Obsolete("This class is only intended for use by the RIA M2M solution")]
-    public partial class RouteEmployee
+    public partial class EmployeeRoute
     {
-        // 'RouteEmployeeToEmployeeSet' associationSet from 'Employee.Id' to 'RouteEmployee.EmployeeId'
-        private System.Guid _EmployeeId;
-
-        [DataMember]
-        [Key]
-        public System.Guid EmployeeId
-        {
-            get
-            {
-                if(Employee != null)
-                {
-		            if(_EmployeeId != Employee.Id && _EmployeeId == Guid.Empty)
-                        _EmployeeId = Employee.Id;
-                }
-                return _EmployeeId;
-            }
-            set
-            {
-                _EmployeeId = value;
-            }
-        }
-
-        [Include]
-        [XmlIgnore]
-        [Association("RouteEmployeeToEmployeeSet", "EmployeeId", "Id", IsForeignKey = true)]
-        [DataMember]
-        public Employee Employee { get; set; }
-
-        // 'RouteEmployeeToRouteSet' associationSet from 'Route.Id' to 'RouteEmployee.RouteId'
+        // 'EmployeeRouteToRouteSet' associationSet from 'Route.Id' to 'EmployeeRoute.RouteId'
         private System.Guid _RouteId;
 
         [DataMember]
@@ -252,9 +224,37 @@ namespace FoundOps.Core.Models.CoreEntities
 
         [Include]
         [XmlIgnore]
-        [Association("RouteEmployeeToRouteSet", "RouteId", "Id", IsForeignKey = true)]
+        [Association("EmployeeRouteToRouteSet", "RouteId", "Id", IsForeignKey = true)]
         [DataMember]
         public Route Route { get; set; }
+
+        // 'EmployeeRouteToEmployeeSet' associationSet from 'Employee.Id' to 'EmployeeRoute.EmployeeId'
+        private System.Guid _EmployeeId;
+
+        [DataMember]
+        [Key]
+        public System.Guid EmployeeId
+        {
+            get
+            {
+                if(Employee != null)
+                {
+		            if(_EmployeeId != Employee.Id && _EmployeeId == Guid.Empty)
+                        _EmployeeId = Employee.Id;
+                }
+                return _EmployeeId;
+            }
+            set
+            {
+                _EmployeeId = value;
+            }
+        }
+
+        [Include]
+        [XmlIgnore]
+        [Association("EmployeeRouteToEmployeeSet", "EmployeeId", "Id", IsForeignKey = true)]
+        [DataMember]
+        public Employee Employee { get; set; }
     }
     //
     // Regular Entity Types
@@ -338,14 +338,14 @@ namespace FoundOps.Core.Models.CoreEntities
         [Obsolete("This property is only intended for use by the RIA M2M solution")]
         [DataMember]
         [Include]
-        [Association("RouteEmployeeToRouteSet", "Id", "RouteId", IsForeignKey = false)]
-        public IList<RouteEmployee> RouteEmployeeToEmployeeSet
+        [Association("EmployeeRouteToRouteSet", "Id", "RouteId", IsForeignKey = false)]
+        public IList<EmployeeRoute> EmployeeRouteToEmployeeSet
         {
             get
             {
-                Func<Employee, RouteEmployee> makeJoinType = 
-                    e => new RouteEmployee { Route = this, Employee = e };
-                return Technicians.Select(makeJoinType).ToList();
+                Func<Employee, EmployeeRoute> makeJoinType = 
+                    e => new EmployeeRoute { Route = this, Employee = e };
+                return Employees.Select(makeJoinType).ToList();
             }
         }
     }
@@ -370,13 +370,13 @@ namespace FoundOps.Core.Models.CoreEntities
         [Obsolete("This property is only intended for use by the RIA M2M solution")]
         [DataMember]
         [Include]
-        [Association("RouteEmployeeToEmployeeSet", "Id", "EmployeeId", IsForeignKey = false)]
-        public IList<RouteEmployee> RouteEmployeeToRouteSet
+        [Association("EmployeeRouteToEmployeeSet", "Id", "EmployeeId", IsForeignKey = false)]
+        public IList<EmployeeRoute> EmployeeRouteToRouteSet
         {
             get
             {
-                Func<Route, RouteEmployee> makeJoinType = 
-                    e => new RouteEmployee { Employee = this, Route = e };
+                Func<Route, EmployeeRoute> makeJoinType = 
+                    e => new EmployeeRoute { Employee = this, Route = e };
                 return Routes.Select(makeJoinType).ToList();
             }
         }

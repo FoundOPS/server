@@ -93,7 +93,7 @@ BEGIN
 	INSERT INTO @TempGenServiceTable (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate, ServiceName)
 	--This is a Semi-Join between the Clients table created above and the RecurringServices Table
 	--Semi-Join simply means that it has all the same logic as a normal join, but it doesnt actually join the tables
-	--In this case, it finds all the RecurringServices that correspond to a Client with a vendorId = @serviceProviderIdContext
+	--In this case, it finds all the RecurringServices that correspond to a Client with a BusinessAccountId = @serviceProviderIdContext
 	SELECT	t1.Id, t1.EndDate, t1.EndAfterTimes, t1.RepeatEveryTimes, t1.FrequencyInt, t1.FrequencyDetailInt, t1.StartDate, t2.Name
 	FROM		Repeats t1, ServiceTemplates t2
 	WHERE		EXISTS
@@ -105,7 +105,7 @@ BEGIN
 		SELECT	*
 		FROM	RecurringServices
 		WHERE	RecurringServices.ClientId = Clients.Id 
-				AND Clients.VendorId = @serviceProviderIdContext 
+				AND Clients.BusinessAccountId = @serviceProviderIdContext 
 				AND RecurringServices.Id = t1.Id
 				AND RecurringServices.Id = t2.Id
 		)

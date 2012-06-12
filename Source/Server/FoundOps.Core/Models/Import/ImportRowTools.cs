@@ -28,7 +28,7 @@ namespace FoundOps.Core.Models.Import
 
             #region Client
 
-            PropertyCategories.Add(new PropertyCategory<Client>(DataCategory.ClientName, (client, name) => ((Business)client.OwnedParty).Name = name));
+            PropertyCategories.Add(new PropertyCategory<Client>(DataCategory.ClientName, (client, name) => client.Name = name));
 
             #endregion
 
@@ -270,14 +270,14 @@ namespace FoundOps.Core.Models.Import
         public static Client CreateClient(BusinessAccount currentBusinessAccount, ImportRow importRow)
         {
             //Need to create an OwnedParty and set the current business account
-            var client = new Client { Vendor = currentBusinessAccount, OwnedParty = new Business() };
+            var client = new Client { BusinessAccount = currentBusinessAccount };
 
             SetProperties(client, importRow);
 
             //Add contact info set
             var contactInfoSet = GetContactInfoSet(importRow);
             foreach (var contactInfo in contactInfoSet)
-                client.OwnedParty.ContactInfoSet.Add(contactInfo);
+                client.ContactInfoSet.Add(contactInfo);
 
             return client;
         }
@@ -292,16 +292,16 @@ namespace FoundOps.Core.Models.Import
         /// <param name="regionAssociation">The region association.</param>
         public static Location CreateLocation(BusinessAccount currentBusinessAccount, ImportRow importRow, Client clientAssociation, Region regionAssociation)
         {
-            var location = new Location { OwnerParty = currentBusinessAccount, Region = regionAssociation };
+            var location = new Location { BusinessAccount = currentBusinessAccount, Region = regionAssociation };
 
             //Set the Location's Party and set the clientAssociation's DefaultBillingLocation to the new location
             //if the clientAssociation is not null
             if (clientAssociation != null)
             {
-                location.Party = clientAssociation.OwnedParty;
+                location.Client = clientAssociation;
 
                 //Set this as the default billing location
-                clientAssociation.DefaultBillingLocation = location;
+                location.IsDefaultBillingLocation = true;
             }
 
             SetProperties(location, importRow);

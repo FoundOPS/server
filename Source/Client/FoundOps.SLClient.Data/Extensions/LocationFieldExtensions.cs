@@ -38,11 +38,10 @@ namespace FoundOps.Core.Models.CoreEntities
             Observable2.FromPropertyChangedPattern(this, x => x.Value).DistinctUntilChanged().ObserveOnDispatcher()
                  .Subscribe(_ =>
                  {
-                     //When a LocationField's value is set automatically set the parent Service's Client
-                     if (Value != null && Value.Party != null && Value.Party.ClientOwner != null &&
-                         OwnerServiceTemplate != null && OwnerServiceTemplate.OwnerService != null)
+                     //When a LocationField's value is set automatically set the parent Service's
+                     if (Value != null && Value.Client != null && OwnerServiceTemplate != null && OwnerServiceTemplate.OwnerService != null)
                      {
-                         OwnerServiceTemplate.OwnerService.Client = Value.Party.ClientOwner;
+                         OwnerServiceTemplate.OwnerService.Client = Value.Client;
                      }
                  });
         }

@@ -10,7 +10,7 @@
         <StackPanel DataContext="{Binding SelectedRouteDestination}">
             <TextBlock Text="{Binding Location.Name}" FontWeight="Bold" TextAlignment="Center" />
             <TextBlock Text="Client" HorizontalAlignment="Center" FontWeight="Bold"/>
-            <TextBlock Text="{Binding Client.OwnedParty.Name}" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Client.Name}" HorizontalAlignment="Center"/>
             <Rectangle Fill="Black" Height="1" Margin="5,3"/>
             <Grid DataContext="{Binding Location}">
                 <Grid.ColumnDefinitions>

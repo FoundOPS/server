@@ -100,7 +100,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Gets the user account destination items source.
         /// ToArray creates a new IEnumerable, part of a workaround for the RadGridView displaying incorrect items when an item is removed.
         /// </summary>
-        public IEnumerable EmployeesDestinationItemsSource { get { return Route == null ? null : Route.Technicians.ToArray(); } }
+        public IEnumerable EmployeesDestinationItemsSource { get { return Route == null ? null : Route.Employees.ToArray(); } }
 
         /// <summary>
         /// Gets the service templates destination items source.
@@ -191,7 +191,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //a) Whenever the current route's technicians or employees changes notify the itemssource updated.
             //  Part of a workaround for the RadGridView displaying incorrect items when an item is removed.
             if (Route != null)
-                _destinationItemsSourcesUpdatedSubscription = Route.Technicians.FromCollectionChangedGeneric().Merge(Route.Vehicles.FromCollectionChangedGeneric())
+                _destinationItemsSourcesUpdatedSubscription = Route.Employees.FromCollectionChangedGeneric().Merge(Route.Vehicles.FromCollectionChangedGeneric())
                     .Throttle(TimeSpan.FromMilliseconds(250)).ObserveOnDispatcher().Subscribe(_ =>
                     {
                         //Notify the DestinationItemsSources changed
@@ -209,7 +209,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     return null;
 
                 var newEmployee = VM.Employees.CreateNewItem(name);
-                Route.Technicians.Add(newEmployee);
+                Route.Employees.Add(newEmployee);
                 return newEmployee;
             };
 
@@ -218,8 +218,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (Route == null)
                     return;
 
-                if (!Route.Technicians.Contains(existingItem))
-                    Route.Technicians.Add((Employee)existingItem);
+                if (!Route.Employees.Contains(existingItem))
+                    Route.Employees.Add((Employee)existingItem);
             };
             RemoveItemEmployee = () =>
             {
@@ -231,7 +231,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //foreach (Employee t in EmployeesDestinationItemsSource)
                 //    Debug.WriteLine("B " + t.DisplayName);
 
-                this.Route.Technicians.Remove(employeeToRemove);
+                this.Route.Employees.Remove(employeeToRemove);
 
                 //foreach (Employee t in EmployeesDestinationItemsSource)
                 //    Debug.WriteLine("A " + t.DisplayName);
@@ -245,7 +245,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     return null;
 
                 var employeeToDelete = SelectedEmployee;
-                this.Route.Technicians.Remove(employeeToDelete);
+                this.Route.Employees.Remove(employeeToDelete);
                 VM.Employees.DeleteEntity(employeeToDelete);
                 return employeeToDelete;
             };

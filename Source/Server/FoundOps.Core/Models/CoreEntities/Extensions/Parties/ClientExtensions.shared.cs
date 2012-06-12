@@ -47,10 +47,5 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 #endif
         #endregion
-
-        public string DisplayName
-        {
-            get { return OwnedParty == null ? "" : OwnedParty.DisplayName; }
-        }
     }
 }

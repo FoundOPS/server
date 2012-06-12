@@ -121,7 +121,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             CreateNewItem = name =>
             {
                 //Set the Party to the current OwnerAccount
-                var newLocation = new Location { Name = name, OwnerParty = ContextManager.OwnerAccount };
+                var newLocation = new Location { Name = name, BusinessAccount = ContextManager.ServiceProvider };
 
                 //Add the entity to the EntitySet so it is tracked by the DomainContext
                 DomainContext.Locations.Add(newLocation);
@@ -131,9 +131,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //If the client context != null add this to the current Client's Locations
                 if (client != null)
                 {
-                    client.OwnedParty.Locations.Add(newLocation);
-                    if (client.OwnedParty.Locations.Count == 1)
-                        newLocation.Name = client.DisplayName;
+                    client.Locations.Add(newLocation);
+                    if (client.Locations.Count == 1)
+                        newLocation.Name = client.Name;
                 }
 
                 var region = ContextManager.GetContext<Region>();
@@ -158,7 +158,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //If the search is happening in a recurring service context, filter by the recurring service's client
                     var recurringServiceContext = ContextManager.GetContext<RecurringService>();
                     if (recurringServiceContext != null && recurringServiceContext.ClientId != Guid.Empty)
-                        query = query.Where(l => l.PartyId == recurringServiceContext.ClientId);
+                        query = query.Where(l => l.ClientId == recurringServiceContext.ClientId);
                     return query;
                 });
 
@@ -170,7 +170,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
-            var contextRelationshipFilters = new[] { new ContextRelationshipFilter("PartyId", typeof (Client), v => ((Client) v).Id), 
+            var contextRelationshipFilters = new[] { new ContextRelationshipFilter("ClientId", typeof (Client), v => ((Client) v).Id), 
                                                      new ContextRelationshipFilter("RegionId", typeof (Region), v => ((Region) v).Id) };
 
             //Force load the entities when in a related types view

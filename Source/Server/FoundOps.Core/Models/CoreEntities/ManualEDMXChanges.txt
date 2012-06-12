@@ -20,7 +20,7 @@ with
     <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId">
 		<DefiningQuery>SELECT 
 		[ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId], 
-		[ServiceTemplatesWithVendorId].[VendorId] AS [VendorId]
+		[ServiceTemplatesWithVendorId].[BusinessAccountId] AS [BusinessAccountId]
 		FROM [dbo].[ServiceTemplatesWithVendorId] AS [ServiceTemplatesWithVendorId]</DefiningQuery>
     </EntitySet>
 -------------------------------------------------------------------------------------------------------------------------------
@@ -54,10 +54,10 @@ with
 	<EntityType Name="ServiceTemplatesWithVendorId">
 		<Key>
             <PropertyRef Name="ServiceTemplateId" />
-			<PropertyRef Name="VendorId" />
+			<PropertyRef Name="BusinessAccountId" />
 		</Key>
 		<Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
-		<Property Name="VendorId" Type="uniqueidentifier" Nullable="false" />
+		<Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
 	</EntityType>
 -------------------------------------------------------------------------------------------------------------------------------
 DO NOT CHANGE : <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.PartyWithName" />
@@ -96,7 +96,7 @@ with
           <EntitySetMapping Name="ServiceTemplateWithVendorIds">
             <EntityTypeMapping TypeName="CoreEntities.ServiceTemplateWithVendorId">
               <MappingFragment StoreEntitySet="ServiceTemplatesWithVendorId">
-                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
                 <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -143,7 +143,7 @@ Add after </EntityContainer> (the one after FK association sets)
       </Function>
       <Function Name="GetUnroutedServicesForDate" IsComposable="false">
         <CommandText>
-          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusName
+          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt
           FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
         </CommandText>
         <Parameter Name="serviceProviderContext"

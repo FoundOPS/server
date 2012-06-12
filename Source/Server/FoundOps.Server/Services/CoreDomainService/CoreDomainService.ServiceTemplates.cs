@@ -160,7 +160,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 serviceTemplatesToReturn = (from serviceTemplate in serviceTemplatesToReturn
                                             join stv in ObjectContext.ServiceTemplateWithVendorIds
                                                 on serviceTemplate.Id equals stv.ServiceTemplateId
-                                            where stv.VendorId == businessForRole.Id
+                                            where stv.BusinessAccountId == businessForRole.Id
                                             select serviceTemplate).Distinct();
             }
 
@@ -186,7 +186,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
                                             join stv in ObjectContext.ServiceTemplateWithVendorIds
                                                 on serviceTemplate.Id equals stv.ServiceTemplateId
-                                            where stv.VendorId == businessForRole.Id
+                                            where stv.BusinessAccountId == businessForRole.Id
                                             select serviceTemplate).Distinct();
 
             //Force load the details
@@ -212,7 +212,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.OwnerClientId == clientId)
                                             join stv in ObjectContext.ServiceTemplateWithVendorIds
                                                 on serviceTemplate.Id equals stv.ServiceTemplateId
-                                            where stv.VendorId == vendorId
+                                            where stv.BusinessAccountId == vendorId 
                                             select serviceTemplate).Distinct();
 
             //Force load the details

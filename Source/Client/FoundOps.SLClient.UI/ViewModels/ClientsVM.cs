@@ -3,6 +3,7 @@ using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.Server.Services.CoreDomainService;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
@@ -24,11 +25,11 @@ namespace FoundOps.SLClient.UI.ViewModels
     {
         #region Public
 
-        private readonly ObservableAsPropertyHelper<PartyVM> _selectedClientOwnedBusinessVM;
+        private readonly ObservableAsPropertyHelper<ContactInfoVM> _selectedClientContactInfoVM;
         /// <summary>
-        /// Gets the selected Client's OwnedParty's PartyVM. (The OwnedPary is a Business)
+        /// Gets the selected Client's ContactInfoVM
         /// </summary>
-        public PartyVM SelectedClientOwnedBusinessVM { get { return _selectedClientOwnedBusinessVM.Value; } }
+        public ContactInfoVM SelectedClientContactInfoVM { get { return _selectedClientContactInfoVM.Value; } }
 
         /// <summary>
         /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
@@ -72,7 +73,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public IEnumerable LocationsDestinationItemsSource
         {
-            get { return SelectedEntity == null || SelectedEntity.OwnedParty == null ? null : SelectedEntity.OwnedParty.Locations; }
+            get { return SelectedEntity == null ? null : SelectedEntity.Locations; }
         }
 
         #endregion
@@ -109,16 +110,16 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientsVM"/> class.
-        /// </summary>
+        /// </summary> 
         [ImportingConstructor]
         public ClientsVM()
         {
             SetupDataLoading();
 
-            //Setup the selected client's OwnedParty PartyVM whenever the selected client changes
-            _selectedClientOwnedBusinessVM =
-                SelectedEntityObservable.Where(se => se != null && se.OwnedParty != null).Select(se => new PartyVM(se.OwnedParty))
-                .ToProperty(this, x => x.SelectedClientOwnedBusinessVM);
+            //Setup the selected client's ContactInfoVM whenever the selected client changes
+            _selectedClientContactInfoVM =
+                SelectedEntityObservable.Where(se => se != null && se.BusinessAccount != null).Select(se => new ContactInfoVM(ContactInfoType.Clients, se.ContactInfoSet))
+                .ToProperty(this, x => x.SelectedClientContactInfoVM); 
 
             ManuallyUpdateSuggestions = autoCompleteBox =>
                 SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchClientsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
@@ -141,7 +142,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             AddExistingItemLocation = existingItem =>
             {
-                SelectedEntity.OwnedParty.Locations.Add((Location)existingItem);
+                SelectedEntity.Locations.Add((Location)existingItem);
                 VM.Locations.MoveToDetailsView.Execute(null);
 
                 VM.Locations.SelectedEntity = (Location) existingItem;
@@ -151,7 +152,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 var selectedLocation = VM.Locations.SelectedEntity;
                 if (selectedLocation != null)
-                    this.SelectedEntity.OwnedParty.Locations.Remove(selectedLocation);
+                    this.SelectedEntity.Locations.Remove(selectedLocation);
 
                 return selectedLocation;
             };
@@ -188,19 +189,19 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         protected override void OnAddEntity(Client newClient)
         {
-            newClient.OwnedParty = new Business { Name = "" };
-            newClient.Vendor = (BusinessAccount)this.ContextManager.OwnerAccount;
+            newClient.Name = "";
+            newClient.BusinessAccount = (BusinessAccount)this.ContextManager.OwnerAccount;
 
             //Add a default Location
             //Set the OwnerParty to the current OwnerAccount
             var defaultLocation = new Location
             {
-                OwnerParty = ContextManager.OwnerAccount,
+                BusinessAccount = ContextManager.ServiceProvider,
                 Region = ContextManager.GetContext<Region>()
             };
-            newClient.OwnedParty.Locations.Add(defaultLocation);
+            newClient.Locations.Add(defaultLocation);
 
-            newClient.DefaultBillingLocation = defaultLocation;
+            defaultLocation.IsDefaultBillingLocation = true;
 
             //Add every available service to the client by default
             foreach (var serviceTemplate in ContextManager.CurrentServiceTemplates)

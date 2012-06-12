@@ -23,29 +23,6 @@ namespace FoundOps.SLClient.UI.Controls.Clients
 
         //Public
 
-        #region ParentContextVM Dependency Property
-
-        /// <summary>
-        /// ParentContextVM
-        /// </summary>
-        public IAddDeleteSelectedLocation ParentContextVM
-        {
-            get { return (IAddDeleteSelectedLocation)GetValue(ParentContextVMProperty); }
-            set { SetValue(ParentContextVMProperty, value); }
-        }
-
-        /// <summary>
-        /// ParentContextVM Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty ParentContextVMProperty =
-            DependencyProperty.Register(
-                "ParentContextVM",
-                typeof(IAddDeleteSelectedLocation),
-                typeof(ClientLocationsGrid),
-                new PropertyMetadata(null));
-
-        #endregion
-
         /// <summary>
         /// Gets the locations VM.
         /// </summary>
@@ -96,9 +73,12 @@ namespace FoundOps.SLClient.UI.Controls.Clients
             if (currentClient == null || location == null) return;
 
             //Prevents race condition issue when changing Client context
-            if (!currentClient.OwnedParty.Locations.Any(l => l.Id == location.Id)) return;
+            if (!currentClient.Locations.Any(l => l.Id == location.Id)) return;
 
-            currentClient.DefaultBillingLocation = location;
+            foreach (var l in currentClient.Locations)
+                l.IsDefaultBillingLocation = false;
+
+            location.IsDefaultBillingLocation = true;
         }
     }
 }

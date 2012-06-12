@@ -118,7 +118,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False" ParentContextVM="{Binding DataContext, ElementName=myRegionLarge}" MaxHeight="150" />
+                        <Locations:LocationsGrid x:Name="LocationsGrid" IsMainGrid="False" MaxHeight="150" />
                     </Grid>
                 </toolkit:Expander>
             </StackPanel>

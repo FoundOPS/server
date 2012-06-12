@@ -128,7 +128,7 @@
             </StackPanel>
             <StackPanel Grid.Column="2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsAssignedTechniciansVisible, Converter={StaticResource VisibilityConverter}}">
                 <TextBlock Text="Technicians" FontWeight="Bold"/>
-                <ItemsControl ItemsSource="{Binding SelectedEntity.Technicians}">
+                <ItemsControl ItemsSource="{Binding SelectedEntity.Employees}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding DisplayName}"/>

@@ -86,27 +86,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                             OwnedPersonTwo, 
                                             OwnedPersonThree 
                                             };
-
-            #region Add ContactInfoSet
-
-            //Add Business contact info
-            foreach (var business in DesignPartys.OfType<Business>())
-            {
-                var designContactInfoData = new ContactInfoDesignData();
-                foreach (var contactInfo in designContactInfoData.DesignBusinessContactInfoList)
-                    business.ContactInfoSet.Add(contactInfo);
-            }
-
-            //Add Person contact info
-            foreach (var person in DesignPartys.OfType<Person>())
-            {
-                var designContactInfoData = new ContactInfoDesignData();
-                foreach (var contactInfo in designContactInfoData.DesignUserContactInfoList)
-                    person.ContactInfoSet.Add(contactInfo);
-            }
-
-            #endregion
-
         }
     }
 }

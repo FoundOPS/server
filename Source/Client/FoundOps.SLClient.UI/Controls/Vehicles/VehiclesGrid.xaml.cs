@@ -1,13 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.Tools;
-using FoundOps.SLClient.UI.ViewModels;
 using Telerik.Windows;
 using Telerik.Windows.Controls.GridView;
-using PropertyMetadata = System.Windows.PropertyMetadata;
 
 namespace FoundOps.SLClient.UI.Controls.Vehicles
 {
@@ -39,29 +36,6 @@ namespace FoundOps.SLClient.UI.Controls.Vehicles
             if (!IsMainGrid)
                 ((IProvideContext)this.DataContext).MoveToDetailsView.Execute(null);
         }
-
-        #region ParentContextVM Dependency Property
-
-        /// <summary>
-        /// ParentContextVM
-        /// </summary>
-        public IAddDeleteSelectedVehicle ParentContextVM
-        {
-            get { return (IAddDeleteSelectedVehicle)GetValue(ParentContextVMProperty); }
-            set { SetValue(ParentContextVMProperty, value); }
-        }
-
-        /// <summary>
-        /// ParentContextVM Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty ParentContextVMProperty =
-            DependencyProperty.Register(
-                "ParentContextVM",
-                typeof(IAddDeleteSelectedVehicle),
-                typeof(VehiclesGrid),
-                new PropertyMetadata(null));
-
-        #endregion
 
         #region Implementation of INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

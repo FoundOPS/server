@@ -333,7 +333,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools
             //    this.VirtualItemCount = sourceCollection.Count;
             //}
 
-            UpdateVirtualItemCount();
+            Rxx3.RunDelayed(TimeSpan.FromSeconds(1), UpdateVirtualItemCount);
         }
 
         #endregion

@@ -29,16 +29,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("Contacts")]
-    public class ContactsMainPage : InfiniteAccordionPageWrapper
-    {
-        [ImportingConstructor]
-        public ContactsMainPage(Blocks managerBlocks)
-            : base(managerBlocks, typeof(Contact))
-        {
-        }
-    }
-
     [ExportPage("Employees")]
     public class EmployeesMainPage : InfiniteAccordionPageWrapper
     {

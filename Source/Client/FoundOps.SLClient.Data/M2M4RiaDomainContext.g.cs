@@ -195,28 +195,8 @@ namespace FoundOps.Core.Models.CoreEntities
     /// This class provides access to the entity's entity set and contains methods for attaching
 	/// to entities to the link table in a single action.
     /// </summary>
-    public partial class RouteEmployee : IExtendedEntity
+    public partial class EmployeeRoute : IExtendedEntity
     {
-        /// <summary>
-        /// This method attaches Route and Employee to the current join table entity, in such a way
-        /// that both navigation properties are set before an INotifyCollectionChanged event is fired.
-        /// </summary>
-        /// <param name="r"></param>
-        /// <param name="route"></param>
-        /// <param name="employee"></param>
-        [Obsolete("This property is only intended for use by the M2M4Ria solution.")]
-        public static void AttachEmployeeToRoute(RouteEmployee r, Route route, Employee employee)
-        {
-            var dummy = r.Employee; // this is to instantiate the EntityRef<Employee>
-            r._employee.Entity = employee;
-            r._employeeId = employee.Id;
-
-            r.Route = route;
-
-            r._employee.Entity = null;
-            r._employeeId = default(System.Guid);
-            r.Employee = employee;
-        }
         /// <summary>
         /// This method attaches Employee and Route to the current join table entity, in such a way
         /// that both navigation properties are set before an INotifyCollectionChanged event is fired.
@@ -225,7 +205,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="employee"></param>
         /// <param name="route"></param>
         [Obsolete("This property is only intended for use by the M2M4Ria solution.")]
-        public static void AttachRouteToEmployee(RouteEmployee r, Employee employee, Route route)
+        public static void AttachRouteToEmployee(EmployeeRoute r, Employee employee, Route route)
         {
             var dummy = r.Route; // this is to instantiate the EntityRef<Route>
             r._route.Entity = route;
@@ -236,6 +216,26 @@ namespace FoundOps.Core.Models.CoreEntities
             r._route.Entity = null;
             r._routeId = default(System.Guid);
             r.Route = route;
+        }
+        /// <summary>
+        /// This method attaches Route and Employee to the current join table entity, in such a way
+        /// that both navigation properties are set before an INotifyCollectionChanged event is fired.
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="route"></param>
+        /// <param name="employee"></param>
+        [Obsolete("This property is only intended for use by the M2M4Ria solution.")]
+        public static void AttachEmployeeToRoute(EmployeeRoute r, Route route, Employee employee)
+        {
+            var dummy = r.Employee; // this is to instantiate the EntityRef<Employee>
+            r._employee.Entity = employee;
+            r._employeeId = employee.Id;
+
+            r.Route = route;
+
+            r._employee.Entity = null;
+            r._employeeId = default(System.Guid);
+            r.Employee = employee;
         }
         /// <summary>
         /// Gets the EntitySet the link table entity is contained in.
@@ -485,44 +485,44 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
         //
-        // Code relating to the managing of the 'RouteEmployee' association from 'Route' to 'Employee'
+        // Code relating to the managing of the 'EmployeeRoute' association from 'Route' to 'Employee'
         //
-        private IEntityCollection<Employee> _Technicians;
+        private IEntityCollection<Employee> _Employees;
 
         /// <summary>
         /// Gets the collection of associated <see cref="Employee"/> entities.
         /// </summary>
-        public IEntityCollection<Employee> Technicians
+        public IEntityCollection<Employee> Employees
         {
             get
             {
-                if(_Technicians == null)
+                if(_Employees == null)
                 {
-                    _Technicians = new EntityCollection<RouteEmployee, Employee>(
-						this.RouteEmployeeToEmployeeSet,
+                    _Employees = new EntityCollection<EmployeeRoute, Employee>(
+						this.EmployeeRouteToEmployeeSet,
 						r => r.Employee,
-						RemoveRouteEmployee,
-						AddRouteEmployee
+						RemoveEmployeeRoute,
+						AddEmployeeRoute
 				    );
                 }
-                return _Technicians;
+                return _Employees;
             }
         }
 
         // Instruct compiler not to warn about usage of obsolete members, because using them is intended.
         #pragma warning disable 618
-        private void AddRouteEmployee(Employee employee)
+        private void AddEmployeeRoute(Employee employee)
 		{
-            var newJoinType = new RouteEmployee();
-            RouteEmployee.AttachEmployeeToRoute(newJoinType, this, employee);
+            var newJoinType = new EmployeeRoute();
+            EmployeeRoute.AttachEmployeeToRoute(newJoinType, this, employee);
 		}
 		#pragma warning restore 618
 
-        private void RemoveRouteEmployee(RouteEmployee r)
+        private void RemoveEmployeeRoute(EmployeeRoute r)
         {
             if(((IExtendedEntity)r).EntitySet == null)
             {
-                this.RouteEmployeeToEmployeeSet.Remove(r);
+                this.EmployeeRouteToEmployeeSet.Remove(r);
             }
             else
             {
@@ -581,7 +581,7 @@ namespace FoundOps.Core.Models.CoreEntities
     public partial class Employee
     {
         //
-        // Code relating to the managing of the 'RouteEmployee' association from 'Employee' to 'Route'
+        // Code relating to the managing of the 'EmployeeRoute' association from 'Employee' to 'Route'
         //
         private IEntityCollection<Route> _Routes;
 
@@ -594,11 +594,11 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 if(_Routes == null)
                 {
-                    _Routes = new EntityCollection<RouteEmployee, Route>(
-						this.RouteEmployeeToRouteSet,
+                    _Routes = new EntityCollection<EmployeeRoute, Route>(
+						this.EmployeeRouteToRouteSet,
 						r => r.Route,
-						RemoveRouteEmployee,
-						AddRouteEmployee
+						RemoveEmployeeRoute,
+						AddEmployeeRoute
 				    );
                 }
                 return _Routes;
@@ -607,18 +607,18 @@ namespace FoundOps.Core.Models.CoreEntities
 
         // Instruct compiler not to warn about usage of obsolete members, because using them is intended.
         #pragma warning disable 618
-        private void AddRouteEmployee(Route route)
+        private void AddEmployeeRoute(Route route)
 		{
-            var newJoinType = new RouteEmployee();
-            RouteEmployee.AttachRouteToEmployee(newJoinType, this, route);
+            var newJoinType = new EmployeeRoute();
+            EmployeeRoute.AttachRouteToEmployee(newJoinType, this, route);
 		}
 		#pragma warning restore 618
 
-        private void RemoveRouteEmployee(RouteEmployee r)
+        private void RemoveEmployeeRoute(EmployeeRoute r)
         {
             if(((IExtendedEntity)r).EntitySet == null)
             {
-                this.RouteEmployeeToRouteSet.Remove(r);
+                this.EmployeeRouteToRouteSet.Remove(r);
             }
             else
             {

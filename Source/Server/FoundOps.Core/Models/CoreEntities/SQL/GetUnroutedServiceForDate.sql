@@ -69,7 +69,7 @@ BEGIN
 		SELECT	*
 		FROM	RecurringServices
 		WHERE	RecurringServices.ClientId = Clients.Id 
-				AND Clients.VendorId = @serviceProviderIdContext 
+				AND Clients.BusinessAccountId = @serviceProviderIdContext 
 				AND RecurringServices.Id = t1.Id
 				AND RecurringServices.Id = t2.Id
 		)

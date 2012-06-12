@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Windows;
 using Telerik.Windows;
 using System.ComponentModel;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using Telerik.Windows.Controls.GridView;
-using PropertyMetadata = System.Windows.PropertyMetadata;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 
 namespace FoundOps.SLClient.UI.Controls.Employees
@@ -47,29 +45,6 @@ namespace FoundOps.SLClient.UI.Controls.Employees
             if (!IsMainGrid)
                 ((IProvideContext)this.DataContext).MoveToDetailsView.Execute(null);
         }
-
-        #region ParentContextVM Dependency Property
-
-        /// <summary>
-        /// ParentContextVM
-        /// </summary>
-        public IAddDeleteSelectedEmployee ParentContextVM
-        {
-            get { return (IAddDeleteSelectedEmployee) GetValue(ParentContextVMProperty); }
-            set { SetValue(ParentContextVMProperty, value); }
-        }
-
-        /// <summary>
-        /// ParentContextVM Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty ParentContextVMProperty =
-            DependencyProperty.Register(
-                "ParentContextVM",
-                typeof (IAddDeleteSelectedEmployee),
-                typeof (EmployeesGrid),
-                new PropertyMetadata(null));
-
-        #endregion
 
         #region Implementation of INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

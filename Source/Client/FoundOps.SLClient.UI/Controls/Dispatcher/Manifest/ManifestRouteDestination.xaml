@@ -85,7 +85,7 @@
                     <StackPanel x:Name="ContactInfoElement" Width="245" Margin="4,2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsContactInfoVisible, 
                         Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
                         <TextBlock Text="Contact Information" FontWeight="Bold"/>
-                        <ItemsControl Margin="4,2" ItemsSource="{Binding Client.OwnedParty.ContactInfoSet}">
+                        <ItemsControl Margin="4,2" ItemsSource="{Binding Client.ContactInfoSet}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel/>

@@ -44,7 +44,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
             //Then compare the Client
             if (compare == 0 && this.Client != null && other.Client != null)
-                compare = this.Client.DisplayName.CompareTo(other.Client.DisplayName);
+                compare = this.Client.Name.CompareTo(other.Client.Name);
 
             //If it is a generated service compare the recurring service parent's id
             if (compare == 0 && this.RecurringServiceId.HasValue && other.RecurringServiceId.HasValue)

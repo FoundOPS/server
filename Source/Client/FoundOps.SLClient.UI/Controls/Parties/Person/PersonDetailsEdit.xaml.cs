@@ -1,13 +1,35 @@
 ﻿using System.Windows;
-using FoundOps.SLClient.UI.ViewModels;
 
-namespace FoundOps.SLClient.UI.Controls.Account.Person
+namespace FoundOps.SLClient.UI.Controls.Parties.Person
 {
     /// <summary>
     /// The UI for viewing and editing a Person
     /// </summary>
     public partial class PersonDetailsEdit
     {
+        #region Person Dependency Property
+
+        /// <summary>
+        /// Person
+        /// </summary>
+        public FoundOps.Core.Models.CoreEntities.Person Person
+        {
+            get { return (FoundOps.Core.Models.CoreEntities.Person)GetValue(PersonProperty); }
+            set { SetValue(PersonProperty, value); }
+        }
+
+        /// <summary>
+        /// SelectedClient Dependency Property.
+        /// </summary>
+        public static readonly DependencyProperty PersonProperty =
+            DependencyProperty.Register(
+                "Person",
+                typeof(FoundOps.Core.Models.CoreEntities.Person),
+                typeof(PersonDetailsEdit),
+                new PropertyMetadata(null));
+
+        #endregion
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PersonDetailsEdit"/> class.
         /// </summary>
@@ -15,28 +37,5 @@ namespace FoundOps.SLClient.UI.Controls.Account.Person
         {
             InitializeComponent();
         }
-
-        #region PersonVM Dependency Property
-
-        /// <summary>
-        /// PersonVM
-        /// </summary>
-        public PartyVM PersonVM
-        {
-            get { return (PartyVM)GetValue(PersonVMProperty); }
-            set { SetValue(PersonVMProperty, value); }
-        }
-
-        /// <summary>
-        /// PersonVM Dependency Property.
-        /// </summary>
-        public static readonly DependencyProperty PersonVMProperty =
-            DependencyProperty.Register(
-                "PersonVM",
-                typeof(PartyVM),
-                typeof(PersonDetailsEdit),
-                new PropertyMetadata(null));
-
-        #endregion
     }
 }

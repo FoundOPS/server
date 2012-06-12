@@ -26,7 +26,7 @@ namespace FoundOps.Core.Models.CoreEntities
             RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
 
         private static readonly string CreateCoreEntitiesDatabaseScriptLocation =
-            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected.edmx.sql";
+            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql";
 
         #endregion
 
@@ -96,34 +96,35 @@ namespace FoundOps.Core.Models.CoreEntities
                 foreach (var employee in employeesDesignData.DesignEmployees)
                     serviceProvider.Employees.Add(employee);
 
+                container.SaveChanges();
+
                 //Add Vehicles (and Vehicle Maintenance, and VehicleTypes)
                 var vehiclesDesignData = new VehiclesDesignData(serviceProvider);
                 foreach (var vehicle in vehiclesDesignData.DesignVehicles)
                     serviceProvider.Vehicles.Add(vehicle);
+
+                container.SaveChanges();
 
                 //Add Regions
                 var regionsDesignData = new RegionsDesignData();
                 foreach (var region in regionsDesignData.DesignRegions)
                     serviceProvider.Regions.Add(region);
 
+                container.SaveChanges();
+
                 //Add Clients (and ContactInfo, Locations, and RecurringServices)
                 var clientsDesignData = new ClientsDesignData(serviceProvider, regionsDesignData);
                 foreach (var client in clientsDesignData.DesignClients)
                     serviceProvider.Clients.Add(client);
-
-                //Add Contacts
-                var contactsDesignData = new ContactsDesignData(clientsDesignData);
-                foreach (var contact in contactsDesignData.DesignContacts)
-                    serviceProvider.Contacts.Add(contact);
-
-                //container.SaveChanges();
+                
+                container.SaveChanges();
 
                 //Add Routes (with RouteTasks, Vehicles, Technicians)
                 var routesDesignData = new RoutesDesignData(serviceProvider, clientsDesignData, vehiclesDesignData, employeesDesignData);
                 foreach (var route in routesDesignData.DesignRoutes)
                     serviceProvider.Routes.Add(route);
 
-                //container.SaveChanges();
+                container.SaveChanges();
 
                 //Add Services
                 var servicesDesignData = new ServicesDesignData(serviceProvider, clientsDesignData.DesignClient, serviceProvider.ServiceTemplates);
@@ -180,7 +181,7 @@ namespace FoundOps.Core.Models.CoreEntities
                     {
                         //This would be the 4th, 8th, etc
                         case 0:
-                            var employees = route.Technicians;
+                            var employees = route.Employees;
                             foreach (var employee in employees)
                             {
                                 var latitude = 40.4599;
@@ -219,7 +220,7 @@ namespace FoundOps.Core.Models.CoreEntities
                             break;
                         //This would be the 1st, 5th, etc
                         case 1:
-                            employees = route.Technicians;
+                            employees = route.Employees;
                             foreach (var employee in employees)
                             {
                                 var latitude = 40.4599;
@@ -260,7 +261,7 @@ namespace FoundOps.Core.Models.CoreEntities
                             break;
                         //This would be the 2nd, 6th, etc
                         case 2:
-                            employees = route.Technicians;
+                            employees = route.Employees;
                             foreach (var employee in employees)
                             {
                                 var latitude = 40.4599;
@@ -300,7 +301,7 @@ namespace FoundOps.Core.Models.CoreEntities
                             break;
                         //This would be the 3rd, 7th, etc
                         case 3:
-                            employees = route.Technicians;
+                            employees = route.Employees;
                             foreach (var employee in employees)
                             {
                                 var latitude = 40.4599;

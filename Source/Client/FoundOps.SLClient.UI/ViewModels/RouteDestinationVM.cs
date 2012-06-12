@@ -87,8 +87,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void UpdateContactInfoVMs()
         {
-            ClientContactInfoVM = RouteDestination.Client != null && RouteDestination.Client.OwnedParty != null
-                                      ? new ContactInfoVM(ContactInfoType.OwnedParties, RouteDestination.Client.OwnedParty.ContactInfoSet)
+            ClientContactInfoVM = RouteDestination.Client != null && RouteDestination.Client != null
+                                      ? new ContactInfoVM(ContactInfoType.OwnedParties, RouteDestination.Client.ContactInfoSet)
                                       : null;
 
             LocationContactInfoVM = RouteDestination.Location != null
