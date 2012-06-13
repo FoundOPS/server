@@ -44,11 +44,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         public RoutesVM RoutesVM { get { return VM.Routes; } }
 
         /// <summary>
-        /// Gets the routes drag drop VM.
-        /// </summary>
-        public RoutesDragDropVM RoutesDragDropVM { get { return VM.RoutesDragDrop; } }
-
-        /// <summary>
         /// True when the map is loaded
         /// </summary>
         private bool _mapLoaded;
@@ -138,35 +133,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     }
                 });
 
-            //Whenever the selected route changes, call setSelectedRoute in the javascript
-            this.RoutesVM.SelectedEntityObservable.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ => SetMapSelectedRoute());
-
-            var mapLoadedObservable = Observable.FromEventPattern<EventHandler, EventArgs>(h => map.UrlLoaded += h, h => map.UrlLoaded -= h);
-
-            //set _mapLoaded to true whenever the map is loaded
-            mapLoadedObservable.Subscribe(_ => _mapLoaded = true);
-
-            //Set the map's role id when
-            //the map is loaded and the role id changes
-            mapLoadedObservable.AsGeneric()
-                //CombineLatest to only trigger when both observables have pushed (the map is loaded, and the role id has been set)
-            .CombineLatest(Manager.Context.RoleIdObservable.AsGeneric(), (a, b) => true)
-            .Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
-            {
-                // Get the IFrame from the HtmlPresenter 
-                var iframe = (HtmlElement)map.HtmlPresenter.Children[0];
-                // Set an ID to the IFrame so that can be used later when calling the javascript 
-                iframe.SetAttribute("id", "mapIFrame");
-
-                var roleId = Manager.Context.RoleId.ToString();
-
-                // set the role id to load the routes
-                var code = "document.getElementById('mapIFrame').contentWindow.map.setRoleId('" + roleId + "');";
-                HtmlPage.Window.Eval(code);
-
-                //set the selected route after initializing (if there is one)
-                SetMapSelectedRoute();
-            });
+            SetupMap();
         }
 
         #region Logic
@@ -558,6 +525,79 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         #endregion
 
         #region Map
+
+        /// <summary>
+        /// Link up to the map view's javascript functions
+        /// </summary>
+        private void SetupMap()
+        {
+            var mapLoadedObservable = Observable.FromEventPattern<EventHandler, EventArgs>(h => map.UrlLoaded += h, h => map.UrlLoaded -= h);
+
+            //Whenever the routes update (the routesvm is saved): update the map's routes
+            this.RoutesVM.SaveCommand.Throttle(TimeSpan.FromSeconds(5)).ObserveOnDispatcher()
+                .Subscribe(_ => UpdateMapRoutes());
+
+            //Whenever the selected route changes: update the selected route in the map view
+            this.RoutesVM.SelectedEntityObservable.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
+                .Subscribe(_ => SetMapSelectedRoute());
+
+            //Whenever the selected date changes: update the map's date
+            this.RoutesVM.SelectedDateObservable.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
+                .Subscribe(_ => SetMapDate());
+
+            //set _mapLoaded to true whenever the map is loaded
+            mapLoadedObservable.Subscribe(_ => _mapLoaded = true);
+
+            //Set the map's role id when
+            //the map is loaded and the role id changes
+            mapLoadedObservable.AsGeneric()
+                //CombineLatest to only trigger when both observables have pushed (the map is loaded, and the role id has been set)
+            .CombineLatest(Manager.Context.RoleIdObservable.AsGeneric(), (a, b) => true)
+            .Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
+            {
+                // Get the IFrame from the HtmlPresenter 
+                var iframe = (HtmlElement)map.HtmlPresenter.Children[0];
+                // Set an ID to the IFrame so that can be used later when calling the javascript 
+                iframe.SetAttribute("id", "mapIFrame");
+
+                var roleId = Manager.Context.RoleId.ToString();
+
+                // set the role id to load the routes
+                var code = "document.getElementById('mapIFrame').contentWindow.map.setRoleId('" + roleId + "');";
+                HtmlPage.Window.Eval(code);
+
+                //set the selected route after initializing (if there is one)
+                SetMapSelectedRoute();
+            });
+        }
+
+        /// <summary>
+        /// Sets the map's date to the selected date.
+        /// </summary>
+        private void SetMapDate()
+        {
+            //If the map is not loaded, return
+            if (!_mapLoaded)
+                return;
+
+            //Call the setSelectedRoute function 
+            var code = "document.getElementById('mapIFrame').contentWindow.map.setDate('" + RoutesVM.SelectedDate.Month + "-" + RoutesVM.SelectedDate.Day + "-" + RoutesVM.SelectedDate.Year + "');";
+            HtmlPage.Window.Eval(code);
+        }
+
+        /// <summary>
+        /// Calls the map's getRoutes method.
+        /// </summary>
+        private void UpdateMapRoutes()
+        {
+            //If the map is not loaded, return
+            if (!_mapLoaded)
+                return;
+
+            //Call the setSelectedRoute function 
+            const string code = "document.getElementById('mapIFrame').contentWindow.map.getRoutes();";
+            HtmlPage.Window.Eval(code);
+        }
 
         /// <summary>
         /// Sets the map's selected route to the selected route.
