@@ -50,7 +50,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.BusinessAccounts
     /// <summary>
     /// A converter that will return Collapsed if the guid == FoundOPS.Id
     /// </summary>
-    public class FoundOPSVisibilityConverter : IValueConverter
+    public class FoundOPSGuidVisibilityConverter : IValueConverter
     {
         #region Implementation of IValueConverter
 

@@ -1,6 +1,9 @@
+using System.Windows.Controls;
 using FoundOps.Common.Silverlight.Services;
+using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
@@ -16,7 +19,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// Contains the logic for displaying Fields
     /// </summary>
     [ExportViewModel("FieldsVM")]
-    public class FieldsVM : InfiniteAccordionVM<Field, Field>
+    public class FieldsVM : InfiniteAccordionVM<Field, Field>, IAddToDeleteFromSource<Field>
     {
         # region Public Properties
 
@@ -35,6 +38,19 @@ namespace FoundOps.SLClient.UI.ViewModels
                 this.RaisePropertyChanged("FieldTypes");
             }
         }
+
+        #region Implementation of IAddToDeleteFromSource<ServiceTemplate>
+
+        public Func<string, Field> CreateNewItem { get; private set; }
+
+        public string MemberPath { get; private set; }
+
+        /// <summary>
+        /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
+        /// </summary>
+        public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+
+        #endregion
 
         #endregion
 
@@ -72,6 +88,34 @@ namespace FoundOps.SLClient.UI.ViewModels
                     else
                         FieldTypes = StandardFieldTypes;
                 });
+
+
+            #region IAddToDeleteFromSource<Field> Implementation
+
+            MemberPath = "Name";
+
+            //In the Administrative Console, creating a new FoundOPS template
+            CreateNewItem = name =>
+            {
+                throw new Exception("Should not add new items through AddToDeleteFrom control. Still using old Add/Delete");
+            };
+
+            ManuallyUpdateSuggestions = autoCompleteBox =>
+            {
+                // Make sure there is a current serviceProvider context and it is not FoundOPS
+                // and there is a service template context
+                var businessAccountContext = ContextManager.GetContext<BusinessAccount>();
+                if (businessAccountContext == null || businessAccountContext.Id == BusinessAccountsConstants.FoundOpsId)
+                    return;
+
+                var serviceTemplateContext = ContextManager.GetContext<ServiceTemplate>();
+
+                // Search the parent FoundOPS ServiceTemplate for Fields the current service template does not have yet
+                SearchSuggestionsHelper(autoCompleteBox, () =>
+                     Manager.Data.DomainContext.SearchFieldsForServiceProviderQuery(Manager.Context.RoleId, serviceTemplateContext.Id, autoCompleteBox.SearchText));
+            };
+
+            #endregion
         }
 
         #region Logic

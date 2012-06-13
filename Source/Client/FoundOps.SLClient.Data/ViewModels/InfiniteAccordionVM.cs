@@ -365,7 +365,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             this.RaisePropertyChanged("QueryableCollectionView");
 
             DataManager.EnqueueSubmitOperation(submitOperation =>
-                  Rxx3.RunDelayed(TimeSpan.FromSeconds(1), ()=> SelectedEntity = newEntity));
+                  Rxx3.RunDelayed(TimeSpan.FromSeconds(1), () => SelectedEntity = newEntity));
 
             return newEntity;
         }
@@ -377,7 +377,8 @@ namespace FoundOps.SLClient.Data.ViewModels
         public override void DeleteEntity(TBase entityToDelete)
         {
             //Remove the entity from the QueryableCollectionView
-            QueryableCollectionView.Remove(entityToDelete);
+            if (QueryableCollectionView != null)
+                QueryableCollectionView.Remove(entityToDelete);
 
             //Remove the entity from the EntitySet (so it is deleted by the DomainContext)
             DomainContext.EntityContainer.GetEntitySet(typeof(TBase)).Remove(entityToDelete);

@@ -45,6 +45,29 @@ namespace FoundOps.Server.Services.CoreDomainService
             return this.ObjectContext.Fields.OfType<TextBoxField>();
         }
 
+        /// <summary>
+        /// Searches the parent FoundOPS ServiceTemplate for Fields.
+        /// </summary>
+        /// <param name="roleId">The current role id.</param>
+        /// <param name="serviceTemplateId">The service template you are searching fields for.</param>
+        /// <param name="searchText">The search text.</param>
+        public IQueryable<Field> SearchFieldsForServiceProvider(Guid roleId, Guid serviceTemplateId, string searchText)
+        {
+            //get the service template and it's parent FoundOPS service template w details
+            var serviceTemplateTuples =
+                from serviceTemplate in GetServiceTemplatesForServiceProvider(roleId, null).Include(st => st.ChildrenServiceTemplates)
+                    .Where(st => st.ChildrenServiceTemplates.Any(cst => cst.Id == serviceTemplateId))
+                from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
+
+            IEnumerable<Field> fields = serviceTemplateTuples.First().Fields;
+            if (!String.IsNullOrEmpty(searchText))
+                fields = fields.Where(f => f.Name.StartsWith(searchText));
+
+            return fields.AsQueryable().OrderBy(f => f.Name);
+        }
+
         public void InsertField(Field field)
         {
             if ((field.EntityState != EntityState.Detached))
@@ -212,7 +235,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.OwnerClientId == clientId)
                                             join stv in ObjectContext.ServiceTemplateWithVendorIds
                                                 on serviceTemplate.Id equals stv.ServiceTemplateId
-                                            where stv.BusinessAccountId == vendorId 
+                                            where stv.BusinessAccountId == vendorId
                                             select serviceTemplate).Distinct();
 
             //Force load the details

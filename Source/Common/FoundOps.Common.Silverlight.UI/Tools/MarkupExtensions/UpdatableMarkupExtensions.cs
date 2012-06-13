@@ -19,7 +19,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
         {
             //Convert the value if there is a converter
             if (Converter != null)
-                value = Converter.Convert(value, null, null, null);
+                value = Converter.Convert(value, null, ConverterParameter, null);
 
             if (TargetObject == null) return;
             if (TargetProperty as DependencyProperty != null)
@@ -47,6 +47,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
         protected abstract object ProvideValueInternal(IServiceProvider serviceProvider);
 
         public IValueConverter Converter { get; set; }
+        public object ConverterParameter { get; set; }
 
         public TE ProvideValue(IServiceProvider serviceProvider)
         {
@@ -65,7 +66,7 @@ namespace FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions
 
             //Convert the value if there is a converter
             if (Converter != null)
-                value = Converter.Convert(value, null, null, null);
+                value = Converter.Convert(value, null, ConverterParameter, null);
 
             return (TE)value;
         }

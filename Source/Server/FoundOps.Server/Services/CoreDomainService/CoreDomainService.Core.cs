@@ -503,7 +503,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         /// <summary>
         /// Gets the UserAccount details.
-        /// It includes the ContactInfoSet and PartyImage.
+        /// It includes the PartyImage.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="userAccountId">The user account id.</param>

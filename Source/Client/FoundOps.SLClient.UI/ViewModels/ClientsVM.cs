@@ -38,7 +38,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #region Implementation of IAddToDeleteFromDestination
 
-        private List<IDisposable> addToDeleteFromSubscriptions = new List<IDisposable>();
+        private readonly List<IDisposable> _addToDeleteFromSubscriptions = new List<IDisposable>();
         /// <summary>
         /// Subscribes to the add delete from control observables.
         /// </summary>
@@ -48,24 +48,24 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             if (sourceType == typeof(Location))
             {
-                addToDeleteFromSubscriptions.Add(control.AddExistingItem.Subscribe(existingItem => AddExistingItemLocation(existingItem)));
-                addToDeleteFromSubscriptions.Add(control.AddNewItem.Subscribe(text => AddNewItemLocation(text)));
-                addToDeleteFromSubscriptions.Add(control.RemoveItem.Subscribe(_ => RemoveItemLocation()));
-                addToDeleteFromSubscriptions.Add(control.DeleteItem.Subscribe(_ => DeleteItemLocation()));
+                _addToDeleteFromSubscriptions.Add(control.AddExistingItem.Subscribe(existingItem => AddExistingItemLocation(existingItem)));
+                _addToDeleteFromSubscriptions.Add(control.AddNewItem.Subscribe(text => AddNewItemLocation(text)));
+                _addToDeleteFromSubscriptions.Add(control.RemoveItem.Subscribe(_ => RemoveItemLocation()));
+                _addToDeleteFromSubscriptions.Add(control.DeleteItem.Subscribe(_ => DeleteItemLocation()));
             }
         }
 
         /// <summary>
         /// Disposes the subscriptions to the add delete from control observables.
         /// </summary>
-        /// <param name="control">The control.</param>
-        /// <param name="sourceType">Type of the source.</param>
+        /// <param name="c">The control.</param>
+        /// <param name="type">Type of the source.</param>
         public void UnlinkAddToDeleteFrom(AddToDeleteFrom c, Type type)
         {
-            foreach (var subscription in addToDeleteFromSubscriptions)
+            foreach (var subscription in _addToDeleteFromSubscriptions)
                 subscription.Dispose();
 
-            addToDeleteFromSubscriptions.Clear();
+            _addToDeleteFromSubscriptions.Clear();
         }
 
         /// <summary>

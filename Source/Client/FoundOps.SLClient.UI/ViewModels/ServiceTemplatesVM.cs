@@ -1,9 +1,11 @@
+using System.Collections;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
@@ -20,7 +22,8 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// A view model to manage adding, modifying, and deleting ServiceTemplates.
     /// </summary>
     [ExportViewModel("ServiceTemplatesVM")]
-    public class ServiceTemplatesVM : InfiniteAccordionVM<ServiceTemplate, ServiceTemplate>, IAddToDeleteFromSource<ServiceTemplate>
+    public class ServiceTemplatesVM : InfiniteAccordionVM<ServiceTemplate, ServiceTemplate>, IAddToDeleteFromSource<ServiceTemplate>,
+        IAddToDeleteFromDestination<Field>, IAddNewExisting<Field>, IRemoveDelete<Field>
     {
         #region Public Properties
 
@@ -59,6 +62,47 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
+        #region Implementation of IAddToDeleteFromDestination
+
+        private readonly List<IDisposable> _addToDeleteFromSubscriptions = new List<IDisposable>();
+        /// <summary>
+        /// Subscribes to the add delete from control observables.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="sourceType">Type of the source.</param>
+        public void LinkToAddToDeleteFrom(AddToDeleteFrom control, Type sourceType)
+        {
+            if (sourceType == typeof(Field))
+            {
+                _addToDeleteFromSubscriptions.Add(control.AddExistingItem.Subscribe(existingItem => AddExistingItemField(existingItem)));
+                _addToDeleteFromSubscriptions.Add(control.DeleteItem.Subscribe(_ => DeleteItemField()));
+            }
+        }
+
+        /// <summary>
+        /// Disposes the subscriptions to the add delete from control observables.
+        /// </summary>
+        /// <param name="c">The control.</param>
+        /// <param name="type">Type of the source.</param>
+        public void UnlinkAddToDeleteFrom(AddToDeleteFrom c, Type type)
+        {
+            foreach (var subscription in _addToDeleteFromSubscriptions)
+                subscription.Dispose();
+
+            _addToDeleteFromSubscriptions.Clear();
+        }
+
+        /// <summary>
+        /// Gets the fields destination items source.
+        /// </summary>
+        public IEnumerable FieldsDestinationItemsSource
+        {
+            get { return SelectedEntity == null ? null : SelectedEntity.Fields; }
+        }
+
+        #endregion
+
+
         #region Implementation of IAddToDeleteFromSource<ServiceTemplate>
 
         public Func<string, ServiceTemplate> CreateNewItem { get; private set; }
@@ -69,6 +113,34 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// A method to update the AddToDeleteFrom's AutoCompleteBox with suggestions remotely loaded.
         /// </summary>
         public Action<AutoCompleteBox> ManuallyUpdateSuggestions { get; private set; }
+
+        #endregion
+
+        #region Implementation of IAddNewExisting<Field> & IRemoveDelete<Field>
+
+        /// <summary>
+        /// An action to add an existing Field to the current BusinessAccount.
+        /// </summary>
+        public Action<object> AddExistingItemField { get; private set; }
+        Action<object> IAddNewExisting<Field>.AddExistingItem { get { return AddExistingItemField; } }
+
+        /// <summary>
+        /// An action to add a new Field to the current BusinessAccount.
+        /// </summary>
+        public Func<string, Field> AddNewItemField { get; private set; }
+        Func<string, Field> IAddNew<Field>.AddNewItem { get { return AddNewItemField; } }
+
+        /// <summary>
+        /// An action to remove a Field from the current BusinessAccount.
+        /// </summary>
+        public Func<Field> RemoveItemField { get; private set; }
+        Func<Field> IRemove<Field>.RemoveItem { get { return RemoveItemField; } }
+
+        /// <summary>
+        /// An action to remove a Field from the current BusinessAccount and delete it.
+        /// </summary>
+        public Func<Field> DeleteItemField { get; private set; }
+        Func<Field> IRemoveDelete<Field>.DeleteItem { get { return DeleteItemField; } }
 
         #endregion
 
@@ -125,6 +197,38 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Search the FoundOPS ServiceTemplates
                 SearchSuggestionsHelper(autoCompleteBox, () =>
                      Manager.Data.DomainContext.SearchServiceTemplatesForServiceProviderQuery(Manager.Context.RoleId, businessAccountContext.Id, autoCompleteBox.SearchText));
+            };
+
+            #endregion
+
+            #region Implementation of IAddNewExisting<Field> & IRemoveDelete<Field>
+
+            AddNewItemField = name =>
+            {
+                throw new Exception("Should not add new items through AddToDeleteFrom control. Still using old Add/Delete");
+            };
+
+            AddExistingItemField = existingItem =>
+            {
+                var parentField = (Field)existingItem;
+                var childField = parentField.MakeChild();
+
+                SelectedEntity.Fields.Add(childField);
+                VM.Fields.SelectedEntity = childField;
+            };
+
+            RemoveItemField = () =>
+            {
+                throw new Exception("Should not remove fields. Only delete them.");
+            };
+
+            DeleteItemField = () =>
+            {
+                var selectedField = VM.Fields.SelectedEntity;
+                if (selectedField != null)
+                    VM.Fields.DeleteEntity(selectedField);
+
+                return selectedField;
             };
 
             #endregion
