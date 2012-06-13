@@ -1,4 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 
 // Needs to be in the same namespace, because it is a partial class
@@ -43,6 +48,31 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
                 typeof (ServiceTemplate),
                 typeof (FieldsDefineGrid),
                 new PropertyMetadata(null));
+
+        #endregion
+    }
+
+    /// <summary>
+    /// This will return true if the current BusinessAccount is FoundOPS.
+    /// </summary>
+    public class FoundOPSBoolConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var serviceProvider = value as BusinessAccount;
+
+            if (serviceProvider == null)
+                return Visibility.Collapsed;
+
+            return serviceProvider.Id == BusinessAccountsConstants.FoundOpsId;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

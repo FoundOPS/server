@@ -4,33 +4,37 @@
     xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields" xmlns:Define="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Define"
     xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors" xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" 
     xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
-    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="FieldsVM">
+             xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
+             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="FieldsVM">
     <UserControl.Resources>
         <Converters:FieldToTypeStringConverter x:Key="FieldToTypeStringConverter"/>
         <Converters:FieldDefaultValueStringConverter x:Key="FieldDefaultValueStringConverter"/>
+        <CustomFields:FoundOPSBoolConverter x:Key="FoundOPSBoolConverter" />
+        <!--Only enable the detail templates if the current business account context is FoundOPS-->
         <DataTemplate x:Key="CheckBoxTemplate">
-            <CustomFields:CheckBoxDefine OptionsField="{Binding}" />
+            <CustomFields:CheckBoxDefine OptionsField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="CurrencyTemplate">
-            <CustomFields:CurrencyDefine NumericField="{Binding}"/>
+            <CustomFields:CurrencyDefine NumericField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="NumberTemplate">
-            <CustomFields:NumberDefine NumericField="{Binding}"/>
+            <CustomFields:NumberDefine NumericField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="OptionsFieldTemplate">
-            <Define:OptionsFieldDefine OptionsField="{Binding}" />
+            <Define:OptionsFieldDefine OptionsField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="PercentageTemplate">
-            <CustomFields:PercentageDefine NumericField="{Binding}"/>
+            <CustomFields:PercentageDefine NumericField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="TextLgTemplate">
-            <CustomFields:TextLargeDefine TextBoxField="{Binding}"/>
+            <CustomFields:TextLargeDefine TextBoxField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="TextSmTemplate">
-            <CustomFields:TextSmallDefine TextBoxField="{Binding}"/>
+            <CustomFields:TextSmallDefine TextBoxField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="TimeTemplate">
-            <CustomFields:TimeDefine DateTimeField="{Binding}"/>
+            <CustomFields:TimeDefine DateTimeField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                                              CheckListTemplate="{StaticResource OptionsFieldTemplate}" ComboBoxTemplate="{StaticResource OptionsFieldTemplate}" 
