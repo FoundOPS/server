@@ -48,6 +48,11 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         /// </summary>
         public RoutesDragDropVM RoutesDragDropVM { get { return VM.RoutesDragDrop; } }
 
+        /// <summary>
+        /// True when the map is loaded
+        /// </summary>
+        private bool _mapLoaded;
+
         #endregion
 
         /// <summary>
@@ -88,7 +93,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             //Whenever a route, route destination, or task is selected select the appropriate details pane
             this.RoutesVM.FromAnyPropertyChanged()
                 .Where(e => e.PropertyName == "SelectedEntity" || e.PropertyName == "SelectedRouteDestination" || e.PropertyName == "SelectedRouteTask")
-                .Throttle(new TimeSpan(0, 0, 0, 0, 300)).ObserveOnDispatcher()
+                .Throttle(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher()
                 .Subscribe(pe =>
                 {
                     switch (pe.PropertyName)
@@ -133,38 +138,34 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     }
                 });
 
-            //           SelectRoute(RoutesVM.SelectedRouteVM.Route.Id.ToString());
-            //
-            //protected void SelectRoute(string routeId)
-            //{
-            //    // Get the IFrame from the HtmlPresenter 
-            //    var iframe = (HtmlElement)map.HtmlPresenter.Children[0];
-            //    // Set an ID to the IFrame so that can be used later when calling the javascript 
-            //    iframe.SetAttribute("id", "mapIFrame");
+            //Whenever the selected route changes, call setSelectedRoute in the javascript
+            this.RoutesVM.SelectedEntityObservable.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ => SetMapSelectedRoute());
 
-            //    // Code to be executed
-            //    var code = "document.getElementById('mapIFrame').contentWindow.map.setSelectedRoute('" + routeId + "');";
-            //    HtmlPage.Window.Eval(code);
-            //}
+            var mapLoadedObservable = Observable.FromEventPattern<EventHandler, EventArgs>(h => map.UrlLoaded += h, h => map.UrlLoaded -= h);
 
-            //When the map view is opened, set the role id
-            var lastRoleId = "";
-            map.LoadedObservable().Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
+            //set _mapLoaded to true whenever the map is loaded
+            mapLoadedObservable.Subscribe(_ => _mapLoaded = true);
+
+            //Set the map's role id when
+            //the map is loaded and the role id changes
+            mapLoadedObservable.AsGeneric()
+                //CombineLatest to only trigger when both observables have pushed (the map is loaded, and the role id has been set)
+            .CombineLatest(Manager.Context.RoleIdObservable.AsGeneric(), (a, b) => true)
+            .Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
             {
-                var roleId = Manager.Context.RoleId.ToString();
-
                 // Get the IFrame from the HtmlPresenter 
                 var iframe = (HtmlElement)map.HtmlPresenter.Children[0];
                 // Set an ID to the IFrame so that can be used later when calling the javascript 
                 iframe.SetAttribute("id", "mapIFrame");
 
-                if (lastRoleId != roleId)
-                {
-                    // Code to be executed
-                    var code = "document.getElementById('mapIFrame').contentWindow.map.setRoleId('" + roleId + "');";
-                    HtmlPage.Window.Eval(code);
-                    lastRoleId = roleId;
-                }
+                var roleId = Manager.Context.RoleId.ToString();
+
+                // set the role id to load the routes
+                var code = "document.getElementById('mapIFrame').contentWindow.map.setRoleId('" + roleId + "');";
+                HtmlPage.Window.Eval(code);
+
+                //set the selected route after initializing (if there is one)
+                SetMapSelectedRoute();
             });
         }
 
@@ -552,6 +553,28 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             //call the analytic for handling layout reset in dispatcher
             Analytics.Track(Event.DispatcherLayoutReset);
+        }
+
+        #endregion
+
+        #region Map
+
+        /// <summary>
+        /// Sets the map's selected route to the selected route.
+        /// </summary>
+        private void SetMapSelectedRoute()
+        {
+            //If the map is not loaded, return
+            if (!_mapLoaded)
+                return;
+
+            //if there is no selected route, return
+            if (RoutesVM.SelectedEntity == null)
+                return;
+
+            //Call the setSelectedRoute function 
+            var code = "document.getElementById('mapIFrame').contentWindow.map.setSelectedRoute('" + RoutesVM.SelectedEntity.Id.ToString() + "');";
+            HtmlPage.Window.Eval(code);
         }
 
         #endregion
