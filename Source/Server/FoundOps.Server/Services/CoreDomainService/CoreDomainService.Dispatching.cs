@@ -39,7 +39,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 ((ObjectQuery<Route>)this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Date == routesDateOnly))
                 .Include("RouteDestinations").Include("RouteDestinations.Location").Include("RouteDestinations.RouteTasks").Include("RouteDestinations.RouteTasks.Client");
 
-            return routes.OrderBy(r=>r.Name);
+            return routes.OrderBy(r => r.Name);
         }
 
         /// <summary>
@@ -53,7 +53,10 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
 
             var route = ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Id == routeId)
-                    .Include("Vehicles").Include("Employees").First();
+                    .Include("Vehicles").Include("Employees").FirstOrDefault();
+
+            if (route == null)
+                return null;
 
             //Force load technician's OwnedPerson
             (from employee in route.Employees

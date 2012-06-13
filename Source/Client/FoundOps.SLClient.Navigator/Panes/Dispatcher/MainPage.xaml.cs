@@ -6,6 +6,7 @@ using System.Windows;
 using System.Collections;
 using System.Reactive.Linq;
 using System.Windows.Browser;
+using FoundOps.Common.Composite;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using System.Windows.Controls;
@@ -580,8 +581,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (!_mapLoaded)
                 return;
 
-            //Call the setSelectedRoute function 
-            var code = "document.getElementById('mapIFrame').contentWindow.map.setDate('" + RoutesVM.SelectedDate.Month + "-" + RoutesVM.SelectedDate.Day + "-" + RoutesVM.SelectedDate.Year + "');";
+            var date = RoutesVM.SelectedDate;
+            var convertedDate = String.Format("new Date('{0}')", date.RFC822());
+            //Call the setSelectedRoute function
+            var code = String.Format("document.getElementById('mapIFrame').contentWindow.map.setDate({0});", convertedDate);
             HtmlPage.Window.Eval(code);
         }
 
