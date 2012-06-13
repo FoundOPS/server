@@ -14,7 +14,7 @@
     <AzureStorageAccountName>opsapplive</AzureStorageAccountName>
     <AzureStorageAccountLabel>opsapplive</AzureStorageAccountLabel>
     <AzureAppendTimestampToDeploymentLabel>True</AzureAppendTimestampToDeploymentLabel>
-    <AzureAllowUpgrade>True</AzureAllowUpgrade>
+    <AzureAllowUpgrade>False</AzureAllowUpgrade>
     <AzureEnableRemoteDesktop>False</AzureEnableRemoteDesktop>
   </PropertyGroup>
 </Project>

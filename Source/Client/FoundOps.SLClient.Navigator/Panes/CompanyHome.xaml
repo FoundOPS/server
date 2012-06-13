@@ -12,26 +12,24 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (5/3/2012)
+                (6/12/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * CLIENTS: Name is now filterable.
+            * ADMIN TOOLS: Importer shows error messages.
+            <LineBreak/>
+            (5/3/2012)<LineBreak/>
             * RECURRING SERVICES: Now you can export recurring services.
             * ADMIN TOOLS: Now you can import recurring services.
             * GENERAL: Small bug fixes.
             <LineBreak/>
             (4/26/2012)<LineBreak/>
-            * DISPATCHER: Added status to route tasks. More coming in the next update.<LineBreak/>
+            * DISPATCHER: Added status to route tasks.<LineBreak/>
             * DISPATCHER: Now you can edit and save service information from the dispatcher when you click on a task.<LineBreak/>
             * DISPATCHER: Fixed region colors not showing up in dispatcher.<LineBreak/>
             * DISPATCHER: Fixed various manifest issues.<LineBreak/>
             * DISPATCHER: Fixed drag and drop numbering issues with Route Destinations.<LineBreak/>
-            <LineBreak/>
-            (4/18/2012)<LineBreak/>
-            * OPTIMIZATION: Optimized the server configuration to increase entire applications performance.<LineBreak/>
-            * GENERAL: Validation errors no longer trigger a Server Error, instead they prompt the user.<LineBreak/>
-            * DISPATCHER: Fixed an issue with the dispatcher not displaying tasks when there are no regions.<LineBreak/>
-            * REGIONS: Fixed adding new regions.<LineBreak/>
         </TextBlock>
     </Grid>
 </sdk:Page>

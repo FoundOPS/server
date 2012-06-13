@@ -1,15 +1,17 @@
-﻿CREATE TABLE [dbo].[ContactInfoSet] (
+CREATE TABLE [dbo].[ContactInfoSet] (
     [Id]         UNIQUEIDENTIFIER NOT NULL,
     [Type]       NVARCHAR (MAX)   NOT NULL,
     [Label]      NVARCHAR (MAX)   NULL,
     [Data]       NVARCHAR (MAX)   NULL,
     [PartyId]    UNIQUEIDENTIFIER NULL,
     [LocationId] UNIQUEIDENTIFIER NULL,
-    [ContactId]  UNIQUEIDENTIFIER NULL,
+    [ClientId]   UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_ContactInfoSet] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_ContactInfoParty] FOREIGN KEY ([PartyId]) REFERENCES [dbo].[Parties] ([Id]),
+    CONSTRAINT [FK_ClientContactInfo] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Clients] ([Id]),
     CONSTRAINT [FK_LocationContactInfo] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 
@@ -20,6 +22,6 @@ CREATE NONCLUSTERED INDEX [IX_FK_LocationContactInfo]
 
 
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_ContactInfoParty]
-    ON [dbo].[ContactInfoSet]([PartyId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_ClientContactInfo]
+    ON [dbo].[ContactInfoSet]([ClientId] ASC);
 
