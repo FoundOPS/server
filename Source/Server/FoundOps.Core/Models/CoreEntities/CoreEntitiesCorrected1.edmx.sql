@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/11/2012 20:36:43
+-- Date Created: 06/14/2012 15:41:42
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -1916,7 +1916,7 @@ ADD CONSTRAINT [FK_Business_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'
@@ -1925,7 +1925,7 @@ ADD CONSTRAINT [FK_BusinessAccount_inherits_Business]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Business]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Person'
@@ -1934,7 +1934,7 @@ ADD CONSTRAINT [FK_Person_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_UserAccount'
@@ -1943,7 +1943,7 @@ ADD CONSTRAINT [FK_UserAccount_inherits_Person]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Person]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_OptionsField'
@@ -1954,6 +1954,7 @@ ADD CONSTRAINT [FK_OptionsField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
+GO
 
 -- Creating foreign key on [Id] in table 'Fields_LocationField'
 ALTER TABLE [dbo].[Fields_LocationField]
@@ -1963,6 +1964,7 @@ ADD CONSTRAINT [FK_LocationField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
+GO
 
 -- Creating foreign key on [Id] in table 'Files_PartyImage'
 ALTER TABLE [dbo].[Files_PartyImage]
@@ -1970,7 +1972,7 @@ ADD CONSTRAINT [FK_PartyImage_inherits_File]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Files]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_TextBoxField'
@@ -1981,6 +1983,7 @@ ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
+GO
 
 -- Creating foreign key on [Id] in table 'Fields_NumericField'
 ALTER TABLE [dbo].[Fields_NumericField]
@@ -1989,6 +1992,7 @@ ADD CONSTRAINT [FK_NumericField_inherits_Field]
     REFERENCES [dbo].[Fields]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_DateTimeField'
@@ -1999,6 +2003,7 @@ ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
+GO
 
 -- Creating foreign key on [Id] in table 'Options_LocationOption'
 ALTER TABLE [dbo].[Options_LocationOption]
@@ -2007,6 +2012,7 @@ ADD CONSTRAINT [FK_LocationOption_inherits_Option]
     REFERENCES [dbo].[Options]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
 GO
 
 -- --------------------------------------------------

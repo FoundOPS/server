@@ -257,6 +257,7 @@
     <EntityDeploy Include="Models\CoreEntities\CoreEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CoreEntities.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>

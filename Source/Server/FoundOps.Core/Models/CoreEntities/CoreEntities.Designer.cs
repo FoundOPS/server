@@ -1038,31 +1038,20 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
         {
-            ObjectParameter serviceProviderContextParameter;
-            if (serviceProviderContext.HasValue)
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
             {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
             }
             else
             {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
             }
     
-            ObjectParameter serviceDateParameter;
-            if (serviceDate.HasValue)
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
-            }
-            else
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
-            }
-    
-            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
     
         /// <summary>
@@ -1153,20 +1142,31 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
         {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
             {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
             }
             else
             {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
         }
 
         #endregion
