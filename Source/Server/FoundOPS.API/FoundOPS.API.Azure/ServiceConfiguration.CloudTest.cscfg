@@ -3,7 +3,7 @@
   <Role name="FoundOPS.API">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=opsapptest;AccountKey=dlAT4qEtm7gsWrOKuIIRgyJvYkwimkBwRo9mWvyhDGF6aISFu3jBYnCn/qgsHwsn0+3chbZ/mEWgDyAYI2gyPA==" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

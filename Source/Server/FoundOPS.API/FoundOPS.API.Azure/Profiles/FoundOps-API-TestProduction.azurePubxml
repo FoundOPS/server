@@ -9,8 +9,8 @@
     <AzureEnableRemoteDesktop>True</AzureEnableRemoteDesktop>
     <AzureEnableWebDeploy>False</AzureEnableWebDeploy>
     <AzureFallbackToDeleteAndRecreateIfUpgradeFails>False</AzureFallbackToDeleteAndRecreateIfUpgradeFails>
-    <AzureHostedServiceLabel>FoundOps-Test</AzureHostedServiceLabel>
-    <AzureHostedServiceName>testops</AzureHostedServiceName>
+    <AzureHostedServiceLabel>FoundOps-API-Test</AzureHostedServiceLabel>
+    <AzureHostedServiceName>opsapitest</AzureHostedServiceName>
     <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
     <AzureEnableProfiling>False</AzureEnableProfiling>
     <AzureServiceConfiguration>CloudTest</AzureServiceConfiguration>

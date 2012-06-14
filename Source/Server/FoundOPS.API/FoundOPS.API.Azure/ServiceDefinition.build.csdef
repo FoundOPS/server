@@ -23,5 +23,8 @@
     <Imports>
       <Import moduleName="Diagnostics" />
     </Imports>
+    <Startup>
+      <Task commandLine="disableTimeout.cmd" executionContext="elevated" />
+    </Startup>
   </WebRole>
 </ServiceDefinition>
