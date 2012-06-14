@@ -1,5 +1,4 @@
 ﻿using System;
-using FoundOps.Common.Silverlight.UI.Tools;
 using System.Windows.Browser;
 using System.Collections.Generic;
 
@@ -30,7 +29,8 @@ namespace FoundOps.SLClient.Data.Services
         //Only tracked on Google Analytics
         ManifestOption,
         PrintedManifest,
-        SectionChosen
+        SectionChosen,
+        ServerError
     }
 
     /// <summary>
@@ -123,6 +123,7 @@ namespace FoundOps.SLClient.Data.Services
             //Set the string value of each Event's name
             EventNames.Add(Event.FirstSectionChosen, "First Section Chosen");
             EventNames.Add(Event.SectionChosen, "Section Chosen");
+            EventNames.Add(Event.ServerError, "Server Error");
             EventNames.Add(Event.AddRoute, "Add Route");
             EventNames.Add(Event.AutoAssignJobs, "Auto-Assign Jobs");
             EventNames.Add(Event.DeleteRouteTask, "Delete Route Task");

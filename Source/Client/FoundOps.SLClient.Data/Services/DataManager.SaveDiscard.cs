@@ -121,6 +121,9 @@ namespace FoundOps.SLClient.Data.Services
                         //Setup the ErrorWindow prompt
                         var errorWindow = new ErrorWindow();
 
+                        //track error with analytics
+                        Analytics.Track(Event.ServerError);
+
                         //The ErrorWindow is now setup, show it to the user
                         errorWindow.Show();
 
