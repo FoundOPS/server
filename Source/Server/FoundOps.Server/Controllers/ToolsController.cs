@@ -24,12 +24,22 @@ namespace FoundOps.Server.Controllers
             throw new Exception("Invalid attempted access logged for investigation.");
         }
 
-
-        public ActionResult ClearCreateHistoricalTrackPoints()
+        public ActionResult ClearHistoricalTrackPoints()
         {
             if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
             {
-                CoreEntitiesServerManagement.ClearCreateHistoricalTrackPoints();
+                CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
+                return View();
+            }
+
+            throw new Exception("Invalid attempted access logged for investigation.");
+        }
+
+        public ActionResult CreateHistoricalTrackPoints()
+        {
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
+            {
+                CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
                 return View();
             }
 

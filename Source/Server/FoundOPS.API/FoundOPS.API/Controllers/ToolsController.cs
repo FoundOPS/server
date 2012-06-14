@@ -24,15 +24,30 @@ namespace FoundOPS.API.Controllers
             throw new Exception("Invalid attempted access logged for investigation.");
         }
 
-        //GET /api/tools/ClearCreateHistoricalTrackPoints
+        //GET /api/tools/ClearHistoricalTrackPoints
         /// <summary>
-        /// Clears and creates historical trackpoints in the azure tables.
+        /// Clears historical trackpoints in the azure tables.
         /// </summary>
-        public bool ClearCreateHistoricalTrackPoints()
+        public bool ClearHistoricalTrackPoints()
         {
             if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
             {
-                CoreEntitiesServerManagement.ClearCreateHistoricalTrackPoints();
+                CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
+                return true;
+            }
+
+            throw new Exception("Invalid attempted access logged for investigation.");
+        }
+
+        //GET /api/tools/CreateHistoricalTrackPoints
+        /// <summary>
+        /// Creates historical trackpoints in the azure tables.
+        /// </summary>
+        public bool CreateHistoricalTrackPoints()
+        {
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
+            {
+                CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
                 return true;
             }
 

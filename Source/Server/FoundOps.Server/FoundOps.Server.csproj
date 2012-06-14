@@ -76,7 +76,10 @@
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore">
       <Private>True</Private>
     </Reference>
@@ -301,8 +304,9 @@
     <Content Include="Views\QuickBooks\OAuthGrantHandler.cshtml" />
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\WorkFlow\TimeCheck.cshtml" />
-    <Content Include="Views\Tools\ClearCreateHistoricalTrackPoints.cshtml" />
+    <Content Include="Views\Tools\ClearHistoricalTrackPoints.cshtml" />
     <Content Include="Views\Home\MapView.cshtml" />
+    <Content Include="Views\Tools\CreateHistoricalTrackPoints.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

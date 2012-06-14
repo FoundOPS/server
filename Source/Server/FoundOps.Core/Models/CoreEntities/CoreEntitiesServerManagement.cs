@@ -15,7 +15,7 @@ namespace FoundOps.Core.Models.CoreEntities
 {
 #if DEBUG
 
-    public class CoreEntitiesServerManagement
+    public static class CoreEntitiesServerManagement
     {
         #region ConnectionString, Paths and Parameters
 
@@ -136,33 +136,47 @@ namespace FoundOps.Core.Models.CoreEntities
             container.SaveChanges();
         }
 
+
         /// <summary>
-        /// Clear and create the HistoricalTrackPoints on the Azure tables.
+        /// Clears the HistoricalTrackPoints from the Azure tables.
+        /// Must do this seperately from Create, because deleting tables takes time.
         /// </summary>
-        public static void ClearCreateHistoricalTrackPoints()
+        public static void ClearHistoricalTrackPoints()
         {
             var coreEntitiesContainer = new CoreEntitiesContainer();
-
             var businessAccountIds = coreEntitiesContainer.Parties.OfType<BusinessAccount>().Select(ba => ba.Id);
 
             foreach (var businessAccountId in businessAccountIds)
             {
-                //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-                var tableName = "tp" + businessAccountId.ToString().Replace("-", "");
+                var tableName = businessAccountId.TrackPointTableName();
+
+                var storageAccount = CloudStorageAccount.Parse(AzureHelpers.StorageConnectionString);
+
+                var tableClient = storageAccount.CreateCloudTableClient();
+
+                //Delete the Table in Azure and all rows in it
+                tableClient.DeleteTableIfExist(tableName);
+            }
+        }
+
+        /// <summary>
+        /// Creates the HistoricalTrackPoints on the Azure tables.
+        /// </summary>
+        public static void CreateHistoricalTrackPoints()
+        {
+            var coreEntitiesContainer = new CoreEntitiesContainer();
+            var businessAccountIds = coreEntitiesContainer.Parties.OfType<BusinessAccount>().Select(ba => ba.Id);
+
+            foreach (var businessAccountId in businessAccountIds)
+            {
+                var tableName = businessAccountId.TrackPointTableName();
 
                 var storageAccount = CloudStorageAccount.Parse(AzureHelpers.StorageConnectionString);
                 var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
 
                 var tableClient = storageAccount.CreateCloudTableClient();
-                try
-                {
-                    //Delete the Table in Azure and all rows in it
-                    tableClient.DeleteTableIfExist(tableName);
-
-                    //Create the empty table once again
-                    tableClient.CreateTableIfNotExist(tableName);
-                }
-                catch { }
+                //Create the empty table once again
+                tableClient.CreateTableIfNotExist(tableName);
 
                 var serviceDate = DateTime.UtcNow;
 

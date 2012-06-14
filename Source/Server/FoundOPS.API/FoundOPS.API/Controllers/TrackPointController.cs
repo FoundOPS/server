@@ -52,7 +52,7 @@ namespace FoundOPS.API.Controllers
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-            var tableName = AzureHelpers.TrackPointTableName(currentBusinessAccount);
+            var tableName = currentBusinessAccount.Id.TrackPointTableName();
 
             var trackPointsDate = serviceDate.Date;
 
@@ -212,7 +212,7 @@ namespace FoundOPS.API.Controllers
             //Create the Tables Client -> Used to Check if the table exists and to create it if it doesnt already exist
             var tableClient = storageAccount.CreateCloudTableClient();
 
-            var tableName = AzureHelpers.TrackPointTableName(businessAccount);
+            var tableName = businessAccount.Id.TrackPointTableName();
 
             //If an exception occurs, it means that the table already exists
             try
