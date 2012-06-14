@@ -142,7 +142,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="roleId">The current role id.</param>
         public IQueryable<Employee> GetEmployeesForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
             if (businessForRole == null)
                 return null;
 
@@ -199,7 +199,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<Employee> SearchEmployeesForRole(Guid roleId, string searchText)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
             if (businessForRole == null)
                 return null;
 
@@ -278,7 +278,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<EmployeeHistoryEntry> GetEmployeeHistoryEntriesForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             if (businessForRole == null)
                 return null;
@@ -488,7 +488,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="roleId">The role id.</param>
         public IQueryable<Region> GetRegionsForServiceProvider(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             var regions = from region in this.ObjectContext.Regions.Where(v => v.BusinessAccountId == businessForRole.Id)
                           orderby region.Name

@@ -43,9 +43,8 @@ namespace FoundOPS.API.Controllers
             //Otherwise: return the current user account's Routes (Mobile Application)
             if (roleId.HasValue)
             {
-                //TODO: When EF5 fixes inherited projections: add .Include("Routes.RouteDestinations.Client.OwnedParty.ContactInfoSet")
                 loadedRoutes = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId.Value).Include(ba => ba.Routes)
-                    .Include("Routes.RouteDestinations").Include("Routes.RouteDestinations.Client")
+                    .Include("Routes.RouteDestinations").Include("Routes.RouteDestinations.Client").Include("Routes.RouteDestinations.Client.ContactInfoSet")
                     .Include("Routes.RouteDestinations.Location").Include("Routes.RouteDestinations.Location.ContactInfoSet")
                     .SelectMany(ba => ba.Routes).Where(r => r.Date == today);
             }
@@ -74,10 +73,10 @@ namespace FoundOPS.API.Controllers
         {
             var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();
 
-            if(currentBusinessAccount == null)
+            if (currentBusinessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            return currentBusinessAccount.Depots.Select(Location.ConvertModel).AsQueryable(); 
+            return currentBusinessAccount.Depots.Select(Location.ConvertModel).AsQueryable();
         }
 
         //public IQueryable<Status> GetStatuses(Guid roleId)

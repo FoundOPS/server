@@ -73,7 +73,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<Party> GetBusinessAccountsForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             //Make sure current account is a FoundOPS account
             return businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id
@@ -89,7 +89,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="businessAccountId">The businessAccount id.</param>
         public Party GetBusinessAccountDetailsForRole(Guid roleId, Guid businessAccountId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             //Make sure current account is a FoundOPS account
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
@@ -467,7 +467,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceProviderId">(Optional) filter user accounts that are in a owned role of this service provider.</param>
         public IQueryable<Party> GetUserAccounts(Guid roleId, Guid serviceProviderId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             IQueryable<UserAccount> accesibleUserAccounts;
 

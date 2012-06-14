@@ -116,7 +116,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 var clientsDesignData = new ClientsDesignData(serviceProvider, regionsDesignData);
                 foreach (var client in clientsDesignData.DesignClients)
                     serviceProvider.Clients.Add(client);
-                
+
                 container.SaveChanges();
 
                 //Add Routes (with RouteTasks, Vehicles, Technicians)
@@ -156,7 +156,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 try
                 {
                     //Delete the Table in Azure and all rows in it
-                    //tableClient.DeleteTableIfExist(tableName);
+                    tableClient.DeleteTableIfExist(tableName);
 
                     //Create the empty table once again
                     tableClient.CreateTableIfNotExist(tableName);
@@ -167,6 +167,8 @@ namespace FoundOps.Core.Models.CoreEntities
 
                 var routes = coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate.Date && r.OwnerBusinessAccountId == businessAccountId).OrderBy(r => r.Id);
 
+                //Do not setup design data for Test or Release
+#if DEBUG
                 #region Setup Design Data for Historical Track Points
 
                 var numberOfRoutes = routes.Count();
@@ -344,6 +346,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
 
                 #endregion
+#endif
             }
         }
 #endif

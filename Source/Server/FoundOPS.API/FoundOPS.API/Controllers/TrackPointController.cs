@@ -1,5 +1,4 @@
-﻿using FoundOPS.API.Models;
-using FoundOps.Core.Models.Azure;
+﻿using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Microsoft.WindowsAzure;
@@ -113,7 +112,7 @@ namespace FoundOPS.API.Controllers
 
                 #region Adjust Technician Location, Speed and Heading
 
-                foreach (var employee in route.Technicians)
+                foreach (var employee in route.Employees)
                 {
                     employee.LastCompassDirection = (employee.LastCompassDirection + 15) % 360;
                     employee.LastTimeStamp = DateTime.UtcNow;
@@ -171,7 +170,9 @@ namespace FoundOPS.API.Controllers
         {
             var currentUserAccount = AuthenticationLogic.CurrentUserAccount(_coreEntitiesContainer);
 
-            //If there is no UserAccount for some reason, return an Unauthorized Status Code
+            //Return an Unauthorized Status Code
+            //a) if there is no UserAccount
+            //b) the user does not have access to the business account of the route
             if (currentUserAccount == null)
                 return new HttpResponseMessage<TrackPoint[]>(modelTrackPoints, HttpStatusCode.Unauthorized);
 
@@ -267,11 +268,16 @@ namespace FoundOPS.API.Controllers
             //The last TrackPoint in the list above is the most current and therefore will be stored in the SQL database
             var lastTrackPoint = orderedModelTrackPoints.Last();
 
-            BusinessAccount currentBusinessAccount;
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountsQueryable().FirstOrDefault(ba => ba.Routes.Any(r => r.Id == routeId));
+
+            //if the current business account for the route is not found, the user is not authorized for that business account (or the route does not exist)
+            if(currentBusinessAccount == null)
+                return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
 
             if (employeeId != null)
             {
-                var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.LinkedUserAccount.Id == employeeId);
+                var employee = _coreEntitiesContainer.Employees.FirstOrDefault(
+                        e => e.EmployerId == currentBusinessAccount.Id && e.LinkedUserAccount.Id == employeeId);
 
                 if (employee == null)
                     return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
@@ -287,12 +293,6 @@ namespace FoundOPS.API.Controllers
 
                 #endregion
 
-                currentBusinessAccount = employee.Employer;
-
-                //If there is no BusinessAccount something went wrong, return a BadRequest status code
-                if (currentBusinessAccount == null)
-                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
-
                 //Checks each TrackPoint to see if it needs to be pushed to the Azure Tables
                 //Pushes if needed
                 CheckTimeStampPushToAzure(employee.LastPushToAzureTimeStamp, currentBusinessAccount, orderedModelTrackPoints, employee, null, routeId);
@@ -300,7 +300,7 @@ namespace FoundOPS.API.Controllers
 
             else if (vehicleId != null)
             {
-                var vehicle = _coreEntitiesContainer.Vehicles.FirstOrDefault(v => v.Id == vehicleId);
+                var vehicle = _coreEntitiesContainer.Vehicles.FirstOrDefault(v => v.OwnerPartyId == currentBusinessAccount.Id && v.Id == vehicleId);
 
                 //If there is no Vehicle that corresponds to the vehicleId passed, something went wrong => return a BadRequest status code
                 if (vehicle == null)
@@ -316,13 +316,7 @@ namespace FoundOPS.API.Controllers
                 vehicle.LastTimeStamp = lastTrackPoint.CollectedTimeStamp;
 
                 #endregion
-
-                currentBusinessAccount = vehicle.OwnerParty.ClientOwner.Vendor;
-
-                //If there is no BusinessAccount something went wrong, return a BadRequest status code
-                if (currentBusinessAccount == null)
-                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
-
+                
                 //Checks each TrackPoint to see if it needs to be pushed to the Azure Tables
                 //Pushes if needed
                 CheckTimeStampPushToAzure(vehicle.LastPushToAzureTimeStamp, currentBusinessAccount, orderedModelTrackPoints, null, vehicle, routeId);
@@ -387,8 +381,8 @@ namespace FoundOPS.API.Controllers
                 EmployeeId = employeeId,
                 VehicleId = vehicleId,
                 RouteId = routeId,
-                Latitude = (double?) trackPoint.Latitude,
-                Longitude = (double?) trackPoint.Longitude,
+                Latitude = (double?)trackPoint.Latitude,
+                Longitude = (double?)trackPoint.Longitude,
                 CollectedTimeStamp = trackPoint.CollectedTimeStamp
             };
 

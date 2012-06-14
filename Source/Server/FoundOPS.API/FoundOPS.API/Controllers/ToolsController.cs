@@ -5,7 +5,7 @@ using System.Web.Http;
 
 namespace FoundOPS.API.Controllers
 {
-#if !RELEASE
+#if DEBUG
 
     public class ToolsController : ApiController
     {
