@@ -13,6 +13,8 @@ using Microsoft.WindowsAzure.StorageClient;
 
 namespace FoundOps.Core.Models.CoreEntities
 {
+#if DEBUG
+
     public class CoreEntitiesServerManagement
     {
         #region ConnectionString, Paths and Parameters
@@ -30,7 +32,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-#if DEBUG
         public static void ClearCreateCoreEntitiesDatabase()
         {
             var clearFile = new FileInfo(ClearCoreEntitiesDatabaseScriptLocation);
@@ -349,6 +350,6 @@ namespace FoundOps.Core.Models.CoreEntities
 #endif
             }
         }
-#endif
     }
+#endif
 }

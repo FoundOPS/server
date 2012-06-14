@@ -54,7 +54,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //     on c.PartyImage.Id equals pi.Id
             // select pi).ToArray();
 
-            return clients.OrderBy(c=>c.Name);
+            return clients.OrderBy(c => c.Name);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Load contact info
             var client = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id && c.Id == clientId)
-                .Include("ContactInfoSet").Include("RecurringServices")
+                .Include(c => c.ContactInfoSet).Include(c => c.RecurringServices)
                 .Include("RecurringServices.Repeat").Include("RecurringServices.ServiceTemplate").FirstOrDefault();
 
             if (client == null) return null;
@@ -410,7 +410,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                                         "Address 1", "Address 2", "City", "State", "Zip Code",
                                         "Latitude", "Longitude");
 
-            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == partyForRole.Id && !loc.BusinessAccountIdIfDepot.HasValue); 
+            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == partyForRole.Id && !loc.BusinessAccountIdIfDepot.HasValue);
 
             //Add client context if it exists
             if (clientId != Guid.Empty)
@@ -425,7 +425,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                           join c in ObjectContext.Clients
                               on loc.Client.Id equals c.Id
                           orderby loc.Name
-                          select new 
+                          select new
                           {
                               loc.Name,
                               RegionName = loc.Region.Name,
@@ -681,7 +681,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
             return
-                this.ObjectContext.VehicleMaintenanceLineItems.Include("VehicleMaintenanceLogEntry").Where(
+                this.ObjectContext.VehicleMaintenanceLineItems.Include(vm => vm.VehicleMaintenanceLogEntry).Where(
                     vm => vm.VehicleMaintenanceLogEntry.Vehicle.OwnerPartyId == partyForRole.Id);
         }
 
@@ -728,7 +728,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var partyForRole = ObjectContext.OwnerPartyOfRole(roleId);
 
             return ObjectContext.VehicleMaintenanceLog.Where(vm => vm.Vehicle.OwnerPartyId == partyForRole.Id)
-                .Include("LineItems").OrderBy(vm => vm.Date);
+                .Include(vml => vml.LineItems).OrderBy(vm => vm.Date);
         }
 
         public void InsertVehicleMaintenanceLogEntry(VehicleMaintenanceLogEntry vehicle)

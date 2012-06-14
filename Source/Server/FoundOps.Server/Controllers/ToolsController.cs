@@ -5,10 +5,9 @@ using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Server.Controllers
 {
+#if DEBUG
     public class ToolsController : Controller
     {
-#if !RELEASE
-#if DEBUG
 
         /// <summary>
         /// Clear, create database, and populate design data.
@@ -25,7 +24,6 @@ namespace FoundOps.Server.Controllers
             throw new Exception("Invalid attempted access logged for investigation.");
         }
 
-#endif
 
         public ActionResult ClearCreateHistoricalTrackPoints()
         {
@@ -37,7 +35,6 @@ namespace FoundOps.Server.Controllers
 
             throw new Exception("Invalid attempted access logged for investigation.");
         }
-#endif
-
     }
+#endif
 }
