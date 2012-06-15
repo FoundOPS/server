@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FoundOPS.API.Tools;
 
 namespace FoundOPS.API
 {
@@ -27,6 +28,7 @@ namespace FoundOPS.API
 
         protected void Application_Start()
         {
+            GlobalConfiguration.Configuration.Formatters[0] = new JsonpMediaTypeFormatter();
             GlobalFilters.Filters.Add(new HandleErrorAttribute());
 
             AreaRegistration.RegisterAllAreas();
