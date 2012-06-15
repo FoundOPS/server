@@ -69,11 +69,11 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientInvoice", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteTaskRecurringService", "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountLocation", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeRoute", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee), "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route))]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientBusinessAccount", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "LocationBusinessAccount", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientLocation1", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientContactInfo", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "ContactInfo", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ContactInfo), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "RouteEmployee", "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee))]
 
 #endregion
 
@@ -1038,8 +1038,142 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBasicPartyBasedOnId1(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteBasicPartyBasedOnId1", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBusinessAccountBasedOnId1(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId1", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="clientId">No Metadata Documentation available.</param>
+        public int DeleteClientBasedOnId1(Nullable<global::System.Guid> clientId)
+        {
+            ObjectParameter clientIdParameter;
+            if (clientId.HasValue)
+            {
+                clientIdParameter = new ObjectParameter("clientId", clientId);
+            }
+            else
+            {
+                clientIdParameter = new ObjectParameter("clientId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteClientBasedOnId1", clientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="parentFieldId">No Metadata Documentation available.</param>
+        public int DeleteFieldAndChildrenBasedOnFieldId1(Nullable<global::System.Guid> parentFieldId)
+        {
+            ObjectParameter parentFieldIdParameter;
+            if (parentFieldId.HasValue)
+            {
+                parentFieldIdParameter = new ObjectParameter("parentFieldId", parentFieldId);
+            }
+            else
+            {
+                parentFieldIdParameter = new ObjectParameter("parentFieldId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteFieldAndChildrenBasedOnFieldId1", parentFieldIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        public int DeleteLocationBasedOnId1(Nullable<global::System.Guid> locationId)
+        {
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
+            {
+                locationIdParameter = new ObjectParameter("locationId", locationId);
+            }
+            else
+            {
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteLocationBasedOnId1", locationIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="recurringServiceId">No Metadata Documentation available.</param>
+        public int DeleteRecurringService1(Nullable<global::System.Guid> recurringServiceId)
+        {
+            ObjectParameter recurringServiceIdParameter;
+            if (recurringServiceId.HasValue)
+            {
+                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", recurringServiceId);
+            }
+            else
+            {
+                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteRecurringService1", recurringServiceIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="parentTemplateId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId1(Nullable<global::System.Guid> parentTemplateId)
+        {
+            ObjectParameter parentTemplateIdParameter;
+            if (parentTemplateId.HasValue)
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", parentTemplateId);
+            }
+            else
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId1", parentTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        /// <param name="ownerClientId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplatesAndChildrenBasedOnContextId1(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.Guid> ownerClientId)
         {
             ObjectParameter serviceProviderIdParameter;
             if (serviceProviderId.HasValue)
@@ -1051,7 +1185,66 @@ namespace FoundOps.Core.Models.CoreEntities
                 serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
+            ObjectParameter ownerClientIdParameter;
+            if (ownerClientId.HasValue)
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", ownerClientId);
+            }
+            else
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnContextId1", serviceProviderIdParameter, ownerClientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteUserAccountBasedOnId1(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteUserAccountBasedOnId1", providerIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+            }
+            else
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
         }
     
         /// <summary>
@@ -1142,31 +1335,20 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
         {
-            ObjectParameter serviceProviderContextParameter;
-            if (serviceProviderContext.HasValue)
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
             {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
             }
             else
             {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
             }
     
-            ObjectParameter serviceDateParameter;
-            if (serviceDate.HasValue)
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
-            }
-            else
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
-            }
-    
-            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
 
         #endregion
@@ -3318,18 +3500,18 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeeRoute", "Route")]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RouteEmployee", "Route")]
         public EntityCollection<Route> Routes
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Route>("CoreEntities.EmployeeRoute", "Route");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Route>("CoreEntities.RouteEmployee", "Route");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Route>("CoreEntities.EmployeeRoute", "Route", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Route>("CoreEntities.RouteEmployee", "Route", value);
                 }
             }
         }
@@ -8200,18 +8382,18 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeeRoute", "Employee")]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RouteEmployee", "Employee")]
         public EntityCollection<Employee> Employees
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Employee>("CoreEntities.EmployeeRoute", "Employee");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Employee>("CoreEntities.RouteEmployee", "Employee");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Employee>("CoreEntities.EmployeeRoute", "Employee", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Employee>("CoreEntities.RouteEmployee", "Employee", value);
                 }
             }
         }

@@ -241,6 +241,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="Models\CoreEntities\CoreEntities.edmx.diagram">
+      <DependentUpon>CoreEntities.edmx</DependentUpon>
+    </None>
     <None Include="Models\CoreEntities\CoreEntitiesCorrected.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CoreEntitiesCorrected1.edmx.sql</LastGenOutput>

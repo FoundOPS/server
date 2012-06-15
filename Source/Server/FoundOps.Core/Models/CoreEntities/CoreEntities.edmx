@@ -4,13 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CoreEntities.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+      <Schema Namespace="CoreEntities.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="CoreEntitiesStoreContainer">
           <EntitySet Name="Blocks" EntityType="CoreEntities.Store.Blocks" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Clients" EntityType="CoreEntities.Store.Clients" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ContactInfoSet" EntityType="CoreEntities.Store.ContactInfoSet" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.Store.EmployeeHistoryEntries" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EmployeeRoute" EntityType="CoreEntities.Store.EmployeeRoute" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Employees" EntityType="CoreEntities.Store.Employees" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Errors" EntityType="CoreEntities.Store.Errors" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Fields" EntityType="CoreEntities.Store.Fields" store:Type="Tables" Schema="dbo" />
@@ -38,6 +37,7 @@
           <EntitySet Name="RoleBlock" EntityType="CoreEntities.Store.RoleBlock" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Roles" EntityType="CoreEntities.Store.Roles" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RouteDestinations" EntityType="CoreEntities.Store.RouteDestinations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RouteEmployee" EntityType="CoreEntities.Store.RouteEmployee" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Routes" EntityType="CoreEntities.Store.Routes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RouteTasks" EntityType="CoreEntities.Store.RouteTasks" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RouteVehicle" EntityType="CoreEntities.Store.RouteVehicle" store:Type="Tables" Schema="dbo" />
@@ -50,16 +50,20 @@
           <EntitySet Name="VehicleMaintenanceLog" EntityType="CoreEntities.Store.VehicleMaintenanceLog" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Vehicles" EntityType="CoreEntities.Store.Vehicles" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PartiesWithName" EntityType="CoreEntities.Store.PartiesWithName" store:Type="Views" store:Schema="dbo" store:Name="PartiesWithName">
-            <DefiningQuery>SELECT 
-      [PartiesWithName].[Id] AS [Id], 
-      [PartiesWithName].[ChildName] AS [ChildName]
-      FROM [dbo].[PartiesWithName] AS [PartiesWithName]</DefiningQuery>
+            <DefiningQuery>
+              SELECT
+              [PartiesWithName].[Id] AS [Id],
+              [PartiesWithName].[ChildName] AS [ChildName]
+              FROM [dbo].[PartiesWithName] AS [PartiesWithName]
+            </DefiningQuery>
           </EntitySet>
           <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId">
-            <DefiningQuery>SELECT 
-      [ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId], 
-      [ServiceTemplatesWithVendorId].[BusinessAccountId] AS [BusinessAccountId]
-      FROM [dbo].[ServiceTemplatesWithVendorId] AS [ServiceTemplatesWithVendorId]</DefiningQuery>
+            <DefiningQuery>
+              SELECT
+              [ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId],
+              [ServiceTemplatesWithVendorId].[BusinessAccountId] AS [BusinessAccountId]
+              FROM [dbo].[ServiceTemplatesWithVendorId] AS [ServiceTemplatesWithVendorId]
+            </DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Business_inherits_Party" Association="CoreEntities.Store.FK_Business_inherits_Party">
             <End Role="Parties" EntitySet="Parties" />
@@ -128,14 +132,6 @@
           <AssociationSet Name="FK_EmployeePerson" Association="CoreEntities.Store.FK_EmployeePerson">
             <End Role="Parties_Person" EntitySet="Parties_Person" />
             <End Role="Employees" EntitySet="Employees" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeRoute_Employee" Association="CoreEntities.Store.FK_EmployeeRoute_Employee">
-            <End Role="Employees" EntitySet="Employees" />
-            <End Role="EmployeeRoute" EntitySet="EmployeeRoute" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeeRoute_Route" Association="CoreEntities.Store.FK_EmployeeRoute_Route">
-            <End Role="Routes" EntitySet="Routes" />
-            <End Role="EmployeeRoute" EntitySet="EmployeeRoute" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeUserAccount" Association="CoreEntities.Store.FK_EmployeeUserAccount">
             <End Role="Parties_UserAccount" EntitySet="Parties_UserAccount" />
@@ -269,6 +265,14 @@
             <End Role="Routes" EntitySet="Routes" />
             <End Role="RouteDestinations" EntitySet="RouteDestinations" />
           </AssociationSet>
+          <AssociationSet Name="FK_RouteEmployee_Employee" Association="CoreEntities.Store.FK_RouteEmployee_Employee">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="RouteEmployee" EntitySet="RouteEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RouteEmployee_Route" Association="CoreEntities.Store.FK_RouteEmployee_Route">
+            <End Role="Routes" EntitySet="Routes" />
+            <End Role="RouteEmployee" EntitySet="RouteEmployee" />
+          </AssociationSet>
           <AssociationSet Name="FK_RouteTaskClient" Association="CoreEntities.Store.FK_RouteTaskClient">
             <End Role="Clients" EntitySet="Clients" />
             <End Role="RouteTasks" EntitySet="RouteTasks" />
@@ -342,54 +346,54 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
-      <Function Name="GetServiceHolders" IsComposable="false">
-        <CommandText>
-          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
-          FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
-        </CommandText>
-        <Parameter Name="serviceProviderIdContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="clientIdContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="recurringServiceIdContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="seedDate"
-                   Mode="In"
-                   Type="datetime"/>
-        <Parameter Name="frontBackMinimum"
-                   Mode="In"
-                   Type="int"/>
-        <Parameter Name="getPrevious"
-                   Mode="In"
-                   Type="bit"/>
-        <Parameter Name="getNext"
-                   Mode="In"
-                   Type="bit"/>
-      </Function>
-      <Function Name="GetUnroutedServicesForDate" IsComposable="false">
-        <CommandText>
-          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt
-          FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
-        </CommandText>
-        <Parameter Name="serviceProviderContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="serviceDate"
-                   Mode="In"
-                   Type="datetime"/>
-      </Function>
-      <Function Name="GetResourcesWithLastPoint" IsComposable="false">
-        <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
-          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
-        </CommandText>
-        <Parameter Name="serviceProviderId"
-               Mode="In"
-               Type="uniqueidentifier"/>
-      </Function>
+        <Function Name="GetServiceHolders" IsComposable="false">
+          <CommandText>
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
+            FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
+          </CommandText>
+          <Parameter Name="serviceProviderIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="clientIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="recurringServiceIdContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="seedDate"
+                     Mode="In"
+                     Type="datetime"/>
+          <Parameter Name="frontBackMinimum"
+                     Mode="In"
+                     Type="int"/>
+          <Parameter Name="getPrevious"
+                     Mode="In"
+                     Type="bit"/>
+          <Parameter Name="getNext"
+                     Mode="In"
+                     Type="bit"/>
+        </Function>
+        <Function Name="GetUnroutedServicesForDate" IsComposable="false">
+          <CommandText>
+            SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt
+            FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
+          </CommandText>
+          <Parameter Name="serviceProviderContext"
+                     Mode="In"
+                     Type="uniqueidentifier"/>
+          <Parameter Name="serviceDate"
+                     Mode="In"
+                     Type="datetime"/>
+        </Function>
+        <Function Name="GetResourcesWithLastPoint" IsComposable="false">
+          <CommandText>
+            SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
+            FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
+          </CommandText>
+          <Parameter Name="serviceProviderId"
+                 Mode="In"
+                 Type="uniqueidentifier"/>
+        </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />
@@ -434,14 +438,6 @@
           <Property Name="Summary" Type="nvarchar(max)" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="EmployeeId" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EmployeeRoute">
-          <Key>
-            <PropertyRef Name="Employees_Id" />
-            <PropertyRef Name="Routes_Id" />
-          </Key>
-          <Property Name="Employees_Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Routes_Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Employees">
           <Key>
@@ -727,6 +723,14 @@
           <Property Name="LocationId" Type="uniqueidentifier" />
           <Property Name="RouteId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ClientId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="RouteEmployee">
+          <Key>
+            <PropertyRef Name="Routes_Id" />
+            <PropertyRef Name="Employees_Id" />
+          </Key>
+          <Property Name="Routes_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Employees_Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Routes">
           <Key>
@@ -1091,30 +1095,6 @@
             </Principal>
             <Dependent Role="Employees">
               <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeRoute_Employee">
-          <End Role="Employees" Type="CoreEntities.Store.Employees" Multiplicity="1" />
-          <End Role="EmployeeRoute" Type="CoreEntities.Store.EmployeeRoute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employees">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EmployeeRoute">
-              <PropertyRef Name="Employees_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeeRoute_Route">
-          <End Role="Routes" Type="CoreEntities.Store.Routes" Multiplicity="1" />
-          <End Role="EmployeeRoute" Type="CoreEntities.Store.EmployeeRoute" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Routes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EmployeeRoute">
-              <PropertyRef Name="Routes_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1548,6 +1528,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RouteEmployee_Employee">
+          <End Role="Employees" Type="CoreEntities.Store.Employees" Multiplicity="1" />
+          <End Role="RouteEmployee" Type="CoreEntities.Store.RouteEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RouteEmployee">
+              <PropertyRef Name="Employees_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RouteEmployee_Route">
+          <End Role="Routes" Type="CoreEntities.Store.Routes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RouteEmployee" Type="CoreEntities.Store.RouteEmployee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Routes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RouteEmployee">
+              <PropertyRef Name="Routes_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_RouteTaskClient">
           <End Role="Clients" Type="CoreEntities.Store.Clients" Multiplicity="0..1" />
           <End Role="RouteTasks" Type="CoreEntities.Store.RouteTasks" Multiplicity="*" />
@@ -1806,7 +1812,8 @@
         <Function Name="DeleteUserAccountBasedOnId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="providerId" Type="uniqueidentifier" Mode="In" />
         </Function>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="CoreEntities" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
@@ -2041,10 +2048,6 @@
             <End Role="BusinessAccount" EntitySet="Parties" />
             <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
-          <AssociationSet Name="EmployeeRoute" Association="CoreEntities.EmployeeRoute">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="Route" EntitySet="Routes" />
-          </AssociationSet>
           <AssociationSet Name="ClientBusinessAccount" Association="CoreEntities.ClientBusinessAccount">
             <End Role="Client" EntitySet="Clients" />
             <End Role="BusinessAccount" EntitySet="Parties" />
@@ -2062,35 +2065,68 @@
             <End Role="ContactInfo" EntitySet="ContactInfoSet" />
           </AssociationSet>
           <FunctionImport Name="DeleteBasicPartyBasedOnId">
-          <Parameter Name="providerId" Mode="In" Type="Guid" />
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteBusinessAccountBasedOnId">
-          <Parameter Name="providerId" Mode="In" Type="Guid" />
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteClientBasedOnId">
-          <Parameter Name="clientId" Mode="In" Type="Guid" />
+            <Parameter Name="clientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteFieldAndChildrenBasedOnFieldId">
-          <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
+            <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteLocationBasedOnId">
-          <Parameter Name="locationId" Mode="In" Type="Guid" />
+            <Parameter Name="locationId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteRecurringService">
-          <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
+            <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId">
-          <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
+            <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplatesAndChildrenBasedOnContextId">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="ownerClientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserAccountBasedOnId">
-          <Parameter Name="providerId" Mode="In" Type="Guid" />
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
-          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+          <AssociationSet Name="RouteEmployee" Association="CoreEntities.RouteEmployee">
+            <End Role="Route" EntitySet="Routes" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <FunctionImport Name="DeleteBasicPartyBasedOnId1">
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteBusinessAccountBasedOnId1">
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteClientBasedOnId1">
+            <Parameter Name="clientId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteFieldAndChildrenBasedOnFieldId1">
+            <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteLocationBasedOnId1">
+            <Parameter Name="locationId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteRecurringService1">
+            <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId1">
+            <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteServiceTemplatesAndChildrenBasedOnContextId1">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
+            <Parameter Name="ownerClientId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteUserAccountBasedOnId1">
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
+            <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
+            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
@@ -2101,9 +2137,8 @@
             <Parameter Name="getPrevious" Mode="In" Type="Boolean" />
             <Parameter Name="getNext" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
-            <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
-            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
+          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Block">
@@ -2293,7 +2328,7 @@
           <NavigationProperty Name="OwnerBusinessAccount" Relationship="CoreEntities.BusinessAccountRoute" FromRole="Route" ToRole="BusinessAccount" />
           <Property Type="Guid" Name="OwnerBusinessAccountId" Nullable="false" />
           <Property Type="String" Name="RouteType" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Employees" Relationship="CoreEntities.EmployeeRoute" FromRole="Route" ToRole="Employee" />
+          <NavigationProperty Name="Employees" Relationship="CoreEntities.RouteEmployee" FromRole="Route" ToRole="Employee" />
         </EntityType>
         <EntityType Name="UserAccountLogEntry">
           <Key>
@@ -2851,7 +2886,7 @@
           <Property Type="String" Name="LastSource" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="DateTime" Name="LastPushToAzureTimeStamp" Nullable="true" Precision="3" />
           <Property Type="Int32" Name="LastAccuracy" Nullable="true" />
-          <NavigationProperty Name="Routes" Relationship="CoreEntities.EmployeeRoute" FromRole="Employee" ToRole="Route" />
+          <NavigationProperty Name="Routes" Relationship="CoreEntities.RouteEmployee" FromRole="Employee" ToRole="Route" />
         </EntityType>
         <Association Name="EmployeeUserAccount">
           <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
@@ -3246,10 +3281,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="EmployeeRoute">
-          <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
-          <End Type="CoreEntities.Route" Role="Route" Multiplicity="*" />
-        </Association>
         <Association Name="ClientBusinessAccount">
           <End Type="CoreEntities.Client" Role="Client" Multiplicity="*" />
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />
@@ -3297,6 +3328,10 @@
               <PropertyRef Name="ClientId" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="RouteEmployee">
+          <End Type="CoreEntities.Route" Role="Route" Multiplicity="*" />
+          <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -3800,41 +3835,23 @@
               <ScalarProperty Name="Id" ColumnName="RoleMembership_Id" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="EmployeeRoute" TypeName="CoreEntities.EmployeeRoute" StoreEntitySet="EmployeeRoute">
-            <EndProperty Name="Employee">
-              <ScalarProperty Name="Id" ColumnName="Employees_Id" />
-            </EndProperty>
+          <AssociationSetMapping Name="RouteEmployee" TypeName="CoreEntities.RouteEmployee" StoreEntitySet="RouteEmployee">
             <EndProperty Name="Route">
               <ScalarProperty Name="Id" ColumnName="Routes_Id" />
             </EndProperty>
+            <EndProperty Name="Employee">
+              <ScalarProperty Name="Id" ColumnName="Employees_Id" />
+            </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="Heading" ColumnName="Heading" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DeleteBasicPartyBasedOnId1" FunctionName="CoreEntities.Store.DeleteBasicPartyBasedOnId" />
+          <FunctionImportMapping FunctionImportName="DeleteBusinessAccountBasedOnId1" FunctionName="CoreEntities.Store.DeleteBusinessAccountBasedOnId" />
+          <FunctionImportMapping FunctionImportName="DeleteClientBasedOnId1" FunctionName="CoreEntities.Store.DeleteClientBasedOnId" />
+          <FunctionImportMapping FunctionImportName="DeleteFieldAndChildrenBasedOnFieldId1" FunctionName="CoreEntities.Store.DeleteFieldAndChildrenBasedOnFieldId" />
+          <FunctionImportMapping FunctionImportName="DeleteLocationBasedOnId1" FunctionName="CoreEntities.Store.DeleteLocationBasedOnId" />
+          <FunctionImportMapping FunctionImportName="DeleteRecurringService1" FunctionName="CoreEntities.Store.DeleteRecurringService" />
+          <FunctionImportMapping FunctionImportName="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId1" FunctionName="CoreEntities.Store.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" />
+          <FunctionImportMapping FunctionImportName="DeleteServiceTemplatesAndChildrenBasedOnContextId1" FunctionName="CoreEntities.Store.DeleteServiceTemplatesAndChildrenBasedOnContextId" />
+          <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId1" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
           <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
@@ -3854,15 +3871,33 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="DeleteClientBasedOnId" FunctionName="CoreEntities.Store.DeleteClientBasedOnId" />
-          <FunctionImportMapping FunctionImportName="DeleteBusinessAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteBusinessAccountBasedOnId" />
-          <FunctionImportMapping FunctionImportName="DeleteBasicPartyBasedOnId" FunctionName="CoreEntities.Store.DeleteBasicPartyBasedOnId" />
-          <FunctionImportMapping FunctionImportName="DeleteFieldAndChildrenBasedOnFieldId" FunctionName="CoreEntities.Store.DeleteFieldAndChildrenBasedOnFieldId" />
-          <FunctionImportMapping FunctionImportName="DeleteLocationBasedOnId" FunctionName="CoreEntities.Store.DeleteLocationBasedOnId" />
-          <FunctionImportMapping FunctionImportName="DeleteRecurringService" FunctionName="CoreEntities.Store.DeleteRecurringService" />
-          <FunctionImportMapping FunctionImportName="DeleteServiceTemplatesAndChildrenBasedOnContextId" FunctionName="CoreEntities.Store.DeleteServiceTemplatesAndChildrenBasedOnContextId" />
-          <FunctionImportMapping FunctionImportName="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" FunctionName="CoreEntities.Store.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" />
-          <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
+          <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
+                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+                <ScalarProperty Name="Heading" ColumnName="Heading" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -3883,623 +3918,6 @@
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
-    <edmx:Diagrams>
-      <Diagram Name="CoreEntities" ZoomLevel="59" >
-        <EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="23.625" PointY="22.875" Height="2.5571907552083353" />
-        <EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="21.375" PointY="23.125" Height="2.5571907552083246" />
-        <EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="18.75" PointY="22.875" Height="2.7494921875000102" />
-        <EntityTypeShape EntityType="CoreEntities.Person" Width="1.5" PointX="14.125" PointY="33.5" Height="2.3648893229166674" />
-        <InheritanceConnector EntityType="CoreEntities.Person" ManuallyRouted="false" >
-          <ConnectorPoint PointX="15.187497624999999" PointY="208.75909505208333" />
-          <ConnectorPoint PointX="15.187497624999999" PointY="212.75" />
-          <ConnectorPoint PointX="15" PointY="212.75" />
-          <ConnectorPoint PointX="15" PointY="215.875" />
-          <ConnectorPoint PointX="14.645835833333335" PointY="215.875" />
-          <ConnectorPoint PointX="14.479169166666667" PointY="215.875" />
-          <ConnectorPoint PointX="14.333333333333334" PointY="215.875" />
-          <ConnectorPoint PointX="14.166666666666666" PointY="215.875" />
-          <ConnectorPoint PointX="11" PointY="215.875" />
-          <ConnectorPoint PointX="11" PointY="216.25000000000003" />
-        </InheritanceConnector>
-        <EntityTypeShape EntityType="CoreEntities.Business" Width="1.5" PointX="21.25" PointY="26.625" Height="1.403382161458353" />
-        <InheritanceConnector EntityType="CoreEntities.Business" ManuallyRouted="false" >
-          <ConnectorPoint PointX="15.8125" PointY="208.951396484375" />
-          <ConnectorPoint PointX="15.8125" PointY="209.20139648437498" />
-          <ConnectorPoint PointX="16.229169166666669" PointY="209.20139648437498" />
-          <ConnectorPoint PointX="16.395835833333333" PointY="209.20139648437498" />
-          <ConnectorPoint PointX="18.125" PointY="209.20139648437498" />
-          <ConnectorPoint PointX="18.125" PointY="209.375" />
-        </InheritanceConnector>
-        <EntityTypeShape EntityType="CoreEntities.ContactInfo" Width="1.5" PointX="16.5" PointY="23" Height="2.557190755208353" />
-        <AssociationConnector Association="CoreEntities.RoleBlock">
-          <ConnectorPoint PointX="22.875" PointY="24.278595377604169" />
-          <ConnectorPoint PointX="23.625" PointY="24.278595377604169" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.Repeat" Width="1.5" PointX="18.25" PointY="7.375" Height="2.557190755208353" />
-        <EntityTypeShape EntityType="CoreEntities.Location" PointX="14.25" PointY="21.875" Width="1.5" Height="4.864807942708353" />
-        <EntityTypeShape EntityType="CoreEntities.Service" Width="3" PointX="6.25" PointY="11.5" Height="2.9417936197916674" />
-        <EntityTypeShape EntityType="CoreEntities.Field" Width="1.5" PointX="21.125" PointY="11.25" Height="2.7494921874999818" />
-        <EntityTypeShape EntityType="CoreEntities.TextBoxField" Width="1.5" PointX="25.125" PointY="14.75" Height="1.403382161458353" />
-        <InheritanceConnector ManuallyRouted="false" EntityType="CoreEntities.TextBoxField">
-          <ConnectorPoint PointX="21.125" PointY="11.25" />
-          <ConnectorPoint PointX="18" PointY="197.125" />
-          <ConnectorPoint PointX="18.249748012631454" PointY="197.125" />
-          <ConnectorPoint PointX="18.463579951248835" PointY="197.125" />
-          <ConnectorPoint PointX="19.947919166666669" PointY="197.125" />
-          <ConnectorPoint PointX="20.114585833333333" PointY="197.125" />
-          <ConnectorPoint PointX="20.680507634741186" PointY="197.125" />
-          <ConnectorPoint PointX="20.847174301407851" PointY="197.125" />
-          <ConnectorPoint PointX="22" PointY="197.125" />
-          <ConnectorPoint PointX="25.125" PointY="14.75" />
-        </InheritanceConnector>
-        <AssociationConnector Association="CoreEntities.LocationContactInfo">
-          <ConnectorPoint PointX="11.875" PointY="207.12474609375" />
-          <ConnectorPoint PointX="12.291666666666666" PointY="207.12474609375" />
-          <ConnectorPoint PointX="12.458333333333334" PointY="207.12474609375" />
-          <ConnectorPoint PointX="12.625" PointY="207.12474609375" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.RouteDestination" Width="1.5" PointX="4.625" PointY="19.75" Height="2.7494921874999818" />
-        <EntityTypeShape EntityType="CoreEntities.Route" Width="1.5" PointX="6.875" PointY="19.5" Height="3.1340950520833246" />
-        <EntityTypeShape EntityType="CoreEntities.UserAccountLogEntry" Width="1.875" PointX="21.125" PointY="37.5" Height="1.980286458333353" />
-        <EntityTypeShape EntityType="CoreEntities.Vehicle" Width="2.5" PointX="9.875" PointY="18.125" Height="4.0956022135416674" />
-        <EntityTypeShape EntityType="CoreEntities.VehicleMaintenanceLogEntry" Width="3" PointX="6.125" PointY="15.875" Height="2.557190755208353" />
-        <AssociationConnector Association="CoreEntities.VehicleMaintenanceLogEntryVehicle">
-          <ConnectorPoint PointX="4.90625" PointY="201.18219075520835" />
-          <ConnectorPoint PointX="4.90625" PointY="201.68484587760418" />
-          <ConnectorPoint PointX="5.666666666666667" PointY="201.68484587760418" />
-          <ConnectorPoint PointX="5.833333333333333" PointY="201.68484587760418" />
-          <ConnectorPoint PointX="6" PointY="201.68484587760418" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RouteVehicle">
-          <ConnectorPoint PointX="4.5" PointY="203.32184895833333" />
-          <ConnectorPoint PointX="4.666666666666667" PointY="203.32184895833333" />
-          <ConnectorPoint PointX="4.833333333333333" PointY="203.32184895833333" />
-          <ConnectorPoint PointX="5.666666666666667" PointY="203.32184895833333" />
-          <ConnectorPoint PointX="5.833333333333333" PointY="203.32184895833333" />
-          <ConnectorPoint PointX="6" PointY="203.32184895833333" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.RouteTask" Width="1.75" PointX="17.25" PointY="34" Height="2.1725878906250102" />
-        <AssociationConnector Association="CoreEntities.RouteTaskLocation">
-          <ConnectorPoint PointX="18.421878125" PointY="34" />
-          <ConnectorPoint PointX="18.421878125" PointY="22.220906645476184" />
-          <ConnectorPoint PointX="18.395833333333332" PointY="22.220906645476184" />
-          <ConnectorPoint PointX="18.229166666666668" PointY="22.220906645476184" />
-          <ConnectorPoint PointX="18.223963958333332" PointY="22.220906645476184" />
-          <ConnectorPoint PointX="18.026044791666667" PointY="22.220906645476184" />
-          <ConnectorPoint PointX="16.333333333333332" PointY="22.220906645476184" />
-          <ConnectorPoint PointX="16.166666666666668" PointY="22.220906645476184" />
-          <ConnectorPoint PointX="15.75" PointY="22.220906645476184" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RouteDestinationLocation">
-          <ConnectorPoint PointX="9.875" PointY="21.874492187499982" />
-          <ConnectorPoint PointX="9.875" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="10.197919166666667" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="10.364585833333335" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="12.510416666666666" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="12.677083333333334" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="15.291666666666666" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="15.458333333333334" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="18.166666666666668" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="18.333333333333332" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="18.479164166666667" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="18.708335833333333" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="18.75" PointY="22.254547526041662" />
-          <ConnectorPoint PointX="1.2333967968750002" PointY="205.24949218749998" />
-          <ConnectorPoint PointX="1.2333967968750002" PointY="205.65625" />
-          <ConnectorPoint PointX="1.6896175651041669" PointY="205.65625" />
-          <ConnectorPoint PointX="1.8562842317708335" PointY="205.65625" />
-          <ConnectorPoint PointX="4.010416666666667" PointY="205.65625" />
-          <ConnectorPoint PointX="4.177083333333333" PointY="205.65625" />
-          <ConnectorPoint PointX="4.666666666666667" PointY="205.65625" />
-          <ConnectorPoint PointX="4.833333333333333" PointY="205.65625" />
-          <ConnectorPoint PointX="4.916666666666667" PointY="205.65625" />
-          <ConnectorPoint PointX="5.083333333333333" PointY="205.65625" />
-          <ConnectorPoint PointX="6.916666666666667" PointY="205.65625" />
-          <ConnectorPoint PointX="7.083333333333333" PointY="205.65625" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="205.65625" />
-          <ConnectorPoint PointX="10.320318554687502" PointY="205.65625" />
-          <ConnectorPoint PointX="10.375" PointY="205.65625" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RouteTaskRouteDestination">
-          <ConnectorPoint PointX="13.375" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="11.083333333333334" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="10.916666666666666" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="10.239583333333334" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="10.072916666666666" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="4.833333333333333" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="4.666666666666667" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="1.7729508984375002" PointY="218.83869466145833" />
-          <ConnectorPoint PointX="1.7729508984375002" PointY="205.24949218749998" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RouteDestinationRoute">
-          <ConnectorPoint PointX="2.25" PointY="203.87474609375" />
-          <ConnectorPoint PointX="3" PointY="203.87474609375" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.VehicleMaintenanceLineItem" Width="2.375" PointX="9.875" PointY="8" Height="2.1725878906249818" />
-        <AssociationConnector Association="CoreEntities.VehicleMaintenanceLogEntryLineItem">
-          <ConnectorPoint PointX="2.28125" PointY="198.625" />
-          <ConnectorPoint PointX="2.28125" PointY="191.83629394531249" />
-          <ConnectorPoint PointX="6" PointY="191.83629394531249" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.Client" Width="1.5" PointX="10" PointY="13.5" Height="4.0956022135416674" />
-        <AssociationConnector Association="CoreEntities.RouteTaskClient">
-          <ConnectorPoint PointX="18.109378125" PointY="34" />
-          <ConnectorPoint PointX="18.109378125" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="16.333333333333332" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="16.166666666666668" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="15.493490520833333" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="15.326823854166666" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="14.911457083333334" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="14.744790416666666" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="14.208335833333335" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="13.947915416666666" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="13.708333333333334" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="13.541666666666666" PointY="16.741269233260251" />
-          <ConnectorPoint PointX="11.5" PointY="16.741269233260251" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.ServiceClient">
-          <ConnectorPoint PointX="5.375" PointY="196.72089680989583" />
-          <ConnectorPoint PointX="6.125" PointY="196.72089680989583" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RouteDestinationClient">
-          <ConnectorPoint PointX="1.46875" PointY="202.5" />
-          <ConnectorPoint PointX="1.46875" PointY="197.90839680989583" />
-          <ConnectorPoint PointX="2.1979166666666665" PointY="197.90839680989583" />
-          <ConnectorPoint PointX="2.3645833333333335" PointY="197.90839680989583" />
-          <ConnectorPoint PointX="5.416666666666667" PointY="197.90839680989583" />
-          <ConnectorPoint PointX="5.583333333333333" PointY="197.90839680989583" />
-          <ConnectorPoint PointX="6.125" PointY="197.90839680989583" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RouteTaskService">
-          <ConnectorPoint PointX="17.640623625000003" PointY="34" />
-          <ConnectorPoint PointX="17.640623625000003" PointY="32.614889322916667" />
-          <ConnectorPoint PointX="16.538578940766929" PointY="32.614889322916667" />
-          <ConnectorPoint PointX="16.371912274100264" PointY="32.614889322916667" />
-          <ConnectorPoint PointX="16.25" PointY="32.614889322916667" />
-          <ConnectorPoint PointX="16.25" PointY="13.307190755208332" />
-          <ConnectorPoint PointX="15.75" PointY="13.307190755208332" />
-          <ConnectorPoint PointX="15.75" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="15.153647708333333" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="14.986981041666665" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="14.911457083333334" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="14.744790416666666" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="14.528643958333335" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="14.361977291666667" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="13.708333333333334" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="13.541666666666666" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="10.833333333333334" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="10.666666666666666" PointY="12.468750499999999" />
-          <ConnectorPoint PointX="9.25" PointY="12.468750499999999" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.BusinessAccount" Width="1.5" PointX="14" PointY="28.75" Height="3.7109993489583246" />
-        <InheritanceConnector EntityType="CoreEntities.BusinessAccount" ManuallyRouted="false" >
-          <ConnectorPoint PointX="18.125" PointY="210.58608072916667" />
-          <ConnectorPoint PointX="18.125" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="15.583332145833333" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="15.416665479166666" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="15.270830958333333" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="15.104164291666665" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="14.770834583333334" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="14.479169166666667" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="14.333333333333334" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="14.166666666666666" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="12.333333333333334" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="12.166666666666666" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="11.875" PointY="212.18219075520835" />
-          <ConnectorPoint PointX="11.875" PointY="211.25" />
-          <ConnectorPoint PointX="10.977870860677085" PointY="211.25" />
-          <ConnectorPoint PointX="10.977870860677085" PointY="211.5" />
-        </InheritanceConnector>
-        <AssociationConnector Association="CoreEntities.BusinessAccountService">
-          <ConnectorPoint PointX="10.174480221354166" PointY="211.5" />
-          <ConnectorPoint PointX="10.174480221354166" PointY="195.20268375634765" />
-          <ConnectorPoint PointX="6.958333333333333" PointY="195.20268375634765" />
-          <ConnectorPoint PointX="6.791666666666667" PointY="195.20268375634765" />
-          <ConnectorPoint PointX="5.375" PointY="195.20268375634765" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.BusinessAccountRoute">
-          <ConnectorPoint PointX="10.205732721354167" PointY="211.5" />
-          <ConnectorPoint PointX="10.205732721354167" PointY="204.50934895833333" />
-          <ConnectorPoint PointX="9.9583333333333339" PointY="204.50934895833333" />
-          <ConnectorPoint PointX="9.7916666666666661" PointY="204.50934895833333" />
-          <ConnectorPoint PointX="5.833333333333333" PointY="204.50934895833333" />
-          <ConnectorPoint PointX="5.666666666666667" PointY="204.50934895833333" />
-          <ConnectorPoint PointX="4.833333333333333" PointY="204.50934895833333" />
-          <ConnectorPoint PointX="4.666666666666667" PointY="204.50934895833333" />
-          <ConnectorPoint PointX="4.5" PointY="204.50934895833333" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.BusinessAccountRouteTask">
-          <ConnectorPoint PointX="10.15625" PointY="215.21099934895833" />
-          <ConnectorPoint PointX="10.15625" PointY="220.07643191145832" />
-          <ConnectorPoint PointX="13.375" PointY="220.07643191145832" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.UserAccount" Width="1.5" PointX="11.625" PointY="36.625" Height="2.3648893229166674" />
-        <InheritanceConnector EntityType="CoreEntities.UserAccount" ManuallyRouted="false" >
-          <ConnectorPoint PointX="11" PointY="218.61488932291667" />
-          <ConnectorPoint PointX="11" PointY="219" />
-          <ConnectorPoint PointX="10.239583333333334" PointY="219" />
-          <ConnectorPoint PointX="10.072916666666666" PointY="219" />
-          <ConnectorPoint PointX="8.5" PointY="219" />
-          <ConnectorPoint PointX="8.5" PointY="219.375" />
-        </InheritanceConnector>
-        <AssociationConnector Association="CoreEntities.UserAccountUserAccountLogEntry">
-          <ConnectorPoint PointX="9.25" PointY="221.32738603580731" />
-          <ConnectorPoint PointX="17.25" PointY="221.32738603580731" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.ServiceTemplate" Width="2.125" PointX="18.25" PointY="10.75" Height="3.518697916666639" />
-        <AssociationConnector Association="CoreEntities.ServiceTemplateBusinessAccount">
-          <ConnectorPoint PointX="18.5546890625" PointY="14.460999348958334" />
-          <ConnectorPoint PointX="18.5546890625" PointY="29.591095377604177" />
-          <ConnectorPoint PointX="18.505211458333331" PointY="29.591095377604177" />
-          <ConnectorPoint PointX="18.338544791666667" PointY="29.591095377604177" />
-          <ConnectorPoint PointX="18.223963958333332" PointY="29.591095377604177" />
-          <ConnectorPoint PointX="18.026044791666667" PointY="29.591095377604177" />
-          <ConnectorPoint PointX="16.333333333333332" PointY="29.591095377604177" />
-          <ConnectorPoint PointX="16.041666666666668" PointY="29.591095377604177" />
-          <ConnectorPoint PointX="15.5" PointY="29.591095377604177" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.OptionsField" Width="1.5" PointX="22.75" PointY="14.75" Height="1.5956835937499818" IsExpanded="true" />
-        <InheritanceConnector EntityType="CoreEntities.OptionsField" ManuallyRouted="false" >
-          <ConnectorPoint PointX="21.125" PointY="11.25" />
-          <ConnectorPoint PointX="18" PointY="197.125" />
-          <ConnectorPoint PointX="18.249748012631454" PointY="197.125" />
-          <ConnectorPoint PointX="18.463579951248835" PointY="197.125" />
-          <ConnectorPoint PointX="19.625" PointY="197.125" />
-          <ConnectorPoint PointX="22.75" PointY="14.75" />
-        </InheritanceConnector>
-        <EntityTypeShape EntityType="CoreEntities.RecurringService" Width="1.5" PointX="16" PointY="10.5" Height="2.3648893229166106" />
-        <AssociationConnector Association="CoreEntities.RecurringServiceServiceTemplate">
-          <ConnectorPoint PointX="17.5" PointY="11.903595377604166" />
-          <ConnectorPoint PointX="18.010417916666668" PointY="11.903595377604166" />
-          <ConnectorPoint PointX="18.177084583333333" PointY="11.903595377604166" />
-          <ConnectorPoint PointX="18.25" PointY="11.903595377604166" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RecurringServiceService">
-          <ConnectorPoint PointX="12.125" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="11.251331801330137" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="11.084665134663469" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="10.904325606668678" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="10.73765894000201" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="10.557319412007219" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="10.390652745340551" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="10.208333333333334" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="6.958333333333333" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="6.791666666666667" PointY="194.47292285123697" />
-          <ConnectorPoint PointX="5.375" PointY="194.47292285123697" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RecurringServiceClient">
-          <ConnectorPoint PointX="12.125" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="11.251331801330137" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="11.084665134663469" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="10.904325606668678" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="10.73765894000201" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="10.557319412007219" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="10.390652745340551" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="10.208333333333334" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="6.875" PointY="193.83020892561848" />
-          <ConnectorPoint PointX="6.875" PointY="196.25" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.ClientServiceTemplate">
-          <ConnectorPoint PointX="11.5" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="13.791666666666666" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="13.958333333333334" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="14.666666666666666" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="14.833333333333334" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="14.947919166666667" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="15.114585833333335" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="16.166666666666668" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="16.333333333333332" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="18.010417916666668" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="18.177084583333333" PointY="13.980499674479166" />
-          <ConnectorPoint PointX="18.25" PointY="13.980499674479166" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.VehicleParty">
-          <ConnectorPoint PointX="12.375" PointY="19.875" />
-          <ConnectorPoint PointX="13.541666666666666" PointY="19.875" />
-          <ConnectorPoint PointX="13.708333333333334" PointY="19.875" />
-          <ConnectorPoint PointX="13.947915416666666" PointY="19.875" />
-          <ConnectorPoint PointX="14.208335833333335" PointY="19.875" />
-          <ConnectorPoint PointX="14.744790416666666" PointY="19.875" />
-          <ConnectorPoint PointX="14.911457083333334" PointY="19.875" />
-          <ConnectorPoint PointX="15.326823854166666" PointY="19.875" />
-          <ConnectorPoint PointX="15.493490520833333" PointY="19.875" />
-          <ConnectorPoint PointX="16.166666666666668" PointY="19.875" />
-          <ConnectorPoint PointX="16.333333333333332" PointY="19.875" />
-          <ConnectorPoint PointX="18.026044791666667" PointY="19.875" />
-          <ConnectorPoint PointX="18.223963958333332" PointY="19.875" />
-          <ConnectorPoint PointX="18.471355729166667" PointY="19.875" />
-          <ConnectorPoint PointX="18.638022395833332" PointY="19.875" />
-          <ConnectorPoint PointX="19.86328125" PointY="19.875" />
-          <ConnectorPoint PointX="19.86328125" PointY="22.875" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.ServiceServiceTemplate">
-          <ConnectorPoint PointX="9.25" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="10.666666666666666" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="10.833333333333334" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="13.791666666666666" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="13.958333333333334" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="14.197914166666665" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="14.364580833333333" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="14.666666666666666" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="14.833333333333334" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="14.947919166666667" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="15.114585833333335" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="15.666666666666666" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="15.833333333333334" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="18.010417916666668" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="18.177084583333333" PointY="13.150940755208332" />
-          <ConnectorPoint PointX="18.25" PointY="13.150940755208332" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.PartyRole">
-          <ConnectorPoint PointX="16.75" PointY="207.58898466428121" />
-          <ConnectorPoint PointX="17.5" PointY="207.58898466428121" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.PartyRole1">
-          <ConnectorPoint PointX="16.75" PointY="206.66949233214061" />
-          <ConnectorPoint PointX="17.5" PointY="206.66949233214061" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.Region" Width="1.5" PointX="12" PointY="23.125" Height="2.3648893229166674" />
-        <AssociationConnector Association="CoreEntities.RegionLocation">
-          <ConnectorPoint PointX="9.625" PointY="207.05744466145833" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="207.05744466145833" />
-          <ConnectorPoint PointX="10.320318554687502" PointY="207.05744466145833" />
-          <ConnectorPoint PointX="10.375" PointY="207.05744466145833" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.BusinessAccountRegion">
-          <ConnectorPoint PointX="10.125" PointY="213.35549967447918" />
-          <ConnectorPoint PointX="8.875" PointY="213.35549967447918" />
-          <ConnectorPoint PointX="8.875" PointY="208.23988932291667" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.File" Width="1.5" PointX="16.5" PointY="30" Height="1.9802864583333246" />
-        <AssociationConnector Association="CoreEntities.LocationFile">
-          <ConnectorPoint PointX="11.874999999999966" PointY="210.06671223958333" />
-          <ConnectorPoint PointX="12.25" PointY="210.44171223958335" />
-          <ConnectorPoint PointX="12.25" PointY="213.93244466145833" />
-          <ConnectorPoint PointX="12.625" PointY="213.93244466145833" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.SubLocation" Width="1.5" PointX="16.5" PointY="26.625" Height="2.557190755208353" />
-        <AssociationConnector Association="CoreEntities.LocationSubLocation">
-          <ConnectorPoint PointX="11.875" PointY="209.72085611979168" />
-          <ConnectorPoint PointX="12.291666666666666" PointY="209.72085611979168" />
-          <ConnectorPoint PointX="12.458333333333334" PointY="209.72085611979168" />
-          <ConnectorPoint PointX="12.625" PointY="209.72085611979168" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.Employee" Width="1.5" PointX="9.125" PointY="23.5" Height="4.4802050781249818" />
-        <AssociationConnector Association="CoreEntities.EmployeeUserAccount">
-          <ConnectorPoint PointX="6.75" PointY="209.21117179667655" />
-          <ConnectorPoint PointX="6.916666666666667" PointY="209.21117179667655" />
-          <ConnectorPoint PointX="7.083333333333333" PointY="209.21117179667655" />
-          <ConnectorPoint PointX="7.90625" PointY="209.21117179667655" />
-          <ConnectorPoint PointX="7.90625" PointY="219.375" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.EmployeeBusinessAccount">
-          <ConnectorPoint PointX="6.75" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="6.916666666666667" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="7.083333333333333" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="8.7916666666666661" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="8.9583333333333339" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="10.2578135546875" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="10.268237721354169" PointY="210.30230544270836" />
-          <ConnectorPoint PointX="10.268237721354169" PointY="211.5" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.EmployeePerson">
-          <ConnectorPoint PointX="6.7499999999999662" PointY="210.53790364583333" />
-          <ConnectorPoint PointX="6.9410744349011209" PointY="210.72897808073446" />
-          <ConnectorPoint PointX="7.0589255650988791" PointY="210.84682921093224" />
-          <ConnectorPoint PointX="7.125" PointY="210.91290364583335" />
-          <ConnectorPoint PointX="7.125" PointY="217.848779564887" />
-          <ConnectorPoint PointX="7.822916666666667" PointY="217.848779564887" />
-          <ConnectorPoint PointX="7.989583333333333" PointY="217.848779564887" />
-          <ConnectorPoint PointX="10.072916666666666" PointY="217.848779564887" />
-          <ConnectorPoint PointX="10.239583333333334" PointY="217.848779564887" />
-          <ConnectorPoint PointX="10.25" PointY="217.848779564887" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.RecurringServiceRepeat">
-          <ConnectorPoint PointX="12.875" PointY="193.25" />
-          <ConnectorPoint PointX="12.875" PointY="191.40359537760418" />
-          <ConnectorPoint PointX="14.375" PointY="191.40359537760418" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.NumericField" Width="1.5" PointX="29.625" PointY="14.75" Height="1.980286458333353" />
-        <InheritanceConnector EntityType="CoreEntities.NumericField" ManuallyRouted="false" >
-          <ConnectorPoint PointX="21.125" PointY="11.25" />
-          <ConnectorPoint PointX="18" PointY="197.125" />
-          <ConnectorPoint PointX="18.249748012631454" PointY="197.125" />
-          <ConnectorPoint PointX="18.463579951248835" PointY="197.125" />
-          <ConnectorPoint PointX="19.947919166666669" PointY="197.125" />
-          <ConnectorPoint PointX="20.114585833333333" PointY="197.125" />
-          <ConnectorPoint PointX="20.680507634741186" PointY="197.125" />
-          <ConnectorPoint PointX="20.847174301407851" PointY="197.125" />
-          <ConnectorPoint PointX="21.961646104637882" PointY="197.125" />
-          <ConnectorPoint PointX="22.128312771304547" PointY="197.125" />
-          <ConnectorPoint PointX="26.5" PointY="197.125" />
-          <ConnectorPoint PointX="29.625" PointY="14.75" />
-        </InheritanceConnector>
-        <EntityTypeShape EntityType="CoreEntities.DateTimeField" Width="1.5" PointX="27.375" PointY="14.75" Height="1.7879850260416674" />
-        <InheritanceConnector EntityType="CoreEntities.DateTimeField" ManuallyRouted="false" >
-          <ConnectorPoint PointX="21.125" PointY="11.25" />
-          <ConnectorPoint PointX="18" PointY="197.125" />
-          <ConnectorPoint PointX="18.249748012631454" PointY="197.125" />
-          <ConnectorPoint PointX="18.463579951248835" PointY="197.125" />
-          <ConnectorPoint PointX="19.947919166666669" PointY="197.125" />
-          <ConnectorPoint PointX="20.114585833333333" PointY="197.125" />
-          <ConnectorPoint PointX="20.680507634741186" PointY="197.125" />
-          <ConnectorPoint PointX="20.847174301407851" PointY="197.125" />
-          <ConnectorPoint PointX="21.961646104637882" PointY="197.125" />
-          <ConnectorPoint PointX="22.128312771304547" PointY="197.125" />
-          <ConnectorPoint PointX="24.25" PointY="197.125" />
-          <ConnectorPoint PointX="27.375" PointY="14.75" />
-        </InheritanceConnector>
-        <EntityTypeShape EntityType="CoreEntities.EmployeeHistoryEntry" Width="1.5" PointX="9.125" PointY="29.625" Height="2.3648893229166106" />
-        <AssociationConnector Association="CoreEntities.EmployeeHistoryEntryEmployee">
-          <ConnectorPoint PointX="5.9687474999999832" PointY="212.375" />
-          <ConnectorPoint PointX="5.9687474999999832" PointY="210.53790364583333" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.ServiceTemplateServiceTemplate">
-          <ConnectorPoint PointX="15.128557692307693" PointY="193.5" />
-          <ConnectorPoint PointX="15.128557692307693" PointY="193.25" />
-          <ConnectorPoint PointX="15.761153846153846" PointY="193.25" />
-          <ConnectorPoint PointX="15.761153846153846" PointY="193.5" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.FieldField">
-          <ConnectorPoint PointX="17.781923076923075" PointY="194" />
-          <ConnectorPoint PointX="17.781923076923075" PointY="193.75" />
-          <ConnectorPoint PointX="18.228461538461538" PointY="193.75" />
-          <ConnectorPoint PointX="18.228461538461538" PointY="194" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.Option" Width="1.5" PointX="25.875" PointY="9.75" Height="2.364889322916639" />
-        <AssociationConnector Association="CoreEntities.OptionsFieldOption">
-          <ConnectorPoint PointX="20.0312525" PointY="197.5" />
-          <ConnectorPoint PointX="20.0312525" PointY="193.68244466145831" />
-          <ConnectorPoint PointX="22" PointY="193.68244466145831" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.LocationOption" Width="1.5" PointX="25.875" PointY="12.5" Height="1.0187792968749818" />
-        <InheritanceConnector EntityType="CoreEntities.LocationOption" ManuallyRouted="false" >
-          <ConnectorPoint PointX="25.875" PointY="12.114889322916639" />
-          <ConnectorPoint PointX="22.75" PointY="195.05744466145831" />
-          <ConnectorPoint PointX="25.875" PointY="12.5" />
-        </InheritanceConnector>
-        <AssociationConnector Association="CoreEntities.ServiceTemplateField">
-          <ConnectorPoint PointX="16.5" PointY="195.47089680989583" />
-          <ConnectorPoint PointX="17.25" PointY="195.47089680989583" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.LocationField" Width="1.5" PointX="25.125" PointY="17.375" Height="1.5956835937499818" />
-        <InheritanceConnector EntityType="CoreEntities.LocationField" ManuallyRouted="false" >
-          <ConnectorPoint PointX="21.125" PointY="11.25" />
-          <ConnectorPoint PointX="18" PointY="199.75" />
-          <ConnectorPoint PointX="18.204518168293014" PointY="199.75" />
-          <ConnectorPoint PointX="18.419081453293863" PointY="199.75" />
-          <ConnectorPoint PointX="20.635712412898183" PointY="199.75" />
-          <ConnectorPoint PointX="20.802379079564847" PointY="199.75" />
-          <ConnectorPoint PointX="22" PointY="199.75" />
-          <ConnectorPoint PointX="25.125" PointY="17.375" />
-        </InheritanceConnector>
-        <AssociationConnector Association="CoreEntities.LocationFieldLocation">
-          <ConnectorPoint PointX="25.90625" PointY="18.970683593749982" />
-          <ConnectorPoint PointX="25.90625" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="25.786333434866933" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="25.613450435065403" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="25.119694611216506" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="24.908048506578634" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="22.699715173245295" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="22.533048506578631" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="21.021033004707039" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="20.851721208987815" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="20.614583333333332" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="20.447916666666668" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="19.946614583333332" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="19.779947916666668" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="18.638022395833332" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="18.229166666666671" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="18.223963958333332" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="18.026044791666667" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="16.333333333333332" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="16.166666666666668" PointY="22.547955822738086" />
-          <ConnectorPoint PointX="15.75" PointY="22.547955822738086" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.Invoice" Width="1.5" PointX="13.75" PointY="4.25" Height="3.9033007812499818" />
-        <AssociationConnector Association="CoreEntities.InvoiceLocation">
-          <ConnectorPoint PointX="11.156309787556104" PointY="191.86480794270833" />
-          <ConnectorPoint PointX="11.156309787556104" PointY="204.625" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.SalesTerm" Width="1.5" PointX="17.25" PointY="4.5" Height="1.5956835937499818" />
-        <AssociationConnector Association="CoreEntities.InvoiceSalesTerm">
-          <ConnectorPoint PointX="11.375" PointY="188.14399251302081" />
-          <ConnectorPoint PointX="13.375" PointY="188.14399251302081" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.InvoiceServiceTemplate">
-          <ConnectorPoint PointX="14.2812475" PointY="9.1148079427083335" />
-          <ConnectorPoint PointX="14.2812475" PointY="13.612592714843755" />
-          <ConnectorPoint PointX="14.666666666666666" PointY="13.612592714843755" />
-          <ConnectorPoint PointX="14.833333333333334" PointY="13.612592714843755" />
-          <ConnectorPoint PointX="14.947919166666667" PointY="13.612592714843755" />
-          <ConnectorPoint PointX="15.114585833333335" PointY="13.612592714843755" />
-          <ConnectorPoint PointX="16.166666666666668" PointY="13.612592714843755" />
-          <ConnectorPoint PointX="16.333333333333332" PointY="13.612592714843755" />
-          <ConnectorPoint PointX="18.010417916666668" PointY="13.612592714843755" />
-          <ConnectorPoint PointX="18.177084583333333" PointY="13.612592714843755" />
-          <ConnectorPoint PointX="18.25" PointY="13.612592714843755" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.LineItem" Width="1.5" PointX="11.625" PointY="4.75" Height="1.9802864583333246" />
-        <AssociationConnector Association="CoreEntities.LineItemInvoice">
-          <ConnectorPoint PointX="9.25" PointY="188.49014322916668" />
-          <ConnectorPoint PointX="9.875" PointY="188.49014322916668" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.PartyImage" Width="1.5" PointX="23.625" PointY="28.25" Height="1.211080729166639" />
-        <InheritanceConnector EntityType="CoreEntities.PartyImage" >
-          <ConnectorPoint PointX="13.375" PointY="212.75" />
-          <ConnectorPoint PointX="13.375" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="14.166666666666666" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="14.333333333333334" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="14.444986979166666" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="14.611653645833334" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="15.104164291666665" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="15.270830958333333" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="15.416665479166666" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="15.583332145833333" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="20.5" PointY="212.58608072916661" />
-          <ConnectorPoint PointX="20.5" PointY="212.21108072916664" />
-        </InheritanceConnector>
-        <AssociationConnector Association="CoreEntities.FileParty">
-          <ConnectorPoint PointX="18" PointY="31.182444661458334" />
-          <ConnectorPoint PointX="18.010417916666668" PointY="31.182444661458334" />
-          <ConnectorPoint PointX="18.208335833333336" PointY="31.182444661458334" />
-          <ConnectorPoint PointX="18.276044166666669" PointY="31.182444661458334" />
-          <ConnectorPoint PointX="18.442710833333333" PointY="31.182444661458334" />
-          <ConnectorPoint PointX="18.510799431187397" PointY="31.182444661458334" />
-          <ConnectorPoint PointX="18.702363598752111" PointY="31.182444661458334" />
-          <ConnectorPoint PointX="19.6875" PointY="31.182444661458334" />
-          <ConnectorPoint PointX="19.6875" PointY="26.009095052083332" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.PartyPartyImage">
-          <ConnectorPoint PointX="16.3125025" PointY="208.75909505208333" />
-          <ConnectorPoint PointX="16.3125025" PointY="211.59109537760418" />
-          <ConnectorPoint PointX="18.041666666666668" PointY="211.59109537760418" />
-          <ConnectorPoint PointX="18.208333333333332" PointY="211.59109537760418" />
-          <ConnectorPoint PointX="19.75" PointY="211.59109537760418" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.BusinessAccountInvoice">
-          <ConnectorPoint PointX="10.977870860677085" PointY="211.5" />
-          <ConnectorPoint PointX="10.977870860677085" PointY="210.56671223958335" />
-          <ConnectorPoint PointX="10.351571054687502" PointY="210.56671223958335" />
-          <ConnectorPoint PointX="10.153651888020834" PointY="210.56671223958335" />
-          <ConnectorPoint PointX="10.125" PointY="210.56671223958335" />
-          <ConnectorPoint PointX="10.125" PointY="192.11480794270835" />
-          <ConnectorPoint PointX="9.625" PointY="192.11480794270835" />
-          <ConnectorPoint PointX="9.625" PointY="190.20872758593751" />
-          <ConnectorPoint PointX="9.875" PointY="190.20872758593751" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.ClientInvoice">
-          <ConnectorPoint PointX="7.625" PointY="197.47773880264663" />
-          <ConnectorPoint PointX="10.041666666666666" PointY="197.47773880264663" />
-          <ConnectorPoint PointX="10.2578135546875" PointY="197.47773880264663" />
-          <ConnectorPoint PointX="10.820992273335344" PointY="197.47773880264663" />
-          <ConnectorPoint PointX="10.820992273335344" PointY="191.86480794270833" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="CoreEntities.Error" Width="1.5" PointX="9" PointY="4.625" Height="2.1725878906249818" />
-        <EntityTypeShape EntityType="CoreEntities.PartyWithName" Width="1.5" PointX="21.125" PointY="20" Height="1.4033821614583246" />
-        <EntityTypeShape EntityType="CoreEntities.ServiceTemplateWithVendorId" Width="1.5" PointX="20.625" PointY="8.625" />
-        <AssociationConnector Association="CoreEntities.RouteTaskRecurringService">
-          <ConnectorPoint PointX="18.140630625" PointY="34" />
-          <ConnectorPoint PointX="18.140630625" PointY="10.59375" />
-          <ConnectorPoint PointX="17.5" PointY="10.59375" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.BusinessAccountLocation">
-          <ConnectorPoint PointX="15.152344781250001" PointY="28.75" />
-          <ConnectorPoint PointX="15.152344781250001" PointY="27.701315104166667" />
-        </AssociationConnector>
-        <AssociationConnector Association="CoreEntities.EmployeeRoute" />
-        <AssociationConnector Association="CoreEntities.ClientBusinessAccount" />
-        <AssociationConnector Association="CoreEntities.LocationBusinessAccount" />
-        <AssociationConnector Association="CoreEntities.ClientLocation1" />
-        <AssociationConnector Association="CoreEntities.ClientContactInfo" />
-      </Diagram>
-    </edmx:Diagrams>
+    <edmx:Diagrams></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

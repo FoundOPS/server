@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/14/2012 15:41:42
+-- Date Created: 06/15/2012 13:08:59
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -67,12 +67,6 @@ IF OBJECT_ID(N'[dbo].[FK_EmployeeHistoryEntryEmployee]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_EmployeePerson]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeePerson];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EmployeeRoute_Employee]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EmployeeRoute] DROP CONSTRAINT [FK_EmployeeRoute_Employee];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EmployeeRoute_Route]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EmployeeRoute] DROP CONSTRAINT [FK_EmployeeRoute_Route];
 GO
 IF OBJECT_ID(N'[dbo].[FK_EmployeeUserAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeUserAccount];
@@ -243,9 +237,6 @@ IF OBJECT_ID(N'[dbo].[ContactInfoSet]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[EmployeeHistoryEntries]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EmployeeHistoryEntries];
-GO
-IF OBJECT_ID(N'[dbo].[EmployeeRoute]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EmployeeRoute];
 GO
 IF OBJECT_ID(N'[dbo].[Employees]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Employees];
@@ -846,10 +837,10 @@ CREATE TABLE [dbo].[PartyRole] (
 );
 GO
 
--- Creating table 'EmployeeRoute'
-CREATE TABLE [dbo].[EmployeeRoute] (
-    [Employees_Id] uniqueidentifier  NOT NULL,
-    [Routes_Id] uniqueidentifier  NOT NULL
+-- Creating table 'RouteEmployee'
+CREATE TABLE [dbo].[RouteEmployee] (
+    [Routes_Id] uniqueidentifier  NOT NULL,
+    [Employees_Id] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -1121,10 +1112,10 @@ ADD CONSTRAINT [PK_PartyRole]
     PRIMARY KEY NONCLUSTERED ([MemberParties_Id], [RoleMembership_Id] ASC);
 GO
 
--- Creating primary key on [Employees_Id], [Routes_Id] in table 'EmployeeRoute'
-ALTER TABLE [dbo].[EmployeeRoute]
-ADD CONSTRAINT [PK_EmployeeRoute]
-    PRIMARY KEY NONCLUSTERED ([Employees_Id], [Routes_Id] ASC);
+-- Creating primary key on [Routes_Id], [Employees_Id] in table 'RouteEmployee'
+ALTER TABLE [dbo].[RouteEmployee]
+ADD CONSTRAINT [PK_RouteEmployee]
+    PRIMARY KEY NONCLUSTERED ([Routes_Id], [Employees_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -1828,29 +1819,6 @@ ON [dbo].[Locations]
     ([BusinessAccountIdIfDepot]);
 GO
 
--- Creating foreign key on [Employees_Id] in table 'EmployeeRoute'
-ALTER TABLE [dbo].[EmployeeRoute]
-ADD CONSTRAINT [FK_EmployeeRoute_Employee]
-    FOREIGN KEY ([Employees_Id])
-    REFERENCES [dbo].[Employees]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Routes_Id] in table 'EmployeeRoute'
-ALTER TABLE [dbo].[EmployeeRoute]
-ADD CONSTRAINT [FK_EmployeeRoute_Route]
-    FOREIGN KEY ([Routes_Id])
-    REFERENCES [dbo].[Routes]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EmployeeRoute_Route'
-CREATE INDEX [IX_FK_EmployeeRoute_Route]
-ON [dbo].[EmployeeRoute]
-    ([Routes_Id]);
-GO
-
 -- Creating foreign key on [BusinessAccountId] in table 'Clients'
 ALTER TABLE [dbo].[Clients]
 ADD CONSTRAINT [FK_ClientBusinessAccount]
@@ -1907,13 +1875,36 @@ ON [dbo].[ContactInfoSet]
     ([ClientId]);
 GO
 
+-- Creating foreign key on [Routes_Id] in table 'RouteEmployee'
+ALTER TABLE [dbo].[RouteEmployee]
+ADD CONSTRAINT [FK_RouteEmployee_Route]
+    FOREIGN KEY ([Routes_Id])
+    REFERENCES [dbo].[Routes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Employees_Id] in table 'RouteEmployee'
+ALTER TABLE [dbo].[RouteEmployee]
+ADD CONSTRAINT [FK_RouteEmployee_Employee]
+    FOREIGN KEY ([Employees_Id])
+    REFERENCES [dbo].[Employees]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RouteEmployee_Employee'
+CREATE INDEX [IX_FK_RouteEmployee_Employee]
+ON [dbo].[RouteEmployee]
+    ([Employees_Id]);
+GO
+
 -- Creating foreign key on [Id] in table 'Parties_Business'
 ALTER TABLE [dbo].[Parties_Business]
 ADD CONSTRAINT [FK_Business_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'
@@ -1922,7 +1913,7 @@ ADD CONSTRAINT [FK_BusinessAccount_inherits_Business]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Business]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Person'
@@ -1931,7 +1922,7 @@ ADD CONSTRAINT [FK_Person_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_UserAccount'
@@ -1940,7 +1931,7 @@ ADD CONSTRAINT [FK_UserAccount_inherits_Person]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties_Person]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_OptionsField'
@@ -1949,7 +1940,7 @@ ADD CONSTRAINT [FK_OptionsField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_LocationField'
@@ -1958,7 +1949,7 @@ ADD CONSTRAINT [FK_LocationField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Files_PartyImage'
@@ -1967,7 +1958,7 @@ ADD CONSTRAINT [FK_PartyImage_inherits_File]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Files]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_TextBoxField'
@@ -1976,7 +1967,7 @@ ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_NumericField'
@@ -1985,7 +1976,7 @@ ADD CONSTRAINT [FK_NumericField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Fields_DateTimeField'
@@ -1994,7 +1985,7 @@ ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Options_LocationOption'
@@ -2003,7 +1994,7 @@ ADD CONSTRAINT [FK_LocationOption_inherits_Option]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Options]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------
