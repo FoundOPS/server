@@ -136,7 +136,7 @@ namespace FoundOps.Common.Silverlight.Converters
         {
             var dateTime = (DateTime)value;
 
-            if (dateTime.Date < DateTime.UtcNow.Date)
+            if (dateTime.ToUniversalTime().Date < DateTime.UtcNow.Date)
                 return false;
 
             return true;

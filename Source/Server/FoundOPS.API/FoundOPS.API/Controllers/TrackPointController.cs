@@ -166,7 +166,7 @@ namespace FoundOPS.API.Controllers
         /// <param name="modelTrackPoints">The list of TrackPoints being passed from an Employee's device</param>
         /// <param name="routeId">The Id of the Route that the Employee is currently on</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        public HttpResponseMessage<TrackPoint[]> PostEmployeeTrackPoint(TrackPoint[] modelTrackPoints, Guid routeId)
+        public HttpResponseMessage PostEmployeeTrackPoint(TrackPoint[] modelTrackPoints, Guid routeId)
         {
             var currentUserAccount = AuthenticationLogic.CurrentUserAccount(_coreEntitiesContainer);
 
@@ -174,7 +174,7 @@ namespace FoundOPS.API.Controllers
             //a) if there is no UserAccount
             //b) the user does not have access to the business account of the route
             if (currentUserAccount == null)
-                return new HttpResponseMessage<TrackPoint[]>(modelTrackPoints, HttpStatusCode.Unauthorized);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, modelTrackPoints);
 
             //Provides an HTTP response back to the Mobile Phone to signal either a successful or unseccessful POST
             return PostTrackPointHelper(currentUserAccount.Id, null, modelTrackPoints, routeId);
@@ -260,7 +260,7 @@ namespace FoundOPS.API.Controllers
         /// <param name="modelTrackPoints">The list of TrackPoints being passed from either an Employees device or a device on a Vehicle</param>
         /// <param name="routeId">The Id of the Route that the vehicle or employee are currently on</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created or that an error occurred</returns>
-        private HttpResponseMessage<TrackPoint[]> PostTrackPointHelper(Guid? employeeId, Guid? vehicleId, TrackPoint[] modelTrackPoints, Guid routeId)
+        private HttpResponseMessage PostTrackPointHelper(Guid? employeeId, Guid? vehicleId, TrackPoint[] modelTrackPoints, Guid routeId)
         {
             //Take the list of TrackPoints passed and order them by their TimeStamps
             var orderedModelTrackPoints = modelTrackPoints.OrderBy(tp => tp.CollectedTimeStamp).ToArray();
@@ -272,7 +272,7 @@ namespace FoundOPS.API.Controllers
 
             //if the current business account for the route is not found, the user is not authorized for that business account (or the route does not exist)
             if(currentBusinessAccount == null)
-                return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
 
             if (employeeId != null)
             {
@@ -280,7 +280,7 @@ namespace FoundOPS.API.Controllers
                         e => e.EmployerId == currentBusinessAccount.Id && e.LinkedUserAccount.Id == employeeId);
 
                 if (employee == null)
-                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
 
                 #region Save the last TrackPoint passed to the database
 
@@ -304,7 +304,7 @@ namespace FoundOPS.API.Controllers
 
                 //If there is no Vehicle that corresponds to the vehicleId passed, something went wrong => return a BadRequest status code
                 if (vehicle == null)
-                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
 
                 #region Save the last TrackPoint passed to the database
 
@@ -329,7 +329,7 @@ namespace FoundOPS.API.Controllers
             _coreEntitiesContainer.SaveChanges();
 
             //Create the Http response 
-            var response = new HttpResponseMessage<TrackPoint[]>(modelTrackPoints, HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created, modelTrackPoints);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/trackpoints/" + employeeOrVehicleId.ToString());
 
             //Return the response

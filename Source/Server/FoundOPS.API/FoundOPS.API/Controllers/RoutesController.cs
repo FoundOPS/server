@@ -1,11 +1,10 @@
-﻿using System.Web.Http.SelfHost;
+﻿using System.Data.Entity;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Route = FoundOPS.API.Models.Route;
 using Location = FoundOPS.API.Models.Location;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 

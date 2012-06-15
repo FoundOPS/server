@@ -33,10 +33,10 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
-            var routesDateOnly = dateOfRoutes.Date;
+            var routesDateOnly = dateOfRoutes.ToUniversalTime().Date;
 
             var routes =
-                ((ObjectQuery<Route>)this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Date == routesDateOnly))
+                this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Date == routesDateOnly)
                 .Include(r => r.RouteDestinations).Include("RouteDestinations.Location").Include("RouteDestinations.RouteTasks").Include("RouteDestinations.RouteTasks.Client");
 
             return routes.OrderBy(r => r.Name);
@@ -147,6 +147,12 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             this.ObjectContext.DetachExistingAndAttach(route);
 
+            //route.Employees.Load();
+            //route.Employees.Clear();
+
+            //route.Vehicles.Load();
+            //route.Vehicles.Clear();
+            
             route.RouteDestinations.Load();
             foreach (var routeDestination in route.RouteDestinations.ToArray())
                 DeleteRouteDestination(routeDestination);
