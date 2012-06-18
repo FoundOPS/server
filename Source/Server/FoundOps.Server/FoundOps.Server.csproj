@@ -225,9 +225,6 @@
     <Content Include="Silverlight.js" />
     <Content Include="Views\Shared\HomeLinkView.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
@@ -313,6 +310,26 @@
     <Content Include="Views\Tools\ClearHistoricalTrackPoints.cshtml" />
     <Content Include="Views\Home\MapView.cshtml" />
     <Content Include="Views\Tools\CreateHistoricalTrackPoints.cshtml" />
+    <Content Include="Web.base.config" />
+    <Content Include="Web.base.TestRelease.config">
+      <DependentUpon>Web.base.config</DependentUpon>
+    </Content>
+    <Content Include="Web.base.Debug.config">
+      <DependentUpon>Web.base.config</DependentUpon>
+    </Content>
+    <Content Include="Web.base.Release.config">
+      <DependentUpon>Web.base.config</DependentUpon>
+    </Content>
+    <Content Include="Web.config" />
+    <Content Include="Web.TestRelease.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -364,11 +381,10 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
+  <!--<Target Name="BeforeBuild">
+  </Target>-->
+  <UsingTask TaskName="TransformXml" AssemblyFile="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\Web\Microsoft.Web.Publishing.Tasks.dll" />
   <Target Name="AfterBuild">
+    <TransformXml Source="Web.base.config" Transform="Web.base.$(Configuration).config" Destination="Web.config" StackTrace="true" />
   </Target>
-  -->
 </Project>

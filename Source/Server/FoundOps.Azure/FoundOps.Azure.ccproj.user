@@ -17,7 +17,8 @@
     <TimestampLabel>True</TimestampLabel>
     <WebRoleSkipLaunchInBrowser>
     </WebRoleSkipLaunchInBrowser>
-    <WebRoleHttpsSkipLaunchInBrowser>FoundOps.Server</WebRoleHttpsSkipLaunchInBrowser>
+    <WebRoleHttpsSkipLaunchInBrowser>
+    </WebRoleHttpsSkipLaunchInBrowser>
     <ActivePublishProfile>FoundOpsTest</ActivePublishProfile>
     <DeploymentPromptBeforeUpgrading>False</DeploymentPromptBeforeUpgrading>
     <LocalProfile>Default</LocalProfile>
