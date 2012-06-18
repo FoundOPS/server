@@ -23,7 +23,7 @@ namespace FoundOps.Server.Services.CoreDomainService
     ///   Role <--> Block
     ///   Route <--> Vehicle
     ///   Party <--> Role
-    ///   Employee <--> Route
+    ///   Route <--> Employee
     ///
     /// We use stub entities to represent entities for which only the foreign key property is available in join type objects.
     ///
@@ -262,80 +262,80 @@ namespace FoundOps.Server.Services.CoreDomainService
             party.RoleMembership.Remove(role);
         }
         [Obsolete("This method is only intended for use by the RIA M2M solution")]
-        public void InsertEmployeeRoute(EmployeeRoute employeeRoute)
+        public void InsertRouteEmployee(RouteEmployee routeEmployee)
         {
-            Employee employee = employeeRoute.Employee;
-            if(employee == null)
-            {
-			   employee = ChangeSet.ChangeSetEntries.Select(cse => cse.Entity)
-			      .OfType<Employee>()
-				  .SingleOrDefault(e => e.Id == employeeRoute.EmployeeId );
-			}
-            if(employee == null)
-            {
-                Employee employeeStubEntity = new Employee { Id = employeeRoute.EmployeeId };
-                employee = GetEntityByKey<Employee>(ObjectContext, "Employees", employeeStubEntity);
-            }
-            Route route = employeeRoute.Route;
+            Route route = routeEmployee.Route;
             if(route == null)
             {
 			   route = ChangeSet.ChangeSetEntries.Select(cse => cse.Entity)
 			      .OfType<Route>()
-				  .SingleOrDefault(e => e.Id == employeeRoute.RouteId );
+				  .SingleOrDefault(e => e.Id == routeEmployee.RouteId );
 			}
             if(route == null)
             {
-                Route routeStubEntity = new Route { Id = employeeRoute.RouteId };
+                Route routeStubEntity = new Route { Id = routeEmployee.RouteId };
                 route = GetEntityByKey<Route>(ObjectContext, "Routes", routeStubEntity);
             }
-            employee.Routes.Add(route);
+            Employee employee = routeEmployee.Employee;
+            if(employee == null)
+            {
+			   employee = ChangeSet.ChangeSetEntries.Select(cse => cse.Entity)
+			      .OfType<Employee>()
+				  .SingleOrDefault(e => e.Id == routeEmployee.EmployeeId );
+			}
+            if(employee == null)
+            {
+                Employee employeeStubEntity = new Employee { Id = routeEmployee.EmployeeId };
+                employee = GetEntityByKey<Employee>(ObjectContext, "Employees", employeeStubEntity);
+            }
+            route.Employees.Add(employee);
         }
         [Obsolete("This method is only intended for use by the RIA M2M solution")]
-        public void DeleteEmployeeRoute(EmployeeRoute employeeRoute)
+        public void DeleteRouteEmployee(RouteEmployee routeEmployee)
         {
-            Employee employee = employeeRoute.Employee;
-            if(employee == null)
-            {
-			   employee = ChangeSet.ChangeSetEntries.Select(cse => cse.Entity)
-			      .OfType<Employee>()
-				  .SingleOrDefault(e => e.Id == employeeRoute.EmployeeId );
-			}
-            if(employee == null)
-            {
-                Employee employeeStubEntity = new Employee { Id = employeeRoute.EmployeeId };
-                employee = GetEntityByKey<Employee>(ObjectContext, "Employees", employeeStubEntity);
-            }
-            Route route = employeeRoute.Route;
+            Route route = routeEmployee.Route;
             if(route == null)
             {
 			   route = ChangeSet.ChangeSetEntries.Select(cse => cse.Entity)
 			      .OfType<Route>()
-				  .SingleOrDefault(e => e.Id == employeeRoute.RouteId );
+				  .SingleOrDefault(e => e.Id == routeEmployee.RouteId );
 			}
             if(route == null)
             {
-                Route routeStubEntity = new Route { Id = employeeRoute.RouteId };
+                Route routeStubEntity = new Route { Id = routeEmployee.RouteId };
                 route = GetEntityByKey<Route>(ObjectContext, "Routes", routeStubEntity);
             }
-            if(employee.Routes.IsLoaded == false)
+            Employee employee = routeEmployee.Employee;
+            if(employee == null)
             {
-			    // We can't attach route if employee is deleted. In that case we
-				// temporarily reset the entity state of employee, then attach route
-				// and set the entity state of employee back to EntityState.Deleted.
-                ObjectStateEntry stateEntry = ObjectContext.ObjectStateManager.GetObjectStateEntry(employee);
+			   employee = ChangeSet.ChangeSetEntries.Select(cse => cse.Entity)
+			      .OfType<Employee>()
+				  .SingleOrDefault(e => e.Id == routeEmployee.EmployeeId );
+			}
+            if(employee == null)
+            {
+                Employee employeeStubEntity = new Employee { Id = routeEmployee.EmployeeId };
+                employee = GetEntityByKey<Employee>(ObjectContext, "Employees", employeeStubEntity);
+            }
+            if(route.Employees.IsLoaded == false)
+            {
+			    // We can't attach employee if route is deleted. In that case we
+				// temporarily reset the entity state of route, then attach employee
+				// and set the entity state of route back to EntityState.Deleted.
+                ObjectStateEntry stateEntry = ObjectContext.ObjectStateManager.GetObjectStateEntry(route);
                 EntityState state = stateEntry.State;
 
                 if(state == EntityState.Deleted)
                 {
                     stateEntry.ChangeState(EntityState.Unchanged);
                 }
-                employee.Routes.Attach(route);
+                route.Employees.Attach(employee);
                 if(stateEntry.State != state)
                 {
                     stateEntry.ChangeState(state);
                 }
             }
-            employee.Routes.Remove(route);
+            route.Employees.Remove(employee);
         }
 
 #region GetEntityByKey

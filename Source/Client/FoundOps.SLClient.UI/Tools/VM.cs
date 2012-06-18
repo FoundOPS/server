@@ -134,17 +134,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the RoutesDragDropVM.
-        /// </summary>
-        public static RoutesDragDropVM RoutesDragDrop
-        {
-            get
-            {
-                return (RoutesDragDropVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("RoutesDragDropVM", null, CreationPolicy.Shared).Value;
-            }
-        }
-
         private static RouteManifestVM _routeManifestVM;
         /// <summary>
         /// Gets the RouteManifestVM.

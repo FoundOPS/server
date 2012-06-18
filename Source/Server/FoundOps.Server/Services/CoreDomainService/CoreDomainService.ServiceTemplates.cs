@@ -145,7 +145,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceTemplateLevel">(Optional/recommended) The service template level to filter by.</param>
         public IQueryable<ServiceTemplate> GetServiceTemplatesForServiceProvider(Guid roleId, int? serviceTemplateLevel)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             IQueryable<ServiceTemplate> serviceTemplatesToReturn = this.ObjectContext.ServiceTemplates;
 
@@ -175,7 +175,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="roleId">The current role id.</param>
         public IEnumerable<ServiceTemplate> GetServiceProviderServiceTemplates(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             IQueryable<ServiceTemplate> serviceProviderTemplates;
 

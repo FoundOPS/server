@@ -36,6 +36,9 @@ namespace FoundOps.Server.Controllers
                 {
                     if (MembershipService.ValidateUser(model.EmailAddress, model.Password))
                     {
+                        //Also authenticate API
+
+
                         ClearLoginAttempts();
                         FormsService.SignIn(model.EmailAddress, model.RememberMe);
 

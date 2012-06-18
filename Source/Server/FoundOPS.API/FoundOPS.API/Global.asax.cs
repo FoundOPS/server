@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Thinktecture.Web.Http.Formatters;
+using FoundOPS.API.Tools;
 
 namespace FoundOPS.API
 {
@@ -28,6 +28,10 @@ namespace FoundOPS.API
 
         protected void Application_Start()
         {
+            //Remove the XML formatter
+            GlobalConfiguration.Configuration.Formatters.RemoveAt(1);
+
+            //Switch JSON to JSONP formatter
             GlobalConfiguration.Configuration.Formatters[0] = new JsonpMediaTypeFormatter();
             GlobalFilters.Filters.Add(new HandleErrorAttribute());
 

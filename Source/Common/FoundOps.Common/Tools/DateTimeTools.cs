@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 
 namespace FoundOps.Common.Composite
 {
@@ -47,6 +48,18 @@ namespace FoundOps.Common.Composite
                 shortestDayNamesInOrder.Add(shortestDayNames[i]);
             }
             return shortestDayNamesInOrder.ToArray();
+        }
+
+        /// <summary>
+        /// Returns the RFC822 formatted date time.
+        /// </summary>
+        /// <param name="dateTime">The date time to formate.</param>
+        /// <returns></returns>
+        public static string RFC822(this DateTime dateTime)
+        {
+            var builder = new StringBuilder(dateTime.ToString("ddd, dd MMM yyyy HH:mm:ss zzz", CultureInfo.InvariantCulture));
+            builder.Remove(builder.Length - 3, 1);
+            return builder.ToString();
         }
 
         /// <summary>

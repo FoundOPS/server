@@ -35,3 +35,5 @@ Source/Server/FoundOps.Server/ClientBin/*.zip
 Source/Server/FoundOps.Server/ClientBin/*.xap
 Developer.config
 Source/Server/FoundOps.Server/Resources/Developer.config
+Source/Server/FoundOPS.API/FoundOPS.API.Azure/csx/
+Source/Server/FoundOps.Azure/csx

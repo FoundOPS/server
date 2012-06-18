@@ -69,11 +69,11 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientInvoice", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteTaskRecurringService", "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountLocation", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeRoute", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee), "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route))]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientBusinessAccount", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "LocationBusinessAccount", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientLocation1", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientContactInfo", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "ContactInfo", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ContactInfo), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "RouteEmployee", "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee))]
 
 #endregion
 
@@ -3318,18 +3318,18 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeeRoute", "Route")]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RouteEmployee", "Route")]
         public EntityCollection<Route> Routes
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Route>("CoreEntities.EmployeeRoute", "Route");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Route>("CoreEntities.RouteEmployee", "Route");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Route>("CoreEntities.EmployeeRoute", "Route", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Route>("CoreEntities.RouteEmployee", "Route", value);
                 }
             }
         }
@@ -8200,18 +8200,18 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeeRoute", "Employee")]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RouteEmployee", "Employee")]
         public EntityCollection<Employee> Employees
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Employee>("CoreEntities.EmployeeRoute", "Employee");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Employee>("CoreEntities.RouteEmployee", "Employee");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Employee>("CoreEntities.EmployeeRoute", "Employee", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Employee>("CoreEntities.RouteEmployee", "Employee", value);
                 }
             }
         }

@@ -69,7 +69,7 @@ BEGIN
 
 	--Pull all employees that are in a Route for the specified day. Keep the EmployeeId and RouteId
 	INSERT INTO @EmployeesForRoutesForDate (EmployeeId, RouteId)
-	SELECT t1.Employees_Id, t2.RouteId FROM EmployeeRoute t1, @RoutesForDate t2
+	SELECT t1.Employees_Id, t2.RouteId FROM RouteEmployee t1, @RoutesForDate t2
 	WHERE t1.Routes_Id = t2.RouteId
 
 	--Fill in the Employee Name based on the Id

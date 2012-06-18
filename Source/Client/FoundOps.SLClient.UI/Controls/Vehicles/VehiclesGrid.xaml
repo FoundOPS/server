@@ -4,7 +4,7 @@
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              mc:Ignorable="d" d:DesignWidth="500"
              ViewModelLocator:ViewModelLocator.SharedViewModel="VehiclesVM" IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
-    <telerik:RadGridView x:Name="VehiclesRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
+    <telerik:RadGridView x:Name="VehiclesRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="False" CanUserSortColumns="False"
             RowIndicatorVisibility="Collapsed" ItemsSource="{Binding QueryableCollectionView}" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Vehicle ID" Width="*">

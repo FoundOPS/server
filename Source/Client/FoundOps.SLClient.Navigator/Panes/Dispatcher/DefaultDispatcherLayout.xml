@@ -35,6 +35,7 @@
         <RadPaneGroup SelectedIndex="0">
           <Items>
             <RadPane SerializationTag="RouteList" IsDockable="True" Title="Route List" Header="Route List" CanUserClose="False" />
+            <RadPane SerializationTag="RouteMap" IsDockable="True" Title="Route Map" Header="Route Map" CanUserClose="False" />
           </Items>
         </RadPaneGroup>
       </Items>

@@ -17,7 +17,7 @@ namespace FoundOPS.API.Controllers
         /// </summary>
         /// <param name="email">The email address.</param>
         /// <param name="pass">The password.</param>
-        /// <returns></returns>
+        [AcceptVerbs("GET", "POST")]
         public bool Login(string email, string pass)
         {
             if (ModelState.IsValid)
