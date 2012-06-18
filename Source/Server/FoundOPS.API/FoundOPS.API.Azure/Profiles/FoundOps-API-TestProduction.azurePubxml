@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <AzureCredentials>Subscription-1</AzureCredentials>
+    <AzureCredentials>Azure-Subscription</AzureCredentials>
     <AzureDeleteDeploymentOnFailure>False</AzureDeleteDeploymentOnFailure>
     <AzureDeploymentLabel>FoundOPS.API.Azure</AzureDeploymentLabel>
     <AzureDeploymentReplacementMethod>DeleteAndCreate</AzureDeploymentReplacementMethod>
@@ -11,7 +11,7 @@
     <AzureFallbackToDeleteAndRecreateIfUpgradeFails>False</AzureFallbackToDeleteAndRecreateIfUpgradeFails>
     <AzureHostedServiceLabel>FoundOps-API-Test</AzureHostedServiceLabel>
     <AzureHostedServiceName>opsapitest</AzureHostedServiceName>
-    <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
+    <AzureEnableIntelliTrace>True</AzureEnableIntelliTrace>
     <AzureEnableProfiling>False</AzureEnableProfiling>
     <AzureServiceConfiguration>CloudTest</AzureServiceConfiguration>
     <AzureSolutionConfiguration>TestRelease</AzureSolutionConfiguration>

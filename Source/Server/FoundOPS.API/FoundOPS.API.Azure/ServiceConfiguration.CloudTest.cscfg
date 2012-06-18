@@ -4,6 +4,14 @@
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=opsapptest;AccountKey=dlAT4qEtm7gsWrOKuIIRgyJvYkwimkBwRo9mWvyhDGF6aISFu3jBYnCn/qgsHwsn0+3chbZ/mEWgDyAYI2gyPA==" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="perladmin" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCECSpModJAKqKRYIyHS2bxFwwDQYJKoZIhvcNAQEBBQAEggEA1fjaRfwaDpGDDz60Qk9mrd5Umbc4mBjcxgP/8W1SP9pz5Z8tJufmYd/lBcFigDxBGRyuP4UhrHDOrgMS0Ha3TLO2nQQOVnr++rkflhfsszUgRdBIT+zLeKFVB/j6cs9VrwcrBsrZdMxvvLEpsZ53orQV+iFiGz+VVaI4iIUWon87YThJrXwDOVhSrjST8p2f21zGahzVumNd0NCv1CrjF/MBoEZAvK67gCtDFxhbMsdaVY54rYrezp0JOD4VdXzIv6VF4v/mWI8OevnSPpR+cxPprcV5xjl0bpKlSZvWuHX4GdOPUvza13u5J8Rrgp24CmNhR+zHl3F7/AWA9SCcljAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECBQ1eQGn7G4ZgBAMSmDlXc9Qd6W53VvfkoYr" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2013-06-18T23:59:59.0000000-04:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
     </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="97A29BD26DE8F31FB85382B6056C46F961FA5C77" thumbprintAlgorithm="sha1" />
+    </Certificates>
   </Role>
 </ServiceConfiguration>

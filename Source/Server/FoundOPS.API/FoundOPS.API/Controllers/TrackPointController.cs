@@ -37,9 +37,10 @@ namespace FoundOPS.API.Controllers
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <param name="routeId">The Id of the Route to pull Track Points for</param>
-        /// <param name="serviceDate">The date of the Route to look for</param>
+        /// <param name="serviceDateUtc">The date of the Route to look for (in UTC).</param>
         /// <returns>A Queryable list of TrackPoints</returns>
-        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId, DateTime serviceDate)
+        [AcceptVerbs("GET", "POST")]
+        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId, DateTime serviceDateUtc)
         {
             //Get the storage account from Azure
             var storageAccount = CloudStorageAccount.Parse(AzureHelpers.StorageConnectionString);
@@ -54,7 +55,7 @@ namespace FoundOPS.API.Controllers
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
             var tableName = currentBusinessAccount.Id.TrackPointTableName();
 
-            var trackPointsDate = serviceDate.Date;
+            var trackPointsDate = serviceDateUtc.Date;
 
             //Gets all objects from the Azure table specified on the date requested and returns the result
             var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName)
@@ -74,6 +75,7 @@ namespace FoundOPS.API.Controllers
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
+        [AcceptVerbs("GET", "POST")]
         public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid roleId)
         {
             var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
@@ -166,6 +168,7 @@ namespace FoundOPS.API.Controllers
         /// <param name="modelTrackPoints">The list of TrackPoints being passed from an Employee's device</param>
         /// <param name="routeId">The Id of the Route that the Employee is currently on</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
+        [AcceptVerbs("POST")]
         public HttpResponseMessage PostEmployeeTrackPoint(TrackPoint[] modelTrackPoints, Guid routeId)
         {
             var currentUserAccount = AuthenticationLogic.CurrentUserAccount(_coreEntitiesContainer);

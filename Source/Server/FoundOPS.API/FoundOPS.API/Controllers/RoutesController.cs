@@ -29,13 +29,18 @@ namespace FoundOPS.API.Controllers
         /// & RouteDestinations.Location & Location.ContactInfoSet.
         /// Ordered by name.
         /// </summary>
+        /// <param name="serviceDateUtc">The date of the service (in UTC). If null it will return todays routes.</param>
         /// <param name="roleId">If the roleId has a value, it will find routes for a business account. Otherwise it will find routes for the current user account.</param>
-        public IQueryable<Route> GetRoutes(Guid? roleId)
+        [AcceptVerbs("GET", "POST")]
+        public IQueryable<Route> GetRoutes(DateTime? serviceDateUtc, Guid? roleId)
         {
             var apiRoutes = new List<Route>();
 
-            //Get the UtcDate of today
-            var today = DateTime.UtcNow.Date;
+            //Find routes for the passed service date. 
+            //If it is null used the UtcDate of today
+            var date = DateTime.UtcNow.Date;
+            if (serviceDateUtc.HasValue)
+                date = serviceDateUtc.Value;
 
             IEnumerable<FoundOps.Core.Models.CoreEntities.Route> loadedRoutes;
 
@@ -46,7 +51,7 @@ namespace FoundOPS.API.Controllers
                 loadedRoutes = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId.Value).Include(ba => ba.Routes)
                     .Include("Routes.RouteDestinations").Include("Routes.RouteDestinations.Client").Include("Routes.RouteDestinations.Client.ContactInfoSet")
                     .Include("Routes.RouteDestinations.Location").Include("Routes.RouteDestinations.Location.ContactInfoSet")
-                    .SelectMany(ba => ba.Routes).Where(r => r.Date == today);
+                    .SelectMany(ba => ba.Routes).Where(r => r.Date == date);
             }
             else
             {
@@ -54,7 +59,7 @@ namespace FoundOPS.API.Controllers
                 //Finds all Routes (today) associated with those Employees
                 loadedRoutes = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer)
                                .SelectMany(cu => cu.LinkedEmployees)
-                               .SelectMany(e => e.Routes).Where(r => r.Date == today);
+                               .SelectMany(e => e.Routes).Where(r => r.Date == date);
             }
 
             //Converts the FoundOPS model Routes to the API model Routes
@@ -69,6 +74,7 @@ namespace FoundOPS.API.Controllers
         /// Gets the depot Location(s) for a BusinessAccount based on the roleId
         /// </summary>
         /// <param name="roleId">Used to get the BusinessAccount</param>
+        [AcceptVerbs("GET", "POST")]
         public IQueryable<Location> GetDepots(Guid roleId)
         {
             var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();
@@ -79,6 +85,7 @@ namespace FoundOPS.API.Controllers
             return currentBusinessAccount.Depots.Select(Location.ConvertModel).AsQueryable();
         }
 
+        //[AcceptVerbs("POST")]
         //public IQueryable<Status> GetStatuses(Guid roleId)
         //{
         //    var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();

@@ -22,9 +22,14 @@
     </Endpoints>
     <Imports>
       <Import moduleName="Diagnostics" />
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
     </Imports>
     <Startup>
       <Task commandLine="disableTimeout.cmd" executionContext="elevated" />
     </Startup>
+    <ConfigurationSettings>
+      <Setting name="CloudToolsDiagnosticAgentVersion" />
+    </ConfigurationSettings>
   </WebRole>
 </ServiceDefinition>
