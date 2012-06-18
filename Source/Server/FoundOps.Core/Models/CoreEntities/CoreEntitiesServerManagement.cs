@@ -1,7 +1,6 @@
 using System.Data.Services.Client;
 using System.Linq;
 using FoundOps.Common.NET;
-using FoundOps.Common.Server;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using Microsoft.SqlServer.Management.Common;
@@ -19,8 +18,8 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         #region ConnectionString, Paths and Parameters
 
-        public static readonly string SqlConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreConnectionString");
-        private static readonly string ContainerConnectionString = UserSpecificResourcesWrapper.ConnectionString("CoreEntitiesContainer");
+        public static readonly string SqlConnectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
+        private static readonly string ContainerConnectionString = ConfigWrapper.ConnectionString("CoreEntitiesContainer");
 
         private static readonly string RootDirectory = ServerConstants.RootDirectory;
 

@@ -1,15 +1,13 @@
 using System;
 using System.Configuration;
 
-namespace FoundOps.Common.Server
+namespace FoundOps.Common.NET
 {
-    public static class UserSpecificResourcesWrapper
+    /// <summary>
+    /// Tools for extracting information from the App.config or Web.config
+    /// </summary>
+    public static class ConfigWrapper
     {
-        public static bool GetBool(string resourceKey)
-        {
-            return Convert.ToBoolean(ConfigurationManager.AppSettings[resourceKey]);
-        }
-
         public static string GetString(string resourceKey)
         {
             return ConfigurationManager.AppSettings[resourceKey];

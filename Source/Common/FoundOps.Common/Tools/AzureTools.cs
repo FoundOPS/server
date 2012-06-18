@@ -2,6 +2,10 @@
 
 namespace FoundOps.Common.Tools
 {
+    /// <summary>
+    /// A shared Azure tools class with the server and client.
+    /// Do not store any sensitive information here.
+    /// </summary>
     public static class AzureTools
     {
 #if DEBUG
