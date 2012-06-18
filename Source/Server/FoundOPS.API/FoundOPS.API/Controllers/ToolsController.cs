@@ -2,10 +2,11 @@
 using FoundOps.Core.Models.CoreEntities;
 using System;
 using System.Web.Http;
+using System.Web.Services.Protocols;
 
 namespace FoundOPS.API.Controllers
 {
-#if !RELEASE
+#if DEBUG
 
     public class ToolsController : ApiController
     {
@@ -13,6 +14,7 @@ namespace FoundOPS.API.Controllers
         /// <summary>
         /// Clears and creates the database and populates design data.
         /// </summary>
+        [AcceptVerbs("GET", "POST")]
         public bool CCDAPDD()
         {
             if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
@@ -24,15 +26,32 @@ namespace FoundOPS.API.Controllers
             throw new Exception("Invalid attempted access logged for investigation.");
         }
 
-        //GET /api/tools/ClearCreateHistoricalTrackPoints
+        //GET /api/tools/ClearHistoricalTrackPoints
         /// <summary>
-        /// Clears and creates historical trackpoints in the azure tables.
+        /// Clears historical trackpoints in the azure tables.
         /// </summary>
-        public bool ClearCreateHistoricalTrackPoints()
+        [AcceptVerbs("GET", "POST")]
+        public bool ClearHistoricalTrackPoints()
         {
             if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
             {
-                CoreEntitiesServerManagement.ClearCreateHistoricalTrackPoints();
+                CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
+                return true;
+            }
+
+            throw new Exception("Invalid attempted access logged for investigation.");
+        }
+
+        //GET /api/tools/CreateHistoricalTrackPoints
+        /// <summary>
+        /// Creates historical trackpoints in the azure tables.
+        /// </summary>
+        [AcceptVerbs("GET", "POST")]
+        public bool CreateHistoricalTrackPoints()
+        {
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
+            {
+                CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
                 return true;
             }
 

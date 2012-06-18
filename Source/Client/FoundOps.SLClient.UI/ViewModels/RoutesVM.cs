@@ -605,7 +605,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Get the ParentRouteTaskHolder
                 var taskHolder = routeTask.ParentRouteTaskHolder;
 
-                taskHolder.StatusInt = (int) Status.Created;
+                taskHolder.StatusInt = (int)Status.Created;
 
                 //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
                 ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);
@@ -632,8 +632,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Id the Route's date is in the past you can not delete
             if (SelectedEntity.Date < DateTime.UtcNow.Date)
             {
-                 MessageBox.Show("You cannot delete Routes in the past.");
-                 checkCompleted(false);
+                MessageBox.Show("You cannot delete Routes in the past.");
+                checkCompleted(false);
             }
             else
                 checkCompleted(true);
@@ -666,7 +666,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public void DispatcherSave()
         {
-            DataManager.EnqueueSubmitOperation();
+            this.SaveCommand.Execute(null);
         }
 
         #endregion

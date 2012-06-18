@@ -21,9 +21,9 @@ namespace FoundOPS.API.Models
 
         public static Client ConvertModel(FoundOps.Core.Models.CoreEntities.Client clientModel)
         {
-            var client =  new Client {Name = clientModel.OwnedParty.DisplayName};
+            var client =  new Client {Name = clientModel.Name};
 
-            foreach (var contactInfo in clientModel.OwnedParty.ContactInfoSet)
+            foreach (var contactInfo in clientModel.ContactInfoSet)
                 client.ContactInfoSet.Add(ContactInfo.Convert(contactInfo));
 
             return client;

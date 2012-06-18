@@ -60,6 +60,10 @@
     <DefineConstants>TESTRELEASE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Server\FoundOPS.API\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -118,10 +122,12 @@
     <Compile Include="UserSpecificResourcesWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="M2M4Ria\Client\M2M4RiaDomainContext.ttinclude" />
     <None Include="M2M4Ria\Server\M2M4RiaEntities.ttinclude" />
     <None Include="M2M4Ria\Server\M2M4RiaLinqToEntitiesDomainService.ttinclude" />
     <None Include="M2M4Ria\Shared\M2M4RiaShared.ttinclude" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

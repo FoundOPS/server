@@ -73,7 +73,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<Party> GetBusinessAccountsForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             //Make sure current account is a FoundOPS account
             return businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id
@@ -89,7 +89,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="businessAccountId">The businessAccount id.</param>
         public Party GetBusinessAccountDetailsForRole(Guid roleId, Guid businessAccountId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             //Make sure current account is a FoundOPS account
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
@@ -178,8 +178,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //foreach (var accountCurrentUserCanAdministerOfSameType in accountsCurrentUserCanAdministerOfSameType)
             //{
-                //accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Load();
-                //contactInfoLabels.AddRange(accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Select(ci => ci.Label));
+            //accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Load();
+            //contactInfoLabels.AddRange(accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Select(ci => ci.Label));
             //}
 
             contactInfoLabels = new List<string>(contactInfoLabels.Distinct());
@@ -451,7 +451,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         public UserAccount CurrentUserAccount()
         {
             var currentUserAccount = ((ObjectQuery<UserAccount>)AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext))
-                 .Include("RoleMembership").Include("RoleMembership.OwnerParty").Include("RoleMembership.Blocks").Include("OwnedRoles").Include("OwnedRoles.Blocks").Include("LinkedEmployees")
+                 .Include(ua => ua.RoleMembership).Include("RoleMembership.OwnerParty").Include("RoleMembership.Blocks")
+                 .Include(ua => ua.OwnedRoles).Include("OwnedRoles.Blocks").Include(ua => ua.LinkedEmployees)
                  .FirstOrDefault();
 
             if (currentUserAccount != null)
@@ -467,7 +468,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceProviderId">(Optional) filter user accounts that are in a owned role of this service provider.</param>
         public IQueryable<Party> GetUserAccounts(Guid roleId, Guid serviceProviderId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             IQueryable<UserAccount> accesibleUserAccounts;
 
@@ -508,7 +509,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="userAccountId">The user account id.</param>
         public Party GetUserAccountDetailsForRole(Guid roleId, Guid userAccountId)
         {
-            var userAccount = GetUserAccounts(roleId, Guid.Empty).Include("ContactInfoSet").FirstOrDefault(ua => ua.Id == userAccountId);
+            var userAccount = GetUserAccounts(roleId, Guid.Empty).FirstOrDefault(ua => ua.Id == userAccountId);
 
             //Force load PartyImage
             userAccount.PartyImageReference.Load();

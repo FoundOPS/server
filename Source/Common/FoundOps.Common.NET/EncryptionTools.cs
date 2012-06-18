@@ -6,8 +6,9 @@ namespace FoundOps.Common.NET
 {
     public static class EncryptionTools
     {
-        //Salt string
-        private static readonly byte[] Salt = System.Text.Encoding.ASCII.GetBytes("mmm@SaLT3Y");
+        //TODO: Resalt everyone's password with unique salt generated from
+        //http://msdn.microsoft.com/en-us/library/system.security.cryptography.rngcryptoserviceprovider.aspx
+        private static readonly byte[] Salt = Encoding.ASCII.GetBytes("mmm@SaLT3Y");
 
         public static string Hash(string valueToHash)
         {

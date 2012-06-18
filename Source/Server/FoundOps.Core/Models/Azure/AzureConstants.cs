@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Tools;
+﻿using System;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Core.Models.Azure
@@ -6,7 +7,7 @@ namespace FoundOps.Core.Models.Azure
     /// <summary>
     /// Contains constant values and helpers for Azure.
     /// </summary>
-    public class AzureHelpers
+    public static class AzureHelpers
     {
 #if DEBUG
         /// <summary>
@@ -33,11 +34,11 @@ namespace FoundOps.Core.Models.Azure
         /// <summary>
         /// Returns the TrackPoint azure storage table name for a business account.
         /// </summary>
-        /// <param name="businessAccount">The business account.</param>
-        public static string TrackPointTableName(BusinessAccount businessAccount)
+        /// <param name="businessAccountId">The business account id.</param>
+        public static string TrackPointTableName(this Guid businessAccountId)
         {
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-            return "tp" + businessAccount.Id.ToString().Replace("-", "");
+            return "tp" + businessAccountId.ToString().Replace("-", "");
         }
     }
 }

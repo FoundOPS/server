@@ -105,7 +105,7 @@ with
 
 2. A. Update Model from Database
    B. Add back all Stored Procedures(Except CheckServiceTemplateForChildren and all that start with "Get" )
-   C. In Model Browser delete the Function Imports for the 2 table valued functions: 
+   C. In Model Browser delete the Function Imports for the 3 table valued functions: 
       GetServiceHolders, GetResourcesWithLastPoint, GetUnroutedServicesForDate
    D. Save EDMX
 
@@ -155,7 +155,7 @@ Add after </EntityContainer> (the one after FK association sets)
       </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, CompassHeading, Latitude, Longitude, LastTimeStamp, Speed, TrackSource, RouteId
+          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
           FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
         </CommandText>
         <Parameter Name="serviceProviderId"
@@ -166,5 +166,9 @@ Add after </EntityContainer> (the one after FK association sets)
 Re-Import functions 
 		A. Go to the Model Browser
 		B. Under CoreEntites.Store, expand Stored Procedures/Functions
-		C. Right click on one of the functions in Step 3 above and click on Add Function Import...
-		D. Be Sure to select the correct output type. If you need help on this please ask. DO NOT GUESS!!#
+		C. For each of the functions in Step 3 above 
+			1. click on Add Function Import
+			2. choose Complex as the output 
+			(GetServiceHolders => ServiceHolder, GetUnroutedServicesForDate => TaskHolder, GetResourcesWithLastPoint => ResourceWithLastPoint)
+		
+Be Sure to select the correct output type. If you need help on this please ask. DO NOT GUESS!!#

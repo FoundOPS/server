@@ -113,8 +113,15 @@
     <Reference Include="NLog">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="ReactiveUI.Xaml_SL5, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI.Xaml_SL5.dll</HintPath>
+    </Reference>
     <Reference Include="ReactiveUI_SL5">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL5.dll</HintPath>
+    </Reference>
+    <Reference Include="SLMultiBinding">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\SLMultiBinding.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>

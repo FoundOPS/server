@@ -30,7 +30,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceId">The service id.</param>
         public Service GetServiceDetailsForRole(Guid roleId, Guid serviceId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             var service = this.ObjectContext.Services.Include(s => s.Client)
                 .FirstOrDefault(s => s.Id == serviceId && s.ServiceProviderId == businessForRole.Id);
@@ -50,7 +50,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Query(HasSideEffects = true)] //HasSideEffects so a POST is used and a maximum URI length is not thrown
         public IQueryable<Service> GetServicesDetailsForRole(Guid roleId, IEnumerable<Guid> serviceIds)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             if (businessForRole == null) return null;
 
@@ -209,7 +209,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             }
             else
             {
-                var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+                var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
                 //Because there is no other context, assume the context should be the serviceProvider
                 //The businessForRole returns null if the user does not have access to the ServiceProvider
@@ -243,7 +243,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="roleId">The role to determine the business account from.</param>
         private IQueryable<RecurringService> RecurringServicesForServiceProviderOptimized(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
             var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.BusinessAccountId == businessForRole.Id);
 

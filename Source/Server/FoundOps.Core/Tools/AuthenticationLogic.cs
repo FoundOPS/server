@@ -71,6 +71,7 @@ namespace FoundOps.Core.Tools
         /// <summary>
         /// Gets the owner party of a role.
         /// It will return one entity as an IQueryable for performance.
+        /// Returns null if the user does not have access to the BusinessAccount.
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <param name="roleId">The role id.</param>
@@ -86,6 +87,7 @@ namespace FoundOps.Core.Tools
 
         /// <summary>
         /// Gets the owner party of a role.
+        /// Returns null if the user does not have access to the BusinessAccount.
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <param name="roleId">The role id.</param>
@@ -96,24 +98,9 @@ namespace FoundOps.Core.Tools
         }
 
         /// <summary>
-        /// Gets the Business owner of a role.
-        /// </summary>
-        /// <param name="coreEntitiesContainer">The core entities container.</param>
-        /// <param name="roleId">The role id.</param>
-        /// <returns></returns>
-        public static Business BusinessOwnerOfRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
-        {
-            var accountForRole = coreEntitiesContainer.OwnerPartyOfRole(roleId);
-            if (!(accountForRole is Business)) return null;
-
-            var ownerParty = (Business)accountForRole;
-            return ownerParty;
-        }
-
-
-        /// <summary>
         /// Gets the BusinessAccount owner of a role.
         /// It will return one entity as an IQueryable for performance.
+        /// Returns null if the user does not have access to the BusinessAccount.
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <param name="roleId">The role id.</param>
@@ -129,18 +116,25 @@ namespace FoundOps.Core.Tools
 
         /// <summary>
         /// Gets the BusinessAccount owner of a role.
+        /// Returns null if the user does not have access to the BusinessAccount.
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <param name="roleId">The role id.</param>
         public static BusinessAccount BusinessAccountOwnerOfRole(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
         {
             var accountForRole = coreEntitiesContainer.OwnerPartyOfRole(roleId);
+            return accountForRole as BusinessAccount;
+        }
 
-            if (!(accountForRole is BusinessAccount)) return null;
-
-            var ownerParty = (BusinessAccount)accountForRole;
-
-            return ownerParty;
+        /// <summary>
+        /// Gets the business accounts the current user has access to.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <returns></returns>
+        public static IQueryable<BusinessAccount> BusinessAccountsQueryable(this CoreEntitiesContainer coreEntitiesContainer)
+        {
+            return (from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer)
+                    select role.OwnerParty).OfType<BusinessAccount>();
         }
 
         #endregion

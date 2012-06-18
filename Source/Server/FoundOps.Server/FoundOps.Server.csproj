@@ -59,10 +59,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Kent.Boogaart.KBCsv">
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
@@ -72,11 +71,15 @@
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Microsoft.ServiceModel.DomainServices.Hosting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.7.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WindowsAzure.Storage.1.7.0.0\lib\net35-full\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore">
       <Private>True</Private>
     </Reference>
@@ -88,6 +91,9 @@
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Recaptcha.dll</HintPath>
     </Reference>
     <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -105,7 +111,9 @@
     <Reference Include="System.Data.Entity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Data.Services.Client">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
@@ -137,38 +145,39 @@
     </Reference>
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\System.Web.Mvc.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.20505.0\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\System.Web.Razor.dll</HintPath>
       <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.20505.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.WebPages.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase">
@@ -185,20 +194,32 @@
     </Content>
     <Content Include="ClientBin\FoundOps.SLClient.Navigator.xap" />
     <Content Include="ClientBin\version.txt" />
+    <Content Include="Content\android.png" />
+    <Content Include="Content\apple.png" />
     <Content Include="Content\bgGradient.png" />
     <Content Include="Content\BlankPhoto.png" />
+    <Content Include="Content\depot.png" />
     <Content Include="Content\facebook.png" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\footerBg.png" />
     <Content Include="Content\headerBg.png" />
+    <Content Include="Content\leaflet.css" />
+    <Content Include="Content\leaflet.ie.css" />
     <Content Include="Content\linkedin.png" />
+    <Content Include="Content\mapIE.css" />
     <Content Include="Content\navLogo.png" />
+    <Content Include="Content\outerCircle.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\SiteLogo.png" />
     <Content Include="Content\TouchIcon.png" />
+    <Content Include="Content\truck.png" />
     <Content Include="Content\twitter.png" />
+    <Content Include="Content\zoom-in.png" />
+    <Content Include="Content\zoom-out.png" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.6.1.min.js" />
+    <Content Include="Scripts\map.js" />
+    <Content Include="Scripts\require-jquery.js" />
     <Content Include="Scripts\Silverlight.js" />
     <Content Include="Scripts\userVoice.js" />
     <Content Include="Silverlight.js" />
@@ -215,6 +236,7 @@
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QuickBooksController.cs" />
+    <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\WorkFlowController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -226,7 +248,7 @@
     <Compile Include="Services\CoreDomainService\CoreDomainService.ServiceTemplates.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Invoicing.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Records.cs" />
-    <Compile Include="Services\DomainServiceTools.cs" />
+    <Compile Include="Views\DomainServiceTools.cs" />
     <Compile Include="Services\M2M4RiaLinqToEntitiesDomainService.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -260,9 +282,11 @@
     <Content Include="ClientBin\Telerik.Windows.Controls.RibbonBar.zip" />
     <Content Include="ClientBin\Telerik.Windows.Data.zip" />
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
-    <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
     <Content Include="ClientBin\System.Xml.Linq.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.Data.zip" />
+    <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
+    <None Include="Content\PTS55F.eot" />
+    <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -277,7 +301,7 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordSuccess.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Home\CCDAPDD.cshtml" />
+    <Content Include="Views\Tools\CCDAPDD.cshtml" />
     <Content Include="Views\Home\PerformServerOperations.cshtml" />
     <Content Include="Views\Home\Silverlight.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
@@ -286,7 +310,9 @@
     <Content Include="Views\QuickBooks\OAuthGrantHandler.cshtml" />
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\WorkFlow\TimeCheck.cshtml" />
-    <Content Include="Views\Home\ClearCreateHistoricalTrackPoints.cshtml" />
+    <Content Include="Views\Tools\ClearHistoricalTrackPoints.cshtml" />
+    <Content Include="Views\Home\MapView.cshtml" />
+    <Content Include="Views\Tools\CreateHistoricalTrackPoints.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

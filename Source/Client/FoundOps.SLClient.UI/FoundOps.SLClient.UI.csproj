@@ -532,7 +532,6 @@
     <Compile Include="ViewModels\DispatcherFilterVM.cs" />
     <Compile Include="ViewModels\RouteDestinationVM.cs" />
     <Compile Include="ViewModels\RouteScheduleVM.cs" />
-    <Compile Include="ViewModels\RoutesDragDropVM.cs" />
     <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />
     <Compile Include="ViewModels\RouteVM.cs" />
     <Compile Include="ViewModels\SearchVM.cs" />

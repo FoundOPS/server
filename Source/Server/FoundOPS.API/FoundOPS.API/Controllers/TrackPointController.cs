@@ -1,5 +1,4 @@
-﻿using FoundOPS.API.Models;
-using FoundOps.Core.Models.Azure;
+﻿using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Microsoft.WindowsAzure;
@@ -38,9 +37,10 @@ namespace FoundOPS.API.Controllers
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <param name="routeId">The Id of the Route to pull Track Points for</param>
-        /// <param name="serviceDate">The date of the Route to look for</param>
+        /// <param name="serviceDateUtc">The date of the Route to look for (in UTC).</param>
         /// <returns>A Queryable list of TrackPoints</returns>
-        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId, DateTime serviceDate)
+        [AcceptVerbs("GET", "POST")]
+        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId, DateTime serviceDateUtc)
         {
             //Get the storage account from Azure
             var storageAccount = CloudStorageAccount.Parse(AzureHelpers.StorageConnectionString);
@@ -53,9 +53,9 @@ namespace FoundOPS.API.Controllers
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-            var tableName = AzureHelpers.TrackPointTableName(currentBusinessAccount);
+            var tableName = currentBusinessAccount.Id.TrackPointTableName();
 
-            var trackPointsDate = serviceDate.Date;
+            var trackPointsDate = serviceDateUtc.Date;
 
             //Gets all objects from the Azure table specified on the date requested and returns the result
             var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName)
@@ -75,6 +75,7 @@ namespace FoundOPS.API.Controllers
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
+        [AcceptVerbs("GET", "POST")]
         public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid roleId)
         {
             var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
@@ -113,7 +114,7 @@ namespace FoundOPS.API.Controllers
 
                 #region Adjust Technician Location, Speed and Heading
 
-                foreach (var employee in route.Technicians)
+                foreach (var employee in route.Employees)
                 {
                     employee.LastCompassDirection = (employee.LastCompassDirection + 15) % 360;
                     employee.LastTimeStamp = DateTime.UtcNow;
@@ -123,23 +124,23 @@ namespace FoundOPS.API.Controllers
                     {
                         //This would be the 4th, 8th, etc
                         case 0:
-                            employee.LastLatitude = employee.LastLatitude + .00005;
-                            employee.LastLongitude = employee.LastLongitude + .00007;
+                            employee.LastLatitude = employee.LastLatitude + .005;
+                            employee.LastLongitude = employee.LastLongitude + .007;
                             break;
                         //This would be the 1st, 5th, etc
                         case 1:
-                            employee.LastLatitude = employee.LastLatitude - .00005;
-                            employee.LastLongitude = employee.LastLongitude + .00003;
+                            employee.LastLatitude = employee.LastLatitude - .005;
+                            employee.LastLongitude = employee.LastLongitude + .003;
                             break;
                         //This would be the 2nd, 6th, etc
                         case 2:
-                            employee.LastLatitude = employee.LastLatitude + .00002;
-                            employee.LastLongitude = employee.LastLongitude - .00005;
+                            employee.LastLatitude = employee.LastLatitude + .002;
+                            employee.LastLongitude = employee.LastLongitude - .005;
                             break;
                         //This would be the 3rd, 7th, etc
                         case 3:
-                            employee.LastLatitude = employee.LastLatitude - .00006;
-                            employee.LastLongitude = employee.LastLongitude - .00005;
+                            employee.LastLatitude = employee.LastLatitude - .006;
+                            employee.LastLongitude = employee.LastLongitude - .005;
                             break;
                     }
 
@@ -167,13 +168,16 @@ namespace FoundOPS.API.Controllers
         /// <param name="modelTrackPoints">The list of TrackPoints being passed from an Employee's device</param>
         /// <param name="routeId">The Id of the Route that the Employee is currently on</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        public HttpResponseMessage<TrackPoint[]> PostEmployeeTrackPoint(TrackPoint[] modelTrackPoints, Guid routeId)
+        [AcceptVerbs("POST")]
+        public HttpResponseMessage PostEmployeeTrackPoint(TrackPoint[] modelTrackPoints, Guid routeId)
         {
             var currentUserAccount = AuthenticationLogic.CurrentUserAccount(_coreEntitiesContainer);
 
-            //If there is no UserAccount for some reason, return an Unauthorized Status Code
+            //Return an Unauthorized Status Code
+            //a) if there is no UserAccount
+            //b) the user does not have access to the business account of the route
             if (currentUserAccount == null)
-                return new HttpResponseMessage<TrackPoint[]>(modelTrackPoints, HttpStatusCode.Unauthorized);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, modelTrackPoints);
 
             //Provides an HTTP response back to the Mobile Phone to signal either a successful or unseccessful POST
             return PostTrackPointHelper(currentUserAccount.Id, null, modelTrackPoints, routeId);
@@ -211,7 +215,7 @@ namespace FoundOPS.API.Controllers
             //Create the Tables Client -> Used to Check if the table exists and to create it if it doesnt already exist
             var tableClient = storageAccount.CreateCloudTableClient();
 
-            var tableName = AzureHelpers.TrackPointTableName(businessAccount);
+            var tableName = businessAccount.Id.TrackPointTableName();
 
             //If an exception occurs, it means that the table already exists
             try
@@ -259,7 +263,7 @@ namespace FoundOPS.API.Controllers
         /// <param name="modelTrackPoints">The list of TrackPoints being passed from either an Employees device or a device on a Vehicle</param>
         /// <param name="routeId">The Id of the Route that the vehicle or employee are currently on</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created or that an error occurred</returns>
-        private HttpResponseMessage<TrackPoint[]> PostTrackPointHelper(Guid? employeeId, Guid? vehicleId, TrackPoint[] modelTrackPoints, Guid routeId)
+        private HttpResponseMessage PostTrackPointHelper(Guid? employeeId, Guid? vehicleId, TrackPoint[] modelTrackPoints, Guid routeId)
         {
             //Take the list of TrackPoints passed and order them by their TimeStamps
             var orderedModelTrackPoints = modelTrackPoints.OrderBy(tp => tp.CollectedTimeStamp).ToArray();
@@ -267,14 +271,19 @@ namespace FoundOPS.API.Controllers
             //The last TrackPoint in the list above is the most current and therefore will be stored in the SQL database
             var lastTrackPoint = orderedModelTrackPoints.Last();
 
-            BusinessAccount currentBusinessAccount;
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountsQueryable().FirstOrDefault(ba => ba.Routes.Any(r => r.Id == routeId));
+
+            //if the current business account for the route is not found, the user is not authorized for that business account (or the route does not exist)
+            if(currentBusinessAccount == null)
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
 
             if (employeeId != null)
             {
-                var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.LinkedUserAccount.Id == employeeId);
+                var employee = _coreEntitiesContainer.Employees.FirstOrDefault(
+                        e => e.EmployerId == currentBusinessAccount.Id && e.LinkedUserAccount.Id == employeeId);
 
                 if (employee == null)
-                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
 
                 #region Save the last TrackPoint passed to the database
 
@@ -287,12 +296,6 @@ namespace FoundOPS.API.Controllers
 
                 #endregion
 
-                currentBusinessAccount = employee.Employer;
-
-                //If there is no BusinessAccount something went wrong, return a BadRequest status code
-                if (currentBusinessAccount == null)
-                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
-
                 //Checks each TrackPoint to see if it needs to be pushed to the Azure Tables
                 //Pushes if needed
                 CheckTimeStampPushToAzure(employee.LastPushToAzureTimeStamp, currentBusinessAccount, orderedModelTrackPoints, employee, null, routeId);
@@ -300,11 +303,11 @@ namespace FoundOPS.API.Controllers
 
             else if (vehicleId != null)
             {
-                var vehicle = _coreEntitiesContainer.Vehicles.FirstOrDefault(v => v.Id == vehicleId);
+                var vehicle = _coreEntitiesContainer.Vehicles.FirstOrDefault(v => v.OwnerPartyId == currentBusinessAccount.Id && v.Id == vehicleId);
 
                 //If there is no Vehicle that corresponds to the vehicleId passed, something went wrong => return a BadRequest status code
                 if (vehicle == null)
-                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
 
                 #region Save the last TrackPoint passed to the database
 
@@ -316,13 +319,7 @@ namespace FoundOPS.API.Controllers
                 vehicle.LastTimeStamp = lastTrackPoint.CollectedTimeStamp;
 
                 #endregion
-
-                currentBusinessAccount = vehicle.OwnerParty.ClientOwner.Vendor;
-
-                //If there is no BusinessAccount something went wrong, return a BadRequest status code
-                if (currentBusinessAccount == null)
-                    return new HttpResponseMessage<TrackPoint[]>(HttpStatusCode.BadRequest);
-
+                
                 //Checks each TrackPoint to see if it needs to be pushed to the Azure Tables
                 //Pushes if needed
                 CheckTimeStampPushToAzure(vehicle.LastPushToAzureTimeStamp, currentBusinessAccount, orderedModelTrackPoints, null, vehicle, routeId);
@@ -335,7 +332,7 @@ namespace FoundOPS.API.Controllers
             _coreEntitiesContainer.SaveChanges();
 
             //Create the Http response 
-            var response = new HttpResponseMessage<TrackPoint[]>(modelTrackPoints, HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created, modelTrackPoints);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/trackpoints/" + employeeOrVehicleId.ToString());
 
             //Return the response
@@ -387,8 +384,8 @@ namespace FoundOPS.API.Controllers
                 EmployeeId = employeeId,
                 VehicleId = vehicleId,
                 RouteId = routeId,
-                Latitude = (double?) trackPoint.Latitude,
-                Longitude = (double?) trackPoint.Longitude,
+                Latitude = (double?)trackPoint.Latitude,
+                Longitude = (double?)trackPoint.Longitude,
                 CollectedTimeStamp = trackPoint.CollectedTimeStamp
             };
 
