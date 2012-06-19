@@ -1038,6 +1038,44 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
+        public int PropagateNameChange(Nullable<global::System.Guid> serviceTemplateId)
+        {
+            ObjectParameter serviceTemplateIdParameter;
+            if (serviceTemplateId.HasValue)
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
+            }
+            else
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNameChange", serviceTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
+        public int PropagateNewServiceTemplateToClients(Nullable<global::System.Guid> serviceTemplateId)
+        {
+            ObjectParameter serviceTemplateIdParameter;
+            if (serviceTemplateId.HasValue)
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
+            }
+            else
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNewServiceTemplateToClients", serviceTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
         /// <param name="serviceDate">No Metadata Documentation available.</param>
         public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
@@ -1167,6 +1205,25 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="fieldId">No Metadata Documentation available.</param>
+        public int PropagateNewFields(Nullable<global::System.Guid> fieldId)
+        {
+            ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter);
         }
 
         #endregion

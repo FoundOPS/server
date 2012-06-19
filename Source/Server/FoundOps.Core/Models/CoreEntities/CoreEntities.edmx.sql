@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/15/2012 13:08:59
+-- Date Created: 06/19/2012 16:09:55
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -167,6 +167,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_RouteDestinationRoute]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteDestinations] DROP CONSTRAINT [FK_RouteDestinationRoute];
 GO
+IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Employee]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteEmployee] DROP CONSTRAINT [FK_RouteEmployee_Employee];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Route]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteEmployee] DROP CONSTRAINT [FK_RouteEmployee_Route];
+GO
 IF OBJECT_ID(N'[dbo].[FK_RouteTaskClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_RouteTaskClient];
 GO
@@ -318,6 +324,9 @@ IF OBJECT_ID(N'[dbo].[Roles]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[RouteDestinations]', 'U') IS NOT NULL
     DROP TABLE [dbo].[RouteDestinations];
+GO
+IF OBJECT_ID(N'[dbo].[RouteEmployee]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RouteEmployee];
 GO
 IF OBJECT_ID(N'[dbo].[Routes]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Routes];

@@ -78,6 +78,17 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 this.ObjectContext.Fields.AddObject(field);
             }
+            
+            var serviceTemplate = ObjectContext.ServiceTemplates.FirstOrDefault(st => st.Id == field.OwnerServiceTemplate.Id);
+
+            //When adding a FoundOPS level service template to a service provider propogate the template/fields to all the Clients
+            if (serviceTemplate.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+            {
+                //In order to propagate the original Template added must already be saved
+                ObjectContext.SaveChanges();
+
+                ObjectContext.PropagateNewFields(field.Id);
+            }
         }
 
         public void UpdateField(Field currentField)
@@ -98,6 +109,15 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteField(Field field)
         {
+            var serviceTemplate = ObjectContext.ServiceTemplates.FirstOrDefault(st => st.Id == field.ServiceTemplateId);
+
+            //If the associated ServiceTemplate is on the ServiceProvider level, delete the field and all children
+            if (serviceTemplate != null && serviceTemplate.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+            {
+                ObjectContext.DeleteFieldAndChildrenBasedOnFieldId(field.Id);
+                return;
+            }
+
             var loadedField = this.ObjectContext.Fields.FirstOrDefault(f => f.Id == field.Id);
             if (loadedField != null) this.ObjectContext.Detach(loadedField);
 
@@ -325,8 +345,15 @@ namespace FoundOps.Server.Services.CoreDomainService
             return descendants;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="serviceTemplate"></param>
         public void InsertServiceTemplate(ServiceTemplate serviceTemplate)
         {
+            if (serviceTemplate.ServiceTemplateLevel != ServiceTemplateLevel.FoundOpsDefined && serviceTemplate.OwnerServiceTemplateId == null)
+                throw new Exception("All service templates (besides FoundOPS levels) should have a parent.");
+
             if ((serviceTemplate.EntityState != EntityState.Detached))
             {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(serviceTemplate, EntityState.Added);
@@ -335,11 +362,32 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 this.ObjectContext.ServiceTemplates.AddObject(serviceTemplate);
             }
+
+            //When adding a FoundOPS level service template to a service provider propogate the template/fields to all the Clients
+            if (serviceTemplate.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+            {
+                //In order to propagate the original Template added must already be saved
+                ObjectContext.SaveChanges();
+
+                ObjectContext.PropagateNewServiceTemplateToClients(serviceTemplate.Id);
+            }
         }
 
+        /// <summary>
+        /// This will only be used for FoundOPS level service templates. Editing name is disabled for lower service templates, for now.
+        /// Name changes on FoundOPS level service templates should propogate to all children.
+        /// </summary>
+        /// <param name="currentServiceTemplate"></param>
         public void UpdateServiceTemplate(ServiceTemplate currentServiceTemplate)
         {
+            if (currentServiceTemplate.ServiceTemplateLevel != ServiceTemplateLevel.FoundOpsDefined)
+                throw new Exception("Should this ever happen?");
+
             this.ObjectContext.ServiceTemplates.AttachAsModified(currentServiceTemplate);
+
+            ObjectContext.SaveChanges();
+
+            ObjectContext.PropagateNameChange(currentServiceTemplate.Id);
         }
 
         #endregion

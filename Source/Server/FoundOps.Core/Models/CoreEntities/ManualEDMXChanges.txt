@@ -103,11 +103,12 @@ with
           </EntitySetMapping>
 -------------------------------------------------------------------------------------------------------------------------------
 
-2. A. Update Model from Database
-   B. Add back all Stored Procedures(Except CheckServiceTemplateForChildren and all that start with "Get" )
-   C. In Model Browser delete the Function Imports for the 3 table valued functions: 
+2. A. Delete all stored procedures
+   B. Update Model from Database
+   C. Add back all Stored Procedures(Except CheckServiceTemplateForChildren and all that start with "Get" )
+   D. In Model Browser delete the Function Imports for the 3 table valued functions: 
       GetServiceHolders, GetResourcesWithLastPoint, GetUnroutedServicesForDate
-   D. Save EDMX
+   E. Save EDMX
 
 -------------------------------------------------------------------------------------------------------------------------------
 3. Add Functions back

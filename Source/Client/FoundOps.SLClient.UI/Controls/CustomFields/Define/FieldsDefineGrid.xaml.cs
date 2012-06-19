@@ -64,7 +64,7 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
             var serviceProvider = value as BusinessAccount;
 
             if (serviceProvider == null)
-                return Visibility.Collapsed;
+                return false;
 
             return serviceProvider.Id == BusinessAccountsConstants.FoundOpsId;
         }

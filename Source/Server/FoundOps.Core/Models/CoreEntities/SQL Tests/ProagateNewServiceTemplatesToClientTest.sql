@@ -5,10 +5,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-DECLARE @serviceProviderId UNIQUEIDENTIFIER
 DECLARE @serviceTemplateId UNIQUEIDENTIFIER
 
 SET @serviceTemplateId = '623B11B0-ECC9-4BD8-94D0-163F68BFF73D'
+
+DECLARE @serviceProviderId UNIQUEIDENTIFIER
 SET @serviceProviderId = (SELECT OwnerServiceProviderId FROM dbo.ServiceTemplates WHERE Id = @serviceTemplateId)
 
 BEGIN --Propagate new Service Template to all Clients Avaliable Services
@@ -86,9 +87,8 @@ END
 -------------------------------------------------------------------------------------------------------------------------------
 
 BEGIN --Propagate all the fields down to the new Service Templates created above
-
-	--Will be used to store Fields that were pulled off of the parent Service Template
-	DECLARE @FieldsTable TABLE
+	
+	DECLARE @FieldsTable TABLE --Will be used to store Fields that were pulled off of the parent Service Template
 	(
 		Id UNIQUEIDENTIFIER,
 		Name NVARCHAR(MAX),
@@ -97,7 +97,7 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 		ToolTip NVARCHAR(MAX),
 		ParentFieldId UNIQUEIDENTIFIER,
 		ServiceTemplateId UNIQUEIDENTIFIER
-	)
+	) 
 
 	INSERT INTO @FieldsTable
 	SELECT * FROM dbo.Fields t1
