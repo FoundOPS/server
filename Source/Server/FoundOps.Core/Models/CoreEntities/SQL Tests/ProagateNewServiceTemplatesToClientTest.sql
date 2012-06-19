@@ -47,9 +47,8 @@ BEGIN --Propagate new Service Template to all Clients Avaliable Services
 
 	DECLARE @currentId UNIQUEIDENTIFIER
 
-	--Iterate through all cliets, while making a new service template and assigning it to the client
-	WHILE @ClientRowCount > 0
-	BEGIN
+	WHILE @ClientRowCount > 0 --Iterate through all cliets, while making a new service template and assigning it to the client
+	BEGIN 
 
 		SET @currentId = (SELECT MIN(Id) FROM @ClientsTable)
 
@@ -113,47 +112,10 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 		DECLARE @fieldServiceTemplateId UNIQUEIDENTIFIER
 		DECLARE @serviceTemplateCount INT 
 		DECLARE @currentServiceTemplateId UNIQUEIDENTIFIER
+		DECLARE @optionsFieldId UNIQUEIDENTIFIER --Will only be used for copying OptionsFields and for copying the Options
 	END
 
-	BEGIN --Declaring tables to use for copying fields
-		DECLARE @newFieldsTable TABLE
-		(
-			Id UNIQUEIDENTIFIER NOT NULL,
-			Name NVARCHAR(MAX) NOT NULL,
-			[Group] nvarchar(MAX) NOT NULL,
-			[Required] BIT NOT NULL,
-			ToolTip NVARCHAR(MAX) NOT NULL,
-			ParentFieldId UNIQUEIDENTIFIER,
-			ServiceTemplateId UNIQUEIDENTIFIER
-		)
-		DECLARE @DateTimeTable TABLE
-		(
-			Earliest DATETIME NOT NULL,
-			Latest DATETIME NOT NULL,
-			TypeInt SMALLINT NOT NULL,
-			Value DATETIME NOT NULL,
-			Id UNIQUEIDENTIFIER
-		) 
-		DECLARE @LocationTable TABLE
-		(
-			LocationId UNIQUEIDENTIFIER,
-			LocationFieldTypeInt SMALLINT,
-			Id UNIQUEIDENTIFIER          
-		)
-		DECLARE @NumericTable TABLE
-		(
-			Mask NVARCHAR(MAX),
-			DeciamalPlaces INT,
-			Minimum DECIMAL(16,6),
-			Maximum DECIMAL(16,6),
-			Value DECIMAL(16,6)     
-		) 
-		DECLARE @TextBoxTable TABLE
-		(
-			IsMultiLine BIT,
-			Value NVARCHAR(max),
-			Id UNIQUEIDENTIFIER   
-		)  
+	BEGIN --Declaring tables to use for copying fields 
 		DECLARE @CopyOfNewServiceTemplates TABLE
 		(
 			Id UNIQUEIDENTIFIER,
@@ -163,13 +125,21 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 			LevelInt INT,
 			Name NVARCHAR(max)
 		)
+		DECLARE @OptionsCopies TABLE
+		(
+			Id UNIQUEIDENTIFIER,
+			NAME NVARCHAR(MAX),
+			IsChecked BIT,
+			OptionsFieldId UNIQUEIDENTIFIER,
+			[Index] INT,
+			ToolTip NVARCHAR(MAX)
+		)      
 	END
 
 	SET @FieldRowCount = (SELECT COUNT(*) FROM @FieldsTable)
 
 	WHILE @FieldRowCount > 0
 	BEGIN
-	
 		--Make sure that @CopyOfNewServiceTemplates is empty so it can be repopulated
 		DELETE FROM @CopyOfNewServiceTemplates
 
@@ -193,11 +163,8 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 		BEGIN
   
 			SET @currentServiceTemplateId = (SELECT MIN(Id) FROM @CopyOfNewServiceTemplates)				
-			      
-			IF @currentId IN (SELECT Id FROM dbo.Fields_DateTimeField)
-			BEGIN
-				--Copy the Field and the DateTime field, set new Id's
-				INSERT INTO @newFieldsTable
+			
+			INSERT INTO Fields --Add a copy of the old field to the Fields table
 				        ( Id ,
 				          Name ,
 				          [Group] ,
@@ -214,8 +181,10 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 				          @currentId , -- ParentFieldId - uniqueidentifier
 				          @currentServiceTemplateId  -- ServiceTemplateId - uniqueidentifier
 				        ) 
-				
-				INSERT INTO @DateTimeTable
+			      
+			IF @currentId IN (SELECT Id FROM dbo.Fields_DateTimeField) --Copy the DateTime field, set new Id's
+			BEGIN 
+				INSERT INTO Fields_DateTimeField
 				        ( Earliest ,
 				          Latest ,
 				          TypeInt ,
@@ -227,28 +196,70 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 				          (SELECT TypeInt FROM Fields_DateTimeField WHERE Id = @currentId) , -- TypeInt - smallint
 				          (SELECT Value FROM Fields_DateTimeField WHERE Id = @currentId) , -- Value - datetime
 				          NEWID()  -- Id - uniqueidentifier
-				        )    
+				        )
 			END
     
-			IF @currentId IN (SELECT Id FROM dbo.Fields_LocationField)
-			BEGIN
-				--Copy the Field and the Location field, set new Id's   
+			IF @currentId IN (SELECT Id FROM dbo.Fields_LocationField) --Copy Location field, set new Id's
+			BEGIN   
+			 
+				INSERT INTO Fields_LocationField
+						( LocationId ,
+						  LocationFieldTypeInt ,
+						  Id
+						)
+				VALUES  ( (SELECT LocationId FROM Fields_LocationField WHERE Id = @currentId) , --LocationId - uniqueidenetifier
+						  (SELECT LocationFieldTypeInt FROM Fields_LocationField WHERE Id = @currentId) , --LocationFieldTypeInt - int
+						  NEWID()  -- Id - uniqueidentifier
+						)
 			END
 
-			IF @currentId IN (SELECT Id FROM dbo.Fields_NumericField)
+			IF @currentId IN (SELECT Id FROM dbo.Fields_NumericField) --Copy Numeric field, set new Id's 
 			BEGIN
-				--Copy the Field and the Numeric field, set new Id's 
+				INSERT INTO Fields_NumericField
+				        ( Mask ,
+				          DecimalPlaces ,
+				          Minimum ,
+				          Maximum ,
+				          Value ,
+				          Id
+				        )
+				VALUES  ( (SELECT Mask FROM Fields_NumericField WHERE Id = @currentId) , -- Mask - nvarchar(max)
+				          (SELECT DecimalPlaces FROM Fields_NumericField WHERE Id = @currentId) , -- DecimalPlaces - int
+				          (SELECT Minimum FROM Fields_NumericField WHERE Id = @currentId) , -- Minimum - decimal
+				          (SELECT Maximum FROM Fields_NumericField WHERE Id = @currentId) , -- Maximum - decimal
+				          (SELECT Value FROM Fields_NumericField WHERE Id = @currentId) , -- Value - decimal
+				          NEWID()  -- Id - uniqueidentifier
+				        )
+
 			END
 
-			IF @currentId IN (SELECT Id FROM dbo.Fields_TextBoxField)
+			IF @currentId IN (SELECT Id FROM dbo.Fields_TextBoxField) --Copy TextBox field, set new Id's
 			BEGIN
-				--Copy the Field and the TextBox field, set new Id's \    
+				INSERT INTO Core.dbo.Fields_TextBoxField
+				        ( IsMultiline, 
+						  Value, 
+						  Id )
+				VALUES  ( (SELECT IsMultiline FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- IsMultiline - bit
+				          (SELECT Value FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- Value - nvarchar(max)
+				          NEWID()  -- Id - uniqueidentifier
+				          )	    
 			END
 
-			IF @currentId IN (SELECT Id FROM dbo.Fields_OptionsField)
+			IF @currentId IN (SELECT Id FROM dbo.Fields_OptionsField) --Copy the Options field, set new Id's 
 			BEGIN
-				--Copy the Field and the Options field, set new Id's 
-				--This is not set up yet...cause its a bitchy bitch
+				SET @optionsFieldId = NEWID()
+
+				INSERT INTO Core.dbo.Fields_OptionsField
+				        ( AllowMultipleSelection ,
+				          TypeInt ,
+				          Id
+				        )
+				VALUES  ( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @currentId) , -- AllowMultipleSelection - bit
+				          (SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @currentId) , -- TypeInt - smallint
+				          @optionsFieldId  -- Id - uniqueidentifier
+				        )
+						
+				INSERT INTO @OptionsCopies 	
 			END  
 	
 			DELETE FROM @CopyOfNewServiceTemplates
