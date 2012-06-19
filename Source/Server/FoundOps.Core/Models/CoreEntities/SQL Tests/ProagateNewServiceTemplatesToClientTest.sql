@@ -8,7 +8,7 @@ GO
 DECLARE @serviceProviderId UNIQUEIDENTIFIER
 DECLARE @serviceTemplateId UNIQUEIDENTIFIER
 
-SET @serviceTemplateId = '49A1FAA4-3255-4859-9FF3-25845D986C6E'
+SET @serviceTemplateId = '623B11B0-ECC9-4BD8-94D0-163F68BFF73D'
 SET @serviceProviderId = (SELECT OwnerServiceProviderId FROM dbo.ServiceTemplates WHERE Id = @serviceTemplateId)
 
 BEGIN --Propagate new Service Template to all Clients Avaliable Services
@@ -43,11 +43,11 @@ BEGIN --Propagate new Service Template to all Clients Avaliable Services
 	DECLARE @ownerServiceTemplateId UNIQUEIDENTIFIER
 
 	SET @serviceTemplateName = (SELECT Name FROM dbo.ServiceTemplates WHERE Id = @serviceTemplateId)
-	SET @ownerServiceTemplateId = (SELECT OwnerServiceTemplateId FROM dbo.ServiceTemplates WHERE Id = @serviceTemplateId)
+	SET @ownerServiceTemplateId = @serviceTemplateId
 
 	DECLARE @currentId UNIQUEIDENTIFIER
 
-	WHILE @ClientRowCount > 0 --Iterate through all cliets, while making a new service template and assigning it to the client
+	WHILE @ClientRowCount > 0 --Iterate through all clients, while making a new service template and assigning it to the client
 	BEGIN 
 
 		SET @currentId = (SELECT MIN(Id) FROM @ClientsTable)
@@ -90,18 +90,18 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 	--Will be used to store Fields that were pulled off of the parent Service Template
 	DECLARE @FieldsTable TABLE
 	(
-		Id UNIQUEIDENTIFIER NOT NULL,
-		Name NVARCHAR(MAX) NOT NULL,
-		[Group] nvarchar(MAX) NOT NULL,
-		[Required] BIT NOT NULL,
-		ToolTip NVARCHAR(MAX) NOT NULL,
+		Id UNIQUEIDENTIFIER,
+		Name NVARCHAR(MAX),
+		[Group] nvarchar(MAX),
+		[Required] BIT,
+		ToolTip NVARCHAR(MAX),
 		ParentFieldId UNIQUEIDENTIFIER,
 		ServiceTemplateId UNIQUEIDENTIFIER
 	)
 
 	INSERT INTO @FieldsTable
 	SELECT * FROM dbo.Fields t1
-	WHERE t1.ServiceTemplateId = @ownerServiceTemplateId
+	WHERE t1.ServiceTemplateId = @ownerServiceTemplateId 
 
 	BEGIN -- declaring variables to be used to copy fields
 		DECLARE @FieldRowCount int
@@ -112,6 +112,7 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 		DECLARE @fieldServiceTemplateId UNIQUEIDENTIFIER
 		DECLARE @serviceTemplateCount INT 
 		DECLARE @currentServiceTemplateId UNIQUEIDENTIFIER
+		DECLARE @newFieldId UNIQUEIDENTIFIER      
 		DECLARE @optionsFieldId UNIQUEIDENTIFIER --Will only be used for copying OptionsFields and for copying the Options
 	END
 
@@ -140,6 +141,8 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 
 	WHILE @FieldRowCount > 0
 	BEGIN
+		SET @currentId = (SELECT MIN(Id) FROM @FieldsTable)
+    
 		--Make sure that @CopyOfNewServiceTemplates is empty so it can be repopulated
 		DELETE FROM @CopyOfNewServiceTemplates
 
@@ -156,24 +159,23 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 		
 		--Track the number of Service Templates left to be created
 		SET @serviceTemplateCount = (SELECT COUNT(*) FROM @CopyOfNewServiceTemplates)
-
-		SET @currentId = (SELECT MIN(Id) FROM @FieldsTable)
         
 		WHILE @serviceTemplateCount > 0
-		BEGIN
-  
+		BEGIN     
 			SET @currentServiceTemplateId = (SELECT MIN(Id) FROM @CopyOfNewServiceTemplates)				
 			
+			SET @newFieldId = NEWID()
+
 			INSERT INTO Fields --Add a copy of the old field to the Fields table
 				        ( Id ,
 				          Name ,
 				          [Group] ,
-				          Required ,
+				          [Required] ,
 				          ToolTip ,
 				          ParentFieldId ,
 				          ServiceTemplateId
 				        )
-				VALUES  ( NEWID() , -- Id - uniqueidentifier
+				VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				          @fieldName , -- Name - nvarchar(max)
 				          @fieldGroup , -- Group - nvarchar(max)
 				          @fieldRequired , -- Required - bit
@@ -181,7 +183,9 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 				          @currentId , -- ParentFieldId - uniqueidentifier
 				          @currentServiceTemplateId  -- ServiceTemplateId - uniqueidentifier
 				        ) 
-			      
+			
+			BEGIN --Copy field to its appropriate inherited table
+				
 			IF @currentId IN (SELECT Id FROM dbo.Fields_DateTimeField) --Copy the DateTime field, set new Id's
 			BEGIN 
 				INSERT INTO Fields_DateTimeField
@@ -195,7 +199,7 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 				          (SELECT Latest FROM Fields_DateTimeField WHERE Id = @currentId) , -- Latest - datetime
 				          (SELECT TypeInt FROM Fields_DateTimeField WHERE Id = @currentId) , -- TypeInt - smallint
 				          (SELECT Value FROM Fields_DateTimeField WHERE Id = @currentId) , -- Value - datetime
-				          NEWID()  -- Id - uniqueidentifier
+				         @newFieldId  -- Id - uniqueidentifier
 				        )
 			END
     
@@ -209,7 +213,7 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 						)
 				VALUES  ( (SELECT LocationId FROM Fields_LocationField WHERE Id = @currentId) , --LocationId - uniqueidenetifier
 						  (SELECT LocationFieldTypeInt FROM Fields_LocationField WHERE Id = @currentId) , --LocationFieldTypeInt - int
-						  NEWID()  -- Id - uniqueidentifier
+						  @newFieldId  -- Id - uniqueidentifier
 						)
 			END
 
@@ -228,40 +232,52 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 				          (SELECT Minimum FROM Fields_NumericField WHERE Id = @currentId) , -- Minimum - decimal
 				          (SELECT Maximum FROM Fields_NumericField WHERE Id = @currentId) , -- Maximum - decimal
 				          (SELECT Value FROM Fields_NumericField WHERE Id = @currentId) , -- Value - decimal
-				          NEWID()  -- Id - uniqueidentifier
+				          @newFieldId  -- Id - uniqueidentifier
 				        )
 
 			END
 
 			IF @currentId IN (SELECT Id FROM dbo.Fields_TextBoxField) --Copy TextBox field, set new Id's
 			BEGIN
-				INSERT INTO Core.dbo.Fields_TextBoxField
+				INSERT INTO Fields_TextBoxField
 				        ( IsMultiline, 
 						  Value, 
 						  Id )
 				VALUES  ( (SELECT IsMultiline FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- IsMultiline - bit
 				          (SELECT Value FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- Value - nvarchar(max)
-				          NEWID()  -- Id - uniqueidentifier
+				          @newFieldId  -- Id - uniqueidentifier
 				          )	    
 			END
 
 			IF @currentId IN (SELECT Id FROM dbo.Fields_OptionsField) --Copy the Options field, set new Id's 
 			BEGIN
-				SET @optionsFieldId = NEWID()
-
-				INSERT INTO Core.dbo.Fields_OptionsField
+				INSERT INTO Fields_OptionsField
 				        ( AllowMultipleSelection ,
 				          TypeInt ,
 				          Id
 				        )
 				VALUES  ( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @currentId) , -- AllowMultipleSelection - bit
 				          (SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @currentId) , -- TypeInt - smallint
-				          @optionsFieldId  -- Id - uniqueidentifier
+				          @newFieldId  -- Id - uniqueidentifier
 				        )
 						
-				INSERT INTO @OptionsCopies 	
+				INSERT INTO @OptionsCopies
+				SELECT * FROM Options
+				WHERE OptionsFieldId = @currentId
+
+				UPDATE @OptionsCopies
+				SET Id = NEWID(),
+					OptionsFieldId = @newFieldId
+
+				INSERT INTO Options
+				SELECT * FROM @OptionsCopies
+
+				DELETE FROM @OptionsCopies
+
 			END  
-	
+			
+			END
+			      
 			DELETE FROM @CopyOfNewServiceTemplates
 			WHERE Id = @currentServiceTemplateId
 
@@ -271,7 +287,6 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 		DELETE FROM @FieldsTable
 		WHERE Id = @currentId
 
-
-
+		SET @FieldRowCount = @FieldRowCount - 1
 	END
 END
