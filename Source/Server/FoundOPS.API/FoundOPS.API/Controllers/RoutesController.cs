@@ -40,7 +40,7 @@ namespace FoundOPS.API.Controllers
             //If it is null used the UtcDate of today
             var date = DateTime.UtcNow.Date;
             if (serviceDateUtc.HasValue)
-                date = serviceDateUtc.Value;
+                date = serviceDateUtc.Value.Date;
 
             IEnumerable<FoundOps.Core.Models.CoreEntities.Route> loadedRoutes;
 

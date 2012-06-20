@@ -12,17 +12,20 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (6/12/2012)
+                (6/19/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            * CLIENTS: Name is now filterable.
-            * ADMIN TOOLS: Importer shows error messages.
+            * DISPATCHER: Added a map view.<LineBreak/>
+            <LineBreak/>
+            (6/12/2012)<LineBreak/>
+            * CLIENTS: Name is now filterable.<LineBreak/>
+            * ADMIN TOOLS: Importer shows error messages.<LineBreak/>
             <LineBreak/>
             (5/3/2012)<LineBreak/>
-            * RECURRING SERVICES: Now you can export recurring services.
-            * ADMIN TOOLS: Now you can import recurring services.
-            * GENERAL: Small bug fixes.
+            * RECURRING SERVICES: Now you can export recurring services.<LineBreak/>
+            * ADMIN TOOLS: Now you can import recurring services.<LineBreak/>
+            * GENERAL: Small bug fixes.<LineBreak/>
             <LineBreak/>
             (4/26/2012)<LineBreak/>
             * DISPATCHER: Added status to route tasks.<LineBreak/>

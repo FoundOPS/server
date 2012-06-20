@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="FoundOps.Core.Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="1" osVersion="*" schemaVersion="2012-05.1.7">
   <Role name="FoundOps.Server">
-    <!--<Instances count="2" />-->
-    <Instances count="1" />
+    <!--<Instances count="1" />-->
+    <Instances count="2" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=opsapptest;AccountKey=dlAT4qEtm7gsWrOKuIIRgyJvYkwimkBwRo9mWvyhDGF6aISFu3jBYnCn/qgsHwsn0+3chbZ/mEWgDyAYI2gyPA==" />
     </ConfigurationSettings>
     <Certificates>
-      <Certificate name="test.foundops.com" thumbprint="E5DD3FE4DC378964892A58528B719869935C2882" thumbprintAlgorithm="sha1" />
-      <!--<Certificate name="app.foundops.com" thumbprint="48E8AC3DFA654D11C1C3B28104A4015383166979" thumbprintAlgorithm="sha1" />-->
+      <!--<Certificate name="test.foundops.com" thumbprint="E5DD3FE4DC378964892A58528B719869935C2882" thumbprintAlgorithm="sha1" />-->
+      <Certificate name="app.foundops.com" thumbprint="48E8AC3DFA654D11C1C3B28104A4015383166979" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
 </ServiceConfiguration>

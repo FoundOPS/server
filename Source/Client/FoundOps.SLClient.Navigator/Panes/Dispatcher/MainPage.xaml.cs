@@ -563,7 +563,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
                 var roleId = Manager.Context.RoleId.ToString();
 
-                // set the role id to load the routes
+                // set the map date, then role id to load the routes
+                SetMapDate();
                 var code = "document.getElementById('mapIFrame').contentWindow.map.setRoleId('" + roleId + "');";
                 HtmlPage.Window.Eval(code);
 

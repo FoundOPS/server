@@ -194,10 +194,6 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Navigation.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Telerik.Windows.Controls.ScheduleView">
-      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Telerik.Windows.Data">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
       <Private>False</Private>
@@ -304,9 +300,6 @@
     </Compile>
     <Compile Include="Controls\Dispatcher\Filter.xaml.cs">
       <DependentUpon>Filter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Dispatcher\RouteScheduleView.xaml.cs">
-      <DependentUpon>RouteScheduleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dispatcher\TaskBoard.xaml.cs">
       <DependentUpon>TaskBoard.xaml</DependentUpon>
@@ -531,7 +524,6 @@
     <Compile Include="ViewModels\BusinessAccountSettingsVM.cs" />
     <Compile Include="ViewModels\DispatcherFilterVM.cs" />
     <Compile Include="ViewModels\RouteDestinationVM.cs" />
-    <Compile Include="ViewModels\RouteScheduleVM.cs" />
     <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />
     <Compile Include="ViewModels\RouteVM.cs" />
     <Compile Include="ViewModels\SearchVM.cs" />
@@ -679,10 +671,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dispatcher\Filter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Dispatcher\RouteScheduleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,10 +2,16 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace FoundOps.Common.Composite.Tools
+namespace FoundOps.Common.Tools.ExtensionMethods
 {
     public static class LinqExtensions
     {
+        public static void AddRange<T>(this System.Collections.ObjectModel.ObservableCollection<T> observableCollection, IEnumerable<T> collection)
+        {
+            foreach (var item in collection)
+                observableCollection.Add(item);
+        }
+
         /// <summary>
         /// This will return the min element based on the selector function.
         /// Note that this will throw an exception if the sequence is empty, and will return the first element with the minimal value if there's more than one.
@@ -48,7 +54,7 @@ namespace FoundOps.Common.Composite.Tools
             try
             {
                 var v = source
-                    .Select((item, index) => new {item, position = index })
+                    .Select((item, index) => new { item, position = index })
                     .Where((x, index) => match(x.item)).FirstOrDefault();
 
                 if (v == null)
@@ -71,7 +77,7 @@ namespace FoundOps.Common.Composite.Tools
         {
             return source.ElementAt(Random.Next(source.Count()));
         }
-        
+
         /// <summary>
         /// Removes all entries from a target list where the predicate is true.
         /// </summary>

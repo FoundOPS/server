@@ -1,6 +1,8 @@
+using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
+using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
