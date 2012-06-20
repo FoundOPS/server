@@ -28,7 +28,8 @@ namespace FoundOPS.API.Controllers
 
         //GET /api/tools/ClearHistoricalTrackPoints
         /// <summary>
-        /// Clears historical trackpoints in the azure tables.
+        /// Deletes the HistoricalTrackPoints tables.
+        /// Must do this seperately from Create, because deleting tables takes time.
         /// </summary>
         [AcceptVerbs("GET", "POST")]
         public bool ClearHistoricalTrackPoints()
@@ -44,7 +45,7 @@ namespace FoundOPS.API.Controllers
 
         //GET /api/tools/CreateHistoricalTrackPoints
         /// <summary>
-        /// Creates historical trackpoints in the azure tables.
+        /// Populates HistoricalTrackPoints design data on the Azure tables.
         /// </summary>
         [AcceptVerbs("GET", "POST")]
         public bool CreateHistoricalTrackPoints()

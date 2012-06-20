@@ -137,7 +137,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
 
         /// <summary>
-        /// Clears the HistoricalTrackPoints from the Azure tables.
+        /// Deletes the HistoricalTrackPoints tables.
         /// Must do this seperately from Create, because deleting tables takes time.
         /// </summary>
         public static void ClearHistoricalTrackPoints()
@@ -159,7 +159,7 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         /// <summary>
-        /// Creates the HistoricalTrackPoints on the Azure tables.
+        /// Populates HistoricalTrackPoints design data on the Azure tables.
         /// </summary>
         public static void CreateHistoricalTrackPoints()
         {
