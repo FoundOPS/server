@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Windows;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
@@ -328,6 +329,16 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         public override void DeleteEntity(ServiceTemplate entityToDelete)
         {
+            if (entityToDelete.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+            {
+                var result =
+                    MessageBox.Show(
+                        "Doing this will delete this Service Template and all of its children templates as well as any data assiciated with them. Are you sure this is what you want to do?",
+                        "Stop and Think!", MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.Cancel)
+                    return;
+            }
             DomainContext.ServiceTemplates.Remove(entityToDelete);
         }
 

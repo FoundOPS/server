@@ -195,6 +195,23 @@ namespace FoundOps.SLClient.UI.ViewModels
             return fieldToAdd;
         }
 
+        public override void DeleteEntity(Field entityToDelete)
+        {
+            var serviceTemplate = entityToDelete.OwnerServiceTemplate;
+            if (serviceTemplate.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+            {
+                var result =
+                    MessageBox.Show(
+                        "Doing this will delete this Field and all of its children fields as well as any data assiciated with them. Are you sure this is what you want to do?",
+                        "Stop and Think!", MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.Cancel)
+                    return;
+            }
+
+            base.DeleteEntity(entityToDelete);
+        }
+
         #endregion
     }
 }

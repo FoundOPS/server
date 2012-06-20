@@ -1,4 +1,6 @@
 using System.Data.Entity;
+using System.Windows;
+using System.Windows.Forms;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.ServiceModel.DomainServices.EntityFramework;
+using MessageBox = System.Windows.MessageBox;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -82,7 +85,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var serviceTemplate = ObjectContext.ServiceTemplates.FirstOrDefault(st => st.Id == field.OwnerServiceTemplate.Id);
 
             //When adding a FoundOPS level service template to a service provider propogate the template/fields to all the Clients
-            if (serviceTemplate.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
+            if (serviceTemplate != null && serviceTemplate.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)
             {
                 //In order to propagate the original Template added must already be saved
                 ObjectContext.SaveChanges();
