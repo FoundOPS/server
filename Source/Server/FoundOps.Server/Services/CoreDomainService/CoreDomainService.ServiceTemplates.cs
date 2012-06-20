@@ -1,6 +1,5 @@
 using System.Data.Entity;
 using System.Windows;
-using System.Windows.Forms;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -10,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.ServiceModel.DomainServices.EntityFramework;
-using MessageBox = System.Windows.MessageBox;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
