@@ -535,18 +535,20 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void InsertUserAccount(UserAccount userAccount)
         {
-            //Set the password to the temporary password
-            userAccount.PasswordHash = EncryptionTools.Hash(userAccount.TemporaryPassword);
-
-            //Setup the Default UserAccount role
-            var userAccountBlocks = this.ObjectContext.Blocks.Where(block => BlockConstants.UserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
-
-            RolesDesignData.SetupDefaultUserAccountRole(userAccount, userAccountBlocks);
-
             if ((userAccount.EntityState != EntityState.Detached))
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(userAccount, EntityState.Added);
             else
                 this.ObjectContext.Parties.AddObject(userAccount);
+
+            //Set the password to the temporary password
+            userAccount.PasswordHash = EncryptionTools.Hash(userAccount.TemporaryPassword);
+
+            //Trim unwanted spaces from the email address
+            userAccount.EmailAddress = userAccount.EmailAddress.Trim();
+
+            //Setup the Default UserAccount role
+            var userAccountBlocks = this.ObjectContext.Blocks.Where(block => BlockConstants.UserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
+            RolesDesignData.SetupDefaultUserAccountRole(userAccount, userAccountBlocks);
         }
 
         [Update]
@@ -558,6 +560,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Check if there is a temporary password
             if (!string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
                 currentUserAccount.PasswordHash = EncryptionTools.Hash(currentUserAccount.TemporaryPassword);
+
+            //Trim unwanted spaces from the email address
+            currentUserAccount.EmailAddress = currentUserAccount.EmailAddress.Trim();
 
             this.ObjectContext.Parties.AttachAsModified(currentUserAccount);
         }
