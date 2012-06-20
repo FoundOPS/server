@@ -99,17 +99,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             this.ObjectContext.Fields.AttachAsModified(currentField);
         }
 
-        public void DeleteOptionsField(OptionsField optionsField)
-        {
-            this.ObjectContext.DetachExistingAndAttach(optionsField);
-            optionsField.Options.Load();
-            var optionsToDelete = optionsField.Options.ToArray();
-            foreach (var option in optionsToDelete)
-                this.DeleteOption(option);
-
-            this.ObjectContext.Fields.DeleteObject(optionsField);
-        }
-
         public void DeleteField(Field field)
         {
             var serviceTemplate = ObjectContext.ServiceTemplates.FirstOrDefault(st => st.Id == field.ServiceTemplateId);
@@ -139,6 +128,18 @@ namespace FoundOps.Server.Services.CoreDomainService
                 DeleteField(child);
 
             this.ObjectContext.Fields.DeleteObject(field);
+        }
+
+        //private so it is not automatically called
+        private void DeleteOptionsField(OptionsField optionsField)
+        {
+            this.ObjectContext.DetachExistingAndAttach(optionsField);
+            optionsField.Options.Load();
+            var optionsToDelete = optionsField.Options.ToArray();
+            foreach (var option in optionsToDelete)
+                this.DeleteOption(option);
+
+            this.ObjectContext.Fields.DeleteObject(optionsField);
         }
 
         #endregion

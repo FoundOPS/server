@@ -33,8 +33,6 @@ GO
 	SELECT	FieldRecurs.Id
 	FROM	FieldRecurs
 
-SELECT * FROM #TempTable
-
 	DELETE 
 	FROM		Fields
 	--This is a Semi-Join between the FieldRecurs table created above and the Fields Table
