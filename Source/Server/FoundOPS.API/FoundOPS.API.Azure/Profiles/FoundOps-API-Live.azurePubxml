@@ -13,7 +13,7 @@
     <AzureHostedServiceName>opsapi</AzureHostedServiceName>
     <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
     <AzureEnableProfiling>False</AzureEnableProfiling>
-    <AzureServiceConfiguration>CloudTest</AzureServiceConfiguration>
+    <AzureServiceConfiguration>CloudLive</AzureServiceConfiguration>
     <AzureSolutionConfiguration>Release</AzureSolutionConfiguration>
     <AzureStorageAccountLabel>opsapplive</AzureStorageAccountLabel>
     <AzureStorageAccountName>opsapplive</AzureStorageAccountName>
