@@ -165,22 +165,24 @@ namespace FoundOPS.API.Controllers
         /// Stores employee trackpoints.
         /// Used by the mobile phone application.
         /// </summary>
-        /// <param name="modelTrackPoints">The list of TrackPoints being passed from an Employee's device</param>
-        /// <param name="routeId">The Id of the Route that the Employee is currently on</param>
+        /// <param name="trackPoints">The list of TrackPoints being passed from an Employee's device</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
         [AcceptVerbs("POST")]
-        public HttpResponseMessage PostEmployeeTrackPoint(TrackPoint[] modelTrackPoints, Guid routeId)
+        public HttpResponseMessage PostEmployeeTrackPoint(TrackPoint[] trackPoints)
         {
+            if (!trackPoints.Any())
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+
             var currentUserAccount = AuthenticationLogic.CurrentUserAccount(_coreEntitiesContainer);
 
             //Return an Unauthorized Status Code
             //a) if there is no UserAccount
             //b) the user does not have access to the business account of the route
             if (currentUserAccount == null)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, modelTrackPoints);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, trackPoints);
 
             //Provides an HTTP response back to the Mobile Phone to signal either a successful or unseccessful POST
-            return PostTrackPointHelper(currentUserAccount.Id, null, modelTrackPoints, routeId);
+            return PostTrackPointHelper(currentUserAccount.Id, null, trackPoints, trackPoints.First().RouteId.Value);
         }
 
         //NOTE: this is not yet implemented because we do not have a way to track vehicles as of 4/11/2012
@@ -274,7 +276,7 @@ namespace FoundOPS.API.Controllers
             var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountsQueryable().FirstOrDefault(ba => ba.Routes.Any(r => r.Id == routeId));
 
             //if the current business account for the route is not found, the user is not authorized for that business account (or the route does not exist)
-            if(currentBusinessAccount == null)
+            if (currentBusinessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
 
             if (employeeId != null)
@@ -288,10 +290,10 @@ namespace FoundOPS.API.Controllers
                 #region Save the last TrackPoint passed to the database
 
                 employee.LastCompassDirection = lastTrackPoint.Heading;
-                employee.LastLatitude = (double?) lastTrackPoint.Latitude;
-                employee.LastLongitude = (double?) lastTrackPoint.Longitude;
+                employee.LastLatitude = (double?)lastTrackPoint.Latitude;
+                employee.LastLongitude = (double?)lastTrackPoint.Longitude;
                 employee.LastSource = lastTrackPoint.Source;
-                employee.LastSpeed = (double?) lastTrackPoint.Speed;
+                employee.LastSpeed = (double?)lastTrackPoint.Speed;
                 employee.LastTimeStamp = lastTrackPoint.CollectedTimeStamp;
 
                 #endregion
@@ -312,14 +314,14 @@ namespace FoundOPS.API.Controllers
                 #region Save the last TrackPoint passed to the database
 
                 vehicle.LastCompassDirection = lastTrackPoint.Heading;
-                vehicle.LastLatitude = (double?) lastTrackPoint.Latitude;
-                vehicle.LastLongitude = (double?) lastTrackPoint.Longitude;
+                vehicle.LastLatitude = (double?)lastTrackPoint.Latitude;
+                vehicle.LastLongitude = (double?)lastTrackPoint.Longitude;
                 vehicle.LastSource = lastTrackPoint.Source;
-                vehicle.LastSpeed = (double?) lastTrackPoint.Speed;
+                vehicle.LastSpeed = (double?)lastTrackPoint.Speed;
                 vehicle.LastTimeStamp = lastTrackPoint.CollectedTimeStamp;
 
                 #endregion
-                
+
                 //Checks each TrackPoint to see if it needs to be pushed to the Azure Tables
                 //Pushes if needed
                 CheckTimeStampPushToAzure(vehicle.LastPushToAzureTimeStamp, currentBusinessAccount, orderedModelTrackPoints, null, vehicle, routeId);

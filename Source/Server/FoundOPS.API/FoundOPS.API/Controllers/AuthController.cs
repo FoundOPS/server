@@ -29,5 +29,15 @@ namespace FoundOPS.API.Controllers
 
             return false;
         }
+
+        /// <summary>
+        /// Log Out the current user.
+        /// </summary>
+        [AcceptVerbs("GET", "POST")]
+        public bool LogOut()
+        {
+            _formsService.SignOut();
+            return true;
+        }
     }
 }
