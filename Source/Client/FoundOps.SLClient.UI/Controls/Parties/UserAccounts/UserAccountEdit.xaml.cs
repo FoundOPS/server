@@ -1,10 +1,9 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Browser;
-using FoundOps.Common.Silverlight.UI.ViewModels;
+﻿using FoundOps.Common.Silverlight.UI.ViewModels;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Models;
+using System;
+using System.Windows;
+using System.Windows.Browser;
 
 namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
 {
@@ -72,7 +71,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
-        private void HyperlinkButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        private void HyperlinkButtonClick(object sender, RoutedEventArgs e)
         {
             HtmlPage.Window.Navigate(new Uri(UriExtensions.ThisRootUrl + @"/Account/ChangePassword"));
         }

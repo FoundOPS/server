@@ -6,8 +6,7 @@
              xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Employees="clr-namespace:FoundOps.SLClient.UI.Controls.Employees"
-             xmlns:Controls1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" mc:Ignorable="d" d:DesignWidth="500">
+             mc:Ignorable="d" d:DesignWidth="500">
     <UserControl.Resources>
         <Converters:VisibilityConverter x:Key="VisibilityConverter"/>
     </UserControl.Resources>

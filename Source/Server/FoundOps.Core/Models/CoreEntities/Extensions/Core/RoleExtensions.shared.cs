@@ -8,7 +8,8 @@ namespace FoundOps.Core.Models.CoreEntities
     public enum RoleType
     {
         Administrator = 0,
-        Custom = 1
+        Custom = 1,
+        Mobile = 2
     }
 
     public partial class Role : IEntityDefaultCreation

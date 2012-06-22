@@ -2,7 +2,6 @@
 using FoundOps.Core.Models.CoreEntities;
 using System;
 using System.Web.Http;
-using System.Web.Services.Protocols;
 
 namespace FoundOPS.API.Controllers
 {
