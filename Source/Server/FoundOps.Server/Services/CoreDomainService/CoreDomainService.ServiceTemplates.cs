@@ -1,7 +1,5 @@
 using System.Data.Entity;
-using System.Windows;
-using System.Windows.Forms;
-using FoundOps.Common.NET;
+using System.Windows;using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.Core.Tools;

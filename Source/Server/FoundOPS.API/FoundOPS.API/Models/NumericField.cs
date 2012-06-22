@@ -7,6 +7,8 @@ namespace FoundOPS.API.Models
 {
     public class NumericField
     {
+        public Guid Id { get; set; }
+
         public string Mask { get; set; }
 
         public int DecimalPlaces { get; set; }

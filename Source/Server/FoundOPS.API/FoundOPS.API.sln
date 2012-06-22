@@ -9,12 +9,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Common.NET", "..\.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{430BF178-8BEF-403E-B053-3F8A6F15EF8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.API.Tests", "API.Tests\FoundOps.API.Tests.csproj", "{41CC16C3-EDF7-4534-AD5C-0968F45309F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8BE952E2-F077-42D0-A4AD-704EEC696840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8BE952E2-F077-42D0-A4AD-704EEC696840}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BE952E2-F077-42D0-A4AD-704EEC696840}.Release|Any CPU.ActiveCfg = Release|Any CPU

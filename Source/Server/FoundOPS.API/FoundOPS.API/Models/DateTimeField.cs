@@ -7,6 +7,8 @@ namespace FoundOPS.API.Models
 {
     public class DateTimeField
     {
+        public Guid Id { get; set; }
+
         public DateTime Earliest { get; set; }
 
         public DateTime Latest { get; set; }
