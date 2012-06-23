@@ -1,23 +1,27 @@
-﻿using FoundOps.Common.Composite.Tools;
-using FoundOps.Common.Tools;
+﻿using FoundOps.Common.Tools;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.Data.ViewModels;
+using MEFedMVVM.ViewModelLocator;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace FoundOps.SLClient.Data.Tools
+namespace FoundOps.SLClient.UI.ViewModels
 {
     /// <summary>
-    /// A calculator for organizing routes.
+    /// Manages the logic for the routing algorithm and hooks it up to the UI
     /// </summary>
-    public class SimpleRouteCalculator
+    [ExportViewModel("AlgorithmVM")]
+    public class AlgorithmVM : DataFedVM
     {
+        public int Progress { get; set; }
+
         /// <summary>
         /// Populates the routes.
         /// </summary>
-        /// <param name="unroutedTaskHolders"> </param>
+        /// <param name="unroutedTaskHolders"></param>
         /// <param name="routesToPopulate">The routes to populate.</param>
         /// <returns>The tasks put into routes.</returns>
         public static IEnumerable<TaskHolder> PopulateRoutes(IEnumerable<TaskHolder> unroutedTaskHolders, IEnumerable<Route> routesToPopulate)
@@ -25,20 +29,18 @@ namespace FoundOps.SLClient.Data.Tools
             var routedTaskHolders = new List<TaskHolder>();
 
             //Organize the unroutedTaskHolders by ServiceTemplateName
-
             var taskHoldersToRoute = unroutedTaskHolders.Where(th => th.LocationId.HasValue && th.ServiceName != null).ToArray();
 
             //a) get a collection of unique ServiceTemplate Names (types) from unroutedTaskHolders
-            //  only choose task holders with a LocationId and a ServiceName
+            //   only choose task holders with a LocationId and a ServiceName
             var distinctServiceTemplates = taskHoldersToRoute.Select(th => th.ServiceName).Distinct().ToArray();
 
-            //b) organize the unroutedTaskHolders into a 2d collection by ServiceTemplate Name 
-            //  only choose task holders with a LocationId and a ServiceName
+            //b) prevent routing different service types together by organizing 
+            //   the unroutedTaskHolders into a 2d collection by ServiceTemplate Name
             var routeTaskHolderCollections =
                 distinctServiceTemplates.Select(serviceTemplateName => taskHoldersToRoute.Where(th => th.ServiceName == serviceTemplateName));
 
-            //Go through each routeTaskHolderCollection and route them
-            //(Before routing them, convert them into RouteTasks)
+            //Go through each different service type's route tasks (each routeTaskHolderCollection) and route them
             foreach (var routeTaskHolderCollection in routeTaskHolderCollections)
             {
                 //Only route tasks with lat/longs
@@ -46,11 +48,8 @@ namespace FoundOps.SLClient.Data.Tools
 
                 var serviceType = unorganizedTaskHolders.First().ServiceName;
 
-                //Before being added to this collection, the TaskHolder will be converted to a RouteTask
-                var organizedRouteTasks = new List<RouteTask>();
-
                 //If there is not a depot set. Default to FoundOPS, 1305 Cumberland Ave, 47906: 40.460335, -86.929840
-                var depot = new GeoLocation { Latitude = 40.460335, Longitude = -86.929840 };
+                var depot = new GeoLocation(40.460335, -86.929840);
 
                 //Try to get the depot from the business account
                 var ownerBusinessAccount = Manager.Context.OwnerAccount as BusinessAccount;
@@ -58,8 +57,10 @@ namespace FoundOps.SLClient.Data.Tools
                 {
                     var depotLocation = ownerBusinessAccount.Depots.First();
                     if (depotLocation.Latitude.HasValue && depotLocation.Longitude.HasValue)
-                        depot = new GeoLocation { Latitude = (double)depotLocation.Latitude.Value, Longitude = (double)depotLocation.Longitude.Value };
+                        depot = new GeoLocation((double)depotLocation.Latitude.Value, (double)depotLocation.Longitude.Value);
                 }
+
+                //TODO REPLACE
 
                 var lastLatLon = depot;
                 //Order the unorganized route tasks by location
@@ -76,15 +77,21 @@ namespace FoundOps.SLClient.Data.Tools
                     //Add the nextRouteTaskToAdd to the organized list and remove it from the unorganized list
                     unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
 
-                    var routeTask = nextTaskHolderToAdd.ChildRouteTask;
-                    organizedRouteTasks.Add(routeTask);
-
-                    lastLatLon = new GeoLocation
+                    lastLatLon = new IGeoLocation
                     {
                         Latitude = Convert.ToDouble(nextTaskHolderToAdd.Latitude),
                         Longitude = Convert.ToDouble(nextTaskHolderToAdd.Longitude)
                     };
                 }
+
+                //TODO REPLACE
+
+                //todo foreach
+                //Add the nextRouteTaskToAdd to the organized list and remove it from the unorganized list
+                //Change the TaskHolder into a RouteTask
+                //var routeTask = nextTaskHolderToAdd.ChildRouteTask;
+                //organizedRouteTasks.Add(routeTask);
+                //unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
 
                 //Take the organizedRouteTask collection and put it into routes
                 var routedRouteTasks = PutTasksIntoRoutes(routesToPopulate.Where(route => route.RouteType == serviceType), organizedRouteTasks);

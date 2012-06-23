@@ -1,0 +1,25 @@
+﻿<controls:ChildWindow x:Class="FoundOps.SLClient.UI.Controls.Dispatcher.AlgorithmStatus" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+                      xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" HasCloseButton="False"
+                      Width="400" Height="300" Title="AlgorithmStatus">
+    <Grid x:Name="LayoutRoot" Margin="2">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Calculating " />
+            <TextBlock Grid.Column="1" Text="{Binding ServiceType}" />
+            <TextBlock Grid.Column="2" Text="Routes" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <TextBlock Text="Total Distance " />
+            <TextBlock Text="{Binding CurrentDistance}" />
+        </StackPanel>
+        <telerik:RadProgressBar x:Name="RadProgressBar1" Grid.Row="2" Minimum="0" Maximum="100" 
+					IsIndeterminate="{Binding IsChecked, ElementName=IsIndeterminateCheckBox, Mode=TwoWay}"
+					Value="{Binding Value, ElementName=ValueNumericInput, Mode=TwoWay}" Width="260" Height="30"
+					Margin="0,20" />
+    </Grid>
+</controls:ChildWindow>

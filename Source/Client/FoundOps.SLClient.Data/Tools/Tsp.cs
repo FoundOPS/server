@@ -1,14 +1,18 @@
-﻿using System;
+﻿using FoundOps.Common.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FoundOps.SLClient.Data.Tools.TSP
+namespace FoundOps.SLClient.Data.Tools
 {
+    /// <summary>
+    /// Logic to process the traveling salesmen problem
+    /// </summary>
     public class Tsp
     {
-        public static IList<GeoLocation> Shuffle(Random rng, IList<GeoLocation> cities)
+        public static IList<IGeoLocation> Shuffle(Random rng, IList<IGeoLocation> cities)
         {
-            var shuffled = new List<GeoLocation>(cities);
+            var shuffled = new List<IGeoLocation>(cities);
             for (var i = cities.Count() - 1; i >= 1; i--)
             {
                 var j = rng.Next(i + 1);
@@ -20,11 +24,11 @@ namespace FoundOps.SLClient.Data.Tools.TSP
             return shuffled;
         }
 
-        public static IList<GeoLocation> Swap(Random rng, IList<GeoLocation> cities)
+        public static IList<IGeoLocation> Swap(Random rng, IList<IGeoLocation> cities)
         {
             var count = cities.Count();
 
-            var swapped = new List<GeoLocation>(cities);
+            var swapped = new List<IGeoLocation>(cities);
 
             var first = rng.Next(count);
             var city = swapped[first];
@@ -41,7 +45,7 @@ namespace FoundOps.SLClient.Data.Tools.TSP
             return swapped;
         }
 
-        public static double Length(IList<GeoLocation> cities)
+        public static double Length(IList<IGeoLocation> cities)
         {
             var length = 0d;
             for (var i = 0; i < cities.Count() - 1; i++)
@@ -53,16 +57,16 @@ namespace FoundOps.SLClient.Data.Tools.TSP
             return length;
         }
 
-        public static double Distance(GeoLocation city1, GeoLocation city2)
+        public static double Distance(IGeoLocation city1, IGeoLocation city2)
         {
-            return MapTools.VincentyDistanceFormula(city1, city2);
+            return GeoLocationTools.VincentyDistanceFormula(city1, city2);
         }
 
-        public static IList<GeoLocation> Decross(Random rng, IList<GeoLocation> cities)
+        public static IList<IGeoLocation> Decross(Random rng, IList<IGeoLocation> cities)
         {
             var count = cities.Count();
 
-            var swapped = new List<GeoLocation>(cities);
+            var swapped = new List<IGeoLocation>(cities);
 
             var first = rng.Next(count - 3);
             var city1 = swapped[first];
@@ -72,7 +76,7 @@ namespace FoundOps.SLClient.Data.Tools.TSP
             {
                 var city3 = swapped[i];
                 var city4 = swapped[i + 1];
-                if (MapTools.SimplePolylineIntersection(city1, city2, city3, city4) != null)
+                if (GeoLocationTools.SimplePolylineIntersection(city1, city2, city3, city4) != null)
                 {
                     swapped.Reverse(first + 1, i - first);
                     break;

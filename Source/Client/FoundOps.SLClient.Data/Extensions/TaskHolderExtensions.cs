@@ -1,5 +1,4 @@
-﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Tools;
+﻿using FoundOps.Common.Tools;
 using FoundOps.SLClient.Data.Services;
 using System;
 using System.Reactive.Linq;
@@ -9,9 +8,43 @@ using System.Reactive.Linq;
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class TaskHolder
+    public partial class TaskHolder : IGeoLocation
     {
         #region Public Properties
+
+        #region Implementation of IGeoLocation
+
+        double IGeoLocation.Latitude
+        {
+            get { return (double)this.Latitude.Value; }
+        }
+
+        double IGeoLocation.Longitude
+        {
+            get { return (double)this.Longitude; }
+        }
+
+        public double LatitudeRad
+        {
+            get { return DegreeToRadian((double)Latitude.Value); }
+        }
+
+        public double LongitudeRad
+        {
+            get { return DegreeToRadian((double)Longitude.Value); }
+        }
+
+        public static double DegreeToRadian(double angle)
+        {
+            return Math.PI * angle / 180.0;
+        }
+
+        public static double RadianToDegree(double angle)
+        {
+            return angle * (180.0 / Math.PI);
+        }
+
+        #endregion
 
         private ServiceHolder _serviceHolder;
         /// <summary>
@@ -43,14 +76,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
-
-        //if (ParentRouteTaskHolder == null)
-        //    {
-        //        ServiceHolder = null;
-        //        return;
-        //    }
-
-        //    ServiceHolder = new ServiceHolder { ExistingServiceId = ParentRouteTaskHolder.ServiceId, OccurDate = ParentRouteTaskHolder.OccurDate, RecurringServiceId = ParentRouteTaskHolder.RecurringServiceId };
 
         #region Initialization
 

@@ -95,11 +95,17 @@
     <Reference Include="AsyncCtpLibrary_Silverlight5">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\AsyncCtpLibrary_Silverlight5.dll</HintPath>
     </Reference>
+    <Reference Include="Bumblebee.Silverlight">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Bumblebee.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="DataValidationFramework.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=62f42d59baf51689, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\DataValidationFramework.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="EntityGraph.Silverlight">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.SL4">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\GalaSoft.MvvmLight.SL4.dll</HintPath>
@@ -307,8 +313,8 @@
     <Compile Include="Services\Manager.cs" />
     <Compile Include="Tools\DataFedVMExtensions.cs" />
     <Compile Include="Tools\ContextManagerMarkupExtensions.cs" />
-    <Compile Include="Tools\SimpleRouteCalculator.cs" />
-    <Compile Include="Tools\TSP\Chromosome.cs" />
+    <Compile Include="Tools\HiveRouteCalculator.cs" />
+    <Compile Include="Tools\Tsp.cs" />
     <Compile Include="Validation\LocationFieldValueRequired.cs" />
     <Compile Include="ViewModels\CoreEntityVM.cs" />
     <Compile Include="ViewModels\InfiniteAccordionVM.cs" />

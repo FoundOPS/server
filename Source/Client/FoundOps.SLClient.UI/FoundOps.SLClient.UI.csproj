@@ -97,6 +97,9 @@
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\FSharp.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Kent.Boogaart.KBCsv, Version=1.3.0.0, Culture=neutral, PublicKeyToken=cc96fa93a217f7a1, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
     </Reference>
@@ -217,6 +220,9 @@
     </Compile>
     <Compile Include="Controls\CustomFields\FieldSmall.xaml.cs">
       <DependentUpon>FieldSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dispatcher\AlgorithmStatus.xaml.cs">
+      <DependentUpon>AlgorithmStatus.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Dispatcher\Converters\ManifestConverters.cs" />
     <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
@@ -519,6 +525,7 @@
     <Compile Include="Tools\DragDropTools.cs" />
     <Compile Include="Tools\ServiceGenerator.cs" />
     <Compile Include="Tools\VM.cs" />
+    <Compile Include="ViewModels\AlgorithmVM.cs" />
     <Compile Include="ViewModels\BusinessAccountsVM.cs" />
     <Compile Include="ViewModels\ContactInfoVM.cs" />
     <Compile Include="ViewModels\BusinessAccountSettingsVM.cs" />
@@ -526,7 +533,6 @@
     <Compile Include="ViewModels\RouteDestinationVM.cs" />
     <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />
     <Compile Include="ViewModels\RouteVM.cs" />
-    <Compile Include="ViewModels\SearchVM.cs" />
     <Compile Include="ViewModels\TaskBoardVM.cs" />
     <Compile Include="ViewModels\UserAccountSettingsVM.cs" />
     <Compile Include="ViewModels\UserAccountsVM.cs" />
@@ -534,7 +540,6 @@
     <Compile Include="ViewModels\EmployeeHistoryVM.cs" />
     <Compile Include="ViewModels\OptionsFieldVM.cs" />
     <Compile Include="ViewModels\ClientsVM.cs" />
-    <Compile Include="ViewModels\RouteMapVM.cs" />
     <Compile Include="ViewModels\RecurringServicesVM.cs" />
     <Compile Include="ViewModels\ServiceTemplatesVM.cs" />
     <Compile Include="ViewModels\SubLocationsVM.cs" />
@@ -565,6 +570,10 @@
     <Page Include="Controls\CustomFields\FieldSmall.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dispatcher\AlgorithmStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dispatcher\Manifest\ManifestHeader.xaml">
       <SubType>Designer</SubType>

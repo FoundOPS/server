@@ -413,7 +413,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
             {
                 //Populate the routes with the unrouted tasks
-                var routedTaskHolders = SimpleRouteCalculator.PopulateRoutes((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, CollectionView.Cast<Route>()).ToArray();
+                var routedTaskHolders = RouteManager.PopulateRoutes((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, CollectionView.Cast<Route>()).ToArray();
 
                 //Remove the routedTasks from the task board
                 foreach (var taskHolderToRemove in routedTaskHolders)

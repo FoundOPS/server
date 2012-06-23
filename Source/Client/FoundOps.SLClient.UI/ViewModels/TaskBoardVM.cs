@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using FoundOps.Common.Silverlight.MVVM.Messages;
+﻿using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
@@ -12,13 +11,12 @@ using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using ReactiveUI.Xaml;
-using Telerik.Windows.Controls;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

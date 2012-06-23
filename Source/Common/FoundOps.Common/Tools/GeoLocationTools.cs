@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 
-namespace FoundOps.SLClient.Data.Tools.TSP
+namespace FoundOps.Common.Tools
 {
     /// <summary>
     /// Tools for working with Latitude and Longitudes.
     /// Vincenty formula implementation from https://github.com/lmaslanka/Orthodromic-Distance-Calculator
     /// Intersection logic from http://rbrundritt.wordpress.com/2008/10/20/approximate-points-of-intersection-of-two-line-segments/
     /// </summary>
-    public static class MapTools
+    public static class GeoLocationTools
     {
         #region Distance
 
@@ -15,7 +15,7 @@ namespace FoundOps.SLClient.Data.Tools.TSP
         /// Calculate the arc length distance between two locations using the Vincenty formula.
         /// From https://github.com/lmaslanka/Orthodromic-Distance-Calculator
         /// </summary>
-        public static double VincentyDistanceFormula(GeoLocation locationA, GeoLocation locationB)
+        public static double VincentyDistanceFormula(IGeoLocation locationA, IGeoLocation locationB)
         {
             return Math.Atan(Math.Sqrt(((Math.Pow(Math.Cos(locationB.LatitudeRad) * Math.Sin(Diff(locationA.LongitudeRad, locationB.LongitudeRad)), 2)) + (Math.Pow((Math.Cos(locationA.LatitudeRad) * Math.Sin(locationB.LatitudeRad)) - (Math.Sin(locationA.LatitudeRad) * Math.Cos(locationB.LatitudeRad) * Math.Cos(Diff(locationA.LongitudeRad, locationB.LongitudeRad))), 2))) / ((Math.Sin(locationA.LatitudeRad) * Math.Sin(locationB.LatitudeRad)) + (Math.Cos(locationA.LatitudeRad) * Math.Cos(locationB.LatitudeRad) * Math.Cos(Diff(locationA.LongitudeRad, locationB.LongitudeRad))))));
         }
@@ -37,7 +37,7 @@ namespace FoundOps.SLClient.Data.Tools.TSP
         /// adapted to C# from http://rbrundritt.wordpress.com/2008/10/20/approximate-points-of-intersection-of-two-line-segments/
         /// </summary>
         /// <returns>Null if there is no intersection. Otherwise the point of intersection.</returns>
-        public static GeoLocation SimplePolylineIntersection(GeoLocation latlong1, GeoLocation latlong2, GeoLocation latlong3, GeoLocation latlong4)
+        public static IGeoLocation SimplePolylineIntersection(IGeoLocation latlong1, IGeoLocation latlong2, IGeoLocation latlong3, IGeoLocation latlong4)
         {
             //Line segment 1 (p1, p2)
             var a1 = latlong2.Latitude - latlong1.Latitude;
@@ -51,7 +51,7 @@ namespace FoundOps.SLClient.Data.Tools.TSP
 
             var determinate = a1 * b2 - a2 * b1;
 
-            GeoLocation intersection;
+            IGeoLocation intersection;
             if (determinate != 0)
             {
                 var x = (b2 * c1 - b1 * c2) / determinate;
@@ -77,7 +77,7 @@ namespace FoundOps.SLClient.Data.Tools.TSP
         /// <param name="latlong2">The second coordinate which makes up the bounded box</param>
         /// <param name="latlong3">a point that we are checking to see is inside the box</param>
         /// <returns></returns>
-        private static bool InBoundedBox(GeoLocation latlong1, GeoLocation latlong2, GeoLocation latlong3)
+        private static bool InBoundedBox(IGeoLocation latlong1, IGeoLocation latlong2, IGeoLocation latlong3)
         {
             bool betweenLats;
             bool betweenLons;
@@ -102,7 +102,16 @@ namespace FoundOps.SLClient.Data.Tools.TSP
         #endregion
     }
 
-    public class GeoLocation
+    public interface IGeoLocation
+    {
+        double Longitude { get; }
+        double Latitude { get; }
+
+        double LatitudeRad { get; }
+        double LongitudeRad { get; }
+    }
+
+    public class GeoLocation : IGeoLocation
     {
         public GeoLocation(double latitude, double longitude)
         {

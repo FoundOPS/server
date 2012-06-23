@@ -115,7 +115,7 @@
     <Compile Include="Tools\ExtensionMethods\LinqExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\ReflectionExtensions.cs" />
     <Compile Include="Tools\ExtensionMethods\UriExtensions.cs" />
-    <Compile Include="Tools\OrthodromicDistanceCalculator.cs" />
+    <Compile Include="Tools\GeoLocationTools.cs" />
     <Compile Include="Tools\PasswordTools.cs" />
     <Compile Include="Tools\Rxx2.cs" />
     <Compile Include="Tools\SerializationTools.cs" />

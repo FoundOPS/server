@@ -1,26 +1,26 @@
 ﻿using ClearLines.Bumblebee;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.SLClient.Data.Tools.TSP;
+using FoundOps.Common.Tools;
 using System;
 using System.Collections.Generic;
 
 namespace FoundOps.SLClient.Data.Tools
 {
     /// <summary>
-    /// 
+    /// A calculator for organizing routes with a hive algorithm
     /// </summary>
     public class HiveRouteCalculator
     {
-        private readonly IList<GeoLocation> _cities;
-        private readonly Solver<IList<GeoLocation>> _solver;
+        private readonly IList<IGeoLocation> _cities;
+        private readonly Solver<IList<IGeoLocation>> _solver;
 
         /// <summary>
         /// Calculates a route based on the hive
         /// </summary>
-        public HiveRouteCalculator(IList<GeoLocation> cities)
+        public HiveRouteCalculator(IList<IGeoLocation> cities)
         {
             _cities = cities;
-            _solver = new Solver<IList<GeoLocation>>();
+            _solver = new Solver<IList<IGeoLocation>>();
             _solver.FoundSolution += SolverFoundSolution;
         }
 
@@ -29,13 +29,13 @@ namespace FoundOps.SLClient.Data.Tools
         /// </summary>
         public void StartSearch()
         {
-            var generator = new Func<Random, IList<GeoLocation>>(random => Tsp.Shuffle(random, _cities));
+            var generator = new Func<Random, IList<IGeoLocation>>(random => Tsp.Shuffle(random, _cities));
 
-            var mutator = new Func<IList<GeoLocation>, Random, IList<GeoLocation>>((solution, random) => Tsp.Swap(random, solution));
+            var mutator = new Func<IList<IGeoLocation>, Random, IList<IGeoLocation>>((solution, random) => Tsp.Swap(random, solution));
 
-            var evaluator = new Func<IList<GeoLocation>, double>(circuit => -Tsp.Length(circuit));
+            var evaluator = new Func<IList<IGeoLocation>, double>(circuit => -Tsp.Length(circuit));
 
-            var problem = new Problem<IList<GeoLocation>>(generator, mutator, evaluator);
+            var problem = new Problem<IList<IGeoLocation>>(generator, mutator, evaluator);
 
             this._solver.Search(problem);
 
@@ -47,7 +47,7 @@ namespace FoundOps.SLClient.Data.Tools
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        public void SolverFoundSolution(object sender, SolutionMessage<IList<GeoLocation>> args)
+        public void SolverFoundSolution(object sender, SolutionMessage<IList<IGeoLocation>> args)
         {
             //this.Quality = args.Quality;
             //this.DiscoveryTime = args.DateTime;
