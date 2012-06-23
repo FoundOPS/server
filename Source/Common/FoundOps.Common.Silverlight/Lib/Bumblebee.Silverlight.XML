@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>Bumblebee.Silverlight</name></assembly>
+<members>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:ClearLines.Bumblebee.Problem`1.#ctor(System.Func{System.Random,`0},System.Func{`0,System.Random,`0},System.Func{`0,System.Double})">
+<summary>C#-friendly constructor.</summary>
+</member>
+<member name="">
+
+</member>
+<member name="T:ClearLines.Bumblebee.Problem`1">
+ <summary>A Problem that can be solved by the Solver, defined by
+ the type of Solution it expects, and 3 functions, defining how
+ to generate a new solutions, how to mutate a known solution into a new one, 
+ and how to evalate the quality of a solution.</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:ClearLines.Bumblebee.SolutionMessage`1">
+ <summary>Solver solution with its quality and discovery time.</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:ClearLines.Bumblebee.Solver`1.Stop">
+ <summary>Stops the search currently going on.</summary>
+</member>
+<member name="M:ClearLines.Bumblebee.Solver`1.Search(ClearLines.Bumblebee.Problem{`0})">
+ <summary>Starts searching for solutions to the Problem.</summary>
+</member>
+<member name="M:ClearLines.Bumblebee.Solver`1.Initialize(ClearLines.Bumblebee.Problem{`0},ClearLines.Bumblebee.Configuration)">
+ <summary>Initializes the Search: creates queue loaded with search bees, 
+ and initial state (inactive solutions and initial best).</summary>
+</member>
+<member name="M:ClearLines.Bumblebee.Solver`1.Dispatch(ClearLines.Bumblebee.Problem{`0},ClearLines.Bumblebee.Configuration,ClearLines.Bumblebee.Solution{`0}[],System.Collections.Concurrent.ConcurrentQueue{ClearLines.Bumblebee.Bee{`0}},ClearLines.Bumblebee.Bee{`0})">
+ <summary>Initiates the next search for a bee:
+ creates a new Task, sending a bee to search for a solution
+ and return to the queue once the search completes.</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:ClearLines.Bumblebee.Array">
+
+</member>
+<member name="M:ClearLines.Bumblebee.Hive.search``1(System.Random,ClearLines.Bumblebee.Problem{``0},ClearLines.Bumblebee.Configuration,ClearLines.Bumblebee.Bee{``0})">
+ <summary>Updates a Bee with the result of its search.
+ A scout bee will return a solution from the Generator,
+ whereas an Active be will return a solution in the neighborhood
+ of its initial solution.</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:ClearLines.Bumblebee.Hive.updateWith``1(ClearLines.Bumblebee.Solution{``0},Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,System.Boolean},ClearLines.Bumblebee.Solution{``0})">
+ <summary>Update original with candidate</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:ClearLines.Bumblebee.Hive">
+
+</member>
+<member name="M:ClearLines.Bumblebee.RNG.create">
+ <summary>Returns a properly seeded Random instance.</summary>
+</member>
+<member name="">
+
+</member>
+<member name="T:ClearLines.Bumblebee.RNG">
+
+</member>
+</members>
+</doc>

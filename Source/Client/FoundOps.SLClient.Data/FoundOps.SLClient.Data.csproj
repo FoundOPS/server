@@ -308,6 +308,7 @@
     <Compile Include="Tools\DataFedVMExtensions.cs" />
     <Compile Include="Tools\ContextManagerMarkupExtensions.cs" />
     <Compile Include="Tools\SimpleRouteCalculator.cs" />
+    <Compile Include="Tools\TSP\Chromosome.cs" />
     <Compile Include="Validation\LocationFieldValueRequired.cs" />
     <Compile Include="ViewModels\CoreEntityVM.cs" />
     <Compile Include="ViewModels\InfiniteAccordionVM.cs" />

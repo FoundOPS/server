@@ -1,4 +1,5 @@
 ﻿using FoundOps.Common.Composite.Tools;
+using FoundOps.Common.Tools;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
@@ -47,8 +48,6 @@ namespace FoundOps.SLClient.Data.Tools
 
                 //Before being added to this collection, the TaskHolder will be converted to a RouteTask
                 var organizedRouteTasks = new List<RouteTask>();
-
-                var calculator = new OrthodromicDistanceCalculator();
 
                 //If there is not a depot set. Default to FoundOPS, 1305 Cumberland Ave, 47906: 40.460335, -86.929840
                 var depot = new GeoLocation { Latitude = 40.460335, Longitude = -86.929840 };

@@ -1,46 +1,36 @@
 ﻿using System;
 
-namespace FoundOps.Common.Composite.Tools
+namespace FoundOps.Common.Tools
 {
-    public class OrthodromicDistanceCalculator
+    /// <summary>
+    /// Uses VincentyFormula
+    /// </summary>
+    public static class OrthodromicDistanceCalculator
     {
-        public const double c_AverageRadiusForSphericalApproximationOfEarth = 6371.01;
+        public const double AverageRadiusForSphericalApproximationOfEarth = 6371.01;
 
-        public enum FormulaType
+        public static double OrthodromicDistance(GeoLocation locationA, GeoLocation locationB)
         {
-            SphericalLawOfCosinesFormula = 1,
-            HaversineFormula = 2,
-            VincentyFormula = 3
-        };
-
-        public double OrthodromicDistance(GeoLocation locationA, GeoLocation locationB, FormulaType formula)
-        {
-            var distance = (c_AverageRadiusForSphericalApproximationOfEarth * ArcLength(locationA, locationB, formula));
-
-            //TODO LOG if NAN
-            //if(double.IsNaN(distance))
-            //{
-            //    Log Error
-            //}
+            var distance = (AverageRadiusForSphericalApproximationOfEarth * ArcLengthVincentyFormula(locationA, locationB));
 
             return distance;
         }
 
-        private double ArcLength(GeoLocation locationA, GeoLocation locationB, FormulaType formula)
+        private static double ArcLengthVincentyFormula(GeoLocation locationA, GeoLocation locationB)
         {
-            switch (formula)
-            {
-                case FormulaType.VincentyFormula:
-                    return ArcLengthVincentyFormula(locationA, locationB);
-
-                default:
-                    return 0;
-            }
-        }
-
-        private double ArcLengthVincentyFormula(GeoLocation locationA, GeoLocation locationB)
-        {
-            return Math.Atan(Math.Sqrt(((Math.Pow(Math.Cos(locationB.LatitudeRad) * Math.Sin(Diff(locationA.LongitudeRad, locationB.LongitudeRad)), 2)) + (Math.Pow((Math.Cos(locationA.LatitudeRad) * Math.Sin(locationB.LatitudeRad)) - (Math.Sin(locationA.LatitudeRad) * Math.Cos(locationB.LatitudeRad) * Math.Cos(Diff(locationA.LongitudeRad, locationB.LongitudeRad))), 2))) / ((Math.Sin(locationA.LatitudeRad) * Math.Sin(locationB.LatitudeRad)) + (Math.Cos(locationA.LatitudeRad) * Math.Cos(locationB.LatitudeRad) * Math.Cos(Diff(locationA.LongitudeRad, locationB.LongitudeRad))))));
+            return
+                Math.Atan(
+                    Math.Sqrt(
+                        ((Math.Pow(
+                            Math.Cos(locationB.LatitudeRad)*
+                            Math.Sin(Diff(locationA.LongitudeRad, locationB.LongitudeRad)), 2)) +
+                         (Math.Pow(
+                             (Math.Cos(locationA.LatitudeRad)*Math.Sin(locationB.LatitudeRad)) -
+                             (Math.Sin(locationA.LatitudeRad)*Math.Cos(locationB.LatitudeRad)*
+                              Math.Cos(Diff(locationA.LongitudeRad, locationB.LongitudeRad))), 2)))/
+                        ((Math.Sin(locationA.LatitudeRad)*Math.Sin(locationB.LatitudeRad)) +
+                         (Math.Cos(locationA.LatitudeRad)*Math.Cos(locationB.LatitudeRad)*
+                          Math.Cos(Diff(locationA.LongitudeRad, locationB.LongitudeRad))))));
         }
 
         public static double Sin2(double x)
@@ -79,5 +69,10 @@ namespace FoundOps.Common.Composite.Tools
         }
 
         #endregion
+
+        public double Proximity(GeoLocation other)
+        {
+            return OrthodromicDistanceCalculator.OrthodromicDistance(this, other);
+        }
     }
 }
