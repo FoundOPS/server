@@ -94,6 +94,10 @@
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bumblebee.Silverlight, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Bumblebee.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="EntityGraph.Silverlight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=77c175743a61d42b, processorArchitecture=MSIL">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\EntityGraph.Silverlight.dll</HintPath>
     </Reference>

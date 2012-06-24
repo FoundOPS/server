@@ -407,7 +407,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             AutoCalculateRoutes = new ReactiveCommand(canCalculateRoutes);
 
             var cancelLoadLocationDetails = new Subject<bool>();
-
             //Populate routes with the UnroutedTasks and refresh the filter counts
             AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
             {
@@ -420,21 +419,11 @@ namespace FoundOps.SLClient.UI.ViewModels
                 {
                     foreach (var taskHolderCollection in organizedTaskHolderCollections)
                     {
-                        //Add the tasks to routes
+                        var serviceType = taskHolderCollection.First().ServiceName;
+                        var routes = CollectionView.Cast<Route>().Where(r => r.RouteType == serviceType);
 
-                        //Add the nextRouteTaskToAdd to the organized list and remove it from the unorganized list
-                        //Change the TaskHolder into a RouteTask
-                        //var routeTask = nextTaskHolderToAdd.ChildRouteTask;
-                        //organizedRouteTasks.Add(routeTask);
-                        //unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
-                        //var serviceType = unorganizedTaskHolders.First().ServiceName;
-                        //Take the organizedRouteTask collection and put it into routes
-                        //var routedRouteTasks = PutTasksIntoRoutes(routesToPopulate.Where(route => route.RouteType == serviceType), organizedRouteTasks);
-                        ////Return the RouteTaskHolders of the routed RouteTasks
-                        //routedTaskHolders.AddRange(routedRouteTasks.Select(rt => rt.ParentRouteTaskHolder));
-                        //and remove the routedTasks from the task board
-                        foreach (var taskHolderToRemove in routedTaskHolders)
-                            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolderToRemove);
+                        //Add the tasks to routes, and remove the tasks from the task board
+                        PutTasksIntoRoutes(routes, taskHolderCollection);
                     }
 
                     //now that the routes are populated, save
@@ -444,7 +433,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //No need to load the regions because they are already loaded (from the filter)
                     cancelLoadLocationDetails.OnNext(true);
                     var locationIdsToLoad =
-                        routedTaskHolders.Select(rth => rth.ChildRouteTask).Where(crt => crt.Location == null && crt.LocationId.HasValue)
+                        organizedTaskHolderCollections.SelectMany(thc => thc).Select(rth => rth.ChildRouteTask).Where(crt => crt.Location == null && crt.LocationId.HasValue)
                             .Select(crt => crt.LocationId.Value).Distinct();
 
                     if (!locationIdsToLoad.Any()) return;
@@ -457,9 +446,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                         MessageBus.Current.SendMessage(new TaskLocationsUpdated());
                     }, TaskScheduler.FromCurrentSynchronizationContext());
 
-                    //TODO is this necessary?
                     //Send a TaskLocationsUpdated message. To refresh Region colors for any loaded locations
-                    //MessageBus.Current.SendMessage(new TaskLocationsUpdated());
+                    MessageBus.Current.SendMessage(new TaskLocationsUpdated());
                 });
             });
 
@@ -560,23 +548,20 @@ namespace FoundOps.SLClient.UI.ViewModels
         #region Logic
 
         /// <summary>
-        /// Puts the tasks into routes.
+        /// Puts the tasks into routes and removes the tasks from the TaskBoard.
         /// </summary>
         /// <param name="routesWithServiceType">Type of the routes with service.</param>
-        /// <param name="organizedRouteTasks">The organized route tasks.</param>
+        /// <param name="organizedTaskHolders">The organized = task holders.</param>
         /// <returns>The routed tasks.</returns>
-        private static IEnumerable<RouteTask> PutTasksIntoRoutes(IEnumerable<Route> routesWithServiceType, IEnumerable<RouteTask> organizedRouteTasks)
+        private void PutTasksIntoRoutes(IEnumerable<Route> routesWithServiceType, IEnumerable<TaskHolder> organizedTaskHolders)
         {
             var routedTasks = new List<RouteTask>();
 
             routesWithServiceType = routesWithServiceType.ToArray();
-            organizedRouteTasks = organizedRouteTasks.ToArray();
+            var organizedRouteTasks = organizedTaskHolders.Select(th => th.ChildRouteTask).ToArray();
 
             var routeCount = routesWithServiceType.Count();
             var routeTasksCount = organizedRouteTasks.Count();
-
-            //Can only put tasks into routes if there is at least one route and one task
-            if (routeCount <= 0 || routeTasksCount <= 0) return new List<RouteTask>();
 
             var normalRouteTaskCount = routeTasksCount / routeCount;
             var numberOfRoutesWithExtraTask = routeTasksCount % routeCount;
@@ -619,7 +604,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                 }
             }
 
-            return routedTasks;
+            //remove the routed task holders from the task board
+            foreach (var taskHolder in organizedTaskHolders)
+                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolder);
         }
 
         #region Protected

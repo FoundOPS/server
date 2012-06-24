@@ -1,14 +1,15 @@
-﻿using System.Reactive.Linq;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Algorithm;
 using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.Controls.Dispatcher;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
+using System.Reactive.Linq;
 using System.Windows;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -19,20 +20,37 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("AlgorithmVM")]
     public class AlgorithmVM : DataFedVM
     {
-        private TimeSpan _totalTime;
+        private int _currentDistance;
         /// <summary>
-        /// The TotalTime for the algorithm to run.
+        /// The current calculated distance (in miles)
         /// </summary>
-        public TimeSpan TotalTime
+        public int CurrentDistance
         {
-            get { return _totalTime; }
+            get { return _currentDistance; }
             set
             {
-                _totalTime = value;
-                this.RaisePropertyChanged("TotalTime");
+                _currentDistance = value;
+                this.RaisePropertyChanged("CurrentDistance");
             }
         }
-        //return Observable.Interval(delay).Take(1).ObserveOnDispatcher().Subscribe(_ => action());
+
+        private TimeSpan _timeRemaining;
+
+        /// <summary>
+        /// The time remaining for the algorithm to run.
+        /// </summary>
+        public TimeSpan TimeRemaining
+        {
+            get
+            {
+                return _timeRemaining;
+            }
+            set
+            {
+                _timeRemaining = value;
+                this.RaisePropertyChanged("TimeRemaining");
+            }
+        }
 
         /// <summary>
         /// Calculate the best organization of the tasks.
@@ -44,9 +62,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <returns>An observable to stay asynchronous. The result is pushed once, so take the first item.</returns>
         public IObservable<IEnumerable<IEnumerable<TaskHolder>>> OrderTasks(IEnumerable<TaskHolder> unroutedTaskHolders, IEnumerable<string> serviceTypes)
         {
+            var algorithmStatus = new AlgorithmStatus();
             var result = new Subject<IEnumerable<IEnumerable<TaskHolder>>>();
-
-            var routedTaskHolders = new List<List<TaskHolder>>();
 
             //Organize the unroutedTaskHolders by ServiceTemplateName
             //only choose task holders that have LocationIds, a ServiceName, and a Latitude and a Longitude
@@ -80,29 +97,77 @@ namespace FoundOps.SLClient.UI.ViewModels
             //}
             #endregion
 
-            //Go through each collection to route and aggregate the time to route
+            //Setup countdown timer
+            //a) aggregate the total time to route
+            //b) countdown
             var totalTime = new TimeSpan();
             totalTime = taskHolderCollections.Select(taskHolderCollection => taskHolderCollection.Count())
                 .Aggregate(totalTime, (current, totalTasks) => current + TimeToCalculate(totalTasks));
 
-            //update the VM (to update the UI)
-            Application.Current.RootVisual.Dispatcher.BeginInvoke(() => this.TotalTime = totalTime);
+            //b) countdown
+            this.TimeRemaining = totalTime;
+            //var dispatcherTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            //dispatcherTimer.Tick += (s, e) =>
+            //{
+            //    TimeRemaining -= TimeSpan.FromSeconds(1);
 
+            //    if (TimeRemaining > new TimeSpan()) return;
+            //    TimeRemaining = new TimeSpan();
+            //    dispatcherTimer.Stop();
+            //};
 
-            //Go through each different service type's route tasks (each routeTaskHolderCollection) and route them
-            foreach (var routeTaskHolderCollection in taskHolderCollections)
+            //Calculate the order, one collection at a time
+            //pefomr the calculations asynchronously
+            Observable.Start(() =>
             {
-                //Only route tasks with lat/longs
-                var unorganizedTaskHolders = routeTaskHolderCollection.ToList();
+                PerformNextCalcuation(taskHolderCollections, 0, new List<IEnumerable<TaskHolder>>(), algorithmStatus, result);
+            });
 
-                var geoLocations = unorganizedTaskHolders.Cast<IGeoLocation>().ToList();
+            algorithmStatus.Show();
+            return result.AsObservable();
+        }
 
-                var whenToStop = TimeToCalculate(geoLocations.Count);
-                var calculator = new HiveRouteCalculator(geoLocations);
-                Rxx3.RunDelayed(whenToStop, calculator.Stop);
+        /// <summary>
+        /// A recursive method that will calculate the order of the routes, one route at a time
+        /// </summary>
+        /// <param name="geoLocationCollections">The collections to order</param>
+        /// <param name="index">The index of the collection to calculate</param>
+        /// <param name="orderedTaskHolderCollections">The ordered taskHolder collections</param>
+        /// <param name="statusWindow">The window to close when complete</param>
+        /// <param name="resultSubject">The subject to push when complete</param>
+        private void PerformNextCalcuation(IEnumerable<IEnumerable<IGeoLocation>> geoLocationCollections, int index, List<IEnumerable<TaskHolder>> orderedTaskHolderCollections,
+            AlgorithmStatus statusWindow, Subject<IEnumerable<IEnumerable<TaskHolder>>> resultSubject)
+        {
+            //if all routes have been calculated, close the algorithm status window and return
+            if (index >= orderedTaskHolderCollections.Count())
+            {
+                Application.Current.MainWindow.Dispatcher.BeginInvoke(statusWindow.Close);
+                resultSubject.OnNext(orderedTaskHolderCollections);
+                return;
             }
 
-            return result.AsObservable();
+            var collectionToCalculate = geoLocationCollections.ElementAt(index).ToList();
+
+            var timeToCalculate = TimeToCalculate(collectionToCalculate.Count);
+            var calculator = new HiveRouteCalculator();
+            var foundSolution = calculator.Search(collectionToCalculate);
+            IList<IGeoLocation> bestSolution = null;
+            foundSolution.Subscribe(solutionMessage =>
+            {
+                bestSolution = solutionMessage.Solution;
+                Application.Current.MainWindow.Dispatcher.BeginInvoke(() =>
+                    //convert meters to miles
+                    CurrentDistance = (int)(solutionMessage.Quality / 0.000621371192));
+            });
+
+            //Stop after timeToCalculate is up, then perform next calculation
+            Rxx3.RunDelayed(timeToCalculate, () =>
+            {
+                calculator.StopSearch();
+                orderedTaskHolderCollections.Add(bestSolution.Cast<TaskHolder>());
+                index++;
+                PerformNextCalcuation(geoLocationCollections, index, orderedTaskHolderCollections, statusWindow, resultSubject);
+            });
         }
 
         /// <summary>
