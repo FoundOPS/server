@@ -1,12 +1,15 @@
-﻿using FoundOps.Common.Tools;
-using FoundOps.Common.Tools.ExtensionMethods;
+﻿using System.Reactive.Linq;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Services;
+using FoundOps.SLClient.Algorithm;
 using FoundOps.SLClient.Data.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
+using System.Windows;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -16,154 +19,99 @@ namespace FoundOps.SLClient.UI.ViewModels
     [ExportViewModel("AlgorithmVM")]
     public class AlgorithmVM : DataFedVM
     {
-        public int Progress { get; set; }
+        private TimeSpan _totalTime;
+        /// <summary>
+        /// The TotalTime for the algorithm to run.
+        /// </summary>
+        public TimeSpan TotalTime
+        {
+            get { return _totalTime; }
+            set
+            {
+                _totalTime = value;
+                this.RaisePropertyChanged("TotalTime");
+            }
+        }
+        //return Observable.Interval(delay).Take(1).ObserveOnDispatcher().Subscribe(_ => action());
 
         /// <summary>
-        /// Populates the routes.
+        /// Calculate the best organization of the tasks.
+        /// It will seperate tasks based on service type, and then push the ordered task collections when complete.
+        /// This will open the AlgorithmProgress window.
         /// </summary>
-        /// <param name="unroutedTaskHolders"></param>
-        /// <param name="routesToPopulate">The routes to populate.</param>
-        /// <returns>The tasks put into routes.</returns>
-        public static IEnumerable<TaskHolder> PopulateRoutes(IEnumerable<TaskHolder> unroutedTaskHolders, IEnumerable<Route> routesToPopulate)
+        /// <param name="unroutedTaskHolders">The task holders to order.</param>
+        /// <param name="serviceTypes">The service types to consider.</param>
+        /// <returns>An observable to stay asynchronous. The result is pushed once, so take the first item.</returns>
+        public IObservable<IEnumerable<IEnumerable<TaskHolder>>> OrderTasks(IEnumerable<TaskHolder> unroutedTaskHolders, IEnumerable<string> serviceTypes)
         {
-            var routedTaskHolders = new List<TaskHolder>();
+            var result = new Subject<IEnumerable<IEnumerable<TaskHolder>>>();
+
+            var routedTaskHolders = new List<List<TaskHolder>>();
 
             //Organize the unroutedTaskHolders by ServiceTemplateName
-            var taskHoldersToRoute = unroutedTaskHolders.Where(th => th.LocationId.HasValue && th.ServiceName != null).ToArray();
+            //only choose task holders that have LocationIds, a ServiceName, and a Latitude and a Longitude
+            var taskHoldersToRoute =
+                unroutedTaskHolders.Where(th =>
+                    th.LocationId.HasValue && th.ServiceName != null && th.Latitude.HasValue && th.Longitude.HasValue)
+                    .ToArray();
 
-            //a) get a collection of unique ServiceTemplate Names (types) from unroutedTaskHolders
-            //   only choose task holders with a LocationId and a ServiceName
-            var distinctServiceTemplates = taskHoldersToRoute.Select(th => th.ServiceName).Distinct().ToArray();
+            //Find which service types should be routed by choosing the (distinct) ServiceTypes of the unroutedTaskHolders
+            //only choose the types that should be routes
+            //Then only choose route types Make sure each of those service types have at least one route with that RouteType
+            var distinctServiceTemplates = taskHoldersToRoute.Select(th => th.ServiceName).Distinct()
+                .Where(st => serviceTypes.Any(t => t == st))
+                .ToArray();
 
-            //b) prevent routing different service types together by organizing 
-            //   the unroutedTaskHolders into a 2d collection by ServiceTemplate Name
-            var routeTaskHolderCollections =
+            //Seperate the TaskHolders by ServiceTemplate Name to prevent routing different service types together
+            var taskHolderCollections =
                 distinctServiceTemplates.Select(serviceTemplateName => taskHoldersToRoute.Where(th => th.ServiceName == serviceTemplateName));
 
+            #region Depot no longer used
+            ////If there is not a depot set. Default to FoundOPS, 1305 Cumberland Ave, 47906: 40.460335, -86.929840
+            //var depot = new GeoLocation(40.460335, -86.929840);
+
+            ////Try to get the depot from the business account
+            //var ownerBusinessAccount = Manager.Context.OwnerAccount as BusinessAccount;
+            //if (ownerBusinessAccount != null && ownerBusinessAccount.Depots.Any())
+            //{
+            //    var depotLocation = ownerBusinessAccount.Depots.First();
+            //    if (depotLocation.Latitude.HasValue && depotLocation.Longitude.HasValue)
+            //        depot = new GeoLocation((double)depotLocation.Latitude.Value, (double)depotLocation.Longitude.Value);
+            //}
+            #endregion
+
+            //Go through each collection to route and aggregate the time to route
+            var totalTime = new TimeSpan();
+            totalTime = taskHolderCollections.Select(taskHolderCollection => taskHolderCollection.Count())
+                .Aggregate(totalTime, (current, totalTasks) => current + TimeToCalculate(totalTasks));
+
+            //update the VM (to update the UI)
+            Application.Current.RootVisual.Dispatcher.BeginInvoke(() => this.TotalTime = totalTime);
+
+
             //Go through each different service type's route tasks (each routeTaskHolderCollection) and route them
-            foreach (var routeTaskHolderCollection in routeTaskHolderCollections)
+            foreach (var routeTaskHolderCollection in taskHolderCollections)
             {
                 //Only route tasks with lat/longs
-                var unorganizedTaskHolders = routeTaskHolderCollection.Where(th => th.Longitude.HasValue && th.Latitude.HasValue).ToList();
+                var unorganizedTaskHolders = routeTaskHolderCollection.ToList();
 
-                var serviceType = unorganizedTaskHolders.First().ServiceName;
+                var geoLocations = unorganizedTaskHolders.Cast<IGeoLocation>().ToList();
 
-                //If there is not a depot set. Default to FoundOPS, 1305 Cumberland Ave, 47906: 40.460335, -86.929840
-                var depot = new GeoLocation(40.460335, -86.929840);
-
-                //Try to get the depot from the business account
-                var ownerBusinessAccount = Manager.Context.OwnerAccount as BusinessAccount;
-                if (ownerBusinessAccount != null && ownerBusinessAccount.Depots.Any())
-                {
-                    var depotLocation = ownerBusinessAccount.Depots.First();
-                    if (depotLocation.Latitude.HasValue && depotLocation.Longitude.HasValue)
-                        depot = new GeoLocation((double)depotLocation.Latitude.Value, (double)depotLocation.Longitude.Value);
-                }
-
-                //TODO REPLACE
-
-                var lastLatLon = depot;
-                //Order the unorganized route tasks by location
-                while (unorganizedTaskHolders.Count > 0)
-                {
-                    var nextTaskHolderToAdd =
-                        unorganizedTaskHolders.MinBy(
-                            th => calculator.OrthodromicDistance(lastLatLon, new GeoLocation
-                            {
-                                Latitude = Convert.ToDouble(th.Latitude),
-                                Longitude = Convert.ToDouble(th.Longitude)
-                            }, OrthodromicDistanceCalculator.FormulaType.VincentyFormula));
-
-                    //Add the nextRouteTaskToAdd to the organized list and remove it from the unorganized list
-                    unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
-
-                    lastLatLon = new IGeoLocation
-                    {
-                        Latitude = Convert.ToDouble(nextTaskHolderToAdd.Latitude),
-                        Longitude = Convert.ToDouble(nextTaskHolderToAdd.Longitude)
-                    };
-                }
-
-                //TODO REPLACE
-
-                //todo foreach
-                //Add the nextRouteTaskToAdd to the organized list and remove it from the unorganized list
-                //Change the TaskHolder into a RouteTask
-                //var routeTask = nextTaskHolderToAdd.ChildRouteTask;
-                //organizedRouteTasks.Add(routeTask);
-                //unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
-
-                //Take the organizedRouteTask collection and put it into routes
-                var routedRouteTasks = PutTasksIntoRoutes(routesToPopulate.Where(route => route.RouteType == serviceType), organizedRouteTasks);
-
-                //Return the RouteTaskHolders of the routed RouteTasks
-                routedTaskHolders.AddRange(routedRouteTasks.Select(rt => rt.ParentRouteTaskHolder));
+                var whenToStop = TimeToCalculate(geoLocations.Count);
+                var calculator = new HiveRouteCalculator(geoLocations);
+                Rxx3.RunDelayed(whenToStop, calculator.Stop);
             }
 
-            return routedTaskHolders;
+            return result.AsObservable();
         }
 
         /// <summary>
-        /// Puts the tasks into routes.
+        /// Returns the time the algorithm should spend calculating a set of tasks
         /// </summary>
-        /// <param name="routesWithServiceType">Type of the routes with service.</param>
-        /// <param name="organizedRouteTasks">The organized route tasks.</param>
-        /// <returns>The routed tasks.</returns>
-        private static IEnumerable<RouteTask> PutTasksIntoRoutes(IEnumerable<Route> routesWithServiceType, IEnumerable<RouteTask> organizedRouteTasks)
+        private static TimeSpan TimeToCalculate(int numberTasks)
         {
-            var routedTasks = new List<RouteTask>();
-
-            routesWithServiceType = routesWithServiceType.ToArray();
-            organizedRouteTasks = organizedRouteTasks.ToArray();
-
-            var routeCount = routesWithServiceType.Count();
-            var routeTasksCount = organizedRouteTasks.Count();
-
-            //Can only put tasks into routes if there is at least one route and one task
-            if (routeCount <= 0 || routeTasksCount <= 0) return new List<RouteTask>();
-
-            var normalRouteTaskCount = routeTasksCount / routeCount;
-            var numberOfRoutesWithExtraTask = routeTasksCount % routeCount;
-
-            int currentRouteTaskIndex = 0;
-
-            //Go through each route, and add it's equal share of organized route tasks
-            for (var currentRouteIndex = 0; currentRouteIndex < routeCount; currentRouteIndex++)
-            {
-                //Get the current route
-                var route = routesWithServiceType.ElementAt(currentRouteIndex);
-
-                //Choose the number of tasks, based on if this route has an extra task or not
-                var currentRouteTaskCount = currentRouteIndex >= routeCount - numberOfRoutesWithExtraTask ? normalRouteTaskCount + 1 : normalRouteTaskCount;
-
-                //Go through the number of route tasks for this route
-                for (var i = 0; i < currentRouteTaskCount; i++)
-                {
-                    //Add a RouteDestination with the task to the route
-                    var routeTask = organizedRouteTasks.ElementAt(currentRouteTaskIndex);
-                    //Move the route task index forward
-                    currentRouteTaskIndex++;
-
-                    routeTask.Status = Status.Routed;
-
-                    //Create a new route destination and add the task to it
-                    var newRouteDestination = new RouteDestination
-                    {
-                        Id = Guid.NewGuid(),
-                        OrderInRoute = route.RouteDestinations.Count + 1,
-                        ClientId = routeTask.ClientId,
-                        LocationId = routeTask.LocationId
-                    };
-                    newRouteDestination.RouteTasks.Add(routeTask);
-
-                    //Add the route destination to the route
-                    route.RouteDestinationsListWrapper.Add(newRouteDestination);
-
-                    routedTasks.Add(routeTask);
-                }
-            }
-
-            return routedTasks;
+            //anything less than 15 stops: 5 seconds, otherwise # tasks * 1 second
+            return numberTasks < 15 ? TimeSpan.FromSeconds(5) : TimeSpan.FromSeconds(numberTasks);
         }
     }
 }

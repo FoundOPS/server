@@ -101,9 +101,6 @@
     <Compile Include="..\FoundOps.Common\Tools\FileTools.cs">
       <Link>Silverlight\FileTools.cs</Link>
     </Compile>
-    <Compile Include="..\FoundOps.Common\Tools\OrthodromicDistanceCalculator.cs">
-      <Link>Silverlight\OrthodromicDistanceCalculator.cs</Link>
-    </Compile>
     <Compile Include="..\FoundOps.Common\Tools\PasswordTools.cs">
       <Link>Silverlight\PasswordTools.cs</Link>
     </Compile>
@@ -150,31 +147,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Lib\DataValidationFramework.EF.dll" />
-    <Content Include="Lib\DataValidationFramework.Net.dll" />
-    <Content Include="Lib\DevDefined.OAuth.dll" />
-    <Content Include="Lib\EntityFramework.dll" />
-    <Content Include="Lib\LinqKit.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.EntityFramework.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Hosting.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.LinqToSql.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Server.UnitTesting.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.Tools.TextTemplate.dll" />
-    <Content Include="Lib\Microsoft.ServiceModel.DomainServices.WindowsAzure.dll" />
-    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.Design.dll" />
-    <Content Include="Lib\Microsoft.Web.DomainServices.WebControls.dll" />
-    <Content Include="Lib\Microsoft.Web.Infrastructure.dll" />
-    <Content Include="Lib\Microsoft.Web.Optimization.dll" />
-    <Content Include="Lib\Microsoft.WindowsAzure.CloudDrive.dll" />
-    <Content Include="Lib\Microsoft.WindowsAzure.Diagnostics.dll" />
-    <Content Include="Lib\Microsoft.WindowsAzure.ServiceRuntime.dll" />
-    <Content Include="Lib\Microsoft.WindowsAzure.StorageClient.dll" />
-    <Content Include="Lib\Recaptcha.dll" />
-    <Content Include="Lib\System.Web.Mvc.dll" />
-    <Content Include="Lib\System.Web.Razor.dll" />
-    <Content Include="Lib\zxing.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

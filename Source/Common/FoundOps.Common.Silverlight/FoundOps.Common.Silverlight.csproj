@@ -275,59 +275,6 @@
     <Resource Include="Resources\PhoneSymbol.png" />
     <Resource Include="Resources\FaxSymbol.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Lib\AsyncCtpLibrary_Silverlight5.dll" />
-    <Content Include="Lib\Croll.Silverlight.Controls.dll" />
-    <Content Include="Lib\DataValidationFramework.Silverlight.dll" />
-    <Content Include="Lib\EntityGraph.Silverlight.dll" />
-    <Content Include="Lib\GalaSoft.MvvmLight.SL4.dll" />
-    <Content Include="Lib\Kent.Boogaart.HelperTrinity.dll" />
-    <Content Include="Lib\Kent.Boogaart.KBCsv.dll" />
-    <Content Include="Lib\MEFedMVVM.SL.dll" />
-    <Content Include="Lib\MEFedMVVM.ValidationsExtensions.SL.dll" />
-    <Content Include="Lib\Microsoft.Expression.Drawing.dll" />
-    <Content Include="Lib\Microsoft.Expression.Effects.dll" />
-    <Content Include="Lib\Microsoft.Expression.Interactions.dll" />
-    <Content Include="Lib\Microsoft.Expression.Prototyping.Interactivity.dll" />
-    <Content Include="Lib\NLog.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Data.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.DataServices.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Docking.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.DomainServices.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Expressions.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.GridView.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Input.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Navigation.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.RadRichTextBoxRibbonBarUI.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.RibbonBar.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.RibbonView.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.RichTextBoxUI.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.Scheduler.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Controls.ScheduleView.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Data.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Themes.Expression_Dark.dll" />
-    <Content Include="Lib\RadControls\Telerik.Windows.Zip.dll" />
-    <Content Include="Lib\Rxx.Contracts.dll" />
-    <Content Include="Lib\Rxx.dll" />
-    <Content Include="Lib\SilverlightAnalytics.dll" />
-    <Content Include="Lib\SLaB.Printing.Controls.dll" />
-    <Content Include="Lib\SLaB.Utilities.dll" />
-    <Content Include="Lib\SLaB.Utilities.Xaml.dll" />
-    <Content Include="Lib\SLMultiBinding.dll" />
-    <Content Include="Lib\System.Reactive.dll" />
-    <Content Include="Lib\System.Reactive.Providers.dll" />
-    <Content Include="Lib\System.Reactive.Windows.Threading.dll" />
-    <Content Include="Lib\System.ServiceModel.DomainServices.Client.dll" />
-    <Content Include="Lib\System.ServiceModel.DomainServices.Client.Web.dll" />
-    <Content Include="Lib\System.Windows.Controls.Data.Input.dll" />
-    <Content Include="Lib\System.Windows.Controls.DomainServices.dll" />
-    <Content Include="Lib\System.Windows.Controls.Input.Toolkit.dll" />
-    <Content Include="Lib\System.Windows.Controls.Toolkit.dll" />
-    <Content Include="Lib\System.Windows.Controls.Toolkit.Internals.dll" />
-    <Content Include="Lib\System.Windows.Interactivity.dll" />
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

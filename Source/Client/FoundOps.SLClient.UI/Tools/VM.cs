@@ -1,5 +1,4 @@
-﻿using FoundOps.SLClient.Data.ViewModels;
-using FoundOps.SLClient.UI.ViewModels;
+﻿using FoundOps.SLClient.UI.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.ComponentModel.Composition;
@@ -13,6 +12,17 @@ namespace FoundOps.SLClient.UI.Tools
     /// </summary>
     public static class VM
     {
+        /// <summary>
+        /// Gets the AlgorithmVM.
+        /// </summary>
+        public static AlgorithmVM Algorithm
+        {
+            get
+            {
+                return (AlgorithmVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("AlgorithmVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
         /// <summary>
         /// Gets the BusinessAccountsVM.
         /// </summary>
@@ -190,7 +200,6 @@ namespace FoundOps.SLClient.UI.Tools
                 return (UserAccountsVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("UserAccountsVM", null, CreationPolicy.Shared).Value;
             }
         }
-
 
         /// <summary>
         /// Gets the UserAccountsVM.

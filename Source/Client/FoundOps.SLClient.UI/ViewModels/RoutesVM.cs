@@ -4,7 +4,6 @@ using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.UI.Controls;
-using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 using FoundOps.SLClient.UI.Tools;
@@ -412,34 +411,56 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Populate routes with the UnroutedTasks and refresh the filter counts
             AutoCalculateRoutes.SubscribeOnDispatcher().Subscribe(_ =>
             {
+                //Find the service types to order, based on the visible Route's route types
+                var serviceTypesToRoute = CollectionView.Cast<Route>().Select(r => r.RouteType).Distinct();
+
                 //Populate the routes with the unrouted tasks
-                var routedTaskHolders = RouteManager.PopulateRoutes((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, CollectionView.Cast<Route>()).ToArray();
-
-                //Remove the routedTasks from the task board
-                foreach (var taskHolderToRemove in routedTaskHolders)
-                    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolderToRemove);
-
-                //Whenever the Routes are Auto Calculated, save
-                this.SaveCommand.Execute(null);
-
-                //Load the locations/contact info set for the newly populated task that do not have loaded locations
-                //No need to load the regions because they are already loaded (from the filter)
-                cancelLoadLocationDetails.OnNext(true);
-                var locationIdsToLoad = routedTaskHolders.Select(rth => rth.ChildRouteTask).Where(crt => crt.Location == null && crt.LocationId.HasValue)
-                    .Select(crt => crt.LocationId.Value).Distinct();
-
-                if (!locationIdsToLoad.Any()) return;
-                //Send a TaskLocationsUpdated message. To refresh Region colors for any loaded locations
-                MessageBus.Current.SendMessage(new TaskLocationsUpdated());
-
-                var locationsQuery = DomainContext.GetLocationsQuery(ContextManager.RoleId, locationIdsToLoad);
-                DomainContext.LoadAsync(locationsQuery, cancelLoadLocationDetails).ContinueWith(task =>
+                VM.Algorithm.OrderTasks((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, serviceTypesToRoute).Take(1)
+                .Subscribe(organizedTaskHolderCollections =>
                 {
-                    if (task.IsCanceled) return;
+                    foreach (var taskHolderCollection in organizedTaskHolderCollections)
+                    {
+                        //Add the tasks to routes
 
+                        //Add the nextRouteTaskToAdd to the organized list and remove it from the unorganized list
+                        //Change the TaskHolder into a RouteTask
+                        //var routeTask = nextTaskHolderToAdd.ChildRouteTask;
+                        //organizedRouteTasks.Add(routeTask);
+                        //unorganizedTaskHolders.Remove(nextTaskHolderToAdd);
+                        //var serviceType = unorganizedTaskHolders.First().ServiceName;
+                        //Take the organizedRouteTask collection and put it into routes
+                        //var routedRouteTasks = PutTasksIntoRoutes(routesToPopulate.Where(route => route.RouteType == serviceType), organizedRouteTasks);
+                        ////Return the RouteTaskHolders of the routed RouteTasks
+                        //routedTaskHolders.AddRange(routedRouteTasks.Select(rt => rt.ParentRouteTaskHolder));
+                        //and remove the routedTasks from the task board
+                        foreach (var taskHolderToRemove in routedTaskHolders)
+                            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolderToRemove);
+                    }
+
+                    //now that the routes are populated, save
+                    this.SaveCommand.Execute(null);
+
+                    //Load the locations/contact info set for the newly populated task that do not have loaded locations
+                    //No need to load the regions because they are already loaded (from the filter)
+                    cancelLoadLocationDetails.OnNext(true);
+                    var locationIdsToLoad =
+                        routedTaskHolders.Select(rth => rth.ChildRouteTask).Where(crt => crt.Location == null && crt.LocationId.HasValue)
+                            .Select(crt => crt.LocationId.Value).Distinct();
+
+                    if (!locationIdsToLoad.Any()) return;
+                    var locationsQuery = DomainContext.GetLocationsQuery(ContextManager.RoleId, locationIdsToLoad);
+                    DomainContext.LoadAsync(locationsQuery, cancelLoadLocationDetails).ContinueWith(task =>
+                    {
+                        if (task.IsCanceled) return;
+
+                        //Send a TaskLocationsUpdated message. To refresh Region colors for any loaded locations
+                        MessageBus.Current.SendMessage(new TaskLocationsUpdated());
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
+
+                    //TODO is this necessary?
                     //Send a TaskLocationsUpdated message. To refresh Region colors for any loaded locations
-                    MessageBus.Current.SendMessage(new TaskLocationsUpdated());
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                    //MessageBus.Current.SendMessage(new TaskLocationsUpdated());
+                });
             });
 
             //Allow the user to open the route manifests whenever there is one or more route visible
@@ -537,6 +558,69 @@ namespace FoundOps.SLClient.UI.ViewModels
         #endregion
 
         #region Logic
+
+        /// <summary>
+        /// Puts the tasks into routes.
+        /// </summary>
+        /// <param name="routesWithServiceType">Type of the routes with service.</param>
+        /// <param name="organizedRouteTasks">The organized route tasks.</param>
+        /// <returns>The routed tasks.</returns>
+        private static IEnumerable<RouteTask> PutTasksIntoRoutes(IEnumerable<Route> routesWithServiceType, IEnumerable<RouteTask> organizedRouteTasks)
+        {
+            var routedTasks = new List<RouteTask>();
+
+            routesWithServiceType = routesWithServiceType.ToArray();
+            organizedRouteTasks = organizedRouteTasks.ToArray();
+
+            var routeCount = routesWithServiceType.Count();
+            var routeTasksCount = organizedRouteTasks.Count();
+
+            //Can only put tasks into routes if there is at least one route and one task
+            if (routeCount <= 0 || routeTasksCount <= 0) return new List<RouteTask>();
+
+            var normalRouteTaskCount = routeTasksCount / routeCount;
+            var numberOfRoutesWithExtraTask = routeTasksCount % routeCount;
+
+            int currentRouteTaskIndex = 0;
+
+            //Go through each route, and add it's equal share of organized route tasks
+            for (var currentRouteIndex = 0; currentRouteIndex < routeCount; currentRouteIndex++)
+            {
+                //Get the current route
+                var route = routesWithServiceType.ElementAt(currentRouteIndex);
+
+                //Choose the number of tasks, based on if this route has an extra task or not
+                var currentRouteTaskCount = currentRouteIndex >= routeCount - numberOfRoutesWithExtraTask ? normalRouteTaskCount + 1 : normalRouteTaskCount;
+
+                //Go through the number of route tasks for this route
+                for (var i = 0; i < currentRouteTaskCount; i++)
+                {
+                    //Add a RouteDestination with the task to the route
+                    var routeTask = organizedRouteTasks.ElementAt(currentRouteTaskIndex);
+                    //Move the route task index forward
+                    currentRouteTaskIndex++;
+
+                    routeTask.Status = Status.Routed;
+
+                    //Create a new route destination and add the task to it
+                    var newRouteDestination = new RouteDestination
+                    {
+                        Id = Guid.NewGuid(),
+                        OrderInRoute = route.RouteDestinations.Count + 1,
+                        ClientId = routeTask.ClientId,
+                        LocationId = routeTask.LocationId
+                    };
+                    newRouteDestination.RouteTasks.Add(routeTask);
+
+                    //Add the route destination to the route
+                    route.RouteDestinationsListWrapper.Add(newRouteDestination);
+
+                    routedTasks.Add(routeTask);
+                }
+            }
+
+            return routedTasks;
+        }
 
         #region Protected
 

@@ -549,13 +549,6 @@
       <Name>FoundOps.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Lib\Microsoft.Practices.ServiceLocation.dll" />
-    <Content Include="Lib\Microsoft.Reactive.Testing.dll" />
-    <Content Include="Lib\Newtonsoft.Json.Silverlight.dll" />
-    <Content Include="Lib\ReactiveUI.Xaml_SL5.dll" />
-    <Content Include="Lib\ReactiveUI_SL5.dll" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

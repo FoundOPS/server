@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FoundOps.SLClient.Data.Tools
+namespace FoundOps.SLClient.Algorithm
 {
     /// <summary>
     /// Logic to process the traveling salesmen problem
