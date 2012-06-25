@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.WindowsAzure;
+﻿using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace FoundOps.Core.Models.Azure

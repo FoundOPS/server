@@ -3179,13 +3179,6 @@
           <Property Type="String" Name="ErrorText" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="InnerException" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
-        <EntityType Name="PartyWithName">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="String"  Name="ChildName" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-        </EntityType>
         <EntityType Name="ServiceTemplateWithVendorId">
           <Key>
             <PropertyRef Name="ServiceTemplateId" />

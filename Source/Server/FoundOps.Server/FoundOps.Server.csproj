@@ -219,6 +219,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.6.1.min.js" />
     <Content Include="Scripts\map.js" />
+    <Content Include="Scripts\mapdebug.js" />
     <Content Include="Scripts\require-jquery.js" />
     <Content Include="Scripts\Silverlight.js" />
     <Content Include="Scripts\userVoice.js" />
