@@ -1,16 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace FoundOPS.API.Models
 {
-    public class OptionsField
+    public class OptionsField : Field
     {
-        public Guid Id { get; set; }
-
         public bool AllowMultipleSelection { get; set; }
 
         public int TypeInt { get; set; }
+
+        public List<Option> Options { get; set; } 
+
+        public OptionsField()
+        {
+            Options = new List<Option>();
+        }
+
+        public static OptionsField ConvertOptionsFieldModel(FoundOps.Core.Models.CoreEntities.OptionsField fieldModel)
+        {
+            var field = new OptionsField
+            {
+                Id = fieldModel.Id,
+                Group = fieldModel.Group,
+                Name = fieldModel.Name,
+                Required = fieldModel.Required,
+                ToolTip = fieldModel.Tooltip,
+                ParentFieldId = fieldModel.ParentFieldId,
+                ServiceTemplateId = fieldModel.ServiceTemplateId,
+                AllowMultipleSelection = fieldModel.AllowMultipleSelection,
+                TypeInt = fieldModel.TypeInt
+            };
+
+            foreach (var option in fieldModel.Options)
+            {
+                field.Options.Add(Option.ConvertOptionModel(option));
+            }
+
+            return field;
+        }
     }
 }

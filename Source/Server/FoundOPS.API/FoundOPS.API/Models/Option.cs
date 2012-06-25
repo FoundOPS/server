@@ -18,5 +18,20 @@ namespace FoundOPS.API.Models
         public int Index { get; set; }
 
         public string Tooltip { get; set; }
+
+        public static Option ConvertOptionModel(FoundOps.Core.Models.CoreEntities.Option modelOption)
+        {
+            var option = new Option
+                {
+                    Id = modelOption.Id,
+                    Name = modelOption.Name,
+                    IsChecked = modelOption.IsChecked,
+                    OptionsFieldId = modelOption.OptionsFieldId,
+                    Index = modelOption.Index,
+                    Tooltip = modelOption.Tooltip
+                };
+
+            return option;
+        }
     }
 }
