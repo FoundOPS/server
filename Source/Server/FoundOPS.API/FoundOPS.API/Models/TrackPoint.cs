@@ -59,25 +59,25 @@ namespace FoundOPS.API.Models
         /// </summary>
         public int? Accuracy { get; set; }
 
-        public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint) 
+        public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint)
         {
             var trackPointId = modelTrackPoint.EmployeeId ?? modelTrackPoint.VehicleId;
 
-            if(trackPointId == null) 
+            if (trackPointId == null)
                 return null;
 
             var trackPoint = new TrackPoint
-                                 {
-                                     Heading = null,
-                                     Id = (Guid) trackPointId,
-                                     CollectedTimeStamp = modelTrackPoint.CollectedTimeStamp,
-                                     Latitude = (decimal?) modelTrackPoint.Latitude, 
-                                     Longitude = (decimal?) modelTrackPoint.Longitude,
-                                     Speed = null,
-                                     Source = null,
-                                     RouteId = modelTrackPoint.RouteId,
-                                     Accuracy = modelTrackPoint.Accuracy
-                                 };
+            {
+                Heading = null,
+                Id = (Guid)trackPointId,
+                CollectedTimeStamp = modelTrackPoint.CollectedTimeStamp,
+                Latitude = (decimal?)modelTrackPoint.Latitude,
+                Longitude = (decimal?)modelTrackPoint.Longitude,
+                Speed = null,
+                Source = null,
+                RouteId = modelTrackPoint.RouteId,
+                Accuracy = modelTrackPoint.Accuracy
+            };
 
             return trackPoint;
         }
