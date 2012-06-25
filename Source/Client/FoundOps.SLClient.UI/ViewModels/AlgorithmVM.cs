@@ -1,10 +1,10 @@
-﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+﻿using System.Windows.Threading;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Algorithm;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
-using MEFedMVVM.ViewModelLocator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,6 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// <summary>
     /// Manages the logic for the routing algorithm and hooks it up to the UI
     /// </summary>
-    [ExportViewModel("AlgorithmVM")]
     public class AlgorithmVM : DataFedVM
     {
         private int _currentDistance;
@@ -97,12 +96,13 @@ namespace FoundOps.SLClient.UI.ViewModels
             //}
             #endregion
 
+            int totalTasksToRoute = taskHolderCollections.Select(taskHolderCollection => taskHolderCollection.Count()).Sum();
+
             //Setup countdown timer
             //a) aggregate the total time to route
             //b) countdown
             var totalTime = new TimeSpan();
-            totalTime = taskHolderCollections.Select(taskHolderCollection => taskHolderCollection.Count())
-                .Aggregate(totalTime, (current, totalTasks) => current + TimeToCalculate(totalTasks));
+            totalTime = TimeToCalculate(totalTasksToRoute);
 
             //b) countdown
             this.TimeRemaining = totalTime;
@@ -117,11 +117,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             //};
 
             //Calculate the order, one collection at a time
-            //pefomr the calculations asynchronously
-            Observable.Start(() =>
-            {
-                PerformNextCalcuation(taskHolderCollections, 0, new List<IEnumerable<TaskHolder>>(), algorithmStatus, result);
-            });
+            //peform the calculations asynchronously
+            if (totalTasksToRoute >= 0)
+                Observable.Start(() =>
+                {
+                    PerformNextCalcuation(taskHolderCollections, 0, new List<IEnumerable<TaskHolder>>(), algorithmStatus, result);
+                });
 
             algorithmStatus.Show();
             return result.AsObservable();
@@ -139,9 +140,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             AlgorithmStatus statusWindow, Subject<IEnumerable<IEnumerable<TaskHolder>>> resultSubject)
         {
             //if all routes have been calculated, close the algorithm status window and return
-            if (index >= orderedTaskHolderCollections.Count())
+            if (index >= geoLocationCollections.Count())
             {
-                Application.Current.MainWindow.Dispatcher.BeginInvoke(statusWindow.Close);
+                statusWindow.Close();
                 resultSubject.OnNext(orderedTaskHolderCollections);
                 return;
             }

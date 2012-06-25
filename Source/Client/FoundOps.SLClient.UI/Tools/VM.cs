@@ -13,17 +13,6 @@ namespace FoundOps.SLClient.UI.Tools
     public static class VM
     {
         /// <summary>
-        /// Gets the AlgorithmVM.
-        /// </summary>
-        public static AlgorithmVM Algorithm
-        {
-            get
-            {
-                return (AlgorithmVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("AlgorithmVM", null, CreationPolicy.Shared).Value;
-            }
-        }
-
-        /// <summary>
         /// Gets the BusinessAccountsVM.
         /// </summary>
         public static BusinessAccountsVM BusinessAccounts

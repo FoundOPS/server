@@ -208,6 +208,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         //The only route manifest viewer
         private RouteManifestViewer _routeManifestViewer;
 
+        private AlgorithmVM _algorithmVM = new AlgorithmVM();
+
         #endregion
 
         #region Constructor
@@ -414,7 +416,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var serviceTypesToRoute = CollectionView.Cast<Route>().Select(r => r.RouteType).Distinct();
 
                 //Populate the routes with the unrouted tasks
-                VM.Algorithm.OrderTasks((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, serviceTypesToRoute).Take(1)
+                _algorithmVM.OrderTasks((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, serviceTypesToRoute).Take(1)
                 .Subscribe(organizedTaskHolderCollections =>
                 {
                     foreach (var taskHolderCollection in organizedTaskHolderCollections)

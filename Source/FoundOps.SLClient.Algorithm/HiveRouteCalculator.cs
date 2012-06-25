@@ -1,6 +1,5 @@
 ﻿using ClearLines.Bumblebee;
 using System.Reactive.Subjects;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using System;
 using System.Collections.Generic;

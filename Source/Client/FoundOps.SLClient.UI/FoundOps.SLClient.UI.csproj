@@ -961,7 +961,7 @@
       <Name>FoundOps.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\FoundOps.SLClient.Algorithm\FoundOps.SLClient.Algorithm.csproj">
-      <Project>{e900bdca-451f-4433-a98a-287bd326bd29}</Project>
+      <Project>{E900BDCA-451F-4433-A98A-287BD326BD29}</Project>
       <Name>FoundOps.SLClient.Algorithm</Name>
     </ProjectReference>
     <ProjectReference Include="..\FoundOps.SLClient.Data\FoundOps.SLClient.Data.csproj">
