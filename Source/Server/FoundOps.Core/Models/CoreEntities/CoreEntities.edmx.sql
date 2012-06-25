@@ -714,13 +714,6 @@ CREATE TABLE [dbo].[Errors] (
 );
 GO
 
--- Creating table 'PartiesWithNames'
-CREATE TABLE [dbo].[PartiesWithNames] (
-    [Id] uniqueidentifier  NOT NULL,
-    [ChildName] nvarchar(max)  NULL
-);
-GO
-
 -- Creating table 'ServiceTemplateWithVendorIds'
 CREATE TABLE [dbo].[ServiceTemplateWithVendorIds] (
     [ServiceTemplateId] uniqueidentifier  NOT NULL,
@@ -1022,12 +1015,6 @@ GO
 -- Creating primary key on [Id] in table 'Errors'
 ALTER TABLE [dbo].[Errors]
 ADD CONSTRAINT [PK_Errors]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'PartiesWithNames'
-ALTER TABLE [dbo].[PartiesWithNames]
-ADD CONSTRAINT [PK_PartiesWithNames]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 

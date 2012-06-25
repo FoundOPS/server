@@ -41,12 +41,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var clients = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id);
 
-            //var clients = from c in ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id)
-            //  join p in ObjectContext.PartiesWithNames
-            //      on c.Id equals p.Id
-            //  orderby p.ChildName
-            //  select c;
-
             //Client's images are not currently used, so this can be commented out
             //TODO: Figure a way to force load OwnedParty.PartyImage. 
             //(from c in clients

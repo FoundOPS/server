@@ -576,22 +576,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<PartyWithName> PartiesWithNames
-        {
-            get
-            {
-                if ((_PartiesWithNames == null))
-                {
-                    _PartiesWithNames = base.CreateObjectSet<PartyWithName>("PartiesWithNames");
-                }
-                return _PartiesWithNames;
-            }
-        }
-        private ObjectSet<PartyWithName> _PartiesWithNames;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<ServiceTemplateWithVendorId> ServiceTemplateWithVendorIds
         {
             get
@@ -831,14 +815,6 @@ namespace FoundOps.Core.Models.CoreEntities
         public void AddToErrors(Error error)
         {
             base.AddObject("Errors", error);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the PartiesWithNames EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToPartiesWithNames(PartyWithName partyWithName)
-        {
-            base.AddObject("PartiesWithNames", partyWithName);
         }
     
         /// <summary>

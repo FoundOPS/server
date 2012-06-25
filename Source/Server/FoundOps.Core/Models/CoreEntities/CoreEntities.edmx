@@ -49,12 +49,6 @@
           <EntitySet Name="VehicleMaintenanceLineItems" EntityType="CoreEntities.Store.VehicleMaintenanceLineItems" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="VehicleMaintenanceLog" EntityType="CoreEntities.Store.VehicleMaintenanceLog" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Vehicles" EntityType="CoreEntities.Store.Vehicles" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="PartiesWithName" EntityType="CoreEntities.Store.PartiesWithName" store:Type="Views" store:Schema="dbo" store:Name="PartiesWithName">
-            <DefiningQuery>SELECT 
-      [PartiesWithName].[Id] AS [Id], 
-      [PartiesWithName].[ChildName] AS [ChildName]
-      FROM [dbo].[PartiesWithName] AS [PartiesWithName]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId">
             <DefiningQuery>SELECT 
       [ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId], 
@@ -864,13 +858,6 @@
         <!--Errors Found During Generation:
       warning 6002: The table/view 'Core.dbo.PartiesWithName' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
-        <EntityType Name="PartiesWithName">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ChildName" Type="nvarchar(max)" />
-        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'Core.dbo.ServiceTemplatesWithVendorId' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
@@ -2042,7 +2029,6 @@
             <End Role="Invoice" EntitySet="Invoices" />
           </AssociationSet>
           <EntitySet Name="Errors" EntityType="CoreEntities.Error" />
-          <EntitySet Name="PartiesWithNames" EntityType="CoreEntities.PartyWithName" />
           <EntitySet Name="ServiceTemplateWithVendorIds" EntityType="CoreEntities.ServiceTemplateWithVendorId" />
           <AssociationSet Name="RouteTaskRecurringService" Association="CoreEntities.RouteTaskRecurringService">
             <End Role="RouteTask" EntitySet="RouteTasks" />
@@ -3777,14 +3763,6 @@
           <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
           <ScalarProperty Name="ErrorText" ColumnName="ErrorText" />
           <ScalarProperty Name="InnerException" ColumnName="InnerException" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="PartiesWithNames">
-      <EntityTypeMapping TypeName="CoreEntities.PartyWithName">
-        <MappingFragment StoreEntitySet="PartiesWithName">
-          <ScalarProperty Name="ChildName" ColumnName="ChildName" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

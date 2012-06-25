@@ -48,7 +48,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //If the destination is Locations or RecurringServices
             //Load clients associations with names
-            Tuple<Client, string>[] clientAssociations = null;
+            Client[] clientAssociations = null;
             if (importDestination == ImportDestination.Locations || importDestination == ImportDestination.RecurringServices)
                 clientAssociations = LoadClientAssociations(currentRoleId, businessAccount, rows, importDestination == ImportDestination.RecurringServices);
 
@@ -146,19 +146,14 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         /// <param name="clientAssociations">The loaded clientAssociations</param>
         /// <param name="row">The row's categories/values.</param>
-        private static Client GetClientAssociation(IEnumerable<Tuple<Client, string>> clientAssociations, ImportRow row)
+        private static Client GetClientAssociation(IEnumerable<Client> clientAssociations, ImportRow row)
         {
             //Get the client association
             var clientNameCell = row.GetCell(DataCategory.ClientName);
             if (clientNameCell == null)
                 throw ImportRowTools.Exception("Client not set", row);
 
-            Client associatedClient = null;
-            var clientTuple = clientAssociations.FirstOrDefault(ca => ca.Item2 == clientNameCell.Value);
-
-            if (clientTuple != null)
-                associatedClient = clientTuple.Item1;
-
+            var associatedClient = clientAssociations.FirstOrDefault(ca => ca.Name == clientNameCell.Value);
             if (associatedClient == null)
                 throw ImportRowTools.Exception(String.Format("Could not find Client '{0}'", clientNameCell.Value), row);
 
@@ -221,7 +216,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="businessAccount">The current business account</param>
         /// <param name="importRows">The import rows"</param>
         /// <param name="includeAvailableServices">if set to <c>true</c> [include client service templates].</param>
-        private Tuple<Client, string>[] LoadClientAssociations(Guid roleId, BusinessAccount businessAccount, IEnumerable<ImportRow> importRows, bool includeAvailableServices)
+        private Client[] LoadClientAssociations(Guid roleId, BusinessAccount businessAccount, IEnumerable<ImportRow> importRows, bool includeAvailableServices)
         {
             //Get the distinct client names from the rows' DataCategory.ClientName values
             var clientNamesToLoad = importRows.Select(importRow =>
@@ -234,18 +229,15 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Load all the associatedClients
             var associatedClients =
                 (from client in ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id)
-                 //Need to get the Clients names
-                 join p in ObjectContext.PartiesWithNames
-                     on client.Id equals p.Id
-                 where clientNamesToLoad.Contains(p.ChildName)
-                 select new { p.ChildName, client }).ToArray();
+                 where clientNamesToLoad.Contains(client.Name)
+                 select client).ToArray();
 
             if (includeAvailableServices)
             {
                 GetServiceProviderServiceTemplates(roleId).Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined);
             }
 
-            return associatedClients.Select(a => new Tuple<Client, string>(a.client, a.ChildName)).ToArray();
+            return associatedClients.ToArray();
         }
 
         /// <summary>

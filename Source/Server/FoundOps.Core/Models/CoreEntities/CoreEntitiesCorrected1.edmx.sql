@@ -711,8 +711,6 @@ CREATE TABLE [dbo].[Errors] (
 );
 GO
 
-
-
 -- Creating table 'ServiceTemplateWithVendorIds'
 CREATE TABLE [dbo].[ServiceTemplateWithVendorIds] (
     [ServiceTemplateId] uniqueidentifier  NOT NULL,
@@ -1016,8 +1014,6 @@ ALTER TABLE [dbo].[Errors]
 ADD CONSTRAINT [PK_Errors]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
-
-
 
 -- Creating primary key on [ServiceTemplateId], [BusinessAccountId] in table 'ServiceTemplateWithVendorIds'
 ALTER TABLE [dbo].[ServiceTemplateWithVendorIds]
@@ -2358,13 +2354,17 @@ GO
 	--This is a Semi-Join between the FieldRecurs table created above and the Fields Table
 	--Semi-Join simply means that it has all the same logic as a normal join, but it doesnt actually join the tables
 	--In this case, it finds all the rows on Fields that correspond to a row in FieldRecurs
-	WHERE		EXISTS
+	WHERE		Id IN
 	(
-	SELECT		#TempTable.Id
+	SELECT		Id
 	FROM		#TempTable
-	WHERE		#TempTable.Id = Fields.Id
-	OR			#TempTable.Id = Fields.ParentFieldId
 	)
+	OR
+	ParentFieldId IN
+	(
+	SELECT		Id
+	FROM		#TempTable
+	)  
 
 	--Drop the table that was created to store the CTE
 	DROP TABLE #TempTable

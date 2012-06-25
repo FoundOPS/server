@@ -601,7 +601,6 @@
           <edmx:ConnectorPoint PointX="10.820992273335344" PointY="191.86480794270833" />
         </edmx:AssociationConnector>
         <edmx:EntityTypeShape EntityType="CoreEntities.Error" Width="1.5" PointX="9" PointY="4.625" Height="2.1725878906249818" />
-        <edmx:EntityTypeShape EntityType="CoreEntities.PartyWithName" Width="1.5" PointX="21.125" PointY="20" Height="1.4033821614583246" />
         <edmx:EntityTypeShape EntityType="CoreEntities.ServiceTemplateWithVendorId" Width="1.5" PointX="20.625" PointY="8.625" />
         <edmx:AssociationConnector Association="CoreEntities.RouteTaskRecurringService">
           <edmx:ConnectorPoint PointX="18.140630625" PointY="34" />

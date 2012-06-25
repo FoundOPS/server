@@ -301,7 +301,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             csvWriter.WriteHeaderRecord("Service Type", "Client", "Location", "Address Line 1", "Frequency",
                                         "Start Date", "End Date", "Repeat Every", "Repeat On");
 
-            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Include(rs => rs.Repeat).Include(rs => rs.ServiceTemplate);
+            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Include(rs=>rs.Client).Include(rs => rs.Repeat).Include(rs => rs.ServiceTemplate);
 
             //Force Load LocationField's Location
             //TODO: Optimize by IQueryable
@@ -309,14 +309,12 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //join RecurringServices with client names
             var records = from rs in recurringServices
-                          join p in ObjectContext.PartiesWithNames
-                              on rs.ClientId equals p.Id
-                          orderby p.ChildName
+                          orderby rs.Client.Name
                           select new
                           {
                               RecurringService = rs,
                               ServiceType = rs.ServiceTemplate.Name,
-                              ClientName = p.ChildName
+                              ClientName = rs.Client.Name
                           };
 
             foreach (var record in records.ToArray())
