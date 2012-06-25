@@ -11,7 +11,12 @@
         public decimal Maximum { get; set; }
 
         public decimal? Value { get; set; }
-
+        
+        /// <summary>
+        /// Converts from the FoundOPS model to the API model
+        /// </summary>
+        /// <param name="fieldModel">The FoundOPS model of a NumericField to be converted</param>
+        /// <returns>A NumericField that has been converted to it's API model</returns>
         public static NumericField ConvertNumericFieldModel(FoundOps.Core.Models.CoreEntities.NumericField fieldModel)
         {
             var field = new NumericField

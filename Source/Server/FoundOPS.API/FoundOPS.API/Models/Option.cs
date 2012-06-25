@@ -19,6 +19,11 @@ namespace FoundOPS.API.Models
 
         public string Tooltip { get; set; }
 
+        /// <summary>
+        /// Converts from the FoundOPS model to the API model
+        /// </summary>
+        /// <param name="modelOption">The FoundOPS model of a Option to be converted</param>
+        /// <returns>An Option that has been converted to it's API model</returns>
         public static Option ConvertOptionModel(FoundOps.Core.Models.CoreEntities.Option modelOption)
         {
             var option = new Option
