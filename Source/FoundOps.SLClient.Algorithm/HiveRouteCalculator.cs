@@ -19,9 +19,9 @@ namespace FoundOps.SLClient.Algorithm
         /// this conflict is why FoundOPS.SLClient.Algorithm is a seperate project.
         /// </summary>
         /// <param name="locationsToRoute">The locations to route</param>
-        public Subject<SolutionMessage<IList<IGeoLocation>>> Search(IList<IGeoLocation> locationsToRoute)
+        public BehaviorSubject<SolutionMessage<IList<IGeoLocation>>> Search(IList<IGeoLocation> locationsToRoute)
         {
-            var foundSolution = new Subject<SolutionMessage<IList<IGeoLocation>>>();
+            var foundSolution = new BehaviorSubject<SolutionMessage<IList<IGeoLocation>>>(null);
 
             _solver.FoundSolution += (s, e) => foundSolution.OnNext(e);
 

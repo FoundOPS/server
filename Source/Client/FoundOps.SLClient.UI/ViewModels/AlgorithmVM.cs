@@ -155,10 +155,13 @@ namespace FoundOps.SLClient.UI.ViewModels
             IList<IGeoLocation> bestSolution = null;
             foundSolution.Subscribe(solutionMessage =>
             {
+                if (solutionMessage == null)
+                    return;
+
                 bestSolution = solutionMessage.Solution;
-                Application.Current.MainWindow.Dispatcher.BeginInvoke(() =>
-                    //convert meters to miles
-                    CurrentDistance = (int)(solutionMessage.Quality / 0.000621371192));
+
+                //convert meters to miles
+                CurrentDistance = (int)(solutionMessage.Quality / 0.000621371192);
             });
 
             //Stop after timeToCalculate is up, then perform next calculation
@@ -177,7 +180,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         private static TimeSpan TimeToCalculate(int numberTasks)
         {
             //anything less than 15 stops: 5 seconds, otherwise # tasks * 1 second
-            return numberTasks < 15 ? TimeSpan.FromSeconds(5) : TimeSpan.FromSeconds(numberTasks);
+            return numberTasks < 15 ? TimeSpan.FromSeconds(5) : TimeSpan.FromSeconds(numberTasks * 1.5);
         }
     }
 }
