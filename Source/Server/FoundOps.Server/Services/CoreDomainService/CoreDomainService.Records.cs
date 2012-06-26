@@ -595,8 +595,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Invoke]
         public IEnumerable<GeocoderResult> TryGeocode(string searchText)
         {
-            //TODO: Also include Factual.com local business data
-            return YahooPlaceFinder.TryGeocode(searchText);
+            return BingLocationServices.TryGeocode(searchText);
         }
 
         #region Vehicle

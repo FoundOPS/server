@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using RiaServicesContrib;
+﻿using RiaServicesContrib;
+using System.Linq;
 using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.Common.Silverlight.Interfaces

@@ -110,6 +110,7 @@
     <Compile Include="..\FoundOps.Common\Tools\StreamHelpers.cs">
       <Link>Silverlight\StreamHelpers.cs</Link>
     </Compile>
+    <Compile Include="BingLocationServices.cs" />
     <Compile Include="EncryptionTools.cs" />
     <Compile Include="EntityCloneTools.cs" />
     <Compile Include="EntityDataReader.cs" />

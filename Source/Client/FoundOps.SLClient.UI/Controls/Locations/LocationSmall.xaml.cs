@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using FoundOps.Framework.Views.Controls.Locations;
 using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.UI.Controls.Locations

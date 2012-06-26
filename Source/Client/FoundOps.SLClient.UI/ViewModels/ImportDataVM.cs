@@ -218,23 +218,26 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 var searchText = string.Format("{0}, {1}, {2}, {3}", addressLineOne, city, state, zipCode);
                 Manager.Data.TryGeocode(searchText, (geocodeComplete, userState) =>
-                                                        {
-                                                            var rowToChange = (DataRow)userState;
-                                                            if (geocodeComplete.Count() != 1) return;
+                {
+                    var rowToChange = (DataRow)userState;
+                    if (geocodeComplete.Count() != 1) return;
 
-                                                            var result = geocodeComplete.First();
+                    var result = geocodeComplete.First();
 
-                                                            //If it is not a good match return
-                                                            if (Convert.ToInt32(result.Precision) < 85) return;
+                    //If it is not a good match return
+                    if (result.Precision == "Low" || result.Precision != "Medium")
+                        return;
+                    if (result.Precision != "High" && Convert.ToInt32(result.Precision) < 85)
+                        return;
 
-                                                            //Clean the rows data with the result
-                                                            rowToChange[addressLineOneColumn.ColumnName] = result.AddressLineOne;
-                                                            rowToChange[cityColumn.ColumnName] = result.City;
-                                                            rowToChange[stateColumn.ColumnName] = result.State;
-                                                            rowToChange[zipCodeColumn.ColumnName] = result.ZipCode;
-                                                            rowToChange[latitudeColumn.ColumnName] = result.Latitude;
-                                                            rowToChange[longitudeColumn.ColumnName] = result.Longitude;
-                                                        }, row);
+                    //Clean the rows data with the result
+                    rowToChange[addressLineOneColumn.ColumnName] = result.AddressLineOne;
+                    rowToChange[cityColumn.ColumnName] = result.City;
+                    rowToChange[stateColumn.ColumnName] = result.State;
+                    rowToChange[zipCodeColumn.ColumnName] = result.ZipCode;
+                    rowToChange[latitudeColumn.ColumnName] = result.Latitude;
+                    rowToChange[longitudeColumn.ColumnName] = result.Longitude;
+                }, row);
             }
         }
 

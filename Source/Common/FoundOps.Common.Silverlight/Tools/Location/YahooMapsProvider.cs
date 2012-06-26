@@ -1,6 +1,7 @@
 ﻿using Telerik.Windows.Controls.Map;
+using FoundOps.Common.Silverlight.Extensions.Telerik;
 
-namespace FoundOps.Common.Silverlight.Extensions.Telerik
+namespace FoundOps.Common.Silverlight.Tools.Location
 {
     public class YahooMapsProvider : MapProviderBase
     {

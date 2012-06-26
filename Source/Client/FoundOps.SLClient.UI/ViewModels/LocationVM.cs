@@ -244,9 +244,6 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             if (SelectedGeocoderResult.Name != ManuallySelectLocationString)
             {
-                if (!String.IsNullOrEmpty(SelectedGeocoderResult.Name))
-                    Entity.Name = SelectedGeocoderResult.Name;
-
                 if (!String.IsNullOrEmpty(SelectedGeocoderResult.AddressLineOne))
                     Entity.AddressLineOne = SelectedGeocoderResult.AddressLineOne;
 
