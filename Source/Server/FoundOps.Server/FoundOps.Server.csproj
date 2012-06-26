@@ -217,12 +217,24 @@
     <Content Include="Content\zoom-in.png" />
     <Content Include="Content\zoom-out.png" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.6.1.min.js" />
-    <Content Include="Scripts\map.js" />
-    <Content Include="Scripts\mapdebug.js" />
-    <Content Include="Scripts\require-jquery.js" />
-    <Content Include="Scripts\Silverlight.js" />
-    <Content Include="Scripts\userVoice.js" />
+    <Content Include="Scripts\jquery-1.6.1.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\map.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\mapdebug.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\require-jquery.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\Silverlight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\userVoice.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Silverlight.js" />
     <Content Include="Views\Shared\HomeLinkView.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
@@ -278,9 +290,9 @@
     <Content Include="ClientBin\Telerik.Windows.Controls.Navigation.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.RibbonBar.zip" />
     <Content Include="ClientBin\Telerik.Windows.Data.zip" />
-    <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <Content Include="ClientBin\System.Xml.Linq.zip" />
     <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
+    <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">
