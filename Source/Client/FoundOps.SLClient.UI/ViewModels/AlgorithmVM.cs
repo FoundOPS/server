@@ -1,16 +1,16 @@
-﻿using System.Windows.Threading;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Algorithm;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
+using ReactiveUI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Subjects;
 using System.Reactive.Linq;
-using System.Windows;
+using System.Reactive.Subjects;
+using System.Windows.Threading;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -19,22 +19,30 @@ namespace FoundOps.SLClient.UI.ViewModels
     /// </summary>
     public class AlgorithmVM : DataFedVM
     {
-        private int _currentDistance;
+        private ReactiveCommand _cancelCommand = new ReactiveCommand();
         /// <summary>
-        /// The current calculated distance (in miles)
+        /// A command to cancel the calculation
         /// </summary>
-        public int CurrentDistance
+        public ReactiveCommand CancelCommand
         {
-            get { return _currentDistance; }
-            set
+            get { return _cancelCommand; }
+            private set { _cancelCommand = value; }
+        }
+
+        /// <summary>
+        /// The percent (from 0-100) complete for the current algorithm calculation.
+        /// </summary>
+        public int PercentProgress
+        {
+            get { return _percentProgress; }
+            private set
             {
-                _currentDistance = value;
-                this.RaisePropertyChanged("CurrentDistance");
+                _percentProgress = value;
+                this.RaisePropertyChanged("PercentProgress");
             }
         }
 
         private TimeSpan _timeRemaining;
-
         /// <summary>
         /// The time remaining for the algorithm to run.
         /// </summary>
@@ -48,6 +56,27 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 _timeRemaining = value;
                 this.RaisePropertyChanged("TimeRemaining");
+                this.RaisePropertyChanged("PercentProgress");
+
+
+                var percentage = (TotalCalculationTime.Ticks - TimeRemaining.Ticks) / (double)TotalCalculationTime.Ticks;
+                PercentProgress = Convert.ToInt32(percentage * 100.0);
+            }
+        }
+
+        private TimeSpan _totalCalculationTime;
+        private int _percentProgress;
+
+        /// <summary>
+        /// The time remaining for the algorithm to run.
+        /// </summary>
+        public TimeSpan TotalCalculationTime
+        {
+            get { return _totalCalculationTime; }
+            private set
+            {
+                _totalCalculationTime = value;
+                this.RaisePropertyChanged("TotalCalculationTime");
             }
         }
 
@@ -61,7 +90,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <returns>An observable to stay asynchronous. The result is pushed once, so take the first item.</returns>
         public IObservable<IEnumerable<IEnumerable<TaskHolder>>> OrderTasks(IEnumerable<TaskHolder> unroutedTaskHolders, IEnumerable<string> serviceTypes)
         {
-            var algorithmStatus = new AlgorithmStatus();
+            var algorithmStatus = new AlgorithmStatus { AlgorithmVM = this };
             var result = new Subject<IEnumerable<IEnumerable<TaskHolder>>>();
 
             //Organize the unroutedTaskHolders by ServiceTemplateName
@@ -98,23 +127,28 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             int totalTasksToRoute = taskHolderCollections.Select(taskHolderCollection => taskHolderCollection.Count()).Sum();
 
+            if (totalTasksToRoute <= 0)
+                return Observable.Empty<IEnumerable<IEnumerable<TaskHolder>>>();
+
             //Setup countdown timer
             //a) aggregate the total time to route
             //b) countdown
-            var totalTime = new TimeSpan();
-            totalTime = TimeToCalculate(totalTasksToRoute);
+            TotalCalculationTime = TimeToCalculate(totalTasksToRoute);
+            this.TimeRemaining = TotalCalculationTime;
+            var dispatcherTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            dispatcherTimer.Tick += (s, e) =>
+            {
+                TimeRemaining -= TimeSpan.FromSeconds(1);
 
-            //b) countdown
-            this.TimeRemaining = totalTime;
-            //var dispatcherTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-            //dispatcherTimer.Tick += (s, e) =>
-            //{
-            //    TimeRemaining -= TimeSpan.FromSeconds(1);
+                if (TimeRemaining > new TimeSpan()) return;
 
-            //    if (TimeRemaining > new TimeSpan()) return;
-            //    TimeRemaining = new TimeSpan();
-            //    dispatcherTimer.Stop();
-            //};
+                //When there is no TimeRemaining
+                //a) reset TimeRemaining to 0 seconds
+                //b) stop the countdown
+                TimeRemaining = new TimeSpan();
+                dispatcherTimer.Stop();
+            };
+            dispatcherTimer.Start();
 
             //Calculate the order, one collection at a time
             //peform the calculations asynchronously
@@ -160,17 +194,29 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 bestSolution = solutionMessage.Solution;
 
-                //convert meters to miles
-                CurrentDistance = (int)(solutionMessage.Quality / 0.000621371192);
+                ////convert meters to miles
+                //CurrentDistance = (int)(solutionMessage.Quality / 0.000621371192);
             });
 
-            //Stop after timeToCalculate is up, then perform next calculation
-            Rxx3.RunDelayed(timeToCalculate, () =>
+            //Stop the algorithm after timeToCalculate is up
+            //then perform the next calculation
+            var stopAlgorithmDisposable = Rxx3.RunDelayed(timeToCalculate, () =>
             {
                 calculator.StopSearch();
+                //add the best solution found to the collection
                 orderedTaskHolderCollections.Add(bestSolution.Cast<TaskHolder>());
                 index++;
                 PerformNextCalcuation(geoLocationCollections, index, orderedTaskHolderCollections, statusWindow, resultSubject);
+            });
+
+            //Stop the algorithm on cancel search and return
+            CancelCommand.Subscribe(_ =>
+            {
+                //since the algorithm was cancelled, prevent the time from stopping the algorithm
+                stopAlgorithmDisposable.Dispose();
+
+                calculator.StopSearch();
+                statusWindow.Close();
             });
         }
 
@@ -179,8 +225,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private static TimeSpan TimeToCalculate(int numberTasks)
         {
-            //anything less than 15 stops: 5 seconds, otherwise # tasks * 1 second
-            return numberTasks < 15 ? TimeSpan.FromSeconds(5) : TimeSpan.FromSeconds(numberTasks * 1.5);
+            //anything less than 15 stops: 5 seconds, otherwise # tasks * .75 second
+            return numberTasks < 15 ? TimeSpan.FromSeconds(5) : TimeSpan.FromSeconds(Math.Round(numberTasks * .75));
         }
     }
 }

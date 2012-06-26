@@ -1,19 +1,7 @@
-using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Collections;
-using System.Reactive.Linq;
-using System.Windows.Browser;
 using FoundOps.Common.Composite;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
-using System.Windows.Controls;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
-using System.IO.IsolatedStorage;
-using System.Collections.Generic;
 using FoundOps.SLClient.Data.Tools;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
@@ -23,6 +11,17 @@ using Telerik.Windows.Controls.TreeView;
 using FoundOps.Common.Silverlight.Blocks;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
 using Analytics = FoundOps.SLClient.Data.Services.Analytics;
+using System;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.IsolatedStorage;
+using System.Linq;
+using System.Windows;
+using System.Collections;
+using System.Reactive.Linq;
+using System.Windows.Browser;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 {

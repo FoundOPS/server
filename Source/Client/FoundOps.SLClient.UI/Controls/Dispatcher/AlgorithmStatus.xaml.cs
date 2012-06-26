@@ -1,33 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using System.ComponentModel;
+using FoundOps.SLClient.UI.ViewModels;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
-    public partial class AlgorithmStatus : ChildWindow
+    /// <summary>
+    /// Displays the algorithm's current status.
+    /// </summary>
+    public partial class AlgorithmStatus : INotifyPropertyChanged
     {
+        private AlgorithmVM _algorithmVM;
+        public AlgorithmVM AlgorithmVM
+        {
+            get { return _algorithmVM; }
+            set
+            {
+                _algorithmVM = value;
+                this.RaisePropertyChanged("AlgorithmVM");
+            }
+        }
+
         public AlgorithmStatus()
         {
             InitializeComponent();
         }
 
-        private void OKButton_Click(object sender, RoutedEventArgs e)
+        #region Implementation of INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void RaisePropertyChanged(string propertyName)
         {
-            this.DialogResult = true;
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = false;
-        }
+        #endregion
     }
 }
 
