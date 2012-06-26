@@ -361,5 +361,9 @@
     <Build Include="dbo\Stored Procedures\DeleteFieldAndChildrenBasedOnFieldId.sql" />
     <Build Include="dbo\Tables\ServiceTemplateWithVendorIds.sql" />
     <Build Include="dbo\Tables\EmployeeRoute.sql" />
+    <Build Include="dbo\Tables\RouteEmployee_1.sql" />
+    <Build Include="dbo\Stored Procedures\PropagateNewServiceTemplateToClients.sql" />
+    <Build Include="dbo\Stored Procedures\PropagateNewFields.sql" />
+    <Build Include="dbo\Stored Procedures\PropagateNameChange.sql" />
   </ItemGroup>
 </Project>

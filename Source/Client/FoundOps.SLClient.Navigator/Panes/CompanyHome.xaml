@@ -12,11 +12,14 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (6/19/2012)
+                (6/25/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-            * DISPATCHER: Added a map view.<LineBreak/>
+			* GENERAL: Prepared for mobile application.<LineBreak/>
+            <LineBreak/>
+			(6/19/2012)<LineBreak/>
+			* DISPATCHER: Added a map view.<LineBreak/>
             <LineBreak/>
             (6/12/2012)<LineBreak/>
             * CLIENTS: Name is now filterable.<LineBreak/>
