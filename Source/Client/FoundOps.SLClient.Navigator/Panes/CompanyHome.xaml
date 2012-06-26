@@ -16,10 +16,12 @@
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
-			* DISPATCHER: Improved the routing algorithm.
-			* LOCATIONS: Switched the location geocoder from Yahoo Maps to Bing Maps. It should be much more accurate now.
+			* DISPATCHER: Improved the routing algorithm.<LineBreak/>
+			* LOCATIONS: Switched the location geocoder from Yahoo Maps to Bing Maps. It should be much more accurate now.<LineBreak/>
+            <LineBreak/>
             (6/25/2012)<LineBreak/>
 			* GENERAL: Prepared for mobile application.<LineBreak/>
+            * ADMIN TOOLS: Now service templates can be updated/renamed. Fields can be added and removed.<LineBreak/>
             <LineBreak/>
 			(6/19/2012)<LineBreak/>
 			* DISPATCHER: Added a map view. To use it, press "Reset Layout" in the Dispatcher. You only need to do this once.<LineBreak/>
