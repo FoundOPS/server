@@ -5,10 +5,13 @@
              xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" 
              xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
+             xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
+             xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools"
+             xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
+             xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
              mc:Ignorable="d" d:DesignWidth="500">
     <UserControl.Resources>
-        <Converters:VisibilityConverter x:Key="VisibilityConverter"/>
+        <Converters:FoundOPSVisibilityConverter x:Key="FoundOPSVisibilityConverter" />
     </UserControl.Resources>
     <telerik:RadBusyIndicator x:Name="BusyIndicator" BusyContent="Loading Data" Foreground="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsBusy="{Binding IsLoading}">
         <Grid x:Name="LayoutRoot" DataContext="{Binding Entity, ElementName=myUserAccountEdit}">
@@ -83,6 +86,9 @@
                     <HyperlinkButton Content="Change Password" Foreground="Black" BorderThickness="1"  HorizontalAlignment="Center" Click="HyperlinkButtonClick" Margin="5"/>
                     </StackPanel>
                 </Controls:Expander>
+                <!--Make user mobile only (for admin console)-->
+                <CheckBox Margin="5" Content="Mobile Only" IsChecked="{Binding SelectedUserIsMobileOnly, Mode=TwoWay, Source={Tools:GetVM Type=ViewModels:UserAccountsVM}}" 
+                          Visibility="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSVisibilityConverter}, ConverterParameter=false, ContextType=CoreEntities:BusinessAccount}" />
             </StackPanel>
         </Grid>
     </telerik:RadBusyIndicator>

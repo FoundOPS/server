@@ -19,7 +19,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         /// </summary>
         public UserAccount Entity
         {
-            get { return (UserAccount) GetValue(EntityProperty); }
+            get { return (UserAccount)GetValue(EntityProperty); }
             set { SetValue(EntityProperty, value); }
         }
 
@@ -29,8 +29,8 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         public static readonly DependencyProperty EntityProperty =
             DependencyProperty.Register(
                 "Entity",
-                typeof (UserAccount),
-                typeof (UserAccountEdit),
+                typeof(UserAccount),
+                typeof(UserAccountEdit),
                 new PropertyMetadata(null));
 
         #endregion
@@ -42,7 +42,7 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         /// </summary>
         public ISaveDiscardChangesCommands ISaveDiscardChangesCommands
         {
-            get { return (ISaveDiscardChangesCommands) GetValue(ISaveDiscardChangesCommandsProperty); }
+            get { return (ISaveDiscardChangesCommands)GetValue(ISaveDiscardChangesCommandsProperty); }
             set { SetValue(ISaveDiscardChangesCommandsProperty, value); }
         }
 
@@ -52,8 +52,8 @@ namespace FoundOps.SLClient.UI.Controls.Parties.UserAccounts
         public static readonly DependencyProperty ISaveDiscardChangesCommandsProperty =
             DependencyProperty.Register(
                 "ISaveDiscardChangesCommands",
-                typeof (ISaveDiscardChangesCommands),
-                typeof (UserAccountEdit),
+                typeof(ISaveDiscardChangesCommands),
+                typeof(UserAccountEdit),
                 new PropertyMetadata(null));
 
         #endregion

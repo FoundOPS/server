@@ -302,7 +302,6 @@ namespace FoundOps.Server.Services.CoreDomainService
                 AuthenticationLogic.AdministratorRoles(this.ObjectContext.RolesCurrentUserHasAccessTo()).FirstOrDefault(r => r.Id == roleId);
 
             var ownerParty = role.OwnerParty;
-            //ownerParty.ContactInfoSet.Load();
             return role.OwnerParty;
         }
 
@@ -452,7 +451,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         public UserAccount CurrentUserAccount()
         {
-            var currentUserAccount = ((ObjectQuery<UserAccount>)AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext))
+            var currentUserAccount = AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext)
                  .Include(ua => ua.RoleMembership).Include("RoleMembership.OwnerParty").Include("RoleMembership.Blocks")
                  .Include(ua => ua.OwnedRoles).Include("OwnedRoles.Blocks").Include(ua => ua.LinkedEmployees)
                  .FirstOrDefault();

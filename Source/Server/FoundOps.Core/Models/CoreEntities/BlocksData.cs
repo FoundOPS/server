@@ -88,13 +88,38 @@ namespace FoundOps.Core.Models.CoreEntities
         /// The Manager blocks' ids
         /// </summary>
         public static IEnumerable<Guid> ManagerBlockIds = new[]
-                                                              {
-                                                                  ClientBlockId, ContactsBlockId, DispatcherBlockId,
-                                                                  EmployeesBlockId, //ImportDataBlockId,
-                                                                  LocationsBlockId, RegionsBlockId, ServicesBlockId,
-                                                                  VehiclesBlockId, VehicleMaintenanceBlockId, FeedbackSupportBlockId,
-                                                                  LogoutBlockId
-                                                              };
+            {
+                ClientBlockId, ContactsBlockId, DispatcherBlockId,
+                EmployeesBlockId, //ImportDataBlockId,
+                LocationsBlockId, RegionsBlockId, ServicesBlockId,
+                VehiclesBlockId, VehicleMaintenanceBlockId, FeedbackSupportBlockId,
+                LogoutBlockId
+            };
+
+        #endregion
+
+        #region HTML Blocks
+
+        /// <summary>
+        /// The Routes block Id
+        /// </summary>
+        public static Guid RoutesBlockId = new Guid("6ABF7716-C4B8-442D-88C2-FFBB1C62598E");
+
+        /// <summary>
+        /// The html block ids
+        /// </summary>
+        public static IEnumerable<Guid> HtmlBlockIds = new[]
+            {
+                RoutesBlockId
+            };
+
+        /// <summary>
+        /// The mobile block ids
+        /// </summary>
+        public static IEnumerable<Guid> MobileBlockIds = new[]
+            {
+                RoutesBlockId
+            };
 
         #endregion
 
@@ -151,6 +176,8 @@ namespace FoundOps.Core.Models.CoreEntities
 
             SetupManagerBlocks();
             SetupPublicBlocks();
+
+            SetupHTMLBlocks();
 
             SetupAdministrativeConsoleBlocks();
 
@@ -397,6 +424,41 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
+        #region HTML Blocks
+
+        /// <summary>
+        /// Gets the routes block.
+        /// </summary>
+        public static Block RoutesBlock { get; private set; }
+
+        /// <summary>
+        /// Gets the HTML application blocks.
+        /// </summary>
+        public static List<Block> HTMLBlocks { get; private set; }
+
+        /// <summary>
+        /// Gets the mobile application blocks.
+        /// </summary>
+        public static List<Block> MobileBlocks { get; private set; }
+
+        private static void SetupHTMLBlocks()
+        {
+            RoutesBlock = new Block
+            {
+                Id = BlockConstants.RoutesBlockId,
+                Name = "Routes",
+                NavigateUri = "Routes",
+                HideFromNavigation = true
+            };
+
+            //RoutesBlock is hidden for now
+            HTMLBlocks = new List<Block> { RoutesBlock };
+
+            MobileBlocks = new List<Block> { RoutesBlock };
+        }
+
+        #endregion
+
         #region FoundOPS Administrative Console Blocks
 
         /// <summary>
@@ -440,6 +502,9 @@ namespace FoundOps.Core.Models.CoreEntities
             AllBlocks.AddRange(ManagerBlocks);
             AllBlocks.AddRange(BusinessAdministratorBlocks);
             AllBlocks.AddRange(UserAccountBlocks);
+
+            //no need to add mobile blocks because they are included in HTMLBlocks
+            AllBlocks.AddRange(HTMLBlocks);
 
             AllBlocks.AddRange(AdministrativeConsoleBlocks);
 

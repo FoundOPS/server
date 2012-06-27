@@ -262,6 +262,7 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\Import\ImportDestinationTools.cs">
       <Link>Models\ImportDestinationTools.cs</Link>
     </Compile>
+    <Compile Include="Converters\BusinessAccountConverters.cs" />
     <Compile Include="Converters\ClientConverters.cs" />
     <Compile Include="Converters\ContactInfoConverters.cs" />
     <Compile Include="Converters\FieldConverters.cs" />

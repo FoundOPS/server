@@ -3,7 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 using FoundOps.Common.Composite.Entities;
 
+//Partial class must be part of same namespace
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public enum RoleType
     {
