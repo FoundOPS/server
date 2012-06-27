@@ -116,11 +116,11 @@ namespace FoundOps.SLClient.UI.Controls.Locations
 
             // Zoom to BestView when Geocoding is completed (i.e. When Search completes)
             _setBestViewDisposable = newLocationVM.GeocodeCompletion.AsGeneric().Merge(georesultselectionchanged)
-                   .Throttle(new TimeSpan(0, 0, 0, 1)).ObserveOnDispatcher().Subscribe(_ => InformationLayer.SetBestView());
+                   .Throttle(TimeSpan.FromSeconds(.5)).ObserveOnDispatcher().Subscribe(_ => InformationLayer.SetBestView());
 
             if (newLocationVM.ValidLatitudeLongitudeState != null)
                 // Subscribe to changes of latitude/longitude by changing visual state according to validity.
-                _setMapStateDisposable = newLocationVM.ValidLatitudeLongitudeState.Throttle(new TimeSpan(0, 0, 0, 0, 500))
+                _setMapStateDisposable = newLocationVM.ValidLatitudeLongitudeState.Throttle(TimeSpan.FromSeconds(.5))
                      .ObserveOnDispatcher().Subscribe(validstate =>
                      {
                          if (validstate)

@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.NET;
+﻿using System.Windows;
+using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.SLClient.Data.ViewModels;
@@ -178,10 +179,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup the ContactInfoVM
             ContactInfoVM = new ContactInfoVM(ContactInfoType.Locations, entity != null ? entity.ContactInfoSet : null);
 
-            //Set ManuallySelectGeocoderResult to the Entity if it has a Latitude/Longitude
             ManuallySelectGeocoderResult = new GeocoderResult { Name = ManuallySelectLocationString, AddressLineOne = ClickOnTheMapString };
 
-            //Update the Geocoder properties
+            var depot = ContextManager.ServiceProvider.Depots.FirstOrDefault();
+            var ipInformation = ((string)Application.Current.Resources["IPInformation"]);
+
+            //Set ManuallySelectGeocoderResult to the Entity if it has a Latitude/Longitude
             if (entity != null && entity.Latitude != null && entity.Longitude != null)
             {
                 ManuallySelectGeocoderResult.Latitude = entity.Latitude.Value.ToString();
@@ -189,6 +192,22 @@ namespace FoundOps.SLClient.UI.ViewModels
                 SelectedGeocoderResult = ManuallySelectGeocoderResult;
                 if (SelectedGeocoderResult.TelerikLocation != null)
                     MessageBus.Current.SendMessage(new LocationSetMessage(SelectedGeocoderResult.TelerikLocation.Value));
+            }
+            //Otherwise set it to the depot if there is one
+            else if (depot != null && depot.Latitude.HasValue && depot.Longitude.HasValue)
+            {
+                ManuallySelectGeocoderResult.Latitude = depot.Latitude.Value.ToString();
+                ManuallySelectGeocoderResult.Longitude = depot.Longitude.Value.ToString();
+            }
+            //Otherwise use the IPInfo if there is any
+            else if (ipInformation != null)
+            {
+                var ipInformationDelimited = ipInformation.Split(';');
+                var latitude = ipInformationDelimited[8];
+                var longitude = ipInformationDelimited[9];
+
+                ManuallySelectGeocoderResult.Latitude = latitude;
+                ManuallySelectGeocoderResult.Longitude = longitude;
             }
 
             #endregion

@@ -1,32 +1,44 @@
-﻿using System;
-using System.Windows;
-using System.Threading;
+﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using Telerik.Windows.Controls.Map;
+using System;
+using System.Linq;
+using System.Windows;
 
 namespace FoundOps.Common.Silverlight.Tools.Location
 {
     public static class MapTools
     {
+        private static IDisposable _setBestViewDisposable;
         public static void SetBestView(this InformationLayer informationLayer)
         {
             if (informationLayer.Items.Count <= 0) return;
 
             var map = informationLayer.MapControl;
 
-            //Wait 1 second (to let the PinPoints draw) then set the best view for the pinpoints
-            Timer timer = null;
-            timer = new Timer(afterTwoSecondsCallback =>
+            if (_setBestViewDisposable!=null)
             {
-                informationLayer.Dispatcher.BeginInvoke(() =>
+                _setBestViewDisposable.Dispose();
+                _setBestViewDisposable = null;
+            }
+
+            //Wait 1/2 second (to let the PinPoints draw) then set the best view for the pinpoints
+            _setBestViewDisposable = Rxx3.RunDelayed(TimeSpan.FromSeconds(.5), () =>
+            {
+                if (informationLayer.Items.Count <= 0)
+                    return;
+
+                if (informationLayer.Items.Count == 1)
                 {
-                    var bestViewRectangle =
-                        informationLayer.GetBestView(informationLayer.Items);
-                    bestViewRectangle.MapControl = map;
-                    map.Center = bestViewRectangle.Center;
-                    map.ZoomLevel = bestViewRectangle.ZoomLevel;
-                });
-                timer.Dispose();
-            }, null, 1000, 1000);
+                    informationLayer.ScrollToCenterOfView(informationLayer.Items.First());
+                    return;
+                }
+
+                var bestViewRectangle = informationLayer.GetBestView(informationLayer.Items);
+                bestViewRectangle.MapControl = map;
+
+                map.ZoomLevel = bestViewRectangle.ZoomLevel;
+                map.Center = bestViewRectangle.Center;
+            });
         }
 
         public static void CenterMapBasedOnIpInfo(this InformationLayer informationLayer)
