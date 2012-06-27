@@ -598,6 +598,13 @@ namespace FoundOps.Server.Services.CoreDomainService
             return BingLocationServices.TryGeocode(searchText);
         }
 
+        [Invoke]
+        public IEnumerable<GeocoderResult> TryGeocodeAddress(string addressLineOne, string city, string state, string zipCode)
+        {
+            return
+                BingLocationServices.TryGeocode(new Address{AddressLineOne = addressLineOne, City = city, State = state, ZipCode = zipCode});
+        }
+
         #region Vehicle
 
         public IQueryable<Vehicle> GetVehiclesForParty(Guid roleId)

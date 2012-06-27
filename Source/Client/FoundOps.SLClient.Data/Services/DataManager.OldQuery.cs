@@ -65,6 +65,20 @@ namespace FoundOps.SLClient.Data.Services
         }
 
         /// <summary>
+        /// Tries to geocode an address.
+        /// </summary>
+        /// <param name="addressLineOne"></param>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <param name="zipCode"></param>
+        /// <param name="geocoderResultsCallback">The geocoder results callback.</param>
+        /// <param name="userState">State of the user.</param>
+        public void TryGeocodeAddress(string addressLineOne, string city, string state, string zipCode, Action<IEnumerable<GeocoderResult>, object> geocoderResultsCallback, object userState = null)
+        {
+            DomainContext.TryGeocodeAddress(addressLineOne, city, state, zipCode, callback => geocoderResultsCallback(callback.Value, userState), userState);
+        }
+
+        /// <summary>
         /// Gets the public blocks.
         /// </summary>
         /// <param name="getPublicBlocksCallback">The get public blocks callback.</param>

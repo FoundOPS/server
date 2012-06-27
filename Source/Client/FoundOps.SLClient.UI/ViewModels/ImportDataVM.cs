@@ -216,8 +216,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var state = (string)row[stateColumn.ColumnName];
                 var zipCode = (string)row[zipCodeColumn.ColumnName];
 
-                var searchText = string.Format("{0}, {1}, {2}, {3}", addressLineOne, city, state, zipCode);
-                Manager.Data.TryGeocode(searchText, (geocodeComplete, userState) =>
+                Manager.Data.TryGeocodeAddress(addressLineOne, city, state, zipCode, (geocodeComplete, userState) =>
                 {
                     var rowToChange = (DataRow)userState;
                     if (geocodeComplete.Count() != 1) return;
@@ -225,7 +224,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     var result = geocodeComplete.First();
 
                     //If it is not a good match return
-                    if (result.Precision == "Low" || result.Precision != "Medium")
+                    if (result.Precision == "Low" || result.Precision == "Medium")
                         return;
                     if (result.Precision != "High" && Convert.ToInt32(result.Precision) < 85)
                         return;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 
-//Only works in .NET (not Silverlight) for now because PlaceFinder's Cross Domain Policy is messed up
+//TODO: Prioritize results based on depot location. http://msdn.microsoft.com/en-us/library/ff701714.aspx &userLocation=
 namespace FoundOps.Common.NET
 {
     //http://developer.yahoo.com/geo/placefinder/guide/responses.html#supported-formats
@@ -34,18 +34,29 @@ namespace FoundOps.Common.NET
                     addressToGeocode.AddressLineOne
                 };
 
-            //replace all spaces with + and empty parameters with -
-            parameters = parameters.Select(p => p.Replace(" ", "+"))
-                .Select(p => string.IsNullOrEmpty(p) ? "-" : p).ToArray();
+            //remove . , : +
+            parameters = parameters.Select(p => p.Replace(".", "").Replace(",", "").Replace(":", "").Replace("+", "")).ToArray();
 
-            var query = String.Format("{0}/US/{1}/{2}/{3}/{4}", ApiUrl, parameters[0], parameters[1], parameters[2], parameters[3]);
+            var query = String.Format("{0}?CountryRegion=US", ApiUrl);
+
+            if (!string.IsNullOrEmpty(parameters[0]))
+                query += "&adminDistrict=" + parameters[0];
+
+            if (!string.IsNullOrEmpty(parameters[1]))
+                query += "&postalCode=" + parameters[1];
+
+            if (!string.IsNullOrEmpty(parameters[2]))
+                query += "&locality=" + parameters[2];
+
+            if (!string.IsNullOrEmpty(parameters[3]))
+                query += "&addressLine=" + parameters[3];
 
             return TryGeocodeUrl(query);
         }
 
         private static IEnumerable<GeocoderResult> TryGeocodeUrl(string restQueryUrl)
         {
-            restQueryUrl = restQueryUrl + "&o=xml" + "&key=" + BingKey;
+            restQueryUrl = restQueryUrl + "&o=xml" + "&key=" + BingKey + "&userIP=" + "127.0.0.1";
 
             // Initiate Async Network call to Bing Maps REST Service
             var geocodeService = new WebClient();
