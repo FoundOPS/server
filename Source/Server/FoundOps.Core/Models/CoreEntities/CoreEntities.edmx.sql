@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/19/2012 16:09:55
+-- Date Created: 06/27/2012 12:06:33
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -361,9 +361,6 @@ GO
 IF OBJECT_ID(N'[dbo].[Vehicles]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Vehicles];
 GO
-IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[PartiesWithName]', 'U') IS NOT NULL
-    DROP TABLE [CoreEntitiesStoreContainer].[PartiesWithName];
-GO
 IF OBJECT_ID(N'[CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId]', 'U') IS NOT NULL
     DROP TABLE [CoreEntitiesStoreContainer].[ServiceTemplatesWithVendorId];
 GO
@@ -534,7 +531,8 @@ CREATE TABLE [dbo].[Clients] (
     [DateAdded] datetime  NOT NULL,
     [Salesperson] nvarchar(max)  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
-    [Name] nvarchar(max)  NULL
+    [Name] nvarchar(max)  NULL,
+    [SalesTermId] uniqueidentifier  NULL
 );
 GO
 
@@ -663,7 +661,12 @@ CREATE TABLE [dbo].[Invoices] (
     [CreateTime] nvarchar(max)  NULL,
     [LastUpdatedTime] nvarchar(max)  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
-    [ClientId] uniqueidentifier  NULL
+    [ClientId] uniqueidentifier  NULL,
+    [QuickBooksId] nvarchar(max)  NULL,
+    [IsMemoChanged] bit  NOT NULL,
+    [IsBillToLocationChanged] bit  NOT NULL,
+    [IsDueDateChanged] bit  NOT NULL,
+    [IsSalesTermChanged] bit  NOT NULL
 );
 GO
 
@@ -671,7 +674,14 @@ GO
 CREATE TABLE [dbo].[SalesTerms] (
     [Id] uniqueidentifier  NOT NULL,
     [DueDays] int  NULL,
-    [Name] nvarchar(max)  NOT NULL
+    [Name] nvarchar(max)  NOT NULL,
+    [BusinessAccountId] uniqueidentifier  NULL,
+    [QuickBooksId] nvarchar(max)  NULL,
+    [IsNameChanged] bit  NOT NULL,
+    [IsDueDaysChanged] bit  NOT NULL,
+    [SyncToken] nvarchar(max)  NULL,
+    [CreateTime] nvarchar(max)  NULL,
+    [LastUpdatedTime] nvarchar(max)  NULL
 );
 GO
 
@@ -680,7 +690,10 @@ CREATE TABLE [dbo].[LineItems] (
     [Id] uniqueidentifier  NOT NULL,
     [InvoiceId] uniqueidentifier  NOT NULL,
     [Description] nvarchar(max)  NULL,
-    [Amount] nvarchar(max)  NULL
+    [Amount] nvarchar(max)  NULL,
+    [IsAmountChanged] bit  NOT NULL,
+    [IsDescriptionChanged] bit  NOT NULL,
+    [QuickBooksId] nvarchar(max)  NULL
 );
 GO
 
@@ -1892,6 +1905,34 @@ ADD CONSTRAINT [FK_RouteEmployee_Employee]
 CREATE INDEX [IX_FK_RouteEmployee_Employee]
 ON [dbo].[RouteEmployee]
     ([Employees_Id]);
+GO
+
+-- Creating foreign key on [BusinessAccountId] in table 'SalesTerms'
+ALTER TABLE [dbo].[SalesTerms]
+ADD CONSTRAINT [FK_SalesTermBusinessAccount]
+    FOREIGN KEY ([BusinessAccountId])
+    REFERENCES [dbo].[Parties_BusinessAccount]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SalesTermBusinessAccount'
+CREATE INDEX [IX_FK_SalesTermBusinessAccount]
+ON [dbo].[SalesTerms]
+    ([BusinessAccountId]);
+GO
+
+-- Creating foreign key on [SalesTermId] in table 'Clients'
+ALTER TABLE [dbo].[Clients]
+ADD CONSTRAINT [FK_SalesTermClient]
+    FOREIGN KEY ([SalesTermId])
+    REFERENCES [dbo].[SalesTerms]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SalesTermClient'
+CREATE INDEX [IX_FK_SalesTermClient]
+ON [dbo].[Clients]
+    ([SalesTermId]);
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_Business'

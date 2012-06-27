@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Data;
 using FoundOps.Common.Tools;
-using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using System.ServiceModel.DomainServices.EntityFramework;
 using FoundOps.Core.Models.QuickBooks;
-using FoundOps.Server.Authentication;
+using FoundOps.Core.Tools;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -58,35 +57,35 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<SalesTerm> GetSalesTerms(Guid roleId)
         {
-            var businessAccountForRole = ObjectContext.BusinessAccountForRole(roleId);
+            var businessAccountOwnerOfRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
-            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(businessAccountForRole.QuickBooksSessionXml);
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(businessAccountOwnerOfRole.QuickBooksSessionXml);
             
             //Have to check whether the BusinessAccount has QuickBooks enabled and whether there is a token and token secret
-            if (businessAccountForRole.QuickBooksEnabled && quickBooksSession.QBToken != null && quickBooksSession.QBTokenSecret != null)
+            if (businessAccountOwnerOfRole.QuickBooksEnabled && quickBooksSession.QBToken != null && quickBooksSession.QBTokenSecret != null)
             {
-                var baseUrl = QuickBooksTools.GetBaseUrl(businessAccountForRole);
+                var baseUrl = QuickBooksTools.GetBaseUrl(businessAccountOwnerOfRole);
 
-                var salesTermsXml = QuickBooksTools.GetEntityList(businessAccountForRole, "sales-terms", baseUrl);
+                var salesTermsXml = QuickBooksTools.GetEntityList(businessAccountOwnerOfRole, "sales-terms", baseUrl);
 
                 var quickBooksSalesTerms = QuickBooksTools.CreateSalesTermsFromQuickBooksResponse(salesTermsXml);
 
                 foreach (var salesTerm in quickBooksSalesTerms)
                 {
                     var exists =
-                        businessAccountForRole.SalesTerms.FirstOrDefault(st => st.QuickBooksId == salesTerm.QuickBooksId);
+                        businessAccountOwnerOfRole.SalesTerms.FirstOrDefault(st => st.QuickBooksId == salesTerm.QuickBooksId);
 
                     if (exists != null)
                     {
-                        businessAccountForRole.SalesTerms.Remove(exists);
+                        businessAccountOwnerOfRole.SalesTerms.Remove(exists);
                     }
                     //Always add the new sales term because it either never existed or the old one was removed from the business account above.
-                    businessAccountForRole.SalesTerms.Add(salesTerm);
+                    businessAccountOwnerOfRole.SalesTerms.Add(salesTerm);
                 }
             }
             this.ObjectContext.SaveChanges();
 
-            var salesTerms =  this.ObjectContext.SalesTerms.Where(st => st.BusinessAccountId == businessAccountForRole.Id);
+            var salesTerms =  this.ObjectContext.SalesTerms.Where(st => st.BusinessAccountId == businessAccountOwnerOfRole.Id);
             return salesTerms;
         }
 

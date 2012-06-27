@@ -4,6 +4,7 @@ using DevDefined.OAuth.Framework;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.QuickBooks;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Tools;
 
 namespace FoundOps.Server.Controllers
 {
@@ -22,7 +23,7 @@ namespace FoundOps.Server.Controllers
         /// </returns>
         public bool NeedsAuthorization(Guid roleId)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountForRole(roleId);
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
 
             //A null BusinessAccount means that it is actually a user account
             //If QuickBooks is disabled on the account
@@ -69,7 +70,7 @@ namespace FoundOps.Server.Controllers
         /// </returns>
         public ActionResult OAuthGrantLogin(string roleId)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountForRole(new Guid(roleId));
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(new Guid(roleId));
 
             //Creates the initial call to QuickBooks with our callback URL
             var callbackUrl = String.Format("{0}?roleId={1}", QuickBooksTools.OauthConstants.OauthCallbackUrl, roleId);
@@ -81,7 +82,7 @@ namespace FoundOps.Server.Controllers
             //Save verification token for later use
             //quickBooksSession.OAuthVerifierToken = (TokenBase)session.GetRequestToken();
 
-            var sessionToken = (TokenBase) session.GetRequestToken();
+            var sessionToken = session.GetRequestToken();
 
             //Setting all properties in QuickBooksSession
             quickBooksSession.OAuthConsumerKey = sessionToken.ConsumerKey;
@@ -113,7 +114,7 @@ namespace FoundOps.Server.Controllers
         {
             //Gets the BusinessAccount based on the roleId
             var currentRoleId = new Guid(roleId);
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountForRole(currentRoleId);
+            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(currentRoleId);
 
             var oauthVerifyer = Request.QueryString["oauth_verifier"];
             var realmid = Request.QueryString["realmId"];

@@ -74,6 +74,8 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientLocation1", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientContactInfo", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "ContactInfo", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ContactInfo), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteEmployee", "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee))]
+[assembly: EdmRelationshipAttribute("CoreEntities", "SalesTermBusinessAccount", "SalesTerm", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.SalesTerm), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "SalesTermClient", "SalesTerm", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.SalesTerm), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Client), true)]
 
 #endregion
 
@@ -1895,6 +1897,28 @@ namespace FoundOps.Core.Models.CoreEntities
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "SalesTermBusinessAccount", "SalesTerm")]
+        public EntityCollection<SalesTerm> SalesTerms
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<SalesTerm>("CoreEntities.SalesTermBusinessAccount", "SalesTerm");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<SalesTerm>("CoreEntities.SalesTermBusinessAccount", "SalesTerm", value);
+                }
+            }
+        }
 
         #endregion
 
@@ -2049,6 +2073,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> SalesTermId
+        {
+            get
+            {
+                return _SalesTermId;
+            }
+            set
+            {
+                OnSalesTermIdChanging(value);
+                ReportPropertyChanging("SalesTermId");
+                _SalesTermId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("SalesTermId");
+                OnSalesTermIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _SalesTermId;
+        partial void OnSalesTermIdChanging(Nullable<global::System.Guid> value);
+        partial void OnSalesTermIdChanged();
 
         #endregion
 
@@ -2265,6 +2313,44 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ContactInfo>("CoreEntities.ClientContactInfo", "ContactInfo", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "SalesTermClient", "SalesTerm")]
+        public SalesTerm SalesTerm
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<SalesTerm>("CoreEntities.SalesTermClient", "SalesTerm").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<SalesTerm>("CoreEntities.SalesTermClient", "SalesTerm").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<SalesTerm> SalesTermReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<SalesTerm>("CoreEntities.SalesTermClient", "SalesTerm");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<SalesTerm>("CoreEntities.SalesTermClient", "SalesTerm", value);
                 }
             }
         }
@@ -4336,11 +4422,19 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="scheduleModeInt">Initial value of the ScheduleModeInt property.</param>
-        public static Invoice CreateInvoice(global::System.Guid id, global::System.Int32 scheduleModeInt)
+        /// <param name="isMemoChanged">Initial value of the IsMemoChanged property.</param>
+        /// <param name="isBillToLocationChanged">Initial value of the IsBillToLocationChanged property.</param>
+        /// <param name="isDueDateChanged">Initial value of the IsDueDateChanged property.</param>
+        /// <param name="isSalesTermChanged">Initial value of the IsSalesTermChanged property.</param>
+        public static Invoice CreateInvoice(global::System.Guid id, global::System.Int32 scheduleModeInt, global::System.Boolean isMemoChanged, global::System.Boolean isBillToLocationChanged, global::System.Boolean isDueDateChanged, global::System.Boolean isSalesTermChanged)
         {
             Invoice invoice = new Invoice();
             invoice.Id = id;
             invoice.ScheduleModeInt = scheduleModeInt;
+            invoice.IsMemoChanged = isMemoChanged;
+            invoice.IsBillToLocationChanged = isBillToLocationChanged;
+            invoice.IsDueDateChanged = isDueDateChanged;
+            invoice.IsSalesTermChanged = isSalesTermChanged;
             return invoice;
         }
 
@@ -4686,6 +4780,126 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _ClientId;
         partial void OnClientIdChanging(Nullable<global::System.Guid> value);
         partial void OnClientIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String QuickBooksId
+        {
+            get
+            {
+                return _QuickBooksId;
+            }
+            set
+            {
+                OnQuickBooksIdChanging(value);
+                ReportPropertyChanging("QuickBooksId");
+                _QuickBooksId = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("QuickBooksId");
+                OnQuickBooksIdChanged();
+            }
+        }
+        private global::System.String _QuickBooksId;
+        partial void OnQuickBooksIdChanging(global::System.String value);
+        partial void OnQuickBooksIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsMemoChanged
+        {
+            get
+            {
+                return _IsMemoChanged;
+            }
+            set
+            {
+                OnIsMemoChangedChanging(value);
+                ReportPropertyChanging("IsMemoChanged");
+                _IsMemoChanged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsMemoChanged");
+                OnIsMemoChangedChanged();
+            }
+        }
+        private global::System.Boolean _IsMemoChanged;
+        partial void OnIsMemoChangedChanging(global::System.Boolean value);
+        partial void OnIsMemoChangedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsBillToLocationChanged
+        {
+            get
+            {
+                return _IsBillToLocationChanged;
+            }
+            set
+            {
+                OnIsBillToLocationChangedChanging(value);
+                ReportPropertyChanging("IsBillToLocationChanged");
+                _IsBillToLocationChanged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsBillToLocationChanged");
+                OnIsBillToLocationChangedChanged();
+            }
+        }
+        private global::System.Boolean _IsBillToLocationChanged;
+        partial void OnIsBillToLocationChangedChanging(global::System.Boolean value);
+        partial void OnIsBillToLocationChangedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsDueDateChanged
+        {
+            get
+            {
+                return _IsDueDateChanged;
+            }
+            set
+            {
+                OnIsDueDateChangedChanging(value);
+                ReportPropertyChanging("IsDueDateChanged");
+                _IsDueDateChanged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDueDateChanged");
+                OnIsDueDateChangedChanged();
+            }
+        }
+        private global::System.Boolean _IsDueDateChanged;
+        partial void OnIsDueDateChangedChanging(global::System.Boolean value);
+        partial void OnIsDueDateChangedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsSalesTermChanged
+        {
+            get
+            {
+                return _IsSalesTermChanged;
+            }
+            set
+            {
+                OnIsSalesTermChangedChanging(value);
+                ReportPropertyChanging("IsSalesTermChanged");
+                _IsSalesTermChanged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsSalesTermChanged");
+                OnIsSalesTermChangedChanged();
+            }
+        }
+        private global::System.Boolean _IsSalesTermChanged;
+        partial void OnIsSalesTermChangedChanging(global::System.Boolean value);
+        partial void OnIsSalesTermChangedChanged();
 
         #endregion
 
@@ -4923,11 +5137,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="invoiceId">Initial value of the InvoiceId property.</param>
-        public static LineItem CreateLineItem(global::System.Guid id, global::System.Guid invoiceId)
+        /// <param name="isAmountChanged">Initial value of the IsAmountChanged property.</param>
+        /// <param name="isDescriptionChanged">Initial value of the IsDescriptionChanged property.</param>
+        public static LineItem CreateLineItem(global::System.Guid id, global::System.Guid invoiceId, global::System.Boolean isAmountChanged, global::System.Boolean isDescriptionChanged)
         {
             LineItem lineItem = new LineItem();
             lineItem.Id = id;
             lineItem.InvoiceId = invoiceId;
+            lineItem.IsAmountChanged = isAmountChanged;
+            lineItem.IsDescriptionChanged = isDescriptionChanged;
             return lineItem;
         }
 
@@ -5033,6 +5251,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Amount;
         partial void OnAmountChanging(global::System.String value);
         partial void OnAmountChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsAmountChanged
+        {
+            get
+            {
+                return _IsAmountChanged;
+            }
+            set
+            {
+                OnIsAmountChangedChanging(value);
+                ReportPropertyChanging("IsAmountChanged");
+                _IsAmountChanged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsAmountChanged");
+                OnIsAmountChangedChanged();
+            }
+        }
+        private global::System.Boolean _IsAmountChanged;
+        partial void OnIsAmountChangedChanging(global::System.Boolean value);
+        partial void OnIsAmountChangedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsDescriptionChanged
+        {
+            get
+            {
+                return _IsDescriptionChanged;
+            }
+            set
+            {
+                OnIsDescriptionChangedChanging(value);
+                ReportPropertyChanging("IsDescriptionChanged");
+                _IsDescriptionChanged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDescriptionChanged");
+                OnIsDescriptionChangedChanged();
+            }
+        }
+        private global::System.Boolean _IsDescriptionChanged;
+        partial void OnIsDescriptionChangedChanging(global::System.Boolean value);
+        partial void OnIsDescriptionChangedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String QuickBooksId
+        {
+            get
+            {
+                return _QuickBooksId;
+            }
+            set
+            {
+                OnQuickBooksIdChanging(value);
+                ReportPropertyChanging("QuickBooksId");
+                _QuickBooksId = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("QuickBooksId");
+                OnQuickBooksIdChanged();
+            }
+        }
+        private global::System.String _QuickBooksId;
+        partial void OnQuickBooksIdChanging(global::System.String value);
+        partial void OnQuickBooksIdChanged();
 
         #endregion
 
@@ -9099,11 +9389,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static SalesTerm CreateSalesTerm(global::System.Guid id, global::System.String name)
+        /// <param name="isNameChanged">Initial value of the IsNameChanged property.</param>
+        /// <param name="isDueDaysChanged">Initial value of the IsDueDaysChanged property.</param>
+        public static SalesTerm CreateSalesTerm(global::System.Guid id, global::System.String name, global::System.Boolean isNameChanged, global::System.Boolean isDueDaysChanged)
         {
             SalesTerm salesTerm = new SalesTerm();
             salesTerm.Id = id;
             salesTerm.Name = name;
+            salesTerm.IsNameChanged = isNameChanged;
+            salesTerm.IsDueDaysChanged = isDueDaysChanged;
             return salesTerm;
         }
 
@@ -9185,6 +9479,174 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> BusinessAccountId
+        {
+            get
+            {
+                return _BusinessAccountId;
+            }
+            set
+            {
+                OnBusinessAccountIdChanging(value);
+                ReportPropertyChanging("BusinessAccountId");
+                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BusinessAccountId");
+                OnBusinessAccountIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _BusinessAccountId;
+        partial void OnBusinessAccountIdChanging(Nullable<global::System.Guid> value);
+        partial void OnBusinessAccountIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String QuickBooksId
+        {
+            get
+            {
+                return _QuickBooksId;
+            }
+            set
+            {
+                OnQuickBooksIdChanging(value);
+                ReportPropertyChanging("QuickBooksId");
+                _QuickBooksId = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("QuickBooksId");
+                OnQuickBooksIdChanged();
+            }
+        }
+        private global::System.String _QuickBooksId;
+        partial void OnQuickBooksIdChanging(global::System.String value);
+        partial void OnQuickBooksIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsNameChanged
+        {
+            get
+            {
+                return _IsNameChanged;
+            }
+            set
+            {
+                OnIsNameChangedChanging(value);
+                ReportPropertyChanging("IsNameChanged");
+                _IsNameChanged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsNameChanged");
+                OnIsNameChangedChanged();
+            }
+        }
+        private global::System.Boolean _IsNameChanged;
+        partial void OnIsNameChangedChanging(global::System.Boolean value);
+        partial void OnIsNameChangedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsDueDaysChanged
+        {
+            get
+            {
+                return _IsDueDaysChanged;
+            }
+            set
+            {
+                OnIsDueDaysChangedChanging(value);
+                ReportPropertyChanging("IsDueDaysChanged");
+                _IsDueDaysChanged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDueDaysChanged");
+                OnIsDueDaysChangedChanged();
+            }
+        }
+        private global::System.Boolean _IsDueDaysChanged;
+        partial void OnIsDueDaysChangedChanging(global::System.Boolean value);
+        partial void OnIsDueDaysChangedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String SyncToken
+        {
+            get
+            {
+                return _SyncToken;
+            }
+            set
+            {
+                OnSyncTokenChanging(value);
+                ReportPropertyChanging("SyncToken");
+                _SyncToken = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SyncToken");
+                OnSyncTokenChanged();
+            }
+        }
+        private global::System.String _SyncToken;
+        partial void OnSyncTokenChanging(global::System.String value);
+        partial void OnSyncTokenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String CreateTime
+        {
+            get
+            {
+                return _CreateTime;
+            }
+            set
+            {
+                OnCreateTimeChanging(value);
+                ReportPropertyChanging("CreateTime");
+                _CreateTime = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("CreateTime");
+                OnCreateTimeChanged();
+            }
+        }
+        private global::System.String _CreateTime;
+        partial void OnCreateTimeChanging(global::System.String value);
+        partial void OnCreateTimeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastUpdatedTime
+        {
+            get
+            {
+                return _LastUpdatedTime;
+            }
+            set
+            {
+                OnLastUpdatedTimeChanging(value);
+                ReportPropertyChanging("LastUpdatedTime");
+                _LastUpdatedTime = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastUpdatedTime");
+                OnLastUpdatedTimeChanged();
+            }
+        }
+        private global::System.String _LastUpdatedTime;
+        partial void OnLastUpdatedTimeChanging(global::System.String value);
+        partial void OnLastUpdatedTimeChanged();
 
         #endregion
 
@@ -9209,6 +9671,66 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Invoice>("CoreEntities.InvoiceSalesTerm", "Invoice", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "SalesTermBusinessAccount", "BusinessAccount")]
+        public BusinessAccount BusinessAccount
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.SalesTermBusinessAccount", "BusinessAccount").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.SalesTermBusinessAccount", "BusinessAccount").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<BusinessAccount> BusinessAccountReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.SalesTermBusinessAccount", "BusinessAccount");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<BusinessAccount>("CoreEntities.SalesTermBusinessAccount", "BusinessAccount", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "SalesTermClient", "Client")]
+        public EntityCollection<Client> Clients
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Client>("CoreEntities.SalesTermClient", "Client");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Client>("CoreEntities.SalesTermClient", "Client", value);
                 }
             }
         }

@@ -2,6 +2,10 @@ using System;
 using System.Linq;
 using System.Text;
 using FoundOps.Common.Tools;
+using FoundOps.Core.Tools;
+using Intuit.Ipp.Core;
+using Intuit.Ipp.Security;
+using Intuit.Ipp.Services;
 using Microsoft.WindowsAzure;
 using DevDefined.OAuth.Consumer;
 using FoundOps.Core.Models.Azure;
@@ -305,6 +309,36 @@ namespace FoundOps.Core.Models.QuickBooks
         }
 
         /// <summary>
+        /// Gets a list of customers from Quickbooks using the new dll's
+        /// </summary>
+        /// <param name="currentBusinessAccount"></param>
+        /// <returns></returns>
+        public static IEnumerable<Intuit.Ipp.Data.Qbo.Customer> GetCustomerList(BusinessAccount currentBusinessAccount)
+        {
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
+
+            var oauthValidator = IntuitInitializer.InitializeOAuthValidator(quickBooksSession.OAuthToken, quickBooksSession.OAuthTokenSecret, OauthConstants.ConsumerKey, OauthConstants.ConsumerSecret);
+            var context = IntuitInitializer.InitializeServiceContext(oauthValidator, quickBooksSession.RealmId, string.Empty, string.Empty, "Qbo");
+            var commonService = new DataServices(context);
+
+            var qboCustomer = new Intuit.Ipp.Data.Qbo.Customer();
+
+            var customers = new List<Intuit.Ipp.Data.Qbo.Customer>();
+
+            //Gets up to 10k Clients from QuickBooks
+            for (var i = 1; i <= 100; i++)
+            {
+                var newCustomers = commonService.FindAll(qboCustomer, i, 100);
+                customers.AddRange(newCustomers);
+
+                if (newCustomers.Count < 100)
+                    break;
+            }
+
+            return customers;
+        }
+
+        /// <summary>
         /// Gets the entity by id.
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
@@ -579,7 +613,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
             return "";
         }
-
+        
         #endregion
 
         #region Functions Used to Sync With QBO

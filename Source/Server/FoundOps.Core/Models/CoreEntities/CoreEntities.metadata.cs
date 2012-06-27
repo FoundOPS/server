@@ -1,4 +1,4 @@
-﻿using FoundOps.Core.Models.CoreEntities.Validation;
+using FoundOps.Core.Models.CoreEntities.Validation;
 using System;
 
 // ReSharper disable CheckNamespace
