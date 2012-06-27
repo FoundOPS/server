@@ -20,7 +20,7 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <param name="type">The type of QuickBooks element.</param>
         /// <param name="writeElementSpecificXml">A method to write the specific element's xml.</param>
         /// <returns></returns>
-        public static string QuickBooksElementXml(string type, Action<XmlWriter, StringBuilder> writeElementSpecificXml)
+        private static string QuickBooksElementXml(string type, Action<XmlWriter, StringBuilder> writeElementSpecificXml)
         {
             var settings = new XmlWriterSettings();
             var builder = new StringBuilder();
@@ -82,19 +82,21 @@ namespace FoundOps.Core.Models.QuickBooks
 
                     writer.CreateElement("CustomerId", clientId, "idDomain", "QBO");
 
-                    writer.WriteElement("BillAddr", () =>
+                    if (invoice.BillToLocation != null)
                     {
-                        writer.CreateElement("Line1", invoice.BillToLocation.AddressLineOne);
+                        writer.WriteElement("BillAddr", () =>
+                        {
+                            writer.CreateElement("Line1", invoice.BillToLocation.AddressLineOne);
 
-                        writer.CreateElement("Line2", invoice.BillToLocation.AddressLineTwo);
+                            writer.CreateElement("Line2", invoice.BillToLocation.AddressLineTwo);
 
-                        writer.CreateElement("City", invoice.BillToLocation.City);
+                            writer.CreateElement("City", invoice.BillToLocation.City);
 
-                        writer.CreateElement("CountrySubDivisionCode", invoice.BillToLocation.State);
+                            writer.CreateElement("CountrySubDivisionCode", invoice.BillToLocation.State);
 
-                        writer.CreateElement("ZipCode", invoice.BillToLocation.ZipCode);
-                    });
-
+                            writer.CreateElement("ZipCode", invoice.BillToLocation.ZipCode);
+                        });
+                    }
                     //writer.CreateElement("SalesTermId", invoiceToCreate.BillToLocation.City);
                     //writer.CreateElement("DueDate", invoiceToCreate.DueDate.ToString());
                 });
@@ -117,13 +119,18 @@ namespace FoundOps.Core.Models.QuickBooks
             });
         }
 
+        public static string CustomerXml(string displayName)
+        {
+            return QuickBooksElementXml("Customer", (writer, builder) => writer.CreateElement("Name", displayName));
+        }
+
         /// <summary>
         /// Writes an element and it's body.
         /// </summary>
         /// <param name="writer">The writer.</param>
         /// <param name="elementName">Name of the element.</param>
         /// <param name="createBody">The action to create the element's body.</param>
-        public static void WriteElement(this XmlWriter writer, string elementName, Action createBody)
+        private static void WriteElement(this XmlWriter writer, string elementName, Action createBody)
         {
             writer.WriteStartElement(elementName);
             createBody();
@@ -138,7 +145,7 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <param name="value">The value.</param>
         /// <param name="attributeName">Name of the attribute local.</param>
         /// <param name="attributeValue">The attribute value.</param>
-        public static void CreateElement(this XmlWriter xmlWriter, string elementName, string value, string attributeName = null, string attributeValue = null)
+        private static void CreateElement(this XmlWriter xmlWriter, string elementName, string value, string attributeName = null, string attributeValue = null)
         {
             xmlWriter.WriteStartElement(elementName);
             if (attributeName != null && attributeValue != null)

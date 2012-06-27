@@ -5,20 +5,27 @@ using FoundOps.Core.Models.QuickBooks;
 namespace FoundOps.QuickBooksWF
 {
 
-    public sealed class CreateInvoiceQuickBooks : CodeActivity
+    public sealed class CheckForValidToken : CodeActivity
     {
         // Define an activity input argument of type string
         public InArgument<BusinessAccount> CurrentBusinessAccount { get; set; }
-        public InArgument<BusinessAccount> CurrentInvoice { get; set; }
+
+        public OutArgument<bool> ValidLogin { get; set; }
 
         // If your activity returns a value, derive from CodeActivity<TResult>
         // and return the value from the Execute method.
         protected override void Execute(CodeActivityContext context)
         {
+            // Obtain the runtime value of the Text input argument
             var currentBusinessAccount = CurrentBusinessAccount.Get<BusinessAccount>(context);
-            var currentInvoice = CurrentInvoice.Get<Invoice>(context);
 
-            QuickBooksTools.CreateNewInvoice(currentBusinessAccount, currentInvoice);
+            //Checks the validity of the token saved on the currentBusinessAccount
+            //Also, makes sure that the account has QuickBooksEnabled
+            var validLogin = QuickBooksTools.CheckValidityOfToken(currentBusinessAccount);
+
+            //Sets the OutArgument
+            ValidLogin.Set(context, validLogin);
+
         }
     }
 }

@@ -43,7 +43,8 @@
                         <TextBlock Text="Connected" Foreground="Green"
                                    Visibility="{Binding Path=SelectedBusinessAccount.QuickBooksAccessToken, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}"/>
                     </StackPanel>
-                    <telerik:RadHtmlPlaceholder HorizontalAlignment="Center"  x:Name="RadHtmlPlaceholder1"/>
+                    <telerik:RadHtmlPlaceholder HorizontalAlignment="Center"  x:Name="RadHtmlPlaceholder1" 
+                                                Visibility="{Binding Path=SelectedBusinessAccount.QuickBooksAccessToken, Converter={StaticResource NotVisibilityConverter}, FallbackValue=Visible}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

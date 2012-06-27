@@ -16,7 +16,9 @@ namespace FoundOps.QuickBooksWF
         {
             var coreEntitiesContainer = new CoreEntitiesContainer();
 
-            ListOfBusinessAccounts.Set(context, coreEntitiesContainer.Parties.OfType<BusinessAccount>().ToArray());
+            var businessAccounts = coreEntitiesContainer.Parties.OfType<BusinessAccount>().ToArray();
+
+            ListOfBusinessAccounts.Set(context, businessAccounts);
         }
     }
 }
