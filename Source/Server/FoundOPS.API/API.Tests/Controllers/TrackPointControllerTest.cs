@@ -27,10 +27,10 @@ namespace API.Tests.Controllers
                 var trackPoint = new TrackPoint
                 {
                     Id = Guid.NewGuid(),
-                    CompassDirection = random.Next(0, 359),
+                    //CompassDirection = random.Next(0, 359),
                     Latitude = random.Next(-90, 90),
                     Longitude = random.Next(-180, 180),
-                    LastTimeStamp = DateTime.Now.AddSeconds(10 * i),
+                    //LastTimeStamp = DateTime.Now.AddSeconds(10 * i),
                     Speed = random.Next(20, 60),
                 };
 
@@ -45,7 +45,7 @@ namespace API.Tests.Controllers
             var response = controller.PostEmployeeTrackPoint(trackPoints.ToArray(), fakeRouteId);
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            var postedTrackPoint = response.Content.ReadAsync().Result;
+            //var postedTrackPoint = response.Content.ReadAsync().Result;
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace API.Tests.Controllers
 
             var date = new DateTime(2012, 4, 18);
 
-            var response = controller.GetResourcesWithLatestPoints(new Guid("6E0B4C05-7089-44B7-A9AA-88BF83CEEC12"), date);
+            //var response = controller.GetResourcesWithLatestPoints(new Guid("6E0B4C05-7089-44B7-A9AA-88BF83CEEC12"), date);
         }
     }
 }

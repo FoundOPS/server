@@ -211,6 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\RoutesController.cs" />
     <Compile Include="Controllers\TrackPointController.cs" />
@@ -219,10 +220,18 @@
     </Compile>
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ContactInfo.cs" />
+    <Compile Include="Models\LocationField.cs" />
+    <Compile Include="Models\Option.cs" />
+    <Compile Include="Models\OptionsField.cs" />
+    <Compile Include="Models\TextBoxField.cs" />
+    <Compile Include="Models\DateTimeField.cs" />
+    <Compile Include="Models\NumericField.cs" />
+    <Compile Include="Models\Field.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\ResourceWithLastPoint.cs" />
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\RouteDestination.cs" />
+    <Compile Include="Models\Service.cs" />
     <Compile Include="Models\TrackPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TechnicianDomainService.cs" />
@@ -271,6 +280,7 @@
   <ItemGroup>
     <None Include="disableTimeout.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <Content Include="Web.base.TestRelease.config">
       <DependentUpon>Web.base.config</DependentUpon>
