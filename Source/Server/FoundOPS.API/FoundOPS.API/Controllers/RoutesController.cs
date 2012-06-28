@@ -1,10 +1,10 @@
-﻿using System.Data.Entity;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
-using Route = FoundOPS.API.Models.Route;
 using Location = FoundOPS.API.Models.Location;
+using Route = FoundOPS.API.Models.Route;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 
@@ -18,7 +18,13 @@ namespace FoundOPS.API.Controllers
     /// </summary>
     public class RoutesController : ApiController
     {
-        private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+        private readonly CoreEntitiesContainer _coreEntitiesContainer;
+
+        public RoutesController()
+        {
+            _coreEntitiesContainer = new CoreEntitiesContainer();
+            _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
+        }
 
         #region Get
 

@@ -26,7 +26,13 @@ namespace FoundOPS.API.Controllers
             public static readonly int SecondsBetweenHistoricalTrackPoints = 30;
         }
 
-        private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+        private readonly CoreEntitiesContainer _coreEntitiesContainer;
+
+        public TrackPointController()
+        {
+            _coreEntitiesContainer = new CoreEntitiesContainer();
+            _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
+        }
 
         #region GET
 
@@ -111,7 +117,7 @@ namespace FoundOPS.API.Controllers
             {
                 var routeNumber = count % numberOfRoutes;
 
-        #region Adjust Technician Location, Speed and Heading
+                #region Adjust Technician Location, Speed and Heading
 
                 foreach (var employee in route.Employees)
                 {
@@ -146,7 +152,7 @@ namespace FoundOPS.API.Controllers
                     employee.LastSource = random.Next(0, 1) == 0 ? "iPhone" : "Android";
                 }
 
-        #endregion
+                #endregion
 
                 count++;
             }

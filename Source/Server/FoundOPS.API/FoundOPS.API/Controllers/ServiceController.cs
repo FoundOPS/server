@@ -16,7 +16,13 @@ namespace FoundOPS.API.Controllers
 #endif
     public class ServiceController : ApiController
     {
-        private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+        private readonly CoreEntitiesContainer _coreEntitiesContainer;
+
+        public ServiceController()
+        {
+            _coreEntitiesContainer = new CoreEntitiesContainer();
+            _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
+        }
 
         #region GET
 
