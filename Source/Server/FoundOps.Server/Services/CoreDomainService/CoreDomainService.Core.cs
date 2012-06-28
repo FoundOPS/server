@@ -171,12 +171,11 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return contactInfoLabels.OrderBy(s => s);
 
             //Add all labels current user can administer that are the same account type. (Business Labels might be different than User Labels)
-            var accountsCurrentUserCanAdminister = AuthenticationLogic.AdministratorRoles(ObjectContext.RolesCurrentUserHasAccessTo()).Select(r => r.OwnerParty);
+            var accountsCurrentUserCanAdminister = ObjectContext.AdminRolesCurrentUserHasAccessTo().Select(r => r.OwnerParty);
 
             MethodInfo method = typeof(Queryable).GetMethod("OfType");
             MethodInfo generic = method.MakeGenericMethod(new Type[] { currentParty.GetType() });
-            var accountsCurrentUserCanAdministerOfSameType = (IEnumerable<Party>)generic.Invoke
-                  (null, new object[] { accountsCurrentUserCanAdminister });
+            var accountsCurrentUserCanAdministerOfSameType = (IEnumerable<Party>)generic.Invoke(null, new object[] { accountsCurrentUserCanAdminister });
 
             //foreach (var accountCurrentUserCanAdministerOfSameType in accountsCurrentUserCanAdministerOfSameType)
             //{
@@ -298,12 +297,10 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public Party PartyToAdministerForRole(Guid roleId)
         {
-            var role =
-                AuthenticationLogic.AdministratorRoles(this.ObjectContext.RolesCurrentUserHasAccessTo()).FirstOrDefault(r => r.Id == roleId);
+            var ownerParty = ObjectContext.AdminRolesCurrentUserHasAccessTo().Where(r => r.Id == roleId)
+                .Select(r => r.OwnerParty).FirstOrDefault();
 
-            var ownerParty = role.OwnerParty;
-            //ownerParty.ContactInfoSet.Load();
-            return role.OwnerParty;
+            return ownerParty;
         }
 
         public IQueryable<Party> GetPartys()
@@ -406,7 +403,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IEnumerable<Role> GetRoles()
         {
-            var availableRoles = this.ObjectContext.RolesCurrentUserHasAccessTo();
+            var availableRoles = this.ObjectContext.AdminRolesCurrentUserHasAccessTo();
 
             return availableRoles;
         }
@@ -423,24 +420,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             }
         }
 
-        private void DeleteRole(Role ownedRole)
-        {
-            if ((ownedRole.EntityState == EntityState.Detached))
-                this.ObjectContext.Roles.Attach(ownedRole);
-
-            //Load and remove the blocks
-            ownedRole.Blocks.Load();
-            foreach (var block in ownedRole.Blocks.ToArray())
-                ownedRole.Blocks.Remove(block);
-
-            //Load and remove the member parties
-            ownedRole.MemberParties.Load();
-            foreach (var member in ownedRole.MemberParties.ToArray())
-                ownedRole.MemberParties.Remove(member);
-
-            this.ObjectContext.Roles.DeleteObject(ownedRole);
-        }
-
         #endregion
 
         #region User Accounts
@@ -452,7 +431,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         public UserAccount CurrentUserAccount()
         {
-            var currentUserAccount = ((ObjectQuery<UserAccount>)AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext))
+            var currentUserAccount = AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext)
                  .Include(ua => ua.RoleMembership).Include("RoleMembership.OwnerParty").Include("RoleMembership.Blocks")
                  .Include(ua => ua.OwnedRoles).Include("OwnedRoles.Blocks").Include(ua => ua.LinkedEmployees)
                  .FirstOrDefault();

@@ -73,10 +73,10 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             get
             {
-                if (SelectedEntity == null || SelectedEntity.FirstOwnedRole == null)
+                if (SelectedEntity == null || SelectedEntity.AdministratorRole == null)
                     return null;
 
-                return SelectedEntity.FirstOwnedRole.MemberParties;
+                return SelectedEntity.AdministratorRole.MemberParties;
             }
         }
 
@@ -236,17 +236,17 @@ namespace FoundOps.SLClient.UI.ViewModels
             AddNewItemUserAccount = name =>
             {
                 var newUserAccount = VM.UserAccounts.CreateNewItem(name);
-                this.SelectedEntity.FirstOwnedRole.MemberParties.Add(newUserAccount);
+                this.SelectedEntity.AdministratorRole.MemberParties.Add(newUserAccount);
                 return (UserAccount)newUserAccount;
             };
 
-            AddExistingItemUserAccount = existingItem => SelectedEntity.FirstOwnedRole.MemberParties.Add((UserAccount)existingItem);
+            AddExistingItemUserAccount = existingItem => SelectedEntity.AdministratorRole.MemberParties.Add((UserAccount)existingItem);
 
             RemoveItemUserAccount = () =>
             {
                 var selectedUserAccount = VM.UserAccounts.SelectedEntity;
                 if (selectedUserAccount != null)
-                    this.SelectedEntity.FirstOwnedRole.MemberParties.Remove(selectedUserAccount);
+                    this.SelectedEntity.AdministratorRole.MemberParties.Remove(selectedUserAccount);
 
                 return (UserAccount)selectedUserAccount;
             };
@@ -282,15 +282,22 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             var newBusinessAccount = new BusinessAccount();
 
-            //Add default role
-            var role = new Role { Id = Guid.NewGuid(), Name = "Administrator", OwnerParty = newBusinessAccount, RoleType = RoleType.Administrator };
-
-            //Add the manager and business administrator blocks to the role
-            foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds))
-                role.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
-
             //Add the entity to the EntitySet so it is tracked by the DomainContext
             this.DomainContext.Parties.Add(newBusinessAccount);
+
+            //Add administrator role
+            var administratorRole = new Role { Id = Guid.NewGuid(), Name = "Administrator", OwnerParty = newBusinessAccount, RoleType = RoleType.Administrator };
+            
+            //Add the manager, business administrator, and HTML blocks to the administrator role
+            foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds).Union(BlockConstants.HtmlBlockIds))
+                administratorRole.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
+
+            //Add mobile role
+            var mobileRole = new Role { Id = Guid.NewGuid(), Name = "Mobile", OwnerParty = newBusinessAccount, RoleType = RoleType.Mobile };
+
+            //Add the mobile blocks to the mobile only role
+            foreach (var blockId in BlockConstants.MobileBlockIds)
+                mobileRole.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
             return newBusinessAccount;
         }

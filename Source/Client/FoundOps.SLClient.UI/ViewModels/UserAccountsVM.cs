@@ -1,14 +1,20 @@
-﻿using FoundOps.Common.Silverlight.Tools;
+﻿using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
+using GalaSoft.MvvmLight.Command;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Controls;
+using ReactiveUI;
+using ReactiveUI.Xaml;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -45,6 +51,25 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// A property for whether the current user is mobile only for the business account context.
+        /// </summary>
+        public bool SelectedUserIsMobileOnly
+        {
+            get
+            {
+                var currentBusinessAccountContext = ContextManager.GetContext<BusinessAccount>();
+                return currentBusinessAccountContext != null &&
+                    currentBusinessAccountContext.MobileRole != null && currentBusinessAccountContext.MobileRole.MemberParties.Contains(SelectedEntity)
+                    && !currentBusinessAccountContext.AdministratorRole.MemberParties.Contains(SelectedEntity);
+            }
+            // Only from the admin console. This will remove the user from the administrator role, and add them to the mobile only role.
+            set
+            {
+                SetUserRole(value);
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -58,6 +83,15 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             SetupDataLoading();
             SetupUserAccountAddToDeleteFromSource();
+
+            #region Setup Mobile only command
+
+            //Whenever the SelectedEntity changes or reject changes happens update SelectedUserIsMobileOnly
+            SelectedEntityObservable.AsGeneric().Merge(DomainContext.ChangesRejectedObservable.AsGeneric())
+                .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
+                .Subscribe(_ => this.RaisePropertyChanged("SelectedUserIsMobileOnly"));
+
+            #endregion
 
             #region TODO Update the QCV when the BusinessAccount context OwnedRoles changes and the BusinessAccount context OwnedRoles' MemberParties changes
 
@@ -102,7 +136,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
-
         private void SetupDataLoading()
         {
             SetupContextDataLoading(roleId =>
@@ -143,6 +176,33 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             ManuallyUpdateSuggestions = autoCompleteBox =>
               SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchUserAccountsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
+        }
+
+        /// <summary>
+        /// Set the user role.
+        /// </summary>
+        /// <param name="mobileOnly">If true add this use to mobile only. Otherwise make them an admin.</param>
+        private void SetUserRole(bool mobileOnly)
+        {
+            if (SelectedEntity == null)
+                return;
+
+            var currentBusinessAccount = ContextManager.GetContext<BusinessAccount>();
+            if (currentBusinessAccount == null)
+                return;
+
+            if (mobileOnly)
+            {
+                currentBusinessAccount.MobileRole.MemberParties.Add(SelectedEntity);
+                currentBusinessAccount.AdministratorRole.MemberParties.Remove(SelectedEntity);
+            }
+            else
+            {
+                currentBusinessAccount.MobileRole.MemberParties.Remove(SelectedEntity);
+                currentBusinessAccount.AdministratorRole.MemberParties.Add(SelectedEntity);
+            }
+
+            this.RaisePropertyChanged("SelectedUserIsMobileOnly");
         }
 
         #endregion

@@ -9,12 +9,14 @@
              xmlns:ServiceTemplate="clr-namespace:FoundOps.SLClient.UI.Controls.Services.ServiceTemplate"
              xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Tools="clr-namespace:FoundOps.SLClient.UI.Tools"
-             xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="800" ViewModelLocator:ViewModelLocator.ViewModel="ServiceTemplatesVM">
+             xmlns:CoreEntities="clr-namespace:FoundOps.SLClient.UI.ViewModels"
+             xmlns:Converters="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="800" ViewModelLocator:ViewModelLocator.ViewModel="ServiceTemplatesVM">
     <UserControl.Resources>
         <DataTemplate x:Key="AddOptionalFieldItemTemplate">
             <TextBlock Text="{Binding}"/>
         </DataTemplate>
-        <ServiceTemplate:FoundOPSVisibilityConverter x:Key="FoundOPSVisibilityConverter" />
+        <Converters:FoundOPSVisibilityConverter x:Key="FoundOPSVisibilityConverter" />
     </UserControl.Resources>
     <StackPanel Grid.Column="2" x:Name="LayoutRoot" Background="White">
         <toolkit:Expander Style="{StaticResource ExpanderStyle}" BorderBrush="{StaticResource ServiceBrush}" Margin="5" IsExpanded="true">

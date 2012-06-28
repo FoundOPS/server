@@ -1,12 +1,13 @@
+using FoundOps.Core.Models;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 using System;
+using System.Data.Entity;
 using System.Web;
 using System.Text;
 using System.Linq;
 using System.Data.Objects;
 using System.Security.Authentication;
-using FoundOps.Core.Models;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Models.CoreEntities.DesignData;
 
 namespace FoundOps.Core.Tools
 {
@@ -38,28 +39,15 @@ namespace FoundOps.Core.Tools
         #region Roles
 
         /// <summary>
-        /// Returns the Administrator roles of rolesToFilter
-        /// </summary>
-        /// <param name='rolesToFilter'>The roles that you want to filter</param>
-        public static IQueryable<Role> AdministratorRoles(IQueryable<Role> rolesToFilter)
-        {
-            //TODO: Setup better Administrator role logic, when roles develop
-            //TODO: Add logic for User administrators
-            var filteredRoles = rolesToFilter.Where(r => r.RoleTypeInt == (int)RoleType.Administrator);
-
-            return filteredRoles;
-        }
-
-        /// <summary>
         /// Gets the roles the current user has access to
         /// NOTE: Role includes MemberParties, and OwnerParty
         /// </summary>
         /// <exception cref="AuthenticationException">Thrown if user is not logged in</exception>
-        public static IQueryable<Role> RolesCurrentUserHasAccessTo(this CoreEntitiesContainer coreEntitiesContainer)
+        public static IQueryable<Role> AdminRolesCurrentUserHasAccessTo(this CoreEntitiesContainer coreEntitiesContainer)
         {
             var roles = (ObjectQuery<Role>) //cast as an ObjectQuery to defer Blocks and OwnerParty include until last minute
                         from user in CurrentUserAccountQueryable(coreEntitiesContainer) //there will only be one
-                        from role in coreEntitiesContainer.Roles.Include("OwnerParty").Include("MemberParties")
+                        from role in coreEntitiesContainer.Roles.Where(r => r.RoleTypeInt == (int)RoleType.Administrator).Include("OwnerParty").Include("MemberParties")
                         where role.OwnerPartyId == user.Id || role.MemberParties.Any(a => a.Id == user.Id)
                         select role;
 
@@ -78,7 +66,7 @@ namespace FoundOps.Core.Tools
         /// <returns></returns>
         public static IQueryable<Party> OwnerPartyOfRoleQueryable(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
         {
-            var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer)
+            var ownerParty = from role in AdminRolesCurrentUserHasAccessTo(coreEntitiesContainer)
                              where role.Id == roleId
                              select role.OwnerParty;
 
@@ -107,7 +95,7 @@ namespace FoundOps.Core.Tools
         /// <returns></returns>
         public static IQueryable<BusinessAccount> BusinessAccountOwnerOfRoleQueryable(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
         {
-            var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer)
+            var ownerParty = from role in AdminRolesCurrentUserHasAccessTo(coreEntitiesContainer)
                              where role.Id == roleId
                              select role.OwnerParty;
 
@@ -133,7 +121,7 @@ namespace FoundOps.Core.Tools
         /// <returns></returns>
         public static IQueryable<BusinessAccount> BusinessAccountsQueryable(this CoreEntitiesContainer coreEntitiesContainer)
         {
-            return (from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer)
+            return (from role in AdminRolesCurrentUserHasAccessTo(coreEntitiesContainer)
                     select role.OwnerParty).OfType<BusinessAccount>();
         }
 
@@ -146,29 +134,6 @@ namespace FoundOps.Core.Tools
         #region Access & Administration methods
 
         /// <summary>
-        /// Returns if the current user can access the party.
-        /// </summary>
-        /// <param name="coreEntitiesContainer">The core entities container.</param>
-        /// <param name="partyId">The party id.</param>
-        /// <returns></returns>
-        public static bool CurrentUserCanAccessParty(this CoreEntitiesContainer coreEntitiesContainer, Guid partyId)
-        {
-            //Return if the current user can administer the party or
-            //if the current user is a FoundOPS admin (then they should have access to administer the party)
-            return RolesCurrentUserHasAccessTo(coreEntitiesContainer).Select(r => r.OwnerParty).Any(p => p.Id == partyId || p.Id == BusinessAccountsConstants.FoundOpsId);
-        }
-
-        /// <summary>
-        /// Returns the parties the current user can administer.
-        /// </summary>
-        /// <param name="coreEntitiesContainer">The container.</param>
-        /// <returns></returns>
-        public static IQueryable<Party> PartiesCurrentUserCanAdminister(this CoreEntitiesContainer coreEntitiesContainer)
-        {
-            return AdministratorRoles(RolesCurrentUserHasAccessTo(coreEntitiesContainer)).Select(r => r.OwnerParty);
-        }
-
-        /// <summary>
         /// Returns if the current user can administer the party.
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
@@ -178,7 +143,7 @@ namespace FoundOps.Core.Tools
         {
             //Return if the current user can administer the party or
             //if the current user is a FoundOPS admin (then they should have access to administer the party)
-            return PartiesCurrentUserCanAdminister(coreEntitiesContainer).Any(p => p.Id == partyId || p.Id == BusinessAccountsConstants.FoundOpsId);
+            return AdminRolesCurrentUserHasAccessTo(coreEntitiesContainer).Select(r => r.OwnerParty).Any(p => p.Id == partyId || p.Id == BusinessAccountsConstants.FoundOpsId);
         }
 
         /// <summary>
@@ -188,7 +153,7 @@ namespace FoundOps.Core.Tools
         /// <returns></returns>
         public static bool CurrentUserCanAdministerFoundOPS(this CoreEntitiesContainer coreEntitiesContainer)
         {
-            return PartiesCurrentUserCanAdminister(coreEntitiesContainer).Any(p => p.Id == BusinessAccountsConstants.FoundOpsId);
+            return AdminRolesCurrentUserHasAccessTo(coreEntitiesContainer).Select(r => r.OwnerParty).Any(p => p.Id == BusinessAccountsConstants.FoundOpsId);
         }
 
         #endregion

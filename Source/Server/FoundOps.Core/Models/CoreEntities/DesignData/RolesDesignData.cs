@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
@@ -13,9 +14,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         public Role ABCouriersAdministratorRole { get; private set; }
         public Role OrensKosherSteakhouseAdministratorRole { get; private set; }
 
-        public List<Role> DesignBusinessAccountRoles { get; private set; }
-        public List<Role> DesignUserAccountRoles { get; private set; }
-
         public RolesDesignData()
             : this(new BusinessAccountsDesignData(), new UserAccountsDesignData())
         {
@@ -25,9 +23,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         {
             _businessAccountsDesignData = businessAccountsDesignData;
             _userAccountsDesignData = userAccountsDesignData;
-
-            DesignBusinessAccountRoles = new List<Role>();
-            DesignUserAccountRoles = new List<Role>();
 
             InitializeDefaultRoles();
 
@@ -80,38 +75,46 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 FoundOpsAdministratorRole.Blocks.Add(adminConsoleBlock);
             }
 
-            //Setup ServiceProvider's default admin role
-
+            //Setup ServiceProvider's default admin role, and mobile role
             foreach (var serviceProvider in _businessAccountsDesignData.DesignServiceProviders)
             {
-                var defaultServiceProviderRole = SetupServiceProviderAdministratorRole(serviceProvider);
-                DesignBusinessAccountRoles.Add(defaultServiceProviderRole);
+                //Setup the admin role
+                var serviceProviderAdminRole = SetupServiceProviderRole(serviceProvider, RoleType.Administrator);
 
                 if (serviceProvider == _businessAccountsDesignData.GotGrease)
-                    GotGreaseAdministratorRole = defaultServiceProviderRole;
+                    GotGreaseAdministratorRole = serviceProviderAdminRole;
 
                 if (serviceProvider == _businessAccountsDesignData.ABCouriers)
-                    ABCouriersAdministratorRole = defaultServiceProviderRole;
+                    ABCouriersAdministratorRole = serviceProviderAdminRole;
 
                 if (serviceProvider == _businessAccountsDesignData.GenericOilCollector)
-                    OrensKosherSteakhouseAdministratorRole = defaultServiceProviderRole;
-            }
+                    OrensKosherSteakhouseAdministratorRole = serviceProviderAdminRole;
 
+                //Setup the mobile role
+                SetupServiceProviderRole(serviceProvider, RoleType.Mobile);
+            }
 
             //Setup UserAccounts' default UserAccountRole
             foreach (var userAccount in _userAccountsDesignData.DesignUserAccounts)
-                DesignUserAccountRoles.Add(SetupDefaultUserAccountRole(userAccount, BlocksData.UserAccountBlocks));
+                SetupDefaultUserAccountRole(userAccount, BlocksData.UserAccountBlocks);
         }
 
-        public static Role SetupServiceProviderAdministratorRole(BusinessAccount ownerParty)
+        public static Role SetupServiceProviderRole(BusinessAccount ownerParty, RoleType roleType)
         {
-            var role = new Role { Name = "Administrator", OwnerParty = ownerParty, RoleType = RoleType.Administrator };
+            var role = new Role { OwnerParty = ownerParty, RoleType = roleType };
 
-            foreach (var block in BlocksData.ManagerBlocks)
-                role.Blocks.Add(block);
-
-            foreach (var block in BlocksData.BusinessAdministratorBlocks)
-                role.Blocks.Add(block);
+            if (roleType == RoleType.Administrator)
+            {
+                role.Name = "Administrator";
+                foreach (var block in BlocksData.ManagerBlocks.Union(BlocksData.BusinessAdministratorBlocks).Union(BlocksData.HTMLBlocks))
+                    role.Blocks.Add(block);
+            }
+            else if(roleType == RoleType.Mobile)
+            {
+                role.Name = "Mobile";
+                foreach (var block in BlocksData.MobileBlocks)
+                    role.Blocks.Add(block);
+            }
 
             return role;
         }

@@ -6,11 +6,12 @@
     xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
              xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
+             xmlns:Converters1="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="FieldsVM">
     <UserControl.Resources>
         <Converters:FieldToTypeStringConverter x:Key="FieldToTypeStringConverter"/>
         <Converters:FieldDefaultValueStringConverter x:Key="FieldDefaultValueStringConverter"/>
-        <CustomFields:FoundOPSBoolConverter x:Key="FoundOPSBoolConverter" />
+        <Converters1:FoundOPSBoolConverter x:Key="FoundOPSBoolConverter" />
         <!--Only enable the detail templates if the current business account context is FoundOPS-->
         <DataTemplate x:Key="CheckBoxTemplate">
             <CustomFields:CheckBoxDefine OptionsField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />

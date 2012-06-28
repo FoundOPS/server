@@ -51,29 +51,4 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
 
         #endregion
     }
-
-    /// <summary>
-    /// This will return true if the current BusinessAccount is FoundOPS.
-    /// </summary>
-    public class FoundOPSBoolConverter : IValueConverter
-    {
-        #region Implementation of IValueConverter
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var serviceProvider = value as BusinessAccount;
-
-            if (serviceProvider == null)
-                return false;
-
-            return serviceProvider.Id == BusinessAccountsConstants.FoundOpsId;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-    }
 }

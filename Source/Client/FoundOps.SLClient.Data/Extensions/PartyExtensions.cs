@@ -60,9 +60,14 @@ namespace FoundOps.Core.Models.CoreEntities
         #endregion
 
         /// <summary>
-        /// Returns the first owned role.
+        /// Returns the administrator role.
         /// </summary>
-        public Role FirstOwnedRole { get { return this.OwnedRoles.FirstOrDefault(); } }
+        public Role AdministratorRole { get { return this.OwnedRoles.FirstOrDefault(r=>r.RoleType == RoleType.Administrator); } }
+
+        /// <summary>
+        /// Returns the mobile role.
+        /// </summary>
+        public Role MobileRole { get { return this.OwnedRoles.FirstOrDefault(r => r.RoleType == RoleType.Mobile); } }
 
         #endregion
 

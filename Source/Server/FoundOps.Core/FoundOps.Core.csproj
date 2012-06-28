@@ -47,6 +47,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\DevDefined.OAuth.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\FoundOPS.API\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Kent.Boogaart.KBCsv">
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
     </Reference>
