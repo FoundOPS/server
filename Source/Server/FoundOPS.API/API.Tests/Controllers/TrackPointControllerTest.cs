@@ -42,7 +42,7 @@ namespace API.Tests.Controllers
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
             var controller = new TrackPointController { Request = request };
 
-            var response = controller.PostEmployeeTrackPoint(trackPoints.ToArray(), fakeRouteId);
+            var response = controller.PostEmployeeTrackPoint(trackPoints.ToArray());
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             //var postedTrackPoint = response.Content.ReadAsync().Result;
