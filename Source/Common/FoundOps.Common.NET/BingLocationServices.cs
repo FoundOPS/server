@@ -26,6 +26,10 @@ namespace FoundOps.Common.NET
 
         public static IEnumerable<GeocoderResult> TryGeocode(Address addressToGeocode)
         {
+            //Do not take addresses without an AddressLineOne, the result will be high confidence but not correct
+            if (string.IsNullOrEmpty(addressToGeocode.AddressLineOne))
+                return new List<GeocoderResult>();
+            
             var parameters = new[]
                 {
                     addressToGeocode.State,
