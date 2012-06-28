@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
@@ -72,35 +73,24 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         {
             InitializeComponent();
 
-            //Make sure the 2D barcodes are loaded on the routes locations
-            //Do this by updating whenever:
-            //a) 2D barcode setting is set to true
-            //b) the selected route changes and the Is2DBarcodeVisible is true
-            VM.Routes.SelectedEntityObservable.AsGeneric()
-            .Merge(Observable2.FromPropertyChangedPattern(Settings, x => x.Is2DBarcodeVisible).DistinctUntilChanged().AsGeneric())
-            .Throttle(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(_ =>
-            {
-                if (VM.Routes.SelectedEntity == null || !Settings.Is2DBarcodeVisible)
-                    return;
-
-                foreach (var location in VM.Routes.SelectedEntity.RouteLocations)
-                    location.UpdateBarcode();
-            });
-
-            //When the data is loaded, update the manifest
-            var detailsLoadedObservable = VM.Routes.SelectedEntityObservable.WhereNotNull().SelectLatest(se => Observable2.FromPropertyChangedPattern(se, x => x.ManifestDetailsLoaded)).DistinctUntilChanged();
-
             //Update the Manifest when
             //a) the RouteManifestSettings properties change (if the details are loaded)
+            var settingsChanged = Settings.FromAnyPropertyChanged()
+                //Throttle, if a setting is changed while the document is updating it causes a problem
+                .Throttle(TimeSpan.FromSeconds(.75)).AsGeneric(); 
+           
             //b) the selected entity changed (if the details are loaded)
+            var selectedEntityChanged =  VM.Routes.SelectedEntityObservable.DistinctUntilChanged().AsGeneric();
+            
             //c) the details are loaded
-            //d) barcode images are loaded
-            Settings.FromAnyPropertyChanged().Throttle(TimeSpan.FromSeconds(.75)).AsGeneric() //If a setting is changed while the document is updating, it causes a problem
-            .Merge(VM.Routes.SelectedEntityObservable.DistinctUntilChanged().AsGeneric())
-            .Merge(detailsLoadedObservable)
-            .Merge(VM.Routes.SelectedEntityObservable.WhereNotNull().SelectLatest(r =>
-                    r.RouteLocations.Select(rl => Observable2.FromPropertyChangedPattern(rl, x => x.BarcodeLoading).Where(loading => !loading)).Merge()).Throttle(TimeSpan.FromMilliseconds(100)))
-            .ObserveOnDispatcher().Subscribe(_updateManifest);
+            var detailsLoadedObservable = VM.Routes.SelectedEntityObservable.WhereNotNull()
+                .SelectLatest(se => Observable2.FromPropertyChangedPattern(se, x => x.ManifestDetailsLoaded)).DistinctUntilChanged();
+
+            settingsChanged.Merge(selectedEntityChanged).Merge(detailsLoadedObservable).Subscribe(_updateManifest);
+
+            selectedEntityChanged.Subscribe(_ => Debug.WriteLine("Selected Entity Changed"));
+            detailsLoadedObservable.Subscribe(_ => Debug.WriteLine("Details Loaded"));
+            settingsChanged.Subscribe(_ => Debug.WriteLine("Settings Changed"));
 
             //Update the manifest when this is opened
             Loaded += (s, e) =>
@@ -179,15 +169,19 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 var stream = new MemoryStream();
                 var provider = new PngFormatProvider();
                 provider.Export(radImage, stream);
+
+                //Remove the uiElements from the stackpanel so the user does not see it
+                BusyContentStackPanel.Children.Clear();
+
                 return new ImageInline(stream);
             }
             catch
             {
                 imageInline = new ImageInline();
-            }
 
-            //Remove the uiElements from the stackpanel so the user does not see it
-            BusyContentStackPanel.Children.Remove(uiElement);
+                //Remove the uiElements from the stackpanel so the user does not see it
+                BusyContentStackPanel.Children.Clear();
+            }
 
             return imageInline;
         }
@@ -276,10 +270,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             if (!VM.Routes.ManifestOpen || _currentlyPrinting || VM.Routes.SelectedEntity == null || !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
                 return;
 
-            //If the manifest is currently updating or the 2D Barcode is to be displayed and they are still loading
-            //Retry in a second
-            if (_updatingDocument ||
-                (VM.Routes.RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible && VM.Routes.SelectedEntity.RouteLocations.Any(rl => rl.BarcodeLoading)))
+            //If the manifest is currently updating retry in a second
+            if (_updatingDocument)
             {
                 if (_retry != null)
                     _retry.Dispose();
@@ -289,12 +281,12 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
             //Disable printing and saving
             CanPrintOrSave = false;
+
             //Open busy indicator, used to add things to visual tree
             ManifestBusyIndicator.IsBusy = true;
 
             //Wait for the busy indicator to open
-            Observable.Interval(TimeSpan.FromMilliseconds(500)).Take(1).ObserveOnDispatcher()
-            .Subscribe(_ =>
+            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(500), () =>
             {
                 _updatingDocument = true;
 

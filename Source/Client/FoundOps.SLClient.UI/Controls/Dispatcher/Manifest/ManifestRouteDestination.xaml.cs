@@ -1,6 +1,4 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
-using System.IO;
-using System.Windows.Media.Imaging;
 using System.Windows;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
@@ -37,14 +35,10 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             if (c == null) return;
             var routeDestination = e.NewValue as RouteDestination;
 
-            //If the barcode image is null hide the barcode image
-            if (routeDestination == null || routeDestination.Location == null || routeDestination.Location.BarcodeImage == null)
-            {
+            //If the location's latitude/longitude is null hide the barcode image
+            if (routeDestination == null || routeDestination.Location == null 
+                || routeDestination.Location.Latitude == null || routeDestination.Location.Longitude == null)
                 c.BarcodeImage.Visibility = Visibility.Collapsed;
-                return;
-            }
-
-            c.SetImage(routeDestination.Location.BarcodeImage);
         }
 
         #endregion
@@ -55,16 +49,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         public ManifestRouteDestination()
         {
             InitializeComponent();
-        }
-
-        /// <summary>
-        /// Sets the barcode image
-        /// </summary>
-        private void SetImage(byte[] imageBytes)
-        {
-            var image = new BitmapImage();
-            image.SetSource(new MemoryStream(imageBytes));
-            BarcodeImage.Source = image;
         }
     }
 }
