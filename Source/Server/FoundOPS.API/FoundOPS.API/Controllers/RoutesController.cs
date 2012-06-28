@@ -56,7 +56,7 @@ namespace FoundOPS.API.Controllers
             {
                 loadedRoutes = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId.Value).Include(ba => ba.Routes)
                     .SelectMany(ba => ba.Routes).Where(r => r.Date == date)
-                    .Include("Routes.RouteDestinations").Include("Routes.RouteDestinations.Client").Include("Routes.RouteDestinations.Location");
+                    .Include("RouteDestinations").Include("RouteDestinations.Client").Include("RouteDestinations.Location");
             }
             else
             {
@@ -65,9 +65,9 @@ namespace FoundOPS.API.Controllers
                 loadedRoutes = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer)
                     .SelectMany(cu => cu.LinkedEmployees)
                     .SelectMany(e => e.Routes).Where(r => r.Date == date)
-                    .Include("Routes.RouteDestinations").Include("Route.RouteDestinations.RouteTasks")
-                    .Include("Routes.RouteDestinations.Client").Include("Routes.RouteDestinations.Client.ContactInfoSet")
-                    .Include("Routes.RouteDestinations.Location").Include("Routes.RouteDestinations.Location.ContactInfoSet");
+                    .Include("RouteDestinations").Include("RouteDestinations.RouteTasks")
+                    .Include("RouteDestinations.Client").Include("RouteDestinations.Client.ContactInfoSet")
+                    .Include("RouteDestinations.Location").Include("RouteDestinations.Location.ContactInfoSet");
             }
 
             //Converts the FoundOPS model Routes to the API model Routes

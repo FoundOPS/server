@@ -6,19 +6,10 @@ namespace FoundOPS.API.Models
 {
     public class Route
     {
-        /// <summary>
-        /// The Id of the Route
-        /// </summary>
         public Guid Id { get; set; }
 
-        /// <summary>
-        /// The name of the Route
-        /// </summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// The list of RouteDestinations associated with this Route
-        /// </summary>
         public List<RouteDestination> RouteDestinations { get; set; }
 
         public Route()
