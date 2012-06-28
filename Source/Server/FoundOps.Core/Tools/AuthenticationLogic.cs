@@ -1,8 +1,8 @@
+using System.Data.Entity;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
 using System;
-using System.Data.Entity;
 using System.Web;
 using System.Text;
 using System.Linq;
@@ -45,11 +45,10 @@ namespace FoundOps.Core.Tools
         /// <exception cref="AuthenticationException">Thrown if user is not logged in</exception>
         public static IQueryable<Role> AdminRolesCurrentUserHasAccessTo(this CoreEntitiesContainer coreEntitiesContainer)
         {
-            var roles = (ObjectQuery<Role>) //cast as an ObjectQuery to defer Blocks and OwnerParty include until last minute
-                        from user in CurrentUserAccountQueryable(coreEntitiesContainer) //there will only be one
-                        from role in coreEntitiesContainer.Roles.Where(r => r.RoleTypeInt == (int)RoleType.Administrator).Include("OwnerParty").Include("MemberParties")
-                        where role.OwnerPartyId == user.Id || role.MemberParties.Any(a => a.Id == user.Id)
-                        select role;
+            var roles = (from user in CurrentUserAccountQueryable(coreEntitiesContainer) //there will only be one
+                         from role in coreEntitiesContainer.Roles.Where(r => r.RoleTypeInt == (int)RoleType.Administrator)
+                         where role.OwnerPartyId == user.Id || role.MemberParties.Any(a => a.Id == user.Id)
+                         select role).Include(r => r.OwnerParty).Include(r => r.MemberParties);
 
             return roles;
         }
