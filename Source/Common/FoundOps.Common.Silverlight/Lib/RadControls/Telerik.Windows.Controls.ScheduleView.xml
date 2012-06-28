@@ -1528,6 +1528,11 @@
             Identifies the SnapAppointments dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.ScheduleViewBase.EnableScrollDuringDragProperty">
+            <summary>
+            Identifies the EnableScrollDuringDrag dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.ScheduleViewBase.HorizontalSmallChangeProperty">
             <summary>
             Identifies the HorizontalSmallChange dependency property.
@@ -2050,6 +2055,14 @@
             Occurs when appointment selection is changed.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.ScheduleViewBase.TimeZone">
+            <summary>
+            Gets or sets the time zone.
+            </summary>
+            <value>
+            The time zone.
+            </value>
+        </member>
         <member name="P:Telerik.Windows.Controls.ScheduleViewBase.RetainScrollPosition">
             <summary>
             Gets or sets RetainScrollPosition.
@@ -2266,6 +2279,11 @@
         <member name="P:Telerik.Windows.Controls.ScheduleViewBase.SnapAppointments">
             <summary>
             Gets or sets the value specifying whether the appointments will snap to the time ruler ticks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.ScheduleViewBase.EnableScrollDuringDrag">
+            <summary>
+            Gets or sets the value specifying whether the scrolling during drag is enabled.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.ScheduleViewBase.UseSnapshotDragCue">
@@ -2735,6 +2753,12 @@
             <param name="value">The value.</param>
             <returns></returns>
             <exception cref="T:System.ArgumentException">Parameter.</exception>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DragDropHelper.ScrollVertical(Telerik.Windows.Controls.RadScheduleView,Telerik.Windows.Controls.ScheduleView.Slot,System.Windows.Size)">
+            <summary>
+            The method is nullable, as when NULL no action should be taken.
+            TO-DO: Find a way not to send the whole ScheduleView as parameter of the methods for scrolling.
+            </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.ScheduleView.IRangeData">
             <summary>
@@ -3648,6 +3672,14 @@
             Describes the grouping of items using a date range as the criteria.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.DateGroupDescription.CreateGroupNames(System.DateTime,System.DateTime,System.Func{System.Object,System.Boolean},System.TimeZoneInfo)">
+            <summary>
+            Generates groups based on the given date range and filter.
+            </summary>
+            <param name="start">The start date. This is the first group in the group names.</param>
+            <param name="end">The end date. This is the last group in the group names.</param>
+            <param name="filter">The filter function that could filter date generation.</param>
+        </member>
         <member name="M:Telerik.Windows.Controls.DateGroupDescription.CreateGroupNames(System.DateTime,System.DateTime,System.Func{System.Object,System.Boolean})">
             <summary>
             Generates groups based on the given date range and filter.
@@ -3676,6 +3708,14 @@
             <summary>
             Gets the duration of the group descriptor.
             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DateGroupDescription.TimeZone">
+            <summary>
+            Gets or sets the time zone.
+            </summary>
+            <value>
+            The time zone.
+            </value>
         </member>
         <member name="T:Telerik.Windows.Controls.ScheduleView.TimeZoneGroupDescription">
             <summary>
@@ -6039,22 +6079,27 @@
             Identifies the Appointment dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.AppointmentItemProxy.GroupResourcesProperty">
+            <summary>
+            Identifies the GroupResources dependency property.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.AppointmentItemProxy.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.AppointmentItemProxy"/> class.
             </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.AppointmentItemProxy.CopyFrom(Telerik.Windows.Controls.ScheduleView.Occurrence)">
-            <summary>
-            Copies all properties from <paramref name="occurrence"/> to this proxy.
-            </summary>
-            <param name="occurrence">The <see cref="T:Telerik.Windows.Controls.ScheduleView.Occurrence"/> which properties are copied.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.AppointmentItemProxy.ToString">
             <summary>
             Returns a string that represents the current appointment proxy object.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.AppointmentItemProxy.CopyFrom(Telerik.Windows.Controls.AppointmentsHelper.OccurrenceInfo)">
+            <summary>
+            Copies all properties from <paramref name="occurrenceInfo"/> to this proxy.
+            </summary>
+            <param name="occurrenceInfo">The <see cref="T:Telerik.Windows.Controls.AppointmentsHelper.OccurrenceInfo"/> which properties are copied.</param>
         </member>
         <member name="P:Telerik.Windows.Controls.AppointmentItemProxy.RecurrenceState">
             <summary>
@@ -6112,6 +6157,11 @@
         <member name="P:Telerik.Windows.Controls.AppointmentItemProxy.Appointment">
             <summary>
             Gets or sets the real Appointment that will update this proxy.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.AppointmentItemProxy.GroupResources">
+            <summary>
+            Gets or sets the resources of the group, that owns the proxy.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.DoubleUtil.AreClose(System.Double,System.Double)">

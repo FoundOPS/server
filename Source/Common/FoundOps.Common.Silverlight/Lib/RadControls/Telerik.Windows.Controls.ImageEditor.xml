@@ -4,6 +4,21 @@
         <name>Telerik.Windows.Controls.ImageEditor</name>
     </assembly>
     <members>
+        <member name="M:Telerik.Windows.Media.Imaging.Commands.DrawTextCommandContext.#ctor(System.Double,System.Windows.Media.Color,System.String,System.Windows.Point,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Media.Imaging.Commands.DrawTextCommandContext"/> class.
+            </summary>
+            <param name="fontSize">Size of the font.</param>
+            <param name="foreColor">Color of the text.</param>
+            <param name="text">The text.</param>
+            <param name="textPosition">The text position.</param>
+            <param name="textRotation">The angle, in degrees, of text's clockwise rotation.</param>
+        </member>
+        <member name="P:Telerik.Windows.Media.Imaging.Commands.DrawTextCommandContext.TextRotation">
+            <summary>
+            Gets the angle, in degrees, of clockwise rotation.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Media.Imaging.ImageEditorCommands.ImageCommandExecutedEventArgs.#ctor(Telerik.Windows.Media.Imaging.ImageEditorCommands.ImageEditorCommandBase,System.Object)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Media.Imaging.ImageEditorCommands.ImageCommandExecutedEventArgs"/> class.

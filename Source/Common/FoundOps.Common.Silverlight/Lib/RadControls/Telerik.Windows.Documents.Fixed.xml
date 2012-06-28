@@ -14,17 +14,19 @@
             Represents PDF filter.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.IPdfFilter.Encode(System.Byte[])">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.IPdfFilter.Encode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.Byte[])">
             <summary>
             Encodes the specified data.
             </summary>
+            <param name="encodedObject">The encoded object.</param>
             <param name="data">The data.</param>
             <returns>The encoded data.</returns>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.IPdfFilter.Decode(System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.IPdfFilter.Decode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
             <summary>
             Decodes the specified stream.
             </summary>
+            <param name="decodedObject">The decoded object.</param>
             <param name="stream">The stream.</param>
             <param name="parms">The decode parameters.</param>
             <returns>The decoded data.</returns>
@@ -35,12 +37,12 @@
             </summary>
             <value>The name.</value>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCII85Decode.Encode(System.Byte[])">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCII85Decode.Encode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.Byte[])">
             <summary>
             Encodes the specified data.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCII85Decode.Decode(System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCII85Decode.Decode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
             <summary>
             Decodes the specified data.
             </summary>
@@ -50,12 +52,12 @@
             Implements the ASCIIHexDecode filter.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCIIHexDecode.Encode(System.Byte[])">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCIIHexDecode.Encode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.Byte[])">
             <summary>
             Encodes the specified data.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCIIHexDecode.Decode(System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCIIHexDecode.Decode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
             <summary>
             Decodes the specified data.
             </summary>
@@ -81,12 +83,12 @@
             Implements the LzwDecode filter.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.LzwDecode.Encode(System.Byte[])">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.LzwDecode.Encode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.Byte[])">
             <summary>
             Throws a NotImplementedException because the obsolete LZW encoding is not supported by PDFsharp.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.LzwDecode.Decode(System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.LzwDecode.Decode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
             <summary>
             Decodes the specified data.
             </summary>
@@ -104,6 +106,11 @@
         <member name="P:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.LzwDecode.NextCode">
             <summary>
             Returns the next set of bits.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject">
+            <summary>
+            Represents a PDF object.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.FormatProviderSettings">
@@ -152,6 +159,61 @@
             </summary>
             <param name="stream">The stream.</param>
             <returns>The fixed document</returns>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProvider">
+            <summary>
+            Provides functionality to export RadFixedDocument to text.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProvider.Export(Telerik.Windows.Documents.Fixed.Model.RadFixedDocument,Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProviderSettings)">
+            <summary>
+            Exports the specified document as text.
+            </summary>
+            <param name="document">The document to export.</param>
+            <param name="settings">The settings.</param>
+            <returns>The text, that is extracted from the RadFixedDocument.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProvider.Export(Telerik.Windows.Documents.Fixed.Model.RadFixedDocument)">
+            <summary>
+            Exports the specified document as text.
+            </summary>
+            <param name="document">The document to export.</param>
+            <returns>The text, that is extracted from the RadFixedDocument.</returns>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProviderSettings">
+            <summary>
+            Represents settigs that <see cref="T:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProvider"/> uses to export RadFixedDocument to text.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProviderSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProviderSettings"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProviderSettings.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProviderSettings"/> class.
+            </summary>
+            <param name="linesSeparator">The lines separator.</param>
+            <param name="pagesSeparator">The pages separator.</param>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProviderSettings.Default">
+            <summary>
+            Gets the default settings.
+            </summary>
+            <value>The default settings.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProviderSettings.LinesSeparator">
+            <summary>
+            Gets or sets the lines separator.
+            </summary>
+            <value>The lines separator.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.FormatProviders.Text.TextFormatProviderSettings.PagesSeparator">
+            <summary>
+            Gets or sets the pages separator.
+            </summary>
+            <value>The pages separator.</value>
         </member>
         <member name="T:FluxJpeg.Core.DCT">
             <summary>
@@ -7580,18 +7642,24 @@
             The resource dictionary.
             </value>
         </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument.CaretPosition">
+            <summary>
+            Gets or sets the caret position in the document.
+            </summary>
+            <value>The caret position.</value>
+        </member>
         <member name="T:Telerik.Windows.Documents.Fixed.Model.RadFixedPage">
             <summary>
             Represents a fixed page.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedPage.Width">
+        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedPage.ActualWidth">
             <summary>
             Gets the fixed page's width.
             </summary>
             <value>The width.</value>
         </member>
-        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedPage.Height">
+        <member name="P:Telerik.Windows.Documents.Fixed.Model.RadFixedPage.ActualHeight">
             <summary>
             Gets the fixed page's height.
             </summary>
@@ -7602,6 +7670,171 @@
             Gets the current page number.
             </summary>
             <value>The page no.</value>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions">
+            <summary>
+            Represent text search options.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions"/> class.
+            </summary>
+            <param name="caseSensitive">The case sensitive option.</param>
+            <param name="useRegularExpression">The use regular expression option.</param>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions.Default">
+            <summary>
+            Gets the default text search options.
+            </summary>
+            <value>The default.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions.UseRegularExpression">
+            <summary>
+            Gets the use regular expression option.
+            </summary>
+            <value>The use regular expression.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions.CaseSensitive">
+            <summary>
+            Gets the case sensitive option.
+            </summary>
+            <value>The case sensitive.</value>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.Search.SearchResult">
+            <summary>
+            Represent search result.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Search.SearchResult.Range">
+            <summary>
+            Gets the text range.
+            </summary>
+            <value>The range.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.Search.SearchResult.Result">
+            <summary>
+            Gets the result as text.
+            </summary>
+            <value>The result.</value>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.Text.TextRange">
+            <summary>
+            Represents text range.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.#ctor(Telerik.Windows.Documents.Fixed.Model.RadFixedPage)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.Text.TextPosition"/> class.
+            </summary>
+            <param name="page">The page.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.#ctor(Telerik.Windows.Documents.Fixed.Model.RadFixedDocument)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.Text.TextPosition"/> class.
+            </summary>
+            <param name="document">The document.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.#ctor(Telerik.Windows.Documents.Fixed.Text.TextPosition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.Text.TextPosition"/> class.
+            </summary>
+            <param name="position">The position.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToPosition(Telerik.Windows.Documents.Fixed.Text.TextPosition)">
+            <summary>
+            Moves to position.
+            </summary>
+            <param name="position">The position.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToNextPosition">
+            <summary>
+            Moves to next position.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToPreviousPosition">
+            <summary>
+            Moves to previous position.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToNextWord">
+            <summary>
+            Moves to next word.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToPreviousWord">
+            <summary>
+            Moves to previous word.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToCurrentWordStart">
+            <summary>
+            Moves to current word start.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToCurrentWordEnd">
+            <summary>
+            Moves to current word end.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToLineStart">
+            <summary>
+            Moves to line start.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToLineEnd">
+            <summary>
+            Moves to line end.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveLineUp">
+            <summary>
+            Moves line up.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveLineDown">
+            <summary>
+            Moves line down.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToStartOfDocument">
+            <summary>
+            Moves to start of document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.MoveToEndOfDocument">
+            <summary>
+            Moves to end of document.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.OnPositionChanging">
+            <summary>
+            Called when TextPosition is changing.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Text.TextPosition.OnPositionChanged">
+            <summary>
+            Called when TextPosition is changed.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Documents.Fixed.Text.TextPosition.PositionChanging">
+            <summary>
+            Occurs when TextPosition is changing.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Documents.Fixed.Text.TextPosition.PositionChanged">
+            <summary>
+            Occurs when TextPosition is changed.
+            </summary>
         </member>
     </members>
 </doc>

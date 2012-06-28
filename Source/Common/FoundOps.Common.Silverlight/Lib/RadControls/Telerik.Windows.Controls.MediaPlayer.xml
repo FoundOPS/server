@@ -6,7 +6,7 @@
     <members>
         <member name="T:Telerik.Windows.Controls.ChaptersPanel">
             <summary>
-            Arranges its chapters children according to their time possition in the video.
+            Arranges its chapters children according to their time position in the video.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.ChaptersPanel.MeasureOverride(System.Windows.Size)">
@@ -587,11 +587,6 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.MediaPlayer.PlaylistPresenter"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.MediaPlayer.PlaylistPresenter.OnApplyTemplate">
-            <summary>
-            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
-            </summary>
-        </member>
         <member name="T:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter">
             <summary>
             
@@ -600,11 +595,6 @@
         <member name="M:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter"/> class.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter.OnApplyTemplate">
-            <summary>
-            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.MediaPlayer.RadChaptersPresenter.OnChapterClicked(System.Object,System.Windows.RoutedEventArgs)">

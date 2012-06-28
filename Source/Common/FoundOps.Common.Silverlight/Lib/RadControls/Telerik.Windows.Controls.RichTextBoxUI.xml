@@ -129,6 +129,16 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.InsertTableOfContentsDialog">
+            <summary>
+            Default InsertTableOfContentsWindow
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.InsertTableOfContentsDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.NewCaptionLabelDialog.InitializeComponent">
             <summary>
             InitializeComponent
@@ -140,6 +150,11 @@
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.Styles.StyleListItem.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Dialogs.TableOfContents.PrintPreview.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
@@ -537,6 +552,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Menus.ContextMenuContentBuilder.CreateTrackChangesCommands">
+            <summary>
+            Creates the clipboard commands menu items (cut, copy, paste, etc.).
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Menus.ContextMenuEventArgs.#ctor(Telerik.Windows.Controls.RichTextBoxUI.Menus.ContextMenuGroupCollection)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RichTextBoxUI.Menus.ContextMenuEventArgs"/> class.
@@ -656,6 +677,11 @@
             Header/footer commands context menu group.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RichTextBoxUI.Menus.ContextMenuGroupType.TrackChangesCommands">
+            <summary>
+            Track changes commands context menu group.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RichTextBoxUI.Menus.ContextMenuGroupType.Custom">
             <summary>
             Custom context menu group.
@@ -674,6 +700,11 @@
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RichTextBoxUI.Menus.TableCellContentAlignmentPicker.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RichTextBoxUI.ListStylesGallery.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>

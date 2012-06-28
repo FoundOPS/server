@@ -57,6 +57,16 @@
             Identifies the DecimalSeparator dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.Calculator.CalculatorBase.HistoryPropertyKey">
+            <summary>
+            Identifies the History dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Calculator.CalculatorBase.HistoryProperty">
+            <summary>
+            Identifies the DecimalSeparator dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.Calculator.CalculatorBase.ErrorMessageProperty">
             <summary>
             Identifies the ErrorMessage dependency property.
@@ -128,6 +138,11 @@
             <value>
             The MemoryButtonsVisibility.
             </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Calculator.CalculatorBase.History">
+            <summary>
+            Gets the history.
+            </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Calculator.CalculatorBase.ErrorMessage">
             <summary>
@@ -5279,7 +5294,27 @@
         </member>
         <member name="T:Telerik.Windows.Controls.RadColorPicker">
             <summary>
-            RadColorPicker enables you to select a Color from a color selectro situated in PopUp.
+            Represents a color picker control.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.ClickEvent">
+            <summary>
+            Identifies the Click property of the internal SplitButton.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.DropDownClosedEvent">
+            <summary>
+            Identifies the moment  DropDownClosed property of the internal SplitButton.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.DropDownOpenedEvent">
+            <summary>
+            Identifies the DropDownOpened property of the internal SplitButton.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.DropDownOpeningEvent">
+            <summary>
+            Identifies the DropDownOpening property of the internal SplitButton.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.RadColorPicker.MainPaletteColumnsCountProperty">
@@ -5290,16 +5325,6 @@
         <member name="F:Telerik.Windows.Controls.RadColorPicker.MainPaletteOrientationProperty">
             <summary>
             Identifies the PaletteOrientation dependency property.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.RadColorPicker.ExpanderButtonStyleProperty">
-            <summary>
-            Identifies the IconButtonStyle dependency property.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.RadColorPicker.ColorButtonStyleProperty">
-            <summary>
-             Identifies the IconButtonStyle dependency property.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.RadColorPicker.SelectedColorProperty">
@@ -5382,14 +5407,39 @@
             Identifies the StandardPaletteItemsSource dependency property.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.RadColorPicker.IsSelectedProperty">
-            <summary>
-            Identifies the IsSelectedProperty dependency property.
-            </summary>
-        </member>
         <member name="F:Telerik.Windows.Controls.RadColorPicker.AutomaticColorProperty">
             <summary>
             Identifies the AutomaticColor dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.ContentProperty">
+            <summary>
+             Identifies the Content dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.ContentTemplateProperty">
+            <summary>
+             Identifies the ContentTemplate dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.ColorButtonStyleProperty">
+            <summary>
+            Identifies the ColorButtonStyle property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.ExpanderButtonStyleProperty">
+            <summary>
+            Identifies the ExpanderButtonStyle property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.DropDownPlacementProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.SplitButtonStyleProperty">
+            <summary>
+            Style for the SplitButton.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadColorPicker.#ctor">
@@ -5406,101 +5456,35 @@
             When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPicker.ChangeVisualState(System.Boolean)">
-            <summary>
-            Updates the visual state of the control.
-            </summary>
-            <param name="useTransitions">Indicates whether transitions should be used.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPicker.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
-            <summary>
-            Called before the <see cref="E:System.Windows.UIElement.MouseEnter"/> event occurs.
-            </summary>
-            <param name="e">The data for the event.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPicker.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
-            <summary>
-            Called before the <see cref="E:System.Windows.UIElement.MouseLeave"/> event occurs.
-            </summary>
-            <param name="e">The data for the event.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPicker.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
-            <summary>
-            Called before the <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/> event occurs.
-            </summary>
-            <param name="e">The data for the event.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPicker.OnGotFocus(System.Windows.RoutedEventArgs)">
-            <summary>
-            Called before the <see cref="E:System.Windows.UIElement.GotFocus"/> event occurs.
-            </summary>
-            <param name="e">The data for the event.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPicker.OnLostFocus(System.Windows.RoutedEventArgs)">
-            <summary>
-            Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
-            </summary>
-            <param name="e">The data for the event.</param>
-        </member>
         <member name="M:Telerik.Windows.Controls.RadColorPicker.OnSelectedColorChanged">
             <summary>
             Called when color selection happens..
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPicker.OnClicked">
-            <summary>
-            Called when [selected color changed].
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPicker.OnDropDownClosed(System.EventArgs)">
-            <summary>
-            Raises the <see cref="E:DropDownClosed"/> event.
-            </summary>
-            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPicker.OnDropDownOpened(System.EventArgs)">
-            <summary>
-            Raises the <see cref="E:DropDownOpened"/> event.
-            </summary>
-            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        </member>
         <member name="E:Telerik.Windows.Controls.RadColorPicker.SelectedColorChanged">
             <summary>
-            Occurs when an item from  the RadColorPicker has been selected.
+            Occurs when selected color changed.
             </summary>
-            <example>
-            Sample code:
-                <code lang="XAML">
-                    <![CDATA[
-                    <telerik:RadColorPicker 
-                        x:Name="RadColorPicker1" 
-                        Selected="RadColorPicker1_SelectedColorChanged"/>
-                    ]]>
-                </code>
-            	<code lang="CS">
-            	    <![CDATA[
-                    void RadColorPicker1_SelectedColorChanged(object sender, EventArgs e)
-                    {
-                      	RadColorPicker colorPicker = sender as RadColorPicker;
-            			Color color = colorPicker.SelectedColor;
-                    }
-                    ]]>
-            	</code>.
-            </example>
         </member>
         <member name="E:Telerik.Windows.Controls.RadColorPicker.Click">
             <summary>
-            Occurs when Color button is clicked.
+            Occurs when the action button of the split button is clicked.
             </summary>
         </member>
         <member name="E:Telerik.Windows.Controls.RadColorPicker.DropDownClosed">
             <summary>
-            Occurs when the drop-down list of the combo box closes.
+            Occurs when the SplitButton closed.
             </summary>
         </member>
         <member name="E:Telerik.Windows.Controls.RadColorPicker.DropDownOpened">
             <summary>
-            Occurs when the drop-down list of the combo box opens.
+            Occurs when the SplitButton opened.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadColorPicker.DropDownOpening">
+            <summary>
+            Occurs when the SplitButton will be opened.
+            Set True for the Handled property and the SplitButton won't open.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadColorPicker.MainPaletteColumnsCount">
@@ -5515,18 +5499,6 @@
             </summary>
             <value>The palette orientation.</value>
         </member>
-        <member name="P:Telerik.Windows.Controls.RadColorPicker.ExpanderButtonStyle">
-            <summary>
-            Gets or sets the Expander button style.
-            </summary>
-            <value>The Expander button style.</value>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadColorPicker.ColorButtonStyle">
-            <summary>
-            Gets or sets the Color button style.
-            </summary>
-            <value>The Color button style.</value>
-        </member>
         <member name="P:Telerik.Windows.Controls.RadColorPicker.SelectedColor">
             <summary>
             Gets or sets the selected color.
@@ -5536,7 +5508,7 @@
         <member name="P:Telerik.Windows.Controls.RadColorPicker.StandardPaletteHeaderText">
             <summary>
             Gets or sets the standard palette header text.
-            This is a dependency proeprty.
+            This is a dependency property.
             </summary>
             <value>The standard palette header text.</value>
             <remarks>
@@ -5665,21 +5637,38 @@
             </summary>
             <value>The automatic color.</value>
         </member>
-        <member name="P:Telerik.Windows.Controls.RadColorPicker.IsMouseOver">
+        <member name="P:Telerik.Windows.Controls.RadColorPicker.DropDownPlacement">
             <summary>
-            Gets or sets a value indicating whether this instance is mouse over.
+            Gets or sets the drop down position.
             </summary>
             <value>
-            	<c>True</c> if this instance is mouse over; otherwise, <c>false</c>.
+            The drop down position.
             </value>
         </member>
-        <member name="P:Telerik.Windows.Controls.RadColorPicker.IsSelected">
+        <member name="P:Telerik.Windows.Controls.RadColorPicker.SplitButtonStyle">
             <summary>
-            Gets or sets a value indicating whether this instance is mouse over.
-            </summary>
-            <value>
-            	<c>True</c> if this instance is mouse over; otherwise, <c>false</c>.
-            </value>
+            Gets or sets the split button style.
+            </summary>		
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorPicker.Content">
+            <summary>
+            Gets or sets the content.
+            </summary>		
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorPicker.ContentTemplate">
+            <summary>
+            Gets or sets the content template.
+            </summary>		
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorPicker.ColorButtonStyle">
+            <summary>
+            Gets or sets the color button style.
+            </summary>		
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorPicker.ExpanderButtonStyle">
+            <summary>
+            Gets or sets the expander button style.
+            </summary>		
         </member>
         <member name="T:Telerik.Windows.Controls.RadColorSelector">
             <summary>
@@ -6994,6 +6983,11 @@
                 or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().
                 In simplest terms, this means the method is called just before a UI element
                displays in an application. For more information, see Remarks.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDateTimePicker.UpdateText">
+            <summary>
+            Called to update the DateTimeText property of RadDateTimePicker.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDateTimePicker.OnKeyDown(System.Windows.Input.KeyEventArgs)">
@@ -8452,6 +8446,20 @@
             </summary>
             <param name="e">Mouse event args.</param>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.OnLoadedOverride(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Called when control is loaded.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.OnUnloadedOverride(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Called when the control is unloaded.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadMaskedInputBase.ValueChangedEvent">
             <summary>
             Identifies the ValueChanged routed event.
@@ -8480,6 +8488,114 @@
             Raises the <see cref="E:MaskChanged"/> event.
             </summary>
             <param name="e">Event args.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.GetRightOffset">
+            <summary>
+            Gets the offset from the right.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.SetFromRightOffset(System.Int32)">
+            <summary>
+            Sets the offset from the right.
+            </summary>
+            <param name="offset"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.InsertCharNoMask(System.Char)">
+            <summary>
+            Inserts a new character when no mask.
+            </summary>
+            <param name="validChar"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.IsCharValid(System.Char)">
+            <summary>
+            Gets a value indicating whether the char is valid when no mask.
+            </summary>
+            <param name="ch">The char.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.IsSeparatorNoMask(System.Char)">
+            <summary>
+            Gets a valud indicating whether a char is a separator when no mask.
+            </summary>
+            <param name="ch"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.CanModifyChar(System.Char)">
+            <summary>
+            Gets a value indicating whether the char can be modified when no mask.
+            </summary>
+            <param name="ch"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.CanReplaceChar(System.Char)">
+            <summary>
+            Gets a value indicating whether the char can be replaced when no mask.
+            </summary>
+            <param name="ch"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.HandleDeleteKeyNoMask">
+            <summary>
+            Handles the Delete key when no mask.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.HandleBackKeyNoMask">
+            <summary>
+            Handles the Back key when no mask.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.HandleTabKeyNoMask">
+            <summary>
+            Handles the tab key when no mask.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.HandleSpinNoMask(System.Boolean)">
+            <summary>
+            Handles the spin when no mask.
+            </summary>
+            <param name="isUp"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.FindPreviousSeparatorPosition(System.Int32)">
+            <summary>
+            Finds the previous separator position.
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.FindPreviousAvailablePositionNoMask">
+            <summary>
+            Finds the previous available position when no mask.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.FindNextSeparatorPosition(System.Int32)">
+            <summary>
+            Finds the next separator position when no mask.
+            </summary>
+            <param name="position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.Remove(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Removes number of characters from the internal text when no mask.
+            </summary>
+            <param name="start">The starting index.</param>
+            <param name="length">The length.</param>
+            <param name="checkPositions">True, if validation check should be performed on the removed positions.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.ReplaceChar(System.Text.StringBuilder,System.Int32@)">
+            <summary>
+            Replaces a char when no mask.
+            </summary>
+            <param name="builder">The text builder.</param>
+            <param name="position">The position of the char.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedInputBase.ClearSelectionNoMask">
+            <summary>
+            Clears the selection when no mask.
+            </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.RadMaskedInputBase.AllowInvalidValuesProperty">
             <summary>
@@ -8674,11 +8790,6 @@
         <member name="P:Telerik.Windows.Controls.RadMaskedInputBase.OldValue">
             <summary>
             The previous value.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadMaskedInputBase.IsNoMaskEnabled">
-            <summary>
-            Specifies whether there is no Mask set.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadMaskedInputBase.IsValueChangingFromInternal">
@@ -9225,6 +9336,39 @@
             If false is returns, the value change proceeds. If true is returned, the update is terminated.
             </remarks>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.GetRightOffset">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.SetFromRightOffset(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.CanModifyChar(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.CanReplaceChar(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.IsCharValid(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.IsSeparatorNoMask(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.InsertCharNoMask(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.HandleBackKeyNoMask">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.HandleSpinNoMask(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.ClearSelectionNoMask">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedCurrencyInput.ReplaceChar(System.Text.StringBuilder,System.Int32@)">
+            <inheritdoc />
+        </member>
         <member name="P:Telerik.Windows.Controls.RadMaskedCurrencyInput.AllowSkipPlaceholders">
             <summary>
             Gets or sets whether input can skip placeholders.
@@ -9753,6 +9897,39 @@
             If false is returns, the value change proceeds. If true is returned, the update is terminated.
             </remarks>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.GetRightOffset">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.SetFromRightOffset(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.CanModifyChar(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.CanReplaceChar(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.IsCharValid(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.IsSeparatorNoMask(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.InsertCharNoMask(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.HandleBackKeyNoMask">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.HandleSpinNoMask(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.ReplaceChar(System.Text.StringBuilder,System.Int32@)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedNumericInput.ClearSelectionNoMask">
+            <inheritdoc />
+        </member>
         <member name="P:Telerik.Windows.Controls.RadMaskedNumericInput.AllowSkipPlaceholders">
             <summary>
             Gets or sets whether input can skip placeholders.
@@ -9945,6 +10122,18 @@
             <summary>
             Updates the EditableTextEnd and EditableTextStart properties.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedTextInput.InsertCharNoMask(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedTextInput.HandleBackKeyNoMask">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedTextInput.IsSeparatorNoMask(System.Char)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadMaskedTextInput.HandleEnterKey">
+            <inheritdoc />
         </member>
         <member name="P:Telerik.Windows.Controls.RadMaskedTextInput.Value">
             <summary>
@@ -12073,6 +12262,11 @@
             Identifies the AutoCompleteInterval property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadMaskedTextBox.AcceptReturnProperty">
+            <summary>
+            Identifies the AcceptReturn property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadMaskedTextBox.SelectionOnFocusProperty">
             <summary>
             Identifies the SelectionOnFocus property.
@@ -12233,6 +12427,11 @@
         <member name="E:Telerik.Windows.Controls.RadMaskedTextBox.ValueChanging">
             <summary>
             Occurs before the value is changed.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadMaskedTextBox.AcceptReturn">
+            <summary>
+            Gets or sets a value indicating whether AcceptReturn is available. This is valid only for MaskType = None.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadMaskedTextBox.IsSpinEnabled">

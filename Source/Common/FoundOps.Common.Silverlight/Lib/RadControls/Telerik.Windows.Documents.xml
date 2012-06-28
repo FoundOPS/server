@@ -4,6 +4,11 @@
         <name>Telerik.Windows.Documents</name>
     </assembly>
     <members>
+        <member name="T:Telerik.Windows.Documents.Model.NumPagesField">
+            <summary>
+            Represents document field that displays the total number of pages in the document.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Documents.Commands.DeleteTableRowCommandContext.IndexOfRowToDelete">
             <summary>
             Gets or sets the hierarchical index of the row to be deleted.
@@ -104,6 +109,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Telerik.Windows.Documents.DocumentPosition.GetCurrentTableCellBox">
+            <summary>
+            Gets the current TableCellLayoutBox.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Documents.DocumentPosition.GetCurrentParagraphBox">
             <summary>
             Gets the current ParagraphLayoutBox.
@@ -137,6 +148,24 @@
         <member name="M:Telerik.Windows.Documents.DocumentPosition.GetNextSpan">
             <summary>
             Gets the next SpanLayoutBox.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.DocumentPosition.GetPreviousInline">
+            <summary>
+            Gets the previous Inline.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.DocumentPosition.GetNextInline">
+            <summary>
+            Gets the next InlineLayout.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.DocumentPosition.GetCurrentInline">
+            <summary>
+            Gets the current Inline.
             </summary>
             <returns></returns>
         </member>
@@ -177,6 +206,13 @@
             </summary>
             <param name="inlineLayoutBox">The InlineLayoutBox.</param>
             <param name="index">The index in the InlineLayoutBox.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.DocumentPosition.MoveToInline(Telerik.Windows.Documents.Model.Inline)">
+            <summary>
+            Moves the position to the start of inline.
+            </summary>
+            <param name="inlineLayoutBox">The Inline.</param>
+            <param name="index">The index in the Inline.</param>
         </member>
         <member name="M:Telerik.Windows.Documents.DocumentPosition.MoveToCurrentWordStart">
             <summary>
@@ -856,6 +892,40 @@
             Provides access to all headers of the document.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.AssociatedRichTextBox">
+            <summary>
+            Gets the associated rich text box.
+            </summary>
+            <value>The associated rich text box.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.CanExecuteInReadOnlyMode">
+            <summary>
+            Gets a value indicating whether this command can be executed when RadRichTextBox is read-only. The default implementation returns false. 
+            </summary>
+            <value>
+            	<c>true</c> if this command preserves document's content; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.SupportedTargets">
+            <summary>
+            Gets the supported targets.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.Enabled">
+             <summary>
+            Gets or sets a value indicating whether the command is enabled 
+            </summary>            
+        </member>
+        <member name="M:Telerik.Windows.Documents.RichTextBoxCommands.ToggleCommandBase.OnToggleExecuted(Telerik.Windows.Documents.RichTextBoxCommands.StylePropertyChangedEventArgs{System.Boolean})">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Documents.RichTextBoxCommands.ToggleCommandBase.ToggleExecuted">
+            <summary>
+            Deprecated.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Documents.Model.PermissionInfo.#ctor(System.String,Telerik.Windows.Documents.Model.PermissionType,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Model.PermissionInfo"/> class.
@@ -891,23 +961,19 @@
             Gets the display name.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.AssociatedRichTextBox">
+        <member name="M:Telerik.Windows.Documents.UI.Layers.TableDecorationLayers.TableBorders.LineBorder.LineHorizontalBorder.InitializeComponent">
             <summary>
-            Gets the associated rich text box.
+            InitializeComponent
             </summary>
-            <value>The associated rich text box.</value>
         </member>
-        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.CanExecuteInReadOnlyMode">
+        <member name="M:Telerik.Windows.Documents.UI.Layers.TableDecorationLayers.TableBorders.LineBorder.LineVerticalBorder.InitializeComponent">
             <summary>
-            Gets a value indicating whether this command can be executed when RadRichTextBox is read-only. The default implementation returns false. 
+            InitializeComponent
             </summary>
-            <value>
-            	<c>true</c> if this command preserves document's content; otherwise, <c>false</c>.
-            </value>
         </member>
-        <member name="P:Telerik.Windows.Documents.RichTextBoxCommands.RichTextBoxCommandBase.SupportedTargets">
+        <member name="M:Telerik.Windows.Documents.UI.Layers.TableDecorationLayers.TableMovement.TableAdorner.InitializeComponent">
             <summary>
-            Gets the supported targets.
+            InitializeComponent
             </summary>
         </member>
         <member name="T:Telerik.Windows.Documents.UI.IDocumentEditor">
@@ -1518,9 +1584,19 @@
             Shows the dialog for managing styles.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowDefineNewListStyleDialog">
+            <summary>
+            Shows dialog for creating new list style.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertCrossReferenceWindow">
             <summary>
             Shows the insert cross reference window.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertTableOfContentsDialog">
+            <summary>
+            Shows the insert Table of Contents window.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadRichTextBox.ShowInsertCaptionDialog">
@@ -1557,6 +1633,28 @@
             <summary>
             Shows the dialog for changing editing permissions.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.GoToNextRevision">
+            <summary>
+            Goes to next revision.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.GoToPreviousRevision">
+            <summary>
+            Goes to previous revision.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.AcceptRevision(Telerik.Windows.Documents.Model.Revisions.Revision)">
+            <summary>
+            Accepts revision.
+            </summary>
+            <param name="revision">The revision.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.RejectRevision(Telerik.Windows.Documents.Model.Revisions.Revision)">
+            <summary>
+            Rejects revision.
+            </summary>
+            <param name="revision">The revision.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnCommentShowing(Telerik.Windows.Documents.UI.CommentShowingEventArgs)">
             <summary>
@@ -1617,6 +1715,12 @@
             Raises the <see cref="E:ActiveDocumentEditorChanged"/> event.
             </summary>
             <param name="e">The <see cref="T:Telerik.Windows.Documents.UI.ActiveDocumentEditorChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRichTextBox.OnUntrackableCommandExecuting(Telerik.Windows.Documents.Model.UntrackableCommandExecutingEventArgs)">
+            <summary>
+            Raises the <see cref="E:UntrackableCommandExecuting"/> event.
+            </summary>
+            <param name="e">The <see cref="T:Telerik.Windows.Documents.Model.UntrackableCommandExecutingEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="P:Telerik.Windows.Controls.RadRichTextBox.NewDocumentCommand">
             <summary>
@@ -1904,6 +2008,14 @@
             	<c>true</c> if formatting symbols are shown; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.IsTrackChangesEnabled">
+            <summary>
+            Gets or sets a value indicating whether formatting symbols are shown in the document.
+            </summary>
+            <value>
+            	<c>true</c> if formatting symbols are shown; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:Telerik.Windows.Controls.RadRichTextBox.CommentTemplateContentMargin">
             <summary>
             Gets or sets the comment template content margin.
@@ -2106,6 +2218,11 @@
             Gets or sets a value representing the current insert cross-reference window instance.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertTableOfContentsDialog">
+            <summary>
+            Gets or sets a value representing the current insert Table of Contents window instance.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.RadRichTextBox.InsertCaptionDialog">
             <summary>
             Gets or sets a value representing the current insert caption dialog instance.
@@ -2242,14 +2359,9 @@
             Occurs when active document editor changes.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Documents.RichTextBoxCommands.ToggleCommandBase.OnToggleExecuted(Telerik.Windows.Documents.RichTextBoxCommands.StylePropertyChangedEventArgs{System.Boolean})">
+        <member name="E:Telerik.Windows.Controls.RadRichTextBox.UntrackableCommandExecuting">
             <summary>
-            Deprecated.
-            </summary>
-        </member>
-        <member name="E:Telerik.Windows.Documents.RichTextBoxCommands.ToggleCommandBase.ToggleExecuted">
-            <summary>
-            Deprecated.
+            Occurs when executing command that does not support track changes and track changes are enabled.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Documents.UI.ActiveDocumentEditorChangedEventArgs">
@@ -2559,6 +2671,113 @@
             <param name="fromPosition">The position to start deleting.</param>
             <param name="toPosition">The position to end deleting.</param>
         </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.InsertComment(Telerik.Windows.Documents.Model.Comment)">
+            <summary>
+            Inserts the comment.
+            </summary>
+            <param name="comment">The comment.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.InsertComment(Telerik.Windows.Documents.DocumentPosition,Telerik.Windows.Documents.DocumentPosition,Telerik.Windows.Documents.Model.Comment)">
+            <summary>
+            Inserts the comment.
+            </summary>
+            <param name="startPosition">The start position.</param>
+            <param name="endPosition">The end position.</param>
+            <param name="comment">The comment.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.DeleteComment(Telerik.Windows.Documents.Model.CommentRangeStart)">
+            <summary>
+            Deletes a comment.
+            </summary>
+            <param name="commentStart">The comment start.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GetNextComment">
+            <summary>
+            Gets the next comment.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GetPreviousComment">
+            <summary>
+            Gets the previous comment.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GetCommentRangeStartByComment(Telerik.Windows.Documents.Model.Comment)">
+            <summary>
+            Gets the comment range start by comment.
+            </summary>
+            <param name="comment">The comment.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GoToComment(Telerik.Windows.Documents.Model.Comment)">
+            <summary>
+            Selects comment.
+            </summary>
+            <param name="comment">The comment.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GoToComment(Telerik.Windows.Documents.Model.CommentRangeStart)">
+            <summary>
+            Selects comment.
+            </summary>
+            <param name="commentRangeStart">The comment range start.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GoToPreviousComment">
+            <summary>
+            Selects previous comment.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GoToNextComment">
+            <summary>
+            Selects next comment.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GoToRevision(Telerik.Windows.Documents.Model.Revisions.Revision)">
+            <summary>
+            Selects revision.
+            </summary>
+            <param name="revision">The revision.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GoToPreviousRevision">
+            <summary>
+            Selects previous revision.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GoToNextRevision">
+            <summary>
+            Selects next revision.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GetCurrentRevision">
+            <summary>
+            Gets the current revision.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GetNextRevision">
+            <summary>
+            Gets the next revision.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GetPreviousRevision">
+            <summary>
+            Gets the previous revision.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.GetAllRevisions">
+            <summary>
+            Gets all revisions.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Documents.Model.RadDocument.InsertHyperlink(Telerik.Windows.Documents.DocumentPosition,Telerik.Windows.Documents.DocumentPosition,Telerik.Windows.Documents.Model.HyperlinkInfo)">
             <summary>
             Creates hyperlink form the content between positions
@@ -2575,6 +2794,11 @@
             <param name="hyperlinkInfo">The hyperlink info.</param>
             <param name="hyperlinkInlines">The hyperlink inlines.</param>
             <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Model.RadDocument.RegisterDefaultHeadingStyles">
+            <summary>
+            Creates and registers the "Heading X" styles with the default settings. Note that these styles are created by default in RadDocument constructor.
+            </summary>
         </member>
         <member name="M:Telerik.Windows.Documents.Model.RadDocument.MeasureAndArrangeInDefaultSize">
             <summary>
@@ -2665,6 +2889,14 @@
               <c>true</c> if headers and footers are different in even and odd pages; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:Telerik.Windows.Documents.Model.RadDocument.IsTrackChangesEnabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is track changes enabled.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is track changes enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:Telerik.Windows.Documents.Model.RadDocument.IsEmpty">
             <summary>
             Gets a value indicating whether the document is empty.
@@ -2672,6 +2904,11 @@
             <value>
               <c>true</c> if the document is empty; otherwise, <c>false</c>.
             </value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Model.RadDocument.DocumentVariableList">
+            <summary>
+            This property supports XAML serialization infrastructure and is not intended to be used directly from your code.
+            </summary>
         </member>
         <member name="P:Telerik.Windows.Documents.Model.RadDocument.DefaultTabWidth">
             <summary>
@@ -2723,7 +2960,7 @@
             Occurs when the document presenter has changed.
             </summary>
         </member>
-        <member name="E:Telerik.Windows.Documents.Model.RadDocument.DocumentContentChanged">
+        <member name="E:Telerik.Windows.Documents.Model.RadDocument.documentContentChanged">
             <summary>
             Occurs when the document content has changed.
             </summary>
@@ -2810,16 +3047,6 @@
             </summary>
         </member>
         <member name="M:Telerik.Windows.Documents.UI.Layers.TableDecorationLayers.TableBorders.DebugSingleCrossBorder.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Documents.UI.Layers.TableDecorationLayers.TableBorders.LineBorder.LineHorizontalBorder.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Documents.UI.Layers.TableDecorationLayers.TableBorders.LineBorder.LineVerticalBorder.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
@@ -4082,7 +4309,7 @@
         </member>
         <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.IsCustom">
             <summary>
-            Gets or sets value indicating whether the
+            Gets or sets value indicating whether the style is custom user-created
             </summary>
         </member>
         <member name="P:Telerik.Windows.Documents.Model.Styles.StyleDefinition.IsDefault">
@@ -4356,6 +4583,11 @@
             </summary>
             <param name="type">PaperType</param>
             <returns></returns>
+        </member>
+        <member name="M:System.Collections.Generic.ExtensionMethods.CastCovariant``2(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Casts enumerable of TFrom to enumerable of TTo on platforms where covariance is not supported.
+            </summary>
         </member>
         <member name="M:Telerik.Windows.Documents.Model.PaperTypeConverter.ToSize(Telerik.Windows.Documents.Model.PaperTypes)">
             <summary>

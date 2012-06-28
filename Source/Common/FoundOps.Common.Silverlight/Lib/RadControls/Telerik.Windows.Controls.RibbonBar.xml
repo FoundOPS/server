@@ -98,6 +98,11 @@
             <param name="element">Element used to display the specified item.</param>
             <param name="item">Specified item.</param>
         </member>
+        <member name="M:Telerik.Windows.Controls.ApplicationMenu.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            When overridden in a derived class, undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.ApplicationMenu.Content">
             <summary>
             Gets or sets the content in the right pane of the menu.

@@ -273,6 +273,14 @@
             <value><c>true</c> if Load will automatically be invoked when a change occurs 
             that impacts the query; otherwise, <c>false</c>.</value>
         </member>
+        <member name="P:Telerik.Windows.Controls.DataServices.QueryableDataServiceCollectionViewBase.Expand">
+            <summary>
+            Gets or sets the expand option.
+            </summary>
+            <value>The expand option.</value>
+            <remarks>For more information, please visit http://msdn.microsoft.com/en-us/library/ee358709.aspx.
+            </remarks>
+        </member>
         <member name="P:Telerik.Windows.Controls.DataServices.QueryableDataServiceCollectionViewBase.CanChangePage">
             <summary>
             Completes move to page operation. Raises PageChanged event and refreshes the data view.
@@ -303,6 +311,18 @@
             <summary>
             Loads the data.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDataServiceCollectionView`1.ReturnsSingleEntity(System.Data.Services.Client.DataServiceQuery{`0})">
+            <summary>
+            Determines whether the query will return a single resource, 
+            i.e. it has an Equals filter on its primary key column.
+            </summary>
+            <returns>true if the URI ends in an opening bracket, one or more digits and a closing bracket,
+            i.e. something like "...Customers(1)" getting the first customer.</returns>
+            <remarks>
+            Using a entity key to select a single entity (see rules: collectionNavigation and keyPredicate)
+            For example: http://services.odata.org/OData/OData.svc/Categories(1).
+            </remarks>
         </member>
         <member name="M:Telerik.Windows.Data.QueryableDataServiceCollectionView`1.System#Collections#Generic#IEnumerable{TEntity}#GetEnumerator">
             <summary>
@@ -377,6 +397,11 @@
         <member name="F:Telerik.Windows.Controls.RadDataServiceDataSource.QueryNameProperty">
             <summary>
             Indentifies <see cref="P:Telerik.Windows.Controls.RadDataServiceDataSource.QueryName"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDataServiceDataSource.ExpandProperty">
+            <summary>
+            Indentifies <see cref="P:Telerik.Windows.Controls.RadDataServiceDataSource.Expand"/> dependency property.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDataServiceDataSource.#ctor">
@@ -505,6 +530,14 @@
             The DataServiceContext will be searched for a method that returns an 
             EntityQuery, with a name that matches the name provided to 
             QueryName. The matched name can be with or without a "Query" suffix.
+            </remarks>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDataServiceDataSource.Expand">
+            <summary>
+            Gets or sets the expand option.
+            </summary>
+            <value>The expand option.</value>
+            <remarks>For more information, please visit http://msdn.microsoft.com/en-us/library/ee358709.aspx.
             </remarks>
         </member>
         <member name="P:Telerik.Windows.Controls.RadDataServiceDataSource.FilterDescriptors">

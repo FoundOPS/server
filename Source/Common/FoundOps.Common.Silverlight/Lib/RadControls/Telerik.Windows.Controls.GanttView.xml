@@ -4,6 +4,206 @@
         <name>Telerik.Windows.Controls.GanttView</name>
     </assembly>
     <members>
+        <member name="T:Telerik.Windows.Controls.GanttView.DragResizeMilestoneSlotHighlightContainer">
+            <summary>
+            Class reprsenting the container drawing the dragged milestone item.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.DragResizeSlotHighlightContainer">
+            <summary>
+            Class representing the container drawing the dragged regular task item.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.DragResizeSlotHighlightContainer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="!:DragDropSlotHighlightContainer"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.DragResizeSlotHighlightContainer.DataItem">
+            <summary>
+            Gets or sets the data item.
+            </summary>
+            <value>
+            The data item.
+            </value>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.DragResizeSlotHighlightContainer.Proxy.StartProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.DragResizeSlotHighlightContainer.Proxy.EndProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.DragResizeSlotHighlightContainer.Proxy.TaskProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.DragResizeSlotHighlightContainer.Proxy.Task">
+            <summary>
+            Gets or sets the task.
+            </summary>
+            <value>
+            The task.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.DragResizeSlotHighlightContainer.Proxy.Start">
+            <summary>
+            Gets or sets the start.
+            </summary>
+            <value>
+            The start.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.DragResizeSlotHighlightContainer.Proxy.End">
+            <summary>
+            Gets or sets the end.
+            </summary>
+            <value>
+            The end.
+            </value>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.DragResizeMilestoneSlotHighlightContainer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.DragResizeMilestoneSlotHighlightContainer"/> class.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.DragResizeSummarySlotHighlightContainer">
+            <summary>
+            Class reprsenting the container drawing the dragged summary item.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.DragResizeSummarySlotHighlightContainer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.DragResizeSummarySlotHighlightContainer"/> class.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.IDependency">
+            <summary>
+            Interface representing objects that define relation between two tasks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IDependency.FromTask">
+            <summary>
+            Represents the destination task of relation.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.IDependency.Type">
+            <summary>
+            Represents the type of relation between two tasks,
+            such as finish to start, start to finish,
+            start to start, and finish to finish. 
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.GanttDataConverter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GridHighlightAndSelectionData.HighlightedColumn">
+            <Summary>Gets or sets HighlightedColumn and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GridHighlightAndSelectionData.SelectedColumn">
+            <Summary>Gets or sets SelectedColumn and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GridHighlightAndSelectionData.EditedColumn">
+            <Summary>Gets or sets EditedColumn and notifies for changes</Summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.GanttDragDropBehavior">
+            <summary>
+            Provides the default drag-drop implementation of the RadGanttView control.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttDragDropBehavior.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.GanttDragDropBehavior"/> class.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.GanttDragResizeVisualProvider">
+            <summary>
+            Default provider for the visual cue of the dragged task.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttDragResizeVisualProvider.CreateDragVisual(Telerik.Windows.Controls.GanttView.GanttDragResizeVisualState)">
+            <summary>
+            Creates the drag visual.
+            </summary>
+            <param name="state">The state.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttDragResizeVisualProvider.CreateDragVisual(Telerik.Windows.DragDrop.Behaviors.DragVisualProviderState)">
+            <summary>
+            When overriden in a derived class allows customization of the drag visual. If the returned element
+            implements IEffectsPresenter, its Effects property will be automatically set during the drag-drop operation.
+            </summary>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttDragResizeVisualProvider.GetDragVisualOffset(Telerik.Windows.DragDrop.Behaviors.DragVisualProviderState)">
+            <summary>
+            When overriden in a derived class allows customization of the drag visual offset relatively to the mouse pointer.
+            </summary>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttDragResizeVisualProvider.DragVisualCueStyle">
+            <summary>
+            Gets or sets the drag visual cue style.
+            </summary>
+            <value>
+            The drag visual cue style.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttDragResizeVisualProvider.UseDefaultCursors">
+            <summary>
+            Specifies whether the drag-drop effects will change the mouse cursor or not. Return true if the cursor should change depending the drag-drop effects, otherwise false.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.GanttDragResizeVisualState">
+            <summary>
+            Default state for gantt drag visual provider
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttDragResizeVisualState.#ctor(System.Windows.Point,System.Collections.IEnumerable,System.Collections.Generic.IEnumerable{System.Windows.DependencyObject},System.Windows.FrameworkElement,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.DragDrop.Behaviors.DragVisualProviderState"/> class.
+            </summary>
+            <param name="relativeStartPoint">The cursor offset relative to the drag source.</param>
+            <param name="draggedItems">The dragged items.</param>
+            <param name="draggedItemContainers">The dragged item containers.</param>
+            <param name="host">The items host control.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttDragResizeVisualState.DraggedResizedData">
+            <summary>
+            Gets or sets the drag data.
+            </summary>
+            <value>
+            The drag data.
+            </value>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.GanttDragVisualCue.EffectsProperty">
+            <summary>
+            Identifies the Effects dependency property. 
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttDragVisualCue.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.DragDrop.DragVisual"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttDragVisualCue.UpdateVisualState">
+            <summary>
+            Updates the visual state of the DragVisual.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttDragVisualCue.Effects">
+            <summary>
+            Gets or sets the Effects. This is a dependency property.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.GanttView.InvertedDoubleToGridLengthConverter">
             <summary>
             TODO: Update summary.
@@ -102,9 +302,9 @@
             Defines basic methods and properties of a gantt task.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.IGanttTask.Relations">
+        <member name="P:Telerik.Windows.Controls.GanttView.IGanttTask.Dependencies">
             <summary>
-            Collection with relation to other tasks.
+            Collection with dependencies from other tasks.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.GanttView.IGanttTask.Duration">
@@ -152,11 +352,6 @@
             Gets a value indicating whether the instance is a summary.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.ISummary.Children">
-            <summary>
-            Collection with subtasks of given task/summary.
-            </summary>
-        </member>
         <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.GanttTask"/> class.
@@ -177,15 +372,6 @@
             <param name="end">The end.</param>
             <param name="title">The title.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.#ctor(System.DateTime,System.DateTime,System.String,System.Collections.Generic.IEnumerable{Telerik.Windows.Controls.GanttView.IRelation})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.GanttTask"/> class.
-            </summary>
-            <param name="start">The start.</param>
-            <param name="end">The end.</param>
-            <param name="title">The title.</param>
-            <param name="relations">The relations between this task and other tasks.</param>
-        </member>
         <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.ToString">
             <summary>
             Returns a <see cref="T:System.String"/> that represents this instance.
@@ -193,18 +379,6 @@
             <returns>
             A <see cref="T:System.String"/> that represents this instance.
             </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.SetChildren(System.Collections.Generic.IEnumerable{Telerik.Windows.Controls.GanttView.IGanttTask})">
-            <summary>
-            Sets the children tasks of the task.
-            </summary>
-            <param name="children">The children.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.GanttView.GanttTask.SetRelations(System.Collections.Generic.IEnumerable{Telerik.Windows.Controls.GanttView.IRelation})">
-            <summary>
-            Sets the relations to other tasks.
-            </summary>
-            <param name="relations">The relations.</param>
         </member>
         <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Start">
             <summary>
@@ -227,7 +401,7 @@
             Gets the children (subtasks).
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Relations">
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Dependencies">
             <summary>
             Collection with relations to other tasks.
             </summary>
@@ -267,11 +441,6 @@
             Gets a value indicating whether the instance is a summary.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Telerik#Windows#Controls#Scheduling#IResourceContainer#Resources">
-            <summary>
-            Gets the resources assigned to the task.
-            </summary>
-        </member>
         <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.UniqueId">
             <summary>
             Gets or sets the unique id.
@@ -280,22 +449,38 @@
             The unique id.
             </value>
         </member>
-        <member name="T:Telerik.Windows.Controls.GanttView.IRelation">
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Telerik#Windows#Core#IHierarchical#Children">
             <summary>
-            Interface representing objects that define relation between two tasks.
+            Gets the children (subtasks).
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.IRelation.Task">
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Telerik#Windows#Controls#GanttView#IGanttTask#Dependencies">
             <summary>
-            Represents the destination task of relation.
+            Collection with relations to other tasks.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.IRelation.Type">
+        <member name="P:Telerik.Windows.Controls.GanttView.GanttTask.Telerik#Windows#Controls#Scheduling#IResourceContainer#Resources">
             <summary>
-            Represents the type of relation between two tasks,
-            such as finish to start, start to finish,
-            start to start, and finish to finish. 
+            Gets the resources assigned to the task.
             </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.GanttTaskFactory">
+            <summary>
+            A factory that implements the logic for creatinf new gantt tasks and copying gantt tasks properties.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttTaskFactory.CreateNewItem">
+            <summary>
+            Creates the new item.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.GanttTaskFactory.CopyItemFrom(Telerik.Windows.Controls.IDateRange,Telerik.Windows.Controls.IDateRange)">
+            <summary>
+            Copies the item from.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="itemTocopy">The item tocopy.</param>
         </member>
         <member name="T:Telerik.Windows.Controls.GanttView.RelationType">
             <summary>
@@ -334,6 +519,11 @@
         <member name="T:Telerik.Windows.Controls.GanttView.GanttViewGridSplitter">
             <summary>
             TODO: Update summary.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.SelectedItemProperty">
+            <summary>
+            Identifies the SelectedItem dependency property. 
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.RadGanttView.ColumnsProperty">
@@ -376,10 +566,106 @@
             Identifies the HighlightedItemsSource dependency property. 
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.TimeLineFilteringBehaviorProperty">
+            <summary>
+            Identifies the TimeLineFilteringBehavior dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.SpecialSlotsGeneratorProperty">
+            <summary>
+            Identifies the SpecialSlotsGenerator dependency property. 
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadGanttView.HighlightsBehaviorProperty">
             <summary>
             Identifies the HighlightsBehavior dependency property. 
             </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.TaskFactoryProperty">
+            <summary>
+            Identifies the TaskFactoryProperty dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.DragVisualTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadGanttView.DragVisualTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.DragVisualStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadGanttView.DragVisualStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.ResizeVisualStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadGanttView.ResizeVisualStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.DragDropBehaviorProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadGanttView.DragDropBehavior"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.ResizeBehaviorProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadGanttView.ResizeBehavior"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.DataConverterProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadGanttView.DataConverter"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.SelectionChangedEvent">
+            <summary>
+            Identifies the SelectionChanged routed event. 
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadGanttView.OnSelectionChanged(Telerik.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Called when the selection changes.
+            </summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadGanttView.TaskCreatingEvent">
+            <summary>
+            Identifies the <see cref="E:Telerik.Windows.Controls.RadGanttView.TaskCreated"/> event.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.RadGanttView.SelectionChanged">
+            <summary>
+            Occurs when the selection of a Selector changes.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.DragDropBehavior">
+            <summary>
+            Gets or sets the drag-drop behavior that defines how RadGanttView will perform drag.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.ResizeBehavior">
+            <summary>
+            Gets or sets the resize behavior that defines how RadGanttView will perform resize.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.DragVisualTemplate">
+            <summary>
+            Gets or sets the DragVisualTemplate property. It defines the look and behavior for the visual element that is displayed when dragging tasks.
+            The default value is null. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.DragVisualStyle">
+            <summary>
+            Gets or sets the DragVisualStyle property. It defines the look and behavior for the visual element that is displayed when dragging tasks.
+            The default value is null. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadGanttView.ResizeVisualStyle">
+            <summary>
+            Gets or sets the resize visual style.
+            </summary>
+            <value>
+            The resize visual style.
+            </value>
         </member>
         <member name="P:Telerik.Windows.Controls.RadGanttView.PixelLength">
             <summary>
@@ -404,6 +690,156 @@
         <member name="P:Telerik.Windows.Controls.RadGanttView.TimeRulerLines">
             <summary>
             Gets or sets the TimeRulerLines. This is a dependency property.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.TaskCreatedEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskCreatedEventArgs.#ctor(Telerik.Windows.RoutedEvent,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskCreatedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskCreatedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Object,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskCreatedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="source">The source.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.TaskCreatedEventArgs.Task">
+            <summary>
+            Gets the task.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.TaskCreatingEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskCreatingEventArgs.#ctor(Telerik.Windows.RoutedEvent,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskCreatingEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskCreatingEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Object,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskCreatingEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="source">The source.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.TaskCreatingEventArgs.Task">
+            <summary>
+            Gets the task.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.TaskDeletedEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskDeletedEventArgs.#ctor(Telerik.Windows.RoutedEvent,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskDeletedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskDeletedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Object,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskDeletedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="source">The source.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.TaskDeletedEventArgs.Task">
+            <summary>
+            Gets the task.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.TaskDeletingEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskDeletingEventArgs.#ctor(Telerik.Windows.RoutedEvent,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskDeletingEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskDeletingEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Object,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskDeletingEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="source">The source.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.TaskDeletingEventArgs.Task">
+            <summary>
+            Gets the task.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.TaskEditedEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskEditedEventArgs.#ctor(Telerik.Windows.RoutedEvent,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskEditedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskEditedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Object,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskEditedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="source">The source.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.TaskEditedEventArgs.Task">
+            <summary>
+            Gets the task.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GanttView.TaskEditingEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskEditingEventArgs.#ctor(Telerik.Windows.RoutedEvent,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskEditingEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.TaskEditingEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Object,Telerik.Windows.Controls.GanttView.IGanttTask)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GanttView.TaskEditingEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="source">The source.</param>
+            <param name="task">The task.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.TaskEditingEventArgs.Task">
+            <summary>
+            Gets the task.
             </summary>
         </member>
     </members>

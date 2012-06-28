@@ -172,6 +172,31 @@
             Occurs when selection is changed.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.Primitives.IAutocomplete">
+            <summary>
+            An interface that is implemented by classes which support autocompleting among their child elements.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.IAutocomplete.Text">
+            <summary>
+            Gets the text for the selected item.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.IAutocomplete.TextRetriever">
+            <summary>
+            Gets the text Retriever that is used for item search.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.IAutocomplete.ValueRetriever">
+            <summary>
+            Gets the value Retriever that is used for item search.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.IAutocomplete.ItemSearch">
+            <summary>
+            Gets the search provider which is used from the retrievers.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.Automation.Peers.RadBusyIndicatorAutomationPeer">
             <summary>
             AutomationPeer for RadBusyIndicator
@@ -2785,6 +2810,91 @@
             <param name="culture"></param>
             <returns></returns>
         </member>
+        <member name="T:Telerik.Windows.DragDrop.DragDropPayloadManager">
+            <summary>
+            Provides basic methods for extracting data for the DragPayload class
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.GetDataFromObject(System.Object,System.String,System.Boolean)">
+            <summary>
+            Gets the data from object.
+            </summary>
+            <param name="draggedObject">The dragged object.</param>
+            <param name="format">The format.</param>
+            <param name="autoConvert">if set to <c>true</c> [auto convert].</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.GetDataFromObject(System.Object,System.String)">
+            <summary>
+            Gets the data from object.
+            </summary>
+            <param name="draggedObject">The dragged object.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.GetDataFromObject(System.Object,System.Type)">
+            <summary>
+            Gets the data from object.
+            </summary>
+            <param name="draggedObject">The dragged object.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.GetDataPresent(System.Object,System.String,System.Boolean)">
+            <summary>
+            Indicates whether data of a certain format is present in the draggedObject parameter.
+            </summary>
+            <param name="draggedObject">The dragged object.</param>
+            <param name="format">The format.</param>
+            <param name="autoConvert">if set to <c>true</c> [auto convert].</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.GetDataPresent(System.Object,System.String)">
+            <summary>
+            Indicates whether data of a certain format is present in the draggedObject parameter.
+            </summary>
+            <param name="draggedObject">The dragged object.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.GetDataPresent(System.Object,System.Type)">
+            <summary>
+            Indicates whether data of a certain format is present in the draggedObject parameter.
+            </summary>
+            <param name="draggedObject">The dragged object.</param>
+            <param name="format">The format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.GetFormats(System.Object,System.Boolean)">
+            <summary>
+            Gets the formats.
+            </summary>
+            <param name="draggedObject">The dragged object.</param>
+            <param name="autoConvert">if set to <c>true</c> [auto convert].</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.GetFormats(System.Object)">
+            <summary>
+            Gets the formats.
+            </summary>
+            <param name="draggedObject">The dragged object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.SetData(System.Object,System.String,System.Object)">
+            <summary>
+            Sets the data for the draggedObject parameter of a given format.
+            </summary>
+            <param name="draggedObject">The dragged object.</param>
+            <param name="format">The format.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.DragDropPayloadManager.GeneratePayload(Telerik.Windows.DragDrop.Behaviors.DataConverter)">
+            <summary>
+            Generate drag payload class based on the security restrictions (e.g. partiall trust or full trust application)
+            </summary>
+            <param name="converter">Data converter used to convert the data from one type to another.</param>
+            <returns>The dray playload object.</returns>
+        </member>
         <member name="T:Telerik.Windows.Media.Imaging.IImageDecoder">
             <summary>
             Represents a decoder for converting stream to RadBitmapData
@@ -3025,32 +3135,20 @@
             Represents the list control that has multiselection.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Controls.Primitives.MultiSelector">
-            <summary>
-            Extends the <see cref="T:Telerik.Windows.Controls.Primitives.SelectorControl"/> and allows a user to select multiple items from among its child elements.
-            </summary>
-        </member>
-        <member name="T:Telerik.Windows.Controls.Primitives.SelectorControl">
+        <member name="T:Telerik.Windows.Controls.Primitives.ItemsControlSelector">
             <summary>
             Represents a control that allows a user to select items from among its child elements.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Primitives.IMultiSelector">
+            <summary>
+            An interface that is implemented by classes which are responsible for selecting multiple items among their child elements.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Primitives.ISelector">
             <summary>
             An interface that is implemented by classes which are responsible for selecting items among their child elements.
             </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.ISelector.SelectJustThis(System.Object)">
-            <summary>
-            Selects only one item in the child elements and unselects the other items which are selected.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.ISelector.UpdateSelection(System.Object,System.Boolean)">
-            <summary>
-            Updates the selection for the item.
-            </summary>
-            <param name="item">The item.</param>
-            <param name="isSelected">if set to <c>true</c> [is selected].</param>
         </member>
         <member name="P:Telerik.Windows.Controls.Primitives.ISelector.SelectedIndex">
             <summary>
@@ -3067,163 +3165,199 @@
             Gets the value for the selected item.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.ISelector.Text">
-            <summary>
-            Gets the text for the selected item.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.ISelector.TextRetriever">
-            <summary>
-            Gets the text Retriever that is used for item search.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.ISelector.ValueRetriever">
-            <summary>
-            Gets the value Retriever that is used for item search.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.ISelector.ItemSearch">
-            <summary>
-            Gets the search provider which is used from the retrievers.
-            </summary>
-        </member>
         <member name="E:Telerik.Windows.Controls.Primitives.ISelector.SelectionChanged">
             <summary>
             Occurs when the selection of a Telerik.Windows.Controls.Primitives.ISelector object changes.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.SelectorControl.SelectedIndexProperty">
+        <member name="P:Telerik.Windows.Controls.Primitives.IMultiSelector.SelectedItems">
+            <summary>
+            Gets a collection of selected items.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Primitives.ISelectorInteraction">
+            <summary>
+            Exposes interface for internal interaction with the selectors.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ISelectorInteraction.GetItems">
+            <summary>
+            Gets the items.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ISelectorInteraction.GetDataItem(System.Windows.UIElement)">
+            <summary>
+            Gets the data item.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ISelectorInteraction.IsItemSelectable(System.Object)">
+            <summary>
+            Determines whether the item is selectable.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ISelectorInteraction.MoveCurrentItemInCollectionView(System.Object)">
+            <summary>
+            Moves the current item in collection view.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.ISelectorInteraction.IsDefaultCollectionView">
+            <summary>
+            Gets a value indicating whether this instance is default collection view.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.IsItemSelectable(System.Object)">
+            <summary>
+            Determines whether an item is selectable or not.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.GetDataItem(System.Windows.UIElement)">
+            <summary>
+            Gets the data item according to its container.
+            </summary>
+            <param name="container">The container.</param>
+            <returns></returns>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectionModeProperty">
+            <summary>
+            Identifies the SelectionMode dependency property. 
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.OnSelectionModeChanged">
+            <summary>
+            Called when selection mode changed.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedIndexProperty">
             <summary>
             Identifies the SelectedIndex dependency property. 
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.SelectorControl.SelectedItemProperty">
+        <member name="F:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedItemProperty">
             <summary>
             Identifies the SelectedItem dependency property. 
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.SelectorControl.SelectedValueProperty">
+        <member name="F:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedValueProperty">
             <summary>
             Identifies the SelectedValue dependency property. 
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.SelectorControl.SelectedValuePathProperty">
+        <member name="F:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedValuePathProperty">
             <summary>
             Identifies the SelectedValuePath dependency property. 
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.SelectorControl.TextProperty">
+        <member name="F:Telerik.Windows.Controls.Primitives.ItemsControlSelector.TextProperty">
             <summary>
             Identifies the Text dependency property. 
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.SelectorControl.TextPathProperty">
+        <member name="F:Telerik.Windows.Controls.Primitives.ItemsControlSelector.TextPathProperty">
             <summary>
             Identifies the TextPath dependency property. 
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.SelectorControl.SelectionChangedEvent">
+        <member name="F:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectionChangedEvent">
             <summary>
             Identifies the SelectionChanged routed event. 
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.#ctor">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.SelectorControl"/> class.
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.ItemsControlSelector"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.UpdateSelection(System.Object,System.Boolean)">
-            <summary>
-            Updates the selection.
-            </summary>
-            <param name="item">The item.</param>
-            <param name="isSelected">if set to <c>true</c> [selected].</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.IsIndexSelectable(System.Int32)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.IsIndexSelectable(System.Int32)">
             <summary>
             Determines whether the index is selectable.
             </summary>
             <param name="index">The index.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.IsItemItsOwnContainerOverride(System.Object)">
-            <summary>
-            Determines if the specified item is (or is eligible to be) its own container.
-            </summary>
-            <param name="item">The item to check.</param>
-            <returns>
-            true if the item is (or is eligible to be) its own container; otherwise, false.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.OnItemsSourceChanged(System.Collections.IEnumerable,System.Collections.IEnumerable)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.OnItemsSourceChanged(System.Collections.IEnumerable,System.Collections.IEnumerable)">
             <summary>
             Called when the SelectorControl.ItemsSource" property changes.
             </summary>
             <param name="oldValue">Old value of the SelectorControl.ItemsSource" property.</param>
             <param name="newValue">New value of the SelectorControl.ItemsSource" property.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.GetContainerForItemOverride">
-            <summary>
-            Creates or identifies the element that is used to display the given item.
-            </summary>
-            <returns>
-            The element that is used to display the given item.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
             <summary>
             Raises the <see cref="E:ItemsChanged"/> event.
             </summary>
             <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.OnSelectionChanged(Telerik.Windows.Controls.SelectionChangedEventArgs)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.OnSelectionChanged(Telerik.Windows.Controls.SelectionChangedEventArgs)">
             <summary>
             Called when the selection changes.
             </summary>
             <param name="e">The event data.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.InitializeValueRetriever">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.InitializeValueRetriever">
             <summary>
             Initializes the value Retriever.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.InitializeTextRetriever">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.InitializeTextRetriever">
             <summary>
             Initializes the text Retriever.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.UpdateItems(System.Collections.Specialized.NotifyCollectionChangedAction,System.Collections.IList,System.Collections.IList)">
             <summary>
-            When overridden in a derived class, undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
+            Updates the items when ItemsChanged occurs.
             </summary>
-            <param name="element">The container element.</param>
-            <param name="item">The item.</param>
+            <param name="action">The action.</param>
+            <param name="newItems">The new items.</param>
+            <param name="oldItems">The old items.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorControl.SelectJustThis(System.Object)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.InitializeSelectionBehavior">
             <summary>
-            Selects only one item in the child elements and unselects the other items which are selected.
+            Initializes the selection behavior.
             </summary>
         </member>
-        <member name="E:Telerik.Windows.Controls.Primitives.SelectorControl.SelectionChanged">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelector.GetSelectionBehavior">
+            <summary>
+            Gets the selection behavior.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectionMode">
+            <summary>
+            Gets or sets the SelectionMode. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedItems">
+            <summary>
+            Gets a collection of selected items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectionHelper">
+            <summary>
+            The selection helper used in all ItemsControlSelectors. It coordinates the selection using the selection behaviors.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectionChanged">
             <summary>
             Occurs when the selection of a Selector changes.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.SelectedIndex">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedIndex">
             <summary>
             Gets or sets the SelectedIndex. This is a dependency property.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.SelectedItem">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedItem">
             <summary>
             Gets the item which is currently selected.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.SelectedValue">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedValue">
             <summary>
             Gets the value for the selected item.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.SelectedValuePath">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedValuePath">
             <summary>
             Gets or sets the selected value path.
             </summary>
@@ -3231,107 +3365,39 @@
             The selected value path.
             </value>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.SelectedValueBinding">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.SelectedValueBinding">
             <summary>
             Gets or sets the SelectedValueBinding.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.TextBinding">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.TextBinding">
             <summary>
             Gets or sets the TextBinding.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.Text">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.Text">
             <summary>
             Gets or sets the Text. This is a dependency property.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.TextPath">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.TextPath">
             <summary>
             Gets or sets the TextPath. This is a dependency property.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.ItemSearch">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.ItemSearch">
             <summary>
             Gets the ItemSearch which defines the logic how the items are found via the retrievers.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.ValueRetriever">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.ValueRetriever">
             <summary>
             Gets the value Retriever that is used for item search.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.TextRetriever">
+        <member name="P:Telerik.Windows.Controls.Primitives.ItemsControlSelector.TextRetriever">
             <summary>
             Gets the text Retriever that is used for item search.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorControl.CanSelectMultiple">
-            <summary>
-            Gets or sets a value indicating whether selector control can select multiple items in its children collection.
-            </summary>
-            <value>
-            	<c>true</c> if this instance can select multiple; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="T:Telerik.Windows.Controls.Primitives.IMultiSelector">
-            <summary>
-            An interface that is implemented by classes which are responsible for selecting multiple items among their child elements.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.IMultiSelector.SelectItems(System.Collections.IEnumerable)">
-            <summary>
-            Selects multiple items.
-            </summary>
-            <param name="items">The items.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.IMultiSelector.SelectItems(System.Object,System.Object,System.Boolean)">
-            <summary>
-            Selects all items between two indexes in the children collection.
-            </summary>
-            <param name="from">From.</param>
-            <param name="destination">The destination.</param>
-            <param name="clearSelected">if set to <c>true</c> [clear selected].</param>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.IMultiSelector.SelectionMode">
-            <summary>
-            Gets or sets the selection mode.
-            </summary>
-            <value>
-            The selection mode.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.IMultiSelector.SelectedItems">
-            <summary>
-            Gets a collection of selected items.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.MultiSelector.SelectionModeProperty">
-            <summary>
-            Identifies the SelectionMode dependency property. 
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.MultiSelector.SelectItems(System.Collections.IEnumerable)">
-            <summary>
-            Selects multiple items.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.MultiSelector.SelectItems(System.Object,System.Object,System.Boolean)">
-            <summary>
-            Selects all items between two indexes in the children collection.
-            </summary>
-            <param name="from">From.</param>
-            <param name="destination">The destination.</param>
-            <param name="clearSelected">if set to <c>true</c> [clear selected].</param>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.MultiSelector.SelectionMode">
-            <summary>
-            Gets or sets the SelectionMode. This is a dependency property.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.MultiSelector.SelectedItems">
-            <summary>
-            Gets a collection of selected items.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Primitives.IListControl">
@@ -3436,10 +3502,27 @@
             Called when matching item is changed. Override this method if a custom logic is required when an item is changed.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.ListControl.OnTypedTextChanged">
+        <member name="M:Telerik.Windows.Controls.Primitives.ListControl.OnAutocompleteBehaviorTypedTextChanged">
             <summary>
             Called when a text is typed.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ListControl.GetContainerForItemOverride">
+            <summary>
+            Creates or identifies the element that is used to display the given item.
+            </summary>
+            <returns>
+            The element that is used to display the given item.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ListControl.IsItemItsOwnContainerOverride(System.Object)">
+            <summary>
+            Determines if the specified item is (or is eligible to be) its own container.
+            </summary>
+            <param name="item">The item to check.</param>
+            <returns>
+            true if the item is (or is eligible to be) its own container; otherwise, false.
+            </returns>
         </member>
         <member name="M:Telerik.Windows.Controls.Primitives.ListControl.OnSelectionChanged(Telerik.Windows.Controls.SelectionChangedEventArgs)">
             <summary>
@@ -3447,9 +3530,15 @@
             </summary>
             <param name="e">The event data.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.ListControl.UpdateSelectionOnMouseButton(Telerik.Windows.Controls.Primitives.ListItem,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ListControl.IsIndexSelectable(System.Int32)">
             <summary>
-            Updates the selection on mouse button.
+            Determines whether the index is selectable.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ListControl.OnSelectionModeChanged">
+            <summary>
+            Called when selection mode changed. Update CanAutocompleteSelectItems property.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.Primitives.ListControl.ScrollIntoView(System.Int32)">
@@ -3560,6 +3649,18 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadListBox"/> class.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadListBox.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadListBox.IsItemSelectable(System.Object)">
+            <summary>
+            Determines whether an item is selectable or not.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Controls.RadListBox.GetContainerForItemOverride">
             <summary>
             Creates or identifies the element that is used to display the given item.
@@ -3597,16 +3698,20 @@
             Initializes the text Retriever.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBox.UpdateSelectionOnMouseButton(Telerik.Windows.Controls.Primitives.ListItem,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+        <member name="M:Telerik.Windows.Controls.RadListBox.GetDataItem(System.Windows.UIElement)">
             <summary>
-            Updates the selection on mouse button.
+            Gets the data item according to its container.
             </summary>
+            <param name="container">The container.</param>
+            <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBox.HighlightedIndexChanged(System.Int32)">
+        <member name="M:Telerik.Windows.Controls.RadListBox.UpdateItems(System.Collections.Specialized.NotifyCollectionChangedAction,System.Collections.IList,System.Collections.IList)">
             <summary>
-            Highlights the changed index.
+            Updates the items when ItemsChanged occurs.
             </summary>
-            <param name="index">The index.</param>
+            <param name="action">The action.</param>
+            <param name="newItems">The new items.</param>
+            <param name="oldItems">The old items.</param>
         </member>
         <member name="P:Telerik.Windows.Controls.RadListBox.DragDropBehavior">
             <summary>
@@ -3627,14 +3732,6 @@
             <summary>
             Gets or sets a value indicating whether this instance is read only. This is a dependency property.
             </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.RadListBox.SelectionBehavior">
-            <summary>
-            Gets or sets the selection behavior.
-            </summary>
-            <value>
-            The selection behavior.
-            </value>
         </member>
         <member name="T:Telerik.Windows.Controls.RadListBox.RadListBoxDragDrop">
             <summary>
@@ -3860,40 +3957,37 @@
             Represents a item in a Telerik.Windows.Controls.Primitives.ListControl.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Controls.Primitives.SelectorItemControl">
+        <member name="T:Telerik.Windows.Controls.Primitives.ISelectorItem">
             <summary>
-            Represents an item in a Telerik.Windows.Controls.Primitives.SelectorControl.
+            An interface that is implemented by classes which are used from the selector controls.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.SelectorItemControl.IsSelectedProperty">
+        <member name="P:Telerik.Windows.Controls.Primitives.ISelectorItem.IsSelected">
             <summary>
-            Identifies the IsSelected dependency property. 
+            Gets or sets a value indicating whether this instance is selected.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectorItemControl.OnIsSelectedChanged">
+        <member name="P:Telerik.Windows.Controls.Primitives.ISelectorItem.SelectionHelper">
             <summary>
-            Called when IsSelected property is changed.
+            Gets or sets the selection helper.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorItemControl.IsSelected">
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnApplyTemplate">
             <summary>
-            Gets or sets a value indicating whether this instance is selected. This is a dependency property.
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.SelectorItemControl.ParentSelector">
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnGotFocus(System.Windows.RoutedEventArgs)">
             <summary>
-            Gets the parent selector.
+            Called before the <see cref="E:System.Windows.UIElement.GotFocus"/> event occurs.
             </summary>
+            <param name="e">The data for the event.</param>
         </member>
-        <member name="F:Telerik.Windows.Controls.Primitives.ListItem.IsHighlightedProperty">
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnLostFocus(System.Windows.RoutedEventArgs)">
             <summary>
-            Identifies the IsHighlighted dependency property. 
+            Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
             </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.ListItem"/> class.
-            </summary>
+            <param name="e">The data for the event.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
             <summary>
@@ -3901,28 +3995,28 @@
             </summary>
             <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
         </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            Invoked when an unhandled <see cref="E:System.Windows.UIElement.OnMouseLeftButtonUp"/> routed event is raised on this element. Implement this method to add class handling for this event.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnMouseRightButtonDown(System.Windows.Input.MouseButtonEventArgs)">
             <summary>
             Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseRightButtonDown"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
             </summary>
             <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the right mouse button was pressed.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
             <summary>
-            Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonUp"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+            Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseEnter"/> attached event is raised on this element. Implement this method to add class handling for this event.
             </summary>
-            <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was released.</param>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnMouseRightButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
             <summary>
-            Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseRightButtonUp"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+            Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseLeave"/> attached event is raised on this element. Implement this method to add class handling for this event.
             </summary>
-            <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the right mouse button was released.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.GoToState(System.Boolean,System.String[])">
-            <summary>
-            Updates the visual state.
-            </summary>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.Primitives.ListItem.ChangeVisualState(System.Boolean)">
             <summary>
@@ -3930,19 +4024,49 @@
             </summary>
             <param name="useTransitions">if set to <c>true</c> [use transitions].</param>
         </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.GoToState(System.Boolean,System.String[])">
+            <summary>
+            Updates the visual state.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnIsSelectedChanged">
+            <summary>
+            Called when selection is changed.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.TryFocus">
+            <summary>
+            Focus the item.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.Primitives.ListItem.OnIsHighlightedChanged">
             <summary>
             Called when IsHighlighted property changed.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.ListItem.ParentListControl">
+        <member name="M:Telerik.Windows.Controls.Primitives.ListItem.#ctor">
             <summary>
-            Gets the parent list control.
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.ListItem"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.ListItem.Telerik#Windows#Controls#Primitives#ISelectorItem#SelectionHelper">
+            <summary>
+            Gets or sets the selection helper.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.ListItem.ParentSelector">
+            <summary>
+            Gets the parent selector.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Primitives.ListItem.IsHighlighted">
             <summary>
-            Gets or sets the IsHighlighted. This is a dependency property.
+            Gets or sets a value indicating whether this instance is highlighted.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.ListItem.IsSelected">
+            <summary>
+            Gets or sets a value indicating whether this instance is selected.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadListBoxItem.#ctor">
@@ -3950,21 +4074,9 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadListBoxItem"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBoxItem.OnGotFocus(System.Windows.RoutedEventArgs)">
+        <member name="M:Telerik.Windows.Controls.RadListBoxItem.OnIsSelectedChanged">
             <summary>
-            Called before the <see cref="E:System.Windows.UIElement.GotFocus"/> event occurs.
-            </summary>
-            <param name="e">The data for the event.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadListBoxItem.OnLostFocus(System.Windows.RoutedEventArgs)">
-            <summary>
-            Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
-            </summary>
-            <param name="e">The data for the event.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadListBoxItem.OnApplyTemplate">
-            <summary>
-            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            Called when IsSelected property is changed.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadListBoxItem.ChangeVisualState(System.Boolean)">
@@ -3972,16 +4084,6 @@
             Changes the visual state.
             </summary>
             <param name="useTransitions">if set to <c>true</c> [use transitions].</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadListBoxItem.OnIsHighlightedChanged">
-            <summary>
-            Called when IsHighlighted property changed.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadListBoxItem.OnIsSelectedChanged">
-            <summary>
-            Called when IsSelected property is changed.
-            </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadListBoxItem.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
             <summary>
@@ -4846,7 +4948,7 @@
         </member>
         <member name="P:Telerik.Windows.DragDrop.DragDropCompletedEventArgs.Data">
             <summary>
-            Gets a data object that contains the data associated with the corresponding drag event.
+             Gets or sets the data that will be used for drag-and-drop operation.(Setting the data will override evrything that has already been set)
             </summary>
         </member>
         <member name="T:System.Windows.DragDropEffects">
@@ -5548,6 +5650,11 @@
             Gets or sets the AllowedEffect for a drag-and-drop operation if such are not specified in DragInitialize event arguments.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.DragDrop.DragDropManager.LastQueryContinueAction">
+            <summary>
+            Gets or sets the last query continue action.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.DragDrop.DragDropManager.IsDragInProgress">
             <summary>
             Gets a value indicating whether a drag is in progress.
@@ -5602,15 +5709,14 @@
             which operations are allowed by the originator of the drag event.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.DragDrop.DragEventArgs.Data">
-            <summary>
-            Gets a data object that contains the data associated with the corresponding
-            drag event.
-            </summary>
-        </member>
         <member name="P:Telerik.Windows.DragDrop.DragEventArgs.Effects">
             <summary>
             Gets or sets the target drop-and-drop operation.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.DragDrop.DragEventArgs.Data">
+            <summary>
+             Gets or sets the data that will be used for drag-and-drop operation.(Setting the data will override evrything that has already been set)
             </summary>
         </member>
         <member name="P:Telerik.Windows.DragDrop.DragEventArgs.MouseEventArgs">
@@ -5639,7 +5745,7 @@
         </member>
         <member name="P:Telerik.Windows.DragDrop.DragInitializeEventArgs.Data">
             <summary>
-             Gets or sets the data that will be used for drag-and-drop operation.
+             Gets or sets the data that will be used for drag-and-drop operation.(Setting the data will override evrything that has already been set)
             </summary>
         </member>
         <member name="P:Telerik.Windows.DragDrop.DragInitializeEventArgs.AllowedEffects">
@@ -6730,6 +6836,23 @@
             Using a DependencyProperty as the backing store for Target.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.Label.OnApplyTemplate">
+            <summary>
+            Invoked whenever application code or internal processes (such as a rebuilding layout pass) call.
+            <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Label.GoToState(System.Boolean,System.String[])">
+            <summary>
+            Updates the visual state.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Label.ChangeVisualState(System.Boolean)">
+            <summary>
+            Changes the visual state.
+            </summary>
+            <param name="useTransitions">if set to <c>true</c> [use transitions].</param>
+        </member>
         <member name="P:Telerik.Windows.Controls.Label.Target">
             <summary>
             Reserved for future use.
@@ -7675,126 +7798,139 @@
             Gets or sets the End proeprty.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.Primitives.ExtendedSelectionBehavior">
+            <summary>
+            Represents selection behavior for extended mode.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.Primitives.ISelectionBehavior">
             <summary>
             An interface that is implemented by classes which expose selection behavior.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.ISelectionBehavior.UpdateSelection(System.Object,System.Boolean,System.Boolean)">
+        <member name="M:Telerik.Windows.Controls.Primitives.ISelectionBehavior.GetItemsForSelection(Telerik.Windows.Controls.Primitives.SelectionState)">
             <summary>
-            Updates the selection.
+            Gets the items for selection.
             </summary>
-            <param name="item">The item.</param>
-            <param name="ctrl">if set to <c>true</c> [CTRL].</param>
-            <param name="shift">if set to <c>true</c> [shift].</param>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.ISelectionBehavior.Selector">
+        <member name="M:Telerik.Windows.Controls.Primitives.ISelectionBehavior.GetItemsForSelectionOnUserInteraction(Telerik.Windows.Controls.Primitives.SelectionState)">
             <summary>
-            Gets the MultiSelector.
+            Gets the items for selection on user interaction.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ISelectionBehavior.GetKeyboardModifiersState">
+            <summary>
+            Gets the state of the keyboard modifiers.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.ISelectionBehavior.CanSelectMultiple">
+            <summary>
+            Gets a value indicating whether this instance can select multiple items.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ExtendedSelectionBehavior.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.ExtendedSelectionBehavior"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ExtendedSelectionBehavior.#ctor(Telerik.Windows.Controls.KeyboardModifiersState)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.ExtendedSelectionBehavior"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ExtendedSelectionBehavior.GetKeyboardModifiersState">
+            <summary>
+            Gets the state of the keyboard modifiers.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Telerik.Windows.Controls.Primitives.MultiSelectionBehavior">
             <summary>
-            Represents behavior for multiselection in ItemsControls.
+            Represents selection behavior for multiple mode.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.MultiSelectionBehavior.#ctor(Telerik.Windows.Controls.Primitives.IMultiSelector)">
+        <member name="M:Telerik.Windows.Controls.Primitives.MultiSelectionBehavior.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.MultiSelectionBehavior"/> class.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.MultiSelectionBehavior.#ctor(Telerik.Windows.Controls.KeyboardModifiersState)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.MultiSelectionBehavior"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.MultiSelectionBehavior.GetKeyboardModifiersState">
+            <summary>
+            Gets the state of the keyboard modifiers.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Primitives.SingleSelectionBehavior">
+            <summary>
+            Represents selection behavior for single mode.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.SingleSelectionBehavior.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.SingleSelectionBehavior"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.SingleSelectionBehavior.#ctor(Telerik.Windows.Controls.KeyboardModifiersState)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.SingleSelectionBehavior"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.SingleSelectionBehavior.GetKeyboardModifiersState">
+            <summary>
+            Gets the state of the keyboard modifiers.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Primitives.ItemsControlSelectorExtensions">
+            <summary>
+            Static class helper for selector extensions.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelectorExtensions.ContainerFromItemOrContainer(Telerik.Windows.Controls.Primitives.ItemsControlSelector,System.Object)">
+            <summary>
+            Get container from item or container.
+            </summary>
             <param name="selector">The selector.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.MultiSelectionBehavior.UpdateSelection(System.Object,System.Boolean,System.Boolean)">
-            <summary>
-            Updates the selection.
-            </summary>
             <param name="item">The item.</param>
-            <param name="ctrl">if set to <c>true</c> [CTRL].</param>
-            <param name="shift">if set to <c>true</c> [shift].</param>
+            <returns></returns>
         </member>
-        <member name="P:Telerik.Windows.Controls.Primitives.MultiSelectionBehavior.Selector">
+        <member name="M:Telerik.Windows.Controls.Primitives.ItemsControlSelectorExtensions.ContainerFromIndex(Telerik.Windows.Controls.Primitives.ItemsControlSelector,System.Int32)">
             <summary>
-            Gets the MultiSelector.
+            Get container from index.
+            </summary>
+            <param name="selector">The selector.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.KeyboardModifiersState">
+            <summary>
+            Represents a class that holds which keyboard modifiers are pressed. It is used for the selection behaviors.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer">
+        <member name="M:Telerik.Windows.Controls.KeyboardModifiersState.#ctor">
             <summary>
-            Represents automation peer for MultiSelector.
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.KeyboardModifiersState"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.#ctor(Telerik.Windows.Controls.Primitives.MultiSelector)">
+        <member name="P:Telerik.Windows.Controls.KeyboardModifiersState.IsControlDown">
             <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Automation.Peers.SelectorAutomationPeer"/> class.
+            Gets or sets a value indicating whether the Control key is down.
             </summary>
-            <param name="owner">The owner.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.GetChildrenCore">
+        <member name="P:Telerik.Windows.Controls.KeyboardModifiersState.IsShiftDown">
             <summary>
-            Gets the collection of child elements of the <see cref="T:System.Windows.Controls.ItemsControl"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemsControlAutomationPeer"/>.
+            Gets or sets a value indicating whether the Shift key is down.
             </summary>
-            <returns>The collection of child elements.</returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.GetAutomationControlTypeCore">
+        <member name="P:Telerik.Windows.Controls.KeyboardModifiersState.IsAltDown">
             <summary>
-            Returns the control type for the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
+            Gets or sets a value indicating whether the Alt key is down.
             </summary>
-            <returns>A value of the enumeration.</returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
-            <summary>
-            Gets a control pattern for the <see cref="T:System.Windows.Controls.ItemsControl"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemsControlAutomationPeer"/>.
-            </summary>
-            <param name="patternInterface">One of the enumeration values that indicates the control pattern.</param>
-            <returns>
-            The object that implements the pattern interface, or null if the specified pattern interface is not implemented by this peer.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.CreateItemAutomationPeer(System.Object)">
-            <summary>
-            When overridden in a derived class, creates a new instance of the <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/> for a data item in the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> collection of this <see cref="T:System.Windows.Controls.ItemsControl"/>.
-            </summary>
-            <param name="item">The data item that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/>.</param>
-            <returns>
-            An object that exposes the data item to UI automation.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.GetClassNameCore">
-            <summary>
-            Returns the name of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
-            </summary>
-            <returns>
-            The name of the owner type that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. See Remarks.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.IsControlElementCore">
-            <summary>
-            Returns a value that indicates whether the element  that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/> is understood by the end user as interactive. Optionally, the user might understand the element as contributing to the logical structure of the control in the GUI. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.IsControlElement"/>.
-            </summary>
-            <returns>
-            True if the element is interactive; otherwise, false.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.GetSelection">
-            <summary>
-            Retrieves a UI automation provider for each child element that is selected.
-            </summary>
-            <returns>
-            A generic list of UI automation providers.
-            </returns>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.CanSelectMultiple">
-            <summary>
-            Gets a value that indicates whether the UI automation provider allows more than one child element to be selected concurrently.
-            </summary>
-            <value></value>
-            <returns>true if multiple selection is allowed; otherwise, false.</returns>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer.IsSelectionRequired">
-            <summary>
-            Gets a value that indicates whether the UI automation provider requires at least one child element to be selected.
-            </summary>
-            <value></value>
-            <returns>true if selection is required; otherwise, false.</returns>
         </member>
         <member name="T:Telerik.Windows.Controls.SelectionChangedEventHandler">
             <summary>
@@ -7828,11 +7964,6 @@
             Does nothing if the item is not already selected.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectionChanger`1.SelectJustThisItem(`0)">
-            <summary>
-            Select just this item; all other items in Selection will be removed.
-            </summary>
-        </member>
         <member name="M:Telerik.Windows.Controls.Primitives.SelectionChanger`1.SynchronizeInternalSelection">
             <summary>
             Update the InternalSelection.
@@ -7848,90 +7979,111 @@
             True if there is a SelectionChange currently in progress.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Controls.Primitives.Extensions.SelectorExtensions">
+        <member name="T:Telerik.Windows.Controls.Primitives.SelectionHelper">
             <summary>
-            Static class helper for selector extensions.
+            Represents a helper class which is used for selection.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.Extensions.SelectorExtensions.ContainerFromItemOrContainer(Telerik.Windows.Controls.Primitives.SelectorControl,System.Object)">
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.#ctor(Telerik.Windows.Controls.Primitives.ISelectorInteraction,Telerik.Windows.Controls.Primitives.ISelectionBehavior,System.Action{System.Object,Telerik.Windows.Controls.SelectionChangedEventArgs})">
             <summary>
-            Get container from item or container.
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.SelectionHelper"/> class.
             </summary>
-            <param name="selector">The selector.</param>
-            <param name="item">The item.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.GetSelectedItems">
+            <summary>
+            Gets the selected items.
+            </summary>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.Extensions.SelectorExtensions.ContainerFromIndex(Telerik.Windows.Controls.Primitives.SelectorControl,System.Int32)">
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.UpdateSelectionBehavior(Telerik.Windows.Controls.Primitives.ISelectionBehavior)">
             <summary>
-            Get container from index.
-            </summary>
-            <param name="selector">The selector.</param>
-            <param name="index">The index.</param>
-            <returns></returns>
-        </member>
-        <member name="T:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer">
-            <summary>
-            
+            Updates the selection behavior.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer.#ctor(System.Object,Telerik.Windows.Controls.Automation.Peers.MultiSelectorAutomationPeer)">
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.UpdateSelectionOnUserInteraction(System.Object)">
             <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Automation.Peers.SelectorItemAutomationPeer"/> class.
-            </summary>
-            <param name="owner">The owner.</param>
-            <param name="selectorAutomationPeer">The selector automation peer.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
-            <summary>
-            Returns the control pattern for the item that is associated with this <see cref="T:System.Windows.Automation.Peers.ItemAutomationPeer"/>.
-            </summary>
-            <param name="patternInterface">One of the enumeration values.</param>
-            <returns>
-            The object that implements the pattern interface, or null if the specified pattern interface is not implemented.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer.GetAutomationControlTypeCore">
-            <summary>
-            Returns the control type for the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
-            </summary>
-            <returns>A value of the enumeration.</returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer.GetClassNameCore">
-            <summary>
-            Returns the name of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
-            </summary>
-            <returns>
-            The name of the owner type that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. See Remarks.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer.AddToSelection">
-            <summary>
-            Adds the current element to the collection of selected items.
+            Updates the selection on user interaction.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer.RemoveFromSelection">
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.UpdateSelection(System.Windows.UIElement,System.Boolean)">
             <summary>
-            Removes the current element from the collection of selected items.
+            Updates the selection using the container and the current selected state.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer.Select">
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.AddToSelection(System.Collections.IEnumerable)">
             <summary>
-            Clears any existing selection and then selects the current element.
+            Adds items to selection.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer.IsSelected">
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.SelectItems(System.Collections.IEnumerable)">
             <summary>
-            Gets a value that indicates whether an item is selected.
+            Selects the items.
             </summary>
-            <value></value>
-            <returns>true if the element is selected; otherwise, false.</returns>
         </member>
-        <member name="P:Telerik.Windows.Controls.Automation.Peers.SelectorItemControlAutomationPeer.SelectionContainer">
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.DeselectItems(System.Collections.IEnumerable)">
             <summary>
-            Gets the UI automation provider that implements <see cref="T:System.Windows.Automation.Provider.ISelectionProvider"/> and acts as the container for the calling object.
+            UnSelects the items.
             </summary>
-            <value></value>
-            <returns>The UI automation provider.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.ClearSelection">
+            <summary>
+            Clears the selection.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionHelper.IsActive">
+            <summary>
+            Gets a value indicating whether the selection is active.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionHelper.SelectedIndex">
+            <summary>
+            Gets the index of the selected item.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionHelper.SelectedItem">
+            <summary>
+            Gets the selected item.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Primitives.SelectionState">
+            <summary>
+            Represents a class that holds the selection state for the selection behaviors.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionState.#ctor(System.Func{System.Collections.IEnumerable})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Primitives.SelectionState"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionState.Items">
+            <summary>
+            Gets all selector items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionState.Anchor">
+            <summary>
+            Gets or sets the anchor.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionState.CurrentItemsState">
+            <summary>
+            Gets or sets the state of the current items. If no value is set, true is default one.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionState.ClearPreviousSelectedItems">
+            <summary>
+            Gets or sets a value indicating whether the previous selected items will be cleared.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionState.ItemsForSelection">
+            <summary>
+            Gets the items for selection.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionState.PreviousSelectedItems">
+            <summary>
+            Gets the previous selected items.
+            </summary>
         </member>
         <member name="T:Telerik.Windows.Shapes.Arc">
             <summary>
@@ -9449,22 +9601,22 @@
         </member>
         <member name="F:Telerik.Windows.Controls.DropDownButtonPosition.Right">
             <summary>
-            Porition is at right side.
+            Position is at right side.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.DropDownButtonPosition.Bottom">
             <summary>
-            Porition is beneath the content.
+            Position is beneath the content.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.DropDownButtonPosition.Left">
             <summary>
-            Porition is at left side.
+            Position is at left side.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.DropDownButtonPosition.Top">
             <summary>
-            Porition is above the content.
+            Position is above the content.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.RadButton">
@@ -9741,6 +9893,12 @@
         <member name="M:Telerik.Windows.Controls.RadDropDownButton.#ctor">
             <summary>
             Initializes a new instance of the RadDropDownButton class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDropDownButton.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the
+            <see cref="T:Telerik.Windows.Controls.RadDropDownButton"/> is reclaimed by garbage collection.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDropDownButton.Dispose">
@@ -14271,6 +14429,257 @@
             Matches items, containing the search text. Case sensitive.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.MetroTouchColors">
+            <summary>
+            Provides XAML access to the <see cref="T:Telerik.Windows.Controls.MetroTouchPalette"/> Palette singleton through the MetroTouchColors Palette proeprty.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MetroTouchColors.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.MetroTouchColors"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchColors.Palette">
+            <summary>
+            Gets the singleton Palette from the <see cref="T:Telerik.Windows.Controls.MetroTouchPalette"/> class.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.MetroTouchPalette">
+            <summary>
+            Hold resources used in the <see cref="T:Telerik.Windows.Controls.MetroTouchTheme"/> theme.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.ThemePalette">
+            <summary>
+            Holds infrastructure for the binded resource in different themes.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.Palette">
+            <summary>
+            Holds the Palette singleton instance.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.IsFreezableProperty">
+            <summary>
+            Identifies the IsFreezable DependencyProperty.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MetroTouchPalette.GetIsFreezable(System.Windows.DependencyObject)">
+            <summary>
+            Gets the IsFreezable value from a DependencObject.
+            </summary>
+            <param name="dependencyObject">The dependencyObject.</param>
+            <returns>The IsFreezable value.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MetroTouchPalette.SetIsFreezable(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets the IsFreezable value from a DependencObject.
+            </summary>
+            <param name="dependencyObject">The dependencyObject.</param>
+            <param name="value">The IsFreezable value.</param>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.AccentColorProperty">
+            <summary>
+            Identifies the AccentColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.MainColorProperty">
+            <summary>
+            Identifies the MainColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.EffectLowColorProperty">
+            <summary>
+            Identifies the EffectLowColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.EffectHighColorProperty">
+            <summary>
+            Identifies the EffectHighColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.ValidationColorProperty">
+            <summary>
+            Identifies the ValidationColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.MainForegroundColorProperty">
+            <summary>
+            Identifies the MainForegroundColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.InvertedForegroundColorProperty">
+            <summary>
+            Identifies the InvertedForegroundColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.InvertedColorProperty">
+            <summary>
+            Identifies the InvertedColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.LowColorProperty">
+            <summary>
+            Identifies the LowColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.MediumColorProperty">
+            <summary>
+            Identifies the MediumColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.MetroTouchPalette.HighColorProperty">
+            <summary>
+            Identifies the HighColor DependencyProperty.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.AccentColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's accent.
+            </summary>
+            <value>
+            The color of the accent.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.MainColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's main.
+            </summary>
+            <value>
+            The color of the main.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.EffectLowColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's shallow highlights.
+            </summary>
+            <value>
+            The color of the effect.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.EffectHighColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's strong highlights.
+            </summary>
+            <value>
+            The color of the effect.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.ValidationColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's validation.
+            </summary>
+            <value>
+            The color of the validation.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.MainForegroundColor">
+            <summary>
+            Gets or sets the color of the main MetroTouchTheme's foreground.
+            </summary>
+            <value>
+            The color of the main foreground.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.InvertedForegroundColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's inverted foreground.
+            </summary>
+            <value>
+            The color of the inverted foreground.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.InvertedColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's inverted color.
+            </summary>
+            <value>
+            The color of the inverted color elements.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.LowColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's low contrast elements.
+            </summary>
+            <value>
+            The color of the low contrast elements.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.MediumColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's medium contrast element.
+            </summary>
+            <value>
+            The color of the medium contrast element.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.MetroTouchPalette.HighColor">
+            <summary>
+            Gets or sets the color of the MetroTouchTheme's high contrast element.
+            </summary>
+            <value>
+            The color of the high contrast element.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.MetroTouchTheme">
+            <summary>
+            VistaTheme class represents the key to the Vista theme.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Theme">
+            <summary>
+            Contains the location of the Theme.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Theme.ApplicationThemeSetterProperty">
+            <summary>
+            Identifies the ApplicationThemeSetter dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Theme.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Theme"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Theme.#ctor(System.Uri)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Theme"/> class.
+            </summary>
+            <param name="source">The Uri from which to load the Theme resources.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Theme.GetApplicationThemeSetter(System.Windows.DependencyObject)">
+            <summary>
+            Gets the application theme setter.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Theme.SetApplicationThemeSetter(System.Windows.DependencyObject,System.String)">
+            <summary>
+            Sets the application theme setter.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Theme.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Theme.Source">
+            <summary>
+            Gets or sets a Uri source for the theme.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Theme.IsApplicationTheme">
+            <summary>
+            Gets or sets if the current Source is an Application Theme.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.MetroTouchTheme.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.MetroTheme"/> class.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.MetroColorPalette">
             <summary>
             This class has a singletone instance stored in the MetroColors holding the 6 brushes used to colorize the Metro Theme.
@@ -14418,55 +14827,6 @@
         <member name="T:Telerik.Windows.Controls.MetroTheme">
             <summary>
             VistaTheme class represents the key to the Vista theme.
-            </summary>
-        </member>
-        <member name="T:Telerik.Windows.Controls.Theme">
-            <summary>
-            Contains the location of the Theme.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.Theme.ApplicationThemeSetterProperty">
-            <summary>
-            Identifies the ApplicationThemeSetter dependency property.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Theme.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Theme"/> class.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Theme.#ctor(System.Uri)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Theme"/> class.
-            </summary>
-            <param name="source">The Uri from which to load the Theme resources.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Theme.GetApplicationThemeSetter(System.Windows.DependencyObject)">
-            <summary>
-            Gets the application theme setter.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Theme.SetApplicationThemeSetter(System.Windows.DependencyObject,System.String)">
-            <summary>
-            Sets the application theme setter.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Theme.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-            </returns>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Theme.Source">
-            <summary>
-            Gets or sets a Uri source for the theme.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Theme.IsApplicationTheme">
-            <summary>
-            Gets or sets if the current Source is an Application Theme.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.MetroTheme.#ctor">
@@ -17458,6 +17818,11 @@
             <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadExpander.Telerik#Windows#Controls#IThemable#ResetTheme">
+            <summary>
+            Resets the theme. Part of the IThemable interface.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.RadExpander.OnCreateAutomationPeer">
             <summary>
             
@@ -19473,19 +19838,19 @@
               Looks up a localized string similar to Selected color.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Strings.ColorPickerAutomatic">
+        <member name="P:Telerik.Windows.Controls.Strings.ColorSelectorAutomaticColorText">
             <summary>
               Looks up a localized string similar to Automatic.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Strings.ColorPickerStandardColors">
-            <summary>
-              Looks up a localized string similar to Standard colors.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Strings.ColorPickerThemeColors">
+        <member name="P:Telerik.Windows.Controls.Strings.ColorSelectorMainPaletteHeaderText">
             <summary>
               Looks up a localized string similar to Theme colors.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.ColorSelectorStandardPaletteHeaderText">
+            <summary>
+              Looks up a localized string similar to Standard colors.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.CommitCellEdit">
@@ -19648,6 +20013,31 @@
               Looks up a localized string similar to Dockable.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Document_TrackChanges_ContinueSearchingFromBeginning">
+            <summary>
+              Looks up a localized string similar to Do you want to continue searching from the beginning of the document?.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Document_TrackChanges_ContinueSearchingFromEnd">
+            <summary>
+              Looks up a localized string similar to Do you want to continue searching from the end of the document?.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Document_TrackChanges_NoChanges">
+            <summary>
+              Looks up a localized string similar to The document contains no changes..
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Document_TrackChanges_UntrackableChange">
+            <summary>
+              Looks up a localized string similar to This action will not be marked as change. Do you want to continue?.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Document_TrackChanges_UntrackableChangeTitle">
+            <summary>
+              Looks up a localized string similar to Confirm Action.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_ChangeEditingPermissionsDialog_Groups">
             <summary>
               Looks up a localized string similar to Groups:.
@@ -19721,6 +20111,11 @@
         <member name="P:Telerik.Windows.Controls.Strings.Documents_ColumnProperties_Size">
             <summary>
               Looks up a localized string similar to Size.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_Commands_AcceptRevisionCommand_Name">
+            <summary>
+              Looks up a localized string similar to Change Accept.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_Commands_BaselineAlignmentCommand_Name">
@@ -20118,6 +20513,11 @@
               Looks up a localized string similar to Paragraph Spacing Before.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_Commands_RejectRevisionCommand_Name">
+            <summary>
+              Looks up a localized string similar to Change Reject.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_Commands_RemoveHyperlinkCommand_Name">
             <summary>
               Looks up a localized string similar to Remove Hyperlink.
@@ -20498,6 +20898,16 @@
               Looks up a localized string similar to Paragraph....
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_ContextMenu_TrackChanges_Accept">
+            <summary>
+              Looks up a localized string similar to Accept Change.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_ContextMenu_TrackChanges_Reject">
+            <summary>
+              Looks up a localized string similar to Reject Change.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_DoubleLineDecoration_DoubleLine">
             <summary>
               Looks up a localized string similar to Double line.
@@ -20827,7 +21237,7 @@
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_FontPropertiesDialog_Effects">
             <summary>
-              Looks up a localized string similar to Effects:.
+              Looks up a localized string similar to Effects.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_FontPropertiesDialog_Effects_Strikethrough">
@@ -21038,6 +21448,11 @@
         <member name="P:Telerik.Windows.Controls.Strings.Documents_InsertCaptionDialog_Caption">
             <summary>
               Looks up a localized string similar to Caption:.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_InsertCaptionDialog_CaptionExamples">
+            <summary>
+              Looks up a localized string similar to Figure 1-III, Table 1-A.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_InsertCaptionDialog_ChapterStartsWithStyle">
@@ -21632,7 +22047,7 @@
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_ParagraphPropertiesDialog_Indentation">
             <summary>
-              Looks up a localized string similar to .
+              Looks up a localized string similar to Indentation.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_ParagraphPropertiesDialog_LeftIndentation">
@@ -21775,11 +22190,51 @@
               Looks up a localized string similar to Print.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_RadRichTextBox_HyperlinkToolTipClick">
+            <summary>
+              Looks up a localized string similar to Click.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_RadRichTextBox_HyperlinkToolTipCtrlClick">
+            <summary>
+              Looks up a localized string similar to Ctrl + Click.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_RadRichTextBox_HyperlinkToolTipCurrentDocument">
+            <summary>
+              Looks up a localized string similar to Current Document.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_RadRichTextBox_HyperlinkToolTipFormatString">
              <summary>
                Looks up a localized string similar to {0}
             {1} to follow link.
              </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_RadRichTextBox_PageBreak">
+            <summary>
+              Looks up a localized string similar to ‧‧‧‧‧‧‧ Page Break ‧‧‧‧‧‧‧.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_RadRichTextBox_SectionBreak">
+            <summary>
+              Looks up a localized string similar to ::::::: Section Break ({0}) :::::::.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_RadRichTextBox_SectionBreak_EvenPage">
+            <summary>
+              Looks up a localized string similar to Even Page.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_RadRichTextBox_SectionBreak_NextPage">
+            <summary>
+              Looks up a localized string similar to Next Page.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_RadRichTextBox_SectionBreak_OddPage">
+            <summary>
+              Looks up a localized string similar to Odd Page.
+            </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_SaveCommand_UnableToSaveFile">
             <summary>
@@ -21951,6 +22406,11 @@
               Looks up a localized string similar to Create new style from formatting.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_StyleFormattingPropertiesDialog_DefineNewListStyle">
+            <summary>
+              Looks up a localized string similar to Define New List Style.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_StyleFormattingPropertiesDialog_DuplicatedStyleName">
             <summary>
               Looks up a localized string similar to This style name already exists..
@@ -21969,6 +22429,11 @@
         <member name="P:Telerik.Windows.Controls.Strings.Documents_StyleFormattingPropertiesDialog_LinkedStyle">
             <summary>
               Looks up a localized string similar to Linked.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_StyleFormattingPropertiesDialog_List">
+            <summary>
+              Looks up a localized string similar to List.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_StyleFormattingPropertiesDialog_ModifyStyleHeader">
@@ -22093,7 +22558,7 @@
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_TableBordersDialog_Header">
             <summary>
-              Looks up a localized string similar to Table Properties.
+              Looks up a localized string similar to Table Borders.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_TableBordersDialog_TableBorders">
@@ -22211,6 +22676,71 @@
               Looks up a localized string similar to Top.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_CaptionLabel">
+            <summary>
+              Looks up a localized string similar to Caption label:.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_General">
+            <summary>
+              Looks up a localized string similar to General.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_Header">
+            <summary>
+              Looks up a localized string similar to Table of Contents.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_PrintPreview">
+            <summary>
+              Looks up a localized string similar to Print Preview.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_PrintPreviewEquation">
+            <summary>
+              Looks up a localized string similar to Equation.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_PrintPreviewFigure">
+            <summary>
+              Looks up a localized string similar to Figure.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_PrintPreviewTable">
+            <summary>
+              Looks up a localized string similar to Table.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_RightAlignPageNumbers">
+            <summary>
+              Looks up a localized string similar to Right align page numbers.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_ShowLevels">
+            <summary>
+              Looks up a localized string similar to Show levels:.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_ShowPageNumbers">
+            <summary>
+              Looks up a localized string similar to Show page numbers.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_TabLeader">
+            <summary>
+              Looks up a localized string similar to Tab Leader:.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_TabLeaderNone">
+            <summary>
+              Looks up a localized string similar to (None).
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TableofContentsDialog_TOFTabHeader">
+            <summary>
+              Looks up a localized string similar to Table of Figures.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_TableProperties_Alignment">
             <summary>
               Looks up a localized string similar to Alignment.
@@ -22326,9 +22856,19 @@
               Looks up a localized string similar to This is not a valid tab stop..
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TabStopsPropertiesDialog_Leader">
+            <summary>
+              Looks up a localized string similar to Leader.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_TabStopsPropertiesDialog_Left">
             <summary>
               Looks up a localized string similar to Left.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_TabStopsPropertiesDialog_None">
+            <summary>
+              Looks up a localized string similar to None.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_TabStopsPropertiesDialog_ProblemRemovingTabStop">
@@ -22394,6 +22934,11 @@
         <member name="P:Telerik.Windows.Controls.Strings.Documents_WatermarkSettingsDialog_PictureWatermark">
             <summary>
               Looks up a localized string similar to Picture watermark.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Documents_WatermarkSettingsDialog_Text">
+            <summary>
+              Looks up a localized string similar to CONFIDENTIAL.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Documents_WatermarkSettingsDialog_TextSettings_Color">
@@ -22691,6 +23236,11 @@
               Looks up a localized string similar to Extends selection to current unit.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.f">
+            <summary>
+              Looks up a localized string similar to .
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.FilterAnd">
             <summary>
               Looks up a localized string similar to And.
@@ -22781,6 +23331,16 @@
               Looks up a localized string similar to first.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.FixedDocumentViewers_BeginningOfDocumentReachedMessage">
+            <summary>
+              Looks up a localized string similar to You have reached the beginning of the document..
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.FixedDocumentViewers_EndOfDocumentReachedMessage">
+            <summary>
+              Looks up a localized string similar to You have reached the end of the document..
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.Floating">
             <summary>
               Looks up a localized string similar to Floating.
@@ -22851,6 +23411,11 @@
               Looks up a localized string similar to Is equal to.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.GridViewFilterIsFalse">
+            <summary>
+              Looks up a localized string similar to False.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.GridViewFilterIsGreaterThan">
             <summary>
               Looks up a localized string similar to Is greater than.
@@ -22889,6 +23454,11 @@
         <member name="P:Telerik.Windows.Controls.Strings.GridViewFilterIsNull">
             <summary>
               Looks up a localized string similar to Is null.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.GridViewFilterIsTrue">
+            <summary>
+              Looks up a localized string similar to True.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.GridViewFilterMatchCase">
@@ -22954,6 +23524,11 @@
         <member name="P:Telerik.Windows.Controls.Strings.Heading">
             <summary>
               Looks up a localized string similar to Heading.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Height">
+            <summary>
+              Looks up a localized string similar to H:.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.Hide">
@@ -23636,6 +24211,16 @@
               Looks up a localized string similar to Popup index must be between {0} and {1}..
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.PositionX">
+            <summary>
+              Looks up a localized string similar to X:.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.PositionY">
+            <summary>
+              Looks up a localized string similar to Y:.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.PreviousAppointment">
             <summary>
               Looks up a localized string similar to Previous Appointment.
@@ -23799,6 +24384,11 @@
         <member name="P:Telerik.Windows.Controls.Strings.RibbonViewWindowTitleDivider">
             <summary>
               Looks up a localized string similar to  - .
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.RotationAngle">
+            <summary>
+              Looks up a localized string similar to Angle:.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.SaveAndClose">
@@ -24246,6 +24836,11 @@
               Looks up a localized string similar to week(s) on:.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Width">
+            <summary>
+              Looks up a localized string similar to W:.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.Yearly">
             <summary>
               Looks up a localized string similar to _Yearly.
@@ -24289,6 +24884,14 @@
         <member name="M:Telerik.Windows.Controls.RadToolTip.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadToolTip"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadToolTip.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application
+            code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate" />.
+            In simplest terms, this means the method is called just before a UI element displays
+            in an application. For more information, see Remarks.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadToolTip.HorizontalOffset">
@@ -24407,11 +25010,6 @@
         <member name="F:Telerik.Windows.Controls.RadToolTipService.ToolTipContentTemplateProperty">
             <summary>
             Identifies the ToolTipContentTemplate dependency property.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.RadToolTipService.ToolTipObjectProperty">
-            <summary>
-            Identifies the ToolTipObject dependency property.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadToolTipService.#cctor">
@@ -24613,12 +25211,6 @@
             </summary>
             <param name="element">The element.</param>
             <param name="value">The value.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadToolTipService.RemoveToolTip(System.Windows.DependencyObject)">
-            <summary>
-            Removes the tool0tip from the specified element.
-            </summary>
-            <param name="owner">The owner.</param>
         </member>
         <member name="T:Telerik.Windows.Controls.TransitionControl.ClrTransition">
             <summary>

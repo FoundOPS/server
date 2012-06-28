@@ -634,6 +634,11 @@
             Gets the collection with all the tick currently present on this axis.
             </summary>
         </member>
+        <member name="T:Telerik.Charting.ContentNode">
+            <summary>
+            Base class for all models with content that form the ChartArea tree.
+            </summary>
+        </member>
         <member name="P:Telerik.Charting.ContentNode.Content">
             <summary>
             Gets or sets the content associated with the node.
@@ -1138,6 +1143,11 @@
             Gets or sets the minimum value.
             </summary>
         </member>
+        <member name="T:Telerik.Charting.AxisLabelModel">
+            <summary>
+            This class represents the axis label data model.
+            </summary>
+        </member>
         <member name="T:Telerik.Charting.TickType">
             <summary>
             Defines the possible types of an axis tick.
@@ -1598,6 +1608,11 @@
         <member name="T:Telerik.Charting.OhlcDataPoint">
             <summary>
             A High-Low-Open-Close data point.
+            </summary>
+        </member>
+        <member name="M:Telerik.Charting.OhlcDataPoint.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Charting.OhlcDataPoint"/> class.
             </summary>
         </member>
         <member name="P:Telerik.Charting.OhlcDataPoint.IsRising">
@@ -2061,6 +2076,14 @@
             </summary>
             <param name="value1"></param>
             <param name="value2"></param>
+        </member>
+        <member name="M:Telerik.Charting.RadMath.AreClose(System.Double,System.Double,System.Double)">
+            <summary>
+            Determines whether the two specified values are close within the order of tolerance.
+            </summary>
+            <param name="value1"></param>
+            <param name="value2"></param>
+            <param name="tolerance"></param>
         </member>
         <member name="M:Telerik.Charting.RadMath.GetPointDistance(System.Double,System.Double,System.Double,System.Double)">
             <summary>
@@ -2628,17 +2651,19 @@
             Called when the behavior is removed from the chart control.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.ChartView.ChartBehavior.OnAdornerLayerInitialized">
+        <member name="M:Telerik.Windows.Controls.ChartView.ChartBehavior.OnChartTemplateChanged(System.Windows.Controls.Canvas,System.Windows.Controls.Canvas)">
             <summary>
-            Called when the adorner layer is initialized.
+            Called when chart template is changed.
             </summary>
+            <param name="oldAdornerContainer">The old adorner layer.</param>
+            <param name="adornerContainer">The adorner layer.</param>
         </member>
         <member name="P:Telerik.Windows.Controls.ChartView.ChartBehavior.Chart">
             <summary>
             Gets the <see cref="T:Telerik.Windows.Controls.ChartView.RadChartBase"/> instance to which this behavior is attached.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.ChartView.ChartBehavior.AdornerLayer">
+        <member name="P:Telerik.Windows.Controls.ChartView.ChartBehavior.AdornerContainer">
             <summary>
             Gets the <see cref="T:System.Windows.Controls.Canvas"/> instance used by different behaviors to add some elements to the visual tree.
             Will be null if the behavior is not yet attached or the chart's template is not applied.
@@ -2751,10 +2776,12 @@
             </summary>
             <param name="args">The <see cref="T:Telerik.Windows.Controls.ChartView.ChartSelectionChangedEventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.ChartView.ChartSelectionBehavior.OnAdornerLayerInitialized">
+        <member name="M:Telerik.Windows.Controls.ChartView.ChartSelectionBehavior.OnChartTemplateChanged(System.Windows.Controls.Canvas,System.Windows.Controls.Canvas)">
             <summary>
-            Called when the adorner layer is initialized.
+            Called when chart template is changed.
             </summary>
+            <param name="oldAdornerContainer">The old adorner layer.</param>
+            <param name="adornerContainer">The adorner layer.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.ChartView.ChartSelectionBehavior.OnDetached">
             <summary>
@@ -2878,10 +2905,12 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ChartView.ChartTooltipBehavior"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.ChartView.ChartTooltipBehavior.OnAdornerLayerInitialized">
+        <member name="M:Telerik.Windows.Controls.ChartView.ChartTooltipBehavior.OnChartTemplateChanged(System.Windows.Controls.Canvas,System.Windows.Controls.Canvas)">
             <summary>
-            Called when the adorner layer is initialized.
+            Called when chart template is changed.
             </summary>
+            <param name="oldAdornerContainer">The old adorner layer.</param>
+            <param name="adornerContainer">The adorner layer.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.ChartView.ChartTooltipBehavior.OnDetached">
             <summary>
@@ -2973,10 +3002,12 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ChartView.ChartTrackBallBehavior"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.ChartView.ChartTrackBallBehavior.OnAdornerLayerInitialized">
+        <member name="M:Telerik.Windows.Controls.ChartView.ChartTrackBallBehavior.OnChartTemplateChanged(System.Windows.Controls.Canvas,System.Windows.Controls.Canvas)">
             <summary>
-            Called when the adorner layer is initialized.
+            Called when chart template is changed.
             </summary>
+            <param name="oldAdornerContainer">The old adorner layer.</param>
+            <param name="adornerContainer">The adorner layer.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.ChartView.ChartTrackBallBehavior.OnAttached">
             <summary>
@@ -3084,10 +3115,12 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.ChartPanAndZoomBehavior.PanMode"/> dependency property.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.ChartView.ChartPanAndZoomBehavior.OnAdornerLayerInitialized">
+        <member name="M:Telerik.Windows.Controls.ChartView.ChartPanAndZoomBehavior.OnChartTemplateChanged(System.Windows.Controls.Canvas,System.Windows.Controls.Canvas)">
             <summary>
-            Called when the adorner layer is initialized.
+            Called when chart template is changed.
             </summary>
+            <param name="oldAdornerContainer">The old adorner layer.</param>
+            <param name="adornerContainer">The adorner layer.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.ChartView.ChartPanAndZoomBehavior.OnAttached">
             <summary>
@@ -3138,6 +3171,11 @@
         <member name="P:Telerik.Windows.Controls.ChartView.DataPointInfo.DisplayContent">
             <summary>
             Gets or sets the object that visually represents the value of the associated point.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.ChartView.DataPointInfo.DistanceToTouchLocation">
+            <summary>
+            Gets the distance to the touch location.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.ChartView.ReadOnlyChartSeriesCollection">
@@ -3475,6 +3513,11 @@
         <member name="F:Telerik.Windows.Controls.ChartView.ChartSeries.ClipTopPlotAreaProperty">
             <summary>
             Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.ChartSeries.ClipToPlotArea"/> property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ChartView.ChartSeries.DisplayNameProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.ChartSeries.DisplayName"/> dependency property.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.ChartView.ChartSeries.#ctor">
@@ -4631,6 +4674,17 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.LineAxis.PanZoomBarStyle"/> dependency property.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.ChartView.LineAxis.OnAttached">
+            <summary>
+            Occurs when the presenter has been successfully attached to its owning <see cref="T:Telerik.Windows.Controls.ChartView.RadChartBase"/> instance.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.ChartView.LineAxis.OnDetached(Telerik.Windows.Controls.ChartView.RadChartBase)">
+            <summary>
+            Occurs when the presenter has been successfully detached from its owning <see cref="T:Telerik.Windows.Controls.ChartView.RadChartBase"/> instance.
+            </summary>
+            <param name="oldChart"></param>
+        </member>
         <member name="M:Telerik.Windows.Controls.ChartView.LineAxis.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ChartView.LineAxis"/> class.
@@ -5155,6 +5209,11 @@
         <member name="M:Telerik.Windows.Controls.ChartView.CartesianChartGrid.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ChartView.CartesianChartGrid"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.ChartView.CartesianChartGrid.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.ChartView.CartesianChartGrid.UpdateUICore(Telerik.Windows.Controls.ChartView.ChartLayoutContext)">
@@ -6877,6 +6936,11 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ChartView.PieSeries"/> class.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.ChartView.PieSeries.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.ChartView.PieSeries.CreateDataSourceInstance">
             <summary>
             Creates the concrete data source for this instance.
@@ -7086,6 +7150,11 @@
         <member name="M:Telerik.Windows.Controls.ChartView.PolarChartGrid.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ChartView.PolarChartGrid"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.ChartView.PolarChartGrid.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.ChartView.PolarChartGrid.UpdateUICore(Telerik.Windows.Controls.ChartView.ChartLayoutContext)">
@@ -7523,11 +7592,6 @@
             Gets a value indicating whether the <see cref="P:Telerik.Windows.Controls.ChartView.RadarLineSeries.Stroke"/> property has been set locally.
             </summary>
             <value></value>
-        </member>
-        <member name="P:Telerik.Windows.Controls.ChartView.RadarLineSeries.AutoSortPoints">
-            <summary>
-            Gets or sets a value indicating whether owned data points will the automatically sorted depending on their Angle property. True by default.
-            </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.ChartView.RadarLineSeries.IsClosed">
             <summary>

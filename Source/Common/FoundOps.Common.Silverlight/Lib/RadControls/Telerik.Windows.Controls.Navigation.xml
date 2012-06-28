@@ -3720,7 +3720,7 @@
                     <see cref="P:Telerik.Windows.Controls.ItemsControl.ItemContainerStyleSelector"/>
                 </para>
                 <para>
-                    The RadTabItem is not meant to be used on its own but as item of the RadTabControl. 
+                    The RadTabItem is not meant to be used on its own but as item of the RadTabControl.
                     The TabItems will be automatically created if other items are inserted in the RadTabControl.
                 </para>
                 <para>
@@ -3733,7 +3733,7 @@
                     </list>
                 </para>
                 <para>
-                    Please note that the TabStripPlacement and TabOrientation properties are set by the TabControl and as 
+                    Please note that the TabStripPlacement and TabOrientation properties are set by the TabControl and as
                     such are read-only.
                 </para>
             </remarks>
@@ -7088,6 +7088,11 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.RadOutlookBar.VerticalResizerAlignment"/> dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadOutlookBar.MinimizeButtonStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadOutlookBar.MinimizeButtonStyle"/> dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadOutlookBar.MinimizedEvent">
             <summary>
             This event gets fired every time a <see cref="T:Telerik.Windows.Controls.RadOutlookBar"/> IsMiminized property is set to true.
@@ -7301,6 +7306,11 @@
         <member name="P:Telerik.Windows.Controls.RadOutlookBar.VerticalResizerAlignment">
             <summary>
             Gets or sets the VerticalResizerAlignment property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadOutlookBar.MinimizeButtonStyle">
+            <summary>
+            Gets or sets the MinimizeButtonStyle property.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadOutlookBar.Align">

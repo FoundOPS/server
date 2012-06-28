@@ -4,6 +4,12 @@
         <name>Telerik.Windows.Controls.FixedDocumentViewers</name>
     </assembly>
     <members>
+        <member name="M:Telerik.Windows.Documents.Commands.FindCommandBase.HandleSearchResult(Telerik.Windows.Documents.Fixed.Search.SearchResult)">
+            <summary>
+            Handles the given search result.
+            </summary>
+            <param name="result">The search result.</param>
+        </member>
         <member name="T:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands">
             <summary>
             Represents commands for a given <see cref="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.FixedDocumentViewer"/> instance.
@@ -57,6 +63,30 @@
             </summary>
             <value>The zoom out command.</value>
         </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.MoveCaretCommand">
+            <summary>
+            Gets the move caret command.
+            </summary>
+            <value>The move caret command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.FindCommand">
+            <summary>
+            Gets the find command.
+            </summary>
+            <value>The find command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.FindPreviousCommand">
+            <summary>
+            Gets the find previous command.
+            </summary>
+            <value>The find previous command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.CopyCommand">
+            <summary>
+            Gets the copy command.
+            </summary>
+            <value>The copy command.</value>
+        </member>
         <member name="T:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource">
             <summary>
             Represents a fixed document source, which can load a document from URI or stream.
@@ -92,7 +122,7 @@
             </summary>
             <param name="stream">The stream from which to create the document.</param>
         </member>
-        <member name="E:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.DocumentLoaded">
+        <member name="E:Telerik.Windows.Documents.Fixed.FixedDocumentStreamSource.Loaded">
             <summary>
             Occurs when document is loaded. It can be loaded asynchronously in case the provided URI is absolute.
             </summary>
@@ -165,10 +195,70 @@
             Represents base document presenter class.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Documents.UI.IFixedDocumentViewerSettingsHolder">
+            <summary>
+            Represents FixedDocumentViewerSettings holder.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.UI.FixedDocumentSinglePagePresenter.Settings">
+            <summary>
+            Gets or sets the settings.
+            </summary>
+            <value>The settings.</value>
+        </member>
         <member name="T:Telerik.Windows.Controls.FixedDocumentViewerBase">
             <summary>
             Base document viewing control that can host <see cref="T:Telerik.Windows.Documents.Fixed.Model.RadFixedDocument"/>.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.Copy">
+            <summary>
+            Copies the selected text in the Clipboard.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.Select(Telerik.Windows.Documents.Fixed.Text.TextPosition,Telerik.Windows.Documents.Fixed.Text.TextPosition)">
+            <summary>
+            Creates selection from start position to end position.
+            </summary>
+            <param name="startPosition">The start position.</param>
+            <param name="endPosition">The end position.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.GetSelectedText">
+            <summary>
+            Gets the selected text.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.GetSelectedTextAsync(System.Action{System.String})">
+            <summary>
+            Gets the selected text asynchroniously.
+            </summary>
+            <param name="callback">The callback that will be called when the text extraction completes.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.Find(System.String)">
+            <summary>
+            Finds the specified text in the current document.
+            </summary>
+            <param name="text">The text.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.Find(System.String,Telerik.Windows.Documents.Fixed.Search.TextSearchOptions)">
+            <summary>
+            Finds the specified text in the current document using specified options.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="options">The options.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.FindPrevious(System.String)">
+            <summary>
+            Finds the previous text in the current document.
+            </summary>
+            <param name="text">The text.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.FindPrevious(System.String,Telerik.Windows.Documents.Fixed.Search.TextSearchOptions)">
+            <summary>
+            Finds the previous text in the current document using specified options.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="options">The options.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.FixedDocumentViewerBase.Print">
             <summary>
@@ -201,6 +291,12 @@
             Occurs when the current page is changed.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.Mode">
+            <summary>
+            Gets or sets the mode that the FixedDocumentViewerBase class works.
+            </summary>
+            <value>The mode.</value>
+        </member>
         <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.Document">
             <summary>
             Gets or sets the document for the viewer.
@@ -208,11 +304,23 @@
             <value>The document.</value>
             <remarks>Instance of RadFixedDocument can be created from PdfFormatProvider class. Otherwise the DocumentSource property should be used.</remarks>
         </member>
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.Settings">
+            <summary>
+            Gets or sets the settings for the RadPdfViewerBase class.
+            </summary>
+            <value>The settings.</value>
+        </member>
         <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.DefaultFormatProviderSettings">
             <summary>
             Gets or sets the default format provider settings for the current FixedDocumentViewerBase. This property is used in the OpenPdfDocumentCommand.
             </summary>
             <value>The default format provider settings.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.CurrentPage">
+            <summary>
+            Gets the current page.
+            </summary>
+            <value>The current page.</value>
         </member>
         <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.DocumentSource">
             <summary>
@@ -226,19 +334,25 @@
             </summary>
             <value>The scale factor.</value>
         </member>
-        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.IsInPanMode">
-            <summary>
-            Gets or sets if the viewer is in pan mode.
-            </summary>
-            <value>The is in pan mode.</value>
-        </member>
         <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.CurrentPageNumber">
             <summary>
             Gets or sets the current page number.
             </summary>
             <value>The current page number.</value>
         </member>
-        <member name="T:Telerik.Windows.Documents.UI.Page">
+        <member name="P:Telerik.Windows.Controls.FixedDocumentViewerBase.IsInPanMode">
+            <summary>
+            Gets or sets if the viewer is in pan mode.
+            </summary>
+            <value>The is in pan mode.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.UI.FixedDocumentViewerSettings.UseOnlyStandardFonts">
+            <summary>
+            Gets or sets the setting if the RadPdfViewer should use only standard fonts.
+            </summary>
+            <value>The use only standard fonts.</value>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.UI.Page">
             <summary>
             Represents a Fixed Page UI.
             </summary>
@@ -247,6 +361,12 @@
             <summary>
             Represents a control for visualization of PDF documents.
             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadPdfViewer.KeyBindings">
+            <summary>
+            Gets or sets the key bindings.
+            </summary>
+            <value>The key bindings.</value>
         </member>
         <member name="P:Telerik.Windows.Controls.RadPdfViewer.DocumentSource">
             <summary>
