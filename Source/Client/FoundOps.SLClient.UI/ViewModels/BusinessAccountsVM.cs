@@ -236,7 +236,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             AddNewItemUserAccount = name =>
             {
                 var newUserAccount = VM.UserAccounts.CreateNewItem(name);
-                this.SelectedEntity.AdministratorRole.MemberParties.Add(newUserAccount);
+                //CreateNewItem automatically adds it to the Administator role, no need to do it here
                 return (UserAccount)newUserAccount;
             };
 
@@ -246,7 +246,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 var selectedUserAccount = VM.UserAccounts.SelectedEntity;
                 if (selectedUserAccount != null)
-                    this.SelectedEntity.AdministratorRole.MemberParties.Remove(selectedUserAccount);
+                {
+                    var rolesToRemoveFrom = this.SelectedEntity.RoleMembership.Where(r => r.OwnerParty == this.SelectedEntity).ToArray();
+                 
+                    foreach (var role in rolesToRemoveFrom)
+                        role.MemberParties.Remove(selectedUserAccount);
+                }
 
                 return (UserAccount)selectedUserAccount;
             };
@@ -287,7 +292,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Add administrator role
             var administratorRole = new Role { Id = Guid.NewGuid(), Name = "Administrator", OwnerParty = newBusinessAccount, RoleType = RoleType.Administrator };
-            
+
             //Add the manager, business administrator, and HTML blocks to the administrator role
             foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds).Union(BlockConstants.HtmlBlockIds))
                 administratorRole.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
