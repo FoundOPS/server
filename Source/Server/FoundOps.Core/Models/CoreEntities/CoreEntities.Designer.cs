@@ -11786,21 +11786,6 @@ namespace FoundOps.Core.Models.CoreEntities
     [Serializable()]
     public partial class ResourceWithLastPoint : ComplexObject
     {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new ResourceWithLastPoint object.
-        /// </summary>
-        /// <param name="collectedTimeStamp">Initial value of the CollectedTimeStamp property.</param>
-        public static ResourceWithLastPoint CreateResourceWithLastPoint(global::System.DateTime collectedTimeStamp)
-        {
-            ResourceWithLastPoint resourceWithLastPoint = new ResourceWithLastPoint();
-            resourceWithLastPoint.CollectedTimeStamp = collectedTimeStamp;
-            return resourceWithLastPoint;
-        }
-
-        #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -11950,9 +11935,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.DateTime CollectedTimeStamp
+        public Nullable<global::System.DateTime> CollectedTimeStamp
         {
             get
             {
@@ -11967,8 +11952,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnCollectedTimeStampChanged();
             }
         }
-        private global::System.DateTime _CollectedTimeStamp;
-        partial void OnCollectedTimeStampChanging(global::System.DateTime value);
+        private Nullable<global::System.DateTime> _CollectedTimeStamp;
+        partial void OnCollectedTimeStampChanging(Nullable<global::System.DateTime> value);
         partial void OnCollectedTimeStampChanged();
     
         /// <summary>

@@ -9,12 +9,12 @@ namespace FoundOPS.API.Models
         /// Null if the object being tracked is a Vehicle
         /// </summary>
         public Guid? EmployeeId { get; set; }
-        
+
         /// <summary>
         /// The name of the object being tracked (ex: Bob Block or License Plate of Vehicle)
         /// </summary>
         public string EntityName { get; set; }
-        
+
         /// <summary>
         /// The Id of the Vehicle being tracked
         /// Null if the object being tracked is a Employee
@@ -28,7 +28,6 @@ namespace FoundOPS.API.Models
                 Heading = modelResource.Heading,
                 EmployeeId = modelResource.EmployeeId,
                 EntityName = modelResource.EntityName,
-                CollectedTimeStamp = modelResource.CollectedTimeStamp,
                 Latitude = modelResource.Latitude,
                 Longitude = modelResource.Longitude,
                 RouteId = modelResource.RouteId,
@@ -37,6 +36,9 @@ namespace FoundOPS.API.Models
                 VehicleId = modelResource.VehicleId,
                 Accuracy = modelResource.Accuracy
             };
+
+            if (modelResource.CollectedTimeStamp.HasValue)
+                resource.CollectedTimeStamp = modelResource.CollectedTimeStamp.Value;
 
             return resource;
         }
