@@ -13,7 +13,8 @@
             <summary>
             Measures the children of a <see cref="T:Telerik.Windows.Controls.ChaptersPanel"/> to prepare for arranging them during the ArrangeOverride pass. 
             </summary>
-            <param name="availableSize">The available size that this element can give to child elements. Indicates an upper limit that child elements should not exceed.</param>
+            <param name="availableSize">The available size that this element can give to child elements.
+            Indicates an upper limit that child elements should not exceed.</param>
             <returns>The Size that represents the desired size of the element.</returns>
         </member>
         <member name="M:Telerik.Windows.Controls.ChaptersPanel.ArrangeOverride(System.Windows.Size)">

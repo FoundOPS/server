@@ -2674,31 +2674,6 @@
             This collection contains the behaviors for RadChart.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.ChartView.ChartBehaviorCollection.InsertItem(System.Int32,Telerik.Windows.Controls.ChartView.ChartBehavior)">
-            <summary>
-            Inserts a behavior at the specified index.
-            </summary>
-            <param name="index">The index at which to insert the behavior.</param>
-            <param name="item">The behavior to insert.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.ChartView.ChartBehaviorCollection.RemoveItem(System.Int32)">
-            <summary>
-            Removes a behavior at the specified index.
-            </summary>
-            <param name="index">The index at which a behavior will be removed.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.ChartView.ChartBehaviorCollection.SetItem(System.Int32,Telerik.Windows.Controls.ChartView.ChartBehavior)">
-            <summary>
-            Replaces a behavior at the specified index with the specified item.
-            </summary>
-            <param name="index">The index of the behavior to replace.</param>
-            <param name="item">The new behavior.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.ChartView.ChartBehaviorCollection.ClearItems">
-            <summary>
-            Removes all behaviors from RadChart.
-            </summary>
-        </member>
         <member name="T:Telerik.Windows.Controls.ChartView.ChartDataContext">
             <summary>
             An object of this type is used as a data context for chart's behaviors.
@@ -5385,6 +5360,11 @@
         <member name="F:Telerik.Windows.Controls.ChartView.RadChartBase.SelectedPointsProperty">
             <summary>
             Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.RadChartBase.SelectedPoints"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ChartView.RadChartBase.BehaviorsProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.RadChartBase.Behaviors"/> dependency property.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.ChartView.RadChartBase.PaletteProperty">

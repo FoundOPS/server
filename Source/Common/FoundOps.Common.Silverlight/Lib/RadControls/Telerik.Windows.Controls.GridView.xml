@@ -3470,6 +3470,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Telerik.Windows.Controls.GridViewColumn.CreateColumnFilterDescriptor">
+            <summary>
+            Creates the column filter descriptor.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Controls.GridViewColumn.ClearFilters">
             <summary>
             Clears all filtering associated with this column.
@@ -4684,6 +4690,12 @@
             <returns>
             An object that represents the content of the cell.
             </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridViewExpressionColumn.CreateColumnFilterDescriptor">
+            <summary>
+            Creates the column filter descriptor.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:Telerik.Windows.Controls.GridViewExpressionColumn.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)">
             <summary>
@@ -8364,12 +8376,79 @@
             </summary>
             <value>The column.</value>
         </member>
+        <member name="M:Telerik.Windows.Controls.GridView.ColumnFilterDescriptor.CreateFilterExpression(System.Linq.Expressions.Expression)">
+            <summary>
+            Creates a filter expression by delegating its creation to
+            <see cref="M:Telerik.Windows.Data.FilterDescriptorBase.CreateFilterExpression(System.Linq.Expressions.ParameterExpression)"/>, if
+            <paramref name="instance"/> is <see cref="T:System.Linq.Expressions.ParameterExpression"/>, otherwise throws <see cref="T:System.ArgumentException"/>
+            </summary>
+            <param name="instance">The instance expression, which will be used for filtering.</param>
+            <returns>A predicate filter expression.</returns>
+            <exception cref="T:System.ArgumentException">Parameter should be of type <see cref="T:System.Linq.Expressions.ParameterExpression"/></exception>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.ColumnFilterDescriptor.Refresh">
+            <summary>
+            Refreshes the column filter descriptor from its parent column.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.GridView.ColumnFilterDescriptor.#ctor(Telerik.Windows.Controls.GridViewColumn)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.ColumnFilterDescriptor"/> class.
             </summary>
             <param name="column">The column.</param>
             <exception cref="T:System.ArgumentNullException"><c>column</c> is null.</exception>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor">
+            <summary>
+            A ColumnFilterDescriptor for GridViewDataColumn.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor.#ctor(Telerik.Windows.Controls.GridViewColumn)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor"/> class.
+            </summary>
+            <param name="column">The column.</param>
+            <exception cref="T:System.ArgumentNullException"><c>column</c> is null.</exception>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor.Refresh">
+            <summary>
+            Refreshes the column filter descriptor from its parent column.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor.Member">
+            <summary>
+            Gets or sets the member.
+            </summary>
+            <value>The member.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor.MemberType">
+            <summary>
+            Gets or sets the type of the member.
+            </summary>
+            <value>The type of the member.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor">
+            <summary>
+            A ColumnFilterDescriptor for GridViewExpressionColumn.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor.#ctor(Telerik.Windows.Controls.GridViewColumn)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor"/> class.
+            </summary>
+            <param name="column">The column.</param>
+            <exception cref="T:System.ArgumentNullException"><c>column</c> is null.</exception>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor.Refresh">
+            <summary>
+            Refreshes the column filter descriptor from its parent column.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor.LambdaExpression">
+            <summary>
+            Gets or sets the lambda expression.
+            </summary>
+            <value>The lambda expression.</value>
         </member>
         <member name="T:Telerik.Windows.Controls.GridView.DistinctValueConverter">
             <summary>
@@ -13954,6 +14033,13 @@
             <summary>
             Virtualizing panel for nested groups.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.IndexStorage.RemoveAt(System.Int32)">
+            <summary>
+            Removes the element at the given index. Worst complexity is
+            (N-InsertIndex) + Log(N)*NonDefaultsInRange(N-InsertIndex).
+            </summary>
+            <param name="index">The index at which to remove the item.</param>
         </member>
         <member name="T:Telerik.Windows.Controls.GridView.IndexTree">
             <summary>

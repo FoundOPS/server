@@ -3120,6 +3120,11 @@
             Represents the ResizeGripperVisibility dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.ItemTemplateProperty">
+            <summary>
+            Repsents the ItemTemplate dependency property.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.Header">
             <summary>
             Gets or sets the header.
@@ -3133,6 +3138,12 @@
             Gets or sets the resize gripper visibility.
             </summary>
             <value>The resize gripper visibility.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.ItemTemplate">
+            <summary>
+            Gets or sets an ItemTemplate for the CollectionEditor ListBox.
+            </summary>
+            <value>The item template.</value>        
         </member>
         <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands">
             <summary>

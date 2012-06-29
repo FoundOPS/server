@@ -4484,6 +4484,11 @@
             Gets the virtualization service.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.IServiceLocator.SegmentationService">
+            <summary>
+            Gets the segmentation service.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ISerializable">
             <summary>
             Represents a serializable item.
@@ -5343,6 +5348,11 @@
         <member name="P:Telerik.Windows.Diagrams.Core.DiagramConstants.MinimumShapeSize">
             <summary>
             The minimum size of item.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.DiagramConstants.SegmentStep">
+            <summary>
+            Gets the segment step.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ExecuteAction">
@@ -6323,981 +6333,6 @@
             Gets the serialization info.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.ColorExtension">
-            <summary>
-            A collection of utilities related to color.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorExtension.op_Implicit(System.UInt32)~Telerik.Windows.Diagrams.Core.ColorExtension">
-            <summary>
-            Performs an implicit conversion from <see cref="T:System.UInt32"/> to <see cref="T:Telerik.Windows.Diagrams.Core.ColorExtension"/>.
-            </summary>
-            <param name="color">The color.</param>
-            <returns>
-            The result of the conversion.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorExtension.op_Implicit(Telerik.Windows.Diagrams.Core.ColorExtension)~System.Windows.Media.Color">
-            <summary>
-            Performs an implicit conversion from <see cref="T:Telerik.Windows.Diagrams.Core.ColorExtension"/> to <see cref="T:System.Windows.Media.Color"/>.
-            </summary>
-            <param name="color">The color.</param>
-            <returns>
-            The result of the conversion.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorExtension.op_Implicit(Telerik.Windows.Diagrams.Core.ColorExtension)~System.Windows.Media.Brush">
-            <summary>
-            Performs an implicit conversion from <see cref="T:Telerik.Windows.Diagrams.Core.ColorExtension"/> to <see cref="T:System.Windows.Media.Brush"/>.
-            </summary>
-            <param name="color">The color.</param>
-            <returns>
-            The result of the conversion.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorExtension.ToBrush(Telerik.Windows.Diagrams.Core.ColorExtension)">
-            <summary>
-            Converts ColorExtension to Brush.
-            </summary>
-            <param name="color">The color.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorExtension.op_Implicit(Telerik.Windows.Diagrams.Core.ColorExtension)~System.Int32">
-            <summary>
-            Performs an implicit conversion from <see cref="T:Telerik.Windows.Diagrams.Core.ColorExtension"/> to <see cref="T:System.UInt32"/>.
-            </summary>
-            <param name="color">The color.</param>
-            <returns>
-            The result of the conversion.
-            </returns>
-        </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.KnownColors">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.AliceBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.AntiqueWhite">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Aqua">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Aquamarine">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Azure">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Beige">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Bisque">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Black">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.BlanchedAlmond">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Blue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.BlueViolet">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Brown">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.BurlyWood">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.CadetBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Chartreuse">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Chocolate">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Coral">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.CornflowerBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.CornSilk">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Crimson">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Cyan">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkCyan">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkGoldenrod">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkKhaki">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkMagenta">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkOliveGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkOrange">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkOrchid">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkRed">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkSalmon">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkSeaGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkSlateBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkSlateGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkTurquoise">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DarkViolet">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DeepPink">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DeepSkyBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DimGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.DodgerBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Firebrick">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.FloralWhite">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.ForestGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Fuchsia">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Gainsboro">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.GhostWhite">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Gold">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Goldenrod">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Gray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Green">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.GreenYellow">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Honeydew">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.HotPink">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.IndianRed">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Indigo">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Ivory">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Khaki">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Lavender">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LavenderBlush">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LawnGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LemonChiffon">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightCoral">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightCyan">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightGoldenrodYellow">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightLightGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightPink">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightSalmon">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightSeaGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightSkyBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightSlateGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightSteelBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LightYellow">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Lime">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.LimeGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Linen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Magenta">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Maroon">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MediumAquamarine">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MediumBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MediumOrchid">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MediumPurple">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MediumSeaGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MediumSlateBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MediumSpringGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MediumTurquoise">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MediumVioletRed">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MidnightBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MintCream">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.MistyRose">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Moccasin">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.NavajoWhite">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Navy">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.OldLace">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Olive">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.OliveDrab">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Orange">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.OrangeRed">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Orchid">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.PaleGoldenrod">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.PaleGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.PaleTurquoise">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.PaleVioletRed">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.PapayaWhip">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.PeachPuff">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Peru">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Pink">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Plum">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.PowderBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Purple">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Red">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.RosyBrown">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.RoyalBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.SaddleBrown">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Salmon">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.SandyBrown">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.SeaGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.SeaShell">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Sienna">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Silver">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.SkyBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.SlateBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.SlateGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Snow">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.SpringGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.SteelBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Tan">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Teal">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Thistle">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Tomato">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Transparent">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Turquoise">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Violet">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Wheat">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.White">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.WhiteSmoke">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.Yellow">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownColors.YellowGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.ColorUtilities">
-            <summary>
-            Static helper class related to color.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.ColorUtilities.NamedColorsRgb">
-            <summary>
-            The ARGB values corresponding to the <see cref="F:Telerik.Windows.Diagrams.Core.ColorUtilities.NamedColors"/>.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.ColorUtilities.NamedColors">
-            <summary>
-            Know color names taken over from .Net.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.FromArgb(System.Byte,System.Byte,System.Byte,System.Byte)">
-            <summary>
-            Froms the ARGB.
-            </summary>
-            <param name="alfa">The alfa.</param>
-            <param name="red">The red.</param>
-            <param name="green">The green.</param>
-            <param name="blue">The blue.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.FromHsl(System.Double,System.Double,System.Double)">
-            <summary>
-            Returns a color based on its HSL value.
-            </summary>
-            <param name="hue">The hue.</param>
-            <param name="saturation">The saturation.</param>
-            <param name="luminance">The luminance.</param>
-            <returns>The corresponding color.</returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.RgbToHsl(System.Windows.Media.Color)">
-            <summary>
-            Given a Color (RGB Struct) in range of 0-255
-            Return H,S,L in the range [0,1].
-            </summary>
-            <param name="colorRgb">The RGB.</param>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.ByteArrayToHexString(System.Byte[])">
-            <summary>
-            Converts the given byte arrary to a color in the format #AARRGGBB.
-            </summary>
-            <param name="value">The bytes.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.HexStringToByteArray(System.String)">
-            <summary>
-            Converts the #AARRGGBB string color to a byte array.
-            </summary>
-            <param name="color">The hex string value of the color.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.HexStringFromSolidColor(System.Windows.Media.Color)">
-            <summary>
-            
-            </summary>
-            <param name="color">The color.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.ColorToString(System.Windows.Media.Color)">
-            <summary>
-            Converts the specified color to a format #AARRGGBB. Use the <see cref="M:Telerik.Windows.Diagrams.Core.ColorUtilities.ColorToString(System.Windows.Media.Color)"/> to convert a string back to a color.
-            </summary>
-            <param name="color">
-            The value to convert.
-            </param>
-            <returns>
-            A string representing the specified value.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.StringToColor(System.String)">
-            <summary>
-            Converts the specified string value to Color.
-            </summary>
-            <param name="value">
-            The string value to convert from.
-            </param>
-            <returns>
-            A Color value that is deserialized from the specified string.
-            </returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.ParseToBrush(System.String)">
-            <summary>
-            Parses to brush.
-            </summary>
-            <param name="hexValue">The hex string.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.ColorFromBrush(System.Windows.Media.Brush,System.Windows.Media.Color)">
-            <summary>
-            Colors from brush.
-            </summary>
-            <param name="brush">The brush.</param>
-            <param name="def">The def.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.ColorFromString(System.String)">
-            <summary>
-            Colors from string.
-            </summary>
-            <param name="hexValue">The hex string.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.Sum(System.Windows.Media.Color,System.Windows.Media.Color)">
-            <summary>
-            Adds the two given colors.
-            </summary>
-            <param name="color1">The first color.</param>
-            <param name="color2">The second color.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.ToValue(System.Windows.Media.Color)">
-            <summary>
-            Returns the unsigned integer value of the color.
-            </summary>
-            <param name="color">The color.</param>                
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.Parse(System.Int32)">
-            <summary>
-            Parses the specified value and converts it to a color.
-            </summary>
-            <param name="value">The value.</param>
-            <returns></returns>        
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.FromAngle(System.Double)">
-            <summary>
-            Creates a color from an angle.
-            </summary>
-            <param name="value">The angle in degrees.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.Multiply(System.Windows.Media.Color,System.Double)">
-            <summary>
-            Multiplies/scales the specified color.
-            </summary>
-            <param name="color">The color.</param>
-            <param name="factor">The factor.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorUtilities.Parse(System.String)">
-            <summary>
-            Parses the specified color string (e.g. '#FF4B4578').
-            </summary>
-            <param name="value">The string representation of the color.</param>
-            <returns></returns>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ColorUtilities.RandomBlues">
-            <summary>
-            Gets a random shade of blue.
-            </summary>
-            <value>The random blue color.</value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ColorUtilities.RandomBrush">
-            <summary>
-            Gets the random brush where the color is picked from the known colors.
-            </summary>
-            <value>The random brush.</value>
-        </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.ColorVector">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorVector.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.ColorVector"/> class.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ColorVector.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.ColorVector"/> class.
-            </summary>
-            <param name="a">A.</param>
-            <param name="r">The r.</param>
-            <param name="g">The g.</param>
-            <param name="b">The b.</param>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ColorVector.A">
-            <summary>
-            Gets or sets the A.
-            </summary>
-            <value>
-            The A.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ColorVector.R">
-            <summary>
-            Gets or sets the R.
-            </summary>
-            <value>
-            The R.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ColorVector.G">
-            <summary>
-            Gets or sets the G.
-            </summary>
-            <value>
-            The G.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ColorVector.B">
-            <summary>
-            Gets or sets the B.
-            </summary>
-            <value>
-            The B.
-            </value>
-        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.CommonExtensions">
             <summary>
             
@@ -7492,7 +6527,7 @@
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.DashStyle">
             <summary>
-            Defines the dash style of a <see cref="T:Telerik.Windows.Diagrams.Core.Pen"/>.
+            Defines the dash style of a pen.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.DashStyle.#ctor(System.Windows.Media.DoubleCollection,System.Double)">
@@ -7722,101 +6757,6 @@
             <param name="shape">The shape.</param>
             <returns></returns>
         </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.KnownBrushes">
-            <summary>
-            KnownBrushes contains predefined Brush objects. 
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.Black">
-            <summary>
-            A solid black brush.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.Transparent">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.Gray">
-            <summary>
-            A solid gray brush.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.White">
-            <summary>
-            A solid white brush.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.Red">
-            <summary>
-            A solid red brush.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.Green">
-            <summary>
-            A solid green brush.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.Cyan">
-            <summary>
-            A solid cyan brush.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.Yellow">
-            <summary>
-            A solid yellow brush.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.Blue">
-            <summary>
-            A solid blue brush.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.LightYellow">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.LightGoldenrodYellow">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.SteelBlue">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.Silver">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.DimGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.LightGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.LightLightGray">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.SeaGreen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.KnownBrushes.BlueWhiteGradient">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ManipulationPointData">
             <summary>
             Structure wrapping point and its manipulation type.
@@ -7874,66 +6814,6 @@
         <member name="P:Telerik.Windows.Diagrams.Core.ManipulationPointData.PointType">
             <summary>
             Returns the manipulation type.
-            </summary>
-        </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.Pen">
-            <summary>
-            The pen implementatin for Silverlight.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.Pen.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Pen"/> class.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.Pen.#ctor(System.Windows.Media.Brush)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Pen"/> class.
-            </summary>
-            <param name="brush">The brush.</param>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.Pen.#ctor(System.Windows.Media.Brush,System.Double)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Pen"/> class.
-            </summary>
-            <param name="brush">The brush.</param>
-            <param name="thickness">The thickness.</param>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.Pen.#ctor(System.Windows.Media.Brush,System.Double,Telerik.Windows.Diagrams.Core.DashStyle)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Pen"/> class.
-            </summary>
-            <param name="brush">The brush of the pen.</param>
-            <param name="thickness">The thickness of the pen.</param>
-            <param name="dashStyle">The dash style of the pen.</param>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.Pen.Clone">
-            <summary>
-            Creates an exact copy of this pen.
-            </summary>
-            <returns>An instance of the Pen class.</returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.Pen.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents this instance.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents this instance.
-            </returns>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.Pen.Brush">
-            <summary>
-            Gets or sets the Brush object that defines the appearance of this pen.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.Pen.Thickness">
-            <summary>
-            Gets or sets the width of the pen.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.Pen.DashStyle">
-            <summary>
-            Gets or sets the style used for dashed pens.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.PointExtensions">
@@ -8141,13 +7021,6 @@
             Centers the bottom.
             </summary>
             <param name="rect">The rect.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.RectExtensions.RotationPoint(System.Windows.Rect)">
-            <summary>
-            Returns the bottom-left point of the rectangle.
-            </summary>
-            <param name="rect">The current rectangle.</param>
             <returns></returns>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.RectExtensions.Center(System.Windows.Rect)">
@@ -8405,44 +7278,6 @@
             <summary>
             Utilities related to (de)serialization.
             </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.SerializationExtensions.ToXml(System.Windows.Media.Brush)">
-            <summary>
-            Converts the given brush to XML.
-            </summary>
-            <param name="brush">The brush to serialize.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.SerializationExtensions.FromXml(System.String)">
-            <summary>
-            Convert the given XML-string to a brush, if possible.
-            </summary>
-            <param name="serializationValue">The XML as string.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.SerializationExtensions.FromXml(System.Xml.Linq.XElement)">
-            <summary>
-            Converts the given XML to a brush, if possible.
-            </summary>
-            <param name="element">The XML element representing a brush.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.SerializationExtensions.GetBrushInfo(System.Windows.Media.Brush,System.String)">
-            <summary>
-            Converts the brush to a serialized form which can be added to the buckets of the <see cref="T:Telerik.Windows.Diagrams.Core.SerializationInfo"/>.
-            </summary>
-            <param name="brush">The brush.</param>
-            <param name="nodeName">Name of the node.</param>
-            <returns></returns>
-            <seealso cref="M:Telerik.Windows.Diagrams.Core.SerializationExtensions.GetBrush(System.Object,System.String)"/>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.SerializationExtensions.GetBrush(System.Object,System.String)">
-            <summary>
-            Returns a brush from the <see cref="T:Telerik.Windows.Diagrams.Core.SerializationInfo"/> data.
-            </summary>
-            <param name="data">The data representing a brush; which can be a simple color or a gradient..</param>
-            <param name="nodeName">Name of the node.</param>
-            <returns></returns>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.SerializationExtensions.GetSerializationInfo(Telerik.Windows.Diagrams.Core.IDiagramItem)">
             <summary>
@@ -9602,7 +8437,7 @@
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ICloneable`1">
             <summary>
-            
+            Clones this instance.
             </summary>
             <typeparam name="T">The cloned type.</typeparam>
         </member>
@@ -9612,12 +8447,12 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.IClonable">
+        <member name="T:Telerik.Windows.Diagrams.Core.ICloneable">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.IClonable.Clone">
+        <member name="M:Telerik.Windows.Diagrams.Core.ICloneable.Clone">
             <summary>
             Clones this instance.
             </summary>
@@ -11632,6 +10467,17 @@
             <param name="connection">The connection to be added.</param>
             <param name="isUndoable">If set to <c>true</c> [is undoable].</param>
         </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.IGraph.AddConnection(System.Windows.Point,System.Windows.Point,System.Boolean)">
+            <summary>
+            Adds a floating connection.
+            </summary>
+            <param name="startPoint">The source (starting) point of the connection.</param>
+            <param name="endPoint">The target (end) point of the connection.</param>
+            <param name="isUndoable">True, if this action is undoable.</param>
+            <returns>
+            Returns the added connection.
+            </returns>
+        </member>
         <member name="M:Telerik.Windows.Diagrams.Core.IGraph.AddShape(Telerik.Windows.Diagrams.Core.IShape,System.Nullable{System.Windows.Point},System.Boolean)">
             <summary>
             Adds a new shape to the diagram.
@@ -12818,6 +11664,163 @@
             
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegment`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T">The type.</typeparam>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegment`1.#ctor(Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegment`1"/> class.
+            </summary>
+            <param name="position">The position.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegment`1.AddItem(`0)">
+            <summary>
+            Adds the item.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegment`1.RemoveItem(`0)">
+            <summary>
+            Removes the item.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegment`1.Items">
+            <summary>
+            Gets the items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegment`1.Count">
+            <summary>
+            Gets the count.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegment`1.Position">
+            <summary>
+            Gets the position.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition"/> struct.
+            </summary>
+            <param name="x">The x.</param>
+            <param name="y">The y.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition.#ctor(System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition"/> struct.
+            </summary>
+            <param name="x">The x.</param>
+            <param name="y">The y.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition.ToString">
+            <inheritdoc />
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition.X">
+            <summary>
+            Gets or sets the X.
+            </summary>
+            <value>
+            The X.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition.Y">
+            <summary>
+            Gets or sets the Y.
+            </summary>
+            <value>
+            The Y.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.Segmentation.DiagramShapeSegment">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.DiagramShapeSegment.#ctor(Telerik.Windows.Diagrams.Core.Segmentation.DiagramSegmentPosition)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Segmentation.DiagramShapeSegment"/> class.
+            </summary>
+            <param name="position">The position.</param>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService"/> class.
+            </summary>
+            <param name="graph">The graph.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService.MapShapes(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IShape})">
+            <summary>
+            Maps the shapes.
+            </summary>
+            <param name="shapes">The shapes.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService.MapShape(Telerik.Windows.Diagrams.Core.IShape)">
+            <summary>
+            Maps the shape.
+            </summary>
+            <param name="shape">The shape.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService.MapShape(Telerik.Windows.Diagrams.Core.IShape,System.Windows.Rect)">
+            <summary>
+            Maps the shape.
+            </summary>
+            <param name="shape">The shape.</param>
+            <param name="bounds">The bounds.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService.UnmapShape(Telerik.Windows.Diagrams.Core.IShape)">
+            <summary>
+            Unmaps the shape.
+            </summary>
+            <param name="shape">The shape.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService.GetShapes(System.Windows.Point,System.Double)">
+            <summary>
+            Gets the shapes.
+            </summary>
+            <param name="point">The point.</param>
+            <param name="delta">The delta.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService.GetShapes(System.Windows.Rect)">
+            <summary>
+            Gets the shapes.
+            </summary>
+            <param name="rect">The rect.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService.SegmentStep">
+            <summary>
+            Gets or sets the segment step.
+            </summary>x
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Segmentation.SegmentationService.IsSegmentationEnabled">
+            <summary>
+            Gets a value indicating whether this instance is segmentation enabled.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.SerializationConstants">
             <summary>
             Constants used in the (de)serialization.
@@ -13355,7 +12358,7 @@
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.AlignmentService">
             <summary>
-            This class is accountable for calculating alignment related transformatins for position and size.
+            This class is accountable for calculating alignment related transformations for position and size.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.AlignmentService.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal)">
@@ -13376,7 +12379,7 @@
             Position is calculated relative to the edge defined by the union of all bounds in the list.
             </summary>
             <param name="listOfBounds">List of bounds to align.</param>
-            <param name="alignment">Determins whether alignment should be calculated towards left/top/right/bottom edge.</param>
+            <param name="alignment">Determines whether alignment should be calculated towards left/top/right/bottom edge.</param>
             <returns>List of positions of the aligned bounds.</returns>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.AlignmentService.VerticalSnappingLine">
@@ -13654,11 +12657,10 @@
             <param name="deltaWidth">The delta width.</param>
             <param name="deltaHeight">The delta height.</param>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.UpdateSelectionBounds(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IShape})">
+        <member name="P:Telerik.Windows.Diagrams.Core.ManipulationService.AdornerAngle">
             <summary>
-            Updates the selection bounds.
+            Gets the adorner angle.
             </summary>
-            <param name="items">The items.</param>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.ManipulationService.InflatedSelectionBounds">
             <summary>
@@ -13675,12 +12677,11 @@
             Represents manipulation service.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ResizingService.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal,Telerik.Windows.Diagrams.Core.IServiceLocator)">
+        <member name="M:Telerik.Windows.Diagrams.Core.ResizingService.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.ResizingService"/> class.
             </summary>
             <param name="graph">The graph.</param>
-            <param name="serviceLocator">The service locator.</param>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.ResizingService.IsResizing">
             <summary>
@@ -13690,56 +12691,26 @@
             	<c>True</c> if this instance is resizing; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ResizingService.SelectedItemsInitialbounds">
-            <summary>
-            Gets the selected items initialbounds.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ResizingService.InitialResizeBounds">
-            <summary>
-            Gets the initial rotated bound.
-            </summary>
-        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.RotationService">
             <summary>
             Represents a rotation service.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.RotationService.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal,Telerik.Windows.Diagrams.Core.IServiceLocator)">
+        <member name="M:Telerik.Windows.Diagrams.Core.RotationService.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.RotationService"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.RotationService.InitiateRotate">
+        <member name="M:Telerik.Windows.Diagrams.Core.RotationService.InitiateRotate(System.Collections.Generic.List{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Double)">
             <summary>
             Initiates the rotate.
             </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.RotationService.UpdateSelection">
-            <summary>
-            Updates the selection.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.RotationService.Rotate(System.Double,System.Double)">
-            <summary>
-            Rotates the specified old angle.
-            </summary>
-            <param name="oldAngle">The old angle.</param>
-            <param name="newAngle">The new angle.</param>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.RotationService.RotationPoint">
             <summary>
             Rotations the point.
             </summary>
             <returns></returns>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.RotationService.CurrentAngle">
-            <summary>
-            Gets or sets the current rotation.
-            </summary>
-            <value>
-            The current rotation.
-            </value>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.RotationService.IsRotating">
             <summary>
@@ -14500,11 +13471,6 @@
             Gets the beam.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.DraggingTool">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="M:Telerik.Windows.Diagrams.Core.DraggingTool.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.DraggingTool"/> class.
@@ -14700,9 +13666,6 @@
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.PanningTool"/> class.
             </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.PanningTool.Initialize(Telerik.Windows.Diagrams.Core.IServiceLocator)">
-            <inheritdoc/>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.PanningTool.MouseMove(Telerik.Windows.Diagrams.Core.PointerArgs)">
             <inheritdoc/>
@@ -15008,6 +13971,11 @@
             <value>
             	<c>True</c> if this instance is virtualizing; otherwise, <c>false</c>.
             </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.IGraphInternal.Segmentation">
+            <summary>
+            Gets the segmentation.
+            </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.IContainerGenerator`1">
             <summary>

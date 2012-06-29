@@ -3649,11 +3649,6 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadListBox"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBox.OnApplyTemplate">
-            <summary>
-            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
-            </summary>
-        </member>
         <member name="M:Telerik.Windows.Controls.RadListBox.IsItemSelectable(System.Object)">
             <summary>
             Determines whether an item is selectable or not.
@@ -4891,7 +4886,7 @@
             Changes the Cursor when the effects property is changed.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.DragDrop.DragDecorator.Update">
+        <member name="M:Telerik.Windows.DragDrop.DragDecorator.UpdateVisualStates(System.Boolean)">
             <summary>
             Updates the visual state of the DragContainer.
             </summary>
@@ -5776,8 +5771,7 @@
         </member>
         <member name="M:Telerik.Windows.DragDrop.DragOperation.RaiseDragSourceEvents(Telerik.Windows.DragDrop.DragEventArgs)">
             <summary>
-            Raises the GiveFeedback and QueryContinueDrag events on the drag
-            source.
+            Raises the GiveFeedback and QueryContinueDrag events on the drag source.
             </summary>
             <param name="args">Information about the last drag event.</param>
         </member>
@@ -5785,8 +5779,7 @@
             <summary>
             Raises the GiveFeedback event on the drag source.
             </summary>
-            <param name="args">Information about the GiveFeedback event.
-            </param>
+            <param name="args">Information about the GiveFeedback event.</param>
         </member>
         <member name="M:Telerik.Windows.DragDrop.DragOperation.GetDragDropEffects">
             <summary>
@@ -8000,9 +7993,9 @@
             Updates the selection behavior.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.UpdateSelectionOnUserInteraction(System.Object)">
+        <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.UpdateSelectionOnUserInteraction(System.Object,Telerik.Windows.Controls.Primitives.SelectionMouseState)">
             <summary>
-            Updates the selection on user interaction.
+            Updates the selection on user interaction. The second SelectionMouseState parameter is optional. By default is SelectionMouseState.Left.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.Primitives.SelectionHelper.UpdateSelection(System.Windows.UIElement,System.Boolean)">
@@ -8045,6 +8038,21 @@
             Gets the selected item.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.Primitives.SelectionMouseState">
+            <summary>
+            Specifies the which mouse button is pressed.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Primitives.SelectionMouseState.Left">
+            <summary>
+             The left mouse button.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Primitives.SelectionMouseState.Right">
+            <summary>
+             The right mouse button.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.Primitives.SelectionState">
             <summary>
             Represents a class that holds the selection state for the selection behaviors.
@@ -8058,6 +8066,11 @@
         <member name="P:Telerik.Windows.Controls.Primitives.SelectionState.Items">
             <summary>
             Gets all selector items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Primitives.SelectionState.MouseState">
+            <summary>
+            Gets or sets the pressed mouse button.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Primitives.SelectionState.Anchor">
@@ -24451,6 +24464,166 @@
               Looks up a localized string similar to Sets the scheduler&apos;s view mode to timeline.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_AlignBottom">
+            <summary>
+              Looks up a localized string similar to bottom.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_AlignCenter">
+            <summary>
+              Looks up a localized string similar to center.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_AlignLeft">
+            <summary>
+              Looks up a localized string similar to left.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_AlignMiddle">
+            <summary>
+              Looks up a localized string similar to middle.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_AlignRight">
+            <summary>
+              Looks up a localized string similar to right.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_AlignTop">
+            <summary>
+              Looks up a localized string similar to top.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_ArrangeTab">
+            <summary>
+              Looks up a localized string similar to Arrange.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_BezierConnectionType">
+            <summary>
+              Looks up a localized string similar to bezier.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_ColorStyles">
+            <summary>
+              Looks up a localized string similar to Color Styles.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_ColorTab">
+            <summary>
+              Looks up a localized string similar to Color.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_ConnectionType">
+            <summary>
+              Looks up a localized string similar to Type.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_Copy">
+            <summary>
+              Looks up a localized string similar to copy.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_Cut">
+            <summary>
+              Looks up a localized string similar to cut.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_Delete">
+            <summary>
+              Looks up a localized string similar to delete.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_GeneralTab">
+            <summary>
+              Looks up a localized string similar to General.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_GeometryTab">
+            <summary>
+              Looks up a localized string similar to Geometry.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_GoToBack">
+            <summary>
+              Looks up a localized string similar to back.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_GoToFront">
+            <summary>
+              Looks up a localized string similar to front.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_GradientStyles">
+            <summary>
+              Looks up a localized string similar to Gradient Styles.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_Group">
+            <summary>
+              Looks up a localized string similar to group.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_HomeTab">
+            <summary>
+              Looks up a localized string similar to Home.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_Opacity">
+            <summary>
+              Looks up a localized string similar to Opacity.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_Paste">
+            <summary>
+              Looks up a localized string similar to paste.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_RightAngleConnectionType">
+            <summary>
+              Looks up a localized string similar to right-angle.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_RoundAngleConnectionType">
+            <summary>
+              Looks up a localized string similar to round-angle.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_SendBackward">
+            <summary>
+              Looks up a localized string similar to backward.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_SendForward">
+            <summary>
+              Looks up a localized string similar to forward.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_SizeTab">
+            <summary>
+              Looks up a localized string similar to Size.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_StraightConnectionType">
+            <summary>
+              Looks up a localized string similar to straight.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_StyleTab">
+            <summary>
+              Looks up a localized string similar to Style.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_TextTab">
+            <summary>
+              Looks up a localized string similar to Text.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_Ungroup">
+            <summary>
+              Looks up a localized string similar to ungroup.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Strings.SetWeekViewMode">
             <summary>
               Looks up a localized string similar to Sets the scheduler&apos;s view mode to week.
@@ -24654,6 +24827,11 @@
         <member name="P:Telerik.Windows.Controls.Strings.TimeMarkers">
             <summary>
               Looks up a localized string similar to TimeMarkers.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Strings.Toolbox_ViewGalleries">
+            <summary>
+              Looks up a localized string similar to View Galleries.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Strings.TransformCategory">

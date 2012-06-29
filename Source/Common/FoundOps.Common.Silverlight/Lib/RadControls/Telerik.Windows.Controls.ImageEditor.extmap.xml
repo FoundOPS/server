@@ -3,7 +3,7 @@
           xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <assembly>
     <name>Telerik.Windows.Controls.ImageEditor</name>
-    <version>2012.2.0607.1050</version>
+    <version>2012.2.0625.1050</version>
     <publickeytoken>5803cfa389c90ce7</publickeytoken>
     <relpath>Telerik.Windows.Controls.ImageEditor.dll</relpath>
     <extension downloadUri="Telerik.Windows.Controls.ImageEditor.zip" />

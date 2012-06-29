@@ -1203,6 +1203,11 @@
                 Identifies the <c cref="P:Telerik.Windows.Controls.RadCalendar.SelectedDate"/> dependency property. 
             </summary> 
         </member>
+        <member name="F:Telerik.Windows.Controls.RadCalendar.BlackoutDatesProperty">
+            <summary>
+                Identifies the <c cref="P:Telerik.Windows.Controls.RadCalendar.BlackoutDates"/> property.
+            </summary> 
+        </member>
         <member name="F:Telerik.Windows.Controls.RadCalendar.MonthViewPanelProperty">
             <summary>
             Identifies the <c cref="P:Telerik.Windows.Controls.RadCalendar.MonthViewPanel"/> property.
@@ -1489,6 +1494,13 @@
             </summary>
             <param name="oldValue">The old value.</param>
             <param name="newValue">The new value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadCalendar.OnBlackOutDatesChanged(System.Collections.Generic.IEnumerable{System.DateTime},System.Collections.Generic.IEnumerable{System.DateTime})">
+            <summary>
+            Called when BlackoutDates collection changed.
+            </summary>
+            <param name="oldCollection">The old value.</param>
+            <param name="newCollection">The new value.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.RadCalendar.OnKeyDown(System.Windows.Input.KeyEventArgs)">
             <summary>
@@ -1845,6 +1857,17 @@
                     should be between the SelectableDateStart/End and DisplayDateStart/End.
                 </para>
             </remarks>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCalendar.BlackoutDates">
+            <summary>
+                Gets or sets a list of dates that cannot be selected. This is a dependency property.
+            </summary>
+            <remarks>
+                <para>
+                    The <strong>BlackoutDates</strong> specifies a list of dates that cannot be selected by the user. 
+                </para>
+            </remarks>
+            <see cref="P:Telerik.Windows.Controls.RadCalendar.SelectableDateStart"/>
         </member>
         <member name="P:Telerik.Windows.Controls.RadCalendar.MonthViewPanel">
             <summary>
@@ -5123,24 +5146,12 @@
             The element that is used to display the given item.
             </returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPaletteView.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
-            <summary>
-            Invoked when the <see cref="P:System.Windows.Controls.ItemsControl.Items"/> property changes.
-            </summary>
-            <param name="e">Information about the change.</param>
-        </member>
         <member name="M:Telerik.Windows.Controls.RadColorPaletteView.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
             <summary>
             Prepares the specified element to display the specified item.
             </summary>
             <param name="element">Element used to display the specified item.</param>
             <param name="item">Specified item.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RadColorPaletteView.OnSelectionChanged(System.Windows.Controls.SelectionChangedEventArgs)">
-            <summary>
-            Called when the selection changes.
-            </summary>
-            <param name="e">The event data.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.RadColorPaletteView.GenerateItemsSource">
             <summary>
@@ -5295,6 +5306,21 @@
         <member name="T:Telerik.Windows.Controls.RadColorPicker">
             <summary>
             Represents a color picker control.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.CommandProperty">
+            <summary>
+            Identifies the Command dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.CommandParameterProperty">
+            <summary>
+            Identifies the CommandParameter dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorPicker.CommandTargetProperty">
+            <summary>
+            Identifies the CommandTarget dependency property.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.RadColorPicker.ClickEvent">
@@ -5487,6 +5513,21 @@
             Set True for the Handled property and the SplitButton won't open.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.RadColorPicker.Command">
+            <summary>
+            Gets or sets the command that will be executed when the command source is invoked.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorPicker.CommandParameter">
+            <summary>
+            Represents a user defined data value that can be passed to the command when it is executed.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorPicker.CommandTarget">
+            <summary>
+            The object that the command is being executed on.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.RadColorPicker.MainPaletteColumnsCount">
             <summary>
             Gets or sets the palette columns count.
@@ -5676,6 +5717,21 @@
             Basicly it consists of 3 independant palette views and has SelectedColor property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadColorSelector.CommandProperty">
+            <summary>
+            Identifies the Command dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorSelector.CommandParameterProperty">
+            <summary>
+            Identifies the CommandParameter dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadColorSelector.CommandTargetProperty">
+            <summary>
+            Identifies the CommandTarget dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadColorSelector.MainPaletteColumnsCountProperty">
             <summary>
             Identifies the PaletteColumnsCount dependency property.
@@ -5805,6 +5861,21 @@
                     ]]>
             	</code>.
             </example>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorSelector.Command">
+            <summary>
+            Gets or sets the command that will be executed when the command source is invoked.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorSelector.CommandParameter">
+            <summary>
+            Represents a user defined data value that can be passed to the command when it is executed.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorSelector.CommandTarget">
+            <summary>
+            The object that the command is being executed on.
+            </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadColorSelector.MainPaletteColumnsCount">
             <summary>
@@ -6914,6 +6985,14 @@
             The identifier for the Telerik.Windows.Controls.RadDateTimePicker.SelectableDateEnd dependency dependency property.
             </returns>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadDateTimePicker.BlackoutDatesDatesProperty">
+            <summary>
+            Gets the identifier for the Telerik.Windows.Controls.RadDateTimePicker.BlackoutDates dependency property.
+            </summary>
+            <returns>
+            The identifier for the Telerik.Windows.Controls.RadDateTimePicker.BlackoutDates dependency property.
+            </returns>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadDateTimePicker.TimeIntervalProperty">
             <summary>
             Gets the identifier for the Telerik.Windows.Controls.RadDateTimePicker.TimeIntervalProperty dependency property.
@@ -7293,6 +7372,17 @@
                 </para>
             </remarks>
             <seealso cref="P:Telerik.Windows.Controls.RadCalendar.SelectableDateEnd"/>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDateTimePicker.BlackoutDates">
+            <summary>
+            Gets or sets a list of dates that cannot be selected. This is a dependency property.
+            </summary>
+            <remarks>
+                <para>
+                    Please refer to <see cref="P:Telerik.Windows.Controls.RadCalendar.BlackoutDates"/> for more information on the property.
+                </para>
+            </remarks>
+            <seealso cref="P:Telerik.Windows.Controls.RadCalendar.BlackoutDates"/>
         </member>
         <member name="P:Telerik.Windows.Controls.RadDateTimePicker.TimeInterval">
             <summary>
