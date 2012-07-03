@@ -133,6 +133,8 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateServiceDetails(Service service)
         {
+            //TODO: Check the current user is allowed to update the service
+            //TODO: Generate the service if it does not exist
             var foundOpsService = _coreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
 
             //There should always be a service. When GetTaskDetails is called, it inserts any generated services
