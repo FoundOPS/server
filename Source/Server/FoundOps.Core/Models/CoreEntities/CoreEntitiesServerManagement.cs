@@ -149,7 +149,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 var tableName = businessAccountId.TrackPointTableName();
 
-                var storageAccount = CloudStorageAccount.Parse(AzureHelpers.StorageConnectionString);
+                var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);
 
                 var tableClient = storageAccount.CreateCloudTableClient();
 
@@ -170,7 +170,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 var tableName = businessAccountId.TrackPointTableName();
 
-                var storageAccount = CloudStorageAccount.Parse(AzureHelpers.StorageConnectionString);
+                var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);
                 var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
 
                 var tableClient = storageAccount.CreateCloudTableClient();

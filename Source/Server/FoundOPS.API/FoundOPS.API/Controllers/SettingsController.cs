@@ -1,4 +1,6 @@
-﻿using FoundOPS.API.Models;
+﻿using System.Data.Entity;
+using FoundOPS.API.Models;
+using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
@@ -25,8 +27,20 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public UserSettings GetUserSettings()
         {
-            var user = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).First();
-            var userSettings = new UserSettings { FirstName = user.FirstName, LastName = user.LastName, EmailAddress = user.EmailAddress };
+            var user = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).Include(u => u.PartyImage).First();
+            var userSettings = new UserSettings
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                EmailAddress = user.EmailAddress
+            };
+
+            //Load image url
+            if (user.PartyImage != null)
+            {
+                var imageUrl = AzureServerHelpers.GetBlobUrlHelper(user.Id, user.PartyImage.Id);
+                userSettings.ImageUrl = imageUrl;
+            }
 
             return userSettings;
         }
@@ -58,12 +72,20 @@ namespace FoundOPS.API.Controllers
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            var businessSettings = new BusinessSettings { Name = businessAccount.Name};
+            var businessSettings = new BusinessSettings { Name = businessAccount.Name };
+
+            //Load image url
+            if (businessAccount.PartyImage != null)
+            {
+                var imageUrl = AzureServerHelpers.GetBlobUrlHelper(businessAccount.Id, businessAccount.PartyImage.Id);
+                businessSettings.ImageUrl = imageUrl;
+            }
+
             return businessSettings;
         }
 
         [AcceptVerbs("POST")]
-        public HttpResponseMessage UpdateBusinessSettings(BusinessSettings settings)
+        public HttpResponseMessage UpdateBusinessSettings(Guid roleId, BusinessSettings settings)
         {
             var businessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();
 

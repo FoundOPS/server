@@ -48,7 +48,7 @@ namespace FoundOPS.API.Controllers
         public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId, DateTime serviceDateUtc)
         {
             //Get the storage account from Azure
-            var storageAccount = CloudStorageAccount.Parse(AzureHelpers.StorageConnectionString);
+            var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);
 
             //Setup the service context for the TrackPointsHistory tables
             var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
@@ -275,7 +275,7 @@ namespace FoundOPS.API.Controllers
         private void PushTrackPointToAzure(BusinessAccount currentBusinessAccount, TrackPoint trackPoint, Employee employee, Guid routeId)
         {
             //Get the storage account information from Azure
-            var storageAccount = CloudStorageAccount.Parse(AzureHelpers.StorageConnectionString);
+            var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);
 
             //Create the Service Context for the TrackPointsHistory Tables
             var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
