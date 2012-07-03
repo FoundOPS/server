@@ -64,7 +64,8 @@ namespace FoundOPS.API.Controllers
             blob.Metadata["Submitter"] = partyToUpdate.Id.ToString();
             blob.SetMetadata();
 
-            blob.Properties.ContentType = imageData.ContentType;
+            var contentType = "image/" + extension.Replace(".", "");
+            blob.Properties.ContentType = contentType;
             blob.SetProperties();
 
             _coreEntitiesContainer.SaveChanges();
