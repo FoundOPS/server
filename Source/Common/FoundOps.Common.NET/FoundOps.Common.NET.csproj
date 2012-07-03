@@ -69,6 +69,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization" />
@@ -114,6 +115,7 @@
     <Compile Include="EncryptionTools.cs" />
     <Compile Include="EntityCloneTools.cs" />
     <Compile Include="EntityDataReader.cs" />
+    <Compile Include="ImageTools.cs" />
     <Compile Include="ObjectContextExtensions.cs" />
     <Compile Include="PlaceFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

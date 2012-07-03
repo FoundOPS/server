@@ -56,15 +56,69 @@ namespace FoundOps.Core.Models.Azure
             var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
             if (blobContainer == null)
                 return null;
-            
+
             //Get a reference to a blob, which may or may not exist
             var blob = blobContainer.GetBlobReference(fileGuid.ToString());
             if (blob == null)
                 return null;
 
             var url = blob.GetSharedAccessSignature(new SharedAccessPolicy { Permissions = SharedAccessPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow + DefaultExpiration });
-            
+
             return url;
+        }
+
+        /// <summary>
+        /// Gets a blob file for getting/inserting/editing a file
+        /// </summary>
+        /// <param name="ownerPartyId">The owner party id of the file</param>
+        /// <param name="fileGuid">The file id</param>
+        /// <returns>The blob file</returns>
+        public static CloudBlob GetBlobHelper(Guid ownerPartyId, Guid fileGuid)
+        {
+            //Create service client for credentialed access to the Blob service.
+            var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl,
+                new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = DefaultTimeout };
+
+            //Get a reference to a container, which may or may not exist
+            var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
+            //Create a new container, if it does not exist
+            var newContainer = blobContainer.CreateIfNotExist(new BlobRequestOptions { Timeout = DefaultTimeout });
+
+            //Setup cross domain policy so Silverlight can access the server
+            if(newContainer)
+                CreateSilverlightPolicy(blobClient);
+
+            //Get a reference to a blob, which may or may not exist.
+            var blob = blobContainer.GetBlobReference(fileGuid.ToString());
+
+            return blob;
+        }
+
+        private static void CreateSilverlightPolicy(CloudBlobClient blobs)
+        {
+            blobs.GetContainerReference("$root").CreateIfNotExist();
+            blobs.GetContainerReference("$root").SetPermissions(
+                new BlobContainerPermissions
+                {
+                    PublicAccess = BlobContainerPublicAccessType.Blob
+                });
+            var blob = blobs.GetBlobReference("clientaccesspolicy.xml");
+            blob.Properties.ContentType = "text/xml";
+            blob.UploadText(
+            @"<?xml version=""1.0"" encoding=""utf-8""?>
+                <access-policy>
+                    <cross-domain-access>
+                    <policy>
+                        <allow-from http-methods=""*"" http-request-headers=""*"">
+                        <domain uri=""*"" />
+                        <domain uri=""http://*"" />
+                        </allow-from>
+                        <grant-to>
+                        <resource path=""/"" include-subpaths=""true"" />
+                        </grant-to>
+                    </policy>
+                    </cross-domain-access>
+                </access-policy>");
         }
     }
 }

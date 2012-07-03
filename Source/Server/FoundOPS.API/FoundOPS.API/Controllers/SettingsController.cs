@@ -1,5 +1,10 @@
 ﻿using System.Data.Entity;
+using System.Drawing;
+using System.IO;
+using System.Web;
 using FoundOPS.API.Models;
+using FoundOps.Common.Composite.Tools;
+using FoundOps.Common.NET;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
@@ -8,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.WindowsAzure.StorageClient;
 
 namespace FoundOPS.API.Controllers
 {
@@ -23,6 +29,56 @@ namespace FoundOPS.API.Controllers
             _coreEntitiesContainer = new CoreEntitiesContainer();
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
         }
+
+        #region Helpers
+
+        /// <summary>
+        /// Updates a party's image.
+        /// </summary>
+        /// <param name="partyToUpdate">The party to update</param>
+        /// <param name="imageData">The image data</param>
+        /// <param name="x">For cropping</param>
+        /// <param name="y">For cropping</param>
+        /// <param name="w">For cropping</param>
+        /// <param name="h">For cropping</param>
+        /// <returns>The image url, expiring in 3 hours</returns>
+        public string UpdatePartyImageHelper(Party partyToUpdate, HttpPostedFileBase imageData, int x, int y, int w, int h)
+        {
+            var blob = AzureServerHelpers.GetBlobHelper(partyToUpdate.Id, partyToUpdate.PartyImage.Id);
+
+            // Get the file extension
+            var extension = Path.GetExtension(imageData.FileName).ToLower();
+            string[] allowedExtensions = { ".png", ".jpeg", ".jpg", ".gif" }; // Make sure it is an image that can be processed
+            if (!allowedExtensions.Contains(extension))
+                throw new Exception("Cannot process files of this type.");
+
+            var imageBytes = imageData.InputStream.ReadFully();
+
+            //If the user selected a crop area, crop the image
+            if (w != 0 && h != 0)
+                imageBytes = ImageTools.CropImage(imageBytes, extension, x, y, w, h);
+
+            blob.UploadByteArray(imageBytes);
+
+            // Set the metadata/properties into the blob
+            blob.Metadata["Submitter"] = partyToUpdate.Id.ToString();
+            blob.SetMetadata();
+
+            blob.Properties.ContentType = imageData.ContentType;
+            blob.SetProperties();
+
+            _coreEntitiesContainer.SaveChanges();
+
+            var readOnlyUrl = blob.GetSharedAccessSignature(new SharedAccessPolicy
+            {
+                Permissions = SharedAccessPermissions.Read,
+                SharedAccessExpiryTime = DateTime.UtcNow + AzureServerHelpers.DefaultExpiration
+            });
+
+            return readOnlyUrl;
+        }
+
+        #endregion
 
         [AcceptVerbs("GET", "POST")]
         public UserSettings GetUserSettings()
@@ -64,6 +120,25 @@ namespace FoundOPS.API.Controllers
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
+        /// <summary>
+        /// Updates a user's image.
+        /// </summary>
+        /// <param name="imageData">The image data</param>
+        /// <param name="x">For cropping</param>
+        /// <param name="y">For cropping</param>
+        /// <param name="w">For cropping</param>
+        /// <param name="h">For cropping</param>
+        /// <returns>The image url, expiring in 3 hours</returns>
+        public string UpdateUserImage(HttpPostedFileBase imageData, int x, int y, int w, int h)
+        {
+            var user = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).Include(u => u.PartyImage).First();
+
+            if (user.PartyImage == null)
+                user.PartyImage = new PartyImage();
+
+            return UpdatePartyImageHelper(user, imageData, x, y, w, h);
+        }
+
         [AcceptVerbs("GET", "POST")]
         public BusinessSettings GetBusinessSettings(Guid roleId)
         {
@@ -96,6 +171,30 @@ namespace FoundOPS.API.Controllers
             _coreEntitiesContainer.SaveChanges();
 
             return Request.CreateResponse(HttpStatusCode.Accepted);
+        }
+
+        /// <summary>
+        /// Updates a user's image.
+        /// </summary>
+        /// <param name="roleId">The current role id</param>
+        /// <param name="imageData">The image data</param>
+        /// <param name="x">For cropping</param>
+        /// <param name="y">For cropping</param>
+        /// <param name="w">For cropping</param>
+        /// <param name="h">For cropping</param>
+        /// <returns>The image url, expiring in 3 hours</returns>
+        [AcceptVerbs("POST")]
+        public string UpdateBusinessImage(Guid roleId, HttpPostedFileBase imageData, int x, int y, int w, int h)
+        {
+            var businessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
+
+            if (businessAccount == null)
+                ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+
+            if (businessAccount.PartyImage == null)
+                businessAccount.PartyImage = new PartyImage();
+
+            return UpdatePartyImageHelper(businessAccount, imageData, x, y, w, h);
         }
     }
 }
