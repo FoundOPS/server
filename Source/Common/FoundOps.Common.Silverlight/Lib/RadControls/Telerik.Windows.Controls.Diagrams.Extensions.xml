@@ -1,0 +1,2918 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.Windows.Controls.Diagrams.Extensions</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryRadioButton">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.IGeometryButton">
+            <summary>
+            Represents the IGeometryButton interface.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.IGeometryButton.Geometry">
+            <summary>
+            Gets or sets the geometry.
+            </summary>
+            <value>The geometry.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.IGeometryButton.GeometryVisibility">
+            <summary>
+            Gets or sets the visibility of the geometry.
+            </summary>
+            <value>The visibility of the geometry.</value>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryRadioButton.GeometryProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryRadioButton.EllipseVisibilityProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryRadioButton.GeometryVisibilityProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryRadioButton.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryRadioButton"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryRadioButton.Geometry">
+            <summary>
+            Gets or sets the geometry.
+            </summary>
+            <value>
+            The geometry.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryRadioButton.EllipseVisibility">
+            <summary>
+            Gets or sets.
+            </summary>
+            <value>
+            The geometry.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryRadioButton.GeometryVisibility">
+            <summary>
+            Gets or sets the visibility of the geometry.
+            </summary>
+            <value>
+            The visibility of the geometry.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.BooleanToFontStyleConverter">
+            <summary>
+            A converter which takes a boolean parameter and returns a FontStyle value.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.BooleanToFontStyleConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.BooleanToFontStyleConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.BooleanToFontWeightConverter">
+            <summary>
+            A converter which takes a boolean parameter and returns a FontWeight value.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.BooleanToFontWeightConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.BooleanToFontWeightConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.DoubleToSizeConverter">
+            <summary>
+            A converter which takes a double parameter and returns a Size value.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.DoubleToSizeConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.DoubleToSizeConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.HierarchicalGraphSourceConverter">
+            <summary>
+            A converter which takes a hierarchical collection and creates a GraphSource.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.HierarchicalGraphSourceConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.HierarchicalGraphSourceConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.PercentageConverter">
+            <summary>
+            A converter which takes a double parameter and returns the value multiplied by 100.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PercentageConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PercentageConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ReversedDoubleToPercentageConverter">
+            <summary>
+            A converter which takes a double parameter and returns the reversed value multiplied by 100.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ReversedDoubleToPercentageConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ReversedDoubleToPercentageConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.CapTypeExtension">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.CapTypeExtension.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.CapTypeExtension"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.CapTypeExtension.ProvideValue(System.IServiceProvider)">
+            <summary>
+            When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>
+            The object value to set on the property where the extension is applied.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontColorsExtension">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontColorsExtension.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontColorsExtension"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontColorsExtension.ProvideValue(System.IServiceProvider)">
+            <summary>
+            When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>
+            The object value to set on the property where the extension is applied.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontFamilyExtension">
+            <summary>
+            FontFamily MarkupExtension.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontFamilyExtension.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontFamilyExtension"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontFamilyExtension.ProvideValue(System.IServiceProvider)">
+            <summary>
+            When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>
+            The object value to set on the property where the extension is applied.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontSizeExtension">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontSizeExtension.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontSizeExtension"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.FontSizeExtension.ProvideValue(System.IServiceProvider)">
+            <summary>
+            When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>
+            The object value to set on the property where the extension is applied.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.GradientColorsExtension">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.GradientColorsExtension.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.GradientColorsExtension"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.GradientColorsExtension.ProvideValue(System.IServiceProvider)">
+            <summary>
+            When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>
+            The object value to set on the property where the extension is applied.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.SolidColorsExtension">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.SolidColorsExtension.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.SolidColorsExtension"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.SolidColorsExtension.ProvideValue(System.IServiceProvider)">
+            <summary>
+            When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>
+            The object value to set on the property where the extension is applied.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.StrokeDashArrayExtension">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.StrokeDashArrayExtension.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.StrokeDashArrayExtension"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.StrokeDashArrayExtension.ProvideValue(System.IServiceProvider)">
+            <summary>
+            When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>
+            The object value to set on the property where the extension is applied.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.StrokeThicknessExtension">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.StrokeThicknessExtension.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Data.StrokeThicknessExtension"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Data.StrokeThicknessExtension.ProvideValue(System.IServiceProvider)">
+            <summary>
+            When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
+            </summary>
+            <param name="serviceProvider">Object that can provide services for the markup extension.</param>
+            <returns>
+            The object value to set on the property where the extension is applied.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionCommands">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionCommands.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionCommands"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionCommands.SketchCommand">
+            <summary>
+            Gets the sketch command.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionProperties">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionProperties.ShouldDetachConnectionsProperty">
+            <summary>
+            Identifies the ShouldDetachConnections dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionProperties.HasImageShapesProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionProperties.GetHasImageShapes(System.Windows.DependencyObject)">
+            <summary>
+            Gets the has image shapes.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionProperties.SetHasImageShapes(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets the has image shapes.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">If set to <c>true</c> [value].</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionProperties.GetShouldDetachConnections(System.Windows.DependencyObject)">
+            <summary>
+            Gets the should detach connections.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.DiagramExtensionProperties.SetShouldDetachConnections(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets the should detach connections.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryButton">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryButton.GeometryProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryButton.EllipseVisibilityProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryButton.GeometryVisibilityProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryButton.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryButton"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryButton.Geometry">
+            <summary>
+            Gets or sets the geometry.
+            </summary>
+            <value>
+            The geometry.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryButton.EllipseVisibility">
+            <summary>
+            Gets or sets.
+            </summary>
+            <value>
+            The geometry.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryButton.GeometryVisibility">
+            <summary>
+            Gets or sets the visibility of the geometry.
+            </summary>
+            <value>
+            The visibility of the geometry.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.GeometryProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.GeometryVisibilityProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.EllipseVisibilityProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.DropDownPopupHorizontalOffsetProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.DropDownPopupVerticalOffsetProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.CloseOnClickProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.ShouldCenterPopupProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.HidePopupOnChildItemActivated(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Hides the Popup when one of observed Children is activated.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.Geometry">
+            <summary>
+            Gets or sets the geometry.
+            </summary>
+            <value>
+            The geometry.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.EllipseVisibility">
+            <summary>
+            Gets or sets the ellipse visibility.
+            </summary>
+            <value>
+            The ellipse visibility.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.GeometryVisibility">
+            <summary>
+            Gets or sets the visibility of the geometry.
+            </summary>
+            <value>
+            The visibility of the geometry.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.DropDownPopupHorizontalOffset">
+            <summary>
+            Gets or sets the horizontal offset of the dropdown popup.
+            </summary>
+            <value>The horizontal offset.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.DropDownPopupVerticalOffset">
+            <summary>
+            Gets or sets the vertical offset of the dropdown popup.
+            </summary>
+            <value>The vertical offset.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.CloseOnClick">
+            <summary>
+            Gets or sets whether the drop down popup should be closed on click inside it.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryDropDownButton.ShouldCenterPopup">
+            <summary>
+            Gets or sets whether the drop down popup should be centered.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryToggleButton">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryToggleButton.GeometryProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryToggleButton.EllipseVisibilityProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryToggleButton.GeometryVisibilityProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryToggleButton.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryToggleButton"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryToggleButton.Geometry">
+            <summary>
+            Gets or sets the geometry.
+            </summary>
+            <value>
+            The geometry.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryToggleButton.EllipseVisibility">
+            <summary>
+            Gets or sets the ellipse's visiblity.
+            </summary>
+            <value>
+            The ellipse's visiblity.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadGeometryToggleButton.GeometryVisibility">
+            <summary>
+            Gets or sets the visibility of the geometry.
+            </summary>
+            <value>
+            The visibility of the geometry.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.FileLocation">
+            <summary>
+            Enumerates the storage targets.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.FileLocation.Disk">
+            <summary>
+            The local user disk.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.FileLocation.IsolatedStorage">
+            <summary>
+            The application's isolated storage.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.FileManager">
+            <summary>
+            File management utility geared towards RadDiagram.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.FileManager.#ctor(Telerik.Windows.Controls.RadDiagram)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.FileManager"/> class.
+            </summary>
+            <param name="diagram">The diagram.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.FileManager.SaveToFile(Telerik.Windows.Controls.Diagrams.Extensions.FileLocation)">
+            <summary>
+            Saves the diagram to file.
+            </summary>
+            <param name="location">The location.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.FileManager.LoadFromFile(Telerik.Windows.Controls.Diagrams.Extensions.FileLocation)">
+            <summary>
+            Loads the diagram from file.
+            </summary>
+            <param name="location"></param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.FileManager.CurrentFile">
+            <summary>
+            Gets or sets the current file path.
+            </summary>
+            <value>
+            The current file.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Properties.ExceptionResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.Properties.ExceptionResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.Properties.ExceptionResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.Properties.ExceptionResources.DiagramControlPropertyNotSet">
+            <summary>
+              Looks up a localized string similar to DiagramControl property is not set..
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramSketchShape">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramSketchShape.Serialize">
+            <summary>
+            Serializes this shape.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramSketchShape.Deserialize(Telerik.Windows.Diagrams.Core.SerializationInfo)">
+            <summary>
+            Deserializes the specified info.
+            </summary>
+            <param name="info">The info.</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler">
+            <summary>
+            Displays a ruler with ticks on certain intervals.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.OnApplyTemplate">
+            <inheritdoc/>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.DiagramProperty">
+            <summary>
+            Identifies the Diagram dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.PlacementProperty">
+            <summary>
+            Identifies the Placement dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.TickIntervalProperty">
+            <summary>
+            Identifies the TickInterval dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.LabelIntervalProperty">
+            <summary>
+            Identifies the LabelInterval dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.ZeroProperty">
+            <summary>
+            Identifies the Zero dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.TickTemplateSelectorProperty">
+            <summary>
+            Identifies the TickTemplateSelector dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.LabelTemplateProperty">
+            <summary>
+            Identifies the LabelTemplate dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.TicksProperty">
+            <summary>
+            Identifies the Ticks dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.LabelsProperty">
+            <summary>
+            Identifies the Labels dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.Diagram">
+            <summary>
+            Gets or sets the associated diagram.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.Placement">
+            <summary>
+            Gets or sets whether the ruler should be horizontal or vertical. Default is horizontal.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.TickInterval">
+            <summary>
+            Gets or sets the interval of the tick scale. Used to create scale of ticks at specified distance from each other.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.LabelInterval">
+            <summary>
+            Gets or sets the interval of the label scale. Used to create scale of labels at specified distance from each other.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.Zero">
+            <summary>
+            Gets or sets the zero of the scale. Used as a start point for ticks creation in the scale.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.TickTemplateSelector">
+            <summary>
+            Gets or sets the ticks date template selector.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.LabelTemplate">
+            <summary>
+            Gets or sets the labels date template.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.Ticks">
+            <summary>
+            Gets a collection of ticks. Every element represents a logical tick in the scale to be visualized in the ruler.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramRuler.Labels">
+            <summary>
+            Gets a collection of labels. Every element represents a logical label in the scale to be visualized in the ruler.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RulerLabelPanel">
+            <summary>
+            Measures and arranges the labels based on the underlying data.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RulerPanelBase">
+            <summary>
+            Basic logic for ruler's measure and arrange.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerPanelBase.ExtractTick(System.Windows.UIElement)">
+            <summary>
+            Extracts the tick from the container.
+            </summary>
+            <param name="child">The child.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerPanelBase.CalculatePlacement">
+            <summary>
+            Calculates the and internally sets the placement.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerPanelBase.GetSafeWidth(System.Windows.Size)">
+            <summary>
+            Gets the width limited to finite number.
+            </summary>
+            <param name="availableSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerPanelBase.GetSafeHeight(System.Windows.Size)">
+            <summary>
+            Gets the height limited to finite number.
+            </summary>
+            <param name="availableSize"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerPanelBase.Placement">
+            <summary>
+            Gets the placement.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerPanelBase.IsHorizontal">
+            <summary>
+            Gets whether the panel will be rotated or not.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerLabelPanel.MeasureOverride(System.Windows.Size)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerLabelPanel.ArrangeOverride(System.Windows.Size)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickInfo">
+            <summary>
+            Encapsulates information about a ruler tick.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickInfo.#ctor(System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickInfo"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickInfo.Value">
+            <summary>
+            Gets the value of the tick.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickInfo.Position">
+            <summary>
+            Gets the position of the tick.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickInfo.IsDirty">
+            <summary>
+            Gets or sets value indicating whether the tick needs to be measured and arranged.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.EditItemType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.EditItemType.None">
+            <summary>
+            None.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.EditItemType.Shapes">
+            <summary>
+            Shapes only.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.EditItemType.Connections">
+            <summary>
+            Connections only.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.EditItemType.Custom">
+            <summary>
+            Custom type.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.EditItemType.All">
+            <summary>
+            All types.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ContainerEditProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.ContainerEditProperty.IsEnabled">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.ContainerEditProperty.Visibility">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.EditItemTypeTypeConverter">
+            <summary>
+            Represents a type converter for the EditItemType enumeration.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.EditItemTypeTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.EditItemTypeTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.PropertyHelper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PropertyHelper.SetProperty(System.String,System.Object,System.Object)">
+            <summary>
+            Sets the property.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="source">The source.</param>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PropertyHelper.GetValue(System.String,System.Object)">
+            <summary>
+            Gets the value.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="source">The source.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PropertyHelper.GetCoercedValue(System.String,System.Object)">
+            <summary>
+            Gets the coerced value.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="source">The source.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PropertyHelper.ConvertValue(System.Type,System.Object)">
+            <summary>
+            Converts the value.
+            </summary>
+            <param name="targetType">Type of the target.</param>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PropertyHelper.GetDefaultValue(System.Type)">
+            <summary>
+            Gets the default value.
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.MeasurementUnit">
+            <summary>
+            Enumeration of the supported measurement units.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.MeasurementUnit.DIP">
+            <summary>
+            Device independent pixel.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.MeasurementUnit.Cm">
+            <summary>
+            Centimeter.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.MeasurementUnit.Inch">
+            <summary>
+            Inch.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.MeasurementUnitConverter">
+            <summary>
+            Converts between inches, centimeters and DPIs (device independent pixel).
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.MeasurementUnitConverter.InchToDip(System.Double)">
+            <summary>
+            Converts inches to DIPs (Device Independant Pixel).
+            </summary>
+            <param name="inch">An inch value.</param>
+            <returns>A DIP value.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.MeasurementUnitConverter.DipToInch(System.Double)">
+            <summary>
+            Converts DIPs (Device Independant Pixel) to inches.
+            </summary>
+            <param name="dip">An inch value.</param>
+            <returns>A DIP value.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.MeasurementUnitConverter.CmToDip(System.Double)">
+            <summary>
+            Converts centimeters to DIPs (Device Independant Pixel).
+            </summary>
+            <param name="cm">A centimeter value.</param>
+            <returns>A DIP value.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.MeasurementUnitConverter.DipToCm(System.Double)">
+            <summary>
+            Converts DIPs (Device Independant Pixel) to centimeters.
+            </summary>
+            <param name="dip">A DIP value.</param>
+            <returns>A centimeter value.</returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickPanel">
+            <summary>
+            Measures and arranges the ticks based on the underlying data.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickPanel.MeasureOverride(System.Windows.Size)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickPanel.ArrangeOverride(System.Windows.Size)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector">
+            <summary>
+            Selects tick template based on the interval properties.
+            The associated item should be object of type <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickInfo"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.SelectTemplate(System.Object,System.Windows.DependencyObject)">
+            <summary>
+            <inheruitdoc/>
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.LargeTickInterval">
+            <summary>
+            Gets or sets the interval for large ticks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.MediumLargeTickInterval">
+            <summary>
+            Gets or sets the interval for medium-large ticks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.MediumSmallTickInterval">
+            <summary>
+            Gets or sets the interval for medium-small ticks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.SmallTickInterval">
+            <summary>
+            Gets or sets the interval for small ticks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.LargeTickTemplate">
+            <summary>
+            Gets or sets the template for large ticks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.MediumLargetTickTemplate">
+            <summary>
+            Gets or sets the template for medium-large ticks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.MediumSmallTickTemplate">
+            <summary>
+            Gets or sets the template for medium-small ticks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.SmallTickTemplate">
+            <summary>
+            Gets or sets the template for small ticks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RulerTickTemplateSelector.DefaultTickTemplate">
+            <summary>
+            Gets or sets the default template ticks.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneBase">
+            <summary>
+            Represents a base class for the settings pane.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneBase.DiagramProperty">
+            <summary>
+            Identifies the Diagram dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneBase.IsActiveProperty">
+            <summary>
+            Identifies the IsActive dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneBase.OnIsActivePropertyChanged(System.Boolean,System.Boolean)">
+            <summary>
+            Called when is active property is changed.
+            </summary>
+            <param name="oldValue">The old value.</param>
+            <param name="newValue">The new value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneBase.OnDiagramPropertyChanged(Telerik.Windows.Controls.RadDiagram,Telerik.Windows.Controls.RadDiagram)">
+            <summary>
+            Called when diagram control property is changed.
+            </summary>
+            <param name="oldValue">The old value.</param>
+            <param name="newValue">The new value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneBase.OnDiagramSelectionChanged(System.Object,Telerik.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Called when diagram control selection is changed.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.Controls.SelectionChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneBase.OnDiagramSelectionBoundsChanged(System.Object,System.EventArgs)">
+            <summary>
+            Called when diagram selection bounds is changed.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneBase.Diagram">
+            <summary>
+            Gets or sets the diagram control.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneBase.IsActive">
+            <summary>
+            Gets or sets a value indicating whether this instance is active.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.IsOpenProperty">
+            <summary>
+            Identifies the IsOpen dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.SettingsPaneViewWidthProperty">
+            <summary>
+            Identifies the SettingsPaneViewWidth dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.SettingsPaneViewHeightProperty">
+            <summary>
+            Identifies the SettingsPaneViewHeight dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.OnApplyTemplate">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.OnMouseWheel(System.Windows.Input.MouseWheelEventArgs)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.OnIsActivePropertyChanged(System.Boolean,System.Boolean)">
+            <summary>
+            Called when [is active property changed].
+            </summary>
+            <param name="oldValue">If set to <c>true</c> [old value].</param>
+            <param name="newValue">If set to <c>true</c> [new value].</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.OnDiagramSelectionChanged(System.Object,Telerik.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            Called when [diagram control selection changed].
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.Controls.SelectionChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.OnDiagramSelectionBoundsChanged(System.Object,System.EventArgs)">
+            <summary>
+            Called when [diagram selection bounds changed].
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.OnDiagramPropertyChanged(Telerik.Windows.Controls.RadDiagram,Telerik.Windows.Controls.RadDiagram)">
+            <summary>
+            Called when diagram control property is changed.
+            </summary>
+            <param name="oldValue">The old value.</param>
+            <param name="newValue">The new value.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.IsOpen">
+            <summary>
+            Gets or sets a value indicating whether this instance is open.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.SettingsPaneViewHeight">
+            <summary>
+            Gets or sets the height of the settings pane view.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPane.SettingsPaneViewWidth">
+            <summary>
+            Gets or sets the width of the settings pane view.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView">
+            <summary>
+            
+            </summary>
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.CurrentEditTypeProperty">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.RegisterEditorEvent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.RegisterContainerEvent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.OnApplyTemplate">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.OnValueChanged(System.String,System.Object,Telerik.Windows.Controls.Diagrams.Extensions.EditItemType,System.Object)">
+            <summary>
+            Called when [value changed].
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="newValue">The new value.</param>
+            <param name="editItemType">Type of the edit item.</param>
+            <param name="editor">The editor.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.OnIsActivePropertyChanged(System.Boolean,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.OnDiagramSelectionChanged(System.Object,Telerik.Windows.Controls.SelectionChangedEventArgs)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.OnDiagramPropertyChanged(Telerik.Windows.Controls.RadDiagram,Telerik.Windows.Controls.RadDiagram)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.ResolveCurrentItemType">
+            <summary>
+            When overriden, resolves the CurrentItemType property value.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.EditorPropertyNameProperty">
+            <summary>
+            Identifies the EditorPropertyName dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.EditorFallbackPropertyNameProperty">
+            <summary>
+            Identifies the EditorFallbackPropertyName dependency property.
+            </summary>
+            <remarks>
+            If set, the editor will get its default or fallback value from this property instead of the SettingsPaneView.EditorPropertyName.
+            </remarks>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.EditorValueProperty">
+            <summary>
+            Identifies the EditorValue dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.EditorTypeItemProperty">
+            <summary>
+            Identifies the EditorItemType dependency property.
+            </summary>
+            <remarks>
+            Identifies what type of items can the editor affect.
+            </remarks>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.ContainerEditPropertyProperty">
+            <summary>
+            Identifies the ContainerEditProperty attached property.
+            </summary>
+            <remarks>
+            Identifies what property of the container should be changed, when the current item type does not match the container's item type.
+            </remarks>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.ContainerEditItemTypeProperty">
+            <summary>
+            Identifies the ContainerEditType attached property.
+            </summary>
+            <remarks>
+            Identifies what type of items can the container be affected by.
+            </remarks>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.IsRadioButtonPanelProperty">
+            <summary>
+            Identifies the IsRadioButtonPanel attached property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.RadioButtonValueProperty">
+            <summary>
+            Identifies the RadioButtonValue attached property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.GetEditorFallbackPropertyName(System.Windows.DependencyObject)">
+            <summary>
+            Gets the EditorFallbackPropertyName property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.SetEditorFallbackPropertyName(System.Windows.DependencyObject,System.String)">
+            <summary>
+            Sets the EditorFallbackPropertyName property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.GetContainerEditProperty(System.Windows.DependencyObject)">
+            <summary>
+            Gets the container property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.SetContainerEditProperty(System.Windows.DependencyObject,Telerik.Windows.Controls.Diagrams.Extensions.ContainerEditProperty)">
+            <summary>
+            Sets the container property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.GetContainerEditItemType(System.Windows.DependencyObject)">
+            <summary>
+            Gets the type of the container edit.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.SetContainerEditItemType(System.Windows.DependencyObject,Telerik.Windows.Controls.Diagrams.Extensions.EditItemType)">
+            <summary>
+            Sets the type of the container edit.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.GetEditorItemType(System.Windows.DependencyObject)">
+            <summary>
+            Gets the EditorTypeItem property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.SetEditorItemType(System.Windows.DependencyObject,Telerik.Windows.Controls.Diagrams.Extensions.EditItemType)">
+            <summary>
+            Sets the EditorTypeItem property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.GetEditorPropertyName(System.Windows.DependencyObject)">
+            <summary>
+            Gets the EditorPropertyName property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.SetEditorPropertyName(System.Windows.DependencyObject,System.String)">
+            <summary>
+            Sets the EditorPropertyName property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.GetEditorValue(System.Windows.DependencyObject)">
+            <summary>
+            Gets the EditorValue property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.SetEditorValue(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Sets the EditorValue property.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.GetIsRadioButtonPanel(System.Windows.DependencyObject)">
+            <summary>
+            Gets the IsToggleButtonPanel value.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.SetIsRadioButtonPanel(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets the IsToggleButtonPanel value.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">If set to <c>true</c> [value].</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.GetRadioButtonValue(System.Windows.DependencyObject)">
+            <summary>
+            Gets the RadioButtonValue.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.SetRadioButtonValue(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Sets the RadioButtonValue.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="E:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.RegisterEditor">
+            <summary>
+            Occurs when value editor is registered.
+            </summary>
+        </member>
+        <member name="E:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.RegisterContainer">
+            <summary>
+            Occurs when container is registered.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.ContextItems">
+            <summary>
+            Gets or sets the context items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.SettingsPaneView.CurrentEditType">
+            <summary>
+            Gets or sets the type of the current edit.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.BezierCurveFlattener.AdaptiveForwardDifferencingCubicFlattener">
+            <summary>
+            See http://www.drdobbs.com/cpp/184403417 .
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentHelper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentHelper.GetLastPoint(System.Windows.Media.PathSegment)">
+            <summary>
+            Gets the last point.
+            </summary>
+            <param name="segment">The segment.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentHelper.GetPoint(System.Windows.Media.PathSegment,System.Int32)">
+            <summary>
+            Gets the point.
+            </summary>
+            <param name="segment">The segment.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentHelper.CreatePolyBezierSegment(System.Collections.Generic.IList{System.Windows.Point},System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Creates the poly bezier segment.
+            </summary>
+            <param name="points">The points.</param>
+            <param name="start">The start.</param>
+            <param name="count">The count.</param>
+            <param name="isStroked">If set to <c>true</c> [is stroked].</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentHelper.CreateLineSegment(System.Windows.Point,System.Boolean)">
+            <summary>
+            Creates the line segment.
+            </summary>
+            <param name="point">The point.</param>
+            <param name="isStroked">If set to <c>true</c> [is stroked].</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentHelper.CreateBezierSegment(System.Windows.Point,System.Windows.Point,System.Windows.Point,System.Boolean)">
+            <summary>
+            Creates the bezier segment.
+            </summary>
+            <param name="point1">The point1.</param>
+            <param name="point2">The point2.</param>
+            <param name="point3">The point3.</param>
+            <param name="isStroked">If set to <c>true</c> [is stroked].</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentHelper.ArcToBezierSegments(System.Windows.Media.ArcSegment,System.Windows.Point)">
+            <summary>
+            Arcs to bezier segments.
+            </summary>
+            <param name="arcSegment">The arc segment.</param>
+            <param name="startPoint">The start point.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentHelper.GetSimpleSegments(System.Windows.Media.PathSegment,System.Windows.Point)">
+            <summary>
+            Gets the simple segments.
+            </summary>
+            <param name="segment">The segment.</param>
+            <param name="start">The start.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentHelper.SyncPolylineSegment(System.Windows.Media.PathSegmentCollection,System.Int32,System.Collections.Generic.IList{System.Windows.Point},System.Int32,System.Int32)">
+            <summary>
+            Syncs the polyline segment.
+            </summary>
+            <param name="collection">The collection.</param>
+            <param name="index">The index.</param>
+            <param name="points">The points.</param>
+            <param name="start">The start.</param>
+            <param name="count">The count.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.PolylineHelper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PolylineHelper.GetWrappedPolylines(System.Collections.Generic.IList{Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo},System.Double@)">
+            <summary>
+            Gets the wrapped polylines.
+            </summary>
+            <param name="lines">The lines.</param>
+            <param name="startArcLength">Start length of the arc.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PolylineHelper.PathMarch(Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo,System.Double,System.Double,System.Func{Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition,System.Double})">
+            <summary>
+            Pathes the march.
+            </summary>
+            <param name="polyline">The polyline.</param>
+            <param name="startArcLength">Start length of the arc.</param>
+            <param name="cornerThreshold">The corner threshold.</param>
+            <param name="stopCallback">The stop callback.</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RandomEngine">
+            <summary>
+            Represents a randoming engine.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RandomEngine.#ctor(System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RandomEngine"/> class.
+            </summary>
+            <param name="seed">The seed.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RandomEngine.NextGaussian(System.Double,System.Double)">
+            <summary>
+            Returns the next gaussian value.
+            </summary>
+            <param name="mean">The mean.</param>
+            <param name="variance">The variance.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RandomEngine.NextUniform(System.Double,System.Double)">
+            <summary>
+            Returns the uniform value.
+            </summary>
+            <param name="min">The min.</param>
+            <param name="max">The max.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentInfo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentInfo.#ctor(System.Windows.Point,System.Windows.Media.PathSegment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentInfo"/> class.
+            </summary>
+            <param name="startPoint">The start point.</param>
+            <param name="pathSegment">The path segment.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentInfo.PathSegment">
+            <summary>
+            Gets the path segment.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PathSegmentInfo.StartPoint">
+            <summary>
+            Gets the start point.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.#ctor(System.Collections.Generic.IList{System.Windows.Point})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo"/> class.
+            </summary>
+            <param name="points">The points.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.Difference(System.Int32)">
+            <summary>
+            Differences the specified index.
+            </summary>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.SmoothNormal(System.Int32,System.Double,System.Double)">
+            <summary>
+            Smoothes the normal.
+            </summary>
+            <param name="index">The index.</param>
+            <param name="fraction">The fraction.</param>
+            <param name="cornerRadius">The corner radius.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.AccumulatedLength">
+            <summary>
+            Gets the length of the accumulated.
+            </summary>
+            <value>
+            The length of the accumulated.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.Angles">
+            <summary>
+            Gets the angles.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.Count">
+            <summary>
+            Gets the count.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.IsClosed">
+            <summary>
+            Gets a value indicating whether this instance is closed.
+            </summary>
+            <value>
+              <c>true</c> if this instance is closed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.Lengths">
+            <summary>
+            Gets the lengths.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.Normals">
+            <summary>
+            Gets the normals.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.Points">
+            <summary>
+            Gets the points.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo.TotalLength">
+            <summary>
+            Gets the total length.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.PolylineStopPositionType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.PolylineStopPositionType.CompleteStep">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.PolylineStopPositionType.CompletePolyline">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.PolylineStopPositionType.CornerPoint">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.Create(Telerik.Windows.Controls.Diagrams.Extensions.PolylineStopPositionType,System.Int32,System.Double,System.Double,System.Double)">
+            <summary>
+            Creates the specified reason.
+            </summary>
+            <param name="reason">The reason.</param>
+            <param name="index">The index.</param>
+            <param name="before">The before.</param>
+            <param name="after">The after.</param>
+            <param name="remain">The remain.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.GetArcLength(System.Collections.Generic.IList{System.Double})">
+            <summary>
+            Gets the length of the arc.
+            </summary>
+            <param name="accumulatedLengths">The accumulated lengths.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.GetNormal(Telerik.Windows.Controls.Diagrams.Extensions.PolylineInfo,System.Double)">
+            <summary>
+            Gets the normal.
+            </summary>
+            <param name="polyline">The polyline.</param>
+            <param name="cornerRadius">The corner radius.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.GetPoint(System.Collections.Generic.IList{System.Windows.Point})">
+            <summary>
+            Gets the point.
+            </summary>
+            <param name="points">The points.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.After">
+            <summary>
+            Gets the after.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.Before">
+            <summary>
+            Gets the before.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.Index">
+            <summary>
+            Gets the index.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.Ratio">
+            <summary>
+            Gets the ratio.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.Reason">
+            <summary>
+            Gets the reason.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.PolylinePosition.Remain">
+            <summary>
+            Gets the remain.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Segment">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Segment.#ctor">
+            <summary>
+            Prevents a default instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Segment"/> class from being created.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Segment.Create(System.Windows.Point,System.Windows.Point)">
+            <summary>
+            Creates the specified point0.
+            </summary>
+            <param name="point0">The point0.</param>
+            <param name="point1">The point1.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Segment.Create(System.Windows.Point,System.Windows.Point,System.Windows.Point)">
+            <summary>
+            Creates the specified point0.
+            </summary>
+            <param name="point0">The point0.</param>
+            <param name="point1">The point1.</param>
+            <param name="point2">The point2.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Segment.Create(System.Windows.Point,System.Windows.Point,System.Windows.Point,System.Windows.Point)">
+            <summary>
+            Creates the specified point0.
+            </summary>
+            <param name="point0">The point0.</param>
+            <param name="point1">The point1.</param>
+            <param name="point2">The point2.</param>
+            <param name="point3">The point3.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Segment.Flatten(System.Collections.Generic.IList{System.Windows.Point},System.Double,System.Collections.Generic.IList{System.Double})">
+            <summary>
+            Flattens the specified result polyline.
+            </summary>
+            <param name="resultPolyline">The result polyline.</param>
+            <param name="tolerance">The tolerance.</param>
+            <param name="resultParameters">The result parameters.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.Segment.Points">
+            <summary>
+            Gets the points.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.Segment.Type">
+            <summary>
+            Gets the type.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Segment.SegmentType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.Segment.SegmentType.Line">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.Segment.SegmentType.CubicBeizer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.SketchEffect">
+            <summary>
+            Represents the sketch effect.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SketchEffect.#ctor(System.Windows.Media.PathGeometry)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.SketchEffect"/> class.
+            </summary>
+            <param name="originalGeometry">The original geometry.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SketchEffect.Sketch">
+            <summary>
+            Sketches this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.SketchGeometryEffect">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SketchGeometryEffect.IsSketchyProperty">
+            <summary>
+            Identifies the IsSketchy attached property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.SketchGeometryEffect.SketchGeometryProperty">
+            <summary>
+            Identifies the SketchGeometry attached property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SketchGeometryEffect.GetIsSketchy(System.Windows.DependencyObject)">
+            <summary>
+            Gets the is sketchy.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SketchGeometryEffect.SetIsSketchy(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets the is sketchy.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">If set to <c>true</c> [value].</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SketchGeometryEffect.GetSketchGeometry(System.Windows.DependencyObject)">
+            <summary>
+            Gets the sketch geometry.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.SketchGeometryEffect.SetSketchGeometry(System.Windows.DependencyObject,System.Windows.Media.Geometry)">
+            <summary>
+            Sets the sketch geometry that will be used if provided when the shape is sketched.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail">
+            <summary>
+            Represents the RadDiagramThumbnail.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.DiagramProperty">
+            <summary>
+            Identifies the Diagram dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.ViewportStyleProperty">
+            <summary>
+            Identifies the ViewportStyle dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.ViewportRectProperty">
+            <summary>
+            Identifies the ViewportRect dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.ImageSourceProperty">
+            <summary>
+            Identifies the ImageSource dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.RefreshThumbnail">
+            <summary>
+            Refreshes the RadDiagramThumbnail.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.OnApplyTemplate">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.ClipFrameworkElement(System.Windows.FrameworkElement)">
+            <summary>
+            Clips the framework element.
+            </summary>
+            <param name="frameworkElement">The framework element.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.GetImageRectangle">
+            <summary>
+            Gets the image rectangle.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.OnMouseMove(System.Windows.Input.MouseEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.OnMouseWheel(System.Windows.Input.MouseWheelEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.ImageSource">
+            <summary>
+            Gets or sets the background brush.
+            </summary>		
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.ViewportRect">
+            <summary>
+            Gets or sets the viewport rect.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.Zoom">
+            <summary>
+            Gets the zoom.
+            </summary>
+            <value>The zoom.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.ViewportStyle">
+            <summary>
+            Gets or sets the viewport border style.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramThumbnail.Diagram">
+            <summary>
+            Gets or sets the diagram.
+            </summary>
+            <value>The diagram.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.Gallery">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.Gallery.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.Gallery"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.Gallery.Header">
+            <summary>
+            Gets or sets the header.
+            </summary>
+            <value>
+            The header.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.Gallery.Items">
+            <summary>
+            Gets the items.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem.#ctor(System.String,Telerik.Windows.Controls.RadDiagramShape)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem"/> class.
+            </summary>
+            <param name="header">The header.</param>
+            <param name="shape">The shape.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem.#ctor(System.String,Telerik.Windows.Controls.RadDiagramShape,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem"/> class.
+            </summary>
+            <param name="header">The header.</param>
+            <param name="shape">The shape.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem.Header">
+            <summary>
+            Gets or sets the header.
+            </summary>
+            <value>
+            The header.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem.ItemType">
+            <summary>
+            Gets or sets the type of the item.
+            </summary>
+            <value>
+            The type of the item.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem.Shape">
+            <summary>
+            Gets or sets the shape.
+            </summary>
+            <value>
+            The shape.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem.ToolboxItemBackground">
+            <summary>
+            Gets or sets the background of the corresponding toolbox item.
+            </summary>
+            <value>
+            The background.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItem.ToolboxItemForeground">
+            <summary>
+            Gets or sets the foreground of the corresponding toolbox item.
+            </summary>
+            <value>
+            The background.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.HierarchicalGalleryItemsCollection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.HierarchicalGalleryItemsCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.HierarchicalGalleryItemsCollection"/> class.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox">
+            <summary>
+            Custom animated listbox to collect droppable RadDiagram shapes and other diagram elements.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.HeaderProperty">
+            <summary>
+            The Header dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.HeaderTemplateProperty">
+            <summary>
+            The HeaderTemplate dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.TitleProperty">
+            <summary>
+            The Title dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.TitleTemplateProperty">
+            <summary>
+            The TitleTemplate dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.IsOpenProperty">
+            <summary>
+            The IsOpen dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.RegularButtonStyleProperty">
+            <summary>
+            The RegularButtonStyle dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.SketchyButtonStyleProperty">
+            <summary>
+            The SketchyButtonStyle dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.CloseButtonStyleProperty">
+            <summary>
+            The CloseButtonStyle dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.OpenCloseButtonStyleProperty">
+            <summary>
+            The OpenCloseToggleButton dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.OnSelectionChanged(Telerik.Windows.Controls.RadSelectionChangedEventArgs)">
+            <summary>
+            Called after SelectionChanged event is fired.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.IsItemItsOwnContainerOverride(System.Object)">
+            <summary>
+            Determines if the specified item is (or is eligible to be) its own container.
+            </summary>
+            <param name="item">The item to check.</param>
+            <returns>
+            true if the item is (or is eligible to be) its own container; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.GetContainerForItemOverride">
+            <summary>
+            Creates or identifies the element that is used to display the given item.
+            </summary>
+            <returns>
+            The element that is used to display the given item.
+            </returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.Header">
+            <summary>
+            Gets or sets the header.
+            </summary>
+            <value>
+            The header.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.HeaderTemplate">
+            <summary>
+            Gets or sets the header's template.
+            </summary>
+            <value>
+            The header's template.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.Title">
+            <summary>
+            Gets or sets the title.
+            </summary>
+            <value>
+            The title.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.TitleTemplate">
+            <summary>
+            Gets or sets the title's template.
+            </summary>
+            <value>
+            The title's template.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.IsOpen">
+            <summary>
+            Gets or sets a value indicating whether this instance is open.
+            </summary>
+            <value>
+              <c>true</c> if this instance is open; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.RegularButtonStyle">
+            <summary>
+            Gets or sets the regular button's style.
+            </summary>
+            <value>
+            The regular button's style.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.SketchyButtonStyle">
+            <summary>
+            Gets or sets the sketchy button's style.
+            </summary>
+            <value>
+            The sketchy button's style.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.CloseButtonStyle">
+            <summary>
+            Gets or sets the close button's style.
+            </summary>
+            <value>
+            The close button's style.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolbox.OpenCloseButtonStyle">
+            <summary>
+            Gets or sets the open-close toggle button's style.
+            </summary>
+            <value>
+            The open-close toggle button's style.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup">
+            <summary>
+            Represents a <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup"/> item.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.IsSelectedProperty">
+            <summary>
+            Identifies the <c cref="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.IsSelected"/> property.
+            </summary>
+            <seealso cref="P:Telerik.Windows.Controls.RadTabItem.IsSelected"/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.OnSelected(Telerik.Windows.RadRoutedEventArgs)">
+            <summary>
+            Called when the item is selected.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.OnUnselected(Telerik.Windows.RadRoutedEventArgs)">
+            <summary>
+            Called when the item is unselected.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.Telerik#Windows#Controls#TabControl#IRadTabItem#SetTabOrientation(System.Windows.Controls.Orientation)">
+            <summary>
+            Sets the tab orientation.
+            </summary>
+            <param name="orientation">The orientation.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.Telerik#Windows#Controls#TabControl#IRadTabItem#UpdateHeaderPresenterContent">
+            <summary>
+            Updates the content of the header presenter.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.Telerik#Windows#Controls#TabControl#IRadTabItem#UpdateTabStripPlacement(Telerik.Windows.Controls.Dock)">
+            <summary>
+            Updates the tab strip placement.
+            </summary>
+            <param name="placement">The placement.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.ChangeVisualState(System.Boolean)">
+            <summary>
+            Updates the visual state of the control.
+            </summary>
+            <param name="useTransitions">Indicates whether transitions should be used.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Prepares the specified element to display the specified item.
+            </summary>
+            <param name="element">Element used to display the specified item.</param>
+            <param name="item">Specified item.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.GetContainerForItemOverride">
+            <summary>
+            Creates or identifies the element that is used to display the given item.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.IsItemItsOwnContainerOverride(System.Object)">
+            <summary>
+            Determines if the specified item is (or is eligible to be) its own container.
+            </summary>
+            <param name="item">The item to check.</param>
+            <returns>
+            True if the item is (or is eligible to be) its own container; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.ArrangeOverride(System.Windows.Size)">
+            <summary>Called to arrange and size the content of a <see cref="T:System.Windows.Controls.Control"/>
+            object. </summary>
+            <returns>The size of the control.</returns>
+            <param name="arrangeBounds">The computed size that is used to arrange the content.
+            </param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseEnter"/> attached event is raised on this element. Implement this method to add class handling for this event.
+            </summary>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseLeave"/> attached event is raised on this element. Implement this method to add class handling for this event.
+            </summary>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.OnMouseMove(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseMove"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
+            </summary>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.OnIsSelectedChanged(System.Boolean,System.Boolean)">
+            <summary>
+            Called when the IsSelected property has changed.
+            </summary>
+            <param name="oldValue">The old value of the IsSelected property.</param>
+            <param name="newValue">The new value of the IsSelected property.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.IsSelected">
+            <summary>
+            Gets a value indicating whether this element is visible in the user interface (UI).
+            </summary>
+            <returns>true if the element is visible; otherwise, false.</returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.Telerik#Windows#Controls#TabControl#IRadTabItem#Control">
+            <summary>
+            Gets an a reference to the control that implements the IRadTabItem interface.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxGroup.Telerik#Windows#Controls#TabControl#IRadTabItem#TabStripPlacement">
+            <summary>
+            Gets the tab strip placement.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem">
+            <summary>
+            Represents a <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem"/> item.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem.ViewContentProperty">
+            <summary>
+            The ViewContent dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem.ViewContentTemplateProperty">
+            <summary>
+            The ViewContentTemplate dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseEnter"/> attached event is raised on this element. Implement this method to add class handling for this event.
+            </summary>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseLeave"/> attached event is raised on this element. Implement this method to add class handling for this event.
+            </summary>
+            <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem.ViewContent">
+            <summary>
+            Gets or sets the view content.
+            </summary>
+            <value>
+            The view content.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.RadDiagramToolboxItem.ViewContentTemplate">
+            <summary>
+            Gets or sets the view content's template.
+            </summary>
+            <value>
+            The view content's template.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItemsCollection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItemsCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItemsCollection"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.GalleryItemsCollection.GetItemsByType(System.String)">
+            <summary>
+            Gets items by type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ToolboxCategoryNames">
+            <summary>
+            Represents toolbox category names.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.ToolboxCategoryNames.Arrows">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.ToolboxCategoryNames.BasicShapes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.ToolboxCategoryNames.FlowChart">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.IMultiValueProvider">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.IMultiValueProvider.GetValues">
+            <summary>
+            Gets the values.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ColorStyle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ColorStyle.GetValues">
+            <summary>
+            Gets the values.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ColorStyle.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ColorStyle.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ColorStyle.OrderId">
+            <summary>
+            Gets or sets the order id.
+            </summary>
+            <value>The order id.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ColorStyle.Fill">
+            <summary>
+            Gets or sets the fill.
+            </summary>
+            <value>The fill.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ColorStyle.Stroke">
+            <summary>
+            Gets or sets the stroke.
+            </summary>
+            <value>The stroke.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2">
+            <summary>
+            Base implementation of the <see cref="T:Telerik.Windows.Diagrams.Core.IGraphSource"/> which can be used to create an MVVM sources for RadDiagram. 
+            </summary>
+            <remarks>This MVVM source is bidirectional.</remarks>
+            <typeparam name="TNode">
+            The data type of the node.
+            </typeparam>
+            <typeparam name="TLink">
+            The data type of the link.
+            </typeparam>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.AddNode(`0)">
+            <summary>
+            Adds a node (shape) to this diagram source.
+            </summary>
+            <param name="node">
+            The node to add.
+            </param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.AddLink(`1)">
+            <summary>
+            Adds the given link to this diagram source.
+            </summary>
+            <param name="link">The link to add.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.RemoveLink(`1)">
+            <summary>
+            Removes the link from this source.
+            </summary>
+            <param name="link">The link.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.RemoveItem(`0)">
+            <summary>
+            Removes the item from the source.
+            </summary>
+            <param name="node">The node.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.Clear">
+            <summary>
+            Removes all items and links from this source.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.InternalItems">
+            <summary>
+            Gets the internal items collection.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.InternalLinks">
+            <summary>
+            Gets the internal links collection.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.Items">
+            <summary>
+            Gets the node items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.GraphSourceBase`2.Links">
+            <summary>
+            Gets the links or connections of this diagram source.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.HierarchicalNodeViewModel">
+            <summary>
+            MVVM representation of a hierarchical node.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.NodeViewModelBase">
+            <summary>
+            Base class for MVVM nodes.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ItemViewModelBase">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ItemViewModelBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ItemViewModelBase"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ItemViewModelBase.Visibility">
+            <summary>
+            Gets or sets the visibility.
+            </summary>
+            <value>The visibility.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ItemViewModelBase.Position">
+            <summary>
+            Gets or sets the position.
+            </summary>
+            <value>The position.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ItemViewModelBase.Content">
+            <summary>
+            Gets or sets the content or label of this connection.
+            </summary>
+            <value>
+            The content.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ItemViewModelBase.IsSelected">
+            <summary>
+            Gets or sets a value indicating whether this instance is selected.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is selected; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.NodeViewModelBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.NodeViewModelBase"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.NodeViewModelBase.Width">
+            <summary>
+            Gets or sets the width.
+            </summary>
+            <value>
+            The width.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.NodeViewModelBase.Height">
+            <summary>
+            Gets or sets the height.
+            </summary>
+            <value>
+            The height.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.NodeViewModelBase.RotationAngle">
+            <summary>
+            Gets or sets the rotation of the shape.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.HierarchicalNodeViewModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.HierarchicalNodeViewModel"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.HierarchicalNodeViewModel.Children">
+            <summary>
+            Gets or sets the children of the current node.
+            </summary>
+            <value>The children.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.HierarchicalNodeViewModel.HasChildren">
+            <summary>
+            Gets a value indicating whether this instance has children.
+            </summary>
+            <value>
+            	<c>True</c> if this instance has children; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.LinkViewModelBase`1">
+            <summary>
+            A generic base class for the link or connection in a diagram source.
+            </summary>
+            <typeparam name="T"> A type inheriting from <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.NodeViewModelBase"/>.
+            </typeparam>
+            <example>
+            If you want to map the Content of the link to the Content of the connection you
+            need to add a Style like so 
+            <code lang="C#">
+            &lt;Style  TargetType="telerik:RadDiagramConnection"&gt;
+              &lt;Setter Property="ContentTemplate"  &gt;
+                &lt;Setter.Value&gt;
+                  &lt;DataTemplate&gt;
+                    &lt;TextBlock Text="{Binding Content}"/&gt;
+                  &lt;/DataTemplate&gt;
+                &lt;/Setter.Value&gt;
+              &lt;/Setter&gt;
+            &lt;/Style&gt;
+            </code>.
+            </example>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.LinkViewModelBase`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.LinkViewModelBase`1"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.LinkViewModelBase`1.#ctor(`0,`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.LinkViewModelBase`1"/> class.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="target">The target.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.LinkViewModelBase`1.Source">
+            <summary>
+            Gets or sets the source of the connection.
+            </summary>
+            <value>
+            The source.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.LinkViewModelBase`1.Target">
+            <summary>
+            Gets or sets the target of this connection.
+            </summary>
+            <value>
+            The target.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.LinkViewModelBase`1.SourceCapType">
+            <summary>
+            Gets or sets the type of the source cap.
+            </summary>
+            <value>The type of the source cap.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.LinkViewModelBase`1.TargetCapType">
+            <summary>
+            Gets or sets the type of the target cap.
+            </summary>
+            <value>The type of the target cap.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2">
+            <summary>
+            Represents a base class for an observable graph source.
+            </summary>
+            <typeparam name="TNode">The type of the node.</typeparam>
+            <typeparam name="TLink">The type of the link.</typeparam>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2.Telerik#Windows#Diagrams#Core#IObservableGraphSource#AddLink(Telerik.Windows.Diagrams.Core.ILink)">
+            <summary>
+            Adds a link in the Links collection.
+            </summary>
+            <param name="link">The link.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2.Telerik#Windows#Diagrams#Core#IObservableGraphSource#AddNode(System.Object)">
+            <summary>
+            Adds a node in the Items collection.
+            </summary>
+            <param name="node">The node.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2.Telerik#Windows#Diagrams#Core#IObservableGraphSource#CreateLink(System.Object,System.Object)">
+            <summary>
+            Creates a link based on the associated source and target nodes.
+            </summary>
+            <param name="source">The source node.</param>
+            <param name="target">The target node.</param>
+            <returns>
+            Returns the created link.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2.Telerik#Windows#Diagrams#Core#IObservableGraphSource#CreateNode(Telerik.Windows.Diagrams.Core.IShape)">
+            <summary>
+            Creates a node based on an associated shape.
+            </summary>
+            <param name="shape">The associated shape.</param>
+            <returns>
+            Returns the created node.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2.Telerik#Windows#Diagrams#Core#IObservableGraphSource#RemoveLink(Telerik.Windows.Diagrams.Core.ILink)">
+            <summary>
+            Removes a link from the Links collection.
+            </summary>
+            <param name="link">The link.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2.Telerik#Windows#Diagrams#Core#IObservableGraphSource#RemoveNode(System.Object)">
+            <summary>
+            Removes a node from the Items collection.
+            </summary>
+            <param name="node">The node.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2">
+            <summary>
+            Represents a base class for a serializable graph source.
+            </summary>
+            <typeparam name="TNode">The type of the node.</typeparam>
+            <typeparam name="TLink">The type of the link.</typeparam>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.CachedNodes">
+            <summary>
+            Cache for the deserialized nodes.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.GetNodeUniqueId(`0)">
+            <summary>
+            Gets the node's unique id. This id should be always unique and should not rely on the object's reference.
+            </summary>
+            <param name="node">The node.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.GetLinkUniqueId(`1)">
+            <summary>
+            Gets the link's unique id. This id should be always unique and should not rely on the object's reference.
+            </summary>
+            <param name="link">The link.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.DeserializeLink(Telerik.Windows.Diagrams.Core.IConnection,Telerik.Windows.Diagrams.Core.SerializationInfo)">
+            <summary>
+            Deserializes the link. When overriden, this method creates a new instance of the link and restores any saved information from the serialization info.
+            </summary>
+            <param name="connection">The connection.</param>
+            <param name="info">The info.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.DeserializeNode(Telerik.Windows.Diagrams.Core.IShape,Telerik.Windows.Diagrams.Core.SerializationInfo)">
+            <summary>
+            Deserializes the node. When overriden, this method creates a new instance of the node and restores any saved information from the serialization info.
+            </summary>
+            <param name="shape">The shape.</param>
+            <param name="info">The info.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.SerializeNode(`0,Telerik.Windows.Diagrams.Core.SerializationInfo)">
+            <summary>
+            Serializes the node. When overriden, this method saves important information about the node in the specified serialization info.
+            </summary>
+            <param name="node">The node.</param>
+            <param name="info">The info.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.SerializeLink(`1,Telerik.Windows.Diagrams.Core.SerializationInfo)">
+            <summary>
+            Serializes the link. When overriden, this method saves important information about the link in the specified serialization info.
+            </summary>
+            <param name="link">The link.</param>
+            <param name="info">The info.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.ClearCache">
+            <summary>
+            Clears the deserialization cache. The cache contains the generated items when deserializing the saved data.
+            The cache should be cleared either before or after the deserialization of the graph source.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.SourceUniqueIdKey">
+            <summary>
+            Gets the source unique id key. This key is used to save the unique id of the source of the link in the serialization info.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.TargetUniqueIdKey">
+            <summary>
+            Gets the target unique id key. This key is used to save the unique id of the target of the link in the serialization info.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.SerializableGraphSourceBase`2.NodeUniqueIdKey">
+            <summary>
+            Gets the node unique id key. This key is used to save the unique id of the node in the serialization info.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,15 +1,14 @@
+using FoundOps.Core.Models.CoreEntities;
 using System;
 using System.Windows.Data;
 using System.Globalization;
-using FoundOps.Common.Tools.ExtensionMethods;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.SLClient.Data.Converters
 {
     /// <summary>
-    /// A converter that takes a location and returns a url with a (Location) QRCode
+    /// A converter that takes a location and returns a string with the geo uri
     /// </summary>
-    public class LocationToUrlConverter : IValueConverter
+    public class LocationToGeoUriConverter : IValueConverter
     {
         #region Implementation of IValueConverter
 
@@ -17,16 +16,12 @@ namespace FoundOps.SLClient.Data.Converters
         {
             var location = value as Location;
 
-            if (location == null)
+            if (location == null || location.Latitude == null || location.Longitude == null)
                 return null;
 
-            var latitude = location.Latitude;
-            var longitude = location.Longitude;
+            var locationUrl = String.Format("geo:{0},{1}", location.Latitude, location.Longitude);
 
-            string locationUrl = "";
-
-            locationUrl = String.Format(UriExtensions.ThisRootUrl+ "/Helper/LocationQRCode?latitude={0}&longitude={1}", latitude, longitude);
-            return new Uri(locationUrl);
+            return locationUrl;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

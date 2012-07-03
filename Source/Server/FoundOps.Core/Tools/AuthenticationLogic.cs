@@ -6,7 +6,6 @@ using System;
 using System.Web;
 using System.Text;
 using System.Linq;
-using System.Data.Objects;
 using System.Security.Authentication;
 
 namespace FoundOps.Core.Tools
@@ -45,6 +44,10 @@ namespace FoundOps.Core.Tools
         /// <exception cref="AuthenticationException">Thrown if user is not logged in</exception>
         public static IQueryable<Role> AdminRolesCurrentUserHasAccessTo(this CoreEntitiesContainer coreEntitiesContainer)
         {
+#if DEBUG //Skip security in debug mode
+            return coreEntitiesContainer.Roles.Where(r => r.RoleTypeInt == (int)RoleType.Administrator).Include(r => r.OwnerParty).Include(r => r.MemberParties);
+#endif
+
             var roles = (from user in CurrentUserAccountQueryable(coreEntitiesContainer) //there will only be one
                          from role in coreEntitiesContainer.Roles.Where(r => r.RoleTypeInt == (int)RoleType.Administrator)
                          where role.OwnerPartyId == user.Id || role.MemberParties.Any(a => a.Id == user.Id)

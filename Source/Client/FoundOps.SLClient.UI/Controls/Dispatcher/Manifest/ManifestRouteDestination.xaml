@@ -7,13 +7,13 @@
              xmlns:Converters="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher.Converters"
              xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields"
              xmlns:Converters2="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="800" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="800" 
              Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsDestinationsVisible, Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
     <!--Do not remove ViewModels, it is used by GetVM-->
     <UserControl.Resources>
         <Converters1:TypeToImageConverter x:Key="TypeToImageConverter" />
         <Converters:LocationNameVisibilityConverter x:Key="LocationNameVisibilityConverter" />
-        <Converters2:LocationToUrlConverter x:Key="LocationToUrlConverter" />
+        <Converters2:LocationToGeoUriConverter x:Key="LocationToGeoUriConverter" />
     </UserControl.Resources>
     <!--<StackPanel x:Name="TransitBetweenDestinationsElement" Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock x:Name="EstimatedDistanceElement" Text="Est. Distance: 30 Miles" Margin="0,0,50,0" />
@@ -133,32 +133,32 @@
                 </StackPanel>
                 <Grid Width="245" Height="120" HorizontalAlignment="Left" Visibility="{Binding RouteManifestVM.RouteManifestSettings.Is2DBarcodeVisible, 
                     Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
-                    <Image x:Name="BarcodeImage" Height="120" Width="120" Stretch="UniformToFill"
-                           Source="{Binding Location, Converter={StaticResource LocationToUrlConverter}}"/>
+                    <telerik:RadBarcodeQR x:Name="BarcodeImage" Width="125" Height="125" Version="4"
+                                          Text="{Binding Location, Converter={StaticResource LocationToGeoUriConverter}}"></telerik:RadBarcodeQR>
                 </Grid>
                 <StackPanel x:Name="RouteTasksElement" Margin="4,2" Width="245" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsRouteTasksVisible, 
                     Converter={StaticResource VisibilityConverter}, Source={Tools1:GetVM Type=ViewModels:RoutesVM}}">
-                        <TextBlock Text="Tasks" FontWeight="Bold"/>
-                        <ItemsControl x:Name="RouteTasksItemsControl" Margin="4,2" ItemsSource="{Binding RouteTasks}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel/>
-                                    <!--Replace VirtualizingStackPanel so export to PDF works properly-->
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel >
-                                        <TextBlock Text="{Binding Name}"/>
-                                        <!--This needs to be manually set-->
-                                        <CustomFields:ManifestFields Margin="15,0,0,0" 
+                    <TextBlock Text="Tasks" FontWeight="Bold"/>
+                    <ItemsControl x:Name="RouteTasksItemsControl" Margin="4,2" ItemsSource="{Binding RouteTasks}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel/>
+                                <!--Replace VirtualizingStackPanel so export to PDF works properly-->
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel >
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <!--This needs to be manually set-->
+                                    <CustomFields:ManifestFields Margin="15,0,0,0" 
                                         Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsFieldsVisible, Converter={StaticResource VisibilityConverter}, 
                                         Source={Tools1:GetVM Type=ViewModels:RoutesVM}}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Border>

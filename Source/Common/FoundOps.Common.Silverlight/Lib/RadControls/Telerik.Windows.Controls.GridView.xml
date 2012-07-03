@@ -1007,6 +1007,11 @@
             </summary>
             <param name="e">The <see cref="T:Telerik.Windows.Controls.GridView.GridViewAddingNewEventArgs"/> instance containing the event data.</param>
         </member>
+        <member name="F:Telerik.Windows.Controls.GridView.GridViewDataControl.FrozenColumnsSplitterVisibilityProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.GridView.GridViewDataControl.FrozenColumnsSplitterVisibility"/> dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.GridView.GridViewDataControl.ShowInsertRowProperty">
             <summary>
             Identifies the <see cref="P:Telerik.Windows.Controls.GridView.GridViewDataControl.ShowInsertRow"/> dependency property.
@@ -1356,6 +1361,13 @@
             <returns>
             The newly created <see cref="T:Telerik.Windows.Data.TableDefinition"/>.
             </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.GridViewDataControl.GetRowForItem(System.Object)">
+            <summary>
+            Gets the row for an item.
+            </summary>
+            <param name="item"></param>
+            <returns>The row for the corresponding item.</returns>
         </member>
         <member name="M:Telerik.Windows.Controls.GridView.GridViewDataControl.OnItemsSourceChanged(System.Object,System.Object)">
             <summary>
@@ -2012,6 +2024,11 @@
             Identifies the <see cref="F:Telerik.Windows.Controls.GridView.GridViewDataControl.IsFilteringAllowedProperty"/> dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.GridView.GridViewDataControl.FilteringModeProperty">
+            <summary>
+            Identifies the <see cref="F:Telerik.Windows.Controls.GridView.GridViewDataControl.FilteringModeProperty"/> dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.GridView.GridViewDataControl.FilteringEvent">
             <summary>
             Occurs before filtering.
@@ -2493,6 +2510,11 @@
         <member name="P:Telerik.Windows.Controls.GridView.GridViewDataControl.ShowInsertRow">
             <summary>
             Gets or sets a value indicating whether to show insert row.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.GridViewDataControl.FrozenColumnsSplitterVisibility">
+            <summary>
+            Gets or sets the visibility of the frozen columns splitter.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.GridView.GridViewDataControl.CanUserResizeRows">
@@ -3186,6 +3208,12 @@
             	<c>true</c> if the control can be filtered through the UI; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:Telerik.Windows.Controls.GridView.GridViewDataControl.FilteringMode">
+            <summary>
+            Gets or sets the filtering mode.
+            </summary>
+            <value>The filtering mode.</value>
+        </member>
         <member name="E:Telerik.Windows.Controls.GridView.GridViewDataControl.Filtering">
             <summary>
             Occurs before filter operation.
@@ -3442,10 +3470,41 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Telerik.Windows.Controls.GridViewColumn.CreateColumnFilterDescriptor">
+            <summary>
+            Creates the column filter descriptor.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Controls.GridViewColumn.ClearFilters">
             <summary>
             Clears all filtering associated with this column.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridViewColumn.SortDistinctValues(System.Linq.IQueryable)">
+            <summary>
+            Sorts the distinct values.
+            </summary>
+            <param name="source">The unsorted distinct values.</param>
+            <returns>The sorted distinct values.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridViewColumn.SortDistinctValuesByFilteringDisplay(System.Linq.IQueryable)">
+            <summary>
+            Sorts the distinct values according to their display value.
+            </summary>
+            <remarks>Use this method only if you have bound RadGridView to an in-memory collection, 
+            i.e. the source.Provider is EnumerableQuery (Linq to Objects). Other 
+            providers such as Linq to Entities and Linq to SQL can not support this 
+            method and will throw an exception.</remarks>
+            <param name="source">The unsorted distinct values.</param>
+            <returns>The distinct values sorted according to their display value.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridViewColumn.GetFilteringDisplayString(System.Object)">
+            <summary>
+            Gets the filtering display string for a distinct value.
+            </summary>
+            <param name="distinctValue">The distinctValue.</param>
+            <returns></returns>
         </member>
         <member name="F:Telerik.Windows.Controls.GridViewColumn.IsFilteringDeferredProperty">
             <summary>
@@ -3832,10 +3891,22 @@
             </summary>
             <value>The column filter descriptor.</value>
         </member>
+        <member name="P:Telerik.Windows.Controls.GridViewColumn.FilteringDisplayFunc">
+            <summary>
+            Gets the filtering display function.
+            </summary>
+            <value>The filtering display function.</value>
+            <remarks>This function is used by the filtering control distinct values list. 
+            It accepts a raw data value and returns what will become the content of the 
+            distinct value checkbox.</remarks>
+        </member>
         <member name="P:Telerik.Windows.Controls.GridViewColumn.IsFilteringDeferred">
             <summary>
-            Gets or sets a value indicating whether this column will have deferred filtering.
+            Gets or sets a value indicating whether this column will have deferred filtering when FilteringMode is Popup.
             </summary>
+            <remarks>
+            This property only makes sense and is used for the Popup FilteringMode of RadGridView.
+            </remarks>
         </member>
         <member name="P:Telerik.Windows.Controls.GridViewColumn.FilterMemberPath">
             <summary>
@@ -4360,6 +4431,15 @@
             <param name="item">The data context for the selected element.</param>
             <param name="value">The clipboard data for the selected cell.</param>
         </member>
+        <member name="P:Telerik.Windows.Controls.GridViewBoundColumnBase.FilteringDisplayFunc">
+            <summary>
+            Gets the filtering display function.
+            </summary>
+            <value>The filtering display function.</value>
+            <remarks>This function is used by the filtering control distinct values list. 
+            It accepts a raw data value and returns what will become the content of the 
+            distinct value checkbox.</remarks>
+        </member>
         <member name="P:Telerik.Windows.Controls.GridViewBoundColumnBase.ExportedElementWidth">
             <summary>
             Gets the actual width of the column.
@@ -4611,6 +4691,12 @@
             An object that represents the content of the cell.
             </returns>
         </member>
+        <member name="M:Telerik.Windows.Controls.GridViewExpressionColumn.CreateColumnFilterDescriptor">
+            <summary>
+            Creates the column filter descriptor.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Controls.GridViewExpressionColumn.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)">
             <summary>
             Raises the "PropertyChanged event.
@@ -4641,6 +4727,15 @@
             This is a dependency property.
             </summary>
             <value>The data format string.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridViewExpressionColumn.FilteringDisplayFunc">
+            <summary>
+            Gets the filtering display function.
+            </summary>
+            <value>The filtering display function.</value>
+            <remarks>This function is used by the filtering control distinct values list. 
+            It accepts a raw data value and returns what will become the content of the 
+            distinct value checkbox.</remarks>
         </member>
         <member name="T:Telerik.Windows.Controls.GridView.GridViewTabStop">
             <summary>
@@ -6390,6 +6485,11 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.GridView.GridViewHeaderCell.FilteringUIVisibility"/> dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.GridView.GridViewHeaderCell.FieldFilterControlVisibilityProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.GridView.GridViewHeaderCell.FieldFilterControlVisibility"/> dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.GridView.GridViewHeaderCell.DropMarkBrushProperty">
             <summary>
             Identifies the <see cref="P:Telerik.Windows.Controls.GridView.GridViewHeaderCell.DropMarkBrush"/> dependency property.
@@ -6490,6 +6590,14 @@
             </summary>
             <value>
             	<c>true</c> if the filtering funnel is displayed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.GridViewHeaderCell.FieldFilterControlVisibility">
+            <summary>
+            Gets or sets a value indicating whether the custom filter row element is displayed.
+            </summary>
+            <value>
+            	<c>true</c> if the custom filter row element is displayed; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="P:Telerik.Windows.Controls.GridView.GridViewHeaderCell.DropMarkBrush">
@@ -6649,8 +6757,20 @@
             Provides data for <see cref="E:Telerik.Windows.Controls.GridView.GridViewDataControl.AutoGeneratingColumn"/>
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.GridViewAutoGeneratingColumnEventArgs.#ctor(Telerik.Windows.Data.ItemPropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridViewAutoGeneratingColumnEventArgs"/> class.
+            </summary>
+            <param name="itemPropertyInfo">The item property info.</param>
+        </member>
         <member name="P:Telerik.Windows.Controls.GridViewAutoGeneratingColumnEventArgs.Column">
             <summary>Gets or sets current column.</summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridViewAutoGeneratingColumnEventArgs.ItemPropertyInfo">
+            <summary>
+            Gets the item property info.
+            </summary>
+            <value>The item property info.</value>
         </member>
         <member name="T:Telerik.Windows.Controls.GridViewColumnCollection">
             <summary>
@@ -6831,12 +6951,12 @@
             <param name="editingEventArgs">The <see cref="T:System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.GridViewComboBoxColumn.GetFilteringDisplayString(System.Object)">
+        <member name="M:Telerik.Windows.Controls.GridViewComboBoxColumn.SortDistinctValues(System.Linq.IQueryable)">
             <summary>
-            Gets the filtering display string for a distinct value.
+            Sorts the distinct values.
             </summary>
-            <param name="distinctValue">The distinctValue.</param>
-            <returns></returns>
+            <param name="source">The unsorted distinct values.</param>
+            <returns>The sorted distinct values.</returns>
         </member>
         <member name="P:Telerik.Windows.Controls.GridViewComboBoxColumn.ItemsSourceBinding">
             <summary> 
@@ -7330,6 +7450,16 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridViewSelectColumn"/> class.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.GridViewSelectColumn.CheckBoxStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.GridViewSelectColumn.CheckBoxStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GridViewSelectColumn.HeaderCheckBoxStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.GridViewSelectColumn.HeaderCheckBoxStyle"/> dependency property.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.GridViewSelectColumn.CanEdit(System.Object)">
             <summary>
             Determines whether the data represented by the column can be edited.
@@ -7366,6 +7496,18 @@
             <summary>
             Creates the element for the cell in view mode.
             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridViewSelectColumn.CheckBoxStyle">
+            <summary>
+            Gets or sets the style to be applied for the CheckBox in that column.
+            </summary>
+            <value>The CheckBox style.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridViewSelectColumn.HeaderCheckBoxStyle">
+            <summary>
+            Gets or sets the style to be applied for the CheckBox in that column header.
+            </summary>
+            <value>The CheckBox style.</value>
         </member>
         <member name="P:Telerik.Windows.Controls.GridViewSelectColumn.Header">
             <summary>
@@ -8234,12 +8376,79 @@
             </summary>
             <value>The column.</value>
         </member>
+        <member name="M:Telerik.Windows.Controls.GridView.ColumnFilterDescriptor.CreateFilterExpression(System.Linq.Expressions.Expression)">
+            <summary>
+            Creates a filter expression by delegating its creation to
+            <see cref="M:Telerik.Windows.Data.FilterDescriptorBase.CreateFilterExpression(System.Linq.Expressions.ParameterExpression)"/>, if
+            <paramref name="instance"/> is <see cref="T:System.Linq.Expressions.ParameterExpression"/>, otherwise throws <see cref="T:System.ArgumentException"/>
+            </summary>
+            <param name="instance">The instance expression, which will be used for filtering.</param>
+            <returns>A predicate filter expression.</returns>
+            <exception cref="T:System.ArgumentException">Parameter should be of type <see cref="T:System.Linq.Expressions.ParameterExpression"/></exception>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.ColumnFilterDescriptor.Refresh">
+            <summary>
+            Refreshes the column filter descriptor from its parent column.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.GridView.ColumnFilterDescriptor.#ctor(Telerik.Windows.Controls.GridViewColumn)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.ColumnFilterDescriptor"/> class.
             </summary>
             <param name="column">The column.</param>
             <exception cref="T:System.ArgumentNullException"><c>column</c> is null.</exception>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor">
+            <summary>
+            A ColumnFilterDescriptor for GridViewDataColumn.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor.#ctor(Telerik.Windows.Controls.GridViewColumn)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor"/> class.
+            </summary>
+            <param name="column">The column.</param>
+            <exception cref="T:System.ArgumentNullException"><c>column</c> is null.</exception>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor.Refresh">
+            <summary>
+            Refreshes the column filter descriptor from its parent column.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor.Member">
+            <summary>
+            Gets or sets the member.
+            </summary>
+            <value>The member.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.MemberColumnFilterDescriptor.MemberType">
+            <summary>
+            Gets or sets the type of the member.
+            </summary>
+            <value>The type of the member.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor">
+            <summary>
+            A ColumnFilterDescriptor for GridViewExpressionColumn.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor.#ctor(Telerik.Windows.Controls.GridViewColumn)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor"/> class.
+            </summary>
+            <param name="column">The column.</param>
+            <exception cref="T:System.ArgumentNullException"><c>column</c> is null.</exception>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor.Refresh">
+            <summary>
+            Refreshes the column filter descriptor from its parent column.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.LambdaColumnFilterDescriptor.LambdaExpression">
+            <summary>
+            Gets or sets the lambda expression.
+            </summary>
+            <value>The lambda expression.</value>
         </member>
         <member name="T:Telerik.Windows.Controls.GridView.DistinctValueConverter">
             <summary>
@@ -8356,6 +8565,110 @@
             Gets the raw value.
             </summary>
             <value>The raw value.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GridView.FieldFilterControl">
+            <summary>
+            This is for internal use only and is not intended to be used directly from your code.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.FieldFilterControl.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or 
+            internal processes (such as a rebuilding layout pass) call 
+            <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. 
+            In simplest terms, this means the method is called just before a UI element 
+            displays in an application. For more information, see Remarks.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.FieldFilterControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.FieldFilterControl"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.FieldFilterControl.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.KeyDown"/> event occurs.
+            </summary>
+            <param name="e">The data for the event.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.FieldFilterControl.Column">
+            <summary>
+            Gets or sets the column this control will service.
+            </summary>
+            <value>The column this control will service..</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GridView.FilterOperatorViewModel">
+            <summary>
+            This is for internal use only and is not intended to be used directly from your code.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.FilterOperatorViewModel.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.FilterOperatorViewModel.FilterOperator">
+            <summary>
+            Gets the filter operator.
+            </summary>
+            <value>The filter operator.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.GridView.FieldFilterControlViewModel">
+            <summary>
+            This is for internal use only and is not intended to be used directly from your code.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.FieldFilterControlViewModel.#ctor(Telerik.Windows.Controls.IFilterableColumn)">
+            <summary>
+            This is for internal use only and is not intended to be used directly from your code.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.FieldFilterControlViewModel.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources;
+            <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.FieldFilterControlViewModel.AvailableOperatorViewModels">
+            <summary>
+            Gets the available filter operators.
+            </summary>
+            <value>The available filter operators.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.FieldFilterControlViewModel.SelectedOperatorViewModel">
+            <summary>
+            Gets or sets the selected filter operator.
+            </summary>
+            <value>The selected filter operator.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.FieldFilterControlViewModel.EditorIsEnabled">
+            <summary>
+            Gets or sets a value indicating whether [editor is enabled].
+            </summary>
+            <value><c>true</c> if [editor is enabled]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.FieldFilterControlViewModel.Value">
+            <summary>
+            Gets or sets the value.
+            </summary>
+            <value>The value.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.FieldFilterControlViewModel.IsCaseSensitive">
+            <summary>
+            Gets or sets a value indicating whether this instance is case sensitive.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is case sensitive; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.FieldFilterControlViewModel.FunnelFillVisibility">
+            <summary>
+            This is for internal use only and is not intended to be used directly from your code.
+            </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.GridView.FieldFilterDescriptor">
             <summary>
@@ -8537,6 +8850,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Telerik.Windows.Controls.GridView.FilterEditorFactory.CreateTimeSpanEditor">
+            <summary>
+            Creates the time span editor.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Controls.GridView.FilterEditorFactory.CreateBooleanEditor(System.Type)">
             <summary>
             Creates the boolean editor.
@@ -8614,12 +8933,6 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.GridView.FilteringControl.FilterButtonVisibility"/> dependency property.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.GridView.FilteringControl.OnApplyTemplate">
-            <summary>
-            When overridden in a derived class, is invoked whenever application code or internal 
-            processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
-            </summary>
-        </member>
         <member name="M:Telerik.Windows.Controls.GridView.FilteringControl.#ctor(Telerik.Windows.Controls.GridViewColumn)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.FilteringControl"/> class.
@@ -8629,6 +8942,12 @@
         <member name="M:Telerik.Windows.Controls.GridView.FilteringControl.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.GridView.FilteringControl"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.FilteringControl.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal 
+            processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.GridView.FilteringControl.Prepare(Telerik.Windows.Controls.GridViewColumn)">
@@ -9019,6 +9338,21 @@
             </summary>
             <value>The ItemsSource.</value>
         </member>
+        <member name="T:Telerik.Windows.Controls.GridView.FilteringMode">
+            <summary>
+            Specifies RadGridView's filtering mode.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GridView.FilteringMode.Popup">
+            <summary>
+            Specifies popup filtering mode. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GridView.FilteringMode.FilterRow">
+            <summary>
+            Specifies custom filter row filtering mode.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.GridView.GridViewDataControlExtensions">
             <summary>
             Contains the <see cref="T:Telerik.Windows.Controls.GridView.GridViewDataControl"/> extension methods.
@@ -9215,6 +9549,14 @@
             Gets or sets the column that will be used for grouping.
             </summary>
             <value>The column that will be used for grouping.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.ColumnGroupDescriptor.ShouldUseColumnDataMemberBindingValueConverter">
+            <summary>
+            The DataMemberBinding converter should not be used in case the developer
+            has specified a GroupMemberPath. It does not make any sense, since we are
+            no longer grouping according to the DataMemberBinding, but according to the
+            GroupMemberPath.
+            </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.GridView.ColumnGroupDescriptor.DisplayContent">
             <summary>
@@ -9691,6 +10033,9 @@
             UIElements.  The control's item-host can ask the GridViewItemContainerGenerator for
             a Generator, which does the actual generation of UI.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GridView.GridViewItemContainerGenerator.Dispose">
+            <summary> IDisposable </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.GridView.GridViewItemContainerGenerator.#ctor(Telerik.Windows.Controls.GridView.IGeneratorHost)">
             <summary> Constructor </summary>
@@ -12055,6 +12400,11 @@
             </summary>
             
         </member>
+        <member name="F:Telerik.Windows.Controls.GridView.GridViewHeaderRow.FieldFilterPlaceholderVisibilityProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.GridView.GridViewHeaderRow.FieldFilterPlaceholderVisibility"/> dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.GridView.GridViewHeaderRow.HorizontalOffsetProperty">
             <summary>
             Identifies the HorizontalOffset dependency property.
@@ -12121,6 +12471,14 @@
             <returns>
             The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
             </returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GridView.GridViewHeaderRow.FieldFilterPlaceholderVisibility">
+            <summary>
+            Gets or sets a value indicating whether the field filter placeholder element is displayed.
+            </summary>
+            <value>
+            	<c>true</c> if the field filter placeholder element is displayed; otherwise, <c>false</c>.
+            </value>
         </member>
         <member name="T:Telerik.Windows.Controls.GridView.GridViewNewRow">
             <summary>
@@ -13676,6 +14034,13 @@
             Virtualizing panel for nested groups.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.GridView.IndexStorage.RemoveAt(System.Int32)">
+            <summary>
+            Removes the element at the given index. Worst complexity is
+            (N-InsertIndex) + Log(N)*NonDefaultsInRange(N-InsertIndex).
+            </summary>
+            <param name="index">The index at which to remove the item.</param>
+        </member>
         <member name="T:Telerik.Windows.Controls.GridView.IndexTree">
             <summary>
             An intex tree structure, used to store non-negative int values and query for a cumulative value up
@@ -13723,7 +14088,7 @@
             <param name="val">The value that will be inserted.</param>
             <param name="index">The index at which it will be inserted.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.GridView.IndexTree.System#Collections#Generic#IEnumerable{System#Int32}#GetEnumerator">
+        <member name="M:Telerik.Windows.Controls.GridView.IndexTree.System#Collections#Generic#IEnumerable{System#Int64}#GetEnumerator">
             <summary>
             Returns an enumerator that iterates through the collection.
             </summary>
@@ -13740,20 +14105,6 @@
             An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the
             collection.
             </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.GridView.IndexTree.CumulativeIndex(System.Double)">
-            <summary>
-            Returns the index of the element that reaches the given value. Has complexity of log(N).
-            </summary>
-            <param name="val">The value that needs to be reached.</param>
-            <returns>The index of the item that reached the given value.</returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.GridView.IndexTree.CumulativeValue(System.Int32)">
-            <summary>
-            Gets or sets the value that has built up for the items up to a given end index. Has complexity of log(N).
-            </summary>
-            <param name="endIndex">The index of the item for which to return the cumulative value.</param>
-            <returns>The cumulative value for all items up to and including a given index.</returns>
         </member>
         <member name="P:Telerik.Windows.Controls.GridView.IndexTree.Count">
             <summary>
@@ -13854,20 +14205,6 @@
             An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the
             collection.
             </returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.GridView.PreciseIndexTree.CumulativeIndex(System.Double)">
-            <summary>
-            Returns the index of the element that reaches the given value. Has complexity of log(N).
-            </summary>
-            <param name="val">The value that needs to be reached.</param>
-            <returns>The index of the item that reached the given value.</returns>
-        </member>
-        <member name="M:Telerik.Windows.Controls.GridView.PreciseIndexTree.CumulativeValue(System.Int32)">
-            <summary>
-            Gets or sets the value that has built up for the items up to a given end index. Has complexity of log(N).
-            </summary>
-            <param name="endIndex">The index of the item for which to return the cumulative value.</param>
-            <returns>The cumulative value for all items up to and including a given index.</returns>
         </member>
         <member name="P:Telerik.Windows.Controls.GridView.PreciseIndexTree.Count">
             <summary>

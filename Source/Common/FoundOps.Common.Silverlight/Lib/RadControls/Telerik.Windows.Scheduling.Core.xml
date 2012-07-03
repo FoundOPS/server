@@ -4,51 +4,34 @@
         <name>Telerik.Windows.Scheduling.Core</name>
     </assembly>
     <members>
-        <member name="M:Telerik.Windows.Core.SelectionChanger`1.End">
+        <member name="M:Telerik.Windows.Core.EditableObjectBase`1.Copy">
             <summary>
-            Commit selection changes.
+            	<b>Deep</b> copies this instance.
+            </summary>
+            <returns>
+            A <b>deep</b> copy of the current object.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Core.EditableObjectBase`1.CopyFrom(`0)">
+            <summary>
+            	<b>Deep</b> copies all properties from <paramref name="other"/> to this <see cref="!:IAppointment"/>.
+            </summary>
+            <param name="other">The <see cref="!:IAppointment"/> which properties are copied.</param>
+        </member>
+        <member name="M:Telerik.Windows.Core.EditableObjectBase`1.System#ComponentModel#IEditableObject#BeginEdit">
+            <summary>
+            Begins an edit on an object.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Core.SelectionChanger`1.Begin">
+        <member name="M:Telerik.Windows.Core.EditableObjectBase`1.System#ComponentModel#IEditableObject#CancelEdit">
             <summary>
-            Begin tracking selection changes.
+            Discards changes since the last System.ComponentModel.IEditableObject.BeginEdit() call.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Core.SelectionChanger`1.Cancel">
+        <member name="M:Telerik.Windows.Core.EditableObjectBase`1.System#ComponentModel#IEditableObject#EndEdit">
             <summary>
-            Cancels the currently active SelectionChanger.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Core.SelectionChanger`1.Select(System.Int32,`0)">
-            <summary>
-            Queue something to be added to the selection.
-            Does nothing if the item is already selected.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Core.SelectionChanger`1.Unselect(System.Int32,`0)">
-            <summary>
-            Queue something to be removed from the selection.
-            Does nothing if the item is not already selected.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Core.SelectionChanger`1.SelectJustThisItem(`0)">
-            <summary>
-            Select just this item; all other items in Selection will be removed.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Core.SelectionChanger`1.SynchronizeInternalSelection">
-            <summary>
-            Update the InternalSelection.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Core.SelectionChanger`1.CoerceItemCallback">
-            <summary>
-            Coerce Item before it is selected.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Core.SelectionChanger`1.IsActive">
-            <summary>
-            True if there is a SelectionChange currently in progress.
+            Pushes changes since the last System.ComponentModel.IEditableObject.BeginEdit()
+            or System.ComponentModel.IBindingList.AddNew() call into the underlying object.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Core.HierarchicalCollectionAdapterBase">
@@ -93,7 +76,7 @@
             Occurs when the collection changes.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Core.SynchronizedCollection`2">
+        <member name="T:Telerik.Windows.Core.SynchronizedCollection`1">
             <summary>
             TODO: Update summary.
             </summary>
@@ -188,17 +171,168 @@
             <param name="index">The index to get the value for.</param>
             <returns>The value for the given index.</returns>
         </member>
-        <member name="T:Telerik.Windows.Controls.FocusManagerHelper">
+        <!-- Badly formed XML comment ignored for member "T:Telerik.Windows.Controls.Internal.MouseInteractionHelperBase" -->
+        <member name="T:Telerik.Windows.Controls.Internal.InteractionHelperBase">
             <summary>
-            Represents a helper that gets the focused element in the SL4, SL5 (including OOB) and WPF platforms.
+            Abstract base class for all interaction helpers. The purpose of the interaction helpers is to hook to low-level control-related events and to
+            translate them to high-level logical events and notify a provided observer for these events.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.FocusManagerHelper.GetFocusedElement(System.Windows.DependencyObject)">
+        <member name="M:Telerik.Windows.Controls.Internal.InteractionHelperBase.#ctor(System.Windows.FrameworkElement)">
             <summary>
-            Gets the focused element.
+            Initializes a new instance of the InteractionHelperBase class.
             </summary>
-            <param name="element">The element.</param>
+            <param name="target">The target to which to hook the events.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.InteractionHelperBase.HookEvents(System.Windows.FrameworkElement)">
+            <summary>
+            When overridden in the derived class, this method hooks the events to the target of the helper.
+            </summary>
+            <param name="target">The target to which to hook the events to.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.InteractionHelperBase.UnhookEvents(System.Windows.FrameworkElement)">
+            <summary>
+            When overridden in the derived class, this method unhooks the events from the target of the helper.
+            </summary>
+            <param name="target">The target from which to unhook the events.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.MouseInteractionHelperBase.#ctor(System.Windows.FrameworkElement,Telerik.Windows.Rendering.ILogicalCanvasRenderingHelper,Telerik.Windows.Rendering.ILogicalCanvasRenderingHelper)">
+            <summary>
+            Initializes an instance of the <see cref="T:Telerik.Windows.Controls.Internal.MouseInteractionHelperBase"/> class.
+            </summary>
+            <param name="target">The target to which events to hook the helper to.</param>
+            <param name="horizontalRenderingHelper">The helper to be used to convert the coordinates on X axis.</param>
+            <param name="verticalRenderingHelper">The helper to be used to convert the coordinates on Y axis.</param>
+            <param name="observer">The observer to be notified.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.MouseInteractionHelperBase.ConvertVerticalOffsetToLogicalCoordinates(System.Double)">
+            <summary>
+            Converts physical coordinates at the screen to logical, depending on the logic implemented in the verticalRenderingHelper. This method works with 
+            local screen coordinates and reflects also the scroll offset.
+            </summary>
+            <param name="offset">The local value at the Y axis to be calculated. The method uses the Viewport property of the target if it is a <see cref="!:VirtualizedPanel"/>.</param>
+            <returns>The converted logical value.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.MouseInteractionHelperBase.ConvertHorizontalOffsetToLogicalCoordinates(System.Double)">
+            <summary>
+            Converts physical coordinates at the screen to logical, depending on the logic implemented in the horizontalRenderingHelper. This method works with 
+            local screen coordinates and reflects also the scroll offset.
+            </summary>
+            <param name="offset">The local value at the X axis to be calculated. The method uses the Viewport property of the target if it is a <see cref="!:VirtualizedPanel"/>.</param>
+            <returns>The converted logical value.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.DragAndDropInteractionHelper.Drop(System.Windows.FrameworkElement,System.Windows.FrameworkElement,System.Object,System.Type,System.DateTime)">
+            <summary>
+            When overriden in a derived class allows custom code in the Drop event.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.DragAndDropInteractionHelper.GetItemType(System.Windows.FrameworkElement)">
+            <summary>
+            Returns the Type of the items in the provided control.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.DragAndDropInteractionHelper.GetItemsOfType(System.Collections.IEnumerable,System.Type)">
+            <summary>
+            Returns IEnumerable containing only items from the provided Type.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.DragAndDropInteractionHelper.GetInferredItemType(System.Collections.IEnumerable)">
+            <summary>
+            Returns the type of the items in the provided collection.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.DragAndDropInteractionHelper.GetItemsFromDataObject(System.Object,System.Type)">
+            <summary>
+            Retrieves items from the specified data object only of the specified type.
+            </summary>
+            <param name="data"></param>
+            <param name="itemType"></param>
             <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Internal.DragAndDropInteractionHelper.DataConverter">
+            <summary>
+            Gets or sets the IDataObjectProvider instance that will be used in the drag-drop operations.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Internal.DragAndDropInteractionHelper.DragDropBehavior">
+            <summary>
+            Gets or sets the DragDropBehavior that will be used in the drag-drop operations.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Internal.KeyboardInteractionHelper">
+            <summary>
+            This class hooks to the target's keyboard events and notifies a specified observer for them translating the physical coordinates to logical.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.KeyboardInteractionHelper.Hook(System.Windows.FrameworkElement,Telerik.Windows.Rendering.ILogicalCanvasKeyObserver)">
+            <summary>
+            Hooks a <see cref="T:Telerik.Windows.Controls.Internal.KeyboardInteractionHelper"/> to the specified target and a mouse observer. When a keyboard event is fired on the target
+            it will be translated to a high-level event with high-level parameters and the corresponding method of the observer will be called.
+            </summary>
+            <param name="target">The target to which events to hook the helper to.</param>
+            <param name="observer">The observer to be notified.</param>
+            <returns>The interaction helper created as a result of the operation. Null if the action have failed.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.KeyboardInteractionHelper.HookEvents(System.Windows.FrameworkElement)">
+            <summary>
+            When overridden in the derived class, this method hooks the events to the target of the helper.
+            </summary>
+            <param name="target">The target to which to hook the events to.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.KeyboardInteractionHelper.UnhookEvents(System.Windows.FrameworkElement)">
+            <summary>
+            When overridden in the derived class, this method unhooks the events from the target of the helper.
+            </summary>
+            <param name="target">The target from which to unhook the events.</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Internal.MouseInteractionHelper">
+            <summary>
+            This class hooks to the target's mouse events and notifies a specified observer for them translating the physical coordinates to logical.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.MouseInteractionHelper.Hook(Telerik.Windows.Rendering.LogicalCanvasPanel,Telerik.Windows.Rendering.ILogicalCanvasMouseObserver)">
+            <summary>
+            Hooks a <see cref="T:Telerik.Windows.Controls.Internal.MouseInteractionHelper"/> to the specified target and a mouse observer. When a mouse event is fired on the target
+            it will be translated to a high-level event with high-level parameters and the corresponding method of the observer will be called.
+            </summary>
+            <param name="target">The target to which events to hook the helper to.</param>
+            <param name="observer">The observer to be notified.</param>
+            <returns>The interaction helper created as a result of the operation. Null if the action have failed.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.MouseInteractionHelper.Hook(System.Windows.FrameworkElement,Telerik.Windows.Rendering.ILogicalCanvasRenderingHelper,Telerik.Windows.Rendering.ILogicalCanvasRenderingHelper,Telerik.Windows.Rendering.ILogicalCanvasMouseObserver)">
+            <summary>
+            Hooks a MouseInteractionHelper to the specified target and a mouse observer. When a mouse event is fired on the target
+            it will be translated to a high-level event with high-level parameters and the corresponding method of the observer will be called.
+            This method accepts two helpers that translate physical to logical coordinates.
+            </summary>
+            <param name="target">The target to which events to hook the helper to.</param>
+            <param name="horizontalRenderingHelper">The helper to be used to convert the coordinates on X axis.</param>
+            <param name="verticalRenderingHelper">The helper to be used to convert the coordinates on Y axis.</param>
+            <param name="observer">The observer to be notified.</param>
+            <returns>The interaction helper created as a result of the operation. Null if the action have failed.</returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.MouseInteractionHelper.HookEvents(System.Windows.FrameworkElement)">
+            <summary>
+            When overridden in the derived class, this method hooks the events to the target of the helper.
+            </summary>
+            <param name="target">The target to which to hook the events to.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Internal.MouseInteractionHelper.UnhookEvents(System.Windows.FrameworkElement)">
+            <summary>
+            When overridden in the derived class, this method unhooks the events from the target of the helper.
+            </summary>
+            <param name="target">The target from which to unhook the events.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.WeekDaysGenerator.FirstDay">
+            <Summary>Gets or sets FirstWorkingDay and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.WeekDaysGenerator.DaysCount">
+            <Summary>Gets or sets WorkingDaysCount and notifies for changes</Summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Scheduling.IMouseOverHighlightItem">
+            <summary>
+            Implement this interface on items, which need MouseOverHighlightHelper.
+            </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.Scheduling.SelectorItemBase.OnApplyTemplate">
             <summary>
@@ -282,70 +416,388 @@
             <param name="items"></param>
             <param name="groupDescriptions"></param>
         </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.IteractionState.GetItems">
+            <summary>
+            Gets the items.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.IteractionState.IsControlDown">
+            <summary>
+            Gets or sets the state of the Control key in the moment when the DragDropState was created.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.IteractionState.IsShiftDown">
+            <summary>
+            Gets or sets the state of the Shift key in the moment when the DragDropState was created.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.IteractionState.DestinationSlot">
+            <summary>
+            Gets or sets the destination slot.
+            </summary>
+            <value>
+            The destination slot.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.IteractionState.EditingEngine">
+            <summary>
+            Gets or sets the editing engine.
+            </summary>
+            <value>
+            The editing engine.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1">
+            <summary>
+            Abstract class representing the drag and drop state during drag drop operations.
+            </summary>
+            <typeparam name="TState">The type of the state.</typeparam>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1"/> class.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.ItemTypeProperty">
+            <summary>
+            Identifies the ItemType dependency property. 
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.GetDragDropEffects(`0)">
+            <summary>
+            Returns the DragDropEffects for the current drag drop operation. The return value affects the mouse cursor.
+            </summary>
+            <param name="state">DragDropState that provides context for the current operation.</param>
+            <remarks>
+            This method is called only in the context of the drop target control.
+            </remarks>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.CanDrop(`0)">
+            <summary>
+            Returns a value specifying whether the drag operation can be started.
+            </summary>
+            <param name="state">DragDropState that provides context for the current operation.</param>
+            <returns>True if the drag operation can be completed, otherwise false.</returns>
+            <remarks>
+            This method is called only in the context of the drag source control.
+            </remarks>
+            <summary>
+            Determines whether this instance can drop the specified state.
+            </summary>
+            <param name="state">The state.</param>
+            <returns>
+              <c>true</c> if this instance can drop the specified state; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.CanDrop(Telerik.Windows.Controls.Scheduling.SchedulingDragDropState)">
+            <summary>
+            Determines whether this instance can drop the specified state.
+            </summary>
+            <param name="state">The state.</param>
+            <returns>
+              <c>true</c> if this instance can drop the specified state; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.CanStartDrag(`0)">
+            <summary>
+            Determines whether this instance [can start drag] the specified state.
+            </summary>
+            <param name="state">The state.</param>
+            <returns>
+              <c>true</c> if this instance [can start drag] the specified state; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.CanStartDrag(Telerik.Windows.Controls.Scheduling.SchedulingDragDropState)">
+            <summary>
+            Determines whether this instance [can start drag] the specified state.
+            </summary>
+            <param name="state">The state.</param>
+            <returns>
+              <c>true</c> if this instance [can start drag] the specified state; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.Drop(`0)">
+            <summary>
+            Drops the specified state.
+            </summary>
+            <param name="state">The state.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.Drop(Telerik.Windows.Controls.Scheduling.SchedulingDragDropState)">
+            <summary>
+            Drops the specified state.
+            </summary>
+            <param name="state">The state.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.BeginEdit(Telerik.Windows.Controls.Scheduling.SchedulingDragDropState,System.Object)">
+            <summary>
+            Begins the edit.
+            </summary>
+            <param name="state">The state.</param>
+            <param name="task">The task.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.TryCommitEdit(Telerik.Windows.Controls.Scheduling.SchedulingDragDropState)">
+            <summary>
+            Tries to commit the edit operation.If fails the edit operation will be canceled.
+            </summary>
+            <param name="state">The state.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.CopyDraggedItems(`0)">
+            <summary>
+            Copies the items that are dragged in the operation specified by the provided ListBoxDragDropState.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.DragDropCanceled(`0)">
+            <summary>
+            When overridden in a derived class cleans up a cancelled drag operation. This method is called only in the context of the drag source control.
+            </summary>
+            <param name="state">DragDropState that provides context for the current operation.</param>
+            <remarks>
+            This method is called only when the drag operation is cancelled by the user. If this method is called, the source's DragDropCompleted and 
+            target's Drop methods are not called.
+            </remarks>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.DragDropCanceled(Telerik.Windows.Controls.Scheduling.SchedulingDragDropState)">
+            <summary>
+            Drags the drop canceled.
+            </summary>
+            <param name="state">The state.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.DragDropCompleted(`0)">
+            <summary>
+            Drags the drop completed.
+            </summary>
+            <param name="state">The state.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.DragDropCompleted(Telerik.Windows.Controls.Scheduling.SchedulingDragDropState)">
+            <summary>
+            When overridden in a derived class completes the drag operation. This method is called only in the context of the drag source control.
+            </summary>
+            <param name="state">DragDropState that provides context for the current operation.</param>
+            <remarks>
+            When the drag source and the drop target are the same control, this method is called after Drop. 
+            This method is called only when the drag operation completed successfuly. If this method is called, DragDropCanceled is not called.
+            </remarks>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.CoerceDraggedItems(Telerik.Windows.Controls.Scheduling.SchedulingDragDropState)">
+            <summary>
+            When overriden in a derived class, filters the dragged items collection if necessary.
+            </summary>
+            <param name="state">DragDropState that provides context for the current operation.</param>
+            <returns>The filtered dragged items.</returns>
+            <remarks>
+            This method is called immediately before the drag operation starts.
+            Only the Items property of the DragDropState is valid.
+            </remarks>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.RemoveItems(System.Collections.IList,System.Collections.IEnumerable)">
+            <summary>
+            Helper method that removes the specified items from the source list.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.InsertItems(System.Collections.IList,System.Int32,System.Collections.IEnumerable)">
+            <summary>
+            Helper method that inserts the specified items in the source list, at the specified index. If index==-1, adds the items at the end of the list.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.IsMovingItems(`0)">
+            <summary>
+            Returns true if the dragged items should be removed from the source list, otherwise false.
+            </summary>
+            <param name="state">DragDropState that provides context for the current operation.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.ItemType">
+            <summary>
+            Gets or sets the Type of the items that can be accepted by the host control. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingDragDropBehavior`1.AllowReorder">
+            <summary>
+            Gets or sets the value specifying whether the ListBoxDragDropBehavior can reorder itms or not.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Scheduling.SchedulingDragDropPayload">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.#ctor(System.Collections.IEnumerable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState"/> class.
+            </summary>
+            <param name="draggedItems">The dragged items.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.#ctor(System.Collections.IList,System.Collections.IList,System.Int32,System.Boolean,System.Boolean,System.Collections.IList)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState"/> class.
+            </summary>
+            <param name="destinationSource">The destination source.</param>
+            <param name="draggedItems">The dragged items.</param>
+            <param name="insertIndex">Index of the insert.</param>
+            <param name="isControlDown">if set to <c>true</c> [is control down].</param>
+            <param name="isShiftDown">if set to <c>true</c> [is shift down].</param>
+            <param name="sourceItemsSource">The source items source.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.GetItems">
+            <summary>
+            Gets the dragged items.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.DraggedItems">
+            <summary>
+            Gets or sets the items that are being dragged.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.SourceItemsSource">
+            <summary>
+            Gets or sets the drag source control ItemsSource. This property is null when the state represents the context of the drop target control.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.DestinationItemsSource">
+            <summary>
+            Gets or sets the drop target control ItemsSource. This property is null when the state represents the context of the drag source control.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.IsSameControl">
+            <summary>
+            Gets a value that specifies whether the drag source and the drop target are the same control.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.InsertIndex">
+            <summary>
+            Gets or sets the index at which the dragged items will be inserted. A value -1 means that the items should be added at the end of the items source.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.TimeToDrop">
+            <summary>
+            Gets the time to drop coresponding to the mouse cursor's position.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingDragDropState.DraggedItem">
+            <summary>
+            Gets the dragged item.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingResizeBehavior`1.BeginEdit(Telerik.Windows.Controls.Scheduling.SchedulingResizeState,System.Object)">
+            <summary>
+            Begins the edit.
+            </summary>
+            <param name="state">The state.</param>
+            <param name="task">The task.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingResizeBehavior`1.TryCommitEdit(Telerik.Windows.Controls.Scheduling.SchedulingResizeState)">
+            <summary>
+            Tries to commit the edit operation.If fails the edit operation will be canceled.
+            </summary>
+            <param name="state">The state.</param>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Scheduling.SchedulingResizeState">
+            <summary>
+            Provides a context for a drag-drop operation.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingResizeState.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.SchedulingResizeState"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingResizeState.#ctor(System.Collections.IEnumerable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.SchedulingResizeState"/> class.
+            </summary>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingResizeState.GetItems">
+            <summary>
+            Gets the items that are resized.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingResizeState.IsResizeFromEnd">
+            <summary>
+            Gets or sets a value indicating whether this instance is resize from end.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is resize from end; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingResizeState.ResizedItem">
+            <summary>
+            Gets or sets the items that are being dragged.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SchedulingResizeState.TimeToDrop">
+            <summary>
+            Gets the time to drop coresponding to the mouse cursor's position.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Scheduling.Slot">
+            <summary>
+            Class reprsenting destination slot of the dragged item.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.Slot.Start">
+            <summary>
+            Gets or sets the start.
+            </summary>
+            <value>
+            The start.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.Slot.End">
+            <summary>
+            Gets or sets the end.
+            </summary>
+            <value>
+            The end.
+            </value>
+        </member>
         <member name="P:Telerik.Windows.Controls.Scheduling.MouseOverHighlightHelper.HighlightedItem">
-            <Summary>Gets or sets HighlightedItem and notifies for changes</Summary>
+            <Summary>Gets or sets HighlightedItem and notifies for changes.</Summary>
         </member>
-        <member name="T:Telerik.Windows.Controls.Scheduling.IMultiSelector">
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingSelectionBehavior.#ctor">
             <summary>
-            An interface that is implemented by classes which are responsible for selecting multiple items among their child elements.
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.SchedulingSelectionBehavior"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Scheduling.IMultiSelector.SelectItems(System.Collections.IEnumerable)">
+        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingSelectionBehavior.#ctor(Telerik.Windows.Controls.KeyboardModifiersState)">
             <summary>
-            Selects multiple items.
-            </summary>
-            <param name="items">The items.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Scheduling.IMultiSelector.SelectItems(System.Object,System.Object,System.Boolean)">
-            <summary>
-            Selects all items between two indexes in the children collection.
-            </summary>
-            <param name="from">From.</param>
-            <param name="destination">The destination.</param>
-            <param name="clearSelected">if set to <c>true</c> [clear selected].</param>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Scheduling.IMultiSelector.SelectedItems">
-            <summary>
-            Gets a collection of selected items.
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.SchedulingSelectionBehavior"/> class.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Scheduling.SchedulingSelector.SelectionChangedEvent">
-            <summary>
-            Identifies the SelectionChanged routed event. 
-            </summary>
+        <member name="P:Telerik.Windows.Controls.Scheduling.SpecialSlotsSettings.SlotGenerator">
+            <Summary>Gets or sets SlotGenerator and notifies for changes</Summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingSelector.SelectItems(System.Collections.IEnumerable)">
+        <member name="M:Telerik.Windows.Controls.Scheduling.TimeLineSettings.ToPixels(System.Int64)">
             <summary>
-            Selects multiple items.
+            Converts offset in ticks to pixels where the zero tick (with value 0) corresponds to the 0 pixels offset.
             </summary>
-            <param name="items">The items.</param>
+            <param name="offsetTicks">The offset to be converted where 0 is the base value.</param>
+            <returns>The offset converted to pixels.</returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.Scheduling.SchedulingSelector.SelectItems(System.Object,System.Object,System.Boolean)">
+        <member name="M:Telerik.Windows.Controls.Scheduling.TimeLineSettings.ToTicks(System.Double)">
             <summary>
-            Selects all items between two indexes in the children collection.
+            Converts offset in pixels to ticks offset where the zero tick (with value 0) corresponds to the 0 pixels offset.
             </summary>
-            <param name="from">From.</param>
-            <param name="destination">The destination.</param>
-            <param name="clearSelected">if set to <c>true</c> [clear selected].</param>
+            <param name="offset"></param>
+            <returns></returns>
         </member>
-        <member name="T:Telerik.Windows.Controls.Scheduling.DeferredAction">
-            <summary>
-            Request for a simple action.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Scheduling.DeferredAction.#ctor(System.Action)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Scheduling.DeferredAction"/> class.
-            </summary>
-            <param name="action">The action.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Scheduling.DeferredAction.Execute">
-            <summary>
-            Executes this instance.
-            </summary>
+        <member name="P:Telerik.Windows.Controls.Scheduling.TimeLineSettings.Rounder">
+            <Summary>Gets or sets Rounder and notifies for changes</Summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Scheduling.VisibleRangeSettings.VisibleRange">
             <Summary>Gets or sets VisibleRange and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Scheduling.VisibleRangeSettings.TimeLineRangesGenerator">
+            <Summary>Gets or sets TimeLineFilteringBehavior and notifies for changes</Summary>
         </member>
         <member name="F:Telerik.Windows.Controls.Scheduling.TimeRulerLine.IntervalsProperty">
             <summary>

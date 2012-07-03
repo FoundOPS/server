@@ -130,6 +130,15 @@
             Translates an expression from its EntityQueryPlaceholder form to a EntityQuery form.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.DomainServices.EntityQueryPlaceholder`1.EntityQueryBuilder.VisitBinary(System.Linq.Expressions.BinaryExpression)">
+            <summary>
+            This method handles the case when we filter on an enum property. WCF RIA Services do not
+            like getting enum values on the server, so we have to cast both the left and right
+            sides of this expression to the underlying enum type, which is usually Int32. 
+            "player.Position == Poistion.GK" becomes "(int)player.Position == 0" in order
+            to be successfully transported over the wire.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.DomainServices.LoadedDataEventArgs">
             <summary>
             Provides data for the LoadedData event.
@@ -230,6 +239,12 @@
             </summary>
             <param name="domainContext">The domain context.</param>
             <param name="sourceCollection">The source collection.</param>
+        </member>
+        <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.Dispose(System.Boolean)">
+            <summary>
+            Unsubscirbes from events.
+            </summary>
+            <param name="disposing"></param>
         </member>
         <member name="M:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.Load">
             <summary>
@@ -400,6 +415,12 @@
             Gets the enumerator.
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionView`1.EffectiveSortDescriptors">
+            <summary>
+            Gets the effective sort descriptors.
+            </summary>
+            <value>The effective sort descriptors.</value>
         </member>
         <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionView`1.EntityQuery">
             <summary>

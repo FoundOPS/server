@@ -4,6 +4,413 @@
         <name>Telerik.Windows.Controls.Data</name>
     </assembly>
     <members>
+        <member name="T:Telerik.Windows.Controls.CollectionNavigatorBase">
+            <summary>
+            A base class for CollectionNavigator.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.SourceProperty">
+            <summary>
+            Represents the Source dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CurrentIndexProperty">
+            <summary>
+            Represents the CurrentIndex dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CurrentItemProperty">
+            <summary>
+            Represents the CurrentItem dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToFirstItemPropertyKey">
+            <summary>
+            Represents CanMoveToFirstItem dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToFirstItemProperty">
+            <summary>
+            Represents CanMoveToFirstItem dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToPreviousItemPropertyKey">
+            <summary>
+            Represents CanMoveToPreviousItem dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToPreviousItemProperty">
+            <summary>
+            Represents CanMoveToPreviousItem dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToLastItemPropertyKey">
+            <summary>
+            Represents CanMoveToLastItem dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToLastItemProperty">
+            <summary>
+            Represents CanMoveToLastItem dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToNextItemPropertyKey">
+            <summary>
+            Represents CanMoveToNextItem dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToNextItemProperty">
+            <summary>
+            Represents CanMoveToNextItem dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.ItemCountPropertyKey">
+            <summary>
+            Represents the ItemCount dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.ItemCountProperty">
+            <summary>
+            Represents the ItemCount dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CollectionViewPropertyKey">
+            <summary>
+            Represents the CollectionView dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CollectionViewProperty">
+            <summary>
+            Represents the CollectionView dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanDeletePropertyKey">
+            <summary>
+            Represents the CanDelete dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanDeleteProperty">
+            <summary>
+            Represents the CanDelete dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanEditPropertyKey">
+            <summary>
+            Represents the CanEdit dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanEditProperty">
+            <summary>
+            Represents the CanEdit dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanAddNewPropertyKey">
+            <summary>
+            Represents the CanAddNew dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.CollectionNavigatorBase.CanAddNewProperty">
+            <summary>
+            Represents the CanAddNew dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.Source">
+            <summary>
+            Gets or sets the source.
+            </summary>
+            <value>
+            The source.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CurrentIndex">
+            <summary>
+            Gets or sets the index of the current.
+            </summary>
+            <value>
+            The index of the current.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CurrentItem">
+            <summary>
+            Gets or sets the current item.
+            </summary>
+            <value>
+            The current item.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToFirstItem">
+            <summary>
+            Gets a value indicating whether this instance can move to first item.
+            </summary>
+            <value>
+            	<c>true</c> if this instance can move to first item; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToPreviousItem">
+            <summary>
+            Gets a value indicating whether this instance can move to previous item.
+            </summary>
+            <value>
+            	<c>true</c> if this instance can move to previous item; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToLastItem">
+            <summary>
+            Gets a value indicating whether this instance can move to last item.
+            </summary>
+            <value>
+            	<c>true</c> if this instance can move to last item; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CanMoveToNextItem">
+            <summary>
+            Gets a value indicating whether this instance can move to next item.
+            </summary>
+            <value>
+            	<c>true</c> if this instance can move to next item; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.ItemCount">
+            <summary>
+            Gets the item count.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CollectionView">
+            <summary>
+            Gets the generated ICollectionView.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CanDelete">
+            <summary>
+            Gets a value indicating whether this instance can delete.
+            </summary>
+            <value>
+            	<c>true</c> if this instance can delete; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CanEdit">
+            <summary>
+            Gets a value indicating whether this instance can edit.
+            </summary>
+            <value>
+              <c>true</c> if this instance can edit; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.CollectionNavigatorBase.CanAddNew">
+            <summary>
+            Gets a value indicating whether this instance can add new.
+            </summary>
+            <value>
+            	<c>true</c> if this instance can add new; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility">
+            <summary>
+            Determines which buttons are visible in RadCollectionNavigator.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility.Add">
+            <summary>
+            AddNew button will be visible.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility.Delete">
+            <summary>
+            DeleteButton will be visible.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility.Edit">
+            <summary>
+            Edit button will be visible.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility.Navigation">
+            <summary>
+            Collection navigation buttons will be visible.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility.Previous">
+            <summary>
+            MoveToPrevious buttons will be visible.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility.First">
+            <summary>
+            MoveToFirst buttons will be visible.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility.Next">
+            <summary>
+            MoveToNext buttons will be visible.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility.Last">
+            <summary>
+            MoveToLast buttons will be visible.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.CollectionNavigator.CommandButtonsVisibility.All">
+            <summary>
+            All buttons will be visible.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RadCollectionNavigator">
+            <summary>
+            Provides UI and logic for displaying and editing data in a from layout.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadCollectionNavigator.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadCollectionNavigator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadCollectionNavigator"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadCollectionNavigator.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadCollectionNavigator.ButtonsStyleProperty">
+            <summary>
+            Represents the ButtonStyle dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadCollectionNavigator.CommandButtonsVisibilityProperty">
+            <summary>
+            Represents the CommandButtonsVisibility dependeny property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCollectionNavigator.ButtonsStyle">
+            <summary>
+            Gets or sets the button style.
+            </summary>
+            <value>
+            The button style.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCollectionNavigator.CommandButtonsVisibility">
+            <summary>
+            Gets or sets the command buttons visibility.
+            </summary>
+            <value>
+            The command buttons visibility.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RadCollectionNavigatorCommands">
+            <summary>
+            Exposes all the commands that RadCollectionNavigator utilizes.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCollectionNavigatorCommands.AddNew">
+            <summary>
+            Gets the add new  command.
+            </summary>
+            <value>The add new command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCollectionNavigatorCommands.Delete">
+            <summary>
+            Gets the delete command.
+            </summary>
+            <value>The delete command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCollectionNavigatorCommands.MoveCurrentToFirst">
+            <summary>
+            Gets the move current to first command.
+            </summary>
+            <value>The move current to first command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCollectionNavigatorCommands.MoveCurrentToLast">
+            <summary>
+            Gets the move current to last command.
+            </summary>
+            <value>The move current to last command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCollectionNavigatorCommands.MoveCurrentToNext">
+            <summary>
+            Gets the move current to  next command.
+            </summary>
+            <value>The move current to next command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCollectionNavigatorCommands.MoveCurrentToPrevious">
+            <summary>
+            Gets the move current to previous command.
+            </summary>
+            <value>The move current to previous command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadCollectionNavigatorCommands.BeginEdit">
+            <summary>
+            Gets the begin edit command.
+            </summary>
+            <value>The begin edit command.</value>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadCollectionNavigatorCommands.CommandId.MoveCurrentToFirst">
+            <summary>
+            Move current to first command.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadCollectionNavigatorCommands.CommandId.MoveCurrentToLast">
+            <summary>
+            Move current to last command.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadCollectionNavigatorCommands.CommandId.MoveCurrentToNext">
+            <summary>
+            Move current to next command.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadCollectionNavigatorCommands.CommandId.MoveCurrentToPrevious">
+            <summary>
+            Move current to previous command.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadCollectionNavigatorCommands.CommandId.BeginEdit">
+            <summary>
+            Begins edit on the current item.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadCollectionNavigatorCommands.CommandId.AddNew">
+            <summary>
+            Adds a new item.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadCollectionNavigatorCommands.CommandId.Delete">
+            <summary>
+            Deletes the current item.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Data.CollectionNavigator.CommandsButtonsVisibilityConverter">
+            <summary>
+            Converts the respective CommandButtonsVisibility values to System.Windows.Visibility.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.CollectionNavigator.CommandsButtonsVisibilityConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.CollectionNavigator.CommandsButtonsVisibilityConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
         <member name="T:Telerik.Windows.Controls.Data.DataFilter.CompositeFilterViewModel">
             <summary>
             CompositeFilterViewModel.
@@ -1199,6 +1606,11 @@
             Represents the ItemsSource dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.DataFormComboBoxField.SelectedIndexProperty">
+            <summary>
+            Represents the SelectedIndex dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.DataFormComboBoxField.SelectedValuePathProperty">
             <summary>
             Identifies the <see cref="P:Telerik.Windows.Controls.DataFormComboBoxField.SelectedValuePath"/> dependency property.
@@ -1209,10 +1621,23 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.DataFormComboBoxField.DisplayMemberPath"/> dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.DataFormComboBoxField.IsComboboxEditableProperty">
+            <summary>
+            Represents the IsComboBoxEditable dependency property.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.DataFormComboBoxField.ItemsSource">
             <summary>
             Gets or Sets the ItemsSource to be used by the internal combo.
             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DataFormComboBoxField.SelectedIndex">
+            <summary>
+            Gets or sets the index of the selected.
+            </summary>
+            <value>
+            The index of the selected.
+            </value>
         </member>
         <member name="P:Telerik.Windows.Controls.DataFormComboBoxField.SelectedValuePath">
             <summary>
@@ -1222,6 +1647,11 @@
         <member name="P:Telerik.Windows.Controls.DataFormComboBoxField.DisplayMemberPath">
             <summary>
             Gets or sets the DisplayMemberPath.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DataFormComboBoxField.IsComboboxEditable">
+            <summary>
+            Gets or sets a value indicating whether the user can edit text in the text box portion of the ComboBox editor.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.DataFormDateField">
@@ -1570,6 +2000,19 @@
             Gets or sets a value indicating whether the Cancel button is visible.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.Data.DataForm.InitializingNewItemEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.DataForm.InitializingNewItemEventArgs.DataItem">
+            <summary>
+            Gets or sets the data item.
+            </summary>
+            <value>
+            The data item.
+            </value>
+        </member>
         <member name="T:Telerik.Windows.Controls.Data.DataForm.ItemDeletedEventArgs">
             <summary>
             ItemDeletedEventArgs.
@@ -1692,6 +2135,16 @@
             Represents the CommitButttonContent dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadDataForm.ReadOnlyTemplateSelectorProperty">
+            <summary>
+            Represents the ReadOnlyTemplateSelector dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadDataForm.EditTemplateSelectorProperty">
+            <summary>
+            Represents the EditTemplateSelector dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadDataForm.CommandButtonsVisibilityProperty">
             <summary>
             Represents the CommandButtonsVisibility dependency property.
@@ -1785,6 +2238,11 @@
             When overridden in a derived class, is invoked whenever 
             application code or internal processes call 
             <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadDataForm.SetElementBindings">
+            <summary>
+            This method fixes the BindingExpressionPath errors that occur due to the delayed set of RadDataForm's ViewModel.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.RadDataForm.CanMoveCurrentToFirstPropertyKey">
@@ -1908,6 +2366,12 @@
             </summary>
             <param name="e"></param>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadDataForm.OnInitializingNewItem(Telerik.Windows.Controls.Data.DataForm.InitializingNewItemEventArgs)">
+            <summary>
+            Raises the InitializingNewItem event.
+            </summary>
+            <param name="e">The <see cref="T:Telerik.Windows.Controls.Data.DataForm.InitializingNewItemEventArgs"/> instance containing the event data.</param>
+        </member>
         <member name="M:Telerik.Windows.Controls.RadDataForm.OnAddedNewItem(Telerik.Windows.Controls.Data.DataForm.AddedNewItemEventArgs)">
             <summary>
             Raises the AddedNewItem event.
@@ -2021,6 +2485,11 @@
             Occurs when a new item is being added.
             </summary>
         </member>
+        <member name="E:Telerik.Windows.Controls.RadDataForm.InitializingNewItem">
+            <summary>
+            Occurs when a new item is being added.
+            </summary>
+        </member>
         <member name="E:Telerik.Windows.Controls.RadDataForm.AddedNewItem">
             <summary>
             Occurs when a new item was just added.
@@ -2100,6 +2569,22 @@
             <summary>
             Gets or sets the content of the Cancel button.
             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDataForm.ReadOnlyTemplateSelector">
+            <summary>
+            Gets or sets the ReadOnlyTemplate selector.
+            </summary>
+            <value>
+            The read only template selector.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadDataForm.EditTemplateSelector">
+            <summary>
+            Gets or sets the EditTemplateSelector.
+            </summary>
+            <value>
+            The edit template selector.
+            </value>
         </member>
         <member name="P:Telerik.Windows.Controls.RadDataForm.CommandButtonsVisibility">
             <summary>
@@ -2509,6 +2994,253 @@
             Gets or sets the property definition.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer">
+            <summary>
+            An AutomationPeer type for the PropertyGridField type.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer.#ctor(Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridField)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer"/> class.
+            </summary>
+            <param name="owner">The owner.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer.GetAutomationControlTypeCore">
+            <summary>
+            Gets the control type for the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.UIElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
+            </summary>
+            <returns>
+            The <see cref="F:System.Windows.Automation.Peers.AutomationControlType.Custom"/> enumeration value.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer.GetClassNameCore">
+            <summary>
+            Gets the name of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.UIElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
+            </summary>
+            <returns>
+            An <see cref="F:System.String.Empty"/> string.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer.AddToSelection">
+            <summary>
+            Adds the current element to the collection of selected items.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer.RemoveFromSelection">
+            <summary>
+            Removes the current element from the collection of selected items.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer.Select">
+            <summary>
+            Deselects any selected items and then selects the current element.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer.IsSelected">
+            <summary>
+            Gets a value that indicates whether an item is selected.
+            </summary>
+            <returns>true if the element is selected; otherwise false.</returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridFieldAutomationPeer.SelectionContainer">
+            <summary>
+            Gets the UI Automation provider that implements <see cref="T:System.Windows.Automation.Provider.ISelectionProvider"/> and acts as the container for the calling object.
+            </summary>
+            <returns>The provider that supports <see cref="T:System.Windows.Automation.Provider.ISelectionProvider"/>. </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.RadPropertyGridAutomationPeer">
+            <summary>
+            An AutomationPeer type for the RadPropertyGrid type.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.RadPropertyGridAutomationPeer.#ctor(Telerik.Windows.Controls.RadPropertyGrid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Data.PropertyGrid.RadPropertyGridAutomationPeer"/> class.
+            </summary>
+            <param name="owner">The owner.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.RadPropertyGridAutomationPeer.GetAutomationControlTypeCore">
+            <summary>
+            Gets the control type for the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.UIElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
+            </summary>
+            <returns>
+            The <see cref="F:System.Windows.Automation.Peers.AutomationControlType.Custom"/> enumeration value.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.RadPropertyGridAutomationPeer.GetClassNameCore">
+            <summary>
+            Gets the name of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.UIElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
+            </summary>
+            <returns>
+            An <see cref="F:System.String.Empty"/> string.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.RadPropertyGridAutomationPeer.GetChildrenCore">
+            <summary>
+            Gets the collection of child elements of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.UIElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetChildren"/>.
+            </summary>
+            <returns>
+            A list of child <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> elements.
+            </returns>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor">
+            <summary>
+            Represents a control that exposes UI for collection editing.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.#ctor">
+            <summary>
+            Initializes a new instance of the CollectionEditor class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.OnDragDelta(System.Object,System.Windows.Controls.Primitives.DragDeltaEventArgs)">
+            <summary>
+            Called when resize thumb's DragDelta event is raised.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.Windows.Controls.Primitives.DragDeltaEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.HeaderProperty">
+            <summary>
+            Represent the Header dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.ResizeGripperVisibilityProperty">
+            <summary>
+            Represents the ResizeGripperVisibility dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.ItemTemplateProperty">
+            <summary>
+            Repsents the ItemTemplate dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.Header">
+            <summary>
+            Gets or sets the header.
+            </summary>
+            <value>
+            The header.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.ResizeGripperVisibility">
+            <summary>
+            Gets or sets the resize gripper visibility.
+            </summary>
+            <value>The resize gripper visibility.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditor.ItemTemplate">
+            <summary>
+            Gets or sets an ItemTemplate for the CollectionEditor ListBox.
+            </summary>
+            <value>The item template.</value>        
+        </member>
+        <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands">
+            <summary>
+            Exposes all the commands that CollectionEditor utilizes.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands.AddNew">
+            <summary>
+            Gets the add new  command.
+            </summary>
+            <value>The add new command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands.Delete">
+            <summary>
+            Gets the delete command.
+            </summary>
+            <value>The delete command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands.MoveCurrentToNext">
+            <summary>
+            Gets the move current to  next command.
+            </summary>
+            <value>The move current to next command.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands.MoveCurrentToPrevious">
+            <summary>
+            Gets the move current to previous command.
+            </summary>
+            <value>The move current to previous command.</value>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands.CommandId.MoveCurrentToNext">
+            <summary>
+            Move current to next command.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands.CommandId.MoveCurrentToPrevious">
+            <summary>
+            Move current to previous command.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands.CommandId.AddNew">
+            <summary>
+            Adds a new item.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorCommands.CommandId.Delete">
+            <summary>
+            Deletes the current item.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker">
+            <summary>
+            Represents a picker control class that provides UI for collection editing.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker.SourceProperty">
+            <summary>
+            Represents the Source dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker.HeaderProperty">
+            <summary>
+            Represents the Header dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker.Source">
+            <summary>
+            Gets or sets the source.
+            </summary>
+            <value>The source.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker.Header">
+            <summary>
+            Gets or sets the header.
+            </summary>
+            <value>The header.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.CollectionEditorPicker.CollectionEditor">
+            <summary>
+            Gets the wrapped CollectionEditor control.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.GroupingItemsSourceConverter">
             <summary>
             Provides grouping for properties in RadPropertyGrid.
@@ -2672,6 +3404,155 @@
             Represent the UpdateBindingOnElementLoaded attached property.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor">
+            <summary>
+            Represents a selection control for editng flag enum values with a drop-down list that can be shown or hidden by 
+            clicking the arrow on the control. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor.EnumItemsSourceProperty">
+            <summary>
+            Identifies the EnumItemsSource dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor.EnumTypeProperty">
+            <summary>
+            Identifies the EnumType dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor.ValueProperty">
+            <summary>
+            Identifies the Value dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor.#ctor">
+            <summary>
+            Initializes a new instance of the FlagEnumEditor class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor.EnumItemsSource">
+            <summary>
+            Gets or sets the EmumItemsSource.
+            </summary>
+            <value>The EnumType.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor.EnumType">
+            <summary>
+            Gets or sets the EnumType.
+            </summary>
+            <value>The EnumType.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor.Value">
+            <summary>
+            Gets or sets the Value.
+            </summary>
+            <value>The Value.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditorViewModel">
+            <summary>
+            Represents the view model of the <see cref="T:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditor"/> control.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditorViewModel.EnumItemsSource">
+            <summary>
+            Gets all the values of the enum of the enum.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditorViewModel.EnumType">
+            <summary>
+            Gets or sets the enum type.
+            </summary>
+            <value>The enum type.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditorViewModel.EnumValue">
+            <summary>
+            Gets or sets the enum value.
+            </summary>
+            <value>The enum value.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditorViewModel.IsSelectAllEnabled">
+            <summary>
+            Gets or sets boolean value whether SelectAll value is defined in the enum.
+            </summary>
+            <value>The value whether SelectAll value is defined.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditorViewModel.SelectedItems">
+            <summary>
+            Gets the selected items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditorViewModel.ShouldUpdateItems">
+            <summary>
+            Gets boolean value whether value should be updated.
+            </summary>
+            <value>The value whether value should be updated.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumEditorViewModel.Value">
+            <summary>
+            Gets or sets the value.
+            </summary>
+            <value>The value.</value>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumValueViewModel">
+            <summary>
+            Holds information about Flag Enum member.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumValueViewModel.#ctor(System.Object,System.String,System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumValueViewModel"/> class.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="name">The name.</param>
+            <param name="description">The description.</param>
+            <param name="flagValue">The flag enum value.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumValueViewModel.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Called when [property changed].
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumValueViewModel.OnPropertyChanged(System.String)">
+            <summary>
+            Called when [property changed].
+            </summary>
+            <param name="propertyName">Name of the property that has been changed.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumValueViewModel.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="E:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumValueViewModel.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumValueViewModel.IsSelected">
+            <summary>
+            Gets or sets the selected state of the item.
+            </summary>
+            <value>The IsSelected value.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.FlagEnumValueViewModel.FlagValue">
+            <summary>
+            Gets or sets the flag value of the item.
+            </summary>
+            <value>The Flag Value of each item.</value>
+        </member>
         <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridIndentPresenter">
             <summary>
             IndentPresenter is a presenter for Indent cells in nested property definitions of
@@ -2772,6 +3653,11 @@
         <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.PropertyDefinition.ParentProperty">
             <summary>
             Gets or sets the parent property of this property definition.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.PropertyDefinition.AutoGeneratedPath">
+            <summary>
+            Gets the auto generated path.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Data.PropertyGrid.PropertyDefinition.DisplayName">
@@ -2971,19 +3857,6 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Data.PropertyGrid.PropertyDefinitionCollection"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.PropertyDefinitionCollection.InsertItem(System.Int32,Telerik.Windows.Controls.Data.PropertyGrid.PropertyDefinition)">
-            <summary>
-            Inserts the item.
-            </summary>
-            <param name="index">The index.</param>
-            <param name="item">The item.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Data.PropertyGrid.PropertyDefinitionCollection.RemoveItem(System.Int32)">
-            <summary>
-            Removes the item.
-            </summary>
-            <param name="index">The index.</param>
-        </member>
         <member name="T:Telerik.Windows.Controls.Data.PropertyGrid.PropertyGridIndentCell">
             <summary>
             Indicates UI indentation for nested properties visualization. 
@@ -3151,6 +4024,14 @@
             When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadPropertyGrid.OnCreateAutomationPeer">
+            <summary>
+            Returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the Windows Presentation Foundation (WPF) infrastructure.
+            </summary>
+            <returns>
+            The type-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementation.
+            </returns>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadPropertyGrid.SearchBoxVisibilityProperty">
             <summary>
             Represents the SearchboxVisibility dependency property.
@@ -3179,6 +4060,11 @@
         <member name="F:Telerik.Windows.Controls.RadPropertyGrid.DescriptionPanelVisibilityProperty">
             <summary>
             Represents the DescriptionPanelVisibility dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadPropertyGrid.AutoGenerateBindingPathsProperty">
+            <summary>
+            Represents the AutoGenerateBindingPaths dependency property.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.RadPropertyGrid.LabelColumnWidthProperty">
@@ -3228,8 +4114,11 @@
         </member>
         <member name="P:Telerik.Windows.Controls.RadPropertyGrid.SearchBoxVisibility">
             <summary>
-            Gets or sets the visibility of the seach box.
+            Gets or sets the search box visibility.
             </summary>
+            <value>
+            The search box visibility.
+            </value>
         </member>
         <member name="P:Telerik.Windows.Controls.RadPropertyGrid.NestedPropertiesVisibility">
             <summary>
@@ -3263,6 +4152,14 @@
             <summary>
             Gets or Sets the width of the first column.
             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadPropertyGrid.AutoGenerateBindingPaths">
+            <summary>
+            Gets or sets a value indicating whether manually defined nested PropertyDefinitions, should have auto-generated paths.
+            </summary>
+            <value>
+            	<c>true</c> if [auto generate binding paths]; otherwise, <c>false</c>.
+            </value>
         </member>
         <member name="P:Telerik.Windows.Controls.RadPropertyGrid.ExpandedFields">
             <summary>

@@ -60,6 +60,11 @@
             <param name="element">Element used to display the specified item.</param>
             <param name="item">Specified item.</param>
         </member>
+        <member name="M:Telerik.Windows.Controls.ApplicationMenu.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            When overridden in a derived class, undoes the effects of the <see cref="M:System.Windows.Controls.ItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)"/> method.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.ApplicationMenu.Content">
             <summary>
             Gets or sets the content in the right pane of the menu.
@@ -1990,6 +1995,12 @@
             </summary>
             <param name="e">The data for the event.</param>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadRibbonBackstageItem.OnMouseMove(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.MouseMove"/> event occurs.
+            </summary>
+            <param name="e">The data for the event.</param>
+        </member>
         <member name="M:Telerik.Windows.Controls.RadRibbonBackstageItem.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
             <summary>
             Called before the <see cref="E:System.Windows.UIElement.MouseLeave"/> event occurs.
@@ -2109,6 +2120,12 @@
         <member name="M:Telerik.Windows.Controls.RadRibbonContextualGroup.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadRibbonContextualGroup"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadRibbonContextualGroup.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code
+            or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadRibbonContextualGroup.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
@@ -2759,12 +2776,6 @@
             Raises the <see cref="E:LaunchDialog"/> event.
             </summary>
             <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.RibbonView.Primitives.GroupChrome.OnCreateAutomationPeer">
-            <summary>
-            Creates Automation Peer for a GroupChrome.
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:Telerik.Windows.Controls.RibbonView.Primitives.GroupChrome.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
             <summary>

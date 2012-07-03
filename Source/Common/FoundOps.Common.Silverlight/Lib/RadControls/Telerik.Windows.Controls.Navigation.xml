@@ -2600,7 +2600,7 @@
         </member>
         <member name="P:Telerik.Windows.Controls.TabControl.IRadTabItem.Control">
             <summary>
-            Gets an a reference to the control that implements the <see cref="T:Telerik.Windows.Controls.TabControl.IRadTabItem"/> interface.
+            Gets a reference to the control that implements the <see cref="T:Telerik.Windows.Controls.TabControl.IRadTabItem"/> interface.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.RadSelectionChangedEventHandler">
@@ -3720,7 +3720,7 @@
                     <see cref="P:Telerik.Windows.Controls.ItemsControl.ItemContainerStyleSelector"/>
                 </para>
                 <para>
-                    The RadTabItem is not meant to be used on its own but as item of the RadTabControl. 
+                    The RadTabItem is not meant to be used on its own but as item of the RadTabControl.
                     The TabItems will be automatically created if other items are inserted in the RadTabControl.
                 </para>
                 <para>
@@ -3733,7 +3733,7 @@
                     </list>
                 </para>
                 <para>
-                    Please note that the TabStripPlacement and TabOrientation properties are set by the TabControl and as 
+                    Please note that the TabStripPlacement and TabOrientation properties are set by the TabControl and as
                     such are read-only.
                 </para>
             </remarks>
@@ -7088,6 +7088,11 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.RadOutlookBar.VerticalResizerAlignment"/> dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadOutlookBar.MinimizeButtonStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.RadOutlookBar.MinimizeButtonStyle"/> dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadOutlookBar.MinimizedEvent">
             <summary>
             This event gets fired every time a <see cref="T:Telerik.Windows.Controls.RadOutlookBar"/> IsMiminized property is set to true.
@@ -7301,6 +7306,11 @@
         <member name="P:Telerik.Windows.Controls.RadOutlookBar.VerticalResizerAlignment">
             <summary>
             Gets or sets the VerticalResizerAlignment property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadOutlookBar.MinimizeButtonStyle">
+            <summary>
+            Gets or sets the MinimizeButtonStyle property.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadOutlookBar.Align">
@@ -11243,14 +11253,14 @@
             Identifies the ChildItemsTemplate dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadPanelBarItem.IsMouseOverHeaderProperty">
+            <summary>
+            Identifies the IsMouseOverHeader dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadPanelBarItem.IsMouseOverProperty">
             <summary>
             Identifies the IsMouseOver dependency property.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.RadPanelBarItem.LevelPropertyKey">
-            <summary>
-            Identifies the Level property.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadPanelBarItem.#ctor">
@@ -11342,6 +11352,11 @@
             <value>
             	<c>True</c> if this instance is under the mouse cursor; otherwise, <c>false</c>.
             </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadPanelBarItem.IsMouseOverHeader">
+            <summary>
+            Gets or sets a value indicating whether the mouse cursor is over the current instance header.
+            </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadPanelBarItem.ParentItem">
             <summary>

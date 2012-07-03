@@ -45,43 +45,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Barcode
-
-        private bool _barcodeLoading;
-        /// <summary>
-        /// True when the barcode is loading.
-        /// </summary>
-        public bool BarcodeLoading
-        {
-            get { return _barcodeLoading; }
-            private set
-            {
-                _barcodeLoading = value;
-                RaisePropertyChanged("BarcodeLoading");
-            }
-        }
-
-        private byte[] _barcodeImage;
-        /// <summary>
-        /// The barcode image.
-        /// </summary>
-        public byte[] BarcodeImage
-        {
-            get { return _barcodeImage; }
-            private set
-            {
-                _barcodeImage = value;
-                this.RaisePropertyChanged("BarcodeImage");
-            }
-        }
-
-        /// <summary>
-        /// Contains the loaded barcode image's latitude and longitude
-        /// </summary>
-        private Tuple<decimal?, decimal?> _barcodeLatitudeLongitudeTuple = null;
-
-        #endregion
-
         /// <summary>
         /// Gets the telerik location.
         /// </summary>
@@ -170,54 +133,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         #endregion
-
-        /// <summary>
-        /// A method to update the barcode if it is not loaded.
-        /// </summary>
-        public void UpdateBarcode()
-        {
-            //if the barcode is currently loading return
-            if (BarcodeLoading)
-                return;
-
-            //if the barcode image is already loaded return
-            if (BarcodeImage != null && _barcodeLatitudeLongitudeTuple != null &&
-                _barcodeLatitudeLongitudeTuple.Item1 == this.Latitude && _barcodeLatitudeLongitudeTuple.Item2 == this.Longitude)
-                return;
-
-            //if the lat and lon are null, set the image to null
-            if (!this.Latitude.HasValue || !this.Longitude.HasValue)
-            {
-                BarcodeImage = null;
-                BarcodeLoading = false;
-                return;
-            }
-
-            //Load the barcode
-
-            BarcodeLoading = true;
-
-            var urlConverter = new LocationToUrlConverter();
-            var client = new WebClient();
-            client.OpenReadObservable((Uri)urlConverter.Convert(this, null, null, null))
-                //If there is an error return a null stream
-                .ObserveOnDispatcher().Subscribe(stream =>
-                {
-                    this.BarcodeImage = stream != null ? stream.ReadFully() : null;
-                    _barcodeLatitudeLongitudeTuple = new Tuple<decimal?, decimal?>(this.Latitude, this.Longitude);
-                    BarcodeLoading = false;
-                });
-
-            //If loading the barcode takes more than 10 seconds, set BarcodeLoading = false, and the BarcodeImage = null
-            Rxx3.RunDelayed(TimeSpan.FromSeconds(10), () =>
-            {
-                if (!BarcodeLoading) return;
-                _barcodeLatitudeLongitudeTuple = null;
-                BarcodeImage = null;
-                BarcodeLoading = false;
-            });
-        }
-
     }
 }
 
