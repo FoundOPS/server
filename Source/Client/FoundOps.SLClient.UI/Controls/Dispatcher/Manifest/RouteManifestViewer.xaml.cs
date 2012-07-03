@@ -20,6 +20,7 @@ using Telerik.Windows.Documents.UI;
 using Telerik.Windows.Documents.Model;
 using Telerik.Windows.Documents.Layout;
 using Telerik.Windows.Documents.FormatProviders.Pdf;
+using Telerik.Windows.Documents.UI.Layers;
 using Telerik.Windows.Media.Imaging;
 using Telerik.Windows.Media.Imaging.FormatProviders;
 using Border = Telerik.Windows.Documents.Model.Border;
@@ -65,13 +66,15 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
         #endregion
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RouteManifestViewer"/> class.
         /// </summary>
         public RouteManifestViewer()
         {
             InitializeComponent();
+
+            // Workaround for bug with RichTextBox. Fixed will be in next release (should remove then)
+            this.ManifestRichTextBox.UILayersBuilder = new CustomUILayerBuilder();
 
             //Update the Manifest when
             //a) the RouteManifestSettings properties change (if the details are loaded)
@@ -495,5 +498,18 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         #endregion
 
         #endregion
+    }
+
+    /// <summary>
+    /// Workaround for bug with RichTextBox. Fixed will be in next release (should remove then)
+    /// </summary>
+    class CustomUILayerBuilder : UILayersBuilder
+    {
+        protected override void BuildUILayersOverride(IUILayerContainer uiLayerContainer)
+        {
+            base.BuildUILayersOverride(uiLayerContainer);
+
+            uiLayerContainer.UILayers.Remove(DefaultUILayers.TableMovementLayer);
+        }
     }
 }
