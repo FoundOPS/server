@@ -120,6 +120,9 @@
     <Reference Include="ReactiveUI_SL5">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL5.dll</HintPath>
     </Reference>
+    <Reference Include="SLMultiBinding">
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\SLMultiBinding.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reactive">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Reactive.dll</HintPath>
     </Reference>

@@ -117,7 +117,7 @@ namespace FoundOPS.API.Controllers
             {
                 var routeNumber = count % numberOfRoutes;
 
-                #region Adjust Technician Location, Speed and Heading
+        #region Adjust Technician Location, Speed and Heading
 
                 foreach (var employee in route.Employees)
                 {
@@ -181,7 +181,10 @@ namespace FoundOPS.API.Controllers
             var routeId = trackPoints.First().RouteId.Value;
 
             var currentUserAccount = AuthenticationLogic.CurrentUserAccount(_coreEntitiesContainer);
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountsQueryable().FirstOrDefault(ba => ba.Routes.Any(r => r.Id == routeId));
+            var currentBusinessAccount =
+                _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(
+                    ba =>
+                    ba.Routes.Any(r => r.Id == routeId && r.Employees.Any(e => e.LinkedUserAccountId == currentUserAccount.Id)));
 
             //Return an Unauthorized Status Code if
             //a) there is no UserAccount

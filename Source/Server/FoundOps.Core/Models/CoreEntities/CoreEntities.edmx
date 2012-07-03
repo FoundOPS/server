@@ -3227,7 +3227,7 @@
           <Property Type="Int32" Name="Heading" Nullable="true" />
           <Property Type="Decimal" Name="Latitude" Nullable="true" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" />
-          <Property Type="DateTime" Name="CollectedTimeStamp" Nullable="false" />
+          <Property Type="DateTime" Name="CollectedTimeStamp" Nullable="true" />
           <Property Type="Decimal" Name="Speed" Nullable="true" />
           <Property Type="String" Name="Source" Nullable="true" />
           <Property Type="Guid" Name="RouteId" Nullable="true" />

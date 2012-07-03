@@ -12,10 +12,14 @@
                 Latest Updates
             </TextBlock>
             <TextBlock FontSize="15" FontWeight="Bold" Foreground="#333335" Margin="10,10,0,0">
-                (6/26/2012)
+                (6/28/2012)
             </TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" FontSize="15" Foreground="#333335" Margin="5,0,0,0">
+            * ADMIN TOOLS: Can setup mobile users.<LineBreak/>
+            * ADMIN TOOLS: Prevent geocoding addresses without an Address Line One.<LineBreak/>
+            <LineBreak/>
+            (6/26/2012)<LineBreak/>
 			* DISPATCHER: Improved the routing algorithm.<LineBreak/>
 			* LOCATIONS: Switched the location geocoder from Yahoo Maps to Bing Maps. It should be much more accurate now.<LineBreak/>
             <LineBreak/>
