@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace FoundOPS.API.Models
 {
@@ -6,7 +7,7 @@ namespace FoundOPS.API.Models
     {
         public Guid Id { get; set; }
 
-        public string Group { get; set; }
+        public string Type { get; set; }
 
         public string Name { get; set; }
 
@@ -31,27 +32,37 @@ namespace FoundOPS.API.Models
             var optionsField = fieldModel as FoundOps.Core.Models.CoreEntities.OptionsField;
             var dateTimeField = fieldModel as FoundOps.Core.Models.CoreEntities.DateTimeField;
 
+            Field field;
+
             //If the field is a TextBoxField, convert the field to an API TextBoxField and return
             if (textBoxField != null)
-                return TextBoxField.ConvertTextBoxFieldModel(textBoxField);
+                field = TextBoxField.ConvertTextBoxFieldModel(textBoxField);
 
-            //If the field is a LocationField, convert the field to an API LocationField and return
-            if (locationField != null)
-                return LocationField.ConvertLocationFieldModel(locationField);
+            //TODO: not using location fields yet
+            ////If the field is a LocationField, convert the field to an API LocationField and return
+            //else if (locationField != null)
+            //    return LocationField.ConvertLocationFieldModel(locationField);
 
             //If the field is a NumericField, convert the field to an API NumericField and return
-            if (numericField != null)
-                return NumericField.ConvertNumericFieldModel(numericField);
+            else if (numericField != null)
+                field= NumericField.ConvertNumericFieldModel(numericField);
 
             //If the field is a OptionsField, convert the field to an API OptionsField and it's Options to API Options, then return
-            if (optionsField != null)
-                return OptionsField.ConvertOptionsFieldModel(optionsField);
-            
-            //If the field is a DateTimeField, convert the field to an API DateTimeField and return
-            if (dateTimeField != null)
-                return DateTimeField.ConvertDateTimeFieldModel(dateTimeField);
+            else if (optionsField != null)
+                field= OptionsField.ConvertOptionsFieldModel(optionsField);
 
-            throw new Exception("Field does not exist");
+            //If the field is a DateTimeField, convert the field to an API DateTimeField and return
+            else if (dateTimeField != null)
+                field= DateTimeField.ConvertDateTimeFieldModel(dateTimeField);
+
+            else
+                throw new Exception("Field does not exist");
+
+            //http://stackoverflow.com/questions/9381090/asp-net-web-api-not-serializing-readonly-property
+            //Need to manually do this until read only fields are serializable in Web API
+            field.Type = field.GetType().Name;
+
+            return field;
         }
     }
 }

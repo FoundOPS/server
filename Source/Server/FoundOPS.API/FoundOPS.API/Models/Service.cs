@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FoundOPS.API.Models
 {
@@ -43,7 +44,9 @@ namespace FoundOPS.API.Models
 
             //Convert each field from the FoundOPS model to the API model
             //Add the newly converted field to the newly created service
-            foreach (var field in serviceModel.ServiceTemplate.Fields)
+            foreach (var field in serviceModel.ServiceTemplate.Fields
+                //Do not serialize LocationFields for now
+                .Where(f => (f as FoundOps.Core.Models.CoreEntities.LocationField) == null))
                 service.Fields.Add(Field.ConvertModel(field));
 
             return service;

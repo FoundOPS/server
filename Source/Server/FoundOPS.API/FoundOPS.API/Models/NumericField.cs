@@ -22,7 +22,6 @@
             var field = new NumericField
             {
                 Id = fieldModel.Id,
-                Group = fieldModel.Group,
                 Name = fieldModel.Name,
                 Required = fieldModel.Required,
                 ToolTip = fieldModel.Tooltip,

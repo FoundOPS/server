@@ -22,7 +22,6 @@ namespace FoundOPS.API.Models
             var field = new DateTimeField
             {
                 Id = fieldModel.Id,
-                Group = fieldModel.Group,
                 Name = fieldModel.Name,
                 Required = fieldModel.Required,
                 ToolTip = fieldModel.Tooltip,
