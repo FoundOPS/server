@@ -1,8 +1,8 @@
-﻿using FoundOps.Core.Models.Azure;
+﻿using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.StorageClient;
+using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
-using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
 using System;
 using System.Linq;
 using System.Net;
