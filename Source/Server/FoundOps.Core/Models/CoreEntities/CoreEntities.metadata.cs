@@ -392,6 +392,9 @@ namespace FoundOps.Core.Models.CoreEntities
             }
 
             [Include]
+            public Client Client { get; set; }
+
+            [Include]
             public Location Location { get; set; }
 
             [Include]

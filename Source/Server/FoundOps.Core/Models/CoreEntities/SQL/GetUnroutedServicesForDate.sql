@@ -1,8 +1,9 @@
+USE [Core]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_GetUnroutedServicesForDate]    Script Date: 7/5/2012 2:15:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
-Use Core
 GO
 --IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
 --DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
@@ -22,22 +23,6 @@ GO
 ALTER PROCEDURE [dbo].[sp_GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
 @serviceDate date)
---RETURNS @ServicesTableToReturn TABLE
---(
---		RecurringServiceId uniqueidentifier,
---		ServiceId uniqueidentifier,
---		OccurDate date,
---		ServiceName nvarchar(max),
---		ClientName nvarchar(max),
---		ClientId uniqueidentifier,
---		RegionName nvarchar(max),
---		LocationName nvarchar(max),
---		LocationId uniqueidentifier,
---		AddressLine nvarchar(max),
---		Latitude decimal(18,8),
---		Longitude decimal(18,8),
---		StatusName nvarchar(max)
---	) 
 AS
 BEGIN
 
@@ -208,15 +193,12 @@ BEGIN
 									)
 								)
 							)
-			 
-	----Add all RouteTasks that were put on hold in the past into the table to be returned
-	--INSERT INTO @serviceForDayTable (RecurringServiceId, ServiceId, OccurDate, ServiceName)
-	--SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name 
-	--FROM	RouteTasks t1
-	--WHERE	t1.Date < @serviceDate AND t1.BusinessAccountId = @serviceProviderIdContext AND t1.DelayedChildId IS NULL
-	--AND EXISTS (
-	--			SELECT Id FROM TaskStatus t2 WHERE BusinessAccountId = @serviceProviderIdContext AND (StatusDetailInt = 1 OR StatusDetailInt = 3 OR StatusDetailInt = 13) AND t1.TaskStatusId = t2.Id
-	--			)						
+						
+	
+	INSERT INTO @PreRoutedServices
+	SELECT RecurringServiceId, ServiceId, [Date], Name
+	FROM dbo.RouteTasks
+	WHERE Date = @serviceDate AND BusinessAccountId = @serviceProviderIdContext AND RouteDestinationId IS NULL
 
 	DECLARE @UnroutedOrUncompletedServices TABLE
 	(
@@ -318,16 +300,6 @@ BEGIN
 							WHERE	ServiceId = t1.Id
 							)
 	WHERE ClientId IS NULL
-
-	--UPDATE	@UnroutedOrUncompletedServices
-	--SET		StatusName =	(
-	--						SELECT Name 
-	--						FROM TaskStatus t1
-	--						WHERE BusinessAccountId = @serviceProviderIdContext
-	--						AND (t1.StatusDetailInt = 13 
-	--							OR t1.StatusDetailInt = 3)
-	--						)
-	--WHERE StatusName IS NULL
 
 	DECLARE @ServicesForDateTable TABLE
 		(
@@ -445,7 +417,7 @@ BEGIN
 		OccurDate date,
 		ServiceName nvarchar(max),
 		ClientName nvarchar(max),
-		ClientId uniqueidentifier,
+		ClientId UNIQUEIDENTIFIER ,
 		RegionName nvarchar(max),
 		LocationName nvarchar(max),
 		LocationId uniqueidentifier,
@@ -464,30 +436,70 @@ BEGIN
 	UPDATE #ServicesTableToReturn
 	SET Id = NEWID()
 
-		CREATE TABLE #Return
-(
-		Id UNIQUEIDENTIFIER PRIMARY KEY,
-		RecurringServiceId uniqueidentifier,
-		ServiceId uniqueidentifier,
-		OccurDate date,
-		ServiceName nvarchar(max),
-		ClientName nvarchar(max),
-		ClientId uniqueidentifier,
-		RegionName nvarchar(max),
-		LocationName nvarchar(max),
-		LocationId uniqueidentifier,
-		AddressLine nvarchar(max),
-		Latitude decimal(18,8),
-		Longitude decimal(18,8),
-		StatusName nvarchar(max)
-	)
+	--CREATE TABLE #Return
+	--(
+	--Id UNIQUEIDENTIFIER PRIMARY KEY,
+	--RecurringServiceId uniqueidentifier,
+	--ServiceId uniqueidentifier,
+	--OccurDate date,
+	--ServiceName nvarchar(max),
+	--ClientName nvarchar(max),
+	--ClientId uniqueidentifier,
+	--RegionName nvarchar(max),
+	--LocationName nvarchar(max),
+	--LocationId uniqueidentifier,
+	--AddressLine nvarchar(max),
+	--Latitude decimal(18,8),
+	--Longitude decimal(18,8),
+	--StatusName nvarchar(max)
+	--)
 
-	INSERT INTO #Return
-	SELECT * FROM #ServicesTableToReturn
+	--INSERT INTO #Return
+	--SELECT * FROM #ServicesTableToReturn
 
-	SELECT * FROM #Return
+	CREATE TABLE #RouteTasks
+			( Id UNIQUEIDENTIFIER,
+			  LocationId UNIQUEIDENTIFIER,
+			  RouteDestinationId UNIQUEIDENTIFIER,
+			  ClientId UNIQUEIDENTIFIER,
+			  ServiceId UNIQUEIDENTIFIER,
+			  ReadOnly BIT,
+			  BusinessAccountId UNIQUEIDENTIFIER,
+			  EstimatedDuration TIME,
+			  Name NVARCHAR(MAX),
+			  StatusInt INT,
+			  [Date] DATETIME,
+			  OrderInRouteDestination INT,
+			  RecurringServiceId UNIQUEIDENTIFIER,
+			  DelayedChildId UNIQUEIDENTIFIER,
+			  TaskStatusId UNIQUEIDENTIFIER
+			)
+
+	INSERT INTO #RouteTasks(Id, LocationId, ClientId, ServiceId, Name, [Date], RecurringServiceId)
+	SELECT Id, LocationId, ClientId, ServiceId, ServiceName, OccurDate, RecurringServiceId
+	FROM #ServicesTableToReturn
+
+	UPDATE #RouteTasks
+	SET ReadOnly = 0,
+		BusinessAccountId = @serviceProviderIdContext,
+		EstimatedDuration = '0:0:16.00',
+		OrderInRouteDestination = 0,
+		TaskStatusId = (SELECT TOP 1 Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @serviceProviderIdContext),
+		StatusInt = 0
+
+	INSERT INTO dbo.RouteTasks
+	SELECT * FROM #RouteTasks
+
+	SELECT * FROM dbo.RouteTasks
+	LEFT JOIN dbo.Locations
+	ON dbo.RouteTasks.LocationId = dbo.Locations.Id
+	LEFT JOIN dbo.Regions
+	ON dbo.Locations.RegionId = dbo.Regions.Id
+	LEFT JOIN dbo.Clients
+	ON dbo.RouteTasks.ClientId = dbo.Clients.Id  
+	WHERE dbo.RouteTasks.BusinessAccountId = @serviceProviderIdContext AND [Date] = @serviceDate AND RouteDestinationId IS NULL 
 
 	DROP TABLE #ServicesTableToReturn
-	DROP TABLE #Return
+	DROP TABLE #RouteTasks
 RETURN 
 END

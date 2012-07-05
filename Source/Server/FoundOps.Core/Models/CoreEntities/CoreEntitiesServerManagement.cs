@@ -18,16 +18,14 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         #region ConnectionString, Paths and Parameters
 
-        public static readonly string SqlConnectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
-        private static readonly string ContainerConnectionString = ConfigWrapper.ConnectionString("CoreEntitiesContainer");
 
-        private static readonly string RootDirectory = ServerConstants.RootDirectory;
+        public static string RootDirectory = @"C:\FoundOps\GitHub\Source\Server";
 
         private static readonly string ClearCoreEntitiesDatabaseScriptLocation =
             RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
 
         private static readonly string CreateCoreEntitiesDatabaseScriptLocation =
-            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected.edmx.sql";
+            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql";
 
         #endregion
 
@@ -37,7 +35,7 @@ namespace FoundOps.Core.Models.CoreEntities
             var createFile = new FileInfo(CreateCoreEntitiesDatabaseScriptLocation);
             string clearScript = clearFile.OpenText().ReadToEnd();
             string createScript = createFile.OpenText().ReadToEnd();
-            using (var conn = new SqlConnection(SqlConnectionString))
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 var server = new Microsoft.SqlServer.Management.Smo.Server(new ServerConnection(conn));
                 server.ConnectionContext.ExecuteNonQuery(clearScript);
@@ -60,7 +58,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             ClearCreateCoreEntitiesDatabase();
 
-            var container = new CoreEntitiesContainer(ContainerConnectionString);
+            var container = new CoreEntitiesContainer(ServerConstants.ContainerConnectionString);
 
             //Setup blocks
             PopulateBlocks(container);

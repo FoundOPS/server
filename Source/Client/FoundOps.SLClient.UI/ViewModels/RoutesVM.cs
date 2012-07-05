@@ -292,8 +292,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                     }
 
                     //Setup RouteTaskHolders for existing RouteTasks
-                    foreach (var routeTask in task.Result.SelectMany(r => r.RouteDestinations.SelectMany(rd => rd.RouteTasks)))
-                        routeTask.SetupTaskHolder();
+                    //foreach (var routeTask in task.Result.SelectMany(r => r.RouteDestinations.SelectMany(rd => rd.RouteTasks)))
+                    //    routeTask.SetupTaskHolder();
 
                     //Update the CollectionView
                     ViewObservable.OnNext(new DomainCollectionViewFactory<Route>(new EntityList<Route>(DomainContext.Routes, task.Result)).View);
@@ -320,7 +320,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 cancelLastDetailsLoad.OnNext(true);
 
                 //Load the RouteTask's ServiceHolder details
-                selectedRouteTask.ParentRouteTaskHolder.ServiceHolder.LoadDetails(cancelLastDetailsLoad, () => selectedRouteTask.DetailsLoaded = true);
+                selectedRouteTask.ServiceHolder.LoadDetails(cancelLastDetailsLoad, () => selectedRouteTask.DetailsLoaded = true);
             });
 
             #endregion
@@ -418,12 +418,12 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var serviceTypesToRoute = CollectionView.Cast<Route>().Select(r => r.RouteType).Distinct();
 
                 //Populate the routes with the unrouted tasks
-                _algorithmVM.OrderTasks((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, serviceTypesToRoute).Take(1)
+                _algorithmVM.OrderTasks((IEnumerable<RouteTask>)VM.TaskBoard.CollectionView, serviceTypesToRoute).Take(1)
                 .Subscribe(organizedTaskHolderCollections =>
                 {
                     foreach (var taskHolderCollection in organizedTaskHolderCollections)
                     {
-                        var serviceType = taskHolderCollection.First().ServiceName;
+                        var serviceType = taskHolderCollection.First().Name;
                         var routes = CollectionView.Cast<Route>().Where(r => r.RouteType == serviceType);
 
                         //Add the tasks to routes, and remove the tasks from the task board
@@ -437,8 +437,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //No need to load the regions because they are already loaded (from the filter)
                     cancelLoadLocationDetails.OnNext(true);
                     var locationIdsToLoad =
-                        organizedTaskHolderCollections.SelectMany(thc => thc).Select(rth => rth.ChildRouteTask).Where(crt => crt.Location == null && crt.LocationId.HasValue)
-                            .Select(crt => crt.LocationId.Value).Distinct();
+                        organizedTaskHolderCollections.SelectMany(thc => thc).Where(crt => crt.Location == null && crt.LocationId.HasValue)
+                            .Select(crt => crt.LocationId != null ? crt.LocationId.Value : new Guid()).Distinct();
 
                     if (!locationIdsToLoad.Any()) return;
                     var locationsQuery = DomainContext.GetLocationsQuery(ContextManager.RoleId, locationIdsToLoad);
@@ -537,7 +537,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                         }, TaskScheduler.FromCurrentSynchronizationContext());
 
                     //Load the Fields info of the RouteTasks
-                    var serviceHoldersToLoad = SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ParentRouteTaskHolder.ServiceHolder);
+                    var serviceHoldersToLoad = SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ServiceHolder);
                     ServiceHolder.LoadDetails(serviceHoldersToLoad, cancelLoadDetails, false, () =>
                     {
                         fieldsLoaded = true;
@@ -555,14 +555,13 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Puts the tasks into routes and removes the tasks from the TaskBoard.
         /// </summary>
         /// <param name="routesWithServiceType">Type of the routes with service.</param>
-        /// <param name="organizedTaskHolders">The organized = task holders.</param>
+        /// <param name="organizedRouteTasks">The organized = task holders.</param>
         /// <returns>The routed tasks.</returns>
-        private void PutTasksIntoRoutes(IEnumerable<Route> routesWithServiceType, IEnumerable<TaskHolder> organizedTaskHolders)
+        private void PutTasksIntoRoutes(IEnumerable<Route> routesWithServiceType, IEnumerable<RouteTask> organizedRouteTasks)
         {
             var routedTasks = new List<RouteTask>();
 
             routesWithServiceType = routesWithServiceType.ToArray();
-            var organizedRouteTasks = organizedTaskHolders.Select(th => th.ChildRouteTask).ToArray();
 
             var routeCount = routesWithServiceType.Count();
             var routeTasksCount = organizedRouteTasks.Count();
@@ -589,7 +588,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //Move the route task index forward
                     currentRouteTaskIndex++;
 
-                    routeTask.Status = Status.Routed;
+                    routeTask.TaskStatus.GetDefaultTaskStatus(routeTask.OwnerBusinessAccount, StatusDetail.RoutedDefault);
 
                     //Create a new route destination and add the task to it
                     var newRouteDestination = new RouteDestination
@@ -609,8 +608,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
 
             //remove the routed task holders from the task board
-            foreach (var taskHolder in organizedTaskHolders)
-                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolder);
+            foreach (var taskHolder in organizedRouteTasks)
+                ((ObservableCollection<RouteTask>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolder);
         }
 
         #region Protected
@@ -675,17 +674,17 @@ namespace FoundOps.SLClient.UI.ViewModels
             var tasksForTaskBoard = deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks).ToArray();
 
             //Add the task holders to keep back to the task board
-            foreach (var routeTask in tasksForTaskBoard)
-            {
-                //Get the ParentRouteTaskHolder
-                var taskHolder = routeTask.ParentRouteTaskHolder;
+            //foreach (var routeTask in tasksForTaskBoard)
+            //{
+            //    //Get the ParentRouteTaskHolder
+            //    var taskHolder = routeTask.ParentRouteTaskHolder;
 
-                //Sets that RouteTasks Status to be the Created Default for the OwnerBusinessAccount
-                routeTask.TaskStatus = routeTask.TaskStatus.GetDefaultTaskStatus(routeTask.OwnerBusinessAccount, StatusDetail.CreatedDefault);
+            //    //Sets that RouteTasks Status to be the Created Default for the OwnerBusinessAccount
+            //    routeTask.TaskStatus = routeTask.TaskStatus.GetDefaultTaskStatus(routeTask.OwnerBusinessAccount, StatusDetail.CreatedDefault);
 
-                //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
-                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);
-            }
+            //    //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
+            //    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);
+            //}
 
             //Delete the Route, RouteDestinations, and RouteTasks
             DataManager.RemoveEntities(new Entity[] { deletedRoute }.Union(deletedRoute.RouteDestinations).Union(tasksForTaskBoard).ToArray());

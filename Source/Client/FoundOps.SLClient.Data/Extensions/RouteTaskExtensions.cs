@@ -9,7 +9,7 @@ using FoundOps.Common.Tools;
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
-    public partial class RouteTask : IReject, ILoadDetails
+    public partial class RouteTask : IReject, ILoadDetails, IGeoLocation
     {
         #region Public Properties
 
@@ -34,6 +34,40 @@ namespace FoundOps.Core.Models.CoreEntities
                 _detailsLoaded = value;
                 this.RaisePropertyChanged("DetailsLoaded");
             }
+        }
+
+        #endregion
+
+        #region Implementation of IGeoLocation
+
+        double IGeoLocation.Latitude
+        {
+            get { return (double)this.Location.Latitude.Value; }
+        }
+
+        double IGeoLocation.Longitude
+        {
+            get { return (double)this.Location.Longitude.Value; }
+        }
+
+        public double LatitudeRad
+        {
+            get { return DegreeToRadian(((IGeoLocation)this).Latitude); }
+        }
+
+        public double LongitudeRad
+        {
+            get { return DegreeToRadian(((IGeoLocation)this).Longitude); }
+        }
+
+        public static double DegreeToRadian(double angle)
+        {
+            return Math.PI * angle / 180.0;
+        }
+
+        public static double RadianToDegree(double angle)
+        {
+            return angle * (180.0 / Math.PI);
         }
 
         #endregion

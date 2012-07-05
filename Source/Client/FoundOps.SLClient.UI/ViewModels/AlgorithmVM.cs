@@ -85,31 +85,31 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// It will seperate tasks based on service type, and then push the ordered task collections when complete.
         /// This will open the AlgorithmProgress window.
         /// </summary>
-        /// <param name="unroutedTaskHolders">The task holders to order.</param>
+        /// <param name="unroutedRouteTasks">The task holders to order.</param>
         /// <param name="serviceTypes">The service types to consider.</param>
         /// <returns>An observable to stay asynchronous. The result is pushed once, so take the first item.</returns>
-        public IObservable<IEnumerable<IEnumerable<TaskHolder>>> OrderTasks(IEnumerable<TaskHolder> unroutedTaskHolders, IEnumerable<string> serviceTypes)
+        public IObservable<IEnumerable<IEnumerable<RouteTask>>> OrderTasks(IEnumerable<RouteTask> unroutedRouteTasks, IEnumerable<string> serviceTypes)
         {
             var algorithmStatus = new AlgorithmStatus { AlgorithmVM = this };
-            var result = new Subject<IEnumerable<IEnumerable<TaskHolder>>>();
+            var result = new Subject<IEnumerable<IEnumerable<RouteTask>>>();
 
-            //Organize the unroutedTaskHolders by ServiceTemplateName
+            //Organize the unroutedRouteTasks by ServiceTemplateName
             //only choose task holders that have LocationIds, a ServiceName, and a Latitude and a Longitude
-            var taskHoldersToRoute =
-                unroutedTaskHolders.Where(th =>
-                    th.LocationId.HasValue && th.ServiceName != null && th.Latitude.HasValue && th.Longitude.HasValue)
+            var RouteTasksToRoute =
+                unroutedRouteTasks.Where(th =>
+                    th.LocationId.HasValue && th.Name != null && th.Location.Latitude.HasValue && th.Location.Longitude.HasValue)
                     .ToArray();
 
-            //Find which service types should be routed by choosing the (distinct) ServiceTypes of the unroutedTaskHolders
+            //Find which service types should be routed by choosing the (distinct) ServiceTypes of the unroutedRouteTasks
             //only choose the types that should be routes
             //Then only choose route types Make sure each of those service types have at least one route with that RouteType
-            var distinctServiceTemplates = taskHoldersToRoute.Select(th => th.ServiceName).Distinct()
+            var distinctServiceTemplates = RouteTasksToRoute.Select(th => th.Name).Distinct()
                 .Where(st => serviceTypes.Any(t => t == st))
                 .ToArray();
 
-            //Seperate the TaskHolders by ServiceTemplate Name to prevent routing different service types together
-            var taskHolderCollections =
-                distinctServiceTemplates.Select(serviceTemplateName => taskHoldersToRoute.Where(th => th.ServiceName == serviceTemplateName));
+            //Seperate the RouteTasks by ServiceTemplate Name to prevent routing different service types together
+            var RouteTaskCollections =
+                distinctServiceTemplates.Select(serviceTemplateName => RouteTasksToRoute.Where(th => th.Name == serviceTemplateName));
 
             #region Depot no longer used
             ////If there is not a depot set. Default to FoundOPS, 1305 Cumberland Ave, 47906: 40.460335, -86.929840
@@ -125,10 +125,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             //}
             #endregion
 
-            int totalTasksToRoute = taskHolderCollections.Select(taskHolderCollection => taskHolderCollection.Count()).Sum();
+            int totalTasksToRoute = RouteTaskCollections.Select(RouteTaskCollection => RouteTaskCollection.Count()).Sum();
 
             if (totalTasksToRoute <= 0)
-                return Observable.Empty<IEnumerable<IEnumerable<TaskHolder>>>();
+                return Observable.Empty<IEnumerable<IEnumerable<RouteTask>>>();
 
             //Setup countdown timer
             //a) aggregate the total time to route
@@ -155,7 +155,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (totalTasksToRoute >= 0)
                 Observable.Start(() =>
                 {
-                    PerformNextCalcuation(taskHolderCollections, 0, new List<IEnumerable<TaskHolder>>(), algorithmStatus, result);
+                    PerformNextCalcuation(RouteTaskCollections, 0, new List<IEnumerable<RouteTask>>(), algorithmStatus, result);
                 });
 
             algorithmStatus.Show();
@@ -167,17 +167,17 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         /// <param name="geoLocationCollections">The collections to order</param>
         /// <param name="index">The index of the collection to calculate</param>
-        /// <param name="orderedTaskHolderCollections">The ordered taskHolder collections</param>
+        /// <param name="orderedRouteTaskCollections">The ordered RouteTask collections</param>
         /// <param name="statusWindow">The window to close when complete</param>
         /// <param name="resultSubject">The subject to push when complete</param>
-        private void PerformNextCalcuation(IEnumerable<IEnumerable<IGeoLocation>> geoLocationCollections, int index, List<IEnumerable<TaskHolder>> orderedTaskHolderCollections,
-            AlgorithmStatus statusWindow, Subject<IEnumerable<IEnumerable<TaskHolder>>> resultSubject)
+        private void PerformNextCalcuation(IEnumerable<IEnumerable<IGeoLocation>> geoLocationCollections, int index, List<IEnumerable<RouteTask>> orderedRouteTaskCollections,
+            AlgorithmStatus statusWindow, Subject<IEnumerable<IEnumerable<RouteTask>>> resultSubject)
         {
             //if all routes have been calculated, close the algorithm status window and return
             if (index >= geoLocationCollections.Count())
             {
                 statusWindow.Close();
-                resultSubject.OnNext(orderedTaskHolderCollections);
+                resultSubject.OnNext(orderedRouteTaskCollections);
                 return;
             }
 
@@ -204,9 +204,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 calculator.StopSearch();
                 //add the best solution found to the collection
-                orderedTaskHolderCollections.Add(bestSolution.Cast<TaskHolder>());
+                orderedRouteTaskCollections.Add(bestSolution.Cast<RouteTask>());
                 index++;
-                PerformNextCalcuation(geoLocationCollections, index, orderedTaskHolderCollections, statusWindow, resultSubject);
+                PerformNextCalcuation(geoLocationCollections, index, orderedRouteTaskCollections, statusWindow, resultSubject);
             });
 
             //Stop the algorithm on cancel search and return

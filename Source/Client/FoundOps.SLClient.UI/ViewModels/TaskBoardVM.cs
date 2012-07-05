@@ -107,10 +107,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                         //Notify the TaskBoardVM has completed loading RouteTasks
                         IsLoadingSubject.OnNext(false);
 
-                        //Detach all RouteTasks so that changes are not tracked
-                        //They will become tracked when you attach them to a RouteDestination/Route
-                        DataManager.DetachEntities(task.Result.ToArray());
-
                         ViewObservable.OnNext(new DomainCollectionViewFactory<RouteTask>(task.Result.ToObservableCollection()).View);
                     },
                     TaskScheduler.FromCurrentSynchronizationContext());

@@ -74,8 +74,8 @@ namespace FoundOps.Core.Models.CoreEntities
             //If this RouteDestination does not already have a Client update it with the task's client
             if (this.Client == null && routeTask.Location != null)
             {
-                if (routeTask.Location.Party.ClientOwner != null)
-                    this.Client = routeTask.Location.Party.ClientOwner;
+                if (routeTask.Location.Client != null)
+                    this.Client = routeTask.Location.Client;
             }
         }
 

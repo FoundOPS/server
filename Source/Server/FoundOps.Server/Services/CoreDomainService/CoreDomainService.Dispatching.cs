@@ -1,6 +1,9 @@
+using System.Data.SqlClient;
 using System.ServiceModel.DomainServices.Server;
+using Dapper;
 using FoundOps.Common.Composite;
 using FoundOps.Common.NET;
+using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Route = FoundOps.Core.Models.CoreEntities.Route;
@@ -152,7 +155,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //route.Vehicles.Load();
             //route.Vehicles.Clear();
-            
+
             route.RouteDestinations.Load();
             foreach (var routeDestination in route.RouteDestinations.ToArray())
                 DeleteRouteDestination(routeDestination);
@@ -225,14 +228,12 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Query]
         public IQueryable<RouteTask> GetUnroutedServices(Guid roleId, DateTime serviceDate)
         {
-            var businessAccount = ObjectContext.Owner(roleId).First();
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
 
 
             var tasks = new List<RouteTask>();
 
-            const string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=Core;Integrated Security=True;MultipleActiveResultSets=True";
-
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 conn.Open();
 
@@ -240,17 +241,24 @@ namespace FoundOps.Server.Services.CoreDomainService
                 parameters.Add("@serviceProviderIdContext", businessForRole.Id);
                 parameters.Add("@serviceDate", serviceDate);
 
-                var data = conn.Query<RouteTask, Location, Region, RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region) =>
+                var data = conn.Query<RouteTask, Location, Region, Client, RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client) =>
                 {
+                    this.ObjectContext.DetachExistingAndAttach(location);
                     routeTask.Location = location;
+
+                    this.ObjectContext.DetachExistingAndAttach(region);
                     routeTask.Location.Region = region;
+
+                    this.ObjectContext.DetachExistingAndAttach(client);
+                    routeTask.Client = client;
+
                     return routeTask;
                 }, parameters, commandType: CommandType.StoredProcedure);
 
+                conn.Close();
+
                 return data.AsQueryable();
             }
-
-            return tasks.AsQueryable();//unroutedServicesForDate.AsQueryable(); 
         }
 
         /// <summary>
@@ -307,18 +315,18 @@ namespace FoundOps.Server.Services.CoreDomainService
             if ((taskStatus.EntityState != EntityState.Detached))
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(taskStatus, EntityState.Added);
             else
-                this.ObjectContext.TaskStatus.AddObject(taskStatus);
+                this.ObjectContext.TaskStatuses.AddObject(taskStatus);
         }
 
         public void UpdateTaskStatus(TaskStatus taskStatus)
         {
-            this.ObjectContext.TaskStatus.AttachAsModified(taskStatus);
+            this.ObjectContext.TaskStatuses.AttachAsModified(taskStatus);
         }
 
         public void DeleteTaskStatus(TaskStatus taskStatus)
         {
             this.ObjectContext.DetachExistingAndAttach(taskStatus);
-            this.ObjectContext.TaskStatus.DeleteObject(taskStatus);
+            this.ObjectContext.TaskStatuses.DeleteObject(taskStatus);
         }
 
         #endregion

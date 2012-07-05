@@ -80,7 +80,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     City = "West Lafayette",
                     State = "IN",
                     ZipCode = "47906",
-                    OwnerParty = serviceProvider,
+                    BusinessAccount = serviceProvider,
                     Latitude = (decimal?)40.460335,
                     Longitude = (decimal?)(-86.929840)
                 });     
