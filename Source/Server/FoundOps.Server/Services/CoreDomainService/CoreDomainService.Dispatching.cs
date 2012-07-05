@@ -241,6 +241,10 @@ namespace FoundOps.Server.Services.CoreDomainService
                 parameters.Add("@serviceProviderIdContext", businessForRole.Id);
                 parameters.Add("@serviceDate", serviceDate);
 
+                //Calls a stored procedure that will find any Services scheduled for today and create a routetask for them if one doesnt exist
+                //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
+                //Dapper will then map the output table to RouteTasks, RouteTasks.Location, RouteTasks.Location.Region and RouteTasks.Client
+                //While that is being mapped we also attach the Client, Location and Region to the objectContext
                 var data = conn.Query<RouteTask, Location, Region, Client, RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client) =>
                 {
                     this.ObjectContext.DetachExistingAndAttach(location);
