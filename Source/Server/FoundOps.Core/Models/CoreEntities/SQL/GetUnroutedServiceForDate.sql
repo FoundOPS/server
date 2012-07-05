@@ -4,9 +4,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 Use Core
 GO
-IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
-DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
-GO
+--IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
+--DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
+--GO
 /*****************************************************************************************************************************************************************************************************************************
 * FUNCTION GetUnroutedServicesForDate will take the context provided and find all the services that are scheduled for that day
 ** Input Parameters **
@@ -19,25 +19,25 @@ GO
 * {GUID}			|           | 1/1/2012 <-- Existing service				| Direct	  |	GotGrease?		| {GUID}	| North		 | GotGrease?	   | {GUID} 	| 6789 Help Ln	| 43.265	| -89.254	| 2	
 * {GUID}			| {GUID}	| 1/2/2012 <-- Existing service w/ RS parent| Regular     | AB Couriers		| {GUID}	| West		 | AB Couriers	   | {GUID}		| 4953 Joe Way	| 44.165	| -79.365	| 4	
 ****************************************************************************************************************************************************************************************************************************/
-CREATE FUNCTION [dbo].[GetUnroutedServicesForDate]
+ALTER PROCEDURE [dbo].[sp_GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
 @serviceDate date)
-RETURNS @ServicesTableToReturn TABLE
-(
-		RecurringServiceId uniqueidentifier,
-		ServiceId uniqueidentifier,
-		OccurDate date,
-		ServiceName nvarchar(max),
-		ClientName nvarchar(max),
-		ClientId uniqueidentifier,
-		RegionName nvarchar(max),
-		LocationName nvarchar(max),
-		LocationId uniqueidentifier,
-		AddressLine nvarchar(max),
-		Latitude decimal(18,8),
-		Longitude decimal(18,8),
-		StatusName nvarchar(max)
-	) 
+--RETURNS @ServicesTableToReturn TABLE
+--(
+--		RecurringServiceId uniqueidentifier,
+--		ServiceId uniqueidentifier,
+--		OccurDate date,
+--		ServiceName nvarchar(max),
+--		ClientName nvarchar(max),
+--		ClientId uniqueidentifier,
+--		RegionName nvarchar(max),
+--		LocationName nvarchar(max),
+--		LocationId uniqueidentifier,
+--		AddressLine nvarchar(max),
+--		Latitude decimal(18,8),
+--		Longitude decimal(18,8),
+--		StatusName nvarchar(max)
+--	) 
 AS
 BEGIN
 
@@ -437,11 +437,57 @@ BEGIN
 	SELECT t1.* FROM @ServicesForDateTable t1, @RecurringServicesWithExcludedDatesSplit t2
 	WHERE t1.RecurringServiceId = t2.Id AND t1.OccurDate = t2.ExcludedDate
 
+	CREATE TABLE #ServicesTableToReturn
+(
+		Id UNIQUEIDENTIFIER,
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max),
+		ClientName nvarchar(max),
+		ClientId uniqueidentifier,
+		RegionName nvarchar(max),
+		LocationName nvarchar(max),
+		LocationId uniqueidentifier,
+		AddressLine nvarchar(max),
+		Latitude decimal(18,8),
+		Longitude decimal(18,8),
+		StatusName nvarchar(max)
+	) 
+
 	--Add all services that have not been excluded to the output table
-	INSERT INTO @ServicesTableToReturn
+	INSERT INTO #ServicesTableToReturn(RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusName)
 	SELECT * FROM @ServicesForDateTable
 	EXCEPT
 	SELECT * FROM @SevicesThatHaveBeenExcluded
 
+	UPDATE #ServicesTableToReturn
+	SET Id = NEWID()
+
+		CREATE TABLE #Return
+(
+		Id UNIQUEIDENTIFIER PRIMARY KEY,
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max),
+		ClientName nvarchar(max),
+		ClientId uniqueidentifier,
+		RegionName nvarchar(max),
+		LocationName nvarchar(max),
+		LocationId uniqueidentifier,
+		AddressLine nvarchar(max),
+		Latitude decimal(18,8),
+		Longitude decimal(18,8),
+		StatusName nvarchar(max)
+	)
+
+	INSERT INTO #Return
+	SELECT * FROM #ServicesTableToReturn
+
+	SELECT * FROM #Return
+
+	DROP TABLE #ServicesTableToReturn
+	DROP TABLE #Return
 RETURN 
 END

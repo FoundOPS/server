@@ -223,15 +223,34 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="roleId">The role id.</param>
         /// <param name="serviceDate">The service date.</param>  
         [Query]
-        public IQueryable<TaskHolder> GetUnroutedServices(Guid roleId, DateTime serviceDate)
+        public IQueryable<RouteTask> GetUnroutedServices(Guid roleId, DateTime serviceDate)
         {
             var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var unroutedServicesForDate = ObjectContext.GetUnroutedServicesForDate(businessAccount.Id, serviceDate);
-            //return routetasks; 
 
+            var tasks = new List<RouteTask>();
 
-            return unroutedServicesForDate.AsQueryable();
+            const string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=Core;Integrated Security=True;MultipleActiveResultSets=True";
+
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@serviceProviderIdContext", businessForRole.Id);
+                parameters.Add("@serviceDate", serviceDate);
+
+                var data = conn.Query<RouteTask, Location, Region, RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region) =>
+                {
+                    routeTask.Location = location;
+                    routeTask.Location.Region = region;
+                    return routeTask;
+                }, parameters, commandType: CommandType.StoredProcedure);
+
+                return data.AsQueryable();
+            }
+
+            return tasks.AsQueryable();//unroutedServicesForDate.AsQueryable(); 
         }
 
         /// <summary>
