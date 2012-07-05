@@ -47,7 +47,7 @@ namespace FoundOPS.API.Controllers
             //Load image url
             if (user.PartyImage != null)
             {
-                var imageUrl = AzureServerHelpers.GetBlobUrlHelper(user.Id, user.PartyImage.Id);
+                var imageUrl = user.PartyImage.RawUrl + AzureServerHelpers.GetBlobUrlHelper(user.Id, user.PartyImage.Id);
                 userSettings.ImageUrl = imageUrl;
             }
 
@@ -84,13 +84,21 @@ namespace FoundOPS.API.Controllers
             var formData = await Request.ReadMultipartAsync(new[] { "imageFileName", "imageData", "x", "y", "w", "h" });
 
             var imageFileName = await formData["imageFileName"].ReadAsStringAsync();
-            var imageDataStream = await formData["imageData"].ReadAsStreamAsync();
+            var imageDataString = await formData["imageData"].ReadAsStringAsync();
             var x = Convert.ToInt32(await formData["x"].ReadAsStringAsync());
             var y = Convert.ToInt32(await formData["y"].ReadAsStringAsync());
             var w = Convert.ToInt32(await formData["w"].ReadAsStringAsync());
             var h = Convert.ToInt32(await formData["h"].ReadAsStringAsync());
 
-            var imageBytes = imageDataStream.ReadFully();
+            if (string.IsNullOrEmpty(imageFileName))
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "imageFileName was not set"));
+
+            //Remove prefaced metadata ex: "data:image/png;base64"
+            var metadataIndex = imageDataString.IndexOf("base64,");
+            if (metadataIndex >= 0)
+                imageDataString = imageDataString.Substring(metadataIndex + 7);
+
+            var imageBytes = Convert.FromBase64String(imageDataString);
 
             var blob = AzureServerHelpers.GetBlobHelper(partyToUpdate.Id, partyToUpdate.PartyImage.Id);
 
@@ -114,9 +122,10 @@ namespace FoundOPS.API.Controllers
             blob.Properties.ContentType = contentType;
             blob.SetProperties();
 
+            partyToUpdate.PartyImage.Name = imageFileName;
             _coreEntitiesContainer.SaveChanges();
 
-            var readOnlyUrl = blob.GetSharedAccessSignature(new SharedAccessPolicy
+            var readOnlyUrl = partyToUpdate.PartyImage.RawUrl + blob.GetSharedAccessSignature(new SharedAccessPolicy
             {
                 Permissions = SharedAccessPermissions.Read,
                 SharedAccessExpiryTime = DateTime.UtcNow + AzureServerHelpers.DefaultExpiration
@@ -137,7 +146,10 @@ namespace FoundOPS.API.Controllers
             var user = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).Include(u => u.PartyImage).First();
 
             if (user.PartyImage == null)
-                user.PartyImage = new PartyImage();
+            {
+                var partyImage = new PartyImage { OwnerParty = user };
+                user.PartyImage = partyImage;
+            }
 
             return UpdatePartyImageHelper(user);
         }
@@ -156,7 +168,7 @@ namespace FoundOPS.API.Controllers
             //Load image url
             if (businessAccount.PartyImage != null)
             {
-                var imageUrl = AzureServerHelpers.GetBlobUrlHelper(businessAccount.Id, businessAccount.PartyImage.Id);
+                var imageUrl = businessAccount.PartyImage.RawUrl + AzureServerHelpers.GetBlobUrlHelper(businessAccount.Id, businessAccount.PartyImage.Id);
                 businessSettings.ImageUrl = imageUrl;
             }
 
@@ -193,7 +205,10 @@ namespace FoundOPS.API.Controllers
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
             if (businessAccount.PartyImage == null)
-                businessAccount.PartyImage = new PartyImage();
+            {
+                var partyImage = new PartyImage { OwnerParty = businessAccount };
+                businessAccount.PartyImage = partyImage;
+            }
 
             return UpdatePartyImageHelper(businessAccount);
         }

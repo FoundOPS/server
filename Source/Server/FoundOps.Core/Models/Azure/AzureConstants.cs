@@ -23,9 +23,9 @@ namespace FoundOps.Core.Models.Azure
         public static string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=" + AzureTools.AccountName + ";AccountKey=" + AccountKey;
 
         /// <summary>
-        /// The default expiration of a shared access key.
+        /// The default expiration of a shared access key. Cannot be more than 1 hour without a signed identifier.
         /// </summary>
-        public static TimeSpan DefaultExpiration = TimeSpan.FromHours(3);
+        public static TimeSpan DefaultExpiration = TimeSpan.FromHours(1);
 
         /// <summary>
         /// The default timeout.
@@ -43,7 +43,7 @@ namespace FoundOps.Core.Models.Azure
         }
 
         /// <summary>
-        /// Gets a read only url for a file. Expires in 3 hours
+        /// Gets a shared access key read only url for a file. Expires in 1 hours
         /// </summary>
         /// <param name="ownerPartyId">The owner party of the file (the container name)</param>
         /// <param name="fileGuid">The file id (name)</param>
