@@ -53,12 +53,12 @@ namespace FoundOPS.API.Controllers
             //Setup the service context for the TrackPointsHistory tables
             var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
 
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
-            if (currentBusinessAccount == null)
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
-            var tableName = currentBusinessAccount.Id.TrackPointTableName();
+            var tableName = businessAccount.Id.TrackPointTableName();
 
             var trackPointsDate = serviceDateUtc.Date;
 
@@ -83,7 +83,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid roleId)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).First();
 
 #if DEBUG
             //Setup the design data
@@ -180,7 +180,7 @@ namespace FoundOPS.API.Controllers
 
             var routeId = trackPoints.First().RouteId.Value;
 
-            var currentUserAccount = AuthenticationLogic.CurrentUserAccount(_coreEntitiesContainer);
+            var currentUserAccount = _coreEntitiesContainer.CurrentUserAccount().First();
             var currentBusinessAccount =
                 _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(
                     ba =>

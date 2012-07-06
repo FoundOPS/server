@@ -1,6 +1,4 @@
-﻿using FoundOps.Core.Models;
-using FoundOps.Core.Models.CoreEntities;
-using System;
+﻿using FoundOps.Core.Models.CoreEntities;
 using System.Web.Http;
 
 namespace FoundOPS.API.Controllers
@@ -16,13 +14,8 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public bool CCDAPDD()
         {
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
-            {
-                CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
-                return true;
-            }
-
-            throw new Exception("Invalid attempted access logged for investigation.");
+            CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
+            return true;
         }
 
         //GET /api/tools/ClearHistoricalTrackPoints
@@ -33,13 +26,8 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public bool ClearHistoricalTrackPoints()
         {
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
-            {
-                CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
-                return true;
-            }
-
-            throw new Exception("Invalid attempted access logged for investigation.");
+            CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
+            return true;
         }
 
         //GET /api/tools/CreateHistoricalTrackPoints
@@ -49,13 +37,8 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public bool CreateHistoricalTrackPoints()
         {
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
-            {
-                CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
-                return true;
-            }
-
-            throw new Exception("Invalid attempted access logged for investigation.");
+            CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
+            return true;
         }
     }
 

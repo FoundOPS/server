@@ -1,7 +1,8 @@
-using System;
-using System.Web.Mvc;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace FoundOps.Server.Controllers
 {
@@ -23,20 +24,20 @@ namespace FoundOps.Server.Controllers
         public void SaveChangesError(Guid roleId, string errorString, string innerException)
         {
             //Current user logged in (email)
-            var currentUser = AuthenticationLogic.CurrentUserAccountsEmailAddress();
+            var currentUser = _coreEntitiesContainer.CurrentUserAccount().First();
 
             //Business account Name
-            var businessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRole(roleId).Name;
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).First().Name;
 
             var newError = new Error
-                               {
-                                   Id = Guid.NewGuid(),
-                                   BusinessName = businessAccount,
-                                   Date = DateTime.UtcNow,
-                                   UserEmail = currentUser,
-                                   ErrorText = errorString,
-                                   InnerException = innerException
-                               };
+            {
+                Id = Guid.NewGuid(),
+                BusinessName = businessAccount,
+                Date = DateTime.UtcNow,
+                UserEmail = currentUser.EmailAddress,
+                ErrorText = errorString,
+                InnerException = innerException
+            };
 
 
             _coreEntitiesContainer.Errors.AddObject(newError);

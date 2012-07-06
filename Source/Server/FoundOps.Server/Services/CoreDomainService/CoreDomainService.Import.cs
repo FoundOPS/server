@@ -18,15 +18,16 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <summary>
         /// Imports the entities.
         /// </summary>
-        /// <param name="currentRoleId">The current role id.</param>
+        /// <param name="roleId">The current role id.</param>
         /// <param name="importDestination">The import destination.</param>
         /// <param name="dataCSV">The data CSV.</param>
         /// <returns></returns>
-        public bool ImportEntities(Guid currentRoleId, ImportDestination importDestination, byte[] dataCSV)
+        public bool ImportEntities(Guid roleId, ImportDestination importDestination, byte[] dataCSV)
         {
-            var businessAccount = ObjectContext.BusinessAccountOwnerOfRole(currentRoleId);
+            var businessAccount = ObjectContext.Owner(roleId).FirstOrDefault();
             if (businessAccount == null)
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
+
             //row index, column index, DataCategory, value
             var rows = new List<ImportRow>();
 
@@ -50,24 +51,24 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Load clients associations with names
             Client[] clientAssociations = null;
             if (importDestination == ImportDestination.Locations || importDestination == ImportDestination.RecurringServices)
-                clientAssociations = LoadClientAssociations(currentRoleId, businessAccount, rows, importDestination == ImportDestination.RecurringServices);
+                clientAssociations = LoadClientAssociations(roleId, businessAccount, rows, importDestination == ImportDestination.RecurringServices);
 
             IEnumerable<ServiceTemplate> serviceProviderServiceTemplates = null;
             //If the destination is Clients or RecurringServices
             //Load ServiceProvider ServiceTemplates (and sub data)
             if (importDestination == ImportDestination.Clients || importDestination == ImportDestination.RecurringServices)
-                serviceProviderServiceTemplates = GetServiceProviderServiceTemplates(currentRoleId).ToArray();
+                serviceProviderServiceTemplates = GetServiceProviderServiceTemplates(roleId).ToArray();
 
             //If the destination is RecurringServices, load location associations
             Location[] locationAssociations = null;
             if (importDestination == ImportDestination.RecurringServices)
-                locationAssociations = LoadLocationAssociations(currentRoleId, rows);
+                locationAssociations = LoadLocationAssociations(roleId, rows);
 
             //If the destination is Locations
             //Load region associations
             Region[] regionAssociations = null;
             if (importDestination == ImportDestination.Locations)
-                regionAssociations = LoadCreateRegionAssociations(currentRoleId, businessAccount, rows);
+                regionAssociations = LoadCreateRegionAssociations(roleId, businessAccount, rows);
 
             #endregion
 

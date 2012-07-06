@@ -35,7 +35,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public UserSettings GetUserSettings()
         {
-            var user = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).Include(u => u.PartyImage).First();
+            var user = _coreEntitiesContainer.CurrentUserAccount().Include(u => u.PartyImage).First();
 
             var userSettings = new UserSettings
             {
@@ -57,7 +57,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateUserSettings(UserSettings settings)
         {
-            var user = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).First();
+            var user = _coreEntitiesContainer.CurrentUserAccount().First();
 
             //If the email address of the current user changed, check the email address is not in use yet
             if (user.EmailAddress != settings.EmailAddress &&
@@ -143,7 +143,7 @@ namespace FoundOPS.API.Controllers
         /// <returns>The image url, expiring in 3 hours</returns>
         public Task<string> UpdateUserImage()
         {
-            var user = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).Include(u => u.PartyImage).First();
+            var user = _coreEntitiesContainer.CurrentUserAccount().Include(u => u.PartyImage).First();
 
             if (user.PartyImage == null)
             {
@@ -158,7 +158,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public BusinessSettings GetBusinessSettings(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
@@ -178,7 +178,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateBusinessSettings(Guid roleId, BusinessSettings settings)
         {
-            var businessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
@@ -199,7 +199,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("POST")]
         public Task<string> UpdateBusinessImage(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();

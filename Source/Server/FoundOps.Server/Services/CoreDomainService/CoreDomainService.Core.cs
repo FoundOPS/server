@@ -73,10 +73,10 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <returns></returns>
         public IQueryable<Party> GetBusinessAccountsForRole(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
             //Make sure current account is a FoundOPS account
-            return businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id
+            return businessAccount.Id != BusinessAccountsDesignData.FoundOps.Id
                        ? null
                        : this.ObjectContext.Parties.OfType<BusinessAccount>().Include(ba => ba.Depots).OrderBy(b => b.Name);
         }
@@ -89,7 +89,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="businessAccountId">The businessAccount id.</param>
         public Party GetBusinessAccountDetailsForRole(Guid roleId, Guid businessAccountId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.Owner(roleId).First();
 
             //Make sure current account is a FoundOPS account
             if (businessForRole.Id != BusinessAccountsDesignData.FoundOps.Id)
@@ -122,7 +122,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         private void UpdateBusinessAccount(BusinessAccount account)
         {
             //Only FoundOPS admin accounts or a user with admin capabilities for the current account can update the account
-            if (!this.ObjectContext.CurrentUserCanAdministerFoundOPS() && !this.ObjectContext.CurrentUserCanAdministerParty(account.Id))
+            if (!this.ObjectContext.CanAdministerFoundOPS() && !this.ObjectContext.CanAdminister(account.Id))
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
             this.ObjectContext.DetachExistingAndAttach(account);
@@ -130,7 +130,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var originalBusinessAccount = this.ChangeSet.GetOriginal(account);
 
             //Only FoundOPS's admins can change the MaxRoutes
-            if (originalBusinessAccount.MaxRoutes != account.MaxRoutes && !this.ObjectContext.CurrentUserCanAdministerFoundOPS())
+            if (originalBusinessAccount.MaxRoutes != account.MaxRoutes && !this.ObjectContext.CanAdministerFoundOPS())
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
             this.ObjectContext.Parties.AttachAsModified(account);
@@ -142,7 +142,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 throw new InvalidOperationException("You are trying to delete the FoundOPS account?!");
 
             //Make sure current account is a FoundOPS account
-            if (!this.ObjectContext.CurrentUserCanAdministerFoundOPS())
+            if (!this.ObjectContext.CanAdministerFoundOPS())
                 throw new AuthenticationException("Invalid attempted access logged for investigation.");
 
             //Set timeout to 10 minutes
@@ -170,8 +170,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (currentParty == null)
                 return contactInfoLabels.OrderBy(s => s);
 
+            //TODO?
             //Add all labels current user can administer that are the same account type. (Business Labels might be different than User Labels)
-            var accountsCurrentUserCanAdminister = ObjectContext.AdminRolesCurrentUserHasAccessTo().Select(r => r.OwnerParty);
+            var accountsCurrentUserCanAdminister = ObjectContext.RolesCurrentUserHasAccessTo(new[] { RoleType.Administrator }).Select(r => r.OwnerParty);
 
             MethodInfo method = typeof(Queryable).GetMethod("OfType");
             MethodInfo generic = method.MakeGenericMethod(new Type[] { currentParty.GetType() });
@@ -286,19 +287,11 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         public Party PartyForRole(Guid roleId)
         {
-            var ownerParty = this.ObjectContext.OwnerPartyOfRole(roleId);
+            var ownerParty = ObjectContext.Owner<Party>(roleId).First();
 
             var businessAccount = ownerParty as BusinessAccount;
             if (businessAccount != null)
                 (businessAccount).Depots.Load();
-
-            return ownerParty;
-        }
-
-        public Party PartyToAdministerForRole(Guid roleId)
-        {
-            var ownerParty = ObjectContext.AdminRolesCurrentUserHasAccessTo().Where(r => r.Id == roleId)
-                .Select(r => r.OwnerParty).FirstOrDefault();
 
             return ownerParty;
         }
@@ -403,7 +396,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IEnumerable<Role> GetRoles()
         {
-            var availableRoles = this.ObjectContext.AdminRolesCurrentUserHasAccessTo();
+            var availableRoles = this.ObjectContext.RolesCurrentUserHasAccessTo(new[] { RoleType.Administrator });
 
             return availableRoles;
         }
@@ -431,7 +424,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         public UserAccount CurrentUserAccount()
         {
-            var currentUserAccount = AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext)
+            var currentUserAccount = ObjectContext.CurrentUserAccount()
                  .Include(ua => ua.RoleMembership).Include("RoleMembership.OwnerParty").Include("RoleMembership.Blocks")
                  .Include(ua => ua.OwnedRoles).Include("OwnedRoles.Blocks").Include(ua => ua.LinkedEmployees)
                  .FirstOrDefault();
@@ -449,12 +442,12 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceProviderId">(Optional) filter user accounts that are in a owned role of this service provider.</param>
         public IQueryable<Party> GetUserAccounts(Guid roleId, Guid serviceProviderId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
             IQueryable<UserAccount> accesibleUserAccounts;
 
             //If the current account is a foundops account, return all user accounts
-            if (businessForRole.Id == BusinessAccountsDesignData.FoundOps.Id)
+            if (businessAccount.Id == BusinessAccountsDesignData.FoundOps.Id)
             {
                 accesibleUserAccounts = this.ObjectContext.Parties.OfType<UserAccount>();
             }
@@ -462,7 +455,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 //If not a FoundOPS account, return the current business's owned roles memberparties
                 accesibleUserAccounts =
-                    from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == businessForRole.Id)
+                    from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == businessAccount.Id)
                     from userAccount in this.ObjectContext.Parties.OfType<UserAccount>()
                     where role.MemberParties.Any(p => p.Id == userAccount.Id)
                     select userAccount;
@@ -535,7 +528,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Update]
         public void UpdateUserAccount(UserAccount currentUserAccount)
         {
-            if (!ObjectContext.CurrentUserCanAdministerParty(currentUserAccount.Id) || !this.ObjectContext.CurrentUserCanAdministerFoundOPS())
+            if (!ObjectContext.CanAdminister(currentUserAccount.Id) || !this.ObjectContext.CanAdministerFoundOPS())
                 throw new AuthenticationException();
 
             //Check if there is a temporary password

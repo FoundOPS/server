@@ -190,7 +190,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceTemplateLevel">(Optional/recommended) The service template level to filter by.</param>
         public IQueryable<ServiceTemplate> GetServiceTemplatesForServiceProvider(Guid roleId, int? serviceTemplateLevel)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
             IQueryable<ServiceTemplate> serviceTemplatesToReturn = this.ObjectContext.ServiceTemplates;
 
@@ -199,13 +199,13 @@ namespace FoundOps.Server.Services.CoreDomainService
                 serviceTemplatesToReturn = serviceTemplatesToReturn.Where(st => st.LevelInt == serviceTemplateLevel);
 
             //If the current role is FoundOPS, filter by what service templates can be accessed
-            if (businessForRole.Id != BusinessAccountsConstants.FoundOpsId)
+            if (businessAccount.Id != BusinessAccountsConstants.FoundOpsId)
             {
                 //Filter by the service templates for the service provider (Vendor)
                 serviceTemplatesToReturn = (from serviceTemplate in serviceTemplatesToReturn
                                             join stv in ObjectContext.ServiceTemplateWithVendorIds
                                                 on serviceTemplate.Id equals stv.ServiceTemplateId
-                                            where stv.BusinessAccountId == businessForRole.Id
+                                            where stv.BusinessAccountId == businessAccount.Id
                                             select serviceTemplate).Distinct();
             }
 
@@ -220,18 +220,18 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="roleId">The current role id.</param>
         public IEnumerable<ServiceTemplate> GetServiceProviderServiceTemplates(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
             IQueryable<ServiceTemplate> serviceProviderTemplates;
 
             //Filter only FoundOPS templates if the current business is FoundOPS
-            if (businessForRole.Id == BusinessAccountsConstants.FoundOpsId)
+            if (businessAccount.Id == BusinessAccountsConstants.FoundOpsId)
                 serviceProviderTemplates = this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.FoundOpsDefined);
             else //Filter by the service templates for the service provider (Vendor)
                 serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
                                             join stv in ObjectContext.ServiceTemplateWithVendorIds
                                                 on serviceTemplate.Id equals stv.ServiceTemplateId
-                                            where stv.BusinessAccountId == businessForRole.Id
+                                            where stv.BusinessAccountId == businessAccount.Id
                                             select serviceTemplate).Distinct();
 
             //Force load the details

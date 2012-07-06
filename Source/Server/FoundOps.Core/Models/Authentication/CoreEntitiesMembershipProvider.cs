@@ -65,10 +65,7 @@ namespace FoundOps.Core.Models.Authentication
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
         {
-            var userPartyId = (Guid)providerUserKey;
-
-            var userParty = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, userPartyId);
-            return userParty != null ? userParty.MembershipUser() : null;
+            throw new NotImplementedException(); 
         }
 
         public override MembershipUser GetUser(string username, bool userIsOnline)

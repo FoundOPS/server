@@ -31,12 +31,12 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="dateOfRoutes">The date of the routes.</param>
         public IQueryable<Route> GetRoutesForServiceProviderOnDay(Guid roleId, DateTime dateOfRoutes)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
             var routesDateOnly = dateOfRoutes.ToUniversalTime().Date;
 
             var routes =
-                this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Date == routesDateOnly)
+                this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Date == routesDateOnly)
                 .Include(r => r.RouteDestinations).Include("RouteDestinations.Location").Include("RouteDestinations.RouteTasks").Include("RouteDestinations.RouteTasks.Client");
 
             return routes.OrderBy(r => r.Name);
@@ -50,9 +50,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="routeId">The employee id.</param>
         public Route GetRouteDetails(Guid roleId, Guid routeId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var route = ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Id == routeId)
+            var route = ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Id == routeId)
                     .Include(r => r.Vehicles).Include(r => r.Employees).FirstOrDefault();
 
             if (route == null)
@@ -75,9 +75,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="routeId">The route id.</param>
         public IQueryable<ServiceTemplate> GetRouteServiceTemplates(Guid roleId, Guid routeId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var serviceTemplateIds = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id && r.Id == routeId).Include("RouteDestinations.RouteTasks")
+            var serviceTemplateIds = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Id == routeId).Include("RouteDestinations.RouteTasks")
                                      .SelectMany(r => r.RouteDestinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.ServiceId))).Where(sid => sid != null).Select(sid => sid.Value).ToArray();
 
             var templatesWithDetails = from serviceTemplate in GetServiceTemplatesForServiceProvider(roleId, (int)ServiceTemplateLevel.ServiceDefined).Where(st => serviceTemplateIds.Contains(st.Id))
@@ -96,9 +96,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="vehicleId">(Optional) filter routes that have this vehicle.</param>
         public IQueryable<Route> GetRouteLogForServiceProvider(Guid roleId, Guid employeeId, Guid vehicleId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var routes = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessForRole.Id)
+            var routes = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessAccount.Id)
                           .Include(r => r.Vehicles).Include(r => r.Employees).Include(r => r.RouteDestinations);
 
             if (vehicleId != Guid.Empty)
@@ -176,9 +176,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="destinationId">The destination id.</param>
         public RouteDestination GetRouteDestinationDetails(Guid roleId, Guid destinationId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var routeDestination = ObjectContext.RouteDestinations.Where(rd => rd.RouteTasks.FirstOrDefault().BusinessAccountId == businessForRole.Id && rd.Id == destinationId)
+            var routeDestination = ObjectContext.RouteDestinations.Where(rd => rd.RouteTasks.FirstOrDefault().BusinessAccountId == businessAccount.Id && rd.Id == destinationId)
                 .Include(rd => rd.Client.ContactInfoSet).FirstOrDefault();
 
             return routeDestination;
@@ -223,9 +223,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Query]
         public IQueryable<TaskHolder> GetUnroutedServices(Guid roleId, DateTime serviceDate)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var unroutedServicesForDate = ObjectContext.GetUnroutedServicesForDate(businessForRole.Id, serviceDate);
+            var unroutedServicesForDate = ObjectContext.GetUnroutedServicesForDate(businessAccount.Id, serviceDate);
 
             return unroutedServicesForDate.AsQueryable();
         }
@@ -237,9 +237,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="routeTaskId">The route task id.</param>
         public RouteTask GetRouteTaskDetails(Guid roleId, Guid routeTaskId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var routeTask = ObjectContext.RouteTasks.Where(rt => rt.BusinessAccountId == businessForRole.Id && rt.Id == routeTaskId)
+            var routeTask = ObjectContext.RouteTasks.Where(rt => rt.BusinessAccountId == businessAccount.Id && rt.Id == routeTaskId)
                 .Include(rt => rt.Client).Include(rt => rt.Client.ContactInfoSet).Include(rt => rt.Location).Include(rt => rt.Service).FirstOrDefault();
 
             //Load the ServiceTemplate for the Service

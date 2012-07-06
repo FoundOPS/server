@@ -54,20 +54,20 @@ namespace FoundOPS.API.Controllers
             //Otherwise: return the current user account's Routes (Mobile Application)
             if (roleId.HasValue)
             {
-                loadedRoutes = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId.Value).Include(ba => ba.Routes)
-                    .SelectMany(ba => ba.Routes).Where(r => r.Date == date)
-                    .Include("RouteDestinations").Include("RouteDestinations.Client").Include("RouteDestinations.Location");
+                loadedRoutes = _coreEntitiesContainer.Owner(roleId.Value).Include(ba => ba.Routes)
+                                .SelectMany(ba => ba.Routes).Where(r => r.Date == date)
+                                .Include(r => r.RouteDestinations).Include("RouteDestinations.Client").Include("RouteDestinations.Location");
             }
             else
             {
                 //Finds all LinkedEmployees for the CurrentUserAccount
                 //Finds all Routes (today) associated with those Employees
-                loadedRoutes = AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer)
-                    .SelectMany(cu => cu.LinkedEmployees)
-                    .SelectMany(e => e.Routes).Where(r => r.Date == date)
-                    .Include("RouteDestinations").Include("RouteDestinations.RouteTasks")
-                    .Include("RouteDestinations.Client").Include("RouteDestinations.Client.ContactInfoSet")
-                    .Include("RouteDestinations.Location").Include("RouteDestinations.Location.ContactInfoSet");
+                loadedRoutes = _coreEntitiesContainer.CurrentUserAccount()
+                                .SelectMany(cu => cu.LinkedEmployees)
+                                .SelectMany(e => e.Routes).Where(r => r.Date == date)
+                                .Include(r => r.RouteDestinations).Include("RouteDestinations.RouteTasks")
+                                .Include("RouteDestinations.Client").Include("RouteDestinations.Client.ContactInfoSet")
+                                .Include("RouteDestinations.Location").Include("RouteDestinations.Location.ContactInfoSet");
             }
 
             //Converts the FoundOPS model Routes to the API model Routes
@@ -85,7 +85,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public IQueryable<Location> GetDepots(Guid roleId)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).Include(ba=>ba.Depots)
+            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.Depots)
                 .FirstOrDefault();
 
             if (currentBusinessAccount == null)

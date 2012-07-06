@@ -7,11 +7,6 @@
     {
 #if DEBUG
         /// <summary>
-        /// If set to true it will automatically login an operations manager.
-        /// </summary>
-        public static bool AutomaticLoginOPSManager = false;
-
-        /// <summary>
         /// If set to true it will automatically login a FoundOPS Admin.
         /// </summary>
         public static bool AutomaticLoginFoundOPSAdmin = true;

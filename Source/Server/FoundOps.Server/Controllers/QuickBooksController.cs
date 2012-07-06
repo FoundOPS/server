@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using FoundOps.Core.Tools;
 using FoundOps.Common.Tools;
@@ -22,19 +23,19 @@ namespace FoundOps.Server.Controllers
         /// </returns>
         public bool NeedsAuthorization(Guid roleId)
         {
-            var currentBusinessAccount = CoreEntitiesContainer.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
             //A null BusinessAccount means that it is actually a user account
             //If QuickBooks is disabled on the account
-            if (currentBusinessAccount == null || currentBusinessAccount.QuickBooksEnabled == false)
+            if (businessAccount == null || businessAccount.QuickBooksEnabled == false)
                 return false;
             //Checks for null tokens on a BusinessAccount that has QuickBooks enabled
-            if (currentBusinessAccount.QuickBooksAccessToken == null || currentBusinessAccount.QuickBooksAccessTokenSecret == null)
+            if (businessAccount.QuickBooksAccessToken == null || businessAccount.QuickBooksAccessTokenSecret == null)
                 return true;
 
             //Check validity of tokens
             //If the tokens are invalid return false, else return true
-            return (QuickBooksTools.GetUserInfo(currentBusinessAccount));
+            return (QuickBooksTools.GetUserInfo(businessAccount));
         }
 
         /// <summary>
@@ -67,9 +68,9 @@ namespace FoundOps.Server.Controllers
 
             //Gets the Business Account based on the roleId passed
             var currentRoleId = new Guid(roleId);
-            var currentBusinessAccount = CoreEntitiesContainer.BusinessAccountOwnerOfRole(currentRoleId);
+            var businessAccount = CoreEntitiesContainer.Owner(currentRoleId).First();
 
-            var authUrl = QuickBooksTools.GetAuthorizationUrl(oauthCallbackUrl, roleId, currentBusinessAccount);
+            var authUrl = QuickBooksTools.GetAuthorizationUrl(oauthCallbackUrl, roleId, businessAccount);
 
             CoreEntitiesContainer.SaveChanges();
 
@@ -88,13 +89,13 @@ namespace FoundOps.Server.Controllers
         {
             //Gets the BusinessAccount based on the roleId
             var currentRoleId = new Guid(roleId);
-            var currentBusinessAccount = CoreEntitiesContainer.BusinessAccountOwnerOfRole(currentRoleId);
+            var businessAccount = CoreEntitiesContainer.Owner(currentRoleId).First();
 
             var oauthVerifyer = Request.QueryString["oauth_verifier"];
             var realmid = Request.QueryString["realmId"];
 
             //Creates the QuickBooksSession class based on the information in QuickBooksXml
-            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
+            var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(businessAccount.QuickBooksSessionXml);
 
             //The Id of the QuickBooks Account that is being accessed. Saved for use by API's 
             quickBooksSession.RealmId = realmid;
@@ -103,13 +104,13 @@ namespace FoundOps.Server.Controllers
             quickBooksSession.OAuthVerifier = oauthVerifyer;
 
             //Serializes the QuickBooksSession class back to the database
-            currentBusinessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
+            businessAccount.QuickBooksSessionXml = SerializationTools.Serialize(quickBooksSession);
 
             //Exchanges the RequestToken 
-            QuickBooksTools.GetAccessToken(currentBusinessAccount, CoreEntitiesContainer);
+            QuickBooksTools.GetAccessToken(businessAccount, CoreEntitiesContainer);
 
             //Saves the base url needed for QuickBooks APIs for this user
-            QuickBooksTools.GetBaseUrl(currentBusinessAccount, CoreEntitiesContainer);
+            QuickBooksTools.GetBaseUrl(businessAccount, CoreEntitiesContainer);
 
             return View();
         }

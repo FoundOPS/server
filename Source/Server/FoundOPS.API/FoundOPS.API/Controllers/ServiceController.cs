@@ -37,7 +37,7 @@ namespace FoundOPS.API.Controllers
         {
             //Make sure the user has access to the route task
             //by checking it's Route is available to the current user
-            var routeTaskCheck = (AuthenticationLogic.CurrentUserAccountQueryable(_coreEntitiesContainer).SelectMany(cu => cu.LinkedEmployees)
+            var routeTaskCheck = (_coreEntitiesContainer.CurrentUserAccount().SelectMany(cu => cu.LinkedEmployees)
             .SelectMany(e => e.Routes.SelectMany(r => r.RouteDestinations.Select(rd => rd.RouteTasks.FirstOrDefault(rt => rt.Id == routeTaskId))))).Any();
 
             if (!routeTaskCheck)

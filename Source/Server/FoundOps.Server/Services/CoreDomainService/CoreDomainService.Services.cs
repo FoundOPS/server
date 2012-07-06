@@ -30,10 +30,10 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceId">The service id.</param>
         public Service GetServiceDetailsForRole(Guid roleId, Guid serviceId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
             var service = this.ObjectContext.Services.Include(s => s.Client)
-                .FirstOrDefault(s => s.Id == serviceId && s.ServiceProviderId == businessForRole.Id);
+                .FirstOrDefault(s => s.Id == serviceId && s.ServiceProviderId == businessAccount.Id);
 
             //Load the ServiceTemplate for the Service
             GetServiceTemplateDetailsForRole(roleId, serviceId);
@@ -50,11 +50,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Query(HasSideEffects = true)] //HasSideEffects so a POST is used and a maximum URI length is not thrown
         public IQueryable<Service> GetServicesDetailsForRole(Guid roleId, IEnumerable<Guid> serviceIds)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
-            if (businessForRole == null) return null;
-
-            var servicesForRole = this.ObjectContext.Services.Where(service => service.ServiceProviderId == businessForRole.Id).Where(s => serviceIds.Contains(s.Id));
+            var servicesForRole = this.ObjectContext.Services.Where(service => service.ServiceProviderId == businessAccount.Id).Where(s => serviceIds.Contains(s.Id));
 
             servicesForRole = servicesForRole.Include(s => s.Client).Include(s => s.Client).Include(s => s.RecurringServiceParent)
                 .Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields);
@@ -209,11 +207,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             }
             else
             {
-                var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+                var businessAccount = ObjectContext.Owner(roleId).First();
 
                 //Because there is no other context, assume the context should be the serviceProvider
                 //The businessForRole returns null if the user does not have access to the ServiceProvider
-                serviceProviderContextId = businessForRole.Id;
+                serviceProviderContextId = businessAccount.Id;
             }
 
             //Order by OccurDate and Service Name for UI
@@ -243,9 +241,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="roleId">The role to determine the business account from.</param>
         private IQueryable<RecurringService> RecurringServicesForServiceProviderOptimized(Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.BusinessAccountId == businessForRole.Id);
+            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.BusinessAccountId == businessAccount.Id);
 
             return recurringServices.OrderBy(rs => rs.ClientId);
         }

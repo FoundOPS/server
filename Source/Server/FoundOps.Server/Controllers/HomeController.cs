@@ -15,7 +15,7 @@ namespace FoundOps.Server.Controllers
         public ActionResult Index()
         {
 #if DEBUG
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
+            if (ServerConstants.AutomaticLoginFoundOPSAdmin)
                 return RedirectToAction("Silverlight", "Home");
 #endif
 

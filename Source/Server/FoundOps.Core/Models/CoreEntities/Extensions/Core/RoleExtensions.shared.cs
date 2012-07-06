@@ -12,7 +12,8 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         Administrator = 0,
         Custom = 1,
-        Mobile = 2
+        Mobile = 2,
+        Regular = 3
     }
 
     public partial class Role : IEntityDefaultCreation

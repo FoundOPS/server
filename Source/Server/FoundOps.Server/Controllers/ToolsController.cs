@@ -1,49 +1,31 @@
-﻿using System;
+﻿using FoundOps.Core.Models.CoreEntities;
 using System.Web.Mvc;
-using FoundOps.Core.Models;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Server.Controllers
 {
 #if DEBUG
     public class ToolsController : Controller
     {
-
         /// <summary>
         /// Clear, create database, and populate design data.
         /// </summary>
         /// <returns></returns>
         public ActionResult CCDAPDD()
         {
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
-            {
-                CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
-                return View();
-            }
-
-            throw new Exception("Invalid attempted access logged for investigation.");
+            CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
+            return View();
         }
 
         public ActionResult ClearHistoricalTrackPoints()
         {
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
-            {
-                CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
-                return View();
-            }
-
-            throw new Exception("Invalid attempted access logged for investigation.");
+            CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
+            return View();
         }
 
         public ActionResult CreateHistoricalTrackPoints()
         {
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin || ServerConstants.AutomaticLoginOPSManager)
-            {
-                CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
-                return View();
-            }
-
-            throw new Exception("Invalid attempted access logged for investigation.");
+            CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
+            return View();
         }
     }
 #endif
