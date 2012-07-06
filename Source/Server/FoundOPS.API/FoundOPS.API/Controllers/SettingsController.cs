@@ -260,7 +260,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public BusinessSettings GetBusinessSettings(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(u => u.PartyImage).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
@@ -280,7 +280,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateBusinessSettings(Guid roleId, BusinessSettings settings)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(u => u.PartyImage).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
