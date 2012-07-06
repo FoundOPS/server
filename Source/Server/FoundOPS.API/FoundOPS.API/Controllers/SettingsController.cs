@@ -260,7 +260,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public BusinessSettings GetBusinessSettings(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(u => u.PartyImage).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
