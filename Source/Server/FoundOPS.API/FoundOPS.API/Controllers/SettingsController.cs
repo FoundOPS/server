@@ -280,7 +280,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateBusinessSettings(Guid roleId, BusinessSettings settings)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(u => u.PartyImage).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
