@@ -327,14 +327,10 @@ namespace FoundOPS.API.Controllers
         /// <returns>The image url, expiring in 3 hours</returns>
         private async Task<string> UpdatePartyImageHelper(Party partyToUpdate)
         {
-            var formData = await Request.ReadMultipartAsync(new[] { "imageFileName", "imageData", "x", "y", "w", "h" });
+            var formData = await Request.ReadMultipartAsync(new[] { "imageFileName", "imageData"});
 
             var imageFileName = await formData["imageFileName"].ReadAsStringAsync();
             var imageDataString = await formData["imageData"].ReadAsStringAsync();
-            var x = Convert.ToInt32(await formData["x"].ReadAsStringAsync());
-            var y = Convert.ToInt32(await formData["y"].ReadAsStringAsync());
-            var w = Convert.ToInt32(await formData["w"].ReadAsStringAsync());
-            var h = Convert.ToInt32(await formData["h"].ReadAsStringAsync());
 
             if (string.IsNullOrEmpty(imageFileName))
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "imageFileName was not set"));
@@ -353,10 +349,6 @@ namespace FoundOPS.API.Controllers
             string[] allowedExtensions = { ".png", ".jpeg", ".jpg", ".gif" };
             if (!allowedExtensions.Contains(extension))
                 throw new Exception("Cannot process files of this type.");
-
-            //If the user selected a crop area, crop the image
-            if (w != 0 && h != 0)
-                imageBytes = ImageTools.CropImage(imageBytes, extension, x, y, w, h);
 
             blob.UploadByteArray(imageBytes);
 
