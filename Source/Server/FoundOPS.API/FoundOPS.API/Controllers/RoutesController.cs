@@ -85,8 +85,7 @@ namespace FoundOPS.API.Controllers
         [AcceptVerbs("GET", "POST")]
         public IQueryable<Location> GetDepots(Guid roleId)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.Depots)
-                .FirstOrDefault();
+            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.Depots).FirstOrDefault();
 
             if (currentBusinessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();

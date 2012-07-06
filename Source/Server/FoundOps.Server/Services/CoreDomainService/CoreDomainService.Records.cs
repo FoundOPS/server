@@ -716,7 +716,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var party = ObjectContext.Owner<Party>(roleId).First();
 
             return ObjectContext.VehicleMaintenanceLog.Where(vm => vm.Vehicle.OwnerPartyId == party.Id)
-                .Include(vml => vml.LineItems).OrderBy(vm => vm.Date);
+                   .Include(vml => vml.LineItems).OrderBy(vm => vm.Date);
         }
 
         public void InsertVehicleMaintenanceLogEntry(VehicleMaintenanceLogEntry vehicle)
