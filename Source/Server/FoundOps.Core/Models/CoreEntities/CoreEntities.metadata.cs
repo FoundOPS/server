@@ -398,6 +398,9 @@ namespace FoundOps.Core.Models.CoreEntities
             public Location Location { get; set; }
 
             [Include]
+            public TaskStatus TaskStatus { get; set; }
+
+            [Include]
             public Service Service { get; set; }
         }
     }

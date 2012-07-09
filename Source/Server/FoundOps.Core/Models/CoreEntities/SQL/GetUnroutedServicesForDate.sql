@@ -484,7 +484,7 @@ BEGIN
 		BusinessAccountId = @serviceProviderIdContext,
 		EstimatedDuration = '0:0:16.00',
 		OrderInRouteDestination = 0,
-		TaskStatusId = (SELECT TOP 1 Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @serviceProviderIdContext),
+		TaskStatusId = (SELECT TOP 1 Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @serviceProviderIdContext AND DefaultTypeInt = 1),
 		StatusInt = 0
 
 	INSERT INTO dbo.RouteTasks
@@ -497,6 +497,8 @@ BEGIN
 	ON dbo.Locations.RegionId = dbo.Regions.Id
 	LEFT JOIN dbo.Clients
 	ON dbo.RouteTasks.ClientId = dbo.Clients.Id  
+	LEFT JOIN dbo.TaskStatuses
+	ON dbo.RouteTasks.TaskStatusId = dbo.TaskStatuses.Id
 	WHERE dbo.RouteTasks.BusinessAccountId = @serviceProviderIdContext AND [Date] = @serviceDate AND RouteDestinationId IS NULL 
 
 	DROP TABLE #ServicesTableToReturn

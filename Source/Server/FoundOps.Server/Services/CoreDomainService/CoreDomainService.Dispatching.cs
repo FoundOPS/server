@@ -245,7 +245,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
                 //Dapper will then map the output table to RouteTasks, RouteTasks.Location, RouteTasks.Location.Region and RouteTasks.Client
                 //While that is being mapped we also attach the Client, Location and Region to the objectContext
-                var data = conn.Query<RouteTask, Location, Region, Client, RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client) =>
+                var data = conn.Query<RouteTask, Location, Region, Client, TaskStatus, RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
                 {
                     this.ObjectContext.DetachExistingAndAttach(location);
                     routeTask.Location = location;
@@ -255,6 +255,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                     this.ObjectContext.DetachExistingAndAttach(client);
                     routeTask.Client = client;
+
+                    this.ObjectContext.DetachExistingAndAttach(taskStatus);
+                    routeTask.TaskStatus = taskStatus;
 
                     return routeTask;
                 }, parameters, commandType: CommandType.StoredProcedure);
