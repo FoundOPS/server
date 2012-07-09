@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/16/2012 09:53:31
+-- Date Created: 07/05/2012 12:31:22
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -102,6 +102,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_PartyRole_Role]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PartyRole] DROP CONSTRAINT [FK_PartyRole_Role];
 GO
+IF OBJECT_ID(N'[dbo].[FK_PartyRole1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Roles] DROP CONSTRAINT [FK_PartyRole1];
+GO
 IF OBJECT_ID(N'[dbo].[FK_RegionLocation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_RegionLocation];
 GO
@@ -119,6 +122,9 @@ IF OBJECT_ID(N'[dbo].[FK_EmployeeUserAccount]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_EmployeeBusinessAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeBusinessAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EmployeePerson]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeePerson];
 GO
 IF OBJECT_ID(N'[dbo].[FK_RecurringServiceRepeat]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RecurringServices] DROP CONSTRAINT [FK_RecurringServiceRepeat];
@@ -189,14 +195,23 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Employee]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteEmployee] DROP CONSTRAINT [FK_RouteEmployee_Employee];
 GO
-IF OBJECT_ID(N'[dbo].[FK_RoleBusinessAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Roles] DROP CONSTRAINT [FK_RoleBusinessAccount];
+IF OBJECT_ID(N'[dbo].[FK_TaskStatusBusinessAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TaskStatuses] DROP CONSTRAINT [FK_TaskStatusBusinessAccount];
 GO
-IF OBJECT_ID(N'[dbo].[FK_BusinessAccount_inherits_Party]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_BusinessAccount] DROP CONSTRAINT [FK_BusinessAccount_inherits_Party];
+IF OBJECT_ID(N'[dbo].[FK_TaskStatusRouteTask]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_TaskStatusRouteTask];
 GO
-IF OBJECT_ID(N'[dbo].[FK_UserAccount_inherits_Party]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_UserAccount] DROP CONSTRAINT [FK_UserAccount_inherits_Party];
+IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccount_inherits_Business]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_BusinessAccount] DROP CONSTRAINT [FK_BusinessAccount_inherits_Business];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Person_inherits_Party]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_Person] DROP CONSTRAINT [FK_Person_inherits_Party];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserAccount_inherits_Person]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_UserAccount] DROP CONSTRAINT [FK_UserAccount_inherits_Person];
 GO
 IF OBJECT_ID(N'[dbo].[FK_OptionsField_inherits_Field]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fields_OptionsField] DROP CONSTRAINT [FK_OptionsField_inherits_Field];
@@ -311,8 +326,17 @@ GO
 IF OBJECT_ID(N'[dbo].[ServiceTemplateWithVendorIds]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ServiceTemplateWithVendorIds];
 GO
+IF OBJECT_ID(N'[dbo].[TaskStatuses]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TaskStatuses];
+GO
+IF OBJECT_ID(N'[dbo].[Parties_Business]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Parties_Business];
+GO
 IF OBJECT_ID(N'[dbo].[Parties_BusinessAccount]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_BusinessAccount];
+GO
+IF OBJECT_ID(N'[dbo].[Parties_Person]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Parties_Person];
 GO
 IF OBJECT_ID(N'[dbo].[Parties_UserAccount]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_UserAccount];
@@ -359,12 +383,11 @@ GO
 CREATE TABLE [dbo].[Blocks] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [Color] nvarchar(max)  NOT NULL,
-    [HideFromNavigation] bit  NOT NULL,
-    [IconUrl] nvarchar(max)  NULL,
-    [HoverIconUrl] nvarchar(max)  NULL,
-    [Url] nvarchar(max)  NULL,
-    [IsSilverlight] bit  NULL
+    [NavigateUri] nvarchar(max)  NOT NULL,
+    [Icon] varbinary(max)  NULL,
+    [Link] nvarchar(max)  NOT NULL,
+    [LoginNotRequired] bit  NOT NULL,
+    [HideFromNavigation] bit  NOT NULL
 );
 GO
 
@@ -373,8 +396,8 @@ CREATE TABLE [dbo].[Roles] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NULL,
     [Description] nvarchar(max)  NULL,
-    [RoleTypeInt] smallint  NOT NULL,
-    [OwnerBusinessAccountId] uniqueidentifier  NULL
+    [OwnerPartyId] uniqueidentifier  NULL,
+    [RoleTypeInt] smallint  NOT NULL
 );
 GO
 
@@ -410,6 +433,7 @@ GO
 CREATE TABLE [dbo].[Fields] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
+    [Group] nvarchar(max)  NOT NULL,
     [Required] bit  NOT NULL,
     [Tooltip] nvarchar(max)  NULL,
     [ParentFieldId] uniqueidentifier  NULL,
@@ -587,11 +611,6 @@ GO
 -- Creating table 'Employees'
 CREATE TABLE [dbo].[Employees] (
     [Id] uniqueidentifier  NOT NULL,
-    [FirstName] nvarchar(max)  NULL,
-    [LastName] nvarchar(max)  NULL,
-    [MiddleInitial] nvarchar(max)  NULL,
-    [GenderInt] smallint  NULL,
-    [DateOfBirth] datetime  NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [AddressLineTwo] nvarchar(max)  NULL,
     [City] nvarchar(max)  NULL,
@@ -687,7 +706,8 @@ CREATE TABLE [dbo].[RouteTasks] (
     [Date] datetime  NOT NULL,
     [OrderInRouteDestination] int  NOT NULL,
     [RecurringServiceId] uniqueidentifier  NULL,
-    [DelayedChildId] uniqueidentifier  NULL
+    [DelayedChildId] uniqueidentifier  NULL,
+    [TaskStatusId] uniqueidentifier  NULL
 );
 GO
 
@@ -709,6 +729,24 @@ CREATE TABLE [dbo].[ServiceTemplateWithVendorIds] (
 );
 GO
 
+-- Creating table 'TaskStatuses'
+CREATE TABLE [dbo].[TaskStatuses] (
+    [Id] uniqueidentifier  NOT NULL,
+    [Color] nvarchar(max)  NULL,
+    [Name] nvarchar(max)  NULL,
+    [DefaultTypeInt] int  NULL,
+    [RouteRequired] bit  NOT NULL,
+    [BusinessAccountId] uniqueidentifier  NULL
+);
+GO
+
+-- Creating table 'Parties_Business'
+CREATE TABLE [dbo].[Parties_Business] (
+    [Name] nvarchar(max)  NULL,
+    [Id] uniqueidentifier  NOT NULL
+);
+GO
+
 -- Creating table 'Parties_BusinessAccount'
 CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [QuickBooksEnabled] bit  NOT NULL,
@@ -717,7 +755,17 @@ CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [RouteManifestSettings] nvarchar(max)  NULL,
     [QuickBooksSessionXml] nvarchar(max)  NULL,
     [MaxRoutes] int  NOT NULL,
-    [Name] nvarchar(max)  NULL,
+    [Id] uniqueidentifier  NOT NULL
+);
+GO
+
+-- Creating table 'Parties_Person'
+CREATE TABLE [dbo].[Parties_Person] (
+    [FirstName] nvarchar(max)  NULL,
+    [LastName] nvarchar(max)  NULL,
+    [MiddleInitial] nvarchar(max)  NULL,
+    [GenderInt] smallint  NULL,
+    [DateOfBirth] datetime  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -728,11 +776,6 @@ CREATE TABLE [dbo].[Parties_UserAccount] (
     [EmailAddress] nvarchar(max)  NOT NULL,
     [LastActivity] datetime  NULL,
     [CreationDate] datetime  NOT NULL,
-    [FirstName] nvarchar(max)  NULL,
-    [LastName] nvarchar(max)  NULL,
-    [MiddleInitial] nvarchar(max)  NULL,
-    [GenderInt] smallint  NULL,
-    [DateOfBirth] datetime  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -1000,9 +1043,27 @@ ADD CONSTRAINT [PK_ServiceTemplateWithVendorIds]
     PRIMARY KEY CLUSTERED ([ServiceTemplateId], [BusinessAccountId] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'TaskStatuses'
+ALTER TABLE [dbo].[TaskStatuses]
+ADD CONSTRAINT [PK_TaskStatuses]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Parties_Business'
+ALTER TABLE [dbo].[Parties_Business]
+ADD CONSTRAINT [PK_Parties_Business]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- Creating primary key on [Id] in table 'Parties_BusinessAccount'
 ALTER TABLE [dbo].[Parties_BusinessAccount]
 ADD CONSTRAINT [PK_Parties_BusinessAccount]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Parties_Person'
+ALTER TABLE [dbo].[Parties_Person]
+ADD CONSTRAINT [PK_Parties_Person]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1458,6 +1519,20 @@ ON [dbo].[PartyRole]
     ([RoleMembership_Id]);
 GO
 
+-- Creating foreign key on [OwnerPartyId] in table 'Roles'
+ALTER TABLE [dbo].[Roles]
+ADD CONSTRAINT [FK_PartyRole1]
+    FOREIGN KEY ([OwnerPartyId])
+    REFERENCES [dbo].[Parties]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PartyRole1'
+CREATE INDEX [IX_FK_PartyRole1]
+ON [dbo].[Roles]
+    ([OwnerPartyId]);
+GO
+
 -- Creating foreign key on [RegionId] in table 'Locations'
 ALTER TABLE [dbo].[Locations]
 ADD CONSTRAINT [FK_RegionLocation]
@@ -1541,6 +1616,15 @@ ADD CONSTRAINT [FK_EmployeeBusinessAccount]
 CREATE INDEX [IX_FK_EmployeeBusinessAccount]
 ON [dbo].[Employees]
     ([EmployerId]);
+GO
+
+-- Creating foreign key on [Id] in table 'Employees'
+ALTER TABLE [dbo].[Employees]
+ADD CONSTRAINT [FK_EmployeePerson]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Parties_Person]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'RecurringServices'
@@ -1850,23 +1934,55 @@ ON [dbo].[RouteEmployee]
     ([Employees_Id]);
 GO
 
--- Creating foreign key on [OwnerBusinessAccountId] in table 'Roles'
-ALTER TABLE [dbo].[Roles]
-ADD CONSTRAINT [FK_RoleBusinessAccount]
-    FOREIGN KEY ([OwnerBusinessAccountId])
+-- Creating foreign key on [BusinessAccountId] in table 'TaskStatuses'
+ALTER TABLE [dbo].[TaskStatuses]
+ADD CONSTRAINT [FK_TaskStatusBusinessAccount]
+    FOREIGN KEY ([BusinessAccountId])
     REFERENCES [dbo].[Parties_BusinessAccount]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- Creating non-clustered index for FOREIGN KEY 'FK_RoleBusinessAccount'
-CREATE INDEX [IX_FK_RoleBusinessAccount]
-ON [dbo].[Roles]
-    ([OwnerBusinessAccountId]);
+-- Creating non-clustered index for FOREIGN KEY 'FK_TaskStatusBusinessAccount'
+CREATE INDEX [IX_FK_TaskStatusBusinessAccount]
+ON [dbo].[TaskStatuses]
+    ([BusinessAccountId]);
+GO
+
+-- Creating foreign key on [TaskStatusId] in table 'RouteTasks'
+ALTER TABLE [dbo].[RouteTasks]
+ADD CONSTRAINT [FK_TaskStatusRouteTask]
+    FOREIGN KEY ([TaskStatusId])
+    REFERENCES [dbo].[TaskStatuses]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TaskStatusRouteTask'
+CREATE INDEX [IX_FK_TaskStatusRouteTask]
+ON [dbo].[RouteTasks]
+    ([TaskStatusId]);
+GO
+
+-- Creating foreign key on [Id] in table 'Parties_Business'
+ALTER TABLE [dbo].[Parties_Business]
+ADD CONSTRAINT [FK_Business_inherits_Party]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Parties]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'
 ALTER TABLE [dbo].[Parties_BusinessAccount]
-ADD CONSTRAINT [FK_BusinessAccount_inherits_Party]
+ADD CONSTRAINT [FK_BusinessAccount_inherits_Business]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Parties_Business]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'Parties_Person'
+ALTER TABLE [dbo].[Parties_Person]
+ADD CONSTRAINT [FK_Person_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
@@ -1875,9 +1991,9 @@ GO
 
 -- Creating foreign key on [Id] in table 'Parties_UserAccount'
 ALTER TABLE [dbo].[Parties_UserAccount]
-ADD CONSTRAINT [FK_UserAccount_inherits_Party]
+ADD CONSTRAINT [FK_UserAccount_inherits_Person]
     FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties]
+    REFERENCES [dbo].[Parties_Person]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
@@ -2023,20 +2139,18 @@ CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 	BEGIN
 
 	DELETE FROM ContactInfoSet
-	WHERE	PartyId = @providerId
+	WHERE		PartyId = @providerId
 
 	DELETE FROM Roles
-	WHERE	OwnerBusinessAccountId = @providerId
+	WHERE		OwnerPartyId = @providerId
 
 	DELETE FROM Vehicles 
-	WHERE	OwnerPartyId = @providerId
+	WHERE		OwnerPartyId = @providerId
 
 	DELETE FROM Files
-	WHERE	PartyId = @providerId
+	WHERE		PartyId = @providerId
 
-	DELETE FROM dbo.Parties
-	WHERE	Id = @providerId
-	
+
 	END
 	RETURN
 
@@ -2061,7 +2175,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	BEGIN
 
 	DELETE FROM RouteEmployee
-	WHERE Routes_Id IN
+	WHERE EXISTS
 	(
 		SELECT Id
 		FROM Routes
@@ -2069,12 +2183,15 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	)
 
 	DELETE FROM RouteVehicle
-	WHERE Routes_Id IN
+	WHERE EXISTS
 	(
 		SELECT Id
 		FROM Routes
 		WHERE OwnerBusinessAccountId = @providerId
 	)
+
+	DELETE FROM Locations
+	WHERE BusinessAccountIdIfDepot = @providerId
 
 	DELETE FROM Routes
 	WHERE OwnerBusinessAccountId = @providerId
@@ -2085,72 +2202,67 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DELETE FROM Services
 	WHERE ServiceProviderId = @providerId
 
-	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = @providerId, @ownerClientId = NULL
-    
-	BEGIN    --Delete Clients for ServiceProvider
-		
-		DECLARE @ClientId uniqueidentifier
+	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = @providerId, @ownerClientId = null
+-------------------------------------------------------------------------------------------------------------------------
+--Delete Clients for ServiceProvider
+-------------------------------------------------------------------------------------------------------------------------	
+	DECLARE @ClientId uniqueidentifier
 
-		DECLARE @ClientIdsForServiceProvider TABLE
-		(
-			ClientId uniqueidentifier
-		)
+	DECLARE @ClientIdsForServiceProvider TABLE
+	(
+		ClientId uniqueidentifier
+	)
 
-		--Finds all Clients that are associated with the BusinessAccount
-		INSERT INTO @ClientIdsForServiceProvider
-		SELECT Id FROM Clients
-		WHERE	BusinessAccountId = @providerId
+	--Finds all Clients that are associated with the BusinessAccount
+	INSERT INTO @ClientIdsForServiceProvider
+	SELECT Id FROM Clients
+	WHERE	BusinessAccountId = @providerId
 
-		DECLARE @ClientRowCount int
-		SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
+	DECLARE @ClientRowCount int
+	SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
 
-		--Iterates through @ClientIdsForServiceProvider and calls DeleteClientBasedOnId on each
-		WHILE @ClientRowCount > 0
-		BEGIN
-				SET @ClientId = (SELECT MIN(ClientId) FROM @ClientIdsForServiceProvider)
+	--Iterates through @ClientIdsForServiceProvider and calls DeleteClientBasedOnId on each
+	WHILE @ClientRowCount > 0
+	BEGIN
+			SET @ClientId = (SELECT MIN(ClientId) FROM @ClientIdsForServiceProvider)
 
-				EXEC dbo.DeleteClientBasedOnId @clientId = @ClientId
+			EXEC dbo.DeleteClientBasedOnId @clientId = @ClientId
 
-				DELETE FROM @ClientIdsForServiceProvider
-				WHERE ClientId = @ClientId
+			DELETE FROM @ClientIdsForServiceProvider
+			WHERE ClientId = @ClientId
 
-				SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
-		END
-
+			SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
 	END
+-------------------------------------------------------------------------------------------------------------------------
+--Delete Locations for ServiceProvider
+-------------------------------------------------------------------------------------------------------------------------	
+	DECLARE @LocationId uniqueidentifier
 
-	BEGIN    --Delete Locations for ServiceProvider
-		
-		DECLARE @LocationId uniqueidentifier
+	DECLARE @LocationIdsForServiceProvider TABLE
+	(
+		LocationId uniqueidentifier
+	)
 
-		DECLARE @LocationIdsForServiceProvider TABLE
-		(
-			LocationId uniqueidentifier
-		)
+	--Finds all Locations that are associated with the BusinessAccount
+	INSERT INTO @LocationIdsForServiceProvider
+	SELECT Id FROM Locations
+	WHERE	BusinessAccountId = @providerId OR BusinessAccountIdIfDepot = @providerId
 
-		--Finds all Locations that are associated with the BusinessAccount
-		INSERT INTO @LocationIdsForServiceProvider
-		SELECT Id FROM Locations
-		WHERE	BusinessAccountId = @providerId OR BusinessAccountIdIfDepot = @providerId
+	DECLARE @LocationRowCount int
+	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
 
-		DECLARE @LocationRowCount int
-		SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+	--Iterates through @LocationIdsForServiceProvider and calls DeleteLocationBasedOnId on each
+	WHILE @LocationRowCount > 0
+	BEGIN
+			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
 
-		--Iterates through @LocationIdsForServiceProvider and calls DeleteLocationBasedOnId on each
-		WHILE @LocationRowCount > 0
-		BEGIN
-				SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
+			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationId
 
-				EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationId
+			DELETE FROM @LocationIdsForServiceProvider
+			WHERE LocationId = @LocationId
 
-				DELETE FROM @LocationIdsForServiceProvider
-				WHERE LocationId = @LocationId
-
-				SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
-		END
-        
+			SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
 	END
-    
 -------------------------------------------------------------------------------------------------------------------------
 
 	DELETE FROM Regions
@@ -2159,18 +2271,17 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DELETE FROM ContactInfoSet
 	WHERE		PartyId = @providerId
 
+	DELETE FROM Roles
+	WHERE		OwnerPartyId = @providerId
+
+	DELETE FROM Vehicles 
+	WHERE		OwnerPartyId = @providerId
+
+	DELETE FROM Files
+	WHERE		PartyId = @providerId
+
 	DELETE FROM Employees
 	WHERE EmployerId = @providerId
-
--------------------------------------------------------------------------------------------------------------------------
---Delete all off of Parties
--------------------------------------------------------------------------------------------------------------------------
-
-	EXECUTE [dbo].[DeleteBasicPartyBasedOnId] @providerId
-
--------------------------------------------------------------------------------------------------------------------------
---Delete the BusinessAccount itself
--------------------------------------------------------------------------------------------------------------------------
 	
 	DELETE FROM Parties_BusinessAccount
 	WHERE Id = @providerId
@@ -2203,9 +2314,6 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	BEGIN
 
 	DELETE FROM RouteDestinations
-	WHERE ClientId = @clientId
-	
-	DELETE FROM RouteTasks
 	WHERE ClientId = @clientId
 
 	DELETE FROM Services
@@ -2659,8 +2767,21 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	AS
 	BEGIN
 
-	EXECUTE [dbo].[DeleteBasicPartyBasedOnId] @providerId
-	
+	DELETE FROM ContactInfoSet
+	WHERE		PartyId = @providerId
+
+	DELETE FROM Roles
+	WHERE		OwnerPartyId = @providerId
+
+	DELETE FROM Vehicles 
+	WHERE		OwnerPartyId = @providerId
+
+	DELETE FROM Files
+	WHERE		PartyId = @providerId
+
+	DELETE FROM UserAccountLog
+	WHERE UserAccountId = @providerId
+
 	DELETE FROM Parties_UserAccount
 	WHERE Id = @providerId
 
@@ -3249,7 +3370,7 @@ BEGIN
 
 	--Fill in the Employee Name based on the Id
 	UPDATE @EmployeesForRoutesForDate
-	SET EmployeeName = (SELECT FirstName + ' ' + LastName FROM Employees WHERE Id = EmployeeId)
+	SET EmployeeName = (SELECT FirstName + ' ' + LastName FROM Parties_Person WHERE Id = EmployeeId)
 	FROM @EmployeesForRoutesForDate
 
 
@@ -4131,15 +4252,16 @@ END
 
 GO
 
+USE [Core]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_GetUnroutedServicesForDate]    Script Date: 7/5/2012 2:15:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-Use Core
-GO
-IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
-DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
-GO
+--IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
+--DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
+--GO
 /*****************************************************************************************************************************************************************************************************************************
 * FUNCTION GetUnroutedServicesForDate will take the context provided and find all the services that are scheduled for that day
 ** Input Parameters **
@@ -4152,25 +4274,9 @@ GO
 * {GUID}			|           | 1/1/2012 <-- Existing service				| Direct	  |	GotGrease?		| {GUID}	| North		 | GotGrease?	   | {GUID} 	| 6789 Help Ln	| 43.265	| -89.254	| 2	
 * {GUID}			| {GUID}	| 1/2/2012 <-- Existing service w/ RS parent| Regular     | AB Couriers		| {GUID}	| West		 | AB Couriers	   | {GUID}		| 4953 Joe Way	| 44.165	| -79.365	| 4	
 ****************************************************************************************************************************************************************************************************************************/
-CREATE FUNCTION [dbo].[GetUnroutedServicesForDate]
+CREATE PROCEDURE [dbo].[sp_GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
 @serviceDate date)
-RETURNS @ServicesTableToReturn TABLE
-	(
-		RecurringServiceId uniqueidentifier,
-		ServiceId uniqueidentifier,
-		OccurDate date,
-		ServiceName nvarchar(max),
-		ClientName nvarchar(max),
-		ClientId uniqueidentifier,
-		RegionName nvarchar(max),
-		LocationName nvarchar(max),
-		LocationId uniqueidentifier,
-		AddressLine nvarchar(max),
-		Latitude decimal(18,8),
-		Longitude decimal(18,8),
-		StatusInt int
-	) 
 AS
 BEGIN
 
@@ -4341,32 +4447,12 @@ BEGIN
 									)
 								)
 							)
-	----If a Service from a previous day has already been routed for the given ServiceDate, add it to @PreRoutedServices
-	----This will cause it to not be included in the final output
-	--INSERT INTO @PreRoutedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
-	--SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name
-	--FROM	RouteTasks t1
-	--WHERE	EXISTS
-	--		(
-	--			SELECT	* 
-	--			FROM	RouteDestinations t2 
-	--			WHERE	EXISTS 
-	--					(
-	--						SELECT	* 
-	--						FROM	Routes t3 
-	--						WHERE	t3.Id = t2.RouteId 
-	--								AND t3.Date = @serviceDate
-	--					) 
-	--					AND t2.Id = t1.RouteDestinationId
-	--		) 
-	--		AND t1.BusinessAccountId = @serviceProviderIdContext
-	--		AND t1.DelayedChildId IS NULL
-			 
-	----Add all RouteTasks that were put on hold in the past into the table to be returned
-	--INSERT INTO @serviceForDayTable (RecurringServiceId, ServiceId, OccurDate, ServiceName)
-	--SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name 
-	--FROM	RouteTasks t1
-	--WHERE	t1.Date < @serviceDate AND t1.StatusInt = 4 AND t1.BusinessAccountId = @serviceProviderIdContext AND t1.DelayedChildId IS NULL							
+						
+	
+	INSERT INTO @PreRoutedServices
+	SELECT RecurringServiceId, ServiceId, [Date], Name
+	FROM dbo.RouteTasks
+	WHERE Date = @serviceDate AND BusinessAccountId = @serviceProviderIdContext AND RouteDestinationId IS NULL
 
 	DECLARE @UnroutedOrUncompletedServices TABLE
 	(
@@ -4374,29 +4460,14 @@ BEGIN
 		ServiceId uniqueidentifier,
 		OccurDate date,
 		ServiceName nvarchar(max),
-		ClientName nvarchar(max),
 		ClientId uniqueidentifier,
-		LocationId uniqueidentifier,
-		RegionName nvarchar(max),
-		LocationName nvarchar(max),
-		AddressLine nvarchar(max),
-		Latitude float,
-		Longitude float,
-		StatusInt int--,
-		--DelayedParentId uniqueidentifier
+		LocationId UNIQUEIDENTIFIER
 	) 
 
-	INSERT INTO @UnroutedOrUncompletedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
+	INSERT INTO @UnroutedOrUncompletedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName) 
 	SELECT * FROM @serviceForDayTable
 	EXCEPT
 	SELECT * FROM @PreRoutedServices
-
-	--UPDATE @UnroutedOrUncompletedServices
-	--SET DelayedParentId =	(
-	--							SELECT	t1.Id
-	--							FROM	RouteTasks t1, @UnroutedOrUncompletedServices
-	--							WHERE	DelayedChildId = 
-	--						)
 
 	UPDATE @UnroutedOrUncompletedServices
 	SET LocationId =	(
@@ -4411,56 +4482,6 @@ BEGIN
 								AND LocationFieldTypeInt = 0
 							)
 						)
-
-	UPDATE @UnroutedOrUncompletedServices
-	SET RegionName =	(
-							SELECT	DISTINCT Name
-							FROM	Regions t1
-							WHERE	EXISTS
-							(
-								SELECT	RegionId
-								FROM	Locations t2
-								WHERE	t2.RegionId = t1.Id 
-								AND		LocationId = t2.Id
-							)
-						)
-
-
-	UPDATE	@UnroutedOrUncompletedServices
-	SET		AddressLine = t1.AddressLineOne, 
-			LocationName = t1.Name,
-			LocationId = t1.Id,
-			Latitude = t1.Latitude, 
-			Longitude = t1.Longitude
-	FROM	Locations t1
-	WHERE	t1.Id = LocationId
-
-	UPDATE	@UnroutedOrUncompletedServices
-	SET		ClientName =	(
-							SELECT DISTINCT t1.Name
-							FROM	dbo.Clients t1
-							WHERE	t1.Id IN 
-							(
-								SELECT  t2.ClientId
-								FROM	RecurringServices t2
-								WHERE	RecurringServiceId = t2.Id 
-								AND		t2.ClientId = t1.Id
-							)
-							)
-
-	UPDATE	@UnroutedOrUncompletedServices
-	SET		ClientName =	(
-							SELECT DISTINCT  t1.Name
-							FROM	dbo.Clients t1
-							WHERE	t1.Id IN 
-							(
-								SELECT  t2.ClientId
-								FROM	Services t2
-								WHERE	ServiceId = t2.Id 
-								AND		t2.ClientId = t1.Id
-							)
-							)
-	WHERE ClientName IS NULL							
 
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientId =		(
@@ -4477,31 +4498,21 @@ BEGIN
 							)
 	WHERE ClientId IS NULL
 
-	UPDATE	@UnroutedOrUncompletedServices
-	SET		StatusInt =		1
-	WHERE StatusInt IS NULL
-
 	DECLARE @ServicesForDateTable TABLE
-		(
-			RecurringServiceId uniqueidentifier,
-			ServiceId uniqueidentifier,
-			OccurDate date,
-			ServiceName nvarchar(max),
-			ClientName nvarchar(max),
-			ClientId uniqueidentifier,
-			RegionName nvarchar(max),
-			LocationName nvarchar(max),
-			LocationId uniqueidentifier,
-			AddressLine nvarchar(max),
-			Latitude decimal(18,8),
-			Longitude decimal(18,8),
-			StatusInt int
-		) 
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max),
+		ClientId uniqueidentifier,
+		LocationId UNIQUEIDENTIFIER
+	) 
 
 	--This will be a complete table of all services that should have been scheduled for the date provided
 	--This does not take into account dates that have been excluded
-	INSERT @ServicesForDateTable (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt)
-	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt FROM @UnroutedOrUncompletedServices
+	INSERT @ServicesForDateTable (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientId, LocationId)
+	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientId, LocationId
+	FROM @UnroutedOrUncompletedServices
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Now that we have all the services that would have been on the date provided, we will take ExcludedDates into account
@@ -4568,35 +4579,100 @@ BEGIN
 
 	--Table that will hold all information about Services that have been excluded
 	DECLARE @SevicesThatHaveBeenExcluded TABLE
-		(
-			RecurringServiceId uniqueidentifier,
-			ServiceId uniqueidentifier,
-			OccurDate date,
-			ServiceName nvarchar(max),
-			ClientName nvarchar(max),
-			ClientId uniqueidentifier,
-			RegionName nvarchar(max),
-			LocationName nvarchar(max),
-			LocationId uniqueidentifier,
-			AddressLine nvarchar(max),
-			Latitude decimal(18,8),
-			Longitude decimal(18,8),
-			StatusInt int
-		) 
+	(
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max),
+		ClientId uniqueidentifier,
+		LocationId UNIQUEIDENTIFIER
+	) 
 
 	--Find all ExcludedServices from @ServicesForDateTable
 	INSERT INTO @SevicesThatHaveBeenExcluded
 	SELECT t1.* FROM @ServicesForDateTable t1, @RecurringServicesWithExcludedDatesSplit t2
 	WHERE t1.RecurringServiceId = t2.Id AND t1.OccurDate = t2.ExcludedDate
 
+	CREATE TABLE #ServicesTableToReturn
+	(
+		Id UNIQUEIDENTIFIER,
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max),
+		ClientId uniqueidentifier,
+		LocationId UNIQUEIDENTIFIER
+	) 
+
 	--Add all services that have not been excluded to the output table
-	INSERT INTO @ServicesTableToReturn
+	INSERT INTO #ServicesTableToReturn(RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientId, LocationId)
 	SELECT * FROM @ServicesForDateTable
 	EXCEPT
 	SELECT * FROM @SevicesThatHaveBeenExcluded
 
+	UPDATE #ServicesTableToReturn
+	SET Id = NEWID()
+
+	CREATE TABLE #RouteTasks
+			( Id UNIQUEIDENTIFIER,
+			  LocationId UNIQUEIDENTIFIER,
+			  RouteDestinationId UNIQUEIDENTIFIER,
+			  ClientId UNIQUEIDENTIFIER,
+			  ServiceId UNIQUEIDENTIFIER,
+			  ReadOnly BIT,
+			  BusinessAccountId UNIQUEIDENTIFIER,
+			  EstimatedDuration TIME,
+			  Name NVARCHAR(MAX),
+			  StatusInt INT,
+			  [Date] DATETIME,
+			  OrderInRouteDestination INT,
+			  RecurringServiceId UNIQUEIDENTIFIER,
+			  DelayedChildId UNIQUEIDENTIFIER,
+			  TaskStatusId UNIQUEIDENTIFIER
+			)
+
+	INSERT INTO #RouteTasks(Id, LocationId, ClientId, ServiceId, Name, [Date], RecurringServiceId)
+	SELECT Id, LocationId, ClientId, ServiceId, ServiceName, OccurDate, RecurringServiceId
+	FROM #ServicesTableToReturn
+
+	UPDATE #RouteTasks
+	SET ReadOnly = 0,
+		BusinessAccountId = @serviceProviderIdContext,
+		EstimatedDuration = '0:0:16.00',
+		OrderInRouteDestination = 0,
+		TaskStatusId = (SELECT TOP 1 Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @serviceProviderIdContext),
+		StatusInt = 0
+
+	INSERT INTO dbo.RouteTasks
+	SELECT * FROM #RouteTasks
+
+	SELECT * FROM dbo.RouteTasks
+	LEFT JOIN dbo.Locations
+	ON dbo.RouteTasks.LocationId = dbo.Locations.Id
+	LEFT JOIN dbo.Regions
+	ON dbo.Locations.RegionId = dbo.Regions.Id
+	LEFT JOIN dbo.Clients
+	ON dbo.RouteTasks.ClientId = dbo.Clients.Id  
+	WHERE dbo.RouteTasks.BusinessAccountId = @serviceProviderIdContext AND [Date] = @serviceDate AND RouteDestinationId IS NULL 
+
+	DROP TABLE #ServicesTableToReturn
+	DROP TABLE #RouteTasks
 RETURN 
 END
+
+GO
+
+CREATE VIEW [dbo].[PartiesWithName]
+AS
+SELECT        dbo.Parties.Id, ISNULL(dbo.Parties_Person.LastName, '') + ' ' +  ISNULL(dbo.Parties_Person.FirstName, '') +' ' +  ISNULL(dbo.Parties_Person.MiddleInitial, '')  AS 'ChildName'
+FROM            dbo.Parties INNER JOIN
+                         dbo.Parties_Person ON dbo.Parties.Id = dbo.Parties_Person.Id
+UNION
+SELECT        dbo.Parties.Id, dbo.Parties_Business.Name AS 'ChildName'
+FROM            dbo.Parties INNER JOIN
+                         dbo.Parties_Business ON dbo.Parties.Id = dbo.Parties_Business.Id
+
+GO
 
 GO
 
@@ -4615,6 +4691,7 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 		BEGIN -- declaring variables to be used to copy fields
 			DECLARE @FieldRowCount int
 			DECLARE @fieldName NVARCHAR(max)
+			DECLARE @fieldGroup NVARCHAR(max)
 			DECLARE @fieldRequired BIT
 			DECLARE @fieldToolTip NVARCHAR(MAX)
 			DECLARE @fieldServiceTemplateId UNIQUEIDENTIFIER
@@ -4643,6 +4720,7 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 
 		BEGIN --Sets all variables to copy basic field data
 			SET @fieldName = (SELECT Name FROM Fields WHERE Id = @FieldId)
+			SET @fieldGroup = (SELECT [Group] FROM Fields WHERE Id = @FieldId)
 			SET @fieldRequired = (SELECT [Required] FROM Fields WHERE Id = @FieldId)
 			SET @fieldToolTip = (SELECT ToolTip FROM Fields WHERE Id = @FieldId)
 			SET @serviceTemplateId = (SELECT ServiceTemplateId FROM dbo.Fields WHERE Id = @FieldId)
@@ -4678,6 +4756,7 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 			INSERT INTO Fields --Add a copy of the old field to the Fields table
 				    ( Id ,
 				        Name ,
+				        [Group] ,
 				        [Required] ,
 				        ToolTip ,
 				        ParentFieldId ,
@@ -4685,6 +4764,7 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				    )
 			VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				        @fieldName , -- Name - nvarchar(max)
+				        @fieldGroup , -- Group - nvarchar(max)
 				        @fieldRequired , -- Required - bit
 				        @fieldToolTip , -- ToolTip - nvarchar(max)
 				        @FieldId , -- ParentFieldId - uniqueidentifier
@@ -4963,6 +5043,7 @@ BEGIN
 		(
 			Id UNIQUEIDENTIFIER,
 			Name NVARCHAR(MAX),
+			[Group] nvarchar(MAX),
 			[Required] BIT,
 			ToolTip NVARCHAR(MAX),
 			ParentFieldId UNIQUEIDENTIFIER,
@@ -4976,6 +5057,7 @@ BEGIN
 		BEGIN -- declaring variables to be used to copy fields
 			DECLARE @FieldRowCount int
 			DECLARE @fieldName NVARCHAR(max)
+			DECLARE @fieldGroup NVARCHAR(max)
 			DECLARE @fieldRequired BIT
 			DECLARE @fieldToolTip NVARCHAR(MAX)
 			DECLARE @fieldServiceTemplateId UNIQUEIDENTIFIER
@@ -5021,6 +5103,7 @@ BEGIN
 
 			BEGIN --Sets all variables to copy basic field data
 				SET @fieldName = (SELECT Name FROM @FieldsTable WHERE Id = @currentId)
+				SET @fieldGroup = (SELECT [Group] FROM @FieldsTable WHERE Id = @currentId)
 				SET @fieldRequired = (SELECT [Required] FROM @FieldsTable WHERE Id = @currentId)
 				SET @fieldToolTip = (SELECT ToolTip FROM @FieldsTable WHERE Id = @currentId)
 			END
@@ -5037,6 +5120,7 @@ BEGIN
 				INSERT INTO Fields --Add a copy of the old field to the Fields table
 				        ( Id ,
 				          Name ,
+				          [Group] ,
 				          [Required] ,
 				          ToolTip ,
 				          ParentFieldId ,
@@ -5044,6 +5128,7 @@ BEGIN
 				        )
 				VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				          @fieldName , -- Name - nvarchar(max)
+				          @fieldGroup , -- Group - nvarchar(max)
 				          @fieldRequired , -- Required - bit
 				          @fieldToolTip , -- ToolTip - nvarchar(max)
 				          @currentId , -- ParentFieldId - uniqueidentifier

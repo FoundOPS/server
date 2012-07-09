@@ -20,7 +20,7 @@ GO
 * {GUID}			|           | 1/1/2012 <-- Existing service				| Direct	  |	GotGrease?		| {GUID}	| North		 | GotGrease?	   | {GUID} 	| 6789 Help Ln	| 43.265	| -89.254	| 2	
 * {GUID}			| {GUID}	| 1/2/2012 <-- Existing service w/ RS parent| Regular     | AB Couriers		| {GUID}	| West		 | AB Couriers	   | {GUID}		| 4953 Joe Way	| 44.165	| -79.365	| 4	
 ****************************************************************************************************************************************************************************************************************************/
-ALTER PROCEDURE [dbo].[sp_GetUnroutedServicesForDate]
+CREATE PROCEDURE [dbo].[sp_GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
 @serviceDate date)
 AS
