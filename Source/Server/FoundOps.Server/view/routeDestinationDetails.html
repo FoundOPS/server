@@ -1,0 +1,37 @@
+<div id="routeDestinationDetails" data-role="view" data-layout="mobile-view" data-model="mobile.viewModel"
+     data-title="Destination Info" data-transition="slide">
+    <div data-bind="source: this" data-template="navigateTemplate"></div>
+    <ul data-role="listview" data-style="inset" data-type="group">
+        <li>Client Contact Info
+            <ul id="destinationContactInfoListView" data-bind="source: clientPhoneContactInfoSource"
+                data-role="listview" data-style="inset" data-template="contactInfoPhoneTemplate"></ul>
+            <ul id="destinationContactInfoListView" data-bind="source: clientEmailContactInfoSource"
+                data-role="listview" data-style="inset" data-template="contactInfoEmailTemplate"></ul>
+            <ul id="destinationContactInfoListView" data-bind="source: clientWebsiteContactInfoSource"
+                data-role="listview" data-style="inset" data-template="contactInfoWebsiteTemplate"></ul>
+        </li>
+        <li>Location Contact Info
+            <ul id="destinationContactInfoListView" data-bind="source: locationPhoneContactInfoSource"
+                data-role="listview" data-style="inset" data-template="contactInfoPhoneTemplate"></ul>
+            <ul id="destinationContactInfoListView" data-bind="source: locationEmailContactInfoSource"
+                data-role="listview" data-style="inset" data-template="contactInfoEmailTemplate"></ul>
+            <ul id="destinationContactInfoListView" data-bind="source: locationWebsiteContactInfoSource"
+                data-role="listview" data-style="inset" data-template="contactInfoWebsiteTemplate"></ul>
+        </li>
+    </ul>
+</div>
+<script type="text/x-kendo-template" id="navigateTemplate">
+    <div style="text-align:center; margin-top: 7px">
+            <a href="http://maps.google.com/maps?q=${selectedDestination.Location.Latitude},${selectedDestination.Location.Longitude}"
+               class="km-button">Navigate to Route Stop</a>
+    </div>
+</script>
+<script type="text/x-kendo-template" id="contactInfoPhoneTemplate">
+    <a data-rel="external" href="tel:${Data}">Call ${Label}</a>
+</script>
+<script type="text/x-kendo-template" id="contactInfoEmailTemplate">
+    <a data-rel="external" href="mailto:${Data}">E-mail ${Label}</a>
+</script>
+<script type="text/x-kendo-template" id="contactInfoWebsiteTemplate">
+    <a data-rel="external" href="${Data}">Go to Website</a>
+</script>

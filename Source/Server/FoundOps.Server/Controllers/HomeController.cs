@@ -12,17 +12,21 @@ namespace FoundOps.Server.Controllers
 {
     public class HomeController : Controller
     {
+        //Cannot require the page to be HTTPS until we have our own tile server
+        //#if !DEBUG
+        //        [RequireHttps]
+        //#endif
         public ActionResult Index()
         {
 #if DEBUG
             if (ServerConstants.AutomaticLoginFoundOPSAdmin)
-                return RedirectToAction("Silverlight", "Home");
+                return View();
 #endif
 
             if (!HttpContext.User.Identity.IsAuthenticated)
                 return Redirect(Global.RootFrontSiteUrl);
 
-            return RedirectToAction("Silverlight", "Home");
+            return View();
         }
 
         //Cannot require the page to be HTTPS until we have our own tile server
