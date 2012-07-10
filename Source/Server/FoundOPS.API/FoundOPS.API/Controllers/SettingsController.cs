@@ -175,11 +175,11 @@ namespace FoundOPS.API.Controllers
 
                 #region Create new UserAccount
 
-                var user = new UserAccount();
-
                 if (_coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress == settings.EmailAddress))
                     throw new Exception("The email address is already in use");
-                
+
+                var user = new UserAccount();
+
                 user.EmailAddress = settings.EmailAddress;
                 user.Id = Guid.NewGuid();
                 user.FirstName = settings.FirstName;
@@ -198,6 +198,23 @@ namespace FoundOPS.API.Controllers
 
                 //Save all changes made
                 _coreEntitiesContainer.SaveChanges();
+
+                var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == settings.Employee.Id);
+
+                if (employee != null)
+                    user.LinkedEmployees.Add(employee);
+                else
+                {
+                    employee = new FoundOps.Core.Models.CoreEntities.Employee
+                        {
+                            Id = Guid.NewGuid(),
+                            OwnedPerson = _coreEntitiesContainer.Parties.OfType<Person>().FirstOrDefault(p => p.Id == user.Id)
+                        };
+                    user.LinkedEmployees.Add(employee);
+                }
+
+                _coreEntitiesContainer.SaveChanges();
+
 
                 return Request.CreateResponse(HttpStatusCode.Accepted);
             }
@@ -252,6 +269,27 @@ namespace FoundOPS.API.Controllers
                 //Add the new role for the user
                 if (newRole != null)
                     user.RoleMembership.Add(newRole);
+            }
+
+            var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => user.LinkedEmployees.FirstOrDefault(le => le.Id == e.Id) == e);
+
+            if(employee != null && employee.Id != settings.Employee.Id)
+            {
+                user.LinkedEmployees.Remove(employee);
+
+                var newEmployee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == settings.Employee.Id);
+
+                if (newEmployee != null)
+                    user.LinkedEmployees.Add(employee);
+                else
+                {
+                    newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
+                    {
+                        Id = Guid.NewGuid(),
+                        OwnedPerson = _coreEntitiesContainer.Parties.OfType<Person>().FirstOrDefault(p => p.Id == user.Id)
+                    };
+                    user.LinkedEmployees.Add(newEmployee);
+                }
             }
 
             _coreEntitiesContainer.SaveChanges();
@@ -350,7 +388,7 @@ namespace FoundOPS.API.Controllers
         /// <returns>The image url, expiring in 3 hours</returns>
         private async Task<string> UpdatePartyImageHelper(Party partyToUpdate)
         {
-            var formData = await Request.ReadMultipartAsync(new[] { "imageFileName", "imageData"});
+            var formData = await Request.ReadMultipartAsync(new[] { "imageFileName", "imageData" });
 
             var imageFileName = await formData["imageFileName"].ReadAsStringAsync();
             var imageDataString = await formData["imageData"].ReadAsStringAsync();
