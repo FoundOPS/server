@@ -31,20 +31,6 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         /// </value>
         public RelayCommand<string> NavigateToCommand { get; set; }
 
-        private IEnumerable<Block> _publicBlocks;
-        /// <summary>
-        /// Gets the public blocks.
-        /// </summary>
-        public IEnumerable<Block> PublicBlocks
-        {
-            get { return _publicBlocks; }
-            private set
-            {
-                _publicBlocks = value;
-                this.RaisePropertyChanged("PublicBlocks");
-            }
-        }
-
         #region Parties/Roles
 
         private UserAccount _currentUserAccount;
@@ -190,12 +176,7 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         public NavigationBarVM()
         {
             Manager.Context.UserAccountObservable.Subscribe(ua => CurrentUserAccount = ua);
-
-            Manager.Data.GetPublicBlocks(blocks =>
-             {
-                 PublicBlocks = blocks;
-                 OnDataLoaded();
-             });
+            OnDataLoaded();
         }
 
         protected override void RegisterCommands()
@@ -294,8 +275,9 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         /// </summary>
         private void SetupBlocksMappingInMEFContentLoader()
         {
-            foreach (var block in CurrentUserAccount.AccessibleBlocks.Union(PublicBlocks).Where(block => block.Link != null))
-                MEFBlockLoader.MapUri(new Uri(block.NavigateUri, UriKind.RelativeOrAbsolute), new Uri(block.Link, UriKind.RelativeOrAbsolute));
+            //TODO
+            //foreach (var block in CurrentUserAccount.AccessibleBlocks.Where(block => block.Link != null))
+            //    MEFBlockLoader.MapUri(new Uri(block.NavigateUri, UriKind.RelativeOrAbsolute), new Uri(block.Link, UriKind.RelativeOrAbsolute));
 
             _setupBlocksMappingInMEFContentLoader = true;
         }

@@ -50,10 +50,7 @@ namespace FoundOps.Core.Models.CoreEntities
         public static void PopulateBlocks(CoreEntitiesContainer coreEntitiesContainer)
         {
             foreach (var block in BlocksData.AllBlocks)
-            {
-                block.Link = String.Format("/{0}", block.NavigateUri);
                 coreEntitiesContainer.Blocks.AddObject(block);
-            }
         }
 
         /// <summary>

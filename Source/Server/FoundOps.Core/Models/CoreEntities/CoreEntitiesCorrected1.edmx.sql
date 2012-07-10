@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/19/2012 16:09:55
+-- Date Created: 07/10/2012 10:31:09
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -364,7 +364,6 @@ IF OBJECT_ID(N'[dbo].[Vehicles]', 'U') IS NOT NULL
 GO
 
 
-
 -- --------------------------------------------------
 -- Creating all tables
 -- --------------------------------------------------
@@ -373,11 +372,10 @@ GO
 CREATE TABLE [dbo].[Blocks] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [NavigateUri] nvarchar(max)  NOT NULL,
-    [Icon] varbinary(max)  NULL,
-    [Link] nvarchar(max)  NOT NULL,
-    [LoginNotRequired] bit  NOT NULL,
-    [HideFromNavigation] bit  NOT NULL
+    [HideFromNavigation] bit  NOT NULL,
+    [IconUrl] nvarchar(max) NULL,
+    [HoverIconUrl] nvarchar(max) NULL,
+    [Url] nvarchar(max)  NULL
 );
 GO
 

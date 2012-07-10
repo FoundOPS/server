@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
@@ -93,10 +91,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 //Setup the mobile role
                 SetupServiceProviderRole(serviceProvider, RoleType.Mobile);
             }
-
-            //Setup UserAccounts' default UserAccountRole
-            foreach (var userAccount in _userAccountsDesignData.DesignUserAccounts)
-                SetupDefaultUserAccountRole(userAccount, BlocksData.UserAccountBlocks);
         }
 
         public static Role SetupServiceProviderRole(BusinessAccount ownerParty, RoleType roleType)
@@ -106,7 +100,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             if (roleType == RoleType.Administrator)
             {
                 role.Name = "Administrator";
-                foreach (var block in BlocksData.ManagerBlocks.Union(BlocksData.BusinessAdministratorBlocks).Union(BlocksData.HTMLBlocks))
+                foreach (var block in BlocksData.ManagerBlocks.Union(BlocksData.HTMLBlocks))
                     role.Blocks.Add(block);
             }
             else if(roleType == RoleType.Mobile)
@@ -117,21 +111,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             }
 
             return role;
-        }
-
-        public static Role SetupDefaultUserAccountRole(UserAccount userAccount, IEnumerable<Block> userAccountBlocks)
-        {
-            var userRole = new Role
-            {
-                Name = String.Format("{0} {1}", userAccount.FirstName, userAccount.LastName),
-                OwnerParty = userAccount,
-                RoleType = RoleType.Administrator
-            };
-
-            foreach (var block in userAccountBlocks)
-                userRole.Blocks.Add(block);
-
-            return userRole;
         }
     }
 }

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Objects;
 using System.Linq;
 using System.Reflection;
 using System.Security.Authentication;
@@ -52,11 +51,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         public IEnumerable<Address> GetAddresses()
         {
             throw new NotSupportedException("Exists solely to generate Address in the clients data project");
-        }
-
-        public IEnumerable<Block> GetPublicBlocks()
-        {
-            return ObjectContext.Blocks.Where(block => block.LoginNotRequired);
         }
 
         public IEnumerable<Block> GetBlocks()
@@ -519,10 +513,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Trim unwanted spaces from the email address
             userAccount.EmailAddress = userAccount.EmailAddress.Trim();
-
-            //Setup the Default UserAccount role
-            var userAccountBlocks = this.ObjectContext.Blocks.Where(block => BlockConstants.UserAccountBlockIds.Any(userAccountBlockId => block.Id == userAccountBlockId));
-            RolesDesignData.SetupDefaultUserAccountRole(userAccount, userAccountBlocks);
         }
 
         [Update]

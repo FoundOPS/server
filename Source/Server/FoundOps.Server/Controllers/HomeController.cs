@@ -3,7 +3,6 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
-using FoundOps.Core.Models;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
@@ -11,7 +10,6 @@ using FoundOps.Server.Tools;
 using System;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using Formatting = System.Xml.Formatting;
 
 #if !DEBUG //RELEASE or TESTRELEASE
 using System.IO;
@@ -23,7 +21,7 @@ namespace FoundOps.Server.Controllers
 {
     public class HomeController : Controller
     {
-        private CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+        private readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
 
         //Cannot require the page to be HTTPS until we have our own tile server
         //#if !DEBUG
@@ -55,7 +53,7 @@ namespace FoundOps.Server.Controllers
             }
 
             var roles = user.RoleMembership.Distinct().OrderBy(r => r.OwnerParty.DisplayName);
-            var sections = roles.SelectMany(r => r.Blocks).Distinct().OrderBy(b => b.Name);
+            var sections = roles.SelectMany(r => r.Blocks).Where(s => !s.HideFromNavigation).Distinct().OrderBy(b => b.Name);
 
             //Build the initializeConfig model
             var sb = new StringBuilder();
@@ -100,7 +98,7 @@ namespace FoundOps.Server.Controllers
                     //Add the available sections's names for the roles
                     jsonWriter.WritePropertyName("sections");
                     jsonWriter.WriteStartArray();
-                    foreach(var section in role.Blocks)
+                    foreach (var section in role.Blocks.Where(s => !s.HideFromNavigation).OrderBy(r => r.Name))
                     {
                         jsonWriter.WriteValue(section.Name);
                     }
@@ -114,22 +112,21 @@ namespace FoundOps.Server.Controllers
                 //Add each of the available blocks (sections) and their details
                 jsonWriter.WritePropertyName("sections");
                 jsonWriter.WriteStartArray();
-                foreach(var section in sections)
+                foreach (var section in sections)
                 {
                     jsonWriter.WriteStartObject(); //start section object
 
                     jsonWriter.WritePropertyName("name");
                     jsonWriter.WriteValue(section.Name);
 
-                    //TODO add these to DB
                     jsonWriter.WritePropertyName("url");
-                    jsonWriter.WriteValue("#Employees");
-
-                    jsonWriter.WritePropertyName("color");
-                    jsonWriter.WriteValue("red");
+                    jsonWriter.WriteValue(section.Url);
 
                     jsonWriter.WritePropertyName("iconUrl");
-                    jsonWriter.WriteValue("img/employees.png");
+                    jsonWriter.WriteValue(section.IconUrl);
+
+                    jsonWriter.WritePropertyName("hoverIconUrl");
+                    jsonWriter.WriteValue(section.HoverIconUrl);
 
                     jsonWriter.WriteEnd(); //end section object
                 }

@@ -18,11 +18,6 @@ namespace FoundOps.Core.Models.CoreEntities
             private BlockMetadata()
             {
             }
-
-            [Exclude]
-            public Byte[] Icon { get; set; }
-
-            public Uri Link { get; set; }
         }
     }
 

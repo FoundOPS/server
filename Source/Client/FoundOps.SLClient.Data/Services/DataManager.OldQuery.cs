@@ -78,20 +78,6 @@ namespace FoundOps.SLClient.Data.Services
             DomainContext.TryGeocodeAddress(addressLineOne, city, state, zipCode, callback => geocoderResultsCallback(callback.Value, userState), userState);
         }
 
-        /// <summary>
-        /// Gets the public blocks.
-        /// </summary>
-        /// <param name="getPublicBlocksCallback">The get public blocks callback.</param>
-        public void GetPublicBlocks(Action<ObservableCollection<Block>> getPublicBlocksCallback)
-        {
-            var query = DomainContext.GetPublicBlocksQuery();
-            DomainContext.Load(query, loadOperation =>
-            {
-                if (!loadOperation.HasError)
-                    getPublicBlocksCallback(new ObservableCollection<Block>(loadOperation.Entities));
-            }, null);
-        }
-
         #endregion
     }
 }

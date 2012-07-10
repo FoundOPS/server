@@ -1033,6 +1033,25 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="fieldId">No Metadata Documentation available.</param>
+        public int PropagateNewFields(Nullable<global::System.Guid> fieldId)
+        {
+            ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
         public int PropagateNewServiceTemplateToClients(Nullable<global::System.Guid> serviceTemplateId)
         {
@@ -1052,31 +1071,20 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
         {
-            ObjectParameter serviceProviderContextParameter;
-            if (serviceProviderContext.HasValue)
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
             {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
             }
             else
             {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
             }
     
-            ObjectParameter serviceDateParameter;
-            if (serviceDate.HasValue)
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
-            }
-            else
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
-            }
-    
-            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
     
         /// <summary>
@@ -1167,39 +1175,31 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
         {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
             {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
             }
             else
             {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="fieldId">No Metadata Documentation available.</param>
-        public int PropagateNewFields(Nullable<global::System.Guid> fieldId)
-        {
-            ObjectParameter fieldIdParameter;
-            if (fieldId.HasValue)
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
             {
-                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
             }
             else
             {
-                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
             }
     
-            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter);
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
         }
 
         #endregion
@@ -1225,18 +1225,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="navigateUri">Initial value of the NavigateUri property.</param>
-        /// <param name="link">Initial value of the Link property.</param>
-        /// <param name="loginNotRequired">Initial value of the LoginNotRequired property.</param>
         /// <param name="hideFromNavigation">Initial value of the HideFromNavigation property.</param>
-        public static Block CreateBlock(global::System.Guid id, global::System.String name, global::System.String navigateUri, global::System.String link, global::System.Boolean loginNotRequired, global::System.Boolean hideFromNavigation)
+        public static Block CreateBlock(global::System.Guid id, global::System.String name, global::System.Boolean hideFromNavigation)
         {
             Block block = new Block();
             block.Id = id;
             block.Name = name;
-            block.NavigateUri = navigateUri;
-            block.Link = link;
-            block.LoginNotRequired = loginNotRequired;
             block.HideFromNavigation = hideFromNavigation;
             return block;
         }
@@ -1301,102 +1295,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String NavigateUri
-        {
-            get
-            {
-                return _NavigateUri;
-            }
-            set
-            {
-                OnNavigateUriChanging(value);
-                ReportPropertyChanging("NavigateUri");
-                _NavigateUri = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("NavigateUri");
-                OnNavigateUriChanged();
-            }
-        }
-        private global::System.String _NavigateUri;
-        partial void OnNavigateUriChanging(global::System.String value);
-        partial void OnNavigateUriChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.Byte[] Icon
-        {
-            get
-            {
-                return StructuralObject.GetValidValue(_Icon);
-            }
-            set
-            {
-                OnIconChanging(value);
-                ReportPropertyChanging("Icon");
-                _Icon = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Icon");
-                OnIconChanged();
-            }
-        }
-        private global::System.Byte[] _Icon;
-        partial void OnIconChanging(global::System.Byte[] value);
-        partial void OnIconChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Link
-        {
-            get
-            {
-                return _Link;
-            }
-            set
-            {
-                OnLinkChanging(value);
-                ReportPropertyChanging("Link");
-                _Link = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Link");
-                OnLinkChanged();
-            }
-        }
-        private global::System.String _Link;
-        partial void OnLinkChanging(global::System.String value);
-        partial void OnLinkChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean LoginNotRequired
-        {
-            get
-            {
-                return _LoginNotRequired;
-            }
-            set
-            {
-                OnLoginNotRequiredChanging(value);
-                ReportPropertyChanging("LoginNotRequired");
-                _LoginNotRequired = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LoginNotRequired");
-                OnLoginNotRequiredChanged();
-            }
-        }
-        private global::System.Boolean _LoginNotRequired;
-        partial void OnLoginNotRequiredChanging(global::System.Boolean value);
-        partial void OnLoginNotRequiredChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
         public global::System.Boolean HideFromNavigation
         {
             get
@@ -1415,6 +1313,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Boolean _HideFromNavigation;
         partial void OnHideFromNavigationChanging(global::System.Boolean value);
         partial void OnHideFromNavigationChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String IconUrl
+        {
+            get
+            {
+                return _IconUrl;
+            }
+            set
+            {
+                OnIconUrlChanging(value);
+                ReportPropertyChanging("IconUrl");
+                _IconUrl = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IconUrl");
+                OnIconUrlChanged();
+            }
+        }
+        private global::System.String _IconUrl;
+        partial void OnIconUrlChanging(global::System.String value);
+        partial void OnIconUrlChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String HoverIconUrl
+        {
+            get
+            {
+                return _HoverIconUrl;
+            }
+            set
+            {
+                OnHoverIconUrlChanging(value);
+                ReportPropertyChanging("HoverIconUrl");
+                _HoverIconUrl = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("HoverIconUrl");
+                OnHoverIconUrlChanged();
+            }
+        }
+        private global::System.String _HoverIconUrl;
+        partial void OnHoverIconUrlChanging(global::System.String value);
+        partial void OnHoverIconUrlChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Url
+        {
+            get
+            {
+                return _Url;
+            }
+            set
+            {
+                OnUrlChanging(value);
+                ReportPropertyChanging("Url");
+                _Url = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Url");
+                OnUrlChanged();
+            }
+        }
+        private global::System.String _Url;
+        partial void OnUrlChanging(global::System.String value);
+        partial void OnUrlChanged();
 
         #endregion
 

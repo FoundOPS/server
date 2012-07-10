@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FoundOps.Core.Models.CoreEntities
 {
@@ -8,30 +9,6 @@ namespace FoundOps.Core.Models.CoreEntities
     /// </summary>
     public static class BlockConstants
     {
-        #region PartyBlocks
-
-        /// <summary>
-        /// The Settings block Id
-        /// </summary>
-        public static Guid SettingsBlockId = new Guid("6E7E2F51-5925-4AF1-9F9A-663165BA7B68");
-
-        /// <summary>
-        /// The Logout block Id
-        /// </summary>
-        public static Guid LogoutBlockId = new Guid("B8ED1EF7-C43A-43DF-AF26-F5FB5BC0DE65");
-
-        /// <summary>
-        /// The BusinessAdministrator block ids.
-        /// </summary>
-        public static IEnumerable<Guid> BusinessAdministratorBlockIds = new[] { SettingsBlockId };
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static IEnumerable<Guid> UserAccountBlockIds = new[] { LogoutBlockId, SettingsBlockId };
-
-        #endregion
-
         #region Manager Blocks
 
         /// <summary>
@@ -92,8 +69,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 ClientBlockId, ContactsBlockId, DispatcherBlockId,
                 EmployeesBlockId, //ImportDataBlockId,
                 LocationsBlockId, RegionsBlockId, ServicesBlockId,
-                VehiclesBlockId, VehicleMaintenanceBlockId, FeedbackSupportBlockId,
-                LogoutBlockId
+                VehiclesBlockId, VehicleMaintenanceBlockId, FeedbackSupportBlockId
             };
 
         #endregion
@@ -123,20 +99,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Public Blocks
-
-        /// <summary>
-        /// The CompanyHome block Id
-        /// </summary>
-        public static Guid CompanyHomeBlockId = new Guid("E69BDD63-A73F-4903-9AEC-2B92724A00FE");
-
-        /// <summary>
-        /// The Public blocks' ids.
-        /// </summary>
-        public static IEnumerable<Guid> PublicBlockIds = new[] { CompanyHomeBlockId };
-
-        #endregion
-
         #region FoundOPS Administrative Console Blocks
 
         /// <summary>
@@ -157,7 +119,6 @@ namespace FoundOps.Core.Models.CoreEntities
         #endregion
     }
 
-
     /// <summary>
     /// The static class of Block entity information.
     /// Should not be used in Silverlight or else it will cause issues with the entity tracking.
@@ -172,10 +133,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         static BlocksData()
         {
-            SetupPartyBlocks();
-
             SetupManagerBlocks();
-            SetupPublicBlocks();
 
             SetupHTMLBlocks();
 
@@ -184,71 +142,13 @@ namespace FoundOps.Core.Models.CoreEntities
             SetupAllBlocks();
         }
 
-        #region PartyBlocks
-
-        /// <summary>
-        /// Contains a page to setup UserAccountSettings and BusinessAccountSettings.
-        /// </summary>
-        public static Block SettingsBlock { get; private set; }
-
-        /// <summary>
-        /// Gets the logout block.
-        /// </summary>
-        public static Block LogoutBlock { get; private set; }
-
-        /// <summary>
-        /// Gets the user account blocks.
-        /// </summary>
-        public static List<Block> UserAccountBlocks { get; private set; }
-        /// <summary>
-        /// Gets the business administrator blocks.
-        /// </summary>
-        public static List<Block> BusinessAdministratorBlocks { get; private set; }
-
-        private static void SetupPartyBlocks()
-        {
-            SettingsBlock = new Block
-            {
-                Id = BlockConstants.SettingsBlockId,
-                Name = "Settings",
-                NavigateUri = "Settings"
-            };
-
-            #region UserAccount
-
-            LogoutBlock = new Block()
-            {
-                Id = BlockConstants.LogoutBlockId,
-                Name = "Logout",
-                NavigateUri = @"Account/LogOff"
-            };
-
-            UserAccountBlocks = new List<Block> { LogoutBlock, SettingsBlock };
-
-            #endregion
-
-            #region BusinessAccount
-
-            BusinessAdministratorBlocks = new List<Block>
-                                              {
-                                                  SettingsBlock
-                                              };
-
-            #endregion
-        }
-
-        #endregion
-
         #region Manager
 
         /// <summary>
         /// Gets the clients block.
         /// </summary>
         public static Block ClientsBlock { get; private set; }
-        /// <summary>
-        /// Gets the contacts block.
-        /// </summary>
-        //public static Block ContactsBlock { get; private set; }
+
         /// <summary>
         /// Gets the dispatcher block.
         /// </summary>
@@ -301,86 +201,83 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.ClientBlockId,
                 Name = "Clients",
-                NavigateUri = "Clients"
+                IconUrl = "img/clients.png",
+                HoverIconUrl = "img/clientsColor.png"
             };
-
-            //ContactsBlock = new Block
-            //{
-            //    Id = BlockConstants.ContactsBlockId,
-            //    Name = "Contacts",
-            //    NavigateUri = "Contacts"
-            //};
 
             DispatcherBlock = new Block
             {
                 Id = BlockConstants.DispatcherBlockId,
                 Name = "Dispatcher",
-                NavigateUri = "Dispatcher"
+                IconUrl = "img/dispatcher.png",
+                HoverIconUrl = "img/dispatcherColor.png"
             };
 
             EmployeesBlock = new Block
             {
                 Id = BlockConstants.EmployeesBlockId,
                 Name = "Employees",
-                NavigateUri = "Employees"
+                IconUrl = "img/employees.png",
+                HoverIconUrl = "img/employeesColor.png"
             };
 
             FeebackSupportBlock = new Block
             {
                 Id = BlockConstants.FeedbackSupportBlockId,
                 Name = "Feedback and Support",
-                NavigateUri = "FeedbackSupport",
-                LoginNotRequired = true
+                IconUrl = "img/uservoice.png",
+                HoverIconUrl = "img/uservoiceColor.png"
             };
 
             ImportDataBlock = new Block
             {
                 Id = BlockConstants.ImportDataBlockId,
                 Name = "Import Data",
-                NavigateUri = "ImportData"
+                HideFromNavigation = true
             };
 
             LocationsBlock = new Block
             {
                 Id = BlockConstants.LocationsBlockId,
                 Name = "Locations",
-                NavigateUri = "Locations"
+                IconUrl = "img/locations.png",
+                HoverIconUrl = "img/locationsColor.png"
             };
 
             RegionsBlock = new Block
             {
                 Id = BlockConstants.RegionsBlockId,
                 Name = "Regions",
-                NavigateUri = "Regions"
+                IconUrl = "img/regions.png",
+                HoverIconUrl = "img/regionsColor.png"
             };
 
             ServicesBlock = new Block
             {
                 Id = BlockConstants.ServicesBlockId,
                 Name = "Services",
-                NavigateUri = "Services"
+                IconUrl = "img/services.png",
+                HoverIconUrl = "img/servicesColor.png"
             };
-
 
             VehiclesBlock = new Block
             {
                 Id = BlockConstants.VehiclesBlockId,
                 Name = "Vehicles",
-                NavigateUri = "Vehicles"
+                IconUrl = "img/vehicles.png",
+                HoverIconUrl = "img/vehiclesColor.png"
             };
 
             VehicleMaintenanceBlock = new Block
             {
                 Id = BlockConstants.VehicleMaintenanceBlockId,
                 Name = "VehicleMaintenance",
-                NavigateUri = "Vehicle Maintenance",
                 HideFromNavigation = true
             };
 
             ManagerBlocks = new List<Block>
             {
                ClientsBlock,
-               //ContactsBlock,
                EmployeesBlock,
                ServicesBlock,
                LocationsBlock,
@@ -390,36 +287,8 @@ namespace FoundOps.Core.Models.CoreEntities
                VehiclesBlock,
                VehicleMaintenanceBlock,
                //ImportDataBlock, 
-               FeebackSupportBlock,
-               LogoutBlock
+               FeebackSupportBlock
             };
-        }
-
-        #endregion
-
-        #region Public Blocks
-
-        /// <summary>
-        /// Gets the company home block.
-        /// </summary>
-        public static Block CompanyHomeBlock { get; private set; }
-
-        /// <summary>
-        /// Gets the public blocks.
-        /// </summary>
-        public static List<Block> PublicBlocks { get; private set; }
-
-        private static void SetupPublicBlocks()
-        {
-            CompanyHomeBlock = new Block
-            {
-                Id = BlockConstants.CompanyHomeBlockId,
-                Name = "Company Home",
-                NavigateUri = "CompanyHome",
-                LoginNotRequired = true
-            };
-
-            PublicBlocks = new List<Block> { CompanyHomeBlock };
         }
 
         #endregion
@@ -447,8 +316,9 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.RoutesBlockId,
                 Name = "Routes",
-                NavigateUri = "Routes",
-                HideFromNavigation = true
+                HideFromNavigation = true,
+                IconUrl = "img/routes.png",
+                HoverIconUrl = "img/routesColor.png"
             };
 
             //RoutesBlock is hidden for now
@@ -476,18 +346,19 @@ namespace FoundOps.Core.Models.CoreEntities
 
         private static void SetupAdministrativeConsoleBlocks()
         {
-            BusinessAccountsBlock = new Block()
+            BusinessAccountsBlock = new Block
             {
                 Id = BlockConstants.BusinessAccountsBlockId,
                 Name = "Business Accounts",
-                NavigateUri = "BusinessAccounts"
+                IconUrl = "img/businessAccounts.png",
+                HoverIconUrl = "img/businessAccountsColor.png"
             };
 
-            ServiceTemplatesBlock = new Block()
+            ServiceTemplatesBlock = new Block
             {
                 Id = BlockConstants.ServiceTemplatesBlockId,
                 Name = "Service Templates",
-                NavigateUri = "ServiceTemplates"
+                HideFromNavigation = true
             };
 
             AdministrativeConsoleBlocks = new List<Block> { BusinessAccountsBlock };
@@ -500,15 +371,17 @@ namespace FoundOps.Core.Models.CoreEntities
             AllBlocks = new List<Block>();
 
             AllBlocks.AddRange(ManagerBlocks);
-            AllBlocks.AddRange(BusinessAdministratorBlocks);
-            AllBlocks.AddRange(UserAccountBlocks);
 
             //no need to add mobile blocks because they are included in HTMLBlocks
             AllBlocks.AddRange(HTMLBlocks);
 
             AllBlocks.AddRange(AdministrativeConsoleBlocks);
 
-            AllBlocks.AddRange(PublicBlocks);
+            //Set the url based on the name
+            foreach (var block in AllBlocks.Where(b => string.IsNullOrEmpty(b.Url)))
+            {
+                block.Url = "#view/silverlight.html?section=" + block.Name;
+            }
         }
     }
 }
