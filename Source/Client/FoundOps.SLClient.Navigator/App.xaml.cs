@@ -1,16 +1,14 @@
-﻿using System;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Navigator.Controls;
+using MEFedMVVM.ViewModelLocator;
+using RiaServicesContrib.DataValidation;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.Generic;
-using MEFedMVVM.ViewModelLocator;
-using FoundOps.Core.Navigator.Loader;
-using FoundOps.Core.Navigator.Controls;
-using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using RiaServicesContrib.DataValidation;
 
 namespace FoundOps.SLClient.Navigator
 {
@@ -94,11 +92,6 @@ namespace FoundOps.SLClient.Navigator
 
 
             _container = new CompositionContainer(aggregateCatalog);
-
-            //Adds aggregateCatalogService as an export, available to any composed parts in the container
-            var aggregateCatalogService = new AggregateCatalogService(aggregateCatalog, _container);
-
-            _container.ComposeParts(aggregateCatalogService);
 
             CompositionHost.Initialize(_container);
 

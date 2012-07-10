@@ -1,9 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.UI.Tools;
-using FoundOps.SLClient.UI.ViewModels;
-using Analytics = FoundOps.SLClient.Data.Services.Analytics;
+using System.Windows;
 
 namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 {

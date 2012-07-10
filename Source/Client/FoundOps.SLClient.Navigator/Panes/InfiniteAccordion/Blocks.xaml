@@ -50,9 +50,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <AdministrativeConsole:BusinessAccountLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <BusinessAccounts:BusinessAccountSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Client">
                     <InfiniteAccordion:ThirdsListDetails.List>
@@ -78,9 +75,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <Clients1:ClientLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <Clients1:ClientSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Employee">
                     <InfiniteAccordion:ThirdsListDetails.List>
@@ -106,9 +100,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <Employees:EmployeeLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <Employees:EmployeeSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.EmployeeHistoryEntry">
                     <InfiniteAccordion:ThirdsListDetails.List>
@@ -134,9 +125,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <EmployeeHistory:EmployeeHistoryLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <EmployeeHistory:EmployeeHistorySmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Location">
                     <InfiniteAccordion:ThirdsListDetails.List>
@@ -194,9 +182,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <Regions1:RegionLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <Regions:RegionSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.RecurringService">
                     <InfiniteAccordion:ThirdsListDetails.List>
@@ -232,9 +217,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <RecurringServices1:RecurringServiceLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <RecurringServices:RecurringServiceSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.Route">
                     <InfiniteAccordion:ThirdsListDetails.List>
@@ -261,9 +243,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <Routes:RouteLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <Routes:RouteSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.ServiceHolder">
                     <InfiniteAccordion:ThirdsListDetails.List>
@@ -296,9 +275,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <Services:ServiceLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <my:ServiceSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.ServiceTemplate" ViewModelLocator:ViewModelLocator.SharedViewModel="ServiceTemplatesVM">
                     <InfiniteAccordion:ThirdsListDetails.List>
@@ -376,9 +352,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <Vehicles1:VehicleLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <Vehicles:VehicleSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
                 <InfiniteAccordion:ThirdsListDetails ObjectTypeToDisplay="FoundOps.Core.Models.CoreEntities.VehicleMaintenanceLogEntry">
                     <InfiniteAccordion:ThirdsListDetails.List>
@@ -405,9 +378,6 @@
                     <InfiniteAccordion:ThirdsListDetails.Details>
                         <Maintenance:MaintenanceLarge />
                     </InfiniteAccordion:ThirdsListDetails.Details>
-                    <InfiniteAccordion:ThirdsListDetails.Summary>
-                        <Maintenance:MaintenanceSmall />
-                    </InfiniteAccordion:ThirdsListDetails.Summary>
                 </InfiniteAccordion:ThirdsListDetails>
             </InfiniteAccordion:InfiniteAccordionView.ObjectTypeDisplayControls>
             <InfiniteAccordion:InfiniteAccordionView.ContextBorderControls>

@@ -225,6 +225,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Clients\ClientLinkSmall.xaml.cs">
+      <DependentUpon>ClientLinkSmall.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomFields\Define\TextLargeDefine.xaml.cs">
       <DependentUpon>TextLargeDefine.xaml</DependentUpon>
     </Compile>
@@ -248,26 +251,17 @@
       <DependentUpon>ManifestSummary.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ImportData\ImportColumn.cs" />
-    <Compile Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml.cs">
-      <DependentUpon>BusinessDetailsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Parties\Person\PersonDetailsEdit.xaml.cs">
       <DependentUpon>PersonDetailsEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Clients\ClientLarge.xaml.cs">
       <DependentUpon>ClientLarge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Clients\ClientSmall.xaml.cs">
-      <DependentUpon>ClientSmall.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Clients\ClientLinkLarge.xaml.cs">
       <DependentUpon>ClientLinkLarge.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Clients\ClientsGrid.xaml.cs">
       <DependentUpon>ClientsGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Clients\ClientLinkSmall.xaml.cs">
-      <DependentUpon>ClientLinkSmall.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Clients\ClientLocationsGrid.xaml.cs">
       <DependentUpon>ClientLocationsGrid.xaml</DependentUpon>
@@ -338,12 +332,6 @@
     <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLinkLarge.xaml.cs">
       <DependentUpon>EmployeeHistoryLinkLarge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistorySmall.xaml.cs">
-      <DependentUpon>EmployeeHistorySmall.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLinkSmall.xaml.cs">
-      <DependentUpon>EmployeeHistoryLinkSmall.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Employees\EmployeesGrid.xaml.cs">
       <DependentUpon>EmployeesGrid.xaml</DependentUpon>
     </Compile>
@@ -355,9 +343,6 @@
     </Compile>
     <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLarge.xaml.cs">
       <DependentUpon>EmployeeHistoryLarge.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Employees\EmployeeSmall.xaml.cs">
-      <DependentUpon>EmployeeSmall.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Files\FileLarge.xaml.cs">
       <DependentUpon>FileLarge.xaml</DependentUpon>
@@ -373,9 +358,6 @@
     </Compile>
     <Compile Include="Controls\ImportData\ImportDataGrid.xaml.cs">
       <DependentUpon>ImportDataGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Invoices\InvoiceDetails.xaml.cs">
-      <DependentUpon>InvoiceDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Locations\LocationLinkSmall.xaml.cs">
       <DependentUpon>LocationLinkSmall.xaml</DependentUpon>
@@ -395,9 +377,6 @@
     <Compile Include="Controls\Parties\BusinessAccounts\BusinessAccountLarge.xaml.cs">
       <DependentUpon>BusinessAccountLarge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Parties\BusinessAccounts\BusinessAccountSmall.xaml.cs">
-      <DependentUpon>BusinessAccountSmall.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Parties\UserAccounts\UserAccountLarge.xaml.cs">
       <DependentUpon>UserAccountLarge.xaml</DependentUpon>
     </Compile>
@@ -406,15 +385,6 @@
     </Compile>
     <Compile Include="Controls\Parties\UserAccounts\UserAccountsGrid.xaml.cs">
       <DependentUpon>UserAccountsGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml.cs">
-      <DependentUpon>UserAccountsLink.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Regions\RegionLinkSmall.xaml.cs">
-      <DependentUpon>RegionLinkSmall.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Regions\RegionSmall.xaml.cs">
-      <DependentUpon>RegionSmall.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Regions\RegionLinkLarge.xaml.cs">
       <DependentUpon>RegionLinkLarge.xaml</DependentUpon>
@@ -440,17 +410,8 @@
     <Compile Include="Controls\Routes\RouteLarge.xaml.cs">
       <DependentUpon>RouteLarge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Routes\RouteSmall.xaml.cs">
-      <DependentUpon>RouteSmall.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Services\RecurringServices\RecurringServicesLinkSmall.xaml.cs">
       <DependentUpon>RecurringServicesLinkSmall.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Services\RecurringServices\RecurringServiceSmall.xaml.cs">
-      <DependentUpon>RecurringServiceSmall.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Services\ServiceSmall.xaml.cs">
-      <DependentUpon>ServiceSmall.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Services\InstanceEditChildWindow.xaml.cs">
       <DependentUpon>InstanceEditChildWindow.xaml</DependentUpon>
@@ -482,32 +443,14 @@
     <Compile Include="Controls\Services\ServiceTemplate\ServiceTemplatesGrid.xaml.cs">
       <DependentUpon>ServiceTemplatesGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Parties\BusinessAccounts\BusinessAccountSettings.xaml.cs">
-      <DependentUpon>BusinessAccountSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\QuickbooksSettings.xaml.cs">
-      <DependentUpon>QuickbooksSettings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Parties\UserAccounts\UserAccountEdit.xaml.cs">
       <DependentUpon>UserAccountEdit.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\UserAccountSettings.xaml.cs">
-      <DependentUpon>UserAccountSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Vehicles\Maintenance\MaintenanceLinkSmall.xaml.cs">
-      <DependentUpon>MaintenanceLinkSmall.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Vehicles\Maintenance\MaintenanceSmall.xaml.cs">
-      <DependentUpon>MaintenanceSmall.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Vehicles\Maintenance\MaintenanceGrid.xaml.cs">
       <DependentUpon>MaintenanceGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Vehicles\Maintenance\MaintenanceLarge.xaml.cs">
       <DependentUpon>MaintenanceLarge.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Vehicles\VehicleSmall.xaml.cs">
-      <DependentUpon>VehicleSmall.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Vehicles\VehicleLarge.xaml.cs">
       <DependentUpon>VehicleLarge.xaml</DependentUpon>
@@ -569,6 +512,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\Clients\ClientLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\CustomFields\Define\TextLargeDefine.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -597,10 +544,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Parties\BusinessAccounts\BusinessDetailsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\Parties\Person\PersonDetailsEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -609,20 +552,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Clients\ClientSmall.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\Clients\ClientLinkLarge.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Clients\ClientsGrid.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Clients\ClientLinkSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Clients\ClientLocationsGrid.xaml">
@@ -717,14 +652,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistorySmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLinkSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\Employees\EmployeesGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -740,10 +667,6 @@
     <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLarge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Employees\EmployeeSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Files\FileLarge.xaml">
       <SubType>Designer</SubType>
@@ -762,10 +685,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ImportData\ImportDataGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Invoices\InvoiceDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -805,10 +724,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Parties\BusinessAccounts\BusinessAccountSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\Parties\UserAccounts\UserAccountLarge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -820,18 +735,6 @@
     <Page Include="Controls\Parties\UserAccounts\UserAccountsGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Parties\UserAccounts\UserAccountsLink.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Regions\RegionLinkSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Regions\RegionSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Regions\RegionLinkLarge.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -853,19 +756,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Routes\RouteSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\Services\RecurringServices\RecurringServicesLinkSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Services\RecurringServices\RecurringServiceSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Services\ServiceSmall.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -909,29 +800,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Parties\BusinessAccounts\BusinessAccountSettings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Settings\QuickbooksSettings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\Parties\UserAccounts\UserAccountEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Settings\UserAccountSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Vehicles\Maintenance\MaintenanceLinkSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Vehicles\Maintenance\MaintenanceSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Vehicles\Maintenance\MaintenanceGrid.xaml">
       <SubType>Designer</SubType>
@@ -940,10 +811,6 @@
     <Page Include="Controls\Vehicles\Maintenance\MaintenanceLarge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Vehicles\VehicleSmall.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Vehicles\VehicleLarge.xaml">
       <SubType>Designer</SubType>

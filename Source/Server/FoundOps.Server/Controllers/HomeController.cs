@@ -1,15 +1,15 @@
+using FoundOps.Core.Models.Azure;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Tools;
+using FoundOps.Server.Tools;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
-using FoundOps.Core.Models.Azure;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Tools;
-using FoundOps.Server.Tools;
 using System;
 using System.Web.Mvc;
-using Newtonsoft.Json;
 
 #if !DEBUG //RELEASE or TESTRELEASE
 using System.IO;
@@ -151,12 +151,23 @@ namespace FoundOps.Server.Controllers
 
             var configData = sb.ToString();
 
-            var model = new { NavigatorConfig = configData, SilverlightVersion = version };
+            var model = new Dictionary<string, object> { { "NavigatorConfig", configData }, { "SilverlightVersion", version } };
 
             //Cast to object so the overload for model data is used
             //instead of it being confused as the view name
             return View(model);
         }
+
+#if !RELEASE
+        //Purely for debugging
+        public ActionResult TestSilverlight()
+        {
+            var random = new Random();
+            var version = random.Next(10000).ToString();
+            var model = new Dictionary<string, object> { { "SilverlightVersion", version } };
+            return View(model);
+        }
+#endif
 
         [AddTestUsersThenAuthorize]
         public ActionResult MapView()

@@ -132,6 +132,10 @@
     <Reference Include="ReactiveUI_SL5">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight.UI\Lib\ReactiveUI_SL5.dll</HintPath>
     </Reference>
+    <Reference Include="Rxx, Version=1.1.4197.32894, Culture=neutral, PublicKeyToken=09aedbbcd2ef4748, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Rxx.dll</HintPath>
+    </Reference>
     <Reference Include="SLMultiBinding">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\SLMultiBinding.dll</HintPath>
     </Reference>
@@ -215,6 +219,10 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.DataVisualization, Version=2012.2.625.1050, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.Docking">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Docking.dll</HintPath>
       <Private>True</Private>
@@ -238,6 +246,14 @@
     <Reference Include="Telerik.Windows.Data">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.Windows.Documents, Version=2012.2.625.1050, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Documents.FormatProviders.Pdf, Version=2012.2.625.1050, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Documents.FormatProviders.Pdf.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -246,21 +262,10 @@
     <Compile Include="Controls\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Footer.xaml.cs">
-      <DependentUpon>Footer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\NavigationSideBar.xaml.cs">
-      <DependentUpon>NavigationSideBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\UserIcon.xaml.cs">
-      <DependentUpon>UserIcon.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panes\CompanyHome.xaml.cs">
-      <DependentUpon>CompanyHome.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="NavigationVM.cs" />
     <Compile Include="Panes\Dispatcher\DispatcherToolBar.xaml.cs">
       <DependentUpon>DispatcherToolBar.xaml</DependentUpon>
     </Compile>
@@ -275,11 +280,7 @@
       <DependentUpon>Blocks.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panes\InfiniteAccordion\ModeConverters.cs" />
-    <Compile Include="Panes\Settings\SettingsPane.xaml.cs">
-      <DependentUpon>SettingsPane.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\NavigationBarVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -290,25 +291,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Footer.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\NavigationSideBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\UserIcon.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Panes\CompanyHome.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Panes\Dispatcher\DispatcherToolBar.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -325,10 +310,6 @@
     <Page Include="Panes\InfiniteAccordion\Blocks.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Panes\Settings\SettingsPane.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Properties\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
       <Generator>MSBuild:Compile</Generator>
@@ -378,9 +359,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Content\SiteLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Panes\Dispatcher\DefaultDispatcherLayout.xml">

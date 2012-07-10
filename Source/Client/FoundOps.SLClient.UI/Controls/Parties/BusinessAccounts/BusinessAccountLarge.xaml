@@ -93,7 +93,7 @@
                             <TextBlock TextWrapping="Wrap" Text="Depot Location" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
                         </Grid>
                     </toolkit:Expander.Header>
-                    <Locations:LocationEdit  LocationVM="{Binding DataContext.SelectedDepotLocationVM, ElementName=myBusinessAccountLarge}" />
+                    <Locations:LocationEdit LocationVM="{Binding DataContext.SelectedDepotLocationVM, ElementName=myBusinessAccountLarge}" />
                 </toolkit:Expander>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">
                     <toolkit:Expander.Header>

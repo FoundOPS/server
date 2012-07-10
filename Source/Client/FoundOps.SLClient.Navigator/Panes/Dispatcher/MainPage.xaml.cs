@@ -1,3 +1,4 @@
+using System.ComponentModel.Composition;
 using FoundOps.Common.Composite;
 using FoundOps.Common.Tools;
 using FoundOps.SLClient.Data.Services;
@@ -8,7 +9,6 @@ using FoundOps.Core.Models.CoreEntities;
 using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.GridView;
 using Telerik.Windows.Controls.TreeView;
-using FoundOps.Common.Silverlight.Blocks;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
 using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 using System;
@@ -28,7 +28,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
     /// <summary>
     /// The main page of the dispatcher.
     /// </summary>
-    [ExportPage("Dispatcher")]
+    [Export("Dispatcher")]
     public partial class MainPage
     {
         #region Properties and Variables

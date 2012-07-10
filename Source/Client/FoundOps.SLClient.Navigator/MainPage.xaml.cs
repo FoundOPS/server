@@ -1,13 +1,9 @@
+using FoundOps.Common.Tools;
+using MEFedMVVM.ViewModelLocator;
 using System;
-using FoundOps.Common.Tools.ExtensionMethods;
-using FoundOps.SLClient.Data.Services;
-using ReactiveUI;
+using System.ComponentModel.Composition;
+using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Browser;
-using System.Windows.Controls;
-using FoundOps.Common.Silverlight.Loader;
-using FoundOps.SLClient.Navigator.ViewModels;
-using FoundOps.Common.Silverlight.MVVM.Messages;
 
 namespace FoundOps.SLClient.Navigator
 {
@@ -23,11 +19,13 @@ namespace FoundOps.SLClient.Navigator
         {
             InitializeComponent();
 
-            MessageBus.Current.Listen<NavigateToMessage>().Subscribe(OnNavigateToMessageRecieved);
-
             //Automatically size the ContentFrame's content to the size of the ContentFrame
             //This is especially important for Dispatcher
             Application.Current.Host.Content.Resized += ContentResized;
+
+            NavigationVM.FromPropertyChanged("SelectedView").ObserveOnDispatcher().Subscribe(_ => SetContentPageSizeToContentFrameSize());
+
+            NavigationVM.NavigateToView("Dispatcher");
         }
 
         #region ContentFrame.Content's Sizing
@@ -47,34 +45,12 @@ namespace FoundOps.SLClient.Navigator
 
         #endregion
 
-        void ContentFrameNavigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        private static NavigationVM NavigationVM
         {
-            SetContentPageSizeToContentFrameSize();
-
-            var navigationContext = ((Page)ContentFrame.Content).NavigationContext;
-
-            //Update the RoleId
-            if (!navigationContext.QueryString.ContainsKey("roleid")) return;
-
-            var roleId = new Guid(navigationContext.QueryString["roleid"]);
-            Manager.Context.RoleIdObserver.OnNext(roleId);
-        }
-
-        private void OnNavigateToMessageRecieved(NavigateToMessage navigateToMessage)
-        {
-            ContentFrame.Navigate(navigateToMessage.UriToNavigateTo);
-        }
-
-        private void MefBlockLoaderPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "IsLoading")
-                ((NavigationBarVM)this.DataContext).BlockLoading = ((MEFBlockLoader)this.Resources["MEFContentLoader"]).IsBusy;
-        }
-
-        private void CompassImageMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (e.ClickCount == 2)
-                HtmlPage.Window.Navigate(new Uri(UriExtensions.ThisRootUrl + "/Home/Silverlight"));
+            get
+            {
+                return (NavigationVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("NavigationVM", null, CreationPolicy.Shared).Value;
+            }
         }
     }
 }

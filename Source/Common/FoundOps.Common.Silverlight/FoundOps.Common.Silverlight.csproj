@@ -183,13 +183,6 @@
     <Compile Include="Models\DataTable\TypeSignature.cs" />
     <Compile Include="Models\SmartDispatcher.cs" />
     <Compile Include="Models\ThreadableNotifiableObject.cs" />
-    <Compile Include="Loader\ContentLoaderBase.cs" />
-    <Compile Include="Loader\ContentLoaderBaseAsyncResult.cs" />
-    <Compile Include="Loader\ExportPageAttribute.cs" />
-    <Compile Include="Loader\IExportPageMetadata.cs" />
-    <Compile Include="Loader\LoaderBase.cs" />
-    <Compile Include="Loader\MEFBlockLoader.cs" />
-    <Compile Include="Loader\AggregateCatalogService.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -239,36 +232,16 @@
     <Resource Include="Resources\Save.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\gotgreaselogo.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\RightArrow.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\LeftArrow.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\AutoAssign.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Truck.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Key.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Add.png" />
-    <Resource Include="Resources\MinusDelete.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\UndoRed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\GoFirst.png" />
-    <Resource Include="Resources\GoLast.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Print.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

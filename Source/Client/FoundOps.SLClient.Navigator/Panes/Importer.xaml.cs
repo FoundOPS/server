@@ -4,14 +4,12 @@ using System.Globalization;
 using System.Windows.Controls;
 using FoundOps.Core.Models.Import;
 using FoundOps.SLClient.UI.ViewModels;
-using FoundOps.Common.Silverlight.Blocks;
 
 namespace FoundOps.SLClient.Navigator.Panes
 {
     /// <summary>
     /// UI for importing data into the system.
     /// </summary>
-    [ExportPage("ImportData")]
     public partial class MainPage
     {
         /// <summary>

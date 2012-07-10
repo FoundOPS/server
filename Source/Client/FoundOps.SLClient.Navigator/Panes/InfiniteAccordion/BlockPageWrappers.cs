@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Common.Silverlight.Blocks;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+using System.ComponentModel.Composition;
 
 namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
 {
@@ -9,7 +8,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
     //A page wrapper is required if you want a block to control navigation.
 
 #pragma warning disable 1591 //Ignore comment warninng. One comment is enough.
-    [ExportPage("BusinessAccounts")]
     public class BusinessAccountsMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -19,7 +17,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("Clients")]
     public class ClientsMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -29,7 +26,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("Employees")]
     public class EmployeesMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -39,7 +35,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("EmployeeHistory")]
     public class EmployeeHistoryMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -49,7 +44,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("Locations")]
     public class LocationsMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -58,8 +52,7 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         {
         }
     }
-
-    [ExportPage("Regions")]
+    
     public class RegionsMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -69,7 +62,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("Services")]
     public class ServicesMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -79,7 +71,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("ServiceTemplates")]
     public class ServiceTemplatesMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -89,7 +80,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("RecurringService")]
     public class RecurringServiceMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -99,7 +89,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("Vehicles")]
     public class VehiclesMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]
@@ -109,7 +98,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         }
     }
 
-    [ExportPage("VehicleMaintenance")]
     public class VehicleMaintenanceMainPage : InfiniteAccordionPageWrapper
     {
         [ImportingConstructor]

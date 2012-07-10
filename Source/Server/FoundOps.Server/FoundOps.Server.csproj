@@ -368,6 +368,10 @@
     <Content Include="ClientBin\System.Xml.Linq.zip" />
     <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Documents.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Documents.FormatProviders.Pdf.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Zip.zip" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">
@@ -405,7 +409,7 @@
     <Content Include="Web.base.Debug.config">
       <DependentUpon>Web.base.config</DependentUpon>
     </Content>
-    <Content Include="Web.base.DebugNode.config" >
+    <Content Include="Web.base.DebugNode.config">
       <DependentUpon>Web.base.config</DependentUpon>
     </Content>
     <Content Include="Web.base.TestRelease.config">
@@ -418,6 +422,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\TestSilverlight.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

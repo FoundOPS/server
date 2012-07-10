@@ -166,10 +166,10 @@ namespace FoundOps.SLClient.Data.Services
         private static void TrackHelper(Section? section, Event trackedEvent, string detail)
         {
             var currentOrganization = Manager.Context.OwnerAccount != null ? Manager.Context.OwnerAccount.DisplayName : "Unknown";
-            var currentUser = Manager.Context.UserAccount.DisplayName;
+            var currentUser = Manager.Context.UserAccount != null ? Manager.Context.UserAccount.DisplayName : "Unknown";
 
             //Do not track FoundOPS users
-            var email = Manager.Context.UserAccount.EmailAddress ?? "";
+            var email =  Manager.Context.UserAccount != null ?  Manager.Context.UserAccount.EmailAddress ?? "" : "";
             if (email.Contains("foundops.com"))
                 return;
 
