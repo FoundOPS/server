@@ -262,6 +262,23 @@ namespace FoundOPS.API.Controllers
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
+        [AcceptVerbs("POST")]
+        public HttpResponseMessage DeleteUserSettings(UserSettings settings, Guid? roleId)
+        {
+            if (!roleId.HasValue)
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value).FirstOrDefault();
+
+            //If they are not an admin, they do not have the ability to insert new Users
+            if (businessAccount == null)
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            _coreEntitiesContainer.DeleteUserAccountBasedOnId(settings.Id);
+
+            return Request.CreateResponse(HttpStatusCode.Accepted);
+        }
+
         #endregion
 
         #region Business Settings
