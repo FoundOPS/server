@@ -112,7 +112,7 @@ namespace FoundOPS.API.Controllers
             if (!roleId.HasValue)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value).First();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value).FirstOrDefault();
 
             //If they are not an admin, they do not have the ability to view Users
             if (businessAccount == null)
@@ -238,15 +238,12 @@ namespace FoundOPS.API.Controllers
             user.LastName = settings.LastName;
             user.EmailAddress = settings.EmailAddress;
 
+            var userRole = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerPartyId == businessAccount.Id && r.MemberParties.Any(p => p.Id == user.Id));
+
             //If a new role has been selected for the user, remove all old ones and assign the new one
-            if (!user.RoleMembership.Select(r => r.Name).Contains(settings.Role))
+            if (userRole != null && userRole.Name != settings.Role)
             {
-                //Check each role the user has and remove all where the OwnerParty is this BuinessAccount
-                foreach (var role in user.RoleMembership)
-                {
-                    if (role.OwnerParty == businessAccount)
-                        user.RoleMembership.Remove(role);
-                }
+                user.RoleMembership.Remove(userRole);
 
                 //Find the new role to be added for the user
                 var newRole = _coreEntitiesContainer.Roles.FirstOrDefault(
