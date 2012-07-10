@@ -99,10 +99,19 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Delete any associated route tasks (today/in the future) if the service date changed
             if (originalService.ServiceDate != currentService.ServiceDate)
             {
-                var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt =>
+                var routeTasksToUpdate = this.ObjectContext.RouteTasks.Where(rt =>
                     rt.ServiceId == currentService.Id || (rt.RecurringServiceId == originalService.RecurringServiceId && rt.Date == originalService.ServiceDate)).ToArray();
 
-                DeleteRouteTasks(routeTasksToDelete);
+                //Remove the RouteTask from its RouteDestination, change the date and set its TaskStatus to CreatedDefault
+                foreach (var routeTask in routeTasksToUpdate)
+                {
+                    routeTask.RouteDestination = null;
+                    routeTask.RouteDestinationId = null;
+
+                    routeTask.Date = currentService.ServiceDate;
+
+                    routeTask.TaskStatus = this.ObjectContext.TaskStatuses.FirstOrDefault(ts => ts.BusinessAccountId == routeTask.BusinessAccountId && ts.DefaultTypeInt == ((int)StatusDetail.CreatedDefault))
+                }
             }
 
             this.ObjectContext.Services.AttachAsModified(currentService);
@@ -137,6 +146,16 @@ namespace FoundOps.Server.Services.CoreDomainService
                 //Delete the route task
                 this.ObjectContext.DetachExistingAndAttach(routeTask);
             }
+        }
+
+        /// <summary>
+        /// Goes through each Service and deletes it
+        /// </summary>
+        /// <param name="servicesToDelete"></param>
+        private void DeleteServices(IEnumerable<Service> servicesToDelete)
+        {
+            foreach (var service in servicesToDelete)
+                DeleteService(service);
         }
 
         public void DeleteService(Service service)
@@ -276,7 +295,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         public IQueryable<RecurringService> GetRecurringServicesWithDetailsForRole(Guid roleId, IEnumerable<Guid> recurringServiceIds)
         {
             var recurringServices = RecurringServicesForServiceProviderOptimized(roleId)
-                .Where(rs => recurringServiceIds.Contains(rs.Id)).Include(c => c.Client).Include(rs => rs.ServiceTemplate).Include(rs => rs.ServiceTemplate.Fields); 
+                .Where(rs => recurringServiceIds.Contains(rs.Id)).Include(c => c.Client).Include(rs => rs.ServiceTemplate).Include(rs => rs.ServiceTemplate.Fields);
 
             //Force Load LocationField's Location/OptionsField Options
             //TODO: Optimize by IQueryable
@@ -299,7 +318,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             csvWriter.WriteHeaderRecord("Service Type", "Client", "Location", "Address Line 1", "Frequency",
                                         "Start Date", "End Date", "Repeat Every", "Repeat On");
 
-            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Include(rs=>rs.Client).Include(rs => rs.Repeat).Include(rs => rs.ServiceTemplate);
+            var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Include(rs => rs.Client).Include(rs => rs.Repeat).Include(rs => rs.ServiceTemplate);
 
             //Force Load LocationField's Location
             //TODO: Optimize by IQueryable
@@ -376,7 +395,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                             repeatOn += ",";
                         repeatOn += "Fri";
                     }
-                     if (weeklyFrequencyDetail.Any(fd => fd == DayOfWeek.Saturday))
+                    if (weeklyFrequencyDetail.Any(fd => fd == DayOfWeek.Saturday))
                     {
                         if (repeatOn.ToCharArray().Any())
                             repeatOn += ",";
@@ -431,7 +450,11 @@ namespace FoundOps.Server.Services.CoreDomainService
                 var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt =>
                     rt.RecurringServiceId == currentRecurringService.Id && newlyAddedFutureDatesToExclude.Contains(rt.Date)).ToArray();
 
+                var servicesToDelete = routeTasksToDelete.Select(rt => rt.Service);
+
                 DeleteRouteTasks(routeTasksToDelete);
+
+                DeleteServices(servicesToDelete);
             }
 
             this.ObjectContext.RecurringServices.AttachAsModified(currentRecurringService);
