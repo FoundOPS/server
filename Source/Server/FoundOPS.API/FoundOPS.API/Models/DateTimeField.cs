@@ -8,7 +8,7 @@ namespace FoundOPS.API.Models
 
         public DateTime Latest { get; set; }
 
-        public int TypeInt { get; set; }
+        public short TypeInt { get; set; }
 
         public DateTime? Value { get; set; }
 
@@ -31,6 +31,31 @@ namespace FoundOPS.API.Models
                 Latest = fieldModel.Latest,
                 TypeInt = fieldModel.TypeInt,
                 Value = fieldModel.Value
+            };
+
+            return field;
+        }
+
+        /// <summary>
+        /// Converts the API model back to the FoundOPS model
+        /// </summary>
+        /// <param name="dateTimeField"></param>
+        /// <returns></returns>
+        public static FoundOps.Core.Models.CoreEntities.Field ConvertBackDateTimeField(DateTimeField dateTimeField)
+        {
+            var field = new FoundOps.Core.Models.CoreEntities.DateTimeField
+            {
+                Id = dateTimeField.Id,
+                Group = dateTimeField.Group,
+                Name = dateTimeField.Name,
+                Required = dateTimeField.Required,
+                Tooltip = dateTimeField.ToolTip,
+                ParentFieldId = dateTimeField.ParentFieldId,
+                ServiceTemplateId = dateTimeField.ServiceTemplateId,
+                Earliest = dateTimeField.Earliest,
+                Latest = dateTimeField.Latest,
+                TypeInt = dateTimeField.TypeInt,
+                Value = dateTimeField.Value
             };
 
             return field;

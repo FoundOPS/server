@@ -135,64 +135,83 @@ namespace FoundOPS.API.Api
             //TODO: Generate the service if it does not exist
             var foundOpsService = _coreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
 
-            //There should always be a service. When GetTaskDetails is called, it inserts any generated services
+            //The Service passed was generated on the Mobile device. Create a new FoundOPS Service and add appropriate field values
             if (foundOpsService == null)
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-
-            //Load all Field information
-            var templatesWithDetails = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => foundOpsService.Id == st.Id)
-                                        from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                                        //from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //LocationField not editable yet
-                                        select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options }).ToArray();//, locations };
-
-            #region Update all Fields
-
-            foreach (var field in service.Fields)
             {
-                var foundOpsField = foundOpsService.ServiceTemplate.Fields.FirstOrDefault(f => f.Id == field.Id);
+                var recurringService = _coreEntitiesContainer.RecurringServices.FirstOrDefault(rs => rs.Id == service.RecurringServiceId);
 
-                //this should not happen
-                //TODO figure out some kind of response that triggers a refresh
-                if (foundOpsField == null)
-                    continue;
+                foundOpsService = GenerateServiceOnDate(service.ServiceDate, recurringService);
 
-                var dateTimeField = foundOpsField as DateTimeField;
-                var numericField = foundOpsField as NumericField;
-                var textBoxField = foundOpsField as TextBoxField;
-                var optionsField = foundOpsField as OptionsField;
+                //Remove all fields that were generated with the Service Template
+                foreach (var field in foundOpsService.ServiceTemplate.Fields)
+                    foundOpsService.ServiceTemplate.Fields.Remove(field);
 
-                //If the field is a DateTimeField, update the value
-                if (dateTimeField != null)
-                    dateTimeField.Value = ((Models.DateTimeField)field).Value;
-
-                //If the field is a NumericField, update the value
-                if (numericField != null)
-                    numericField.Value = ((Models.NumericField)field).Value;
-
-                //If the field is a TextBoxField, update the value
-                if (textBoxField != null)
-                    textBoxField.Value = ((Models.TextBoxField)field).Value;
-
-                //If the field is a OptionsField, update the Options
-                if (optionsField != null)
+                //Add all fields from the generated Service to the Service Template
+                foreach (var field in service.Fields)
                 {
-                    var foundOpsOptions = _coreEntitiesContainer.Options.Where(o => o.OptionsFieldId == optionsField.Id).ToArray();
+                    //Set the Service template for the field to the newly created Service Template
+                    field.ServiceTemplateId = foundOpsService.ServiceProviderId;
 
-                    if (!foundOpsOptions.Any())
-                        continue;
-
-                    //Cycle through each option and update the IsChecked value
-                    foreach (var apiOption in ((Models.OptionsField)field).Options)
-                    {
-                        var foundOpsOption = foundOpsOptions.FirstOrDefault(op => op.Id == apiOption.Id);
-                        if (foundOpsOption != null)
-                            foundOpsOption.IsChecked = apiOption.IsChecked;
-                    }
+                    //Add the field to the new Service Template
+                    foundOpsService.ServiceTemplate.Fields.Add(Models.Field.ConvertBack(field));
                 }
             }
+            //The Service passed exists. Load all Field information update Field values
+            else 
+            {
+                var templatesWithDetails = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => foundOpsService.Id == st.Id)
+                                            from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                                            //from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //LocationField not editable yet
+                                            select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options }).ToArray();//, locations };
+                #region Update all Fields
 
-            #endregion
+                foreach (var field in service.Fields)
+                {
+                    var foundOpsField = foundOpsService.ServiceTemplate.Fields.FirstOrDefault(f => f.Id == field.Id);
 
+                    //this should not happen
+                    //TODO figure out some kind of response that triggers a refresh
+                    if (foundOpsField == null)
+                        continue;
+
+                    var dateTimeField = foundOpsField as DateTimeField;
+                    var numericField = foundOpsField as NumericField;
+                    var textBoxField = foundOpsField as TextBoxField;
+                    var optionsField = foundOpsField as OptionsField;
+
+                    //If the field is a DateTimeField, update the value
+                    if (dateTimeField != null)
+                        dateTimeField.Value = ((Models.DateTimeField)field).Value;
+
+                    //If the field is a NumericField, update the value
+                    if (numericField != null)
+                        numericField.Value = ((Models.NumericField)field).Value;
+
+                    //If the field is a TextBoxField, update the value
+                    if (textBoxField != null)
+                        textBoxField.Value = ((Models.TextBoxField)field).Value;
+
+                    //If the field is a OptionsField, update the Options
+                    if (optionsField != null)
+                    {
+                        var foundOpsOptions = _coreEntitiesContainer.Options.Where(o => o.OptionsFieldId == optionsField.Id).ToArray();
+
+                        if (!foundOpsOptions.Any())
+                            continue;
+
+                        //Cycle through each option and update the IsChecked value
+                        foreach (var apiOption in ((Models.OptionsField)field).Options)
+                        {
+                            var foundOpsOption = foundOpsOptions.FirstOrDefault(op => op.Id == apiOption.Id);
+                            if (foundOpsOption != null)
+                                foundOpsOption.IsChecked = apiOption.IsChecked;
+                        }
+                    }
+                }
+
+                #endregion
+
+            }
             //Save any changes that were made
             _coreEntitiesContainer.SaveChanges();
 
