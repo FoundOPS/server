@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/19/2012 16:09:55
+-- Date Created: 07/10/2012 18:38:15
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -18,12 +18,6 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
-GO
-IF OBJECT_ID(N'[dbo].[FK_BusinessAccount_inherits_Business]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_BusinessAccount] DROP CONSTRAINT [FK_BusinessAccount_inherits_Business];
-GO
 IF OBJECT_ID(N'[dbo].[FK_BusinessAccountInvoice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Invoices] DROP CONSTRAINT [FK_BusinessAccountInvoice];
 GO
@@ -293,9 +287,6 @@ GO
 IF OBJECT_ID(N'[dbo].[Parties]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties];
 GO
-IF OBJECT_ID(N'[dbo].[Parties_Business]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Parties_Business];
-GO
 IF OBJECT_ID(N'[dbo].[Parties_BusinessAccount]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_BusinessAccount];
 GO
@@ -362,7 +353,6 @@ GO
 IF OBJECT_ID(N'[dbo].[Vehicles]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Vehicles];
 GO
-
 
 
 -- --------------------------------------------------
@@ -718,13 +708,6 @@ CREATE TABLE [dbo].[ServiceTemplateWithVendorIds] (
 );
 GO
 
--- Creating table 'Parties_Business'
-CREATE TABLE [dbo].[Parties_Business] (
-    [Name] nvarchar(max)  NULL,
-    [Id] uniqueidentifier  NOT NULL
-);
-GO
-
 -- Creating table 'Parties_BusinessAccount'
 CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [QuickBooksEnabled] bit  NOT NULL,
@@ -733,6 +716,7 @@ CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [RouteManifestSettings] nvarchar(max)  NULL,
     [QuickBooksSessionXml] nvarchar(max)  NULL,
     [MaxRoutes] int  NOT NULL,
+    [Name] nvarchar(max)  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -1019,12 +1003,6 @@ GO
 ALTER TABLE [dbo].[ServiceTemplateWithVendorIds]
 ADD CONSTRAINT [PK_ServiceTemplateWithVendorIds]
     PRIMARY KEY CLUSTERED ([ServiceTemplateId], [BusinessAccountId] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Parties_Business'
-ALTER TABLE [dbo].[Parties_Business]
-ADD CONSTRAINT [PK_Parties_Business]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
 -- Creating primary key on [Id] in table 'Parties_BusinessAccount'
@@ -1906,20 +1884,11 @@ ON [dbo].[RouteEmployee]
     ([Employees_Id]);
 GO
 
--- Creating foreign key on [Id] in table 'Parties_Business'
-ALTER TABLE [dbo].[Parties_Business]
-ADD CONSTRAINT [FK_Business_inherits_Party]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'
 ALTER TABLE [dbo].[Parties_BusinessAccount]
-ADD CONSTRAINT [FK_BusinessAccount_inherits_Business]
+ADD CONSTRAINT [FK_BusinessAccount_inherits_Party]
     FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties_Business]
+    REFERENCES [dbo].[Parties]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
@@ -4506,7 +4475,7 @@ BEGIN
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientName =	(
 							SELECT DISTINCT t1.Name
-							FROM	Parties_Business t1
+							FROM	Parties_BusinessAccount t1
 							WHERE	EXISTS
 							(
 								SELECT  t2.ClientId
@@ -4519,7 +4488,7 @@ BEGIN
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientName =	(
 							SELECT DISTINCT  t1.Name
-							FROM	Parties_Business t1
+							FROM	Parties_BusinessAccount t1
 							WHERE	EXISTS
 							(
 								SELECT  t2.ClientId
@@ -4674,9 +4643,9 @@ SELECT        dbo.Parties.Id, ISNULL(dbo.Parties_Person.LastName, '') + ' ' +  I
 FROM            dbo.Parties INNER JOIN
                          dbo.Parties_Person ON dbo.Parties.Id = dbo.Parties_Person.Id
 UNION
-SELECT        dbo.Parties.Id, dbo.Parties_Business.Name AS 'ChildName'
+SELECT        dbo.Parties.Id, dbo.Parties_BusinessAccount.Name AS 'ChildName'
 FROM            dbo.Parties INNER JOIN
-                         dbo.Parties_Business ON dbo.Parties.Id = dbo.Parties_Business.Id
+                         dbo.Parties_BusinessAccount ON dbo.Parties.Id = dbo.Parties_BusinessAccount.Id
 
 GO
 

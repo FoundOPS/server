@@ -26,21 +26,10 @@ namespace FoundOps.Core.Models.CoreEntities
         }
     }
 
-    [MetadataTypeAttribute(typeof(Business.BusinessMetadata))]
-    public partial class Business
-    {
-        internal class BusinessMetadata : PartyMetadata
-        {
-            protected BusinessMetadata()
-            {
-            }
-        }
-    }
-
     [MetadataTypeAttribute(typeof(BusinessAccount.BusinessAccountMetadata))]
     public partial class BusinessAccount
     {
-        internal sealed class BusinessAccountMetadata : Business.BusinessMetadata
+        internal sealed class BusinessAccountMetadata : Party.PartyMetadata
         {
             private BusinessAccountMetadata()
             {
@@ -385,7 +374,7 @@ namespace FoundOps.Core.Models.CoreEntities
             [Include]
             public EntityCollection<RouteDestination> RouteDestinations { get; set; }
 
-            public Business OwnerBusinessAccount { get; set; }
+            public BusinessAccount OwnerBusinessAccount { get; set; }
         }
     }
 

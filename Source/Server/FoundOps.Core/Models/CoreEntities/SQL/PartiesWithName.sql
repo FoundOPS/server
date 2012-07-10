@@ -4,8 +4,8 @@ SELECT        dbo.Parties.Id, ISNULL(dbo.Parties_Person.LastName, '') + ' ' +  I
 FROM            dbo.Parties INNER JOIN
                          dbo.Parties_Person ON dbo.Parties.Id = dbo.Parties_Person.Id
 UNION
-SELECT        dbo.Parties.Id, dbo.Parties_Business.Name AS 'ChildName'
+SELECT        dbo.Parties.Id, dbo.Parties_BusinessAccount.Name AS 'ChildName'
 FROM            dbo.Parties INNER JOIN
-                         dbo.Parties_Business ON dbo.Parties.Id = dbo.Parties_Business.Id
+                         dbo.Parties_BusinessAccount ON dbo.Parties.Id = dbo.Parties_BusinessAccount.Id
 
 GO

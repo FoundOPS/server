@@ -1450,65 +1450,10 @@ namespace FoundOps.Core.Models.CoreEntities
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Business")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    [KnownTypeAttribute(typeof(BusinessAccount))]
-    public partial class Business : Party
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Business object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static Business CreateBusiness(global::System.Guid id)
-        {
-            Business business = new Business();
-            business.Id = id;
-            return business;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
-
-        #endregion
-
-    
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="BusinessAccount")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class BusinessAccount : Business
+    public partial class BusinessAccount : Party
     {
         #region Factory Method
     
@@ -1670,6 +1615,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Int32 _MaxRoutes = 1;
         partial void OnMaxRoutesChanging(global::System.Int32 value);
         partial void OnMaxRoutesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
 
         #endregion
 
@@ -6426,7 +6395,7 @@ namespace FoundOps.Core.Models.CoreEntities
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Party")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    [KnownTypeAttribute(typeof(Business))]
+    [KnownTypeAttribute(typeof(BusinessAccount))]
     [KnownTypeAttribute(typeof(Person))]
     public partial class Party : EntityObject
     {
