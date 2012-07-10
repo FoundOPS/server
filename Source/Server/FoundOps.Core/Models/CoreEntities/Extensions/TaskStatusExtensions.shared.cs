@@ -22,8 +22,6 @@ namespace FoundOps.Core.Models.CoreEntities
                     return;
                 }
 
-                DefaultTypeInt = null;
-
                 //Join the integers of the distinct status details
                 //Ex { OutOfRoute, CreatedDefault } = 13
                 var statusDetailString = String.Join("", detailsForStatusDetails.Distinct().Select(d => ((int) d).ToString()));

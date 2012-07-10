@@ -126,7 +126,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     EstimatedDuration = new TimeSpan(0, _random.Next(25), 0),
                     OwnerBusinessAccount = ownerBusinessAccount,
                     Service = newService,
-                    TaskStatus = ownerBusinessAccount.TaskStatuses.FirstOrDefault(ts => ts.DefaultTypeInt != null && ((StatusDetail)ts.DefaultTypeInt) == StatusDetail.RoutedDefault)
+                    TaskStatus = ownerBusinessAccount.TaskStatuses.FirstOrDefault(ts => ts.DefaultTypeInt != null && ts.DefaultTypeInt == ((int)StatusDetail.RoutedDefault))
                 };
 
                 var routeDestination = new RouteDestination { OrderInRoute = orderInRoute };

@@ -74,6 +74,15 @@ namespace FoundOps.Server.Services.CoreDomainService
                        ? null
                        : this.ObjectContext.Parties.OfType<BusinessAccount>().Include(ba => ba.Depots).OrderBy(b => b.Name);
         }
+        
+        public IQueryable<TaskStatus> GetTaskStatusesForBusinessAccount (Guid roleId)
+        {
+            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+
+            var taskStatuses = this.ObjectContext.TaskStatuses.Where(ts => ts.BusinessAccountId == businessForRole.Id);
+
+            return taskStatuses.OrderBy(ts => ts.Name);
+        }
 
         /// <summary>
         /// Gets the BusinessAccount details.
@@ -90,7 +99,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return null;
 
             var businessAccountQueryable = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId)
-                                    .Include(ba => ba.ServiceTemplates).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties");
+                                    .Include(ba => ba.TaskStatuses).Include(ba => ba.ServiceTemplates).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties");
 
             var a =
                 (from businessAccount in businessAccountQueryable

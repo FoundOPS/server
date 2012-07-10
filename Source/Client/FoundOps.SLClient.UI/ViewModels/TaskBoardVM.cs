@@ -55,7 +55,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <summary>
         /// Used to force reload the tasks.
         /// </summary>
-        public IObserver<bool> ForceReloadTasks { get { return _reloadTasks; } } 
+        public IObserver<bool> ForceReloadTasks { get { return _reloadTasks; } }
 
         #endregion
 

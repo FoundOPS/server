@@ -15,7 +15,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                                                Name = "Unrouted",
                                                                Color = DesignColors[0],
                                                                RouteRequired = false,
-                                                               DefaultTypeInt = ((int)StatusDetail.CreatedDefault)
+                                                               DefaultTypeInt = 1
                                                            },
                                                            new TaskStatus
                                                            {
@@ -23,7 +23,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                                                Name = "Routed",
                                                                Color = DesignColors[1],
                                                                RouteRequired = true,
-                                                               DefaultTypeInt = ((int)StatusDetail.RoutedDefault)
+                                                               DefaultTypeInt = 2
                                                            },
                                                            new TaskStatus
                                                            {
@@ -55,7 +55,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                                                Name = "Completed",
                                                                Color = DesignColors[5],
                                                                RouteRequired = true,
-                                                               DefaultTypeInt = ((int)StatusDetail.CompletedDefault)
+                                                               DefaultTypeInt = 3
                                                            },
                                                    };
     }

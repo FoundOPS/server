@@ -11,7 +11,7 @@
     <Controls1:RadBusyIndicator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BusyContent="Loading Tasks" IsBusy="{Binding TasksLoading}">
         <Grid x:Name="LayoutRoot" Background="White">
             <telerik:RadGridView x:Name="TaskBoardRadGridView" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" IsFilteringAllowed="False"
-                                 SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Multiple" 
+                                 SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Extended" 
                                  telerikDragDrop:RadDragAndDropManager.AllowDrag="True" ItemsSource="{Binding CollectionView}">
                 <telerik:RadGridView.RowStyle>
                     <Style TargetType="telerikGridElements:GridViewRow" x:Name="GridDragStyle">

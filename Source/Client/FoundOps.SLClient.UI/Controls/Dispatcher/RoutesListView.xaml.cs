@@ -112,51 +112,23 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                 var placeInRoute = DragDropTools.GetDropPlacement(destination, dropPlacement);
 
-
-                #region Modify placeInRoute
-
-                if (placeInRoute > 0)
+                //Modify placeInRoute
+                if (placeInRoute > 0 && dropPlacement != DropPlacement.After)
                     placeInRoute--;
 
-                if (dropPlacement == DropPlacement.After)
-                    placeInRoute++;
-
-                #endregion
-
-                //if(((RouteDestination)((RouteTask)draggedItems.FirstOrDefault())).RouteTasks.Count == 1)
-                //if(e.Options.Destination is TaskBoard)
-                //{
-                //    var destinations = draggedItems.OfType<RouteDestination>().ToArray();
-                //    var routeTasks = draggedItems.OfType<RouteTask>().ToArray();
-                //    var tHs = routeTasks.Select(rt => rt.ParentRouteTH);
-
-                //    var allTHsToAdd = tHs.Union(destinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.ParentRouteTH)));
-
-                //    //Add the TH back to VM.TaskBoard.LoadedTHs 
-                //    ((ObservableCollection<TH>)VM.TaskBoard.CollectionView.SourceCollection).AddRange(allTHsToAdd);
-
-                //    //Delete the Route, RouteDestinations, and RouteTasks
-                //    foreach (var routeDestination in destinations)
-                //        VM.Routes.DeleteRouteDestination(routeDestination);
-                //    foreach (var routeTask in routeTasks)
-                //        VM.Routes.DeleteRouteTask(routeTask);
-                //}
-                //else
-                //{
                 //Go in reverse to preserve the order that the objects were previously in
                 foreach (var draggedItem in draggedItems.Reverse())
                 {
                     if (e.Options.Destination is TaskBoard)
                     {
+                        DragDropTools.RemoveFromRoute(draggedItem);
                         AddToTaskBoard(draggedItem);
-                        DragDropTools.RemoveFromRoute(draggedItem); 
                     }
                     else
                     {
                         AddToRoute(draggedItem, destination, placeInRoute, dropPlacement);
                     }
                 }
-                //}
 
                 VM.Routes.DispatcherSave();
             }
@@ -366,14 +338,14 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             //If the draggedItem is a RouteDestination, add all its RouteTasks to the TaskBoard
             if (draggedItem is RouteDestination)
             {
-                foreach (var task in ((RouteDestination) draggedItem).RouteTasks)
-                    DragDropTools.CreateNewRouteTaskAndAddToTaskBoard(task);
+                foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
+                    DragDropTools.AddRouteTaskToTaskBoard(task);
                 //TODO:add analytic
             }
             //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
             if (draggedItem is RouteTask)
             {
-                DragDropTools.CreateNewRouteTaskAndAddToTaskBoard(((RouteTask) draggedItem));
+                DragDropTools.AddRouteTaskToTaskBoard(((RouteTask)draggedItem));
                 //TODO:add analytic
             }
         }

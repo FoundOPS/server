@@ -18,24 +18,21 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         {
             var selectedRouteTask = VM.Routes.SelectedRouteTask;
 
+            if(selectedRouteTask == null)
+                return;
+
+            var source = e.OriginalSource as RadComboBox;
+
+            if(source == null || !source.IsDropDownOpen)
+                return;
+
             var status = selectedRouteTask.TaskStatus;
-            if (!status.RouteRequired)// This would mean that the status requires the task to be out of a route
+            if (status != null && !status.RouteRequired && e.RemovedItems.Count > 0)// This would mean that the status requires the task to be out of a route
             {
-                var destination = selectedRouteTask.RouteDestination;
-
-                var lastRouteTask = destination.Route.RouteDestinationsListWrapper.LastOrDefault();
-
-                selectedRouteTask.RemoveRouteDestination();
-
+                //This will also remove the task from its RouteDestination and delete the Destination if there are no other tasks for that Destination
                 DragDropTools.RemoveFromRoute(selectedRouteTask);
 
-                if (destination.RouteTasks.Count == 0)
-                    VM.Routes.DeleteRouteDestination(destination);
-
                 ((ObservableCollection<RouteTask>)VM.TaskBoard.CollectionView.SourceCollection).Add(selectedRouteTask);
-
-                if (lastRouteTask != null)
-                    VM.Routes.SelectedRouteTask = lastRouteTask.RouteTasks.FirstOrDefault();
 
                 VM.Routes.DispatcherSave();
             }

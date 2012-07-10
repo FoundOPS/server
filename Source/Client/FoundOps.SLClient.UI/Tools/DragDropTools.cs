@@ -298,32 +298,16 @@ namespace FoundOps.SLClient.UI.Tools
         /// Regenerate a RouteTask and add it to the TaskBoard
         /// </summary>
         /// <param name="routeTask">The RouteTask to regenerate and add to the TaskBoard</param>
-        public static void CreateNewRouteTaskAndAddToTaskBoard(RouteTask routeTask)  
+        public static void AddRouteTaskToTaskBoard(RouteTask routeTask)
         {
+            if (((ObservableCollection<RouteTask>)VM.TaskBoard.CollectionView.SourceCollection).Contains(routeTask))
+                return;
 
-            //Create a new RouteTask to be saved
-            var newRouteTask = new RouteTask
-            {
-                Id = Guid.NewGuid(),
-                BusinessAccountId = routeTask.BusinessAccountId,
-                Date = routeTask.Date,
-                EstimatedDuration = routeTask.EstimatedDuration,
-                Location = routeTask.Location,
-                LocationId = routeTask.LocationId,
-                Name = routeTask.Name,
-                OwnerBusinessAccount = routeTask.OwnerBusinessAccount,
-                ParentRecurringService = routeTask.ParentRecurringService,
-                RecurringServiceId = routeTask.RecurringServiceId,
-                RouteDestination = null,
-                RouteDestinationId = null,
-                Service = routeTask.Service,
-                ServiceId = routeTask.ServiceId//,
-                //Status = Status.Unrouted
-            };
+            var statuses = VM.Routes.TaskStatusesForBusinessAccount;
 
-            Manager.Data.DetachEntities(new[] { newRouteTask });
+            var createdStatus = statuses.FirstOrDefault(ts => ts.DefaultTypeInt == ((int) StatusDetail.CreatedDefault));
 
-            VM.Routes.DeleteRouteTask(routeTask);
+            routeTask.TaskStatus = createdStatus;
             
             ((ObservableCollection<RouteTask>)VM.TaskBoard.CollectionView.SourceCollection).Add(routeTask);
         }
@@ -345,8 +329,8 @@ namespace FoundOps.SLClient.UI.Tools
 
                 var oldRouteDestination = draggedRouteTask.RouteDestination;
 
-                //if the old route destination has no tasks, delete it
-                if (oldRouteDestination == null || oldRouteDestination.RouteTasks.Count == 0)
+                //if the old route destination has no other tasks, delete it
+                if (oldRouteDestination != null && oldRouteDestination.RouteTasks.Count == 1)
                     VM.Routes.DeleteRouteDestination(oldRouteDestination);
                 else 
                     draggedRouteTask.RemoveRouteDestination();

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Reactive.Linq;
-using System.ServiceModel.DomainServices.Client;
-using FoundOps.Common.Tools;
+﻿using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.SLClient.Data.ViewModels;
-using RiaServicesContrib;
+using System;
+using System.Reactive.Linq;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {

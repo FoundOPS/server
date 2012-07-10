@@ -21,6 +21,7 @@ using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
 using System.Windows;
+using TaskStatus = FoundOps.Core.Models.CoreEntities.TaskStatus;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -79,6 +80,16 @@ namespace FoundOps.SLClient.UI.ViewModels
         #endregion
 
         #endregion
+
+        public IEnumerable<TaskStatus> TaskStatusesForBusinessAccount
+        {
+            get { return _taskStatusesForBusinessAccount; }
+            set 
+            { 
+                _taskStatusesForBusinessAccount = value;
+                this.RaisePropertyChanged("TaskStatusesForBusinessAccount");
+            }
+        }
 
         private readonly ObservableAsPropertyHelper<bool> _manifestOpenHelper;
         private readonly Subject<bool> _manifestOpenSubject = new Subject<bool>();
@@ -208,6 +219,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         private RouteManifestViewer _routeManifestViewer;
 
         private AlgorithmVM _algorithmVM = new AlgorithmVM();
+        private IEnumerable<TaskStatus> _taskStatusesForBusinessAccount;
 
         #endregion
 
@@ -223,7 +235,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup ObservableAsPropertyHelpers
             _manifestOpenHelper = _manifestOpenSubject.ToProperty(this, x => x.ManifestOpen);
             _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate, DateTime.Now.Date);
-            _selectedRouteDestinationHelper = _selectedRouteDestinationSubject.ToProperty(this, x => x.SelectedRouteDestination);
+            //throttle because when selecting multiple route destinations in route list, it will cycle through and select each one
+            _selectedRouteDestinationHelper = _selectedRouteDestinationSubject.Throttle(TimeSpan.FromMilliseconds(300)).ToProperty(this, x => x.SelectedRouteDestination);
             _selectedRouteTaskHelper = _selectedRouteTaskSubject.ToProperty(this, x => x.SelectedRouteTask);
             _routeTypesHelper = RouteTypesObservable.ToProperty(this, x => x.RouteTypes);
 
@@ -237,7 +250,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Update the SelectedRouteDestinationVM whenever the RouteDestination changes
-            _selectedRouteDestinationSubject.ObserveOnDispatcher().Subscribe(rd =>
+            _selectedRouteDestinationSubject.Throttle(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(rd =>
             {
                 if (this.SelectedRouteDestinationVM != null)
                     this.SelectedRouteDestinationVM.Dispose();
@@ -254,6 +267,19 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
+            #region Load Task Status types
+
+            //Whenever the role id changes, load task statuses
+            ContextManager.RoleIdObservable.Subscribe(roleId => DomainContext.LoadAsync(DomainContext.GetTaskStatusesForBusinessAccountQuery(roleId)).ContinueWith(
+                status =>
+                    {
+                        TaskStatusesForBusinessAccount = status.Result;
+
+                        var test = TaskStatusesForBusinessAccount.ToArray();
+                    }));
+
+            #endregion
+
             #region Load Routes
 
             //Load the Routes whenever
@@ -291,10 +317,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                         return;
                     }
 
-                    //Setup RouteTaskHolders for existing RouteTasks
-                    //foreach (var routeTask in task.Result.SelectMany(r => r.RouteDestinations.SelectMany(rd => rd.RouteTasks)))
-                    //    routeTask.SetupTaskHolder();
-
                     //Update the CollectionView
                     ViewObservable.OnNext(new DomainCollectionViewFactory<Route>(new EntityList<Route>(DomainContext.Routes, task.Result)).View);
                 }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -330,7 +352,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the selectedRouteDestination changes load the RouteDestination's details
             //a) cancel the last loads
             //b) load the details
-            _selectedRouteDestinationSubject.Where(se => se != null).ObserveOnDispatcher().Subscribe(selectedRouteDestination =>
+            _selectedRouteDestinationSubject.Throttle(TimeSpan.FromMilliseconds(300)).Where(se => se != null).ObserveOnDispatcher().Subscribe(selectedRouteDestination =>
             {
                 //a) cancel the last loads
                 cancelLastDetailsLoad.OnNext(true);
@@ -375,7 +397,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Update the filter whenever
             //a) the filter changes
             //b) the SourceCollection (an ObservableCollection) changes or the CollectionView is set
-
             VM.DispatcherFilter.FilterUpdatedObservable.AsGeneric()
            .Merge(SourceCollectionChangedOrSet)
            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
@@ -588,7 +609,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //Move the route task index forward
                     currentRouteTaskIndex++;
 
-                    routeTask.TaskStatus.GetDefaultTaskStatus(routeTask.OwnerBusinessAccount, StatusDetail.RoutedDefault);
+                    routeTask.TaskStatus = routeTask.OwnerBusinessAccount.TaskStatuses.FirstOrDefault(ts => ts.DefaultTypeInt == ((int)StatusDetail.RoutedDefault));
 
                     //Create a new route destination and add the task to it
                     var newRouteDestination = new RouteDestination
