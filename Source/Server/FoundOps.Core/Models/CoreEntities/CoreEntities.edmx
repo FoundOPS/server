@@ -382,7 +382,6 @@
     </Key>
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Group" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Required" Type="bit" Nullable="false" />
     <Property Name="Tooltip" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ParentFieldId" Type="uniqueidentifier" Nullable="true" />
@@ -2086,7 +2085,6 @@
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="Group" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Boolean" Name="Required" Nullable="false" />
           <Property Type="String" Name="Tooltip" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="ChildrenFields" Relationship="CoreEntities.FieldField" FromRole="Field" ToRole="Field1" />
@@ -3235,7 +3233,6 @@
         <MappingFragment StoreEntitySet="Fields">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Group" ColumnName="Group" />
           <ScalarProperty Name="Required" ColumnName="Required" />
           <ScalarProperty Name="Tooltip" ColumnName="Tooltip" />
           <ScalarProperty Name="ParentFieldId" ColumnName="ParentFieldId" />

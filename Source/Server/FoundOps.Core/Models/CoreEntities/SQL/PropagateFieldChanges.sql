@@ -13,7 +13,6 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 		BEGIN -- declaring variables to be used to copy fields
 			DECLARE @FieldRowCount int
 			DECLARE @fieldName NVARCHAR(max)
-			DECLARE @fieldGroup NVARCHAR(max)
 			DECLARE @fieldRequired BIT
 			DECLARE @fieldToolTip NVARCHAR(MAX)
 			DECLARE @fieldServiceTemplateId UNIQUEIDENTIFIER
@@ -42,7 +41,6 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 
 		BEGIN --Sets all variables to copy basic field data
 			SET @fieldName = (SELECT Name FROM Fields WHERE Id = @FieldId)
-			SET @fieldGroup = (SELECT [Group] FROM Fields WHERE Id = @FieldId)
 			SET @fieldRequired = (SELECT [Required] FROM Fields WHERE Id = @FieldId)
 			SET @fieldToolTip = (SELECT ToolTip FROM Fields WHERE Id = @FieldId)
 			SET @serviceTemplateId = (SELECT ServiceTemplateId FROM dbo.Fields WHERE Id = @FieldId)
@@ -78,7 +76,6 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 			INSERT INTO Fields --Add a copy of the old field to the Fields table
 				    ( Id ,
 				        Name ,
-				        [Group] ,
 				        [Required] ,
 				        ToolTip ,
 				        ParentFieldId ,
@@ -86,7 +83,6 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				    )
 			VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				        @fieldName , -- Name - nvarchar(max)
-				        @fieldGroup , -- Group - nvarchar(max)
 				        @fieldRequired , -- Required - bit
 				        @fieldToolTip , -- ToolTip - nvarchar(max)
 				        @FieldId , -- ParentFieldId - uniqueidentifier

@@ -2540,17 +2540,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="earliest">Initial value of the Earliest property.</param>
         /// <param name="latest">Initial value of the Latest property.</param>
         /// <param name="typeInt">Initial value of the TypeInt property.</param>
-        public static DateTimeField CreateDateTimeField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.DateTime earliest, global::System.DateTime latest, global::System.Int16 typeInt)
+        public static DateTimeField CreateDateTimeField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime earliest, global::System.DateTime latest, global::System.Int16 typeInt)
         {
             DateTimeField dateTimeField = new DateTimeField();
             dateTimeField.Id = id;
             dateTimeField.Name = name;
-            dateTimeField.Group = group;
             dateTimeField.Required = required;
             dateTimeField.Earliest = earliest;
             dateTimeField.Latest = latest;
@@ -3758,14 +3756,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
-        public static Field CreateField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required)
+        public static Field CreateField(global::System.Guid id, global::System.String name, global::System.Boolean required)
         {
             Field field = new Field();
             field.Id = id;
             field.Name = name;
-            field.Group = group;
             field.Required = required;
             return field;
         }
@@ -3824,30 +3820,6 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Group
-        {
-            get
-            {
-                return _Group;
-            }
-            set
-            {
-                OnGroupChanging(value);
-                ReportPropertyChanging("Group");
-                _Group = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Group");
-                OnGroupChanged();
-            }
-        }
-        private global::System.String _Group;
-        partial void OnGroupChanging(global::System.String value);
-        partial void OnGroupChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5744,15 +5716,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="locationFieldTypeInt">Initial value of the LocationFieldTypeInt property.</param>
-        public static LocationField CreateLocationField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.Int16 locationFieldTypeInt)
+        public static LocationField CreateLocationField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Int16 locationFieldTypeInt)
         {
             LocationField locationField = new LocationField();
             locationField.Id = id;
             locationField.Name = name;
-            locationField.Group = group;
             locationField.Required = required;
             locationField.LocationFieldTypeInt = locationFieldTypeInt;
             return locationField;
@@ -5902,18 +5872,16 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="mask">Initial value of the Mask property.</param>
         /// <param name="decimalPlaces">Initial value of the DecimalPlaces property.</param>
         /// <param name="minimum">Initial value of the Minimum property.</param>
         /// <param name="maximum">Initial value of the Maximum property.</param>
-        public static NumericField CreateNumericField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.String mask, global::System.Int32 decimalPlaces, global::System.Decimal minimum, global::System.Decimal maximum)
+        public static NumericField CreateNumericField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.String mask, global::System.Int32 decimalPlaces, global::System.Decimal minimum, global::System.Decimal maximum)
         {
             NumericField numericField = new NumericField();
             numericField.Id = id;
             numericField.Name = name;
-            numericField.Group = group;
             numericField.Required = required;
             numericField.Mask = mask;
             numericField.DecimalPlaces = decimalPlaces;
@@ -6290,16 +6258,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="allowMultipleSelection">Initial value of the AllowMultipleSelection property.</param>
         /// <param name="typeInt">Initial value of the TypeInt property.</param>
-        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt)
+        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt)
         {
             OptionsField optionsField = new OptionsField();
             optionsField.Id = id;
             optionsField.Name = name;
-            optionsField.Group = group;
             optionsField.Required = required;
             optionsField.AllowMultipleSelection = allowMultipleSelection;
             optionsField.TypeInt = typeInt;
@@ -10326,15 +10292,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="isMultiline">Initial value of the IsMultiline property.</param>
-        public static TextBoxField CreateTextBoxField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.Boolean isMultiline)
+        public static TextBoxField CreateTextBoxField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean isMultiline)
         {
             TextBoxField textBoxField = new TextBoxField();
             textBoxField.Id = id;
             textBoxField.Name = name;
-            textBoxField.Group = group;
             textBoxField.Required = required;
             textBoxField.IsMultiline = isMultiline;
             return textBoxField;

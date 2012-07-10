@@ -95,7 +95,6 @@ BEGIN
 		(
 			Id UNIQUEIDENTIFIER,
 			Name NVARCHAR(MAX),
-			[Group] nvarchar(MAX),
 			[Required] BIT,
 			ToolTip NVARCHAR(MAX),
 			ParentFieldId UNIQUEIDENTIFIER,
@@ -109,7 +108,6 @@ BEGIN
 		BEGIN -- declaring variables to be used to copy fields
 			DECLARE @FieldRowCount int
 			DECLARE @fieldName NVARCHAR(max)
-			DECLARE @fieldGroup NVARCHAR(max)
 			DECLARE @fieldRequired BIT
 			DECLARE @fieldToolTip NVARCHAR(MAX)
 			DECLARE @fieldServiceTemplateId UNIQUEIDENTIFIER
@@ -155,7 +153,6 @@ BEGIN
 
 			BEGIN --Sets all variables to copy basic field data
 				SET @fieldName = (SELECT Name FROM @FieldsTable WHERE Id = @currentId)
-				SET @fieldGroup = (SELECT [Group] FROM @FieldsTable WHERE Id = @currentId)
 				SET @fieldRequired = (SELECT [Required] FROM @FieldsTable WHERE Id = @currentId)
 				SET @fieldToolTip = (SELECT ToolTip FROM @FieldsTable WHERE Id = @currentId)
 			END
@@ -172,7 +169,6 @@ BEGIN
 				INSERT INTO Fields --Add a copy of the old field to the Fields table
 				        ( Id ,
 				          Name ,
-				          [Group] ,
 				          [Required] ,
 				          ToolTip ,
 				          ParentFieldId ,
@@ -180,7 +176,6 @@ BEGIN
 				        )
 				VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				          @fieldName , -- Name - nvarchar(max)
-				          @fieldGroup , -- Group - nvarchar(max)
 				          @fieldRequired , -- Required - bit
 				          @fieldToolTip , -- ToolTip - nvarchar(max)
 				          @currentId , -- ParentFieldId - uniqueidentifier

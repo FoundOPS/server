@@ -172,7 +172,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                     fieldToAdd = new LocationField
                     {
                         ParentFieldId = ServiceTemplateConstants.ServiceDestinationFieldId,
-                        Group = "Location",
                         Name = "Service Destination",
                         Tooltip = "Enter the Service Destination here",
                         LocationFieldType = LocationFieldType.Destination,
@@ -184,9 +183,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                 default:
                     throw new NotImplementedException("Field Type not Recognized");
             }
-
-            if (!(fieldToAdd is LocationField))
-                fieldToAdd.Group = "Details";
 
             //Setup the ServiceTemplate Context
             serviceTemplateContext.Fields.Add(fieldToAdd);
