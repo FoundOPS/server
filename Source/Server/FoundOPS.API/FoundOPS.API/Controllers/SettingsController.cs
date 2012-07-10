@@ -149,7 +149,16 @@ namespace FoundOPS.API.Controllers
             else
                 userAccounts = accesibleUserAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName).ToArray();
 
-            return userAccounts.Select(UserSettings.ConvertModel).AsQueryable();
+            IList<UserSettings> userAccountsQueryable = new List<UserSettings>();
+
+            foreach (var user in userAccounts)
+            {
+                var role = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerPartyId == businessAccount.Id && r.MemberParties.Any(p => p.Id == user.Id));
+
+                userAccountsQueryable.Add(UserSettings.ConvertModel(user, role));
+            }
+
+            return userAccountsQueryable.AsQueryable();
         }
 
         [AcceptVerbs("POST")]

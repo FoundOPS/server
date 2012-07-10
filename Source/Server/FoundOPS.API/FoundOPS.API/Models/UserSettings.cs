@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOPS.API.Models
 {
@@ -17,14 +19,15 @@ namespace FoundOPS.API.Models
         /// </summary>
         public string Role { get; set; }
 
-        public static UserSettings ConvertModel(FoundOps.Core.Models.CoreEntities.UserAccount userAccount)
+        public static UserSettings ConvertModel(UserAccount userAccount, Role role)
         {
             var userSettings = new UserSettings
                 {
                     Id = userAccount.Id,
                     FirstName = userAccount.FirstName,
                     LastName = userAccount.LastName,
-                    EmailAddress = userAccount.EmailAddress
+                    EmailAddress = userAccount.EmailAddress,
+                    Role = role.Name
                 };
 
             return userSettings;
