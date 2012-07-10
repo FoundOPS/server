@@ -25,13 +25,14 @@ namespace FoundOps.SLClient.Data
         {
             //Manually set the rootUrl because it is different for debugging and deployement
 
-// ReSharper disable JoinDeclarationAndInitializer
-
+#if DEBUGNODE
+            //The silverlight app will be running under the node server, different from the DomainService
+            var rootUrl = "http://localhost:31820";
+#else
             //The rootUrl for the domainService
             //In deployement it is the same as the root url of the server (which is the current document's root url)
             var rootUrl = HtmlPage.Document.DocumentUri.RootUrl();
-
-// ReSharper restore JoinDeclarationAndInitializer
+#endif
 
 #if DEBUG
             //In debug mode, on the local server, the CoreDomainContext is under ClientBin

@@ -4,6 +4,15 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TESTRELEASE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugNode|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -70,7 +79,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Microsoft.ServiceModel.DomainServices.Hosting.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
@@ -377,7 +386,6 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Tools\CCDAPDD.cshtml" />
     <Content Include="Views\Home\PerformServerOperations.cshtml" />
-    <Content Include="Views\Home\Silverlight.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\QuickBooks\GetAuthorization.cshtml" />
@@ -394,10 +402,13 @@
     <Content Include="view\testContent.html" />
     <Content Include="view\updates.html" />
     <Content Include="Web.base.config" />
-    <Content Include="Web.base.TestRelease.config">
+    <Content Include="Web.base.Debug.config">
       <DependentUpon>Web.base.config</DependentUpon>
     </Content>
-    <Content Include="Web.base.Debug.config">
+    <Content Include="Web.base.DebugNode.config" >
+      <DependentUpon>Web.base.config</DependentUpon>
+    </Content>
+    <Content Include="Web.base.TestRelease.config">
       <DependentUpon>Web.base.config</DependentUpon>
     </Content>
     <Content Include="Web.base.Release.config">

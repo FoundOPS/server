@@ -34,6 +34,21 @@ namespace FoundOps.Server.Controllers
                 return Redirect(Global.RootFrontSiteUrl);
 #endif
 
+#if DEBUG
+            var random = new Random();
+            var version = random.Next(10000).ToString();
+#else
+            var request = (HttpWebRequest)WebRequest.Create(AzureTools.BlobStorageUrl + "xaps/version.txt");
+
+            // *** Retrieve request info headers
+            var response = (HttpWebResponse)request.GetResponse();
+            var stream = new StreamReader(response.GetResponseStream());
+
+            var version = stream.ReadToEnd();
+            response.Close();
+            stream.Close();
+#endif
+
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.PartyImage)
                         .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks").Include("RoleMembership.OwnerParty")
                         .First();
@@ -64,7 +79,7 @@ namespace FoundOps.Server.Controllers
 #if DEBUG
                 jsonWriter.Formatting = Newtonsoft.Json.Formatting.Indented;
 #endif
-                jsonWriter.WriteStartObject(); //initializeConfig object
+                jsonWriter.WriteStartObject(); //navigatorConfig object
                 jsonWriter.WritePropertyName("name");
                 jsonWriter.WriteValue(user.FirstName + " " + user.LastName);
 
@@ -108,7 +123,6 @@ namespace FoundOps.Server.Controllers
 
                 jsonWriter.WriteEnd(); //end roles array
 
-
                 //Add each of the available blocks (sections) and their details
                 jsonWriter.WritePropertyName("sections");
                 jsonWriter.WriteStartArray();
@@ -137,35 +151,11 @@ namespace FoundOps.Server.Controllers
 
             var configData = sb.ToString();
 
+            var model = new { NavigatorConfig = configData, SilverlightVersion = version };
+
             //Cast to object so the overload for model data is used
             //instead of it being confused as the view name
-            return View((object)configData);
-        }
-
-        //Cannot require the page to be HTTPS until we have our own tile server
-        //#if !DEBUG
-        //        [RequireHttps]
-        //#endif
-        [AddTestUsersThenAuthorize]
-        public ActionResult Silverlight()
-        {
-#if DEBUG
-            var random = new Random();
-            var version = random.Next(10000).ToString();
-#else
-            var request = (HttpWebRequest)WebRequest.Create(AzureTools.BlobStorageUrl + "xaps/version.txt");
-
-            // *** Retrieve request info headers
-            var response = (HttpWebResponse)request.GetResponse();
-            var stream = new StreamReader(response.GetResponseStream());
-
-            var version = stream.ReadToEnd();
-            response.Close();
-            stream.Close();
-#endif
-
-            //Must cast the string as an object so it uses the correct overloaded method
-            return View((object)version);
+            return View(model);
         }
 
         [AddTestUsersThenAuthorize]

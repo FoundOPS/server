@@ -4,12 +4,11 @@
 <!--[if IEMobile 7 ]>
 <html class="no-js iem7" lang="en"> <![endif]-->
 <!--[if (gt IEMobile 7)|!(IEMobile)]><!-->
-<html class="no-js" lang="en">
-<!--<![endif]-->
+<html class="no-js" lang="en"> <!--<![endif]-->
 
 <head>
     <meta charset="utf-8">
-    <title>FoundOPS Navigator</title>
+    <title>FoundOPS</title>
 
     <!-- From H5BP:M -->
     <meta name="description" content="">
@@ -18,7 +17,7 @@
     <meta name="MobileOptimized" content="320">
     <!-- Enabling user-scalable=no or calling $("#nav").toggleClass("androidFixedPositionFix"); fixes fixed position bug in android 2.3 -->
     <meta name="viewport"
-        content="width=100%; initial-scale=1; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no" />
+          content="width=100%; initial-scale=1; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no"/>
     <!-- Home screen icon  Mathias Bynens mathiasbynens.be/notes/touch-icons -->
     <!-- For iPhone 4 with high-resolution Retina display: -->
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/h/apple-touch-icon.png">
@@ -44,56 +43,107 @@
     <!-- Main Stylesheet -->
     <!--link rel="stylesheet" href="css/style.css"-->
 
-    <link rel="shortcut icon" href="./favicon_32.ico" />
-    <link rel="stylesheet" type="text/css" href="styles/navigator.css">
-    <link rel="stylesheet" type="text/css" href="styles/jquery.jscrollpane.css" media="all" />
+    <link rel="shortcut icon" href="./favicon_32.ico"/>
+    <!--If debug-->
+    <link rel="stylesheet/less" type="text/css" href="styles/navigator.less">
+    <link rel="stylesheet" type="text/css" href="styles/jquery.jscrollpane.css" media="all"/>
 
     <script type="text/javascript">
-        /* window.initializeConfig = @Html.Raw(@Model) */
-
-        window.initializeConfig = {
-            name: "Jordan Kelly",
-            avatarUrl: "./img/david.png",
-            businessLogoUrl: "./img/got-grease-logo.png",
-            roles: [
-                { name: "FoundOPS", id: "23144-24242-242442" },
-                { name: "GotGrease", id: "95838-24242-242442" },
-                { name: "AB Couriers", id: "64729-24242-242442" }
-            ],
-            sections: [
-                { name: "Test Content", url: "#view/testContent.html", color: "red", iconUrl: "img/employees.png" },
-                { name: "Employees", url: "#Home/Silverlight", color: "red", iconUrl: "img/employees.png" },
-                { name: "Routes", url: "#Home/Silverlight", color: "green", iconUrl: "./img/routes.png" },
-                { name: "Regions", url: "#Home/Silverlight", color: "orange", iconUrl: "./img/regions.png" },
-                { name: "Vehicles", url: "#Home/Silverlight", color: "red", iconUrl: "./img/vehicles.png" }/*,
-                 {name:"Logout", url:"#logout", color:"black", iconUrl:"./img/logout.png"}*/
-            ]
-        };
+        //If release
+        window.navigatorConfig = @Html.Raw(Model.NavigatorConfig)
+        //If debugging
+        //window.navigatorConfig = {
+        //    name: "Jordan Kelly",
+        //    avatarUrl: "./img/david.png",
+        //    businessLogoUrl: "./img/got-grease-logo.png",
+        //    roles: [
+        //        { name: "FoundOPS", id: "23144-24242-242442" },
+        //        { name: "GotGrease", id: "95838-24242-242442" },
+        //        { name: "AB Couriers", id: "64729-24242-242442" }
+        //    ],
+        //    sections: [
+        //        { name: "Employees", url: "#Employees", color: "red", iconUrl: "img/employees.png" },
+        //        { name: "Routes", url: "#Routes", color: "green", iconUrl: "./img/routes.png" },
+        //        { name: "Regions", url: "#Regions", color: "orange", iconUrl: "./img/regions.png" },
+        //        { name: "Vehicles", url: "#Vehicles", color: "red", iconUrl: "./img/vehicles.png" }/*,
+        //         {name:"Logout", url:"#logout", color:"black", iconUrl:"./img/logout.png"}*/
+        //    ]
+        //};
     </script>
 </head>
 
 <body ontouchstart="">
-    <div id="contentWrapper">
-        <div id="content"></div>
+<div id="contentWrapper">
+    <div id="content">
+        <div id="remoteContent">
+        </div>
+        <div id="silverlightControlHost" style="visibility: hidden">
+            <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="100%">
+                <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged" />
+                <!--if debugging outside of VS-->
+                <!--<param name="splashscreensource" value="http://localhost:31820/ClientBin/SplashScreen.xaml" />-->
+                <!--<param name="source" value="http://localhost:31820/ClientBin/FoundOps.SLClient.Navigator.xap"/>-->
+
+                <!--if in VS-->
+                @{
+                var xapSource = "";
+                var splashSource = "";
+                switch (FoundOps.Server.Global.Mode)
+                {
+                case "DEBUG":
+                xapSource = Url.Content("/ClientBin/FoundOps.SLClient.Navigator.xap");
+                splashSource = Url.Content("/ClientBin/SplashScreen.xaml");
+                break;
+                case "TESTRELEASE":
+                xapSource = Url.Content("http://opsapptest.blob.core.windows.net/xaps/FoundOps.SLClient.Navigator.xap");
+                splashSource = Url.Content("http://opsapptest.blob.core.windows.net/xaps/SplashScreen.xaml");
+                break;
+                case "RELEASE":
+                xapSource = Url.Content("http://opsapplive.blob.core.windows.net/xaps/FoundOps.SLClient.Navigator.xap");
+                splashSource = Url.Content("http://opsapplive.blob.core.windows.net/xaps/SplashScreen.xaml");
+                break;
+                }
+
+                //Setup version
+                var sourceParam = xapSource + "?ignore=" + Model.SilverlightVersion;
+                }
+                <param name="splashscreensource" value="@splashSource" />
+                <param name="source" value="@sourceParam"/>
+
+                <param name="onError" value="onSilverlightError" />
+                <param name="background" value="#ff333335" />
+                <param name="windowless" value="true" />
+                <param name="minRuntimeVersion" value="5.0.61118.0" />
+                <param name="enableHtmlAccess" value="true" />
+                <param name="autoUpgrade" value="true" />
+                <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration: none">
+                    <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"
+                         style="border-style: none" />
+                </a>
+            </object>
+            <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px;
+            border: 0px"></iframe>
+        </div>
     </div>
+</div>
 
-    <script type="text/javascript">
-        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
 
+<script type="text/javascript" src="lib/less.min.js"></script>
+<script data-main="js/main.js" src="lib/require-jquery.js"></script>
 
-    <script data-main="js/main.js" src="lib/require-jquery.js"></script>
+<!-- JavaScript at the bottom for fast page loading -->
+<!--script>window.jQuery || document.write('<script src="lib/jquery.min.js"><\/script>')</script-->
 
-    <!-- JavaScript at the bottom for fast page loading -->
-    <!--script>window.jQuery || document.write('<script src="lib/jquery.min.js"><\/script>')</script-->
+<!-- Debugger - remove for production -->
+<!-- <script src="https://getfirebug.com/firebug-lite.js"></script> -->
 
-    <!-- Debugger - remove for production -->
-    <!-- <script src="https://getfirebug.com/firebug-lite.js"></script> -->
-
-    <!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
+<!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
 mathiasbynens.be/notes/async-analytics-snippet -->
-    <!--script>
+<!--script>
     var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
     (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
         g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
