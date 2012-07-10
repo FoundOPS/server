@@ -226,7 +226,7 @@ namespace FoundOPS.API.Controllers
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-            var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().First(ua => ua.Id == settings.Id);
+            var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == settings.Id).Include(ua => ua.RoleMembership).First();
 
             var emailExists = _coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress == settings.EmailAddress);
 
