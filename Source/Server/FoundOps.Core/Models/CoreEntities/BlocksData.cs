@@ -380,7 +380,7 @@ namespace FoundOps.Core.Models.CoreEntities
             //Set the url based on the name
             foreach (var block in AllBlocks.Where(b => string.IsNullOrEmpty(b.Url)))
             {
-                block.Url = "#view/silverlight.html?section=" + block.Name;
+                block.Url = "#Home/Silverlight";
             }
         }
     }

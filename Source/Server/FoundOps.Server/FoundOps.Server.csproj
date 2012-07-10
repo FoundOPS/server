@@ -392,6 +392,7 @@
     <Content Include="view\routeDetails.html" />
     <Content Include="view\routeList.html" />
     <Content Include="view\testContent.html" />
+    <Content Include="view\updates.html" />
     <Content Include="Web.base.config" />
     <Content Include="Web.base.TestRelease.config">
       <DependentUpon>Web.base.config</DependentUpon>
