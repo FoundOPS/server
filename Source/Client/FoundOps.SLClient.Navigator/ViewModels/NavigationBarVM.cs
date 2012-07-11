@@ -1,5 +1,6 @@
 ﻿using FoundOps.Common.Silverlight.Loader;
 using FoundOps.Common.Silverlight.MVVM.Messages;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Interfaces;
 using FoundOps.Common.Silverlight.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
@@ -54,19 +55,6 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         public UserAccount CurrentUserAccount
         {
             get { return _currentUserAccount; }
-            private set
-            {
-                _currentUserAccount = value;
-
-                this.RaisePropertyChanged("CurrentUserAccount");
-
-                if (CurrentUserAccount == null)
-                    return;
-
-                this.RaisePropertyChanged("OwnerAccountsOfMyRoles");
-                SelectedOwnerAccountOfRole = OwnerAccountsOfMyRoles.FirstOrDefault();
-                OnDataLoaded();
-            }
         }
 
         /// <summary>
@@ -79,27 +67,13 @@ namespace FoundOps.SLClient.Navigator.ViewModels
                 if (CurrentUserAccount == null)
                     return null;
 
-                var orderedParties = CurrentUserAccount.AccessibleRoles.Select(r => r.OwnerBusinessAccount).Distinct().ToList();
+                var businesssAccounts = CurrentUserAccount.AccessibleRoles.Where(ar => ar.OwnerBusinessAccount != null).Select(r => r.OwnerBusinessAccount)
+                    .Distinct().OrderBy(ba => ba.Name).ToList();
 
-                //Compare the names alphabetically
-                orderedParties.Sort((a, b) => a.DisplayName.ToString().CompareTo(b.DisplayName.ToString()));
-
-                //Currently the UserAccountRole should not be displayed
-                //when that changes TODO: Remove the following line and uncomment the 3 lines below
-                //orderedParties.Remove(CurrentUserAccount);
-
-                //TODO: Add the following 3 lines back
-                ////If the CurrentUserAccount is in the list put it last
-                //if (orderedParties.Remove(CurrentUserAccount))
-                //    orderedParties.Add(CurrentUserAccount);
-
-                SelectedOwnerAccountOfRole = orderedParties.FirstOrDefault();
-
-                return orderedParties;
+                return businesssAccounts;
             }
         }
 
-        private Party _selectedOwnerAccountOfRole;
         /// <summary>
         /// Gets or sets the selected owner account of role.
         /// </summary>
@@ -108,21 +82,7 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         /// </value>
         public Party SelectedOwnerAccountOfRole
         {
-            get { return _selectedOwnerAccountOfRole; }
-            set
-            {
-                _selectedOwnerAccountOfRole = value;
-
-                //The SelectedRole will be the only Role the CurrentUser has access to that is owned by the SelectedOwnerAccountOfRole
-                //You can only have one role per Party
-                SelectedRole = this.CurrentUserAccount.AccessibleRoles.FirstOrDefault(r => r.OwnerBusinessAccountId == SelectedOwnerAccountOfRole.Id);
-
-                //Whenever the OwnerAccount is a BusinessAccount load CompanyHome page
-                if (SelectedOwnerAccountOfRole != null && SelectedOwnerAccountOfRole is BusinessAccount)
-                    OnNavigateToHandler("CompanyHome");
-
-                this.RaisePropertyChanged("SelectedOwnerAccountOfRole");
-            }
+            get { return SelectedRole != null ? SelectedRole.OwnerBusinessAccount : null; }
         }
 
         private Role _selectedRole;
@@ -140,6 +100,7 @@ namespace FoundOps.SLClient.Navigator.ViewModels
                 _selectedRole = value;
 
                 this.RaisePropertyChanged("SelectedRole");
+                this.RaisePropertyChanged("SelectedOwnerAccountOfRole");
 
                 //Update the ContextManager's RoleId
                 Manager.Context.RoleIdObserver.OnNext(SelectedRole.Id);
@@ -189,13 +150,27 @@ namespace FoundOps.SLClient.Navigator.ViewModels
         [ImportingConstructor]
         public NavigationBarVM()
         {
-            Manager.Context.UserAccountObservable.Subscribe(ua => CurrentUserAccount = ua);
+            Manager.Context.UserAccountObservable.Subscribe(ua =>
+            {
+                _currentUserAccount = ua;
+
+                this.RaisePropertyChanged("CurrentUserAccount");
+                if (CurrentUserAccount == null)
+                    return;
+
+                this.RaisePropertyChanged("OwnerAccountsOfMyRoles");
+                if (OwnerAccountsOfMyRoles.Any())
+                {
+                    var selectedRole = _currentUserAccount.AccessibleRoles.FirstOrDefault(r => r.OwnerBusinessAccount == OwnerAccountsOfMyRoles.First());
+                    SelectedRole = selectedRole;
+                }
+            });
 
             Manager.Data.GetPublicBlocks(blocks =>
-             {
-                 PublicBlocks = blocks;
-                 OnDataLoaded();
-             });
+            {
+                PublicBlocks = blocks;
+                OnDataLoaded();
+            });
         }
 
         protected override void RegisterCommands()

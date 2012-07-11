@@ -27,7 +27,7 @@
                                     SelectedItem="{Binding SelectedOwnerAccountOfRole, Mode=TwoWay}" Height="30" MinWidth="80" IsEnabled="{Binding CurrentUserAccount, Converter={StaticResource ExistsBoolConverter}}" >
                 <Controls:RadComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding DisplayName}"/>
+                        <TextBlock Text="{Binding Name}"/>
                     </DataTemplate>
                 </Controls:RadComboBox.ItemTemplate>
             </Controls:RadComboBox>

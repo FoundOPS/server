@@ -432,7 +432,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         public UserAccount CurrentUserAccount()
         {
             var currentUserAccount = AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext)
-                 .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks")
+                .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount")
                  .Include(ua => ua.LinkedEmployees)
                  .FirstOrDefault();
 
