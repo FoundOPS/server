@@ -265,7 +265,6 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NavigationVM.cs" />
     <Compile Include="Panes\Dispatcher\DispatcherToolBar.xaml.cs">
       <DependentUpon>DispatcherToolBar.xaml</DependentUpon>
     </Compile>

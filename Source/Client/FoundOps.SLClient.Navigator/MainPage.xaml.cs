@@ -1,13 +1,9 @@
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Navigator.Panes.InfiniteAccordion;
-using MEFedMVVM.ViewModelLocator;
+using FoundOps.SLClient.UI.Tools;
 using System;
-using System.ComponentModel.Composition;
 using System.Reactive.Linq;
 using System.Windows;
-using ReactiveUI;
+using System.Windows.Browser;
 
 namespace FoundOps.SLClient.Navigator
 {
@@ -27,9 +23,14 @@ namespace FoundOps.SLClient.Navigator
             //This is especially important for Dispatcher
             Application.Current.Host.Content.Resized += ContentResized;
 
-            NavigationVM.FromPropertyChanged("SelectedView").ObserveOnDispatcher().Subscribe(_ => SetContentPageSizeToContentFrameSize());
+            this.Loaded += MainPageLoaded;
 
-            NavigationVM.NavigateToView("Business Accounts");
+            VM.Navigation.FromPropertyChanged("SelectedView").ObserveOnDispatcher().Subscribe(_ => SetContentPageSizeToContentFrameSize());
+        }
+
+        void MainPageLoaded(object sender, RoutedEventArgs e)
+        {
+            HtmlPage.RegisterScriptableObject("navigationVM", VM.Navigation);
         }
 
         #region ContentFrame.Content's Sizing
@@ -48,13 +49,5 @@ namespace FoundOps.SLClient.Navigator
         }
 
         #endregion
-
-        private static NavigationVM NavigationVM
-        {
-            get
-            {
-                return (NavigationVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("NavigationVM", null, CreationPolicy.Shared).Value;
-            }
-        }
     }
 }

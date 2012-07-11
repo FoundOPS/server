@@ -1,4 +1,5 @@
-﻿using FoundOps.SLClient.UI.ViewModels;
+﻿using FoundOps.SLClient.Navigator;
+using FoundOps.SLClient.UI.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.ComponentModel.Composition;
@@ -12,9 +13,6 @@ namespace FoundOps.SLClient.UI.Tools
     /// </summary>
     public static class VM
     {
-        /// <summary>
-        /// Gets the BusinessAccountsVM.
-        /// </summary>
         public static BusinessAccountsVM BusinessAccounts
         {
             get
@@ -23,9 +21,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the ClientsVM.
-        /// </summary>
         public static ClientsVM Clients
         {
             get
@@ -34,9 +29,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the EmployeesVM.
-        /// </summary>
         public static EmployeesVM Employees
         {
             get
@@ -45,9 +37,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the FieldsVM.
-        /// </summary>
         public static FieldsVM Fields
         {
             get
@@ -56,9 +45,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the FieldsVM.
-        /// </summary>
         public static DispatcherFilterVM DispatcherFilter
         {
             get
@@ -67,9 +53,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the ImportDataVM.
-        /// </summary>
         public static ImportDataVM ImportData
         {
             get
@@ -78,9 +61,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the LocationsVM.
-        /// </summary>
         public static LocationsVM Locations
         {
             get
@@ -89,9 +69,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the RegionsVM.
-        /// </summary>
         public static RegionsVM Regions
         {
             get
@@ -100,9 +77,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the RecurringServicesVM.
-        /// </summary>
         public static RecurringServicesVM RecurringServices
         {
             get
@@ -111,9 +85,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the RoutesVM.
-        /// </summary>
         public static RoutesVM Routes
         {
             get
@@ -122,9 +93,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the RoutesInfiniteAccordionVM.
-        /// </summary>
         public static RoutesInfiniteAccordionVM RoutesInfiniteAccordion
         {
             get
@@ -134,9 +102,6 @@ namespace FoundOps.SLClient.UI.Tools
         }
 
         private static RouteManifestVM _routeManifestVM;
-        /// <summary>
-        /// Gets the RouteManifestVM.
-        /// </summary>
         public static RouteManifestVM RouteManifest
         {
             get
@@ -146,9 +111,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the ServiceTemplatesVM.
-        /// </summary>
         public static ServiceTemplatesVM ServiceTemplates
         {
             get
@@ -157,9 +119,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the ServicesVM.
-        /// </summary>
         public static ServicesVM Services
         {
             get
@@ -168,9 +127,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the TaskBoardVM.
-        /// </summary>
         public static TaskBoardVM TaskBoard
         {
             get
@@ -179,9 +135,6 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the UserAccountsVM.
-        /// </summary>
         public static UserAccountsVM UserAccounts
         {
             get
@@ -190,14 +143,19 @@ namespace FoundOps.SLClient.UI.Tools
             }
         }
 
-        /// <summary>
-        /// Gets the UserAccountsVM.
-        /// </summary>
         public static VehiclesVM Vehicles
         {
             get
             {
                 return (VehiclesVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("VehiclesVM", null, CreationPolicy.Shared).Value;
+            }
+        }
+
+        public static NavigationVM Navigation
+        {
+            get
+            {
+                return (NavigationVM)ViewModelRepository.Instance.Resolver.GetViewModelByContract("NavigationVM", null, CreationPolicy.Shared).Value;
             }
         }
     }

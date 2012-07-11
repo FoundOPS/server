@@ -483,6 +483,7 @@
     <Compile Include="ViewModels\ContactInfoVM.cs" />
     <Compile Include="ViewModels\BusinessAccountSettingsVM.cs" />
     <Compile Include="ViewModels\DispatcherFilterVM.cs" />
+    <Compile Include="ViewModels\NavigationVM.cs" />
     <Compile Include="ViewModels\RouteDestinationVM.cs" />
     <Compile Include="ViewModels\RoutesInfiniteAccordionVM.cs" />
     <Compile Include="ViewModels\RouteVM.cs" />

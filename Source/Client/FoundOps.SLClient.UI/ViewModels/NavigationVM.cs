@@ -1,13 +1,13 @@
-﻿using FoundOps.Common.Silverlight.Interfaces;
+﻿using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.Navigator.Panes.InfiniteAccordion;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
+using System.Windows.Browser;
 using System.Windows.Controls;
 
 namespace FoundOps.SLClient.Navigator
@@ -15,6 +15,8 @@ namespace FoundOps.SLClient.Navigator
     [ExportViewModel("NavigationVM")]
     public class NavigationVM : INotifyPropertyChanged
     {
+        #region Properties
+
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -39,7 +41,7 @@ namespace FoundOps.SLClient.Navigator
             new Tuple<string, Type>("Services", typeof (Service)),
             new Tuple<string, Type>("Vehicles", typeof (Vehicle))
         };
-                                                                                
+
         /// <summary>
         /// The current selected view.
         /// </summary>
@@ -56,18 +58,21 @@ namespace FoundOps.SLClient.Navigator
         private bool _firstBlockChosen;
         private UserControl _selectedView;
 
+        #endregion
+
         /// <summary>
         /// Navigate to a view
         /// </summary>
         /// <param name="name"></param>
+        [ScriptableMember]
         public UserControl NavigateToView(string name)
         {
             var infiniteAccordionSection = _infiniteAccordionSections.FirstOrDefault(t => t.Item1 == name);
 
             var view = GetView(infiniteAccordionSection != null ? "Infinite Accordion" : name);
-            if(infiniteAccordionSection !=null)
+            if (infiniteAccordionSection != null)
             {
-                ((InfiniteAccordion) view).SelectedObjectType = infiniteAccordionSection.Item2.ToString();
+                ((IInfiniteAccordionPage)view).SelectedObjectType = infiniteAccordionSection.Item2.ToString();
             }
 
             SelectedView = view;
