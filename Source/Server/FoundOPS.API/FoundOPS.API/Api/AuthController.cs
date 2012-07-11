@@ -1,7 +1,7 @@
 ﻿using FoundOps.Core.Models.Authentication;
 using System.Web.Http;
 
-namespace FoundOPS.API.Controllers
+namespace FoundOPS.API.Api
 {
     /// <summary>
     /// An api controller which allows users to authenticate.
@@ -17,7 +17,7 @@ namespace FoundOPS.API.Controllers
         /// </summary>
         /// <param name="email">The email address.</param>
         /// <param name="pass">The password.</param>
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public bool Login(string email, string pass)
         {
             if (ModelState.IsValid)
@@ -33,7 +33,7 @@ namespace FoundOPS.API.Controllers
         /// <summary>
         /// Log Out the current user.
         /// </summary>
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public bool LogOut()
         {
             _formsService.SignOut();

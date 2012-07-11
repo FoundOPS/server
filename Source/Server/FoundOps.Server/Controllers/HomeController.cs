@@ -20,7 +20,7 @@ namespace FoundOps.Server.Controllers
 #endif
 
             if (!HttpContext.User.Identity.IsAuthenticated)
-                return Redirect(Global.RootFrontSiteUrl);
+                return Redirect(ServerConstants.RootFrontSiteUrl);
 
             return RedirectToAction("Silverlight", "Home");
         }

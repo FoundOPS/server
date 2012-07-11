@@ -2,6 +2,7 @@
 using FoundOPS.API.Models;
 using FoundOPS.API.Tools;
 using FoundOps.Common.NET;
+using FoundOps.Core.Models;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -16,7 +17,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace FoundOPS.API.Controllers
+namespace FoundOPS.API.Api
 {
 #if !DEBUG
     [Authorize]
@@ -165,45 +166,66 @@ namespace FoundOPS.API.Controllers
         public HttpResponseMessage InsertUserSettings(UserSettings settings, Guid? roleId)
         {
             //Check for admin abilities
-            if (roleId.HasValue)
-            {
-                var businessAccount = _coreEntitiesContainer.Owner(roleId.Value).FirstOrDefault();
-
-                //If they are not an admin, they do not have the ability to insert new Users
-                if (businessAccount == null)
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
-
-                #region Create new UserAccount
-
-                var user = new UserAccount();
-
-                if (_coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress == settings.EmailAddress))
-                    throw new Exception("The email address is already in use");
-                
-                user.EmailAddress = settings.EmailAddress;
-                user.Id = Guid.NewGuid();
-                user.FirstName = settings.FirstName;
-                user.LastName = settings.LastName;
-
-                //Find the role in the BusinessAccount that matches the name of the one passed in.
-                var newRole = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerParty.Id == businessAccount.Id && r.Name == settings.Role);
-
-                if (newRole != null)
-                    user.RoleMembership.Add(newRole);
-
-                #endregion
-
-                //Add the newly created UserAccount to the database
-                _coreEntitiesContainer.Parties.AddObject(user);
-
-                //Save all changes made
-                _coreEntitiesContainer.SaveChanges();
-
-                return Request.CreateResponse(HttpStatusCode.Accepted);
-            }
+            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator })
+                .FirstOrDefault();
 
             //User must be in an admin role to Create new Users
-            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+            if (businessAccount == null)
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            #region Create new UserAccount
+
+            var user = new UserAccount();
+
+            if (
+                _coreEntitiesContainer.Parties.OfType<UserAccount>().Any(
+                    ua => ua.EmailAddress == settings.EmailAddress))
+                throw new Exception("The email address is already in use");
+
+            user.EmailAddress = settings.EmailAddress;
+            user.Id = Guid.NewGuid();
+            user.FirstName = settings.FirstName;
+            user.LastName = settings.LastName;
+            //Create a temporary password
+            user.TemporaryPassword = EmailPasswordTools.GeneratePassword();
+            user.PasswordHash = EncryptionTools.Hash(user.TemporaryPassword);
+
+            //Find the role in the BusinessAccount that matches the name of the one passed in.
+            var newRole =
+                _coreEntitiesContainer.Roles.FirstOrDefault(
+                    r => r.OwnerParty.Id == businessAccount.Id && r.Name == settings.Role);
+
+            if (newRole != null)
+                user.RoleMembership.Add(newRole);
+
+            #endregion
+
+            //Add the newly created UserAccount to the database
+            _coreEntitiesContainer.Parties.AddObject(user);
+
+            //Save all changes made
+            _coreEntitiesContainer.SaveChanges();
+
+            var sender = _coreEntitiesContainer.CurrentUserAccount().First().DisplayName;
+            var recipient = user.FirstName;
+
+            //Create the link that will login the new user and then redirect them to the
+            //settings page where they can change their password
+            var redirect = ServerConstants.RootApplicationUrl + "/settings.html";
+            var link = ServerConstants.RootApiUrl + "/api/Helper/Login?email=" + user.EmailAddress + "&pass=" + user.TemporaryPassword + "&redirect=" + redirect;
+
+            //Construct the email
+            var from = _coreEntitiesContainer.CurrentUserAccount().First().EmailAddress;
+            var subject = "Your FoundOPS invite from " + sender;
+            var body = "Hi " + recipient + ", \r\n\r\n" + sender + " has created a user account for you in FoundOPS. \r\n\r\nFoundOPS is an easy to use " +
+                                "tool that helps field services teams communicate and provide the best " +
+                                "possible service to their clients. \r\n\r\nClick here to accept the invite: \r\n" + link +
+                                " \r\n\r\nIf you have any difficulty accepting the invitation, email us at " +
+                                "support@foundops.com. \r\n\r\n\r\nThe FoundOPS Team";
+
+            EmailPasswordTools.SendEmail(user.EmailAddress, subject, body);
+
+            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
         /// <summary>
@@ -350,7 +372,7 @@ namespace FoundOPS.API.Controllers
         /// <returns>The image url, expiring in 3 hours</returns>
         private async Task<string> UpdatePartyImageHelper(Party partyToUpdate)
         {
-            var formData = await Request.ReadMultipartAsync(new[] { "imageFileName", "imageData"});
+            var formData = await Request.ReadMultipartAsync(new[] { "imageFileName", "imageData" });
 
             var imageFileName = await formData["imageFileName"].ReadAsStringAsync();
             var imageDataString = await formData["imageData"].ReadAsStringAsync();

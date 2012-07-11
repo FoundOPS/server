@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure;
+﻿using FoundOPS.API.Models;
+using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
@@ -9,9 +10,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ResourceWithLastPoint = FoundOPS.API.Models.ResourceWithLastPoint;
-using TrackPoint = FoundOPS.API.Models.TrackPoint;
 
-namespace FoundOPS.API.Controllers
+namespace FoundOPS.API.Api
 {
 #if !DEBUG
     [Authorize]

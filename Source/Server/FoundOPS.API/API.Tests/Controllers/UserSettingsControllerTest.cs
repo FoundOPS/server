@@ -2,6 +2,7 @@
 using System.Net.Http;
 using FoundOPS.API.Controllers;
 using FoundOPS.API.Models;
+using FoundOPS.API.Api;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace API.Tests.Controllers

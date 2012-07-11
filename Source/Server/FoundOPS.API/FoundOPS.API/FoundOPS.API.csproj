@@ -207,12 +207,13 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AuthController.cs" />
-    <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Controllers\ServiceController.cs" />
-    <Compile Include="Controllers\ToolsController.cs" />
-    <Compile Include="Controllers\RoutesController.cs" />
-    <Compile Include="Controllers\TrackPointController.cs" />
+    <Compile Include="Api\AuthController.cs" />
+    <Compile Include="Controllers\HelperController.cs" />
+    <Compile Include="Api\SettingsController.cs" />
+    <Compile Include="Api\ServiceController.cs" />
+    <Compile Include="Api\ToolsController.cs" />
+    <Compile Include="Api\RoutesController.cs" />
+    <Compile Include="Api\TrackPointController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -238,6 +239,7 @@
     <Compile Include="TechnicianDomainService.cs" />
     <Compile Include="Tools\FormTools.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
+    <Compile Include="Tools\EmailPasswordTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

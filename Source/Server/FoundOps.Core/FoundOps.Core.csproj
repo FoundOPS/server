@@ -97,7 +97,7 @@
     <Compile Include="Models\Azure\TrackPointsHistoryContext.cs" />
     <Compile Include="Models\Azure\InvoiceTableDataModel.cs" />
     <Compile Include="Models\Azure\InvoiceDataServiceContext.cs" />
-    <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\ServerConstants.cs" />
     <Compile Include="Models\CoreEntities\BlocksData.cs" />
     <Compile Include="Models\CoreEntities\CoreEntities.metadata.cs" />
     <Compile Include="Models\CoreEntities\CoreEntities.Designer.cs">

@@ -1,14 +1,14 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
-using Location = FoundOPS.API.Models.Location;
-using Route = FoundOPS.API.Models.Route;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using Location = FoundOPS.API.Models.Location;
+using Route = FoundOPS.API.Models.Route;
 
-namespace FoundOPS.API.Controllers
+namespace FoundOPS.API.Api
 {
 #if !DEBUG
     [Authorize]

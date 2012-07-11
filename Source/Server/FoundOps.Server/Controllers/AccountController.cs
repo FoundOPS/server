@@ -148,7 +148,7 @@ namespace FoundOps.Server.Controllers
         {
             FormsService.SignOut();
 
-            return Redirect(Global.RootFrontSiteUrl);
+            return Redirect(ServerConstants.RootFrontSiteUrl);
         }
 
         #endregion

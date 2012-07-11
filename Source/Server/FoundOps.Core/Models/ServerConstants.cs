@@ -6,6 +6,20 @@
     public class ServerConstants
     {
 #if DEBUG
+        public static string RootApplicationUrl = "http://localhost:31820";
+        public static string RootFrontSiteUrl = "http://localhost:55206";
+        public static string RootApiUrl = "http://localhost:9711";
+#elif TESTRELEASE
+        public static string RootApplicationUrl = "https://test.foundops.com";
+        public static string RootFrontSiteUrl = "http://foundops.com";
+        public static string RootApiUrl = "http://testapi.foundops.com";
+#elif RELEASE
+        public static string RootApplicationUrl = "https://app.foundops.com";
+        public static string RootFrontSiteUrl = "http://foundops.com";
+        public static string RootApiUrl = "http://api.foundops.com";
+#endif
+
+#if DEBUG
         /// <summary>
         /// If set to true it will automatically login a FoundOPS Admin.
         /// </summary>

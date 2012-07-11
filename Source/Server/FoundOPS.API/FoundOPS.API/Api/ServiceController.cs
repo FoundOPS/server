@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Service = FoundOPS.API.Models.Service;
 
-namespace FoundOPS.API.Controllers
+namespace FoundOPS.API.Api
 {
 #if !DEBUG
     [Authorize]
