@@ -171,7 +171,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return contactInfoLabels.OrderBy(s => s);
 
             //Add all labels current user can administer that are the same account type. (Business Labels might be different than User Labels)
-            var accountsCurrentUserCanAdminister = ObjectContext.AdminRolesCurrentUserHasAccessTo().Select(r => r.OwnerParty);
+            var accountsCurrentUserCanAdminister = ObjectContext.AdminRolesCurrentUserHasAccessTo().Select(r => r.OwnerBusinessAccount);
 
             MethodInfo method = typeof(Queryable).GetMethod("OfType");
             MethodInfo generic = method.MakeGenericMethod(new Type[] { currentParty.GetType() });
@@ -298,7 +298,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         public Party PartyToAdministerForRole(Guid roleId)
         {
             var ownerParty = ObjectContext.AdminRolesCurrentUserHasAccessTo().Where(r => r.Id == roleId)
-                .Select(r => r.OwnerParty).FirstOrDefault();
+                .Select(r => r.OwnerBusinessAccount).FirstOrDefault();
 
             return ownerParty;
         }
@@ -432,8 +432,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         public UserAccount CurrentUserAccount()
         {
             var currentUserAccount = AuthenticationLogic.CurrentUserAccountQueryable(this.ObjectContext)
-                 .Include(ua => ua.RoleMembership).Include("RoleMembership.OwnerParty").Include("RoleMembership.Blocks")
-                 .Include(ua => ua.OwnedRoles).Include("OwnedRoles.Blocks").Include(ua => ua.LinkedEmployees)
+                 .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks")
+                 .Include(ua => ua.LinkedEmployees)
                  .FirstOrDefault();
 
             if (currentUserAccount != null)
@@ -462,7 +462,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 //If not a FoundOPS account, return the current business's owned roles memberparties
                 accesibleUserAccounts =
-                    from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == businessForRole.Id)
+                    from role in this.ObjectContext.Roles.Where(r => r.OwnerBusinessAccountId == businessForRole.Id)
                     from userAccount in this.ObjectContext.Parties.OfType<UserAccount>()
                     where role.MemberParties.Any(p => p.Id == userAccount.Id)
                     select userAccount;
@@ -472,7 +472,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Filter only user accounts that are member parties of one of it's roles
             if (serviceProviderId != Guid.Empty)
             {
-                return from role in this.ObjectContext.Roles.Where(r => r.OwnerPartyId == serviceProviderId)
+                return from role in this.ObjectContext.Roles.Where(r => r.OwnerBusinessAccountId == serviceProviderId)
                        from userAccount in accesibleUserAccounts
                        where role.MemberParties.Any(p => p.Id == userAccount.Id)
                        orderby userAccount.LastName + " " + userAccount.FirstName

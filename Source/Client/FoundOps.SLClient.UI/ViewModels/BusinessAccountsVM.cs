@@ -247,7 +247,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var selectedUserAccount = VM.UserAccounts.SelectedEntity;
                 if (selectedUserAccount != null)
                 {
-                    var rolesToRemoveFrom = this.SelectedEntity.RoleMembership.Where(r => r.OwnerParty == this.SelectedEntity).ToArray();
+                    var rolesToRemoveFrom = this.SelectedEntity.RoleMembership.Where(r => r.OwnerBusinessAccount == this.SelectedEntity).ToArray();
                  
                     foreach (var role in rolesToRemoveFrom)
                         role.MemberParties.Remove(selectedUserAccount);
@@ -291,14 +291,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             this.DomainContext.Parties.Add(newBusinessAccount);
 
             //Add administrator role
-            var administratorRole = new Role { Id = Guid.NewGuid(), Name = "Administrator", OwnerParty = newBusinessAccount, RoleType = RoleType.Administrator };
+            var administratorRole = new Role { Id = Guid.NewGuid(), Name = "Administrator", OwnerBusinessAccount = newBusinessAccount, RoleType = RoleType.Administrator };
 
             //Add the manager, business administrator, and HTML blocks to the administrator role
             foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.BusinessAdministratorBlockIds).Union(BlockConstants.HtmlBlockIds))
                 administratorRole.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
             //Add mobile role
-            var mobileRole = new Role { Id = Guid.NewGuid(), Name = "Mobile", OwnerParty = newBusinessAccount, RoleType = RoleType.Mobile };
+            var mobileRole = new Role { Id = Guid.NewGuid(), Name = "Mobile", OwnerBusinessAccount = newBusinessAccount, RoleType = RoleType.Mobile };
 
             //Add the mobile blocks to the mobile only role
             foreach (var blockId in BlockConstants.MobileBlockIds)

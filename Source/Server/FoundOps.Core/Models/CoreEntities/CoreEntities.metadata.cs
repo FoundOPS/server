@@ -39,6 +39,9 @@ namespace FoundOps.Core.Models.CoreEntities
             public EntityCollection<Location> Depots { get; set; }
 
             [Include]
+            public EntityCollection<Role> OwnedRoles { get; set; }
+
+            [Include]
             public EntityCollection<ServiceTemplate> ServiceTemplates { get; set; }
         }
     }
@@ -272,9 +275,6 @@ namespace FoundOps.Core.Models.CoreEntities
             public EntityCollection<Role> RoleMembership { get; set; }
 
             [Include]
-            public EntityCollection<Role> OwnedRoles { get; set; }
-
-            [Include]
             public PartyImage PartyImage { get; set; }
         }
     }
@@ -355,7 +355,7 @@ namespace FoundOps.Core.Models.CoreEntities
             public EntityCollection<Party> MemberParties { get; set; }
 
             [Include]
-            public Party OwnerParty { get; set; }
+            public Party OwnerBusinessAccount { get; set; }
         }
     }
 

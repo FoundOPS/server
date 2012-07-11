@@ -329,10 +329,6 @@
           <edmx:ConnectorPoint PointX="16.75" PointY="207.58898466428121" />
           <edmx:ConnectorPoint PointX="17.5" PointY="207.58898466428121" />
         </edmx:AssociationConnector>
-        <edmx:AssociationConnector Association="CoreEntities.PartyRole1">
-          <edmx:ConnectorPoint PointX="16.75" PointY="206.66949233214061" />
-          <edmx:ConnectorPoint PointX="17.5" PointY="206.66949233214061" />
-        </edmx:AssociationConnector>
         <edmx:EntityTypeShape EntityType="CoreEntities.Region" Width="1.5" PointX="12" PointY="23.125" Height="2.3648893229166674" />
         <edmx:AssociationConnector Association="CoreEntities.RegionLocation">
           <edmx:ConnectorPoint PointX="9.625" PointY="207.05744466145833" />
@@ -591,6 +587,7 @@
         <edmx:AssociationConnector Association="CoreEntities.RouteEmployee" />
         <edmx:InheritanceConnector EntityType="CoreEntities.BusinessAccount" />
         <edmx:InheritanceConnector EntityType="CoreEntities.BusinessAccount" />
+        <edmx:AssociationConnector Association="CoreEntities.RoleBusinessAccount" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

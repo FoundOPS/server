@@ -161,10 +161,6 @@
       <End Role="Role" EntitySet="Roles" />
       <End Role="PartyRole" EntitySet="PartyRole" />
     </AssociationSet>
-    <AssociationSet Name="PartyRole1" Association="CoreEntities.Store.PartyRole1">
-      <End Role="Party" EntitySet="Parties" />
-      <End Role="Role" EntitySet="Roles" />
-    </AssociationSet>
     <AssociationSet Name="RegionsLocation" Association="CoreEntities.Store.RegionLocation">
       <End Role="Regions" EntitySet="Regions" />
       <End Role="Location" EntitySet="Locations" />
@@ -285,6 +281,10 @@
       <End Role="Employee" EntitySet="Employees" />
       <End Role="RouteEmployee" EntitySet="RouteEmployee" />
     </AssociationSet>
+    <AssociationSet Name="RoleBusinessAccount" Association="CoreEntities.Store.RoleBusinessAccount">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
+    </AssociationSet>
     <AssociationSet Name="FK_BusinessAccount_inherits_Party" Association="CoreEntities.Store.FK_BusinessAccount_inherits_Party">
       <End Role="Party" EntitySet="Parties" />
       <End Role="BusinessAccount" EntitySet="Parties_BusinessAccount" />
@@ -345,8 +345,8 @@
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="OwnerPartyId" Type="uniqueidentifier" Nullable="true" />
     <Property Name="RoleTypeInt" Type="smallint" Nullable="false" DefaultValue="0" />
+    <Property Name="OwnerBusinessAccountId" Type="uniqueidentifier" Nullable="true" />
   </EntityType>
   <EntityType Name="Parties">
     <Key>
@@ -1062,18 +1062,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="PartyRole1">
-    <End Role="Party" Type="CoreEntities.Store.Parties" Multiplicity="0..1" />
-    <End Role="Role" Type="CoreEntities.Store.Roles" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Party">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Role">
-        <PropertyRef Name="OwnerPartyId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="RegionLocation">
     <End Role="Regions" Type="CoreEntities.Store.Regions" Multiplicity="0..1" />
     <End Role="Location" Type="CoreEntities.Store.Locations" Multiplicity="*" />
@@ -1407,6 +1395,18 @@
       </Principal>
       <Dependent Role="ContactInfo">
         <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RoleBusinessAccount">
+    <End Role="Role" Type="CoreEntities.Store.Roles" Multiplicity="*" />
+    <End Role="BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="BusinessAccount">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Role">
+        <PropertyRef Name="OwnerBusinessAccountId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1768,10 +1768,6 @@
             <End Role="Party" EntitySet="Parties" />
             <End Role="Role" EntitySet="Roles" />
           </AssociationSet>
-          <AssociationSet Name="PartyRole1" Association="CoreEntities.PartyRole1">
-            <End Role="Party" EntitySet="Parties" />
-            <End Role="Role" EntitySet="Roles" />
-          </AssociationSet>
           <EntitySet Name="Regions" EntityType="CoreEntities.Region" />
           <AssociationSet Name="RegionsLocation" Association="CoreEntities.RegionLocation">
             <End Role="Regions" EntitySet="Regions" />
@@ -1953,6 +1949,10 @@
           <FunctionImport Name="PropagateNewFields">
             <Parameter Name="FieldId" Mode="In" Type="Guid" />
           </FunctionImport>
+          <AssociationSet Name="RoleBusinessAccount" Association="CoreEntities.RoleBusinessAccount">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="BusinessAccount" EntitySet="Parties" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Block">
           <Key>
@@ -1976,13 +1976,13 @@
           <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Blocks" Relationship="CoreEntities.RoleBlock" FromRole="Role" ToRole="Block" />
           <NavigationProperty Name="MemberParties" Relationship="CoreEntities.PartyRole" FromRole="Role" ToRole="Party" />
-          <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.PartyRole1" FromRole="Role" ToRole="Party" />
-          <Property Name="OwnerPartyId" Nullable="true" Type="Guid" />
           <Property Type="Int16" Name="RoleTypeInt" Nullable="false" DefaultValue="0" >
             <Documentation>
               <Summary>The Role's type. Defaults to custom.</Summary>
             </Documentation>
           </Property>
+          <NavigationProperty Name="OwnerBusinessAccount" Relationship="CoreEntities.RoleBusinessAccount" FromRole="Role" ToRole="BusinessAccount" />
+          <Property Type="Guid" Name="OwnerBusinessAccountId" Nullable="true" />
         </EntityType>
         <EntityType Name="Party" Abstract="false">
           <Key>
@@ -1991,7 +1991,6 @@
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Vehicles" Relationship="CoreEntities.VehicleParty" FromRole="Party" ToRole="Vehicle" />
           <NavigationProperty Name="RoleMembership" Relationship="CoreEntities.PartyRole" FromRole="Party" ToRole="Role" />
-          <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.PartyRole1" FromRole="Party" ToRole="Role" />
           <NavigationProperty Name="OwnedFiles" Relationship="CoreEntities.FileParty" FromRole="Party" ToRole="File" />
           <NavigationProperty Name="PartyImage" Relationship="CoreEntities.PartyPartyImage" FromRole="Party" ToRole="PartyImage" />
         </EntityType>
@@ -2385,6 +2384,7 @@
           <NavigationProperty Name="Clients" Relationship="CoreEntities.ClientBusinessAccount" FromRole="BusinessAccount" ToRole="Client" />
           <NavigationProperty Name="OwnedLocations" Relationship="CoreEntities.LocationBusinessAccount" FromRole="BusinessAccount" ToRole="Location" />
           <Property Type="String" Name="Name" Nullable="true" Unicode="true" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.RoleBusinessAccount" FromRole="BusinessAccount" ToRole="Role" />
         </EntityType>
         <Association Name="BusinessAccountService">
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
@@ -2570,18 +2570,6 @@
         <Association Name="PartyRole">
           <End Type="CoreEntities.Party" Role="Party" Multiplicity="*" />
           <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
-        </Association>
-        <Association Name="PartyRole1">
-          <End Type="CoreEntities.Party" Role="Party" Multiplicity="0..1" />
-          <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Party">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Role">
-              <PropertyRef Name="OwnerPartyId" />
-            </Dependent>
-          </ReferentialConstraint>
         </Association>
         <EntityType Name="Region">
           <Key>
@@ -3136,6 +3124,18 @@
           <End Type="CoreEntities.Route" Role="Route" Multiplicity="*" />
           <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
         </Association>
+        <Association Name="RoleBusinessAccount">
+          <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
+          <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessAccount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="OwnerBusinessAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3161,8 +3161,8 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="OwnerPartyId" ColumnName="OwnerPartyId" />
           <ScalarProperty Name="RoleTypeInt" ColumnName="RoleTypeInt" />
+          <ScalarProperty Name="OwnerBusinessAccountId" ColumnName="OwnerBusinessAccountId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

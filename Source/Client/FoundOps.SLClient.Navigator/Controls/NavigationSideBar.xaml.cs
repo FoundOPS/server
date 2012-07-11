@@ -49,7 +49,7 @@ namespace FoundOps.SLClient.Navigator.Controls
             var selectedRole =
                 NavigationBarVM.CurrentUserAccount.AccessibleRoles.FirstOrDefault(
                     r =>
-                    r.OwnerParty == NavigationBarVM.SelectedOwnerAccountOfRole &&
+                    r.OwnerBusinessAccount == NavigationBarVM.SelectedOwnerAccountOfRole &&
                     r.Blocks.Any(b => b == selectedBlock));
 
             NavigationBarVM.SelectedRole = selectedRole;

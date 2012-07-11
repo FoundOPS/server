@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/10/2012 19:18:53
+-- Date Created: 07/11/2012 12:05:17
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -101,9 +101,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_PartyRole_Role]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PartyRole] DROP CONSTRAINT [FK_PartyRole_Role];
 GO
-IF OBJECT_ID(N'[dbo].[FK_PartyRole1]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Roles] DROP CONSTRAINT [FK_PartyRole1];
-GO
 IF OBJECT_ID(N'[dbo].[FK_RegionLocation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_RegionLocation];
 GO
@@ -193,6 +190,9 @@ IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Route]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Employee]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteEmployee] DROP CONSTRAINT [FK_RouteEmployee_Employee];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RoleBusinessAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Roles] DROP CONSTRAINT [FK_RoleBusinessAccount];
 GO
 IF OBJECT_ID(N'[dbo].[FK_BusinessAccount_inherits_Party]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parties_BusinessAccount] DROP CONSTRAINT [FK_BusinessAccount_inherits_Party];
@@ -380,8 +380,8 @@ CREATE TABLE [dbo].[Roles] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NULL,
     [Description] nvarchar(max)  NULL,
-    [OwnerPartyId] uniqueidentifier  NULL,
-    [RoleTypeInt] smallint  NOT NULL
+    [RoleTypeInt] smallint  NOT NULL,
+    [OwnerBusinessAccountId] uniqueidentifier  NULL
 );
 GO
 
@@ -1463,20 +1463,6 @@ ON [dbo].[PartyRole]
     ([RoleMembership_Id]);
 GO
 
--- Creating foreign key on [OwnerPartyId] in table 'Roles'
-ALTER TABLE [dbo].[Roles]
-ADD CONSTRAINT [FK_PartyRole1]
-    FOREIGN KEY ([OwnerPartyId])
-    REFERENCES [dbo].[Parties]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_PartyRole1'
-CREATE INDEX [IX_FK_PartyRole1]
-ON [dbo].[Roles]
-    ([OwnerPartyId]);
-GO
-
 -- Creating foreign key on [RegionId] in table 'Locations'
 ALTER TABLE [dbo].[Locations]
 ADD CONSTRAINT [FK_RegionLocation]
@@ -1870,6 +1856,20 @@ ADD CONSTRAINT [FK_RouteEmployee_Employee]
 CREATE INDEX [IX_FK_RouteEmployee_Employee]
 ON [dbo].[RouteEmployee]
     ([Employees_Id]);
+GO
+
+-- Creating foreign key on [OwnerBusinessAccountId] in table 'Roles'
+ALTER TABLE [dbo].[Roles]
+ADD CONSTRAINT [FK_RoleBusinessAccount]
+    FOREIGN KEY ([OwnerBusinessAccountId])
+    REFERENCES [dbo].[Parties_BusinessAccount]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RoleBusinessAccount'
+CREATE INDEX [IX_FK_RoleBusinessAccount]
+ON [dbo].[Roles]
+    ([OwnerBusinessAccountId]);
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'

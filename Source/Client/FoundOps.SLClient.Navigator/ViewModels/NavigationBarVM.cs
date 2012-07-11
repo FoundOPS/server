@@ -79,14 +79,14 @@ namespace FoundOps.SLClient.Navigator.ViewModels
                 if (CurrentUserAccount == null)
                     return null;
 
-                var orderedParties = CurrentUserAccount.AccessibleRoles.Select(r => r.OwnerParty).Distinct().ToList();
+                var orderedParties = CurrentUserAccount.AccessibleRoles.Select(r => r.OwnerBusinessAccount).Distinct().ToList();
 
                 //Compare the names alphabetically
                 orderedParties.Sort((a, b) => a.DisplayName.ToString().CompareTo(b.DisplayName.ToString()));
 
                 //Currently the UserAccountRole should not be displayed
                 //when that changes TODO: Remove the following line and uncomment the 3 lines below
-                orderedParties.Remove(CurrentUserAccount);
+                //orderedParties.Remove(CurrentUserAccount);
 
                 //TODO: Add the following 3 lines back
                 ////If the CurrentUserAccount is in the list put it last
@@ -115,7 +115,7 @@ namespace FoundOps.SLClient.Navigator.ViewModels
 
                 //The SelectedRole will be the only Role the CurrentUser has access to that is owned by the SelectedOwnerAccountOfRole
                 //You can only have one role per Party
-                SelectedRole = this.CurrentUserAccount.AccessibleRoles.FirstOrDefault(r => r.OwnerPartyId == SelectedOwnerAccountOfRole.Id);
+                SelectedRole = this.CurrentUserAccount.AccessibleRoles.FirstOrDefault(r => r.OwnerBusinessAccountId == SelectedOwnerAccountOfRole.Id);
 
                 //Whenever the OwnerAccount is a BusinessAccount load CompanyHome page
                 if (SelectedOwnerAccountOfRole != null && SelectedOwnerAccountOfRole is BusinessAccount)

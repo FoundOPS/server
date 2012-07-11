@@ -28,9 +28,9 @@ namespace FoundOps.Core.Models.CoreEntities
         public virtual void OnCreate()
         {
             Id = Guid.NewGuid();
-            if(this is Person)
+            if (this is Person)
             {
-                ((Person) this).FirstName = "";
+                ((Person)this).FirstName = "";
                 ((Person)this).LastName = "";
                 ((Person)this).MiddleInitial = "";
             }
@@ -50,9 +50,11 @@ namespace FoundOps.Core.Models.CoreEntities
 
         public IEnumerable<Role> AccessibleRoles
         {
-            get
+            get 
             {
-                return this.RoleMembership.Union(OwnedRoles);
+                return this is BusinessAccount
+                           ? this.RoleMembership.Union(((BusinessAccount) this).OwnedRoles)
+                           : this.RoleMembership;
             }
         }
 
