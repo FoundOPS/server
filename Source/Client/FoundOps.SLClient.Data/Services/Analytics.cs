@@ -44,6 +44,7 @@ namespace FoundOps.SLClient.Data.Services
         Dispatcher,
         Employees,
         FeedbackAndSupport,
+        Importer,
         Locations,
         Logout,
         None,
@@ -112,6 +113,7 @@ namespace FoundOps.SLClient.Data.Services
             SectionNames.Add(Section.Dispatcher, "Dispatcher");
             SectionNames.Add(Section.Employees, "Employees");
             SectionNames.Add(Section.FeedbackAndSupport, "Feedback and Support");
+            SectionNames.Add(Section.Importer, "Importer");
             SectionNames.Add(Section.Locations, "Locations");
             SectionNames.Add(Section.Logout, "Logout");
             SectionNames.Add(Section.None, "None");

@@ -1,26 +1,25 @@
-﻿using System;
+﻿using FoundOps.Common.Silverlight.UI.Messages;
+using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
 using ReactiveUI;
+using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.ComponentModel.Composition;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Common.Silverlight.MVVM.Messages;
-using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 
 namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
 {
     /// <summary>
     /// The InfiniteAccordionPageAdapter for Blocks.
     /// </summary>
-    [Export]
-    public partial class Blocks : IInfiniteAccordionPage
+    [Export("Infinite Accordion")]
+    public partial class InfiniteAccordion : IInfiniteAccordionPage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Blocks"/> class.
+        /// Initializes a new instance of the <see cref="InfiniteAccordion"/> class.
         /// </summary>
         [ImportingConstructor]
-        public Blocks()
+        public InfiniteAccordion()
         {
             InitializeComponent();
             MessageBus.Current.Listen<NavigateToMessage>().Subscribe(OnNavigateToMessageRecieved);
@@ -34,7 +33,7 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
             //Clear the ObjectDisplayTypeToDisplay
             LayoutRoot.ObjectDisplayTypeToDisplay = null;
 
-            if (navigateToUriString.Contains("BusinessAccounts"))
+            if (navigateToUriString.Contains("Business Accounts"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(BusinessAccount).ToString();
             else if (navigateToUriString.Contains("Clients"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Client).ToString();
@@ -50,7 +49,7 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(ServiceHolder).ToString();
             else if (navigateToUriString.Contains("Vehicles"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Vehicle).ToString();
-            else if (navigateToUriString.Contains("VehicleMaintenance"))
+            else if (navigateToUriString.Contains("Vehicle Maintenance"))
                 LayoutRoot.ObjectDisplayTypeToDisplay = typeof(VehicleMaintenanceLogEntry).ToString();
         }
 
@@ -67,32 +66,6 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
                 _initialListDetailsControlObjectType = value;
                 LayoutRoot.ObjectDisplayTypeToDisplay = _initialListDetailsControlObjectType;
             }
-        }
-
-        /// <summary>
-        /// A method to get the ObjectDisplay for the type.
-        /// </summary>
-        /// <param name="objectTypeToDisplay">The object type to display.</param>
-        /// <returns></returns>
-        public IObjectTypeDisplay ObjectDisplayToDisplay(Type objectTypeToDisplay)
-        {
-            return LayoutRoot.ObjectTypeDisplay(objectTypeToDisplay.ToString());
-        }
-
-        /// <summary>
-        /// Exposes the parent grid.
-        /// </summary>
-        public Grid ParentGrid
-        {
-            get { return (Grid)this.Parent; }
-        }
-
-        /// <summary>
-        /// Exposes this as a UI element.
-        /// </summary>
-        public UIElement ThisUIElement
-        {
-            get { return this; }
         }
 
         private void ExportLocationsCSV_OnClick(object sender, RoutedEventArgs e)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.MVVM.Models;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Silverlight.UI.Messages;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;

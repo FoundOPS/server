@@ -80,16 +80,15 @@ namespace FoundOps.SLClient.Navigator
 
             //Deployment catalog adds all assemblies, but FoundOps.SLClient.Algorithm cannot be added
             //so instead only add required assemblies through AssemblyCatalog
-            var commonUIAssembly = new AssemblyCatalog(typeof(FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion.IProvideContext).Assembly);
-            var dataAssembly = new AssemblyCatalog(typeof(FoundOps.SLClient.Data.ExportContext).Assembly);
-            var uiAssembly = new AssemblyCatalog(typeof(FoundOps.SLClient.UI.ViewModels.AlgorithmVM).Assembly);
+            var commonUIAssembly = new AssemblyCatalog(typeof(Common.Silverlight.UI.Controls.InfiniteAccordion.IProvideContext).Assembly);
+            var dataAssembly = new AssemblyCatalog(typeof(Data.ExportContext).Assembly);
+            var uiAssembly = new AssemblyCatalog(typeof(UI.ViewModels.ClientsVM).Assembly);
             var navigatorAssembly = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
 
             aggregateCatalog.Catalogs.Add(commonUIAssembly);
             aggregateCatalog.Catalogs.Add(dataAssembly);
             aggregateCatalog.Catalogs.Add(uiAssembly);
             aggregateCatalog.Catalogs.Add(navigatorAssembly);
-
 
             _container = new CompositionContainer(aggregateCatalog);
 

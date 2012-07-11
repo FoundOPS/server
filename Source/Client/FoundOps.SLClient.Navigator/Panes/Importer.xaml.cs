@@ -1,15 +1,17 @@
-﻿using System;
-using System.Windows.Data;
-using System.Globalization;
-using System.Windows.Controls;
-using FoundOps.Core.Models.Import;
+﻿using FoundOps.Core.Models.Import;
 using FoundOps.SLClient.UI.ViewModels;
+using System;
+using System.ComponentModel.Composition;
+using System.Globalization;
+using System.Windows.Data;
+using System.Windows.Controls;
 
 namespace FoundOps.SLClient.Navigator.Panes
 {
     /// <summary>
     /// UI for importing data into the system.
     /// </summary>
+    [Export("Importer")]
     public partial class MainPage
     {
         /// <summary>

@@ -15,6 +15,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// The Clients block Id
         /// </summary>
         public static Guid ClientBlockId = new Guid("076E5CC5-E1DF-47A0-BCE7-DBCF3281895A");
+
         /// <summary>
         /// The Contacts block Id
         /// </summary>
@@ -24,6 +25,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// The Dispatchers block Id
         /// </summary>
         public static Guid DispatcherBlockId = new Guid("C6C6C562-AFF4-4555-94DC-6C53A90A6B27");
+
         /// <summary>
         /// The Employees block Id
         /// </summary>
@@ -43,10 +45,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// The Locations block Id
         /// </summary>
         public static Guid LocationsBlockId = new Guid("23DE47A8-F56E-4A2F-96EB-F7E3C7A6BBA5");
+
         /// <summary>
         /// The Regions block Id
         /// </summary>
         public static Guid RegionsBlockId = new Guid("02FC9C08-299D-484F-8939-07C985656ACE");
+
         /// <summary>
         /// The Services block Id
         /// </summary>
@@ -56,6 +60,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// The Vehicles block Id
         /// </summary>
         public static Guid VehiclesBlockId = new Guid("5BB29361-D22E-40E8-9C49-50DA4E506940");
+
         /// <summary>
         /// The VehicleMaintenance block Id
         /// </summary>
@@ -153,6 +158,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Gets the dispatcher block.
         /// </summary>
         public static Block DispatcherBlock { get; private set; }
+
         /// <summary>
         /// Gets the employees block.
         /// </summary>
@@ -172,10 +178,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Gets the locations block.
         /// </summary>
         public static Block LocationsBlock { get; private set; }
+
         /// <summary>
         /// Gets the regions block.
         /// </summary>
         public static Block RegionsBlock { get; private set; }
+
         /// <summary>
         /// Gets the services block.
         /// </summary>
@@ -185,6 +193,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Gets the vehicles block.
         /// </summary>
         public static Block VehiclesBlock { get; private set; }
+
         /// <summary>
         /// Gets the vehicle maintenance block.
         /// </summary>
@@ -271,7 +280,7 @@ namespace FoundOps.Core.Models.CoreEntities
             VehicleMaintenanceBlock = new Block
             {
                 Id = BlockConstants.VehicleMaintenanceBlockId,
-                Name = "VehicleMaintenance",
+                Name = "Vehicle Maintenance",
                 HideFromNavigation = true
             };
 
@@ -335,10 +344,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Gets the business accounts block.
         /// </summary>
         public static Block BusinessAccountsBlock { get; private set; }
+
         /// <summary>
         /// Gets the service templates block.
         /// </summary>
         public static Block ServiceTemplatesBlock { get; private set; }
+
         /// <summary>
         /// Gets the administrative console blocks.
         /// </summary>

@@ -275,9 +275,8 @@
     <Compile Include="Panes\Importer.xaml.cs">
       <DependentUpon>Importer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panes\InfiniteAccordion\BlockPageWrappers.cs" />
-    <Compile Include="Panes\InfiniteAccordion\Blocks.xaml.cs">
-      <DependentUpon>Blocks.xaml</DependentUpon>
+    <Compile Include="Panes\InfiniteAccordion\InfiniteAccordion.xaml.cs">
+      <DependentUpon>InfiniteAccordion.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panes\InfiniteAccordion\ModeConverters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -307,7 +306,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Panes\InfiniteAccordion\Blocks.xaml">
+    <Page Include="Panes\InfiniteAccordion\InfiniteAccordion.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

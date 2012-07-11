@@ -1,9 +1,13 @@
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Navigator.Panes.InfiniteAccordion;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.ComponentModel.Composition;
 using System.Reactive.Linq;
 using System.Windows;
+using ReactiveUI;
 
 namespace FoundOps.SLClient.Navigator
 {
@@ -25,7 +29,7 @@ namespace FoundOps.SLClient.Navigator
 
             NavigationVM.FromPropertyChanged("SelectedView").ObserveOnDispatcher().Subscribe(_ => SetContentPageSizeToContentFrameSize());
 
-            NavigationVM.NavigateToView("Dispatcher");
+            NavigationVM.NavigateToView("Business Accounts");
         }
 
         #region ContentFrame.Content's Sizing

@@ -1,8 +1,6 @@
-﻿using FoundOps.Server.Services.CoreDomainService;
-using FoundOps.Common.Silverlight.MVVM.Messages;
-using FoundOps.Common.Silverlight.UI.ViewModels;
+﻿using FoundOps.Common.Silverlight.UI.ViewModels;
+using FoundOps.Server.Services.CoreDomainService;
 using FoundOps.SLClient.Data.Services;
-using ReactiveUI;
 using ReactiveUI.Xaml;
 using System;
 using System.Reactive.Linq;
@@ -29,12 +27,6 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// A command for discarding changes.
         /// </summary>
         public IReactiveCommand DiscardCommand { get; protected set; }
-
-        private readonly Subject<string> _navigateToObservable = new Subject<string>();
-        /// <summary>
-        /// Publishes a stream of NavigateTo message uris (as strings)
-        /// </summary>
-        public IObservable<string> NavigateToObservable { get { return _navigateToObservable; } }
 
         #endregion
 
@@ -70,9 +62,6 @@ namespace FoundOps.SLClient.Data.ViewModels
         /// </summary>
         protected CoreEntityVM()
         {
-            //Hookup NavigateToObservable
-            MessageBus.Current.Listen<NavigateToMessage>().Subscribe(message => _navigateToObservable.OnNext(message.UriToNavigateTo.ToString()));
-
             #region Register Commands
 
             //Can save or discard when context has changes and is not submitting

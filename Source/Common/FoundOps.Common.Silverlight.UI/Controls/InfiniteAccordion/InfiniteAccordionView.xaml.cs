@@ -119,6 +119,16 @@ namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
             MessageBus.Current.Listen<MoveToDetailsViewMessage>().SubscribeOnDispatcher().Subscribe(OnMoveToDetailsViewMessage);
 
             CurrentlySelectedContextProvider = null;
+
+            this.Loaded += InfiniteAccordionViewLoaded;
+        }
+
+        void InfiniteAccordionViewLoaded(object sender, RoutedEventArgs e)
+        {
+            //Refresh the ObjectDisplayTypeToDisplay, in case it was set before the InfiniteAccordionView was loaded
+            var type = ObjectDisplayTypeToDisplay;
+            ObjectDisplayTypeToDisplay = null;
+            ObjectDisplayTypeToDisplay = type;
         }
 
         /// <summary>

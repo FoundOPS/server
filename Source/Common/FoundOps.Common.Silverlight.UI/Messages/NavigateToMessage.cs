@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FoundOps.Common.Silverlight.MVVM.Messages
+namespace FoundOps.Common.Silverlight.UI.Messages
 {
     public class NavigateToMessage
     {
