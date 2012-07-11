@@ -1,5 +1,4 @@
-﻿using FoundOps.SLClient.Navigator;
-using FoundOps.SLClient.UI.ViewModels;
+﻿using FoundOps.SLClient.UI.ViewModels;
 using MEFedMVVM.ViewModelLocator;
 using System;
 using System.ComponentModel.Composition;

@@ -12,6 +12,11 @@ namespace FoundOps.SLClient.Navigator
     /// </summary>
     public partial class MainPage
     {
+        //Whenever the application is clicked this will fire
+        //Expose this for the navigator
+        [ScriptableMemberAttribute]
+        public event EventHandler Clicked;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainPage"/> class.
         /// </summary>
@@ -23,6 +28,12 @@ namespace FoundOps.SLClient.Navigator
             //This is especially important for Dispatcher
             Application.Current.Host.Content.Resized += ContentResized;
 
+            this.MouseLeftButtonDown += (s, e) =>
+            {
+                if (Clicked != null)
+                    Clicked(s, e);
+            };
+
             this.Loaded += MainPageLoaded;
 
             VM.Navigation.FromPropertyChanged("SelectedView").ObserveOnDispatcher().Subscribe(_ => SetContentPageSizeToContentFrameSize());
@@ -30,6 +41,10 @@ namespace FoundOps.SLClient.Navigator
 
         void MainPageLoaded(object sender, RoutedEventArgs e)
         {
+            //For the click event, expost this
+            HtmlPage.RegisterScriptableObject("mainPage", this);
+
+            //For navigation, expose the navigationVM
             HtmlPage.RegisterScriptableObject("navigationVM", VM.Navigation);
         }
 

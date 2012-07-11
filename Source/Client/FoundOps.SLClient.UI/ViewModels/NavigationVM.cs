@@ -7,10 +7,12 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
+using System.Windows;
 using System.Windows.Browser;
 using System.Windows.Controls;
+using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 
-namespace FoundOps.SLClient.Navigator
+namespace FoundOps.SLClient.UI.ViewModels
 {
     [ExportViewModel("NavigationVM")]
     public class NavigationVM : INotifyPropertyChanged
@@ -80,6 +82,16 @@ namespace FoundOps.SLClient.Navigator
             TrackChosenSection(name);
 
             return view;
+        }
+
+        /// <summary>
+        /// Change the current role.
+        /// </summary>
+        [ScriptableMember]
+        public void ChangeRole(string roleId)
+        {
+            //var roleGuid = new Guid(roleId);
+            MessageBox.Show(roleId);
         }
 
         /// <summary>
