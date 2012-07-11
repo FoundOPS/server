@@ -175,25 +175,22 @@ namespace FoundOPS.API.Api
 
             #region Create new UserAccount
 
-            var user = new UserAccount();
-
-            if (
-                _coreEntitiesContainer.Parties.OfType<UserAccount>().Any(
-                    ua => ua.EmailAddress == settings.EmailAddress))
+            if (_coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress == settings.EmailAddress))
                 throw new Exception("The email address is already in use");
 
-            user.EmailAddress = settings.EmailAddress;
-            user.Id = Guid.NewGuid();
-            user.FirstName = settings.FirstName;
-            user.LastName = settings.LastName;
-            //Create a temporary password
-            user.TemporaryPassword = EmailPasswordTools.GeneratePassword();
-            user.PasswordHash = EncryptionTools.Hash(user.TemporaryPassword);
+            var temporaryPassword = EmailPasswordTools.GeneratePassword();
+
+            var user = new UserAccount
+            {
+                EmailAddress = settings.EmailAddress,
+                Id = Guid.NewGuid(),
+                FirstName = settings.FirstName,
+                LastName = settings.LastName,
+                PasswordHash = EncryptionTools.Hash(temporaryPassword)
+            };
 
             //Find the role in the BusinessAccount that matches the name of the one passed in.
-            var newRole =
-                _coreEntitiesContainer.Roles.FirstOrDefault(
-                    r => r.OwnerParty.Id == businessAccount.Id && r.Name == settings.Role);
+            var newRole = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerParty.Id == businessAccount.Id && r.Name == settings.Role);
 
             if (newRole != null)
                 user.RoleMembership.Add(newRole);
@@ -203,16 +200,30 @@ namespace FoundOPS.API.Api
             //Add the newly created UserAccount to the database
             _coreEntitiesContainer.Parties.AddObject(user);
 
-            //Save all changes made
+            var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == settings.Employee.Id);
+
+            if (employee != null)
+                user.LinkedEmployees.Add(employee);
+            else
+            {
+                employee = new FoundOps.Core.Models.CoreEntities.Employee
+                {
+                    Id = Guid.NewGuid(),
+                    OwnedPerson = _coreEntitiesContainer.Parties.OfType<Person>().FirstOrDefault(p => p.Id == user.Id)
+                };
+                user.LinkedEmployees.Add(employee);
+            }
+
             _coreEntitiesContainer.SaveChanges();
 
             var sender = _coreEntitiesContainer.CurrentUserAccount().First().DisplayName;
             var recipient = user.FirstName;
 
+
             //Create the link that will login the new user and then redirect them to the
             //settings page where they can change their password
             var redirect = ServerConstants.RootApplicationUrl + "/settings.html";
-            var link = ServerConstants.RootApiUrl + "/api/Helper/Login?email=" + user.EmailAddress + "&pass=" + user.TemporaryPassword + "&redirect=" + redirect;
+            var link = ServerConstants.RootApiUrl + "/api/Helper/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirect=" + redirect;
 
             //Construct the email
             var from = _coreEntitiesContainer.CurrentUserAccount().First().EmailAddress;
@@ -274,6 +285,27 @@ namespace FoundOPS.API.Api
                 //Add the new role for the user
                 if (newRole != null)
                     user.RoleMembership.Add(newRole);
+            }
+
+            var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => user.LinkedEmployees.FirstOrDefault(le => le.Id == e.Id) == e);
+
+            if (employee != null && employee.Id != settings.Employee.Id)
+            {
+                user.LinkedEmployees.Remove(employee);
+
+                var newEmployee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == settings.Employee.Id);
+
+                if (newEmployee != null)
+                    user.LinkedEmployees.Add(employee);
+                else
+                {
+                    newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
+                    {
+                        Id = Guid.NewGuid(),
+                        OwnedPerson = _coreEntitiesContainer.Parties.OfType<Person>().FirstOrDefault(p => p.Id == user.Id)
+                    };
+                    user.LinkedEmployees.Add(newEmployee);
+                }
             }
 
             _coreEntitiesContainer.SaveChanges();

@@ -272,7 +272,7 @@ namespace FoundOPS.API.Api
         /// <param name="trackPoint">The Model TrackPoint to be pushed to AzureTables</param>
         /// <param name="employee">The employee</param>
         /// <param name="routeId">The Id of the Route that the vehicle or employee are currently on</param>
-        private void PushTrackPointToAzure(BusinessAccount currentBusinessAccount, TrackPoint trackPoint, Employee employee, Guid routeId)
+        private void PushTrackPointToAzure(BusinessAccount currentBusinessAccount, TrackPoint trackPoint, FoundOps.Core.Models.CoreEntities.Employee employee, Guid routeId)
         {
             //Get the storage account information from Azure
             var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);
