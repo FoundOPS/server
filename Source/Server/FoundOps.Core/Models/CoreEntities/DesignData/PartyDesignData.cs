@@ -35,9 +35,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         //public Business DesignBusinessTwentyThree { get; private set; }
         //public Business DesignBusinessTwentyFour { get; private set; }
 
-        public Person OwnedPerson { get; private set; }
-        public Person OwnedPersonTwo { get; private set; }
-        public Person OwnedPersonThree { get; private set; }
+        public UserAccount OwnedPerson { get; private set; }
+        public UserAccount OwnedPersonTwo { get; private set; }
+        public UserAccount OwnedPersonThree { get; private set; }
 
         public BusinessAccount DesignBusinessAccount { get; private set; }
 
@@ -73,9 +73,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             
             DesignBusinessAccount = new BusinessAccount { Name = "GotGrease" };
 
-            OwnedPerson = new Person { FirstName = "Bob", LastName = "Black", DateOfBirth = DateTime.UtcNow.Date.AddDays(-21), Gender = Gender.Male };
-            OwnedPersonTwo = new Person { FirstName = "Susanne", LastName = "Greene", DateOfBirth = DateTime.UtcNow.Date.AddDays(-991), Gender = Gender.Female };
-            OwnedPersonThree = new Person { FirstName = "Jim", LastName = "Boliath", DateOfBirth = DateTime.UtcNow.Date.AddDays(-501), Gender = Gender.Male };
+            OwnedPerson = new UserAccount { FirstName = "Bob", LastName = "Black", DateOfBirth = DateTime.UtcNow.Date.AddDays(-21), Gender = Gender.Male };
+            OwnedPersonTwo = new UserAccount { FirstName = "Susanne", LastName = "Greene", DateOfBirth = DateTime.UtcNow.Date.AddDays(-991), Gender = Gender.Female };
+            OwnedPersonThree = new UserAccount { FirstName = "Jim", LastName = "Boliath", DateOfBirth = DateTime.UtcNow.Date.AddDays(-501), Gender = Gender.Male };
 
             DesignPartys = new List<Party>  { 
                                             //DesignBusiness, 

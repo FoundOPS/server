@@ -60,9 +60,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Force load technician's OwnedPerson
             (from employee in route.Employees
-             join person in ObjectContext.Parties.OfType<Person>()
-                 on employee.Id equals person.Id
-             select new { employee, person }).ToArray();
+             join user in ObjectContext.Parties.OfType<UserAccount>()
+                 on employee.Id equals user.Id
+             select new { employee, user }).ToArray();
 
             return route;
         }

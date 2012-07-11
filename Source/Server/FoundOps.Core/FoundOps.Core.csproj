@@ -155,7 +155,6 @@
     <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeHistoryExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\PartyExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Parties\PersonExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountLogEntryExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\RepeatExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.cs" />

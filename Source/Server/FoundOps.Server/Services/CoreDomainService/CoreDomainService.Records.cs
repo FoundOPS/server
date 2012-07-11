@@ -146,21 +146,23 @@ namespace FoundOps.Server.Services.CoreDomainService
                                      ? ObjectContext.Employees
                                      : ObjectContext.Employees.Where(c => c.EmployerId == businessForRole.Id);
 
-            var employeesPeople =
-                from employee in employees
-                join person in ObjectContext.Parties.OfType<Person>()
-                    on employee.Id equals person.Id
-                orderby person.LastName + " " + person.FirstName
-                select new { employee, person };
+            //var employeesPeople =
+            //    from employee in employees
+            //    join user in ObjectContext.Parties.OfType<UserAccount>()
+            //        on employee.Id equals user.Id
+            //    orderby user.LastName + " " + user.FirstName
+            //    select new { employee, user };
 
-            //TODO: optimize this
-            //See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
-            //http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
-            //Force load OwnedPerson
-            //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            employeesPeople.Select(cp => cp.person).ToArray();
+            ////TODO: optimize this
+            ////See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
+            ////http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
+            ////Force load OwnedPerson
+            ////Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
+            //employeesPeople.Select(cp => cp.person).ToArray();
 
-            return employeesPeople.Select(i => i.employee);
+            //return employeesPeople.Select(i => i.employee);
+
+            return employees;
         }
 
         /// <summary>
@@ -203,27 +205,29 @@ namespace FoundOps.Server.Services.CoreDomainService
                                      ? ObjectContext.Employees
                                      : ObjectContext.Employees.Where(c => c.EmployerId == businessForRole.Id);
 
-            var employeesPeople =
-                from employee in employees
-                join person in ObjectContext.Parties.OfType<Person>()
-                    on employee.Id equals person.Id
-                orderby person.LastName + " " + person.FirstName
-                select new { employee, person };
+            //var employeesPeople =
+            //    from employee in employees
+            //    join person in ObjectContext.Parties.OfType<Person>()
+            //        on employee.Id equals person.Id
+            //    orderby person.LastName + " " + person.FirstName
+            //    select new { employee, person };
 
 
             if (!String.IsNullOrEmpty(searchText))
-                employeesPeople = employeesPeople.Where(ep =>
-                    ep.person.FirstName.StartsWith(searchText) || ep.person.LastName.StartsWith(searchText)
-                    || searchText.StartsWith(ep.person.FirstName) || searchText.Contains(ep.person.LastName));
+                employees = employees.Where(e =>
+                    e.FirstName.StartsWith(searchText) || e.LastName.StartsWith(searchText)
+                    || searchText.StartsWith(e.FirstName) || searchText.Contains(e.LastName));
 
-            //TODO: optimize this
-            //See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
-            //http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
-            //Force load OwnedPerson
-            //Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            employeesPeople.Select(cp => cp.person).ToArray();
+            ////TODO: optimize this
+            ////See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
+            ////http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
+            ////Force load OwnedPerson
+            ////Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
+            //employeesPeople.Select(cp => cp.person).ToArray();
 
-            return employeesPeople.Select(i => i.employee);
+            //return employeesPeople.Select(i => i.employee);
+
+            return employees;
         }
 
         public void InsertEmployee(Employee employee)
@@ -255,10 +259,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             employee.EmployeeHistoryEntries.ToArray();
             foreach (var employeeHistoryEntry in employee.EmployeeHistoryEntries.ToArray())
                 this.DeleteEmployeeHistoryEntry(employeeHistoryEntry);
-
-            employee.OwnedPersonReference.Load();
-            if (employee.OwnedPerson != null)
-                this.DeleteParty(employee.OwnedPerson);
 
             employee.Routes.Load();
             employee.Routes.Clear();

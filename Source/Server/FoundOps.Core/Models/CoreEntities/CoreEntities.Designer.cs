@@ -50,7 +50,6 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "LocationSubLocation", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), "SubLocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.SubLocation), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeUserAccount", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.UserAccount), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeBusinessAccount", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "EmployeePerson", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Employee), "Person", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Person), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RecurringServiceRepeat", "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), "Repeat", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Repeat), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeHistoryEntryEmployee", "EmployeeHistoryEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.EmployeeHistoryEntry), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Employee), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceTemplateServiceTemplate", "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), "ServiceTemplate1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), true)]
@@ -2742,6 +2741,126 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
+        public global::System.String FirstName
+        {
+            get
+            {
+                return _FirstName;
+            }
+            set
+            {
+                OnFirstNameChanging(value);
+                ReportPropertyChanging("FirstName");
+                _FirstName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FirstName");
+                OnFirstNameChanged();
+            }
+        }
+        private global::System.String _FirstName;
+        partial void OnFirstNameChanging(global::System.String value);
+        partial void OnFirstNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastName
+        {
+            get
+            {
+                return _LastName;
+            }
+            set
+            {
+                OnLastNameChanging(value);
+                ReportPropertyChanging("LastName");
+                _LastName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastName");
+                OnLastNameChanged();
+            }
+        }
+        private global::System.String _LastName;
+        partial void OnLastNameChanging(global::System.String value);
+        partial void OnLastNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MiddleInitial
+        {
+            get
+            {
+                return _MiddleInitial;
+            }
+            set
+            {
+                OnMiddleInitialChanging(value);
+                ReportPropertyChanging("MiddleInitial");
+                _MiddleInitial = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MiddleInitial");
+                OnMiddleInitialChanged();
+            }
+        }
+        private global::System.String _MiddleInitial;
+        partial void OnMiddleInitialChanging(global::System.String value);
+        partial void OnMiddleInitialChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> GenderInt
+        {
+            get
+            {
+                return _GenderInt;
+            }
+            set
+            {
+                OnGenderIntChanging(value);
+                ReportPropertyChanging("GenderInt");
+                _GenderInt = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("GenderInt");
+                OnGenderIntChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _GenderInt;
+        partial void OnGenderIntChanging(Nullable<global::System.Int16> value);
+        partial void OnGenderIntChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateOfBirth
+        {
+            get
+            {
+                return _DateOfBirth;
+            }
+            set
+            {
+                OnDateOfBirthChanging(value);
+                ReportPropertyChanging("DateOfBirth");
+                _DateOfBirth = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateOfBirth");
+                OnDateOfBirthChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateOfBirth;
+        partial void OnDateOfBirthChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateOfBirthChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
         public global::System.String AddressLineOne
         {
             get
@@ -3270,44 +3389,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<BusinessAccount>("CoreEntities.EmployeeBusinessAccount", "BusinessAccount", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeePerson", "Person")]
-        public Person OwnedPerson
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Person>("CoreEntities.EmployeePerson", "Person").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Person>("CoreEntities.EmployeePerson", "Person").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Person> OwnedPersonReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Person>("CoreEntities.EmployeePerson", "Person");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Person>("CoreEntities.EmployeePerson", "Person", value);
                 }
             }
         }
@@ -6384,7 +6465,7 @@ namespace FoundOps.Core.Models.CoreEntities
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
     [KnownTypeAttribute(typeof(BusinessAccount))]
-    [KnownTypeAttribute(typeof(Person))]
+    [KnownTypeAttribute(typeof(UserAccount))]
     public partial class Party : EntityObject
     {
         #region Factory Method
@@ -6608,199 +6689,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Party>("CoreEntities.PartyPartyImage", "Party", value);
-                }
-            }
-        }
-
-        #endregion
-
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Person")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    [KnownTypeAttribute(typeof(UserAccount))]
-    public partial class Person : Party
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Person object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static Person CreatePerson(global::System.Guid id)
-        {
-            Person person = new Person();
-            person.Id = id;
-            return person;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String FirstName
-        {
-            get
-            {
-                return _FirstName;
-            }
-            set
-            {
-                OnFirstNameChanging(value);
-                ReportPropertyChanging("FirstName");
-                _FirstName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("FirstName");
-                OnFirstNameChanged();
-            }
-        }
-        private global::System.String _FirstName;
-        partial void OnFirstNameChanging(global::System.String value);
-        partial void OnFirstNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String LastName
-        {
-            get
-            {
-                return _LastName;
-            }
-            set
-            {
-                OnLastNameChanging(value);
-                ReportPropertyChanging("LastName");
-                _LastName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("LastName");
-                OnLastNameChanged();
-            }
-        }
-        private global::System.String _LastName;
-        partial void OnLastNameChanging(global::System.String value);
-        partial void OnLastNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String MiddleInitial
-        {
-            get
-            {
-                return _MiddleInitial;
-            }
-            set
-            {
-                OnMiddleInitialChanging(value);
-                ReportPropertyChanging("MiddleInitial");
-                _MiddleInitial = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MiddleInitial");
-                OnMiddleInitialChanged();
-            }
-        }
-        private global::System.String _MiddleInitial;
-        partial void OnMiddleInitialChanging(global::System.String value);
-        partial void OnMiddleInitialChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int16> GenderInt
-        {
-            get
-            {
-                return _GenderInt;
-            }
-            set
-            {
-                OnGenderIntChanging(value);
-                ReportPropertyChanging("GenderInt");
-                _GenderInt = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("GenderInt");
-                OnGenderIntChanged();
-            }
-        }
-        private Nullable<global::System.Int16> _GenderInt;
-        partial void OnGenderIntChanging(Nullable<global::System.Int16> value);
-        partial void OnGenderIntChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> DateOfBirth
-        {
-            get
-            {
-                return _DateOfBirth;
-            }
-            set
-            {
-                OnDateOfBirthChanging(value);
-                ReportPropertyChanging("DateOfBirth");
-                _DateOfBirth = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("DateOfBirth");
-                OnDateOfBirthChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _DateOfBirth;
-        partial void OnDateOfBirthChanging(Nullable<global::System.DateTime> value);
-        partial void OnDateOfBirthChanged();
-
-        #endregion
-
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeePerson", "Employee")]
-        public Employee OwnerEmployee
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.EmployeePerson", "Employee").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.EmployeePerson", "Employee").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Employee> OwnerEmployeeReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.EmployeePerson", "Employee");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Employee>("CoreEntities.EmployeePerson", "Employee", value);
                 }
             }
         }
@@ -10367,7 +10255,7 @@ namespace FoundOps.Core.Models.CoreEntities
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="UserAccount")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class UserAccount : Person
+    public partial class UserAccount : Party
     {
         #region Factory Method
     
@@ -10485,6 +10373,126 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.DateTime _CreationDate;
         partial void OnCreationDateChanging(global::System.DateTime value);
         partial void OnCreationDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FirstName
+        {
+            get
+            {
+                return _FirstName;
+            }
+            set
+            {
+                OnFirstNameChanging(value);
+                ReportPropertyChanging("FirstName");
+                _FirstName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FirstName");
+                OnFirstNameChanged();
+            }
+        }
+        private global::System.String _FirstName;
+        partial void OnFirstNameChanging(global::System.String value);
+        partial void OnFirstNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastName
+        {
+            get
+            {
+                return _LastName;
+            }
+            set
+            {
+                OnLastNameChanging(value);
+                ReportPropertyChanging("LastName");
+                _LastName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastName");
+                OnLastNameChanged();
+            }
+        }
+        private global::System.String _LastName;
+        partial void OnLastNameChanging(global::System.String value);
+        partial void OnLastNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MiddleInitial
+        {
+            get
+            {
+                return _MiddleInitial;
+            }
+            set
+            {
+                OnMiddleInitialChanging(value);
+                ReportPropertyChanging("MiddleInitial");
+                _MiddleInitial = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MiddleInitial");
+                OnMiddleInitialChanged();
+            }
+        }
+        private global::System.String _MiddleInitial;
+        partial void OnMiddleInitialChanging(global::System.String value);
+        partial void OnMiddleInitialChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> GenderInt
+        {
+            get
+            {
+                return _GenderInt;
+            }
+            set
+            {
+                OnGenderIntChanging(value);
+                ReportPropertyChanging("GenderInt");
+                _GenderInt = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("GenderInt");
+                OnGenderIntChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _GenderInt;
+        partial void OnGenderIntChanging(Nullable<global::System.Int16> value);
+        partial void OnGenderIntChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateOfBirth
+        {
+            get
+            {
+                return _DateOfBirth;
+            }
+            set
+            {
+                OnDateOfBirthChanging(value);
+                ReportPropertyChanging("DateOfBirth");
+                _DateOfBirth = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateOfBirth");
+                OnDateOfBirthChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateOfBirth;
+        partial void OnDateOfBirthChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateOfBirthChanged();
 
         #endregion
 

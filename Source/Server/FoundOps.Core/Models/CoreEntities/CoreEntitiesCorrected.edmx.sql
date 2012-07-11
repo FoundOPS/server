@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/11/2012 12:05:17
+-- Date Created: 07/11/2012 12:27:44
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -120,9 +120,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_EmployeeBusinessAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeBusinessAccount];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EmployeePerson]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeePerson];
-GO
 IF OBJECT_ID(N'[dbo].[FK_RecurringServiceRepeat]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RecurringServices] DROP CONSTRAINT [FK_RecurringServiceRepeat];
 GO
@@ -197,12 +194,6 @@ IF OBJECT_ID(N'[dbo].[FK_RoleBusinessAccount]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_BusinessAccount_inherits_Party]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parties_BusinessAccount] DROP CONSTRAINT [FK_BusinessAccount_inherits_Party];
-GO
-IF OBJECT_ID(N'[dbo].[FK_Person_inherits_Party]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_Person] DROP CONSTRAINT [FK_Person_inherits_Party];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserAccount_inherits_Person]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_UserAccount] DROP CONSTRAINT [FK_UserAccount_inherits_Person];
 GO
 IF OBJECT_ID(N'[dbo].[FK_OptionsField_inherits_Field]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fields_OptionsField] DROP CONSTRAINT [FK_OptionsField_inherits_Field];
@@ -319,9 +310,6 @@ IF OBJECT_ID(N'[dbo].[ServiceTemplateWithVendorIds]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Parties_BusinessAccount]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_BusinessAccount];
-GO
-IF OBJECT_ID(N'[dbo].[Parties_Person]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Parties_Person];
 GO
 IF OBJECT_ID(N'[dbo].[Parties_UserAccount]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_UserAccount];
@@ -595,6 +583,11 @@ GO
 -- Creating table 'Employees'
 CREATE TABLE [dbo].[Employees] (
     [Id] uniqueidentifier  NOT NULL,
+    [FirstName] nvarchar(max)  NULL,
+    [LastName] nvarchar(max)  NULL,
+    [MiddleInitial] nvarchar(max)  NULL,
+    [GenderInt] smallint  NULL,
+    [DateOfBirth] datetime  NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [AddressLineTwo] nvarchar(max)  NULL,
     [City] nvarchar(max)  NULL,
@@ -725,23 +718,17 @@ CREATE TABLE [dbo].[Parties_BusinessAccount] (
 );
 GO
 
--- Creating table 'Parties_Person'
-CREATE TABLE [dbo].[Parties_Person] (
-    [FirstName] nvarchar(max)  NULL,
-    [LastName] nvarchar(max)  NULL,
-    [MiddleInitial] nvarchar(max)  NULL,
-    [GenderInt] smallint  NULL,
-    [DateOfBirth] datetime  NULL,
-    [Id] uniqueidentifier  NOT NULL
-);
-GO
-
 -- Creating table 'Parties_UserAccount'
 CREATE TABLE [dbo].[Parties_UserAccount] (
     [PasswordHash] nvarchar(max)  NULL,
     [EmailAddress] nvarchar(max)  NOT NULL,
     [LastActivity] datetime  NULL,
     [CreationDate] datetime  NOT NULL,
+    [FirstName] nvarchar(max)  NULL,
+    [LastName] nvarchar(max)  NULL,
+    [MiddleInitial] nvarchar(max)  NULL,
+    [GenderInt] smallint  NULL,
+    [DateOfBirth] datetime  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -1012,12 +999,6 @@ GO
 -- Creating primary key on [Id] in table 'Parties_BusinessAccount'
 ALTER TABLE [dbo].[Parties_BusinessAccount]
 ADD CONSTRAINT [PK_Parties_BusinessAccount]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Parties_Person'
-ALTER TABLE [dbo].[Parties_Person]
-ADD CONSTRAINT [PK_Parties_Person]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1558,15 +1539,6 @@ ON [dbo].[Employees]
     ([EmployerId]);
 GO
 
--- Creating foreign key on [Id] in table 'Employees'
-ALTER TABLE [dbo].[Employees]
-ADD CONSTRAINT [FK_EmployeePerson]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties_Person]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
 -- Creating foreign key on [Id] in table 'RecurringServices'
 ALTER TABLE [dbo].[RecurringServices]
 ADD CONSTRAINT [FK_RecurringServiceRepeat]
@@ -1897,20 +1869,11 @@ ADD CONSTRAINT [FK_BusinessAccount_inherits_Party]
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [Id] in table 'Parties_Person'
-ALTER TABLE [dbo].[Parties_Person]
-ADD CONSTRAINT [FK_Person_inherits_Party]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
 -- Creating foreign key on [Id] in table 'Parties_UserAccount'
 ALTER TABLE [dbo].[Parties_UserAccount]
-ADD CONSTRAINT [FK_UserAccount_inherits_Person]
+ADD CONSTRAINT [FK_UserAccount_inherits_Party]
     FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties_Person]
+    REFERENCES [dbo].[Parties]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
@@ -3290,7 +3253,7 @@ BEGIN
 
 	--Fill in the Employee Name based on the Id
 	UPDATE @EmployeesForRoutesForDate
-	SET EmployeeName = (SELECT FirstName + ' ' + LastName FROM Parties_Person WHERE Id = EmployeeId)
+	SET EmployeeName = (SELECT FirstName + ' ' + LastName FROM Employees WHERE Id = EmployeeId)
 	FROM @EmployeesForRoutesForDate
 
 
@@ -4643,9 +4606,9 @@ GO
 
 CREATE VIEW [dbo].[PartiesWithName]
 AS
-SELECT        dbo.Parties.Id, ISNULL(dbo.Parties_Person.LastName, '') + ' ' +  ISNULL(dbo.Parties_Person.FirstName, '') +' ' +  ISNULL(dbo.Parties_Person.MiddleInitial, '')  AS 'ChildName'
+SELECT        dbo.Parties.Id, ISNULL(dbo.Parties_UserAccount.LastName, '') + ' ' +  ISNULL(dbo.Parties_UserAccount.FirstName, '') +' ' +  ISNULL(dbo.Parties_UserAccount.MiddleInitial, '')  AS 'ChildName'
 FROM            dbo.Parties INNER JOIN
-                         dbo.Parties_Person ON dbo.Parties.Id = dbo.Parties_Person.Id
+                         dbo.Parties_UserAccount ON dbo.Parties.Id = dbo.Parties_UserAccount.Id
 UNION
 SELECT        dbo.Parties.Id, dbo.Parties_BusinessAccount.Name AS 'ChildName'
 FROM            dbo.Parties INNER JOIN

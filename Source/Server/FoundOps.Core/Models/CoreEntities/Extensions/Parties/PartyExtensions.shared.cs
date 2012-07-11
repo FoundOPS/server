@@ -28,11 +28,12 @@ namespace FoundOps.Core.Models.CoreEntities
         public virtual void OnCreate()
         {
             Id = Guid.NewGuid();
-            if (this is Person)
+            var userAccount = this as UserAccount;
+            if (userAccount != null)
             {
-                ((Person)this).FirstName = "";
-                ((Person)this).LastName = "";
-                ((Person)this).MiddleInitial = "";
+                userAccount.FirstName = "";
+                userAccount.LastName = "";
+                userAccount.MiddleInitial = "";
             }
             OnCreation();
         }

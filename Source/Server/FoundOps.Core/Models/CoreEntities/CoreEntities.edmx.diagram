@@ -6,19 +6,6 @@
         <edmx:EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="23.625" PointY="22.875" Height="2.5571907552083353" />
         <edmx:EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="21.375" PointY="23.125" Height="2.5571907552083246" />
         <edmx:EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="18.75" PointY="22.875" Height="2.7494921875000102" />
-        <edmx:EntityTypeShape EntityType="CoreEntities.Person" Width="1.5" PointX="14.125" PointY="33.5" Height="2.3648893229166674" />
-        <edmx:InheritanceConnector EntityType="CoreEntities.Person" ManuallyRouted="false">
-          <edmx:ConnectorPoint PointX="15.187497624999999" PointY="208.75909505208333" />
-          <edmx:ConnectorPoint PointX="15.187497624999999" PointY="212.75" />
-          <edmx:ConnectorPoint PointX="15" PointY="212.75" />
-          <edmx:ConnectorPoint PointX="15" PointY="215.875" />
-          <edmx:ConnectorPoint PointX="14.645835833333335" PointY="215.875" />
-          <edmx:ConnectorPoint PointX="14.479169166666667" PointY="215.875" />
-          <edmx:ConnectorPoint PointX="14.333333333333334" PointY="215.875" />
-          <edmx:ConnectorPoint PointX="14.166666666666666" PointY="215.875" />
-          <edmx:ConnectorPoint PointX="11" PointY="215.875" />
-          <edmx:ConnectorPoint PointX="11" PointY="216.25000000000003" />
-        </edmx:InheritanceConnector>
         <edmx:EntityTypeShape EntityType="CoreEntities.ContactInfo" Width="1.5" PointX="16.5" PointY="23" Height="2.557190755208353" />
         <edmx:AssociationConnector Association="CoreEntities.RoleBlock">
           <edmx:ConnectorPoint PointX="22.875" PointY="24.278595377604169" />
@@ -207,14 +194,6 @@
           <edmx:ConnectorPoint PointX="13.375" PointY="220.07643191145832" />
         </edmx:AssociationConnector>
         <edmx:EntityTypeShape EntityType="CoreEntities.UserAccount" Width="1.5" PointX="11.625" PointY="36.625" Height="2.3648893229166674" />
-        <edmx:InheritanceConnector EntityType="CoreEntities.UserAccount" ManuallyRouted="false">
-          <edmx:ConnectorPoint PointX="11" PointY="218.61488932291667" />
-          <edmx:ConnectorPoint PointX="11" PointY="219" />
-          <edmx:ConnectorPoint PointX="10.239583333333334" PointY="219" />
-          <edmx:ConnectorPoint PointX="10.072916666666666" PointY="219" />
-          <edmx:ConnectorPoint PointX="8.5" PointY="219" />
-          <edmx:ConnectorPoint PointX="8.5" PointY="219.375" />
-        </edmx:InheritanceConnector>
         <edmx:AssociationConnector Association="CoreEntities.UserAccountUserAccountLogEntry">
           <edmx:ConnectorPoint PointX="9.25" PointY="221.32738603580731" />
           <edmx:ConnectorPoint PointX="17.25" PointY="221.32738603580731" />
@@ -375,18 +354,6 @@
           <edmx:ConnectorPoint PointX="10.2578135546875" PointY="210.30230544270836" />
           <edmx:ConnectorPoint PointX="10.268237721354169" PointY="210.30230544270836" />
           <edmx:ConnectorPoint PointX="10.268237721354169" PointY="211.5" />
-        </edmx:AssociationConnector>
-        <edmx:AssociationConnector Association="CoreEntities.EmployeePerson">
-          <edmx:ConnectorPoint PointX="6.7499999999999662" PointY="210.53790364583333" />
-          <edmx:ConnectorPoint PointX="6.9410744349011209" PointY="210.72897808073446" />
-          <edmx:ConnectorPoint PointX="7.0589255650988791" PointY="210.84682921093224" />
-          <edmx:ConnectorPoint PointX="7.125" PointY="210.91290364583335" />
-          <edmx:ConnectorPoint PointX="7.125" PointY="217.848779564887" />
-          <edmx:ConnectorPoint PointX="7.822916666666667" PointY="217.848779564887" />
-          <edmx:ConnectorPoint PointX="7.989583333333333" PointY="217.848779564887" />
-          <edmx:ConnectorPoint PointX="10.072916666666666" PointY="217.848779564887" />
-          <edmx:ConnectorPoint PointX="10.239583333333334" PointY="217.848779564887" />
-          <edmx:ConnectorPoint PointX="10.25" PointY="217.848779564887" />
         </edmx:AssociationConnector>
         <edmx:AssociationConnector Association="CoreEntities.RecurringServiceRepeat">
           <edmx:ConnectorPoint PointX="12.875" PointY="193.25" />
@@ -588,6 +555,8 @@
         <edmx:InheritanceConnector EntityType="CoreEntities.BusinessAccount" />
         <edmx:InheritanceConnector EntityType="CoreEntities.BusinessAccount" />
         <edmx:AssociationConnector Association="CoreEntities.RoleBusinessAccount" />
+        <edmx:InheritanceConnector EntityType="CoreEntities.UserAccount" />
+        <edmx:InheritanceConnector EntityType="CoreEntities.UserAccount" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

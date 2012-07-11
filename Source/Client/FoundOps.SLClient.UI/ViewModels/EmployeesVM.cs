@@ -51,7 +51,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             CreateNewItem = name =>
             {
-                var newEmployee = new Employee { OwnedPerson = new Person { DisplayName = name } };
+                var newEmployee = new Employee { DisplayName = name };
 
                 //Add the new entity to the OwnerAccount
                 ((BusinessAccount)ContextManager.OwnerAccount).Employees.Add(newEmployee);

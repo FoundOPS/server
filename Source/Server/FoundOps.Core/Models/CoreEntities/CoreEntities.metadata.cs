@@ -86,20 +86,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
     }
 
-    [MetadataTypeAttribute(typeof(Contact.ContactMetadata))]
-    public partial class Contact
-    {
-        internal sealed class ContactMetadata
-        {
-            private ContactMetadata()
-            {
-            }
-
-            [Include]
-            public Person OwnedPerson { get; set; }
-        }
-    }
-
     [MetadataTypeAttribute(typeof(ContactInfo.ContactInfoMetadata))]
     public partial class ContactInfo
     {
@@ -153,9 +139,6 @@ namespace FoundOps.Core.Models.CoreEntities
             private EmployeeMetadata()
             {
             }
-
-            [Include]
-            public Person OwnedPerson { get; set; }
 
             [Include]
             public UserAccount LinkedUserAccount { get; set; }
