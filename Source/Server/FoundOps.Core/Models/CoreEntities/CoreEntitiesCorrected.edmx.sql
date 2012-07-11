@@ -2019,18 +2019,20 @@ CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 	BEGIN
 
 	DELETE FROM ContactInfoSet
-	WHERE		PartyId = @providerId
+	WHERE	PartyId = @providerId
 
 	DELETE FROM Roles
-	WHERE		OwnerBusinessAccountId = @providerId
+	WHERE	OwnerBusinessAccountId = @providerId
 
 	DELETE FROM Vehicles 
-	WHERE		OwnerPartyId = @providerId
+	WHERE	OwnerPartyId = @providerId
 
 	DELETE FROM Files
-	WHERE		PartyId = @providerId
+	WHERE	PartyId = @providerId
 
-
+	DELETE FROM dbo.Parties
+	WHERE	Id = @providerId
+	
 	END
 	RETURN
 
@@ -2069,9 +2071,6 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		FROM Routes
 		WHERE OwnerBusinessAccountId = @providerId
 	)
-
-	DELETE FROM Locations
-	WHERE BusinessAccountIdIfDepot = @providerId
 
 	DELETE FROM Routes
 	WHERE OwnerBusinessAccountId = @providerId
@@ -2151,17 +2150,27 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DELETE FROM ContactInfoSet
 	WHERE		PartyId = @providerId
 
-	DELETE FROM Roles
-	WHERE		OwnerBusinessAccountId = @providerId
+	DELETE FROM Employees
+	WHERE EmployerId = @providerId
+
+-------------------------------------------------------------------------------------------------------------------------
+--Delete all off of Parties
+-------------------------------------------------------------------------------------------------------------------------
 
 	DELETE FROM Vehicles 
 	WHERE		OwnerPartyId = @providerId
 
+	DELETE FROM Roles
+	WHERE		OwnerBusinessAccountId = @providerId
+
 	DELETE FROM Files
 	WHERE		PartyId = @providerId
 
-	DELETE FROM Employees
-	WHERE EmployerId = @providerId
+	DELETE FROM dbo.Parties
+	WHERE Id = @providerId
+-------------------------------------------------------------------------------------------------------------------------
+--Delete the BusinessAccount itself
+-------------------------------------------------------------------------------------------------------------------------
 	
 	DELETE FROM Parties_BusinessAccount
 	WHERE Id = @providerId
@@ -2664,6 +2673,9 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 
 	DELETE FROM UserAccountLog
 	WHERE UserAccountId = @providerId
+
+	DELETE FROM dbo.Parties
+	WHERE Id = @providerId
 
 	DELETE FROM Parties_UserAccount
 	WHERE Id = @providerId
