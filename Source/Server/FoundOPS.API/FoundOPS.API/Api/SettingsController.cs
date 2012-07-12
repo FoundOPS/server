@@ -3,6 +3,7 @@ using FoundOPS.API.Models;
 using FoundOPS.API.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models;
+using FoundOps.Core.Models.Authentication;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -25,6 +26,7 @@ namespace FoundOPS.API.Api
     public class SettingsController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;
+        private IMembershipService MembershipService { get; set; }
 
         public SettingsController()
         {
@@ -80,6 +82,25 @@ namespace FoundOPS.API.Api
             _coreEntitiesContainer.SaveChanges();
 
             return Request.CreateResponse(HttpStatusCode.Accepted);
+        }
+
+        [AcceptVerbs("POST")]
+        public HttpResponseMessage UpdatePassword(string oldPass, string newPass, string confirmPass)
+        {
+            if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
+
+            var user = _coreEntitiesContainer.CurrentUserAccount().First();
+            var oldHash = EncryptionTools.Hash(oldPass);
+            var newHash = EncryptionTools.Hash(newPass);
+
+            if (newPass == confirmPass && oldHash == user.PasswordHash)
+            {
+                if (MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass))
+                {
+                    return Request.CreateResponse(HttpStatusCode.Accepted);
+                }
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         /// <summary>
