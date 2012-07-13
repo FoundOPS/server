@@ -1226,12 +1226,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="hideFromNavigation">Initial value of the HideFromNavigation property.</param>
-        public static Block CreateBlock(global::System.Guid id, global::System.String name, global::System.Boolean hideFromNavigation)
+        /// <param name="isSilverlight">Initial value of the IsSilverlight property.</param>
+        public static Block CreateBlock(global::System.Guid id, global::System.String name, global::System.Boolean hideFromNavigation, global::System.Boolean isSilverlight)
         {
             Block block = new Block();
             block.Id = id;
             block.Name = name;
             block.HideFromNavigation = hideFromNavigation;
+            block.IsSilverlight = isSilverlight;
             return block;
         }
 
@@ -1385,6 +1387,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Url;
         partial void OnUrlChanging(global::System.String value);
         partial void OnUrlChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsSilverlight
+        {
+            get
+            {
+                return _IsSilverlight;
+            }
+            set
+            {
+                OnIsSilverlightChanging(value);
+                ReportPropertyChanging("IsSilverlight");
+                _IsSilverlight = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsSilverlight");
+                OnIsSilverlightChanged();
+            }
+        }
+        private global::System.Boolean _IsSilverlight;
+        partial void OnIsSilverlightChanging(global::System.Boolean value);
+        partial void OnIsSilverlightChanged();
 
         #endregion
 

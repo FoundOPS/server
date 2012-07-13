@@ -293,8 +293,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Add administrator role
             var administratorRole = new Role { Id = Guid.NewGuid(), Name = "Administrator", OwnerParty = newBusinessAccount, RoleType = RoleType.Administrator };
 
-            //Add the manager, business administrator, and HTML blocks to the administrator role
-            foreach (var blockId in BlockConstants.ManagerBlockIds.Union(BlockConstants.HtmlBlockIds))
+            //Add the mobile and regular blocks to the administrator role
+            foreach (var blockId in BlockConstants.RegularBlockIds.Union(BlockConstants.MobileBlockIds))
                 administratorRole.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
             //Add mobile role

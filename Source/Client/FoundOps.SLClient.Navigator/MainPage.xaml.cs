@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Windows.Navigation;
 using FoundOps.Common.Tools;
 using FoundOps.SLClient.UI.Tools;
 using System;
@@ -57,10 +59,10 @@ namespace FoundOps.SLClient.Navigator
 
         private void SetContentPageSizeToContentFrameSize()
         {
-            if (ContentFrame.Content as FrameworkElement == null) return;
+            if (this.Content as FrameworkElement == null) return;
 
-            ((FrameworkElement)ContentFrame.Content).Width = ContentFrame.ActualWidth;
-            ((FrameworkElement)ContentFrame.Content).Height = ContentFrame.ActualHeight;
+            ((FrameworkElement)this.Content).Width = this.ActualWidth;
+            ((FrameworkElement)this.Content).Height = this.ActualHeight;
         }
 
         #endregion

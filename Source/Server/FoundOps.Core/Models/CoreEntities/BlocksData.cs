@@ -9,7 +9,24 @@ namespace FoundOps.Core.Models.CoreEntities
     /// </summary>
     public static class BlockConstants
     {
-        #region Manager Blocks
+        #region Mobile Blocks
+
+        /// <summary>
+        /// The Routes block Id
+        /// </summary>
+        public static Guid RoutesBlockId = new Guid("6ABF7716-C4B8-442D-88C2-FFBB1C62598E");
+
+        /// <summary>
+        /// The mobile block ids
+        /// </summary>
+        public static IEnumerable<Guid> MobileBlockIds = new[]
+            {
+                RoutesBlockId
+            };
+
+        #endregion
+
+        #region Regular Blocks
 
         /// <summary>
         /// The Clients block Id
@@ -69,37 +86,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// The Manager blocks' ids
         /// </summary>
-        public static IEnumerable<Guid> ManagerBlockIds = new[]
+        public static IEnumerable<Guid> RegularBlockIds = new[]
             {
                 ClientBlockId, ContactsBlockId, DispatcherBlockId,
-                EmployeesBlockId, //ImportDataBlockId,
+                EmployeesBlockId, FeedbackSupportBlockId, ImportDataBlockId,
                 LocationsBlockId, RegionsBlockId, ServicesBlockId,
-                VehiclesBlockId, VehicleMaintenanceBlockId, FeedbackSupportBlockId
-            };
-
-        #endregion
-
-        #region HTML Blocks
-
-        /// <summary>
-        /// The Routes block Id
-        /// </summary>
-        public static Guid RoutesBlockId = new Guid("6ABF7716-C4B8-442D-88C2-FFBB1C62598E");
-
-        /// <summary>
-        /// The html block ids
-        /// </summary>
-        public static IEnumerable<Guid> HtmlBlockIds = new[]
-            {
-                RoutesBlockId
-            };
-
-        /// <summary>
-        /// The mobile block ids
-        /// </summary>
-        public static IEnumerable<Guid> MobileBlockIds = new[]
-            {
-                RoutesBlockId
+                VehiclesBlockId, VehicleMaintenanceBlockId
             };
 
         #endregion
@@ -138,16 +130,45 @@ namespace FoundOps.Core.Models.CoreEntities
 
         static BlocksData()
         {
-            SetupManagerBlocks();
+            SetupRegularBlocks();
 
-            SetupHTMLBlocks();
+            SetupMobileBlocks();
 
             SetupAdministrativeConsoleBlocks();
 
             SetupAllBlocks();
         }
 
-        #region Manager
+        #region Mobile Blocks
+
+        /// <summary>
+        /// Gets the routes block.
+        /// </summary>
+        public static Block RoutesBlock { get; private set; }
+
+        /// <summary>
+        /// Gets the mobile application blocks.
+        /// </summary>
+        public static List<Block> MobileBlocks { get; private set; }
+
+        private static void SetupMobileBlocks()
+        {
+            RoutesBlock = new Block
+            {
+                Id = BlockConstants.RoutesBlockId,
+                Name = "Routes",
+                HideFromNavigation = true,
+                IconUrl = "img/routes.png",
+                HoverIconUrl = "img/routesColor.png"
+            };
+
+            //RoutesBlock is hidden for now
+            MobileBlocks = new List<Block> { RoutesBlock };
+        }
+
+        #endregion
+
+        #region Regular
 
         /// <summary>
         /// Gets the clients block.
@@ -200,18 +221,19 @@ namespace FoundOps.Core.Models.CoreEntities
         public static Block VehicleMaintenanceBlock { get; private set; }
 
         /// <summary>
-        /// The list of manager blocks.
+        /// The list of regular blocks.
         /// </summary>
-        public static List<Block> ManagerBlocks { get; set; }
+        public static List<Block> RegularBlocks { get; set; }
 
-        private static void SetupManagerBlocks()
+        private static void SetupRegularBlocks()
         {
             ClientsBlock = new Block
             {
                 Id = BlockConstants.ClientBlockId,
                 Name = "Clients",
                 IconUrl = "img/clients.png",
-                HoverIconUrl = "img/clientsColor.png"
+                HoverIconUrl = "img/clientsColor.png",
+                IsSilverlight = true
             };
 
             DispatcherBlock = new Block
@@ -219,7 +241,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = BlockConstants.DispatcherBlockId,
                 Name = "Dispatcher",
                 IconUrl = "img/dispatcher.png",
-                HoverIconUrl = "img/dispatcherColor.png"
+                HoverIconUrl = "img/dispatcherColor.png",
+                IsSilverlight = true
             };
 
             EmployeesBlock = new Block
@@ -227,7 +250,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = BlockConstants.EmployeesBlockId,
                 Name = "Employees",
                 IconUrl = "img/employees.png",
-                HoverIconUrl = "img/employeesColor.png"
+                HoverIconUrl = "img/employeesColor.png",
+                IsSilverlight = true
             };
 
             FeebackSupportBlock = new Block
@@ -242,7 +266,8 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.ImportDataBlockId,
                 Name = "Import Data",
-                HideFromNavigation = true
+                HideFromNavigation = true,
+                IsSilverlight = true
             };
 
             LocationsBlock = new Block
@@ -250,7 +275,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = BlockConstants.LocationsBlockId,
                 Name = "Locations",
                 IconUrl = "img/locations.png",
-                HoverIconUrl = "img/locationsColor.png"
+                HoverIconUrl = "img/locationsColor.png",
+                IsSilverlight = true
             };
 
             RegionsBlock = new Block
@@ -258,7 +284,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = BlockConstants.RegionsBlockId,
                 Name = "Regions",
                 IconUrl = "img/regions.png",
-                HoverIconUrl = "img/regionsColor.png"
+                HoverIconUrl = "img/regionsColor.png",
+                IsSilverlight = true
             };
 
             ServicesBlock = new Block
@@ -266,7 +293,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = BlockConstants.ServicesBlockId,
                 Name = "Services",
                 IconUrl = "img/services.png",
-                HoverIconUrl = "img/servicesColor.png"
+                HoverIconUrl = "img/servicesColor.png",
+                IsSilverlight = true
             };
 
             VehiclesBlock = new Block
@@ -274,66 +302,32 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = BlockConstants.VehiclesBlockId,
                 Name = "Vehicles",
                 IconUrl = "img/vehicles.png",
-                HoverIconUrl = "img/vehiclesColor.png"
+                HoverIconUrl = "img/vehiclesColor.png",
+                IsSilverlight = true
             };
 
             VehicleMaintenanceBlock = new Block
             {
                 Id = BlockConstants.VehicleMaintenanceBlockId,
                 Name = "Vehicle Maintenance",
-                HideFromNavigation = true
+                HideFromNavigation = true,
+                IsSilverlight = true
             };
 
-            ManagerBlocks = new List<Block>
+            RegularBlocks = new List<Block>
             {
                ClientsBlock,
-               EmployeesBlock,
-               ServicesBlock,
-               LocationsBlock,
-               RegionsBlock,
                DispatcherBlock,
                EmployeesBlock,
+               FeebackSupportBlock,
+               ImportDataBlock, 
+               LocationsBlock,
+               RegionsBlock,
+               ServicesBlock,
+               EmployeesBlock,
                VehiclesBlock,
-               VehicleMaintenanceBlock,
-               //ImportDataBlock, 
-               FeebackSupportBlock
+               VehicleMaintenanceBlock
             };
-        }
-
-        #endregion
-
-        #region HTML Blocks
-
-        /// <summary>
-        /// Gets the routes block.
-        /// </summary>
-        public static Block RoutesBlock { get; private set; }
-
-        /// <summary>
-        /// Gets the HTML application blocks.
-        /// </summary>
-        public static List<Block> HTMLBlocks { get; private set; }
-
-        /// <summary>
-        /// Gets the mobile application blocks.
-        /// </summary>
-        public static List<Block> MobileBlocks { get; private set; }
-
-        private static void SetupHTMLBlocks()
-        {
-            RoutesBlock = new Block
-            {
-                Id = BlockConstants.RoutesBlockId,
-                Name = "Routes",
-                HideFromNavigation = true,
-                IconUrl = "img/routes.png",
-                HoverIconUrl = "img/routesColor.png"
-            };
-
-            //RoutesBlock is hidden for now
-            HTMLBlocks = new List<Block> { RoutesBlock };
-
-            MobileBlocks = new List<Block> { RoutesBlock };
         }
 
         #endregion
@@ -381,18 +375,9 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             AllBlocks = new List<Block>();
 
-            AllBlocks.AddRange(ManagerBlocks);
-
-            //no need to add mobile blocks because they are included in HTMLBlocks
-            AllBlocks.AddRange(HTMLBlocks);
-
+            AllBlocks.AddRange(MobileBlocks);
+            AllBlocks.AddRange(RegularBlocks);
             AllBlocks.AddRange(AdministrativeConsoleBlocks);
-
-            //Set the url based on the name
-            foreach (var block in AllBlocks.Where(b => string.IsNullOrEmpty(b.Url)))
-            {
-                block.Url = "#Home/Silverlight";
-            }
         }
     }
 }

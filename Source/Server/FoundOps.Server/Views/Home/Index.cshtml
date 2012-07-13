@@ -17,7 +17,7 @@
     <meta name="MobileOptimized" content="320">
     <!-- Enabling user-scalable=no or calling $("#nav").toggleClass("androidFixedPositionFix"); fixes fixed position bug in android 2.3 -->
     <meta name="viewport"
-          content="width=100%; initial-scale=1; minimum-scale=1.0; maximum-scale=1.0; user-scalable=no"/>
+          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!-- Home screen icon  Mathias Bynens mathiasbynens.be/notes/touch-icons -->
     <!-- For iPhone 4 with high-resolution Retina display: -->
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/h/apple-touch-icon.png">
@@ -37,38 +37,15 @@
 
     <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
     <meta http-equiv="cleartype" content="on">
-
     <!-- more tags for your 'head' to consider h5bp.com/d/head-Tips -->
-
-    <!-- Main Stylesheet -->
-    <!--link rel="stylesheet" href="css/style.css"-->
 
     <link rel="shortcut icon" href="./favicon_32.ico"/>
     <!--If debug-->
-    <link rel="stylesheet/less" type="text/css" href="styles/navigator.less">
+    <link rel="stylesheet" type="text/css" href="styles/navigator.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery.jscrollpane.css" media="all"/>
 
     <script type="text/javascript">
-        //If release
-        window.navigatorConfig = @Html.Raw(Model["NavigatorConfig"]);
-        //If debugging
-        //window.navigatorConfig = {
-        //    name: "Jordan Kelly",
-        //    avatarUrl: "./img/david.png",
-        //    businessLogoUrl: "./img/got-grease-logo.png",
-        //    roles: [
-        //        { name: "FoundOPS", id: "23144-24242-242442" },
-        //        { name: "GotGrease", id: "95838-24242-242442" },
-        //        { name: "AB Couriers", id: "64729-24242-242442" }
-        //    ],
-        //    sections: [
-        //        { name: "Employees", url: "#Employees", color: "red", iconUrl: "img/employees.png" },
-        //        { name: "Routes", url: "#Routes", color: "green", iconUrl: "./img/routes.png" },
-        //        { name: "Regions", url: "#Regions", color: "orange", iconUrl: "./img/regions.png" },
-        //        { name: "Vehicles", url: "#Vehicles", color: "red", iconUrl: "./img/vehicles.png" }/*,
-        //         {name:"Logout", url:"#logout", color:"black", iconUrl:"./img/logout.png"}*/
-        //    ]
-        //};
+        window.navigatorConfig = @Html.Raw(((Dictionary<string, object>)@Model)["NavigatorConfig"]);
     </script>
 </head>
 
@@ -77,14 +54,9 @@
     <div id="content">
         <div id="remoteContent">
         </div>
-        <div id="silverlightControlHost" style="visibility: hidden">
-            <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="100%">
+        <div id="silverlightControlHost" style="visibility: hidden; z-index: 0;">
+            <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="100%">
                 <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged" />
-                <!--if debugging outside of VS-->
-                <!--<param name="splashscreensource" value="http://localhost:31820/ClientBin/SplashScreen.xaml" />-->
-                <!--<param name="source" value="http://localhost:31820/ClientBin/FoundOps.SLClient.Navigator.xap"/>-->
-
-                <!--if in VS-->
                 @{
                 var xapSource = "";
                 var splashSource = "";
@@ -110,6 +82,7 @@
                 <param name="splashscreensource" value="@splashSource" />
                 <param name="source" value="@sourceParam"/>
 
+                <param name="onLoad" value="onSilverlightPluginLoaded"/>
                 <param name="onError" value="onSilverlightError" />
                 <param name="background" value="#ff333335" />
                 <param name="windowless" value="true" />
@@ -121,7 +94,7 @@
                          style="border-style: none" />
                 </a>
             </object>
-            <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px;
+            <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px; z-index: -1;
             border: 0px"></iframe>
         </div>
     </div>
@@ -132,7 +105,6 @@
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 
-<script type="text/javascript" src="lib/less.min.js"></script>
 <script data-main="js/main.js" src="lib/require-jquery.js"></script>
 
 <!-- JavaScript at the bottom for fast page loading -->
@@ -153,32 +125,32 @@ mathiasbynens.be/notes/async-analytics-snippet -->
 
 <script id="navTemplate" type="text/x-kendo-template">
     <div id='navContainer'>
-        <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/><a
-                href='\#'><img class='navIcon' src='img/search.png'/></a></div>
-        <div id='navClient' class='navElement popup last'><a href='\#'><img class='navIcon profile' src='#= data[0] #'/><img
-                id='clientLogo' src='#= data[1] #'/></a></div>
+        <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>
+            <a><img class='navIcon' src='img/search.png'/></a>
+        </div>
+        <div id='navClient' class='navElement popup last'>
+            <a><img class='navIcon profile' src='#= data[0] #'/><img id='clientLogo' src='#= data[1] #'/></a>
+        </div>
     </div>
     <img id='logo' src='./img/Logo.png' alt='FoundOPS'/>
 </script>
 
 <script id="expandTemplate" type="text/x-kendo-template">
-    <a id="expandMenuButton" href='\#'>
+    <a id="expandMenuButton">
         <div id='slideMenu'><img class='iconExpand' src='img/Expand.png'/></div>
     </a>
 </script>
 
 <script id="showMenuTemplate" type="text/x-kendo-template">
     <div id="showMenu">
-        <a href='\#'><img class='iconShow rotateIcon' src='img/Expand.png'/></a>
+        <a><img class='iconShow rotateIcon' src='img/Expand.png'/></a>
     </div>
 </script>
 
 <script id="sideBarElementTemplate" type="text/x-kendo-template">
-    <a href="#= href #">
-        <div class='sideBarElement' color='#= color #'>
-            <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>
-            <span>#= name #</span>
-        </div>
+    <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-iconHoverUrl='#= iconHoverUrl #'>
+        <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>
+        <span class='sectionName'>#= name #</span>
     </a>
 </script>
 </html>

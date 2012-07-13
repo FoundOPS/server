@@ -1,4 +1,6 @@
-﻿using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+﻿using System.Reactive.Linq;
+using System.Windows;
+using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using MEFedMVVM.ViewModelLocator;
@@ -7,7 +9,6 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
-using System.Windows;
 using System.Windows.Browser;
 using System.Windows.Controls;
 using Analytics = FoundOps.SLClient.Data.Services.Analytics;
@@ -69,6 +70,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ScriptableMember]
         public UserControl NavigateToView(string name)
         {
+            //if this is an infiniteAccordionSection
+            //a) load the Infinite Accordion View (instead of the view with this name)
+            //b) set the IInfiniteAccordionPage.SelectedObjectType to the section's type
             var infiniteAccordionSection = _infiniteAccordionSections.FirstOrDefault(t => t.Item1 == name);
 
             var view = GetView(infiniteAccordionSection != null ? "Infinite Accordion" : name);
@@ -90,8 +94,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ScriptableMember]
         public void ChangeRole(string roleId)
         {
-            //var roleGuid = new Guid(roleId);
-            MessageBox.Show(roleId);
+            var roleGuid = new Guid(roleId);
+            Manager.Context.RoleIdObserver.OnNext(roleGuid);
         }
 
         /// <summary>

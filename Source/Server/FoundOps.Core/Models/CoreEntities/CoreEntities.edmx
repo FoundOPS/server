@@ -341,6 +341,7 @@
     <Property Name="IconUrl" Type="nvarchar(max)" Nullable="true" />
     <Property Name="HoverIconUrl" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Url" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="IsSilverlight" Type="bit" Nullable="true" />
   </EntityType>
   <EntityType Name="Roles">
     <Key>
@@ -1990,6 +1991,7 @@
           <Property Type="String" Name="IconUrl" Nullable="true" />
           <Property Type="String" Name="HoverIconUrl" Nullable="true" />
           <Property Type="String" Name="Url" Nullable="true" />
+          <Property Type="Boolean" Name="IsSilverlight" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -3178,6 +3180,7 @@
           <ScalarProperty Name="IconUrl" ColumnName="IconUrl" />
           <ScalarProperty Name="HoverIconUrl" ColumnName="HoverIconUrl" />
           <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="IsSilverlight" ColumnName="IsSilverlight" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

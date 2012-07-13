@@ -133,14 +133,23 @@ namespace FoundOps.Server.Controllers
                     jsonWriter.WritePropertyName("name");
                     jsonWriter.WriteValue(section.Name);
 
-                    jsonWriter.WritePropertyName("url");
-                    jsonWriter.WriteValue(section.Url);
+                    if (section.Url != null)
+                    {
+                        jsonWriter.WritePropertyName("url");
+                        jsonWriter.WriteValue(section.Url);
+                    }
 
                     jsonWriter.WritePropertyName("iconUrl");
                     jsonWriter.WriteValue(section.IconUrl);
 
                     jsonWriter.WritePropertyName("hoverIconUrl");
                     jsonWriter.WriteValue(section.HoverIconUrl);
+
+                    if (section.IsSilverlight)
+                    {
+                        jsonWriter.WritePropertyName("isSilverlight");
+                        jsonWriter.WriteValue(true);
+                    }
 
                     jsonWriter.WriteEnd(); //end section object
                 }
