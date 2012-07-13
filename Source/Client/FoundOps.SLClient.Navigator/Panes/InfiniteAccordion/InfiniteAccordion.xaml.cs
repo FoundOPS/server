@@ -1,8 +1,6 @@
-﻿using FoundOps.Common.Silverlight.UI.Messages;
-using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
+﻿using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.UI.Tools;
-using ReactiveUI;
 using System;
 using System.Windows;
 using System.ComponentModel.Composition;
@@ -22,16 +20,16 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         public InfiniteAccordion()
         {
             InitializeComponent();
-            MessageBus.Current.Listen<NavigateToMessage>().Subscribe(OnNavigateToMessageRecieved);
+            VM.Navigation.CurrentSectionObservable.Subscribe(OnNavigateToMessageRecieved);
         }
 
-        //This method handles when a NavigateTo button was pressed
-        private void OnNavigateToMessageRecieved(NavigateToMessage navigateToMessage)
+        //This method handles when a section was chosen
+        private void OnNavigateToMessageRecieved(string sectionChosen)
         {
             //Clear the ObjectDisplayTypeToDisplay
             LayoutRoot.ObjectDisplayTypeToDisplay = null;
 
-            switch (navigateToMessage.Section)
+            switch (sectionChosen)
             {
                 case "Business Accounts":
                     LayoutRoot.ObjectDisplayTypeToDisplay = typeof (BusinessAccount).ToString();

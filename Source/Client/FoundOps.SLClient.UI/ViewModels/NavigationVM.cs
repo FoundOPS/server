@@ -1,15 +1,17 @@
-﻿using FoundOps.Common.Silverlight.UI.Messages;
-using GalaSoft.MvvmLight.Messaging;
+﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using MEFedMVVM.ViewModelLocator;
+using ReactiveUI;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows.Browser;
 using System.Windows.Controls;
 
@@ -19,6 +21,12 @@ namespace FoundOps.SLClient.UI.ViewModels
     public class NavigationVM : INotifyPropertyChanged
     {
         #region Properties
+
+        private readonly BehaviorSubject<string> _currentSectionObservable = new BehaviorSubject<string>("Infinite Accordion");
+        /// <summary>
+        /// The current section Observable (backed by a BehaviorSubject)
+        /// </summary>
+        public IObservable<string> CurrentSectionObservable { get { return _currentSectionObservable.AsObservable(); } }
 
         #region Implementation of INotifyPropertyChanged
 
@@ -63,6 +71,13 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         #endregion
 
+        public NavigationVM()
+        {
+            //By starting with the InfiniteAccordion all the VMs will be attached
+            //and any messages can be properly listened to
+            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(250), ()=> NavigateToView("Infinite Accordion"));
+        }
+
         /// <summary>
         /// Navigate to a view
         /// </summary>
@@ -78,13 +93,12 @@ namespace FoundOps.SLClient.UI.ViewModels
             var view = GetView(infiniteAccordionSection != null ? "Infinite Accordion" : name);
             if (infiniteAccordionSection != null)
             {
-                ((IInfiniteAccordionPage)view).SelectedObjectType = infiniteAccordionSection.Item2.ToString();
+                MessageBus.Current.SendMessage(new MoveToDetailsViewMessage(infiniteAccordionSection.Item2, MoveStrategy.StartFresh));
             }
 
             SelectedView = view;
 
-            //Send the NavigateToMessage message
-            Messenger.Default.Send(new NavigateToMessage {Section = name});
+            _currentSectionObservable.OnNext(name);
 
             TrackChosenSection(name);
 
@@ -109,6 +123,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             Section section;
             switch (name)
             {
+                case "Infinite Accordion": //The initial load
+                    return;
                 case "Feedback and Support":
                     section = Section.FeedbackAndSupport;
                     break;

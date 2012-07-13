@@ -341,7 +341,6 @@
     <Compile Include="Interfaces\ILoadDetails.cs" />
     <Compile Include="Interfaces\IPreventNavigationFrom.cs" />
     <Compile Include="Messages\IsBusyMessage.cs" />
-    <Compile Include="Messages\NavigateToMessage.cs" />
     <Compile Include="Messages\SelectItemMessage.cs" />
     <Compile Include="Messages\SwitchToStateMessage.cs" />
     <Compile Include="Messages\HasChangesEventArgs.cs" />

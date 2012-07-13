@@ -1,4 +1,4 @@
-<UserControl x:Class="FoundOps.SLClient.UI.Controls.Clients.ClientLarge" x:Name="myClientDetailsLarge" 
+<UserControl x:Class="FoundOps.SLClient.UI.Controls.Clients.ClientLarge" x:Name="myClientDetailsLarge"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
@@ -8,7 +8,7 @@
              xmlns:AddEditDelete="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;assembly=FoundOps.Common.Silverlight.UI" xmlns:Services="clr-namespace:FoundOps.SLClient.UI.Controls.Services"
              xmlns:Clients="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" xmlns:MarkupExtensions="clr-namespace:FoundOps.Common.Silverlight.UI.Tools.MarkupExtensions;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.UI.Tools" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Converters2="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data" xmlns:Converters3="clr-namespace:FoundOps.SLClient.UI.Converters;assembly=FoundOps.SLClient.Data"
+             xmlns:Converters2="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
              xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:ViewModels="clr-namespace:FoundOps.SLClient.UI.ViewModels"
              xmlns:Locations="clr-namespace:FoundOps.SLClient.UI.Controls.Locations" mc:Ignorable="d" d:DesignWidth="500" ViewModelLocator:ViewModelLocator.SharedViewModel="ClientsVM" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <!--IMPORTANT: DO NOT REMOVE "xmls:CoreEntities". It is needed for ImageFileUpload-->
@@ -19,7 +19,7 @@
         <Converters:EqualsVisibilityConverter x:Key="EqualsVisibilityConverter"/>
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
-    <Grid x:Name="LayoutRoot" ><!--Visibility="{Binding SelectedClientOwnedBusinessVM.Entity, Converter={StaticResource VisibilityConverter}}"-->
+    <Grid x:Name="LayoutRoot" Background="White"><!--Visibility="{Binding SelectedClientOwnedBusinessVM.Entity, Converter={StaticResource VisibilityConverter}}"-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

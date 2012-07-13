@@ -2,9 +2,7 @@
                     xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                     xmlns:Controls="clr-namespace:FoundOps.Common.Silverlight.Controls.Icons" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters" 
-                    xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.Icons" xmlns:System="clr-namespace:System;assembly=mscorlib" 
-                    xmlns:Telerik_Windows_Controls_Chromes="clr-namespace:Telerik.Windows.Controls.Chromes;assembly=Telerik.Windows.Controls"
-                    xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.UI.Converters"
+                    xmlns:Icons="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.Icons" xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.UI.Converters"
                     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" mc:Ignorable="d">
     <!--Common Converters-->
     <Converters1:ExistsBoolConverter x:Key="ExistsBoolConverter"/>

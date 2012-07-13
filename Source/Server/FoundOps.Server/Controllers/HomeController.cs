@@ -105,10 +105,11 @@ namespace FoundOps.Server.Controllers
                     jsonWriter.WriteValue(role.OwnerParty.DisplayName);
 
                     //Set the business's logo
-                    jsonWriter.WritePropertyName("businessLogoUrl");
-                    jsonWriter.WriteValue(role.OwnerParty.PartyImage != null
-                                              ? partyImageUrls[role.OwnerParty.PartyImage.Id]
-                                              : "img/emptyBusiness.png");
+                    if (role.OwnerParty.PartyImage != null)
+                    {
+                        jsonWriter.WritePropertyName("businessLogoUrl");
+                        jsonWriter.WriteValue(partyImageUrls[role.OwnerParty.PartyImage.Id]);
+                    }
 
                     //Add the available sections's names for the roles
                     jsonWriter.WritePropertyName("sections");
@@ -145,7 +146,7 @@ namespace FoundOps.Server.Controllers
                     jsonWriter.WritePropertyName("hoverIconUrl");
                     jsonWriter.WriteValue(section.HoverIconUrl);
 
-                    if (section.IsSilverlight.HasValue)
+                    if (section.IsSilverlight.HasValue && section.IsSilverlight.Value)
                     {
                         jsonWriter.WritePropertyName("isSilverlight");
                         jsonWriter.WriteValue(true);

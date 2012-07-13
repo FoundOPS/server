@@ -1,7 +1,5 @@
-using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Silverlight.UI.Messages;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.UI.Controls;
@@ -95,7 +93,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public bool ManifestOpen { get { return _manifestOpenHelper.Value; } set { _manifestOpenSubject.OnNext(value); } }
 
         private readonly ObservableAsPropertyHelper<DateTime> _selectedDateHelper;
-        private readonly Subject<DateTime> _selectedDateSubject = new Subject<DateTime>();
+        private readonly BehaviorSubject<DateTime> _selectedDateSubject = new BehaviorSubject<DateTime>(DateTime.Now.Date);
         /// <summary>
         /// An Observable of the SelectedDate.
         /// </summary>
@@ -260,9 +258,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Load the Routes whenever
             //a) the Dispatcher is entered/re-entered
-            //b) the SelectedDate changes
-            //c) Discard was called
-            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.Section == "Dispatcher").AsGeneric()
+            //b) the current role changed, while the dispatcher was open
+            //c) the SelectedDate changes
+            //d) Discard was called
+            //e) Changes were rejected
+            VM.Navigation.CurrentSectionObservable.Where(section => section == "Dispatcher").AsGeneric()
+            .Merge(ContextManager.OwnerAccountObservable.Where(o=>VM.Navigation.CurrentSectionObservable.First() == "Dispatcher").AsGeneric())
             .Merge(SelectedDateObservable.AsGeneric())
             .Merge(DiscardObservable.AsGeneric())
             .Merge(DataManager.RejectChangesDueToError)

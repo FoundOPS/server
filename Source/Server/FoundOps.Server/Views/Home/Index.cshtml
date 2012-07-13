@@ -40,9 +40,8 @@
     <!-- more tags for your 'head' to consider h5bp.com/d/head-Tips -->
 
     <link rel="shortcut icon" href="./favicon_32.ico"/>
-    <!--If debug-->
-    <link rel="stylesheet" type="text/css" href="styles/navigator.css">
     <link rel="stylesheet" type="text/css" href="styles/jquery.jscrollpane.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="styles/navigator.css">
 
     <script type="text/javascript">
         window.navigatorConfig = @Html.Raw(((Dictionary<string, object>)@Model)["NavigatorConfig"]);
@@ -81,7 +80,6 @@
                 }
                 <param name="splashscreensource" value="@splashSource" />
                 <param name="source" value="@sourceParam"/>
-
                 <param name="onLoad" value="onSilverlightPluginLoaded"/>
                 <param name="onError" value="onSilverlightError" />
                 <param name="background" value="#ff333335" />
@@ -104,6 +102,7 @@
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
+
 
 <script data-main="js/main.js" src="lib/require-jquery.js"></script>
 
@@ -148,7 +147,7 @@ mathiasbynens.be/notes/async-analytics-snippet -->
 </script>
 
 <script id="sideBarElementTemplate" type="text/x-kendo-template">
-    <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-iconHoverUrl='#= iconHoverUrl #'>
+    <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-hoverIconUrl='#= hoverIconUrl #'>
         <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>
         <span class='sectionName'>#= name #</span>
     </a>

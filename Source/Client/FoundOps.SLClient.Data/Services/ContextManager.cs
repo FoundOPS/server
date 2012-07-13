@@ -84,7 +84,7 @@ namespace FoundOps.SLClient.Data.Services
         /// </summary>
         public BusinessAccount ServiceProvider { get { return _ownerAccount.Value as BusinessAccount; } }
 
-        private readonly Subject<IEnumerable<ServiceTemplate>> _currentServiceTemplatesSubject = new Subject<IEnumerable<ServiceTemplate>>();
+        private readonly BehaviorSubject<IEnumerable<ServiceTemplate>> _currentServiceTemplatesSubject = new BehaviorSubject<IEnumerable<ServiceTemplate>>(new List<ServiceTemplate>());
         /// <summary>
         /// Pushes the current ServiceProvider's ServiceTemplates
         /// </summary>
@@ -123,7 +123,6 @@ namespace FoundOps.SLClient.Data.Services
         /// The current context.
         /// </value>
         public ObservableCollection<object> CurrentContext { get { return _currentContext.Value; } set { _currentContextSubject.OnNext(value); } }
-
 
         private readonly Subject<IProvideContext> _currentContextProviderSubject = new Subject<IProvideContext>();
         /// <summary>

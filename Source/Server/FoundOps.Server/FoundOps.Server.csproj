@@ -223,6 +223,9 @@
     <Content Include="Content\outerCircle.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\SiteLogo.png" />
+    <Content Include="img\businessAccounts.png" />
+    <Content Include="img\businessAccountsColor.png" />
+    <Content Include="img\emptyPerson.png" />
     <Content Include="Scripts\require-jquery.js" />
     <Content Include="styles\jquery.jscrollpane.css" />
     <Content Include="styles\navigator.css" />

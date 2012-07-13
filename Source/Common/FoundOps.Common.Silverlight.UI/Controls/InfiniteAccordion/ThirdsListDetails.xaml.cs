@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Data;
+using System.Windows.Media;
 using Telerik.Windows.Controls;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
@@ -14,13 +14,21 @@ namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
 
     public partial class ThirdsListDetails : IObjectTypeDisplay, INotifyPropertyChanged
     {
-        private readonly RadFluidContentControl _leftRadFluidContentControl = new RadFluidContentControl { ContentChangeMode = ContentChangeMode.Manual };
-        private readonly RadFluidContentControl _rightRadFluidContentControl = new RadFluidContentControl { ContentChangeMode = ContentChangeMode.Manual, TransitionDuration = new TimeSpan(0, 0, 0, 0, 300) };
+        private readonly RadFluidContentControl _leftRadFluidContentControl = new RadFluidContentControl
+        {
+            ContentChangeMode = ContentChangeMode.Manual
+        };
+
+        private readonly RadFluidContentControl _rightRadFluidContentControl = new RadFluidContentControl
+        {
+            ContentChangeMode = ContentChangeMode.Manual,
+            TransitionDuration = new TimeSpan(0, 0, 0, 0, 300)
+        };
 
         public ThirdsListDetails()
         {
             InitializeComponent();
-            
+
             //Commented out because small state is disable for now, TODO: Uncomment when small state is ready to be used again
             //_rightRadFluidContentControl.SizeChanged += (sender, e) =>
             //{
@@ -141,7 +149,7 @@ namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
 
         #region IObjectTypeDisplay
 
-                /// <value>
+        /// <value>
         /// The related context provider.
         /// </value>
         public IProvideContext ContextProvider { get; set; }

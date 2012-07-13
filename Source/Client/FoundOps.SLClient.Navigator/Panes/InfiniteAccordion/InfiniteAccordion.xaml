@@ -376,12 +376,12 @@
             <InfiniteAccordion:InfiniteAccordionView.ContextBorderControls>
                 <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.BusinessAccount" BorderBrush="{StaticResource PermissionBrush}" DeleteButtonVisibility="Collapsed">
                     <InfiniteAccordion:ContextBorder.HeaderContent>
-                        <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
+                        <TextBlock Text="{Binding Name}" Foreground="White"/>
                     </InfiniteAccordion:ContextBorder.HeaderContent>
                 </InfiniteAccordion:ContextBorder>
                 <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Client" BorderBrush="{StaticResource ClientBrush}" DeleteButtonVisibility="Collapsed">
                     <InfiniteAccordion:ContextBorder.HeaderContent>
-                        <TextBlock Text="{Binding OwnedParty.DisplayName}" Foreground="White"/>
+                        <TextBlock Text="{Binding Name}" Foreground="White"/>
                     </InfiniteAccordion:ContextBorder.HeaderContent>
                 </InfiniteAccordion:ContextBorder>
                 <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Employee" BorderBrush="{StaticResource VehiclesBrush}" DeleteButtonVisibility="Collapsed">
@@ -407,7 +407,7 @@
                 <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.ServiceHolder" BorderBrush="{StaticResource ServiceBrush}" DeleteButtonVisibility="Collapsed">
                     <InfiniteAccordion:ContextBorder.HeaderContent>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding AccountToService.DisplayName}" Foreground="White" />
+                            <TextBlock Text="{Binding Service.Client.Name}" Foreground="White" />
                             <TextBlock Margin="5,0" Text="{Binding ServiceTemplate.Name}" Foreground="White" />
                         </StackPanel>
                     </InfiniteAccordion:ContextBorder.HeaderContent>

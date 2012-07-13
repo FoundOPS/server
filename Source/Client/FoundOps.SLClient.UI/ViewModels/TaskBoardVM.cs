@@ -1,6 +1,5 @@
 ﻿using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Silverlight.UI.Messages;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
@@ -100,9 +99,11 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             //Load the TaskHolders whenever
             //a) the Dispatcher is entered/re-entered
-            //b) the SelectedDate changes
-            //c) RejectChanges is called due to an error
-            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.Section == "Dispatcher").AsGeneric()
+            //b) the current role changed, while the dispatcher was open
+            //c) the SelectedDate changes
+            //d) RejectChanges is called due to an error
+            VM.Navigation.CurrentSectionObservable.Where(section => section == "Dispatcher").AsGeneric()
+            .Merge(ContextManager.OwnerAccountObservable.Where(o => VM.Navigation.CurrentSectionObservable.First() == "Dispatcher").AsGeneric())
             .Merge(VM.Routes.SelectedDateObservable.AsGeneric())
             .Merge(DataManager.RejectChangesDueToError)
             .Merge(_reloadTasks)

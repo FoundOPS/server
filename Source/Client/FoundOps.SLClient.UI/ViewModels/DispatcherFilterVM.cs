@@ -1,21 +1,19 @@
 ﻿using System.Linq;
 using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
-using System.Threading.Tasks;
-using FoundOps.Common.Silverlight.MVVM.Messages;
 using FoundOps.Common.Silverlight.MVVM.Models;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Silverlight.UI.Messages;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
-using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -96,30 +94,32 @@ namespace FoundOps.SLClient.UI.ViewModels
                     ServiceTemplateOptions.Add(new EntityOption(serviceTemplate));
             });
 
-            //Load the regions whenever the Dispatcher is entered
-            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.Section == "Dispatcher").AsGeneric()
+            //Load the regions whenever the Dispatcher is entered, or 
+            //the current role changed while the dispatcher was open
+            VM.Navigation.CurrentSectionObservable.Where(section => section == "Dispatcher").AsGeneric()
+            .Merge(Manager.Context.OwnerAccountObservable.Where(o => VM.Navigation.CurrentSectionObservable.First() == "Dispatcher").AsGeneric())
             .ObserveOnDispatcher().Subscribe(_ =>
-           {
-               _cancelLastFilterRegionsLoad.OnNext(true);
+            {
+                _cancelLastFilterRegionsLoad.OnNext(true);
 
-               Manager.CoreDomainContext.LoadAsync(Manager.CoreDomainContext.GetRegionsForServiceProviderQuery(Manager.Context.RoleId), _cancelLastFilterRegionsLoad)
-               .ContinueWith(task =>
-               {
-                   if (task.IsCanceled || !task.Result.Any())
-                       return;
+                Manager.CoreDomainContext.LoadAsync(Manager.CoreDomainContext.GetRegionsForServiceProviderQuery(Manager.Context.RoleId), _cancelLastFilterRegionsLoad)
+                .ContinueWith(task =>
+                {
+                    if (task.IsCanceled || !task.Result.Any())
+                        return;
 
-                   //Notify the RoutesVM has completed loading Routes
-                   IsLoadingSubject.OnNext(false);
+                    //Notify the RoutesVM has completed loading Routes
+                    IsLoadingSubject.OnNext(false);
 
-                   LoadedRegions = new ObservableCollection<Region>(task.Result);
+                    LoadedRegions = new ObservableCollection<Region>(task.Result);
 
-                   RegionOptions.Clear();
+                    RegionOptions.Clear();
 
-                   foreach (var region in LoadedRegions)
-                       RegionOptions.Add(new EntityOption(region));
+                    foreach (var region in LoadedRegions)
+                        RegionOptions.Add(new EntityOption(region));
 
-               }, TaskScheduler.FromCurrentSynchronizationContext());
-           });
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            });
         }
 
         #endregion
@@ -136,7 +136,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public bool TaskHolderIncludedInFilter(TaskHolder taskHolder)
         {
             var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == taskHolder.ServiceName);
-            var meetsRegionsFilter = RegionOptions.Any(option => (option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName)) || 
+            var meetsRegionsFilter = RegionOptions.Any(option => (option.IsSelected && ((Region)option.Entity).Name == taskHolder.RegionName)) ||
                 taskHolder.RegionName == null || !RegionOptions.Any();
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
