@@ -28,29 +28,39 @@ namespace FoundOps.SLClient.Navigator.Panes.InfiniteAccordion
         //This method handles when a NavigateTo button was pressed
         private void OnNavigateToMessageRecieved(NavigateToMessage navigateToMessage)
         {
-            var navigateToUriString = navigateToMessage.UriToNavigateTo.ToString();
-
             //Clear the ObjectDisplayTypeToDisplay
             LayoutRoot.ObjectDisplayTypeToDisplay = null;
 
-            if (navigateToUriString.Contains("Business Accounts"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(BusinessAccount).ToString();
-            else if (navigateToUriString.Contains("Clients"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Client).ToString();
-            else if (navigateToUriString.Contains("Employees"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Employee).ToString();
-            else if (navigateToUriString.Contains("Locations"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Location).ToString();
-            else if (navigateToUriString.Contains("Regions"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Region).ToString();
-            else if (navigateToUriString.Contains("Routes"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Route).ToString();
-            else if (navigateToUriString.Contains("Services"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(ServiceHolder).ToString();
-            else if (navigateToUriString.Contains("Vehicles"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(Vehicle).ToString();
-            else if (navigateToUriString.Contains("Vehicle Maintenance"))
-                LayoutRoot.ObjectDisplayTypeToDisplay = typeof(VehicleMaintenanceLogEntry).ToString();
+            switch (navigateToMessage.Section)
+            {
+                case "Business Accounts":
+                    LayoutRoot.ObjectDisplayTypeToDisplay = typeof (BusinessAccount).ToString();
+                    break;
+                case "Clients":
+                    LayoutRoot.ObjectDisplayTypeToDisplay = typeof (Client).ToString();
+                    break;
+                case "Employees":
+                    LayoutRoot.ObjectDisplayTypeToDisplay = typeof (Employee).ToString();
+                    break;
+                case "Locations":
+                    LayoutRoot.ObjectDisplayTypeToDisplay = typeof (Location).ToString();
+                    break;
+                case "Regions":
+                    LayoutRoot.ObjectDisplayTypeToDisplay = typeof (Region).ToString();
+                    break;
+                case "Routes":
+                    LayoutRoot.ObjectDisplayTypeToDisplay = typeof (Route).ToString();
+                    break;
+                case "Services":
+                    LayoutRoot.ObjectDisplayTypeToDisplay = typeof (ServiceHolder).ToString();
+                    break;
+                case "Vehicles":
+                    LayoutRoot.ObjectDisplayTypeToDisplay = typeof (Vehicle).ToString();
+                    break;
+                case "Vehicle Maintenance":
+                    LayoutRoot.ObjectDisplayTypeToDisplay = typeof (VehicleMaintenanceLogEntry).ToString();
+                    break;
+            }
         }
 
         private string _initialListDetailsControlObjectType;

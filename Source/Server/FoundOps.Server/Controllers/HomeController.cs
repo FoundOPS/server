@@ -145,7 +145,7 @@ namespace FoundOps.Server.Controllers
                     jsonWriter.WritePropertyName("hoverIconUrl");
                     jsonWriter.WriteValue(section.HoverIconUrl);
 
-                    if (section.IsSilverlight)
+                    if (section.IsSilverlight.HasValue)
                     {
                         jsonWriter.WritePropertyName("isSilverlight");
                         jsonWriter.WriteValue(true);

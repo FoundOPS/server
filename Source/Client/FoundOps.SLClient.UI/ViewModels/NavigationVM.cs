@@ -1,5 +1,6 @@
-﻿using System.Reactive.Linq;
-using System.Windows;
+﻿using FoundOps.Common.Silverlight.UI.Messages;
+using GalaSoft.MvvmLight.Messaging;
+using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
@@ -11,7 +12,6 @@ using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Windows.Browser;
 using System.Windows.Controls;
-using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -82,6 +82,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
 
             SelectedView = view;
+
+            //Send the NavigateToMessage message
+            Messenger.Default.Send(new NavigateToMessage {Section = name});
 
             TrackChosenSection(name);
 

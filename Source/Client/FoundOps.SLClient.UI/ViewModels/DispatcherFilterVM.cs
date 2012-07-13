@@ -97,7 +97,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Load the regions whenever the Dispatcher is entered
-            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
+            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.Section == "Dispatcher").AsGeneric()
             .ObserveOnDispatcher().Subscribe(_ =>
            {
                _cancelLastFilterRegionsLoad.OnNext(true);

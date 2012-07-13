@@ -102,7 +102,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //a) the Dispatcher is entered/re-entered
             //b) the SelectedDate changes
             //c) RejectChanges is called due to an error
-            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
+            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.Section == "Dispatcher").AsGeneric()
             .Merge(VM.Routes.SelectedDateObservable.AsGeneric())
             .Merge(DataManager.RejectChangesDueToError)
             .Merge(_reloadTasks)

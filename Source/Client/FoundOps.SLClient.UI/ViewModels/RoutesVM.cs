@@ -262,7 +262,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //a) the Dispatcher is entered/re-entered
             //b) the SelectedDate changes
             //c) Discard was called
-            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.UriToNavigateTo.ToString().Contains("Dispatcher")).AsGeneric()
+            MessageBus.Current.Listen<NavigateToMessage>().Where(m => m.Section == "Dispatcher").AsGeneric()
             .Merge(SelectedDateObservable.AsGeneric())
             .Merge(DiscardObservable.AsGeneric())
             .Merge(DataManager.RejectChangesDueToError)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
+﻿namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
 {
     /// <summary>
     /// The page which holds the InfiniteAccordion and it's ObjectDisplayControls.

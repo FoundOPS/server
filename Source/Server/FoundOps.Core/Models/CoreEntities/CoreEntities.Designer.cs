@@ -1090,6 +1090,36 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderContextParameter;
+            if (serviceProviderContext.HasValue)
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
+            }
+            else
+            {
+                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
@@ -1171,36 +1201,6 @@ namespace FoundOps.Core.Models.CoreEntities
     
             return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter);
         }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
-        {
-            ObjectParameter serviceProviderContextParameter;
-            if (serviceProviderContext.HasValue)
-            {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", serviceProviderContext);
-            }
-            else
-            {
-                serviceProviderContextParameter = new ObjectParameter("serviceProviderContext", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter serviceDateParameter;
-            if (serviceDate.HasValue)
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
-            }
-            else
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
-            }
-    
-            return base.ExecuteFunction<TaskHolder>("GetUnroutedServicesForDate", serviceProviderContextParameter, serviceDateParameter);
-        }
 
         #endregion
 
@@ -1226,14 +1226,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="hideFromNavigation">Initial value of the HideFromNavigation property.</param>
-        /// <param name="isSilverlight">Initial value of the IsSilverlight property.</param>
-        public static Block CreateBlock(global::System.Guid id, global::System.String name, global::System.Boolean hideFromNavigation, global::System.Boolean isSilverlight)
+        public static Block CreateBlock(global::System.Guid id, global::System.String name, global::System.Boolean hideFromNavigation)
         {
             Block block = new Block();
             block.Id = id;
             block.Name = name;
             block.HideFromNavigation = hideFromNavigation;
-            block.IsSilverlight = isSilverlight;
             return block;
         }
 
@@ -1391,9 +1389,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Boolean IsSilverlight
+        public Nullable<global::System.Boolean> IsSilverlight
         {
             get
             {
@@ -1408,8 +1406,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnIsSilverlightChanged();
             }
         }
-        private global::System.Boolean _IsSilverlight;
-        partial void OnIsSilverlightChanging(global::System.Boolean value);
+        private Nullable<global::System.Boolean> _IsSilverlight;
+        partial void OnIsSilverlightChanging(Nullable<global::System.Boolean> value);
         partial void OnIsSilverlightChanged();
 
         #endregion
