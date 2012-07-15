@@ -2120,7 +2120,7 @@
           <Property Type="String" Name="IconUrl" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="HoverIconUrl" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Url" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="Boolean" Name="IsSilverlight" />
+          <Property Type="Boolean" Name="IsSilverlight" Nullable="true" />
         </EntityType>
         <EntityType Name="Role">
           <Key>

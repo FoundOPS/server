@@ -377,7 +377,7 @@ CREATE TABLE [dbo].[Blocks] (
     [IconUrl] nvarchar(max)  NULL,
     [HoverIconUrl] nvarchar(max)  NULL,
     [Url] nvarchar(max)  NULL,
-    [IsSilverlight] bit  NOT NULL
+    [IsSilverlight] bit  NULL
 );
 GO
 

@@ -356,14 +356,16 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = BlockConstants.BusinessAccountsBlockId,
                 Name = "Business Accounts",
                 IconUrl = "img/businessAccounts.png",
-                HoverIconUrl = "img/businessAccountsColor.png"
+                HoverIconUrl = "img/businessAccountsColor.png",
+                IsSilverlight = true
             };
 
             ServiceTemplatesBlock = new Block
             {
                 Id = BlockConstants.ServiceTemplatesBlockId,
                 Name = "Service Templates",
-                HideFromNavigation = true
+                HideFromNavigation = true,
+                IsSilverlight = true
             };
 
             AdministrativeConsoleBlocks = new List<Block> { BusinessAccountsBlock };

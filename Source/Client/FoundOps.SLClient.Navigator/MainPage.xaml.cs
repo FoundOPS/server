@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 using FoundOps.Common.Tools;
 using FoundOps.SLClient.UI.Tools;
 using System;

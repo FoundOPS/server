@@ -68,14 +68,12 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private bool _firstBlockChosen;
         private UserControl _selectedView;
-
         #endregion
 
         public NavigationVM()
         {
-            //By starting with the InfiniteAccordion all the VMs will be attached
-            //and any messages can be properly listened to
-            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(250), ()=> NavigateToView("Infinite Accordion"));
+            //Start with the InfiniteAccordion all the VMs will be attached and any messages can be properly listened to
+            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(150), () => NavigateToView("Infinite Accordion"));
         }
 
         /// <summary>

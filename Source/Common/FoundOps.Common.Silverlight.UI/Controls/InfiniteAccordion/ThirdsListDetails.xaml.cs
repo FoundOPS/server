@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Media;
 using Telerik.Windows.Controls;
 
 namespace FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion
