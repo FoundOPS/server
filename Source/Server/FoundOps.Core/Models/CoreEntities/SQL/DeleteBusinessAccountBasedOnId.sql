@@ -32,9 +32,6 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		WHERE OwnerBusinessAccountId = @providerId
 	)
 
-	DELETE FROM Locations
-	WHERE BusinessAccountIdIfDepot = @providerId
-
 	DELETE FROM Routes
 	WHERE OwnerBusinessAccountId = @providerId
 
@@ -44,67 +41,72 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DELETE FROM Services
 	WHERE ServiceProviderId = @providerId
 
-	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = @providerId, @ownerClientId = null
--------------------------------------------------------------------------------------------------------------------------
---Delete Clients for ServiceProvider
--------------------------------------------------------------------------------------------------------------------------	
-	DECLARE @ClientId uniqueidentifier
+	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = @providerId, @ownerClientId = NULL
+    
+	BEGIN    --Delete Clients for ServiceProvider
+		
+		DECLARE @ClientId uniqueidentifier
 
-	DECLARE @ClientIdsForServiceProvider TABLE
-	(
-		ClientId uniqueidentifier
-	)
+		DECLARE @ClientIdsForServiceProvider TABLE
+		(
+			ClientId uniqueidentifier
+		)
 
-	--Finds all Clients that are associated with the BusinessAccount
-	INSERT INTO @ClientIdsForServiceProvider
-	SELECT Id FROM Clients
-	WHERE	BusinessAccountId = @providerId
+		--Finds all Clients that are associated with the BusinessAccount
+		INSERT INTO @ClientIdsForServiceProvider
+		SELECT Id FROM Clients
+		WHERE	BusinessAccountId = @providerId
 
-	DECLARE @ClientRowCount int
-	SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
+		DECLARE @ClientRowCount int
+		SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
 
-	--Iterates through @ClientIdsForServiceProvider and calls DeleteClientBasedOnId on each
-	WHILE @ClientRowCount > 0
-	BEGIN
-			SET @ClientId = (SELECT MIN(ClientId) FROM @ClientIdsForServiceProvider)
+		--Iterates through @ClientIdsForServiceProvider and calls DeleteClientBasedOnId on each
+		WHILE @ClientRowCount > 0
+		BEGIN
+				SET @ClientId = (SELECT MIN(ClientId) FROM @ClientIdsForServiceProvider)
 
-			EXEC dbo.DeleteClientBasedOnId @clientId = @ClientId
+				EXEC dbo.DeleteClientBasedOnId @clientId = @ClientId
 
-			DELETE FROM @ClientIdsForServiceProvider
-			WHERE ClientId = @ClientId
+				DELETE FROM @ClientIdsForServiceProvider
+				WHERE ClientId = @ClientId
 
-			SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
+				SET @ClientRowCount = (SELECT COUNT(*) FROM @ClientIdsForServiceProvider)
+		END
+
 	END
--------------------------------------------------------------------------------------------------------------------------
---Delete Locations for ServiceProvider
--------------------------------------------------------------------------------------------------------------------------	
-	DECLARE @LocationId uniqueidentifier
 
-	DECLARE @LocationIdsForServiceProvider TABLE
-	(
-		LocationId uniqueidentifier
-	)
+	BEGIN    --Delete Locations for ServiceProvider
+		
+		DECLARE @LocationId uniqueidentifier
 
-	--Finds all Locations that are associated with the BusinessAccount
-	INSERT INTO @LocationIdsForServiceProvider
-	SELECT Id FROM Locations
-	WHERE	BusinessAccountId = @providerId OR BusinessAccountIdIfDepot = @providerId
+		DECLARE @LocationIdsForServiceProvider TABLE
+		(
+			LocationId uniqueidentifier
+		)
 
-	DECLARE @LocationRowCount int
-	SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+		--Finds all Locations that are associated with the BusinessAccount
+		INSERT INTO @LocationIdsForServiceProvider
+		SELECT Id FROM Locations
+		WHERE	BusinessAccountId = @providerId OR BusinessAccountIdIfDepot = @providerId
 
-	--Iterates through @LocationIdsForServiceProvider and calls DeleteLocationBasedOnId on each
-	WHILE @LocationRowCount > 0
-	BEGIN
-			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
+		DECLARE @LocationRowCount int
+		SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
 
-			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationId
+		--Iterates through @LocationIdsForServiceProvider and calls DeleteLocationBasedOnId on each
+		WHILE @LocationRowCount > 0
+		BEGIN
+				SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForServiceProvider)
 
-			DELETE FROM @LocationIdsForServiceProvider
-			WHERE LocationId = @LocationId
+				EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationId
 
-			SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+				DELETE FROM @LocationIdsForServiceProvider
+				WHERE LocationId = @LocationId
+
+				SET @LocationRowCount = (SELECT COUNT(*) FROM @LocationIdsForServiceProvider)
+		END
+        
 	END
+    
 -------------------------------------------------------------------------------------------------------------------------
 
 	DELETE FROM Regions
@@ -113,17 +115,18 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	DELETE FROM ContactInfoSet
 	WHERE		PartyId = @providerId
 
-	DELETE FROM Roles
-	WHERE		OwnerPartyId = @providerId
-
-	DELETE FROM Vehicles 
-	WHERE		OwnerPartyId = @providerId
-
-	DELETE FROM Files
-	WHERE		PartyId = @providerId
-
 	DELETE FROM Employees
 	WHERE EmployerId = @providerId
+
+-------------------------------------------------------------------------------------------------------------------------
+--Delete all off of Parties
+-------------------------------------------------------------------------------------------------------------------------
+
+	EXECUTE [dbo].[DeleteBasicPartyBasedOnId] @providerId
+
+-------------------------------------------------------------------------------------------------------------------------
+--Delete the BusinessAccount itself
+-------------------------------------------------------------------------------------------------------------------------
 	
 	DELETE FROM Parties_BusinessAccount
 	WHERE Id = @providerId

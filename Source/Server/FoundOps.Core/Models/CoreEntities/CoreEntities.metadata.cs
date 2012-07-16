@@ -21,21 +21,10 @@ namespace FoundOps.Core.Models.CoreEntities
         }
     }
 
-    [MetadataTypeAttribute(typeof(Business.BusinessMetadata))]
-    public partial class Business
-    {
-        internal class BusinessMetadata : PartyMetadata
-        {
-            protected BusinessMetadata()
-            {
-            }
-        }
-    }
-
     [MetadataTypeAttribute(typeof(BusinessAccount.BusinessAccountMetadata))]
     public partial class BusinessAccount
     {
-        internal sealed class BusinessAccountMetadata : Business.BusinessMetadata
+        internal sealed class BusinessAccountMetadata : Party.PartyMetadata
         {
             private BusinessAccountMetadata()
             {
@@ -43,6 +32,9 @@ namespace FoundOps.Core.Models.CoreEntities
 
             [Include]
             public EntityCollection<Location> Depots { get; set; }
+
+            [Include]
+            public EntityCollection<Role> OwnedRoles { get; set; }
 
             [Include]
             public EntityCollection<ServiceTemplate> ServiceTemplates { get; set; }
@@ -86,20 +78,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
             [Include]
             public Client Client { get; set; }
-        }
-    }
-
-    [MetadataTypeAttribute(typeof(Contact.ContactMetadata))]
-    public partial class Contact
-    {
-        internal sealed class ContactMetadata
-        {
-            private ContactMetadata()
-            {
-            }
-
-            [Include]
-            public Person OwnedPerson { get; set; }
         }
     }
 
@@ -156,9 +134,6 @@ namespace FoundOps.Core.Models.CoreEntities
             private EmployeeMetadata()
             {
             }
-
-            [Include]
-            public Person OwnedPerson { get; set; }
 
             [Include]
             public UserAccount LinkedUserAccount { get; set; }
@@ -278,9 +253,6 @@ namespace FoundOps.Core.Models.CoreEntities
             public EntityCollection<Role> RoleMembership { get; set; }
 
             [Include]
-            public EntityCollection<Role> OwnedRoles { get; set; }
-
-            [Include]
             public PartyImage PartyImage { get; set; }
         }
     }
@@ -361,7 +333,7 @@ namespace FoundOps.Core.Models.CoreEntities
             public EntityCollection<Party> MemberParties { get; set; }
 
             [Include]
-            public Party OwnerParty { get; set; }
+            public Party OwnerBusinessAccount { get; set; }
         }
     }
 
@@ -380,7 +352,7 @@ namespace FoundOps.Core.Models.CoreEntities
             [Include]
             public EntityCollection<RouteDestination> RouteDestinations { get; set; }
 
-            public Business OwnerBusinessAccount { get; set; }
+            public BusinessAccount OwnerBusinessAccount { get; set; }
         }
     }
 

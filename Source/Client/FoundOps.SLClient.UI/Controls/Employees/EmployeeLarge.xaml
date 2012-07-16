@@ -3,13 +3,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
-             xmlns:EmployeeHistory="clr-namespace:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory"
-             xmlns:ContactInfo="clr-namespace:FoundOps.SLClient.UI.Controls.ContactInfo" xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher"
+             xmlns:EmployeeHistory="clr-namespace:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory" xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Files="clr-namespace:FoundOps.SLClient.UI.Controls.Files" xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts"
-             xmlns:Person="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.Person" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM" 
+             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
+             xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" xmlns:telerik1="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.UI.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
+             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM" 
              d:DesignWidth="400" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
+    <UserControl.Resources>
+<Converters1:TrueIfEnumValueEqualsParameter x:Key="TrueIfEnumValueEqualsParameter" />
+        <CoreEntities1:Gender x:Key="Male">Male</CoreEntities1:Gender>
+        <CoreEntities1:Gender x:Key="Female">Female</CoreEntities1:Gender>
+    </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">
         <Grid.RowDefinitions>
@@ -24,9 +29,9 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="5,3" >
                     <TextBlock Text="Employee - " FontSize="13" Foreground="White"/>
-                    <TextBlock Text="{Binding OwnedPerson.FirstName}" FontSize="13" Foreground="White"/>
+                    <TextBlock Text="{Binding FirstName}" FontSize="13" Foreground="White"/>
                     <TextBlock Text=" " FontSize="13" Foreground="White"/>
-                    <TextBlock Text="{Binding OwnedPerson.LastName}" FontSize="13" Foreground="White"/>
+                    <TextBlock Text="{Binding LastName}" FontSize="13" Foreground="White"/>
                     <!--Bind Text to selected employee name-->
                 </StackPanel>
                 <SaveDiscardCancel:SaveCancel Grid.Column="1" ISaveDiscardChangesCommands="{Binding DataContext, ElementName=myEmployeeLarge}"/>
@@ -34,21 +39,13 @@
         </Border>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel>
-                <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource EmployeeBrush}" 
-                                  IsEnabled="{Binding DetailsLoaded}">
-                    <toolkit:Expander.Header>
-                        <TextBlock Text="Photo" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource EmployeeBrush}" />
-                    </toolkit:Expander.Header>
-                    <Files:ImageFileUpload x:Name="accountImage1" Margin="10" HorizontalAlignment="Center" DefaultFileTypeToCreate="CoreEntities:PartyImage" 
-                                           OwnerParty="{Binding OwnedPerson}" File="{Binding OwnedPerson.PartyImage, Mode=TwoWay}" />
-                </toolkit:Expander>
                 <toolkit:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource EmployeeBrush}">
                     <toolkit:Expander.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock TextWrapping="Wrap" Text="Employee Details" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource EmployeeBrush}" />
                         </StackPanel>
                     </toolkit:Expander.Header>
-                    <Grid Margin="0,5" HorizontalAlignment="Center">
+                    <Grid Margin="0,5" Grid.ColumnSpan="5" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="{StaticResource LargeLabelColumn}" />
                             <ColumnDefinition Width="5" />
@@ -63,9 +60,38 @@
                             <RowDefinition Height="{StaticResource DetailRowHeight}"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Person:PersonDetailsEdit Grid.ColumnSpan="5" Person="{Binding DataContext.SelectedEntity.OwnedPerson, ElementName=myEmployeeLarge}"/>
-                        <TextBlock Text="SSN:" Grid.Row="2" TextAlignment="Right"/>
-                        <Telerik:RadMaskedTextBox Mask="AAA-AA-AAAA" Grid.Row="2" Grid.Column="2" Value="{Binding SSN, Mode=TwoWay}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="{StaticResource DetailRowHeight}"/>
+                                <RowDefinition/>
+                                <RowDefinition Height="{StaticResource DetailRowHeight}"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource LargeLabelColumn}" />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="{StaticResource LargeValueColumn}"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Name:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                <Telerik:RadMaskedTextBox MaskType="None" EmptyContent="First" MinWidth="100" Margin="0,0,2.5,0" Value="{Binding FirstName, Mode=TwoWay}" />
+                                <Telerik:RadMaskedTextBox Mask="l" EmptyContent="MI" Margin="0,0,2.5,0" Placeholder=" " Value="{Binding MiddleInitial, Mode=TwoWay}" />
+                                <Telerik:RadMaskedTextBox MaskType="None" EmptyContent="Last" MinWidth="100" Placeholder=" " Value="{Binding LastName, Mode=TwoWay}"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Gender:" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="2">
+                                <telerik1:RadRadioButton Content="Male" Margin="0,0,2.5,0" IsThreeState="True" GroupName="Gender" 
+                                                         IsChecked="{Binding Gender, Mode=TwoWay, Converter={StaticResource TrueIfEnumValueEqualsParameter}, ConverterParameter={StaticResource Male}}" />
+                                <telerik1:RadRadioButton Content="Female" GroupName="Gender" IsThreeState="True" 
+                                                         IsChecked="{Binding Gender, Mode=TwoWay, Converter={StaticResource TrueIfEnumValueEqualsParameter}, ConverterParameter={StaticResource Female}}" />
+                            </StackPanel>
+
+                            <TextBlock Text="Date of Birth:" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <Telerik:RadDateTimePicker Grid.Row="4" Grid.Column="2" InputMode="DatePicker" SelectedDate="{Binding DateOfBirth, Mode=TwoWay}" IsTooltipEnabled="False" />
+                        </Grid>
                         <TextBlock Text="Address:" Grid.Row="4" TextAlignment="Right"/>
                         <StackPanel Grid.Row="4" Grid.Column="2">
                             <Telerik:RadMaskedTextBox MaskType="None" EmptyContent="Address Line 1" Value="{Binding AddressLineOne, Mode=TwoWay}" />

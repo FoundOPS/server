@@ -161,12 +161,10 @@
     <Compile Include="Models\CoreEntities\Extensions\Locations\LocationExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Locations\RegionExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Locations\SubLocationExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Parties\BusinessExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\ClientExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\EmployeeHistoryExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\PartyExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Parties\PersonExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\UserAccountLogEntryExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\RepeatExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Services\ServiceExtensions.cs" />
@@ -216,7 +214,7 @@
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
     <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
-    <Content Include="Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql">
+    <Content Include="Models\CoreEntities\CoreEntitiesCorrected.edmx.sql">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
@@ -241,7 +239,6 @@
     <Content Include="Models\CoreEntities\SQL\GetUnroutedServiceForDate.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\TestFunctionForRecurringServices.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\SchedulerTests.sql" />
-    <Content Include="Models\CoreEntities\SQL\PartiesWithName.sql" />
     <Content Include="Models\CoreEntities\SQL\SchedulerSubFunctions.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteUserAccountBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\GetServiceHolders.sql" />
@@ -262,7 +259,7 @@
     </None>
     <None Include="Models\CoreEntities\CoreEntitiesCorrected.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CoreEntitiesCorrected1.edmx.sql</LastGenOutput>
+      <LastGenOutput>CoreEntitiesCorrected.edmx.sql</LastGenOutput>
     </None>
     <None Include="Models\CoreEntities\M2M4RiaEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

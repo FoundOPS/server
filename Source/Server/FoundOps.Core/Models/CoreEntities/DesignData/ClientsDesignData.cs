@@ -74,174 +74,172 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private void InitializeClients()
         {
-            var partyDesignData = new PartyDesignData();
-
             DesignClient = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusiness.Name
+                Name = "Adelino's Old World Kitchen"
             };
 
             DesignClientTwo = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessTwo.Name
+                Name = "Akropolis Restaraunt"
             };
 
             DesignClientThree = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessThree.Name
+                Name = "Apollo Lounge"
             };
 
             DesignClientFour = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessFour.Name
+                Name = "Applebee's Neighborhood Grill"
             };
 
             DesignClientFive = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessFive.Name
+                Name = "Arby's"
             };
 
             DesignClientSix = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessSix.Name
+                Name = "Arctic White Soft Serve Ice"
             };
 
             DesignClientSeven = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessSeven.Name
+                Name = "Arthur's"
             };
 
             DesignClientEight = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessEight.Name
+                Name = "Artie's Tenderloin"
             };
 
             DesignClientNine = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessNine.Name
+                Name = "Barcelona Tapas"
             };
 
             DesignClientTen = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessTen.Name
+                Name = "Bistro 501"
             };
 
             DesignClientEleven = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessEleven.Name
+                Name = "Black Sparrow"
             };
 
             DesignClientTwelve = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessTwelve.Name
+                Name = "Blue Fin Bistro Sushi Lafayette"
             };
 
             DesignClientThirteen = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessThirteen.Name
+                Name = "Bob Evans Restaurant"
             };
 
             DesignClientFourteen = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessFourteen.Name
+                Name = "Bruno's Pizza and Big O's Sports Room"
             };
 
             DesignClientFifteen = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessFifteen.Name
+                Name = "Buca di Beppo - Downtown Indianapolis"
             };
 
             DesignClientSixteen = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessSixteen.Name
+                Name = "Buffalo Wild Wings Grill & Bar"
             };
 
             DesignClientSeventeen = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessSeventeen.Name
+                Name = "Burger King"
             };
 
             DesignClientEighteen = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessEighteen.Name
+                Name = "Campbell's On Main Street"
             };
 
             DesignClientNineteen = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessNineteen.Name
+                Name = "Covered Bridge Restaurant"
             };
 
             DesignClientTwenty = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessTwenty.Name
+                Name = "Crawfordsville Forum Family"
             };
 
             DesignClientTwentyOne = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessTwentyOne.Name
+                Name = "Dairy Queen"
             };
 
             DesignClientTwentyTwo = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessTwentyTwo.Name
+                Name = "Diamond Coffee Company"
             };
 
             DesignClientTwentyThree = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessTwentyThree.Name
+                Name = "Culver's"
             };
 
             DesignClientTwentyFour = new Client
             {
                 Id = Guid.NewGuid(),
                 DateAdded = DateTime.UtcNow,
-                Name = partyDesignData.DesignBusinessTwentyFour.Name
+                Name = "El Rodeo"
             };
 
             DesignClients = new List<Client> { 

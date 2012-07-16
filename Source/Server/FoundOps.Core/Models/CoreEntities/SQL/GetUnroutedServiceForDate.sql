@@ -305,7 +305,7 @@ BEGIN
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientName =	(
 							SELECT DISTINCT t1.Name
-							FROM	Parties_Business t1
+							FROM	Parties_BusinessAccount t1
 							WHERE	EXISTS
 							(
 								SELECT  t2.ClientId
@@ -318,7 +318,7 @@ BEGIN
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientName =	(
 							SELECT DISTINCT  t1.Name
-							FROM	Parties_Business t1
+							FROM	Parties_BusinessAccount t1
 							WHERE	EXISTS
 							(
 								SELECT  t2.ClientId

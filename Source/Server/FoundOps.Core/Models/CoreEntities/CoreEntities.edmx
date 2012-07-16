@@ -26,9 +26,7 @@
           <EntitySet Name="Options" EntityType="CoreEntities.Store.Options" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Options_LocationOption" EntityType="CoreEntities.Store.Options_LocationOption" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Parties" EntityType="CoreEntities.Store.Parties" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Parties_Business" EntityType="CoreEntities.Store.Parties_Business" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Parties_BusinessAccount" EntityType="CoreEntities.Store.Parties_BusinessAccount" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Parties_Person" EntityType="CoreEntities.Store.Parties_Person" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Parties_UserAccount" EntityType="CoreEntities.Store.Parties_UserAccount" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="PartyRole" EntityType="CoreEntities.Store.PartyRole" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RecurringServices" EntityType="CoreEntities.Store.RecurringServices" store:Type="Tables" Schema="dbo" />
@@ -55,12 +53,8 @@
       [ServiceTemplatesWithVendorId].[BusinessAccountId] AS [BusinessAccountId]
       FROM [dbo].[ServiceTemplatesWithVendorId] AS [ServiceTemplatesWithVendorId]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK_Business_inherits_Party" Association="CoreEntities.Store.FK_Business_inherits_Party">
+          <AssociationSet Name="FK_BusinessAccount_inherits_Party" Association="CoreEntities.Store.FK_BusinessAccount_inherits_Party">
             <End Role="Parties" EntitySet="Parties" />
-            <End Role="Parties_Business" EntitySet="Parties_Business" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BusinessAccount_inherits_Business" Association="CoreEntities.Store.FK_BusinessAccount_inherits_Business">
-            <End Role="Parties_Business" EntitySet="Parties_Business" />
             <End Role="Parties_BusinessAccount" EntitySet="Parties_BusinessAccount" />
           </AssociationSet>
           <AssociationSet Name="FK_BusinessAccountInvoice" Association="CoreEntities.Store.FK_BusinessAccountInvoice">
@@ -118,10 +112,6 @@
           <AssociationSet Name="FK_EmployeeHistoryEntryEmployee" Association="CoreEntities.Store.FK_EmployeeHistoryEntryEmployee">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="EmployeeHistoryEntries" EntitySet="EmployeeHistoryEntries" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployeePerson" Association="CoreEntities.Store.FK_EmployeePerson">
-            <End Role="Parties_Person" EntitySet="Parties_Person" />
-            <End Role="Employees" EntitySet="Employees" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeUserAccount" Association="CoreEntities.Store.FK_EmployeeUserAccount">
             <End Role="Parties_UserAccount" EntitySet="Parties_UserAccount" />
@@ -207,14 +197,6 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="PartyRole" EntitySet="PartyRole" />
           </AssociationSet>
-          <AssociationSet Name="FK_PartyRole1" Association="CoreEntities.Store.FK_PartyRole1">
-            <End Role="Parties" EntitySet="Parties" />
-            <End Role="Roles" EntitySet="Roles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Person_inherits_Party" Association="CoreEntities.Store.FK_Person_inherits_Party">
-            <End Role="Parties" EntitySet="Parties" />
-            <End Role="Parties_Person" EntitySet="Parties_Person" />
-          </AssociationSet>
           <AssociationSet Name="FK_RecurringServiceClient" Association="CoreEntities.Store.FK_RecurringServiceClient">
             <End Role="Clients" EntitySet="Clients" />
             <End Role="RecurringServices" EntitySet="RecurringServices" />
@@ -242,6 +224,10 @@
           <AssociationSet Name="FK_RoleBlock_Role" Association="CoreEntities.Store.FK_RoleBlock_Role">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="RoleBlock" EntitySet="RoleBlock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleBusinessAccount" Association="CoreEntities.Store.FK_RoleBusinessAccount">
+            <End Role="Parties_BusinessAccount" EntitySet="Parties_BusinessAccount" />
+            <End Role="Roles" EntitySet="Roles" />
           </AssociationSet>
           <AssociationSet Name="FK_RouteDestinationClient" Association="CoreEntities.Store.FK_RouteDestinationClient">
             <End Role="Clients" EntitySet="Clients" />
@@ -315,8 +301,8 @@
             <End Role="Fields" EntitySet="Fields" />
             <End Role="Fields_TextBoxField" EntitySet="Fields_TextBoxField" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserAccount_inherits_Person" Association="CoreEntities.Store.FK_UserAccount_inherits_Person">
-            <End Role="Parties_Person" EntitySet="Parties_Person" />
+          <AssociationSet Name="FK_UserAccount_inherits_Party" Association="CoreEntities.Store.FK_UserAccount_inherits_Party">
+            <End Role="Parties" EntitySet="Parties" />
             <End Role="Parties_UserAccount" EntitySet="Parties_UserAccount" />
           </AssociationSet>
           <AssociationSet Name="FK_UserAccountUserAccountLogEntry" Association="CoreEntities.Store.FK_UserAccountUserAccountLogEntry">
@@ -434,6 +420,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="MiddleInitial" Type="nvarchar(max)" />
+          <Property Name="GenderInt" Type="smallint" />
+          <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="AddressLineOne" Type="nvarchar(max)" />
           <Property Name="AddressLineTwo" Type="nvarchar(max)" />
           <Property Name="City" Type="nvarchar(max)" />
@@ -471,7 +462,6 @@
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Group" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Required" Type="bit" Nullable="false" />
           <Property Name="Tooltip" Type="nvarchar(max)" />
           <Property Name="ParentFieldId" Type="uniqueidentifier" />
@@ -608,13 +598,6 @@
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <EntityType Name="Parties_Business">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Name" Type="nvarchar(max)" />
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
         <EntityType Name="Parties_BusinessAccount">
           <Key>
             <PropertyRef Name="Id" />
@@ -625,17 +608,7 @@
           <Property Name="RouteManifestSettings" Type="nvarchar(max)" />
           <Property Name="QuickBooksSessionXml" Type="nvarchar(max)" />
           <Property Name="MaxRoutes" Type="int" Nullable="false" />
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Parties_Person">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="FirstName" Type="nvarchar(max)" />
-          <Property Name="LastName" Type="nvarchar(max)" />
-          <Property Name="MiddleInitial" Type="nvarchar(max)" />
-          <Property Name="GenderInt" Type="smallint" />
-          <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Parties_UserAccount">
@@ -646,6 +619,11 @@
           <Property Name="EmailAddress" Type="nvarchar(max)" Nullable="false" />
           <Property Name="LastActivity" Type="datetime" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="MiddleInitial" Type="nvarchar(max)" />
+          <Property Name="GenderInt" Type="smallint" />
+          <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PartyRole">
@@ -701,8 +679,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="OwnerPartyId" Type="uniqueidentifier" />
           <Property Name="RoleTypeInt" Type="smallint" Nullable="false" />
+          <Property Name="OwnerBusinessAccountId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="RouteDestinations">
           <Key>
@@ -866,27 +844,13 @@
           <Property Name="ServiceTemplateId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Business_inherits_Party">
+        <Association Name="FK_BusinessAccount_inherits_Party">
           <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Parties_Business" Type="CoreEntities.Store.Parties_Business" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Parties">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Parties_Business">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BusinessAccount_inherits_Business">
-          <End Role="Parties_Business" Type="CoreEntities.Store.Parties_Business" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Parties_BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="Parties_Business">
+            <Principal Role="Parties">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Parties_BusinessAccount">
@@ -1063,18 +1027,6 @@
             </Principal>
             <Dependent Role="EmployeeHistoryEntries">
               <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployeePerson">
-          <End Role="Parties_Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="1" />
-          <End Role="Employees" Type="CoreEntities.Store.Employees" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Parties_Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Employees">
-              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1354,32 +1306,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PartyRole1">
-          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="0..1" />
-          <End Role="Roles" Type="CoreEntities.Store.Roles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Parties">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Roles">
-              <PropertyRef Name="OwnerPartyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Person_inherits_Party">
-          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Parties_Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Parties">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Parties_Person">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_RecurringServiceClient">
           <End Role="Clients" Type="CoreEntities.Store.Clients" Multiplicity="1" />
           <End Role="RecurringServices" Type="CoreEntities.Store.RecurringServices" Multiplicity="*" />
@@ -1467,6 +1393,18 @@
             </Principal>
             <Dependent Role="RoleBlock">
               <PropertyRef Name="Roles_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleBusinessAccount">
+          <End Role="Parties_BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
+          <End Role="Roles" Type="CoreEntities.Store.Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parties_BusinessAccount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="OwnerBusinessAccountId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1698,13 +1636,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserAccount_inherits_Person">
-          <End Role="Parties_Person" Type="CoreEntities.Store.Parties_Person" Multiplicity="1">
+        <Association Name="FK_UserAccount_inherits_Party">
+          <End Role="Parties" Type="CoreEntities.Store.Parties" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Parties_UserAccount" Type="CoreEntities.Store.Parties_UserAccount" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="Parties_Person">
+            <Principal Role="Parties">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Parties_UserAccount">
@@ -1923,10 +1861,6 @@
             <End Role="Party" EntitySet="Parties" />
             <End Role="Role" EntitySet="Roles" />
           </AssociationSet>
-          <AssociationSet Name="PartyRole1" Association="CoreEntities.PartyRole1">
-            <End Role="Party" EntitySet="Parties" />
-            <End Role="Role" EntitySet="Roles" />
-          </AssociationSet>
           <EntitySet Name="Regions" EntityType="CoreEntities.Region" />
           <AssociationSet Name="RegionsLocation" Association="CoreEntities.RegionLocation">
             <End Role="Regions" EntitySet="Regions" />
@@ -1954,10 +1888,6 @@
           <AssociationSet Name="EmployeeBusinessAccount" Association="CoreEntities.EmployeeBusinessAccount">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="BusinessAccount" EntitySet="Parties" />
-          </AssociationSet>
-          <AssociationSet Name="EmployeePerson" Association="CoreEntities.EmployeePerson">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="Person" EntitySet="Parties" />
           </AssociationSet>
           <AssociationSet Name="RecurringServiceRepeat" Association="CoreEntities.RecurringServiceRepeat">
             <End Role="RecurringService" EntitySet="RecurringServices" />
@@ -2055,6 +1985,10 @@
             <End Role="Route" EntitySet="Routes" />
             <End Role="Employee" EntitySet="Employees" />
           </AssociationSet>
+          <AssociationSet Name="RoleBusinessAccount" Association="CoreEntities.RoleBusinessAccount">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="BusinessAccount" EntitySet="Parties" />
+          </AssociationSet>
           <FunctionImport Name="DeleteBasicPartyBasedOnId">
             <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
@@ -2092,9 +2026,6 @@
           <FunctionImport Name="PropagateNewServiceTemplateToClients">
             <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
-          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
-            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
-          </FunctionImport>
           <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
             <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
             <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
@@ -2108,7 +2039,10 @@
             <Parameter Name="getPrevious" Mode="In" Type="Boolean" />
             <Parameter Name="getNext" Mode="In" Type="Boolean" />
           </FunctionImport>
-        </EntityContainer>
+          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          </EntityContainer>
         <EntityType Name="Block">
           <Key>
             <PropertyRef Name="Id" />
@@ -2131,13 +2065,13 @@
           <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Blocks" Relationship="CoreEntities.RoleBlock" FromRole="Role" ToRole="Block" />
           <NavigationProperty Name="MemberParties" Relationship="CoreEntities.PartyRole" FromRole="Role" ToRole="Party" />
-          <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.PartyRole1" FromRole="Role" ToRole="Party" />
-          <Property Name="OwnerPartyId" Nullable="true" Type="Guid" />
           <Property Type="Int16" Name="RoleTypeInt" Nullable="false" DefaultValue="0" >
             <Documentation>
               <Summary>The Role's type. Defaults to custom.</Summary>
             </Documentation>
           </Property>
+          <NavigationProperty Name="OwnerBusinessAccount" Relationship="CoreEntities.RoleBusinessAccount" FromRole="Role" ToRole="BusinessAccount" />
+          <Property Type="Guid" Name="OwnerBusinessAccountId" Nullable="true" />
         </EntityType>
         <EntityType Name="Party" Abstract="false">
           <Key>
@@ -2146,20 +2080,8 @@
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Vehicles" Relationship="CoreEntities.VehicleParty" FromRole="Party" ToRole="Vehicle" />
           <NavigationProperty Name="RoleMembership" Relationship="CoreEntities.PartyRole" FromRole="Party" ToRole="Role" />
-          <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.PartyRole1" FromRole="Party" ToRole="Role" />
           <NavigationProperty Name="OwnedFiles" Relationship="CoreEntities.FileParty" FromRole="Party" ToRole="File" />
           <NavigationProperty Name="PartyImage" Relationship="CoreEntities.PartyPartyImage" FromRole="Party" ToRole="PartyImage" />
-        </EntityType>
-        <EntityType Name="Person" BaseType="CoreEntities.Party" >
-          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="LastName" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="MiddleInitial" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="Int16" Name="GenderInt" Nullable="true" />
-          <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
-          <NavigationProperty Name="OwnerEmployee" Relationship="CoreEntities.EmployeePerson" FromRole="Person" ToRole="Employee" />
-        </EntityType>
-        <EntityType Name="Business" BaseType="CoreEntities.Party" >
-          <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
         <EntityType Name="ContactInfo">
           <Key>
@@ -2243,7 +2165,6 @@
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="Group" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Boolean" Name="Required" Nullable="false" />
           <Property Type="String" Name="Tooltip" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="ChildrenFields" Relationship="CoreEntities.FieldField" FromRole="Field" ToRole="Field1" />
@@ -2526,7 +2447,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="BusinessAccount" BaseType="CoreEntities.Business" >
+        <EntityType Name="BusinessAccount" BaseType="CoreEntities.Party" >
           <NavigationProperty Name="ServicesToProvide" Relationship="CoreEntities.BusinessAccountService" FromRole="BusinessAccount" ToRole="Service" />
           <NavigationProperty Name="Routes" Relationship="CoreEntities.BusinessAccountRoute" FromRole="BusinessAccount" ToRole="Route" />
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.BusinessAccountRouteTask" FromRole="BusinessAccount" ToRole="RouteTask" />
@@ -2543,6 +2464,8 @@
           <NavigationProperty Name="Depots" Relationship="CoreEntities.BusinessAccountLocation" FromRole="BusinessAccount" ToRole="Location" />
           <NavigationProperty Name="Clients" Relationship="CoreEntities.ClientBusinessAccount" FromRole="BusinessAccount" ToRole="Client" />
           <NavigationProperty Name="OwnedLocations" Relationship="CoreEntities.LocationBusinessAccount" FromRole="BusinessAccount" ToRole="Location" />
+          <Property Type="String" Name="Name" Nullable="true" Unicode="true" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.RoleBusinessAccount" FromRole="BusinessAccount" ToRole="Role" />
         </EntityType>
         <Association Name="BusinessAccountService">
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
@@ -2580,13 +2503,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="UserAccount" BaseType="CoreEntities.Person" >
+        <EntityType Name="UserAccount" BaseType="CoreEntities.Party" >
           <Property Type="String" Name="PasswordHash" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="EmailAddress" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="DateTime" Name="LastActivity" Nullable="true" Precision="3" />
           <NavigationProperty Name="UserAccountLog" Relationship="CoreEntities.UserAccountUserAccountLogEntry" FromRole="UserAccount" ToRole="UserAccountLogEntry" />
           <Property Type="DateTime" Name="CreationDate" Nullable="false" Precision="3" />
           <NavigationProperty Name="LinkedEmployees" Relationship="CoreEntities.EmployeeUserAccount" FromRole="UserAccount" ToRole="Employee" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MiddleInitial" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int16" Name="GenderInt" Nullable="true" />
+          <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
         </EntityType>
         <Association Name="UserAccountUserAccountLogEntry">
           <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="1" />
@@ -2729,18 +2657,6 @@
           <End Type="CoreEntities.Party" Role="Party" Multiplicity="*" />
           <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
         </Association>
-        <Association Name="PartyRole1">
-          <End Type="CoreEntities.Party" Role="Party" Multiplicity="0..1" />
-          <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Party">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Role">
-              <PropertyRef Name="OwnerPartyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Region">
           <Key>
             <PropertyRef Name="Id" />
@@ -2830,7 +2746,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MiddleInitial" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int16" Name="GenderInt" Nullable="true" />
+          <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
           <Property Type="String" Name="AddressLineOne" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="AddressLineTwo" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="City" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2844,7 +2765,6 @@
           <Property Type="Guid" Name="LinkedUserAccountId" Nullable="true" />
           <NavigationProperty Name="Employer" Relationship="CoreEntities.EmployeeBusinessAccount" FromRole="Employee" ToRole="BusinessAccount" />
           <Property Type="Guid" Name="EmployerId" Nullable="false" />
-          <NavigationProperty Name="OwnedPerson" Relationship="CoreEntities.EmployeePerson" FromRole="Employee" ToRole="Person" />
           <NavigationProperty Name="EmployeeHistoryEntries" Relationship="CoreEntities.EmployeeHistoryEntryEmployee" FromRole="Employee" ToRole="EmployeeHistoryEntry" />
           <Property Type="Int32" Name="LastCompassDirection" Nullable="true" />
           <Property Type="Double" Name="LastLongitude" Nullable="true" />
@@ -2877,18 +2797,6 @@
             </Principal>
             <Dependent Role="Employee">
               <PropertyRef Name="EmployerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="EmployeePerson">
-          <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="0..1" />
-          <End Type="CoreEntities.Person" Role="Person" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="Person">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Employee">
-              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3294,508 +3202,514 @@
           <End Type="CoreEntities.Route" Role="Route" Multiplicity="*" />
           <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
         </Association>
+        <Association Name="RoleBusinessAccount">
+          <End Type="CoreEntities.Role" Role="Role" Multiplicity="*" />
+          <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessAccount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="OwnerBusinessAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="CoreEntitiesStoreContainer" CdmEntityContainer="CoreEntitiesContainer">
-          <EntitySetMapping Name="Blocks">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Block)">
-              <MappingFragment StoreEntitySet="Blocks">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="HideFromNavigation" ColumnName="HideFromNavigation" />
-                <ScalarProperty Name="IconUrl" ColumnName="IconUrl" />
-                <ScalarProperty Name="HoverIconUrl" ColumnName="HoverIconUrl" />
-                <ScalarProperty Name="Url" ColumnName="Url" />
-                <ScalarProperty Name="IsSilverlight" ColumnName="IsSilverlight" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Roles">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Role)">
-              <MappingFragment StoreEntitySet="Roles">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="OwnerPartyId" ColumnName="OwnerPartyId" />
-                <ScalarProperty Name="RoleTypeInt" ColumnName="RoleTypeInt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Parties">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Party)">
-              <MappingFragment StoreEntitySet="Parties">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Business)">
-              <MappingFragment StoreEntitySet="Parties_Business">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.BusinessAccount)">
-              <MappingFragment StoreEntitySet="Parties_BusinessAccount">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="QuickBooksEnabled" ColumnName="QuickBooksEnabled" />
-                <ScalarProperty Name="QuickBooksAccessToken" ColumnName="QuickBooksAccessToken" />
-                <ScalarProperty Name="QuickBooksAccessTokenSecret" ColumnName="QuickBooksAccessTokenSecret" />
-                <ScalarProperty Name="RouteManifestSettings" ColumnName="RouteManifestSettings" />
-                <ScalarProperty Name="QuickBooksSessionXml" ColumnName="QuickBooksSessionXml" />
-                <ScalarProperty Name="MaxRoutes" ColumnName="MaxRoutes" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Person)">
-              <MappingFragment StoreEntitySet="Parties_Person">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
-                <ScalarProperty Name="GenderInt" ColumnName="GenderInt" />
-                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.UserAccount)">
-              <MappingFragment StoreEntitySet="Parties_UserAccount">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
-                <ScalarProperty Name="LastActivity" ColumnName="LastActivity" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ContactInfoSet">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.ContactInfo)">
-              <MappingFragment StoreEntitySet="ContactInfoSet">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Label" ColumnName="Label" />
-                <ScalarProperty Name="Data" ColumnName="Data" />
-                <ScalarProperty Name="PartyId" ColumnName="PartyId" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Services">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Service)">
-              <MappingFragment StoreEntitySet="Services">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="ServiceProviderId" ColumnName="ServiceProviderId" />
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Fields">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Field)">
-              <MappingFragment StoreEntitySet="Fields">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Group" ColumnName="Group" />
-                <ScalarProperty Name="Required" ColumnName="Required" />
-                <ScalarProperty Name="Tooltip" ColumnName="Tooltip" />
-                <ScalarProperty Name="ParentFieldId" ColumnName="ParentFieldId" />
-                <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.OptionsField)">
-              <MappingFragment StoreEntitySet="Fields_OptionsField">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AllowMultipleSelection" ColumnName="AllowMultipleSelection" />
-                <ScalarProperty Name="TypeInt" ColumnName="TypeInt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.LocationField)">
-              <MappingFragment StoreEntitySet="Fields_LocationField">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="LocationFieldTypeInt" ColumnName="LocationFieldTypeInt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.TextBoxField)">
-              <MappingFragment StoreEntitySet="Fields_TextBoxField">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IsMultiline" ColumnName="IsMultiline" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.NumericField)">
-              <MappingFragment StoreEntitySet="Fields_NumericField">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Mask" ColumnName="Mask" />
-                <ScalarProperty Name="DecimalPlaces" ColumnName="DecimalPlaces" />
-                <ScalarProperty Name="Minimum" ColumnName="Minimum" />
-                <ScalarProperty Name="Maximum" ColumnName="Maximum" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.DateTimeField)">
-              <MappingFragment StoreEntitySet="Fields_DateTimeField">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Earliest" ColumnName="Earliest" />
-                <ScalarProperty Name="Latest" ColumnName="Latest" />
-                <ScalarProperty Name="TypeInt" ColumnName="TypeInt" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Locations">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Location)">
-              <MappingFragment StoreEntitySet="Locations">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
-                <ScalarProperty Name="AddressLineTwo" ColumnName="AddressLineTwo" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
-                <ScalarProperty Name="BusinessAccountIdIfDepot" ColumnName="BusinessAccountIdIfDepot" />
-                <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="IsDefaultBillingLocation" ColumnName="IsDefaultBillingLocation" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RouteDestinations">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.RouteDestination)">
-              <MappingFragment StoreEntitySet="RouteDestinations">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="OrderInRoute" ColumnName="OrderInRoute" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Routes">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Route)">
-              <MappingFragment StoreEntitySet="Routes">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="OwnerBusinessAccountId" ColumnName="OwnerBusinessAccountId" />
-                <ScalarProperty Name="RouteType" ColumnName="RouteType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserAccountLog">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.UserAccountLogEntry)">
-              <MappingFragment StoreEntitySet="UserAccountLog">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="UserAccountId" ColumnName="UserAccountId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Vehicles">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Vehicle)">
-              <MappingFragment StoreEntitySet="Vehicles">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="Mileage" ColumnName="Mileage" />
-                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
-                <ScalarProperty Name="VIN" ColumnName="VIN" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Make" ColumnName="Make" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="LastCompassDirection" ColumnName="LastCompassDirection" />
-                <ScalarProperty Name="LastLongitude" ColumnName="LastLongitude" />
-                <ScalarProperty Name="LastLatitude" ColumnName="LastLatitude" />
-                <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
-                <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
-                <ScalarProperty Name="LastSource" ColumnName="LastSource" />
-                <ScalarProperty Name="OwnerPartyId" ColumnName="OwnerPartyId" />
-                <ScalarProperty Name="LastPushToAzureTimeStamp" ColumnName="LastPushToAzureTimeStamp" />
-                <ScalarProperty Name="LastAccuracy" ColumnName="LastAccuracy" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VehicleMaintenanceLog">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.VehicleMaintenanceLogEntry)">
-              <MappingFragment StoreEntitySet="VehicleMaintenanceLog">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Mileage" ColumnName="Mileage" />
-                <ScalarProperty Name="ServicedBy" ColumnName="ServicedBy" />
-                <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VehicleMaintenanceLineItems">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.VehicleMaintenanceLineItem)">
-              <MappingFragment StoreEntitySet="VehicleMaintenanceLineItems">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Cost" ColumnName="Cost" />
-                <ScalarProperty Name="Details" ColumnName="Details" />
-                <ScalarProperty Name="VehicleMaintenanceLogEntryId" ColumnName="VehicleMaintenanceLogEntryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Clients">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Client)">
-              <MappingFragment StoreEntitySet="Clients">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
-                <ScalarProperty Name="Salesperson" ColumnName="Salesperson" />
-                <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ServiceTemplates">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.ServiceTemplate)">
-              <MappingFragment StoreEntitySet="ServiceTemplates">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="OwnerServiceProviderId" ColumnName="OwnerServiceProviderId" />
-                <ScalarProperty Name="OwnerClientId" ColumnName="OwnerClientId" />
-                <ScalarProperty Name="OwnerServiceTemplateId" ColumnName="OwnerServiceTemplateId" />
-                <ScalarProperty Name="LevelInt" ColumnName="LevelInt" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Repeats">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Repeat)">
-              <MappingFragment StoreEntitySet="Repeats">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="EndAfterTimes" ColumnName="EndAfterTimes" />
-                <ScalarProperty Name="RepeatEveryTimes" ColumnName="RepeatEveryTimes" />
-                <ScalarProperty Name="FrequencyInt" ColumnName="FrequencyInt" />
-                <ScalarProperty Name="FrequencyDetailInt" ColumnName="FrequencyDetailInt" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RecurringServices">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.RecurringService)">
-              <MappingFragment StoreEntitySet="RecurringServices">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="ExcludedDatesString" ColumnName="ExcludedDatesString" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Regions">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Region)">
-              <MappingFragment StoreEntitySet="Regions">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
-                <ScalarProperty Name="Color" ColumnName="Color" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Files">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.File)">
-              <MappingFragment StoreEntitySet="Files">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Data" ColumnName="Data" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="PartyId" ColumnName="PartyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.PartyImage)">
-              <MappingFragment StoreEntitySet="Files_PartyImage">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SubLocations">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.SubLocation)">
-              <MappingFragment StoreEntitySet="SubLocations">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Employees">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Employee)">
-              <MappingFragment StoreEntitySet="Employees">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
-                <ScalarProperty Name="AddressLineTwo" ColumnName="AddressLineTwo" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
-                <ScalarProperty Name="Permissions" ColumnName="Permissions" />
-                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
-                <ScalarProperty Name="SSN" ColumnName="SSN" />
-                <ScalarProperty Name="LinkedUserAccountId" ColumnName="LinkedUserAccountId" />
-                <ScalarProperty Name="EmployerId" ColumnName="EmployerId" />
-                <ScalarProperty Name="LastCompassDirection" ColumnName="LastCompassDirection" />
-                <ScalarProperty Name="LastLongitude" ColumnName="LastLongitude" />
-                <ScalarProperty Name="LastLatitude" ColumnName="LastLatitude" />
-                <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
-                <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
-                <ScalarProperty Name="LastSource" ColumnName="LastSource" />
-                <ScalarProperty Name="LastPushToAzureTimeStamp" ColumnName="LastPushToAzureTimeStamp" />
-                <ScalarProperty Name="LastAccuracy" ColumnName="LastAccuracy" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EmployeeHistoryEntries">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.EmployeeHistoryEntry)">
-              <MappingFragment StoreEntitySet="EmployeeHistoryEntries">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Summary" ColumnName="Summary" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Options">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Option)">
-              <MappingFragment StoreEntitySet="Options">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="IsChecked" ColumnName="IsChecked" />
-                <ScalarProperty Name="OptionsFieldId" ColumnName="OptionsFieldId" />
-                <ScalarProperty Name="Index" ColumnName="Index" />
-                <ScalarProperty Name="Tooltip" ColumnName="Tooltip" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.LocationOption)">
-              <MappingFragment StoreEntitySet="Options_LocationOption">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Invoices">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Invoice)">
-              <MappingFragment StoreEntitySet="Invoices">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="FixedScheduleOptionInt" ColumnName="FixedScheduleOptionInt" />
-                <ScalarProperty Name="RelativeScheduleDays" ColumnName="RelativeScheduleDays" />
-                <ScalarProperty Name="ScheduleModeInt" ColumnName="ScheduleModeInt" />
-                <ScalarProperty Name="SalesTermId" ColumnName="SalesTermId" />
-                <ScalarProperty Name="Memo" ColumnName="Memo" />
-                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
-                <ScalarProperty Name="SyncToken" ColumnName="SyncToken" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SalesTerms">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.SalesTerm)">
-              <MappingFragment StoreEntitySet="SalesTerms">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="DueDays" ColumnName="DueDays" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LineItems">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.LineItem)">
-              <MappingFragment StoreEntitySet="LineItems">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RouteTasks">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.RouteTask)">
-              <MappingFragment StoreEntitySet="RouteTasks">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="RouteDestinationId" ColumnName="RouteDestinationId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="ReadOnly" ColumnName="ReadOnly" />
-                <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
-                <ScalarProperty Name="EstimatedDuration" ColumnName="EstimatedDuration" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="OrderInRouteDestination" ColumnName="OrderInRouteDestination" />
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="DelayedChildId" ColumnName="DelayedChildId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Errors">
-            <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Error)">
-              <MappingFragment StoreEntitySet="Errors">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="BusinessName" ColumnName="BusinessName" />
-                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
-                <ScalarProperty Name="ErrorText" ColumnName="ErrorText" />
-                <ScalarProperty Name="InnerException" ColumnName="InnerException" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ServiceTemplateWithVendorIds">
-            <EntityTypeMapping TypeName="CoreEntities.ServiceTemplateWithVendorId">
-              <MappingFragment StoreEntitySet="ServiceTemplatesWithVendorId">
-                <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
-                <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="RoleBlock" TypeName="CoreEntities.RoleBlock" StoreEntitySet="RoleBlock">
-            <EndProperty Name="Role">
-              <ScalarProperty Name="Id" ColumnName="Roles_Id" />
-            </EndProperty>
-            <EndProperty Name="Block">
-              <ScalarProperty Name="Id" ColumnName="Blocks_Id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="RouteVehicle" TypeName="CoreEntities.RouteVehicle" StoreEntitySet="RouteVehicle">
-            <EndProperty Name="Route">
-              <ScalarProperty Name="Id" ColumnName="Routes_Id" />
-            </EndProperty>
-            <EndProperty Name="Vehicle">
-              <ScalarProperty Name="Id" ColumnName="Vehicles_Id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="PartyRole" TypeName="CoreEntities.PartyRole" StoreEntitySet="PartyRole">
-            <EndProperty Name="Party">
-              <ScalarProperty Name="Id" ColumnName="MemberParties_Id" />
-            </EndProperty>
-            <EndProperty Name="Role">
-              <ScalarProperty Name="Id" ColumnName="RoleMembership_Id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="RouteEmployee" TypeName="CoreEntities.RouteEmployee" StoreEntitySet="RouteEmployee">
-            <EndProperty Name="Route">
-              <ScalarProperty Name="Id" ColumnName="Routes_Id" />
-            </EndProperty>
-            <EndProperty Name="Employee">
-              <ScalarProperty Name="Id" ColumnName="Employees_Id" />
-            </EndProperty>
-          </AssociationSetMapping>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CoreEntitiesStoreContainer" CdmEntityContainer="CoreEntitiesContainer">
+    <EntitySetMapping Name="Blocks">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Block)">
+        <MappingFragment StoreEntitySet="Blocks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="HideFromNavigation" ColumnName="HideFromNavigation" />
+          <ScalarProperty Name="IconUrl" ColumnName="IconUrl" />
+          <ScalarProperty Name="HoverIconUrl" ColumnName="HoverIconUrl" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="IsSilverlight" ColumnName="IsSilverlight" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Role)">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="RoleTypeInt" ColumnName="RoleTypeInt" />
+          <ScalarProperty Name="OwnerBusinessAccountId" ColumnName="OwnerBusinessAccountId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Parties">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Party)">
+        <MappingFragment StoreEntitySet="Parties">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.BusinessAccount)">
+        <MappingFragment StoreEntitySet="Parties_BusinessAccount">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="QuickBooksEnabled" ColumnName="QuickBooksEnabled" />
+          <ScalarProperty Name="QuickBooksAccessToken" ColumnName="QuickBooksAccessToken" />
+          <ScalarProperty Name="QuickBooksAccessTokenSecret" ColumnName="QuickBooksAccessTokenSecret" />
+          <ScalarProperty Name="RouteManifestSettings" ColumnName="RouteManifestSettings" />
+          <ScalarProperty Name="QuickBooksSessionXml" ColumnName="QuickBooksSessionXml" />
+          <ScalarProperty Name="MaxRoutes" ColumnName="MaxRoutes" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.UserAccount)">
+        <MappingFragment StoreEntitySet="Parties_UserAccount">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+          <ScalarProperty Name="LastActivity" ColumnName="LastActivity" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
+          <ScalarProperty Name="GenderInt" ColumnName="GenderInt" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ContactInfoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.ContactInfo)">
+        <MappingFragment StoreEntitySet="ContactInfoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Label" ColumnName="Label" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="PartyId" ColumnName="PartyId" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Services">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Service)">
+        <MappingFragment StoreEntitySet="Services">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ServiceProviderId" ColumnName="ServiceProviderId" />
+          <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+          <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Fields">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Field)">
+        <MappingFragment StoreEntitySet="Fields">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Required" ColumnName="Required" />
+          <ScalarProperty Name="Tooltip" ColumnName="Tooltip" />
+          <ScalarProperty Name="ParentFieldId" ColumnName="ParentFieldId" />
+          <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.OptionsField)">
+        <MappingFragment StoreEntitySet="Fields_OptionsField">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AllowMultipleSelection" ColumnName="AllowMultipleSelection" />
+          <ScalarProperty Name="TypeInt" ColumnName="TypeInt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.LocationField)">
+        <MappingFragment StoreEntitySet="Fields_LocationField">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="LocationFieldTypeInt" ColumnName="LocationFieldTypeInt" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.TextBoxField)">
+        <MappingFragment StoreEntitySet="Fields_TextBoxField">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IsMultiline" ColumnName="IsMultiline" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.NumericField)">
+        <MappingFragment StoreEntitySet="Fields_NumericField">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Mask" ColumnName="Mask" />
+          <ScalarProperty Name="DecimalPlaces" ColumnName="DecimalPlaces" />
+          <ScalarProperty Name="Minimum" ColumnName="Minimum" />
+          <ScalarProperty Name="Maximum" ColumnName="Maximum" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.DateTimeField)">
+        <MappingFragment StoreEntitySet="Fields_DateTimeField">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Earliest" ColumnName="Earliest" />
+          <ScalarProperty Name="Latest" ColumnName="Latest" />
+          <ScalarProperty Name="TypeInt" ColumnName="TypeInt" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Locations">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Location)">
+        <MappingFragment StoreEntitySet="Locations">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="AddressLineTwo" ColumnName="AddressLineTwo" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+          <ScalarProperty Name="BusinessAccountIdIfDepot" ColumnName="BusinessAccountIdIfDepot" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="IsDefaultBillingLocation" ColumnName="IsDefaultBillingLocation" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RouteDestinations">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.RouteDestination)">
+        <MappingFragment StoreEntitySet="RouteDestinations">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="OrderInRoute" ColumnName="OrderInRoute" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Routes">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Route)">
+        <MappingFragment StoreEntitySet="Routes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="OwnerBusinessAccountId" ColumnName="OwnerBusinessAccountId" />
+          <ScalarProperty Name="RouteType" ColumnName="RouteType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAccountLog">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.UserAccountLogEntry)">
+        <MappingFragment StoreEntitySet="UserAccountLog">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+          <ScalarProperty Name="UserAccountId" ColumnName="UserAccountId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vehicles">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Vehicle)">
+        <MappingFragment StoreEntitySet="Vehicles">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+          <ScalarProperty Name="Mileage" ColumnName="Mileage" />
+          <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
+          <ScalarProperty Name="VIN" ColumnName="VIN" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Make" ColumnName="Make" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="LastCompassDirection" ColumnName="LastCompassDirection" />
+          <ScalarProperty Name="LastLongitude" ColumnName="LastLongitude" />
+          <ScalarProperty Name="LastLatitude" ColumnName="LastLatitude" />
+          <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
+          <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
+          <ScalarProperty Name="LastSource" ColumnName="LastSource" />
+          <ScalarProperty Name="OwnerPartyId" ColumnName="OwnerPartyId" />
+          <ScalarProperty Name="LastPushToAzureTimeStamp" ColumnName="LastPushToAzureTimeStamp" />
+          <ScalarProperty Name="LastAccuracy" ColumnName="LastAccuracy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehicleMaintenanceLog">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.VehicleMaintenanceLogEntry)">
+        <MappingFragment StoreEntitySet="VehicleMaintenanceLog">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Mileage" ColumnName="Mileage" />
+          <ScalarProperty Name="ServicedBy" ColumnName="ServicedBy" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VehicleMaintenanceLineItems">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.VehicleMaintenanceLineItem)">
+        <MappingFragment StoreEntitySet="VehicleMaintenanceLineItems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Cost" ColumnName="Cost" />
+          <ScalarProperty Name="Details" ColumnName="Details" />
+          <ScalarProperty Name="VehicleMaintenanceLogEntryId" ColumnName="VehicleMaintenanceLogEntryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Clients">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Client)">
+        <MappingFragment StoreEntitySet="Clients">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+          <ScalarProperty Name="Salesperson" ColumnName="Salesperson" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceTemplates">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.ServiceTemplate)">
+        <MappingFragment StoreEntitySet="ServiceTemplates">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="OwnerServiceProviderId" ColumnName="OwnerServiceProviderId" />
+          <ScalarProperty Name="OwnerClientId" ColumnName="OwnerClientId" />
+          <ScalarProperty Name="OwnerServiceTemplateId" ColumnName="OwnerServiceTemplateId" />
+          <ScalarProperty Name="LevelInt" ColumnName="LevelInt" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Repeats">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Repeat)">
+        <MappingFragment StoreEntitySet="Repeats">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="EndAfterTimes" ColumnName="EndAfterTimes" />
+          <ScalarProperty Name="RepeatEveryTimes" ColumnName="RepeatEveryTimes" />
+          <ScalarProperty Name="FrequencyInt" ColumnName="FrequencyInt" />
+          <ScalarProperty Name="FrequencyDetailInt" ColumnName="FrequencyDetailInt" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RecurringServices">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.RecurringService)">
+        <MappingFragment StoreEntitySet="RecurringServices">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ExcludedDatesString" ColumnName="ExcludedDatesString" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Regions">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Region)">
+        <MappingFragment StoreEntitySet="Regions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Files">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.File)">
+        <MappingFragment StoreEntitySet="Files">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="PartyId" ColumnName="PartyId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.PartyImage)">
+        <MappingFragment StoreEntitySet="Files_PartyImage">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SubLocations">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.SubLocation)">
+        <MappingFragment StoreEntitySet="SubLocations">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Employee)">
+        <MappingFragment StoreEntitySet="Employees">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
+          <ScalarProperty Name="GenderInt" ColumnName="GenderInt" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
+          <ScalarProperty Name="AddressLineTwo" ColumnName="AddressLineTwo" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="Permissions" ColumnName="Permissions" />
+          <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+          <ScalarProperty Name="SSN" ColumnName="SSN" />
+          <ScalarProperty Name="LinkedUserAccountId" ColumnName="LinkedUserAccountId" />
+          <ScalarProperty Name="EmployerId" ColumnName="EmployerId" />
+          <ScalarProperty Name="LastCompassDirection" ColumnName="LastCompassDirection" />
+          <ScalarProperty Name="LastLongitude" ColumnName="LastLongitude" />
+          <ScalarProperty Name="LastLatitude" ColumnName="LastLatitude" />
+          <ScalarProperty Name="LastTimeStamp" ColumnName="LastTimeStamp" />
+          <ScalarProperty Name="LastSpeed" ColumnName="LastSpeed" />
+          <ScalarProperty Name="LastSource" ColumnName="LastSource" />
+          <ScalarProperty Name="LastPushToAzureTimeStamp" ColumnName="LastPushToAzureTimeStamp" />
+          <ScalarProperty Name="LastAccuracy" ColumnName="LastAccuracy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeHistoryEntries">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.EmployeeHistoryEntry)">
+        <MappingFragment StoreEntitySet="EmployeeHistoryEntries">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Summary" ColumnName="Summary" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Options">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Option)">
+        <MappingFragment StoreEntitySet="Options">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IsChecked" ColumnName="IsChecked" />
+          <ScalarProperty Name="OptionsFieldId" ColumnName="OptionsFieldId" />
+          <ScalarProperty Name="Index" ColumnName="Index" />
+          <ScalarProperty Name="Tooltip" ColumnName="Tooltip" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.LocationOption)">
+        <MappingFragment StoreEntitySet="Options_LocationOption">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Invoices">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Invoice)">
+        <MappingFragment StoreEntitySet="Invoices">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="FixedScheduleOptionInt" ColumnName="FixedScheduleOptionInt" />
+          <ScalarProperty Name="RelativeScheduleDays" ColumnName="RelativeScheduleDays" />
+          <ScalarProperty Name="ScheduleModeInt" ColumnName="ScheduleModeInt" />
+          <ScalarProperty Name="SalesTermId" ColumnName="SalesTermId" />
+          <ScalarProperty Name="Memo" ColumnName="Memo" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+          <ScalarProperty Name="SyncToken" ColumnName="SyncToken" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SalesTerms">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.SalesTerm)">
+        <MappingFragment StoreEntitySet="SalesTerms">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DueDays" ColumnName="DueDays" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LineItems">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.LineItem)">
+        <MappingFragment StoreEntitySet="LineItems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RouteTasks">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.RouteTask)">
+        <MappingFragment StoreEntitySet="RouteTasks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="RouteDestinationId" ColumnName="RouteDestinationId" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
+          <ScalarProperty Name="ReadOnly" ColumnName="ReadOnly" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
+          <ScalarProperty Name="EstimatedDuration" ColumnName="EstimatedDuration" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="OrderInRouteDestination" ColumnName="OrderInRouteDestination" />
+          <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
+          <ScalarProperty Name="DelayedChildId" ColumnName="DelayedChildId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Errors">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Error)">
+        <MappingFragment StoreEntitySet="Errors">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="BusinessName" ColumnName="BusinessName" />
+          <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+          <ScalarProperty Name="ErrorText" ColumnName="ErrorText" />
+          <ScalarProperty Name="InnerException" ColumnName="InnerException" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceTemplateWithVendorIds">
+      <EntityTypeMapping TypeName="CoreEntities.ServiceTemplateWithVendorId">
+        <MappingFragment StoreEntitySet="ServiceTemplatesWithVendorId">
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
+          <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="RoleBlock" TypeName="CoreEntities.RoleBlock" StoreEntitySet="RoleBlock">
+      <EndProperty Name="Role">
+        <ScalarProperty Name="Id" ColumnName="Roles_Id" />
+      </EndProperty>
+      <EndProperty Name="Block">
+        <ScalarProperty Name="Id" ColumnName="Blocks_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RouteVehicle" TypeName="CoreEntities.RouteVehicle" StoreEntitySet="RouteVehicle">
+      <EndProperty Name="Route">
+        <ScalarProperty Name="Id" ColumnName="Routes_Id" />
+      </EndProperty>
+      <EndProperty Name="Vehicle">
+        <ScalarProperty Name="Id" ColumnName="Vehicles_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="PartyRole" TypeName="CoreEntities.PartyRole" StoreEntitySet="PartyRole">
+      <EndProperty Name="Party">
+        <ScalarProperty Name="Id" ColumnName="MemberParties_Id" />
+      </EndProperty>
+      <EndProperty Name="Role">
+        <ScalarProperty Name="Id" ColumnName="RoleMembership_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="RouteEmployee" TypeName="CoreEntities.RouteEmployee" StoreEntitySet="RouteEmployee">
+      <EndProperty Name="Route">
+        <ScalarProperty Name="Id" ColumnName="Routes_Id" />
+      </EndProperty>
+      <EndProperty Name="Employee">
+        <ScalarProperty Name="Id" ColumnName="Employees_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="DeleteBasicPartyBasedOnId" FunctionName="CoreEntities.Store.DeleteBasicPartyBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteBusinessAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteBusinessAccountBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteClientBasedOnId" FunctionName="CoreEntities.Store.DeleteClientBasedOnId" />
@@ -3808,23 +3722,6 @@
           <FunctionImportMapping FunctionImportName="PropagateNameChange" FunctionName="CoreEntities.Store.PropagateNameChange" />
           <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
           <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="Heading" ColumnName="Heading" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
@@ -3854,9 +3751,25 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+                <ScalarProperty Name="Heading" ColumnName="Heading" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">

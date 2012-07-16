@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/13/2012 16:15:45
+-- Date Created: 07/16/2012 09:53:31
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -101,9 +101,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_PartyRole_Role]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PartyRole] DROP CONSTRAINT [FK_PartyRole_Role];
 GO
-IF OBJECT_ID(N'[dbo].[FK_PartyRole1]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Roles] DROP CONSTRAINT [FK_PartyRole1];
-GO
 IF OBJECT_ID(N'[dbo].[FK_RegionLocation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Locations] DROP CONSTRAINT [FK_RegionLocation];
 GO
@@ -121,9 +118,6 @@ IF OBJECT_ID(N'[dbo].[FK_EmployeeUserAccount]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_EmployeeBusinessAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeBusinessAccount];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EmployeePerson]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeePerson];
 GO
 IF OBJECT_ID(N'[dbo].[FK_RecurringServiceRepeat]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RecurringServices] DROP CONSTRAINT [FK_RecurringServiceRepeat];
@@ -194,17 +188,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_RouteEmployee_Employee]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteEmployee] DROP CONSTRAINT [FK_RouteEmployee_Employee];
 GO
-IF OBJECT_ID(N'[dbo].[FK_Business_inherits_Party]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_Business] DROP CONSTRAINT [FK_Business_inherits_Party];
+IF OBJECT_ID(N'[dbo].[FK_RoleBusinessAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Roles] DROP CONSTRAINT [FK_RoleBusinessAccount];
 GO
-IF OBJECT_ID(N'[dbo].[FK_BusinessAccount_inherits_Business]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_BusinessAccount] DROP CONSTRAINT [FK_BusinessAccount_inherits_Business];
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccount_inherits_Party]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_BusinessAccount] DROP CONSTRAINT [FK_BusinessAccount_inherits_Party];
 GO
-IF OBJECT_ID(N'[dbo].[FK_Person_inherits_Party]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_Person] DROP CONSTRAINT [FK_Person_inherits_Party];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserAccount_inherits_Person]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Parties_UserAccount] DROP CONSTRAINT [FK_UserAccount_inherits_Person];
+IF OBJECT_ID(N'[dbo].[FK_UserAccount_inherits_Party]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Parties_UserAccount] DROP CONSTRAINT [FK_UserAccount_inherits_Party];
 GO
 IF OBJECT_ID(N'[dbo].[FK_OptionsField_inherits_Field]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fields_OptionsField] DROP CONSTRAINT [FK_OptionsField_inherits_Field];
@@ -319,14 +310,8 @@ GO
 IF OBJECT_ID(N'[dbo].[ServiceTemplateWithVendorIds]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ServiceTemplateWithVendorIds];
 GO
-IF OBJECT_ID(N'[dbo].[Parties_Business]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Parties_Business];
-GO
 IF OBJECT_ID(N'[dbo].[Parties_BusinessAccount]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_BusinessAccount];
-GO
-IF OBJECT_ID(N'[dbo].[Parties_Person]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Parties_Person];
 GO
 IF OBJECT_ID(N'[dbo].[Parties_UserAccount]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties_UserAccount];
@@ -386,8 +371,8 @@ CREATE TABLE [dbo].[Roles] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NULL,
     [Description] nvarchar(max)  NULL,
-    [OwnerPartyId] uniqueidentifier  NULL,
-    [RoleTypeInt] smallint  NOT NULL
+    [RoleTypeInt] smallint  NOT NULL,
+    [OwnerBusinessAccountId] uniqueidentifier  NULL
 );
 GO
 
@@ -423,7 +408,6 @@ GO
 CREATE TABLE [dbo].[Fields] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [Group] nvarchar(max)  NOT NULL,
     [Required] bit  NOT NULL,
     [Tooltip] nvarchar(max)  NULL,
     [ParentFieldId] uniqueidentifier  NULL,
@@ -601,6 +585,11 @@ GO
 -- Creating table 'Employees'
 CREATE TABLE [dbo].[Employees] (
     [Id] uniqueidentifier  NOT NULL,
+    [FirstName] nvarchar(max)  NULL,
+    [LastName] nvarchar(max)  NULL,
+    [MiddleInitial] nvarchar(max)  NULL,
+    [GenderInt] smallint  NULL,
+    [DateOfBirth] datetime  NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [AddressLineTwo] nvarchar(max)  NULL,
     [City] nvarchar(max)  NULL,
@@ -718,13 +707,6 @@ CREATE TABLE [dbo].[ServiceTemplateWithVendorIds] (
 );
 GO
 
--- Creating table 'Parties_Business'
-CREATE TABLE [dbo].[Parties_Business] (
-    [Name] nvarchar(max)  NULL,
-    [Id] uniqueidentifier  NOT NULL
-);
-GO
-
 -- Creating table 'Parties_BusinessAccount'
 CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [QuickBooksEnabled] bit  NOT NULL,
@@ -733,17 +715,7 @@ CREATE TABLE [dbo].[Parties_BusinessAccount] (
     [RouteManifestSettings] nvarchar(max)  NULL,
     [QuickBooksSessionXml] nvarchar(max)  NULL,
     [MaxRoutes] int  NOT NULL,
-    [Id] uniqueidentifier  NOT NULL
-);
-GO
-
--- Creating table 'Parties_Person'
-CREATE TABLE [dbo].[Parties_Person] (
-    [FirstName] nvarchar(max)  NULL,
-    [LastName] nvarchar(max)  NULL,
-    [MiddleInitial] nvarchar(max)  NULL,
-    [GenderInt] smallint  NULL,
-    [DateOfBirth] datetime  NULL,
+    [Name] nvarchar(max)  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -754,6 +726,11 @@ CREATE TABLE [dbo].[Parties_UserAccount] (
     [EmailAddress] nvarchar(max)  NOT NULL,
     [LastActivity] datetime  NULL,
     [CreationDate] datetime  NOT NULL,
+    [FirstName] nvarchar(max)  NULL,
+    [LastName] nvarchar(max)  NULL,
+    [MiddleInitial] nvarchar(max)  NULL,
+    [GenderInt] smallint  NULL,
+    [DateOfBirth] datetime  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -1021,21 +998,9 @@ ADD CONSTRAINT [PK_ServiceTemplateWithVendorIds]
     PRIMARY KEY CLUSTERED ([ServiceTemplateId], [BusinessAccountId] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Parties_Business'
-ALTER TABLE [dbo].[Parties_Business]
-ADD CONSTRAINT [PK_Parties_Business]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'Parties_BusinessAccount'
 ALTER TABLE [dbo].[Parties_BusinessAccount]
 ADD CONSTRAINT [PK_Parties_BusinessAccount]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Parties_Person'
-ALTER TABLE [dbo].[Parties_Person]
-ADD CONSTRAINT [PK_Parties_Person]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1482,20 +1447,6 @@ ON [dbo].[PartyRole]
     ([RoleMembership_Id]);
 GO
 
--- Creating foreign key on [OwnerPartyId] in table 'Roles'
-ALTER TABLE [dbo].[Roles]
-ADD CONSTRAINT [FK_PartyRole1]
-    FOREIGN KEY ([OwnerPartyId])
-    REFERENCES [dbo].[Parties]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_PartyRole1'
-CREATE INDEX [IX_FK_PartyRole1]
-ON [dbo].[Roles]
-    ([OwnerPartyId]);
-GO
-
 -- Creating foreign key on [RegionId] in table 'Locations'
 ALTER TABLE [dbo].[Locations]
 ADD CONSTRAINT [FK_RegionLocation]
@@ -1578,15 +1529,6 @@ ADD CONSTRAINT [FK_EmployeeBusinessAccount]
 CREATE INDEX [IX_FK_EmployeeBusinessAccount]
 ON [dbo].[Employees]
     ([EmployerId]);
-GO
-
--- Creating foreign key on [Id] in table 'Employees'
-ALTER TABLE [dbo].[Employees]
-ADD CONSTRAINT [FK_EmployeePerson]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties_Person]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'RecurringServices'
@@ -1891,27 +1833,23 @@ ON [dbo].[RouteEmployee]
     ([Employees_Id]);
 GO
 
--- Creating foreign key on [Id] in table 'Parties_Business'
-ALTER TABLE [dbo].[Parties_Business]
-ADD CONSTRAINT [FK_Business_inherits_Party]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties]
+-- Creating foreign key on [OwnerBusinessAccountId] in table 'Roles'
+ALTER TABLE [dbo].[Roles]
+ADD CONSTRAINT [FK_RoleBusinessAccount]
+    FOREIGN KEY ([OwnerBusinessAccountId])
+    REFERENCES [dbo].[Parties_BusinessAccount]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RoleBusinessAccount'
+CREATE INDEX [IX_FK_RoleBusinessAccount]
+ON [dbo].[Roles]
+    ([OwnerBusinessAccountId]);
 GO
 
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'
 ALTER TABLE [dbo].[Parties_BusinessAccount]
-ADD CONSTRAINT [FK_BusinessAccount_inherits_Business]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties_Business]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Id] in table 'Parties_Person'
-ALTER TABLE [dbo].[Parties_Person]
-ADD CONSTRAINT [FK_Person_inherits_Party]
+ADD CONSTRAINT [FK_BusinessAccount_inherits_Party]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Parties]
         ([Id])
@@ -1920,9 +1858,9 @@ GO
 
 -- Creating foreign key on [Id] in table 'Parties_UserAccount'
 ALTER TABLE [dbo].[Parties_UserAccount]
-ADD CONSTRAINT [FK_UserAccount_inherits_Person]
+ADD CONSTRAINT [FK_UserAccount_inherits_Party]
     FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Parties_Person]
+    REFERENCES [dbo].[Parties]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO

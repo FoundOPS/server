@@ -251,9 +251,6 @@
       <DependentUpon>ManifestSummary.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ImportData\ImportColumn.cs" />
-    <Compile Include="Controls\Parties\Person\PersonDetailsEdit.xaml.cs">
-      <DependentUpon>PersonDetailsEdit.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Clients\ClientLarge.xaml.cs">
       <DependentUpon>ClientLarge.xaml</DependentUpon>
     </Compile>
@@ -544,10 +541,6 @@
     <Page Include="Controls\Dispatcher\Manifest\ManifestSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Parties\Person\PersonDetailsEdit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Clients\ClientLarge.xaml">
       <Generator>MSBuild:Compile</Generator>

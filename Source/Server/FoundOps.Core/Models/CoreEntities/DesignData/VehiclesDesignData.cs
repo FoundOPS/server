@@ -6,7 +6,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
     public class VehiclesDesignData
     {
-        private readonly Business _ownerParty;
+        private readonly BusinessAccount _ownerParty;
         public Vehicle DesignVehicle { get; private set; }
         public Vehicle DesignVehicleTwo { get; private set; }
         public Vehicle DesignVehicleThree { get; private set; }
@@ -20,7 +20,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         {
         }
 
-        public VehiclesDesignData(Business ownerParty)
+        public VehiclesDesignData(BusinessAccount ownerParty)
         {
             _ownerParty = ownerParty;
             InitializeVehicles();

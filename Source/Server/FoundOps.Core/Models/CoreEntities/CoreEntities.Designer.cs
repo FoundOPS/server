@@ -44,14 +44,12 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "VehicleParty", "Vehicle", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Vehicle), "Party", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Party), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceServiceTemplate", "Service", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Service), "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "PartyRole", "Party", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Party), "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Role))]
-[assembly: EdmRelationshipAttribute("CoreEntities", "PartyRole1", "Party", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Party), "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Role), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RegionLocation", "Regions", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Region), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountRegion", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Region", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Region), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "LocationFile", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), "File", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.File), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "LocationSubLocation", "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), "SubLocation", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.SubLocation), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeUserAccount", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.UserAccount), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeBusinessAccount", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "EmployeePerson", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Employee), "Person", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Person), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RecurringServiceRepeat", "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), "Repeat", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Repeat), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeHistoryEntryEmployee", "EmployeeHistoryEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.EmployeeHistoryEntry), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Employee), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceTemplateServiceTemplate", "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), "ServiceTemplate1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), true)]
@@ -74,6 +72,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientLocation1", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientContactInfo", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "ContactInfo", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ContactInfo), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RouteEmployee", "Route", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Route), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Employee))]
+[assembly: EdmRelationshipAttribute("CoreEntities", "RoleBusinessAccount", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Role), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 
 #endregion
 
@@ -1071,25 +1070,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
-        {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
-            }
-            else
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="serviceProviderContext">No Metadata Documentation available.</param>
         /// <param name="serviceDate">No Metadata Documentation available.</param>
         public ObjectResult<TaskHolder> GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderContext, Nullable<global::System.DateTime> serviceDate)
@@ -1200,6 +1180,25 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
 
         #endregion
@@ -1444,65 +1443,10 @@ namespace FoundOps.Core.Models.CoreEntities
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Business")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    [KnownTypeAttribute(typeof(BusinessAccount))]
-    public partial class Business : Party
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Business object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static Business CreateBusiness(global::System.Guid id)
-        {
-            Business business = new Business();
-            business.Id = id;
-            return business;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
-
-        #endregion
-
-    
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="BusinessAccount")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class BusinessAccount : Business
+    public partial class BusinessAccount : Party
     {
         #region Factory Method
     
@@ -1664,6 +1608,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Int32 _MaxRoutes = 1;
         partial void OnMaxRoutesChanging(global::System.Int32 value);
         partial void OnMaxRoutesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
 
         #endregion
 
@@ -1886,6 +1854,28 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Location>("CoreEntities.LocationBusinessAccount", "Location", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RoleBusinessAccount", "Role")]
+        public EntityCollection<Role> OwnedRoles
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Role>("CoreEntities.RoleBusinessAccount", "Role");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Role>("CoreEntities.RoleBusinessAccount", "Role", value);
                 }
             }
         }
@@ -2565,17 +2555,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="earliest">Initial value of the Earliest property.</param>
         /// <param name="latest">Initial value of the Latest property.</param>
         /// <param name="typeInt">Initial value of the TypeInt property.</param>
-        public static DateTimeField CreateDateTimeField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.DateTime earliest, global::System.DateTime latest, global::System.Int16 typeInt)
+        public static DateTimeField CreateDateTimeField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime earliest, global::System.DateTime latest, global::System.Int16 typeInt)
         {
             DateTimeField dateTimeField = new DateTimeField();
             dateTimeField.Id = id;
             dateTimeField.Name = name;
-            dateTimeField.Group = group;
             dateTimeField.Required = required;
             dateTimeField.Earliest = earliest;
             dateTimeField.Latest = latest;
@@ -2741,6 +2729,126 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _Id;
         partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FirstName
+        {
+            get
+            {
+                return _FirstName;
+            }
+            set
+            {
+                OnFirstNameChanging(value);
+                ReportPropertyChanging("FirstName");
+                _FirstName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FirstName");
+                OnFirstNameChanged();
+            }
+        }
+        private global::System.String _FirstName;
+        partial void OnFirstNameChanging(global::System.String value);
+        partial void OnFirstNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastName
+        {
+            get
+            {
+                return _LastName;
+            }
+            set
+            {
+                OnLastNameChanging(value);
+                ReportPropertyChanging("LastName");
+                _LastName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastName");
+                OnLastNameChanged();
+            }
+        }
+        private global::System.String _LastName;
+        partial void OnLastNameChanging(global::System.String value);
+        partial void OnLastNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MiddleInitial
+        {
+            get
+            {
+                return _MiddleInitial;
+            }
+            set
+            {
+                OnMiddleInitialChanging(value);
+                ReportPropertyChanging("MiddleInitial");
+                _MiddleInitial = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MiddleInitial");
+                OnMiddleInitialChanged();
+            }
+        }
+        private global::System.String _MiddleInitial;
+        partial void OnMiddleInitialChanging(global::System.String value);
+        partial void OnMiddleInitialChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> GenderInt
+        {
+            get
+            {
+                return _GenderInt;
+            }
+            set
+            {
+                OnGenderIntChanging(value);
+                ReportPropertyChanging("GenderInt");
+                _GenderInt = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("GenderInt");
+                OnGenderIntChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _GenderInt;
+        partial void OnGenderIntChanging(Nullable<global::System.Int16> value);
+        partial void OnGenderIntChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateOfBirth
+        {
+            get
+            {
+                return _DateOfBirth;
+            }
+            set
+            {
+                OnDateOfBirthChanging(value);
+                ReportPropertyChanging("DateOfBirth");
+                _DateOfBirth = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateOfBirth");
+                OnDateOfBirthChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateOfBirth;
+        partial void OnDateOfBirthChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateOfBirthChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3285,44 +3393,6 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeePerson", "Person")]
-        public Person OwnedPerson
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Person>("CoreEntities.EmployeePerson", "Person").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Person>("CoreEntities.EmployeePerson", "Person").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Person> OwnedPersonReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Person>("CoreEntities.EmployeePerson", "Person");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Person>("CoreEntities.EmployeePerson", "Person", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeeHistoryEntryEmployee", "EmployeeHistoryEntry")]
         public EntityCollection<EmployeeHistoryEntry> EmployeeHistoryEntries
         {
@@ -3783,14 +3853,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
-        public static Field CreateField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required)
+        public static Field CreateField(global::System.Guid id, global::System.String name, global::System.Boolean required)
         {
             Field field = new Field();
             field.Id = id;
             field.Name = name;
-            field.Group = group;
             field.Required = required;
             return field;
         }
@@ -3849,30 +3917,6 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Group
-        {
-            get
-            {
-                return _Group;
-            }
-            set
-            {
-                OnGroupChanging(value);
-                ReportPropertyChanging("Group");
-                _Group = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Group");
-                OnGroupChanged();
-            }
-        }
-        private global::System.String _Group;
-        partial void OnGroupChanging(global::System.String value);
-        partial void OnGroupChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5769,15 +5813,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="locationFieldTypeInt">Initial value of the LocationFieldTypeInt property.</param>
-        public static LocationField CreateLocationField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.Int16 locationFieldTypeInt)
+        public static LocationField CreateLocationField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Int16 locationFieldTypeInt)
         {
             LocationField locationField = new LocationField();
             locationField.Id = id;
             locationField.Name = name;
-            locationField.Group = group;
             locationField.Required = required;
             locationField.LocationFieldTypeInt = locationFieldTypeInt;
             return locationField;
@@ -5927,18 +5969,16 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="mask">Initial value of the Mask property.</param>
         /// <param name="decimalPlaces">Initial value of the DecimalPlaces property.</param>
         /// <param name="minimum">Initial value of the Minimum property.</param>
         /// <param name="maximum">Initial value of the Maximum property.</param>
-        public static NumericField CreateNumericField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.String mask, global::System.Int32 decimalPlaces, global::System.Decimal minimum, global::System.Decimal maximum)
+        public static NumericField CreateNumericField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.String mask, global::System.Int32 decimalPlaces, global::System.Decimal minimum, global::System.Decimal maximum)
         {
             NumericField numericField = new NumericField();
             numericField.Id = id;
             numericField.Name = name;
-            numericField.Group = group;
             numericField.Required = required;
             numericField.Mask = mask;
             numericField.DecimalPlaces = decimalPlaces;
@@ -6315,16 +6355,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="allowMultipleSelection">Initial value of the AllowMultipleSelection property.</param>
         /// <param name="typeInt">Initial value of the TypeInt property.</param>
-        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt)
+        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt)
         {
             OptionsField optionsField = new OptionsField();
             optionsField.Id = id;
             optionsField.Name = name;
-            optionsField.Group = group;
             optionsField.Required = required;
             optionsField.AllowMultipleSelection = allowMultipleSelection;
             optionsField.TypeInt = typeInt;
@@ -6420,8 +6458,8 @@ namespace FoundOps.Core.Models.CoreEntities
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Party")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    [KnownTypeAttribute(typeof(Business))]
-    [KnownTypeAttribute(typeof(Person))]
+    [KnownTypeAttribute(typeof(BusinessAccount))]
+    [KnownTypeAttribute(typeof(UserAccount))]
     public partial class Party : EntityObject
     {
         #region Factory Method
@@ -6513,28 +6551,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Role>("CoreEntities.PartyRole", "Role", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "PartyRole1", "Role")]
-        public EntityCollection<Role> OwnedRoles
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Role>("CoreEntities.PartyRole1", "Role");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Role>("CoreEntities.PartyRole1", "Role", value);
                 }
             }
         }
@@ -6667,199 +6683,6 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Party>("CoreEntities.PartyPartyImage", "Party", value);
-                }
-            }
-        }
-
-        #endregion
-
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Person")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    [KnownTypeAttribute(typeof(UserAccount))]
-    public partial class Person : Party
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Person object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        public static Person CreatePerson(global::System.Guid id)
-        {
-            Person person = new Person();
-            person.Id = id;
-            return person;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String FirstName
-        {
-            get
-            {
-                return _FirstName;
-            }
-            set
-            {
-                OnFirstNameChanging(value);
-                ReportPropertyChanging("FirstName");
-                _FirstName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("FirstName");
-                OnFirstNameChanged();
-            }
-        }
-        private global::System.String _FirstName;
-        partial void OnFirstNameChanging(global::System.String value);
-        partial void OnFirstNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String LastName
-        {
-            get
-            {
-                return _LastName;
-            }
-            set
-            {
-                OnLastNameChanging(value);
-                ReportPropertyChanging("LastName");
-                _LastName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("LastName");
-                OnLastNameChanged();
-            }
-        }
-        private global::System.String _LastName;
-        partial void OnLastNameChanging(global::System.String value);
-        partial void OnLastNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String MiddleInitial
-        {
-            get
-            {
-                return _MiddleInitial;
-            }
-            set
-            {
-                OnMiddleInitialChanging(value);
-                ReportPropertyChanging("MiddleInitial");
-                _MiddleInitial = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("MiddleInitial");
-                OnMiddleInitialChanged();
-            }
-        }
-        private global::System.String _MiddleInitial;
-        partial void OnMiddleInitialChanging(global::System.String value);
-        partial void OnMiddleInitialChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int16> GenderInt
-        {
-            get
-            {
-                return _GenderInt;
-            }
-            set
-            {
-                OnGenderIntChanging(value);
-                ReportPropertyChanging("GenderInt");
-                _GenderInt = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("GenderInt");
-                OnGenderIntChanged();
-            }
-        }
-        private Nullable<global::System.Int16> _GenderInt;
-        partial void OnGenderIntChanging(Nullable<global::System.Int16> value);
-        partial void OnGenderIntChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> DateOfBirth
-        {
-            get
-            {
-                return _DateOfBirth;
-            }
-            set
-            {
-                OnDateOfBirthChanging(value);
-                ReportPropertyChanging("DateOfBirth");
-                _DateOfBirth = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("DateOfBirth");
-                OnDateOfBirthChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _DateOfBirth;
-        partial void OnDateOfBirthChanging(Nullable<global::System.DateTime> value);
-        partial void OnDateOfBirthChanged();
-
-        #endregion
-
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "EmployeePerson", "Employee")]
-        public Employee OwnerEmployee
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.EmployeePerson", "Employee").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.EmployeePerson", "Employee").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Employee> OwnerEmployeeReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Employee>("CoreEntities.EmployeePerson", "Employee");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Employee>("CoreEntities.EmployeePerson", "Employee", value);
                 }
             }
         }
@@ -7709,30 +7532,6 @@ namespace FoundOps.Core.Models.CoreEntities
         partial void OnDescriptionChanged();
     
         /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Guid> OwnerPartyId
-        {
-            get
-            {
-                return _OwnerPartyId;
-            }
-            set
-            {
-                OnOwnerPartyIdChanging(value);
-                ReportPropertyChanging("OwnerPartyId");
-                _OwnerPartyId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OwnerPartyId");
-                OnOwnerPartyIdChanged();
-            }
-        }
-        private Nullable<global::System.Guid> _OwnerPartyId;
-        partial void OnOwnerPartyIdChanging(Nullable<global::System.Guid> value);
-        partial void OnOwnerPartyIdChanged();
-    
-        /// <summary>
         /// The Role&apos;s type. Defaults to custom.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
@@ -7755,6 +7554,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Int16 _RoleTypeInt = 0;
         partial void OnRoleTypeIntChanging(global::System.Int16 value);
         partial void OnRoleTypeIntChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> OwnerBusinessAccountId
+        {
+            get
+            {
+                return _OwnerBusinessAccountId;
+            }
+            set
+            {
+                OnOwnerBusinessAccountIdChanging(value);
+                ReportPropertyChanging("OwnerBusinessAccountId");
+                _OwnerBusinessAccountId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OwnerBusinessAccountId");
+                OnOwnerBusinessAccountIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _OwnerBusinessAccountId;
+        partial void OnOwnerBusinessAccountIdChanging(Nullable<global::System.Guid> value);
+        partial void OnOwnerBusinessAccountIdChanged();
 
         #endregion
 
@@ -7811,16 +7634,16 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "PartyRole1", "Party")]
-        public Party OwnerParty
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "RoleBusinessAccount", "BusinessAccount")]
+        public BusinessAccount OwnerBusinessAccount
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Party>("CoreEntities.PartyRole1", "Party").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.RoleBusinessAccount", "BusinessAccount").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Party>("CoreEntities.PartyRole1", "Party").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.RoleBusinessAccount", "BusinessAccount").Value = value;
             }
         }
         /// <summary>
@@ -7828,17 +7651,17 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Party> OwnerPartyReference
+        public EntityReference<BusinessAccount> OwnerBusinessAccountReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Party>("CoreEntities.PartyRole1", "Party");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.RoleBusinessAccount", "BusinessAccount");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Party>("CoreEntities.PartyRole1", "Party", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<BusinessAccount>("CoreEntities.RoleBusinessAccount", "BusinessAccount", value);
                 }
             }
         }
@@ -10351,15 +10174,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="group">Initial value of the Group property.</param>
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="isMultiline">Initial value of the IsMultiline property.</param>
-        public static TextBoxField CreateTextBoxField(global::System.Guid id, global::System.String name, global::System.String group, global::System.Boolean required, global::System.Boolean isMultiline)
+        public static TextBoxField CreateTextBoxField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean isMultiline)
         {
             TextBoxField textBoxField = new TextBoxField();
             textBoxField.Id = id;
             textBoxField.Name = name;
-            textBoxField.Group = group;
             textBoxField.Required = required;
             textBoxField.IsMultiline = isMultiline;
             return textBoxField;
@@ -10428,7 +10249,7 @@ namespace FoundOps.Core.Models.CoreEntities
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="UserAccount")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class UserAccount : Person
+    public partial class UserAccount : Party
     {
         #region Factory Method
     
@@ -10546,6 +10367,126 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.DateTime _CreationDate;
         partial void OnCreationDateChanging(global::System.DateTime value);
         partial void OnCreationDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FirstName
+        {
+            get
+            {
+                return _FirstName;
+            }
+            set
+            {
+                OnFirstNameChanging(value);
+                ReportPropertyChanging("FirstName");
+                _FirstName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FirstName");
+                OnFirstNameChanged();
+            }
+        }
+        private global::System.String _FirstName;
+        partial void OnFirstNameChanging(global::System.String value);
+        partial void OnFirstNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastName
+        {
+            get
+            {
+                return _LastName;
+            }
+            set
+            {
+                OnLastNameChanging(value);
+                ReportPropertyChanging("LastName");
+                _LastName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastName");
+                OnLastNameChanged();
+            }
+        }
+        private global::System.String _LastName;
+        partial void OnLastNameChanging(global::System.String value);
+        partial void OnLastNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String MiddleInitial
+        {
+            get
+            {
+                return _MiddleInitial;
+            }
+            set
+            {
+                OnMiddleInitialChanging(value);
+                ReportPropertyChanging("MiddleInitial");
+                _MiddleInitial = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("MiddleInitial");
+                OnMiddleInitialChanged();
+            }
+        }
+        private global::System.String _MiddleInitial;
+        partial void OnMiddleInitialChanging(global::System.String value);
+        partial void OnMiddleInitialChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> GenderInt
+        {
+            get
+            {
+                return _GenderInt;
+            }
+            set
+            {
+                OnGenderIntChanging(value);
+                ReportPropertyChanging("GenderInt");
+                _GenderInt = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("GenderInt");
+                OnGenderIntChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _GenderInt;
+        partial void OnGenderIntChanging(Nullable<global::System.Int16> value);
+        partial void OnGenderIntChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateOfBirth
+        {
+            get
+            {
+                return _DateOfBirth;
+            }
+            set
+            {
+                OnDateOfBirthChanging(value);
+                ReportPropertyChanging("DateOfBirth");
+                _DateOfBirth = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateOfBirth");
+                OnDateOfBirthChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateOfBirth;
+        partial void OnDateOfBirthChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateOfBirthChanged();
 
         #endregion
 

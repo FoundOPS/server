@@ -222,7 +222,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             var hoseLength = new OptionsField
             {
                 Id = Guid.NewGuid(),
-                Group = "Service Details",
                 Name = "Hose Length",
                 Required = false
             };
@@ -238,7 +237,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             return new TextBoxField
             {
                 Id = Guid.NewGuid(),
-                Group = "Service Details",
                 Name = "Lock Info",
                 IsMultiline = false,
                 Required = false
@@ -249,7 +247,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             return new TextBoxField
             {
                 Id = Guid.NewGuid(),
-                Group = "Service Details",
                 Name = "Notes",
                 IsMultiline = true,
                 Required = false
@@ -260,7 +257,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             return new LocationField
             {
                 Id = Guid.NewGuid(),
-                Group = "Location",
                 Name = "Service Destination",
                 Tooltip = "Enter the Service Destination here",
                 LocationFieldType = LocationFieldType.Destination,
@@ -272,7 +268,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             var environmentalBiotechServicesCheckListField = new OptionsField
             {
                 Id = Guid.NewGuid(),
-                Group = "Service Details",
                 Name = "Subservices to Provide",
                 AllowMultipleSelection = true,
                 OptionsType = OptionsType.Checklist,

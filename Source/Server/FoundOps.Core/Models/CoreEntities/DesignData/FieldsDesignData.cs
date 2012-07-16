@@ -29,7 +29,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignTextBoxSmallField = new TextBoxField
             {
                 Name = "Lock Info",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 IsMultiline = false
@@ -38,7 +37,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignTextBoxLargeField = new TextBoxField
             {
                 Name = "Notes",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 IsMultiline = true
@@ -47,7 +45,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignTimeField = new DateTimeField
             {
                 Name = "Start/End Times",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 Earliest = DateTime.UtcNow,
@@ -58,7 +55,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignNumberField = new NumericField
             {
                 Name = "Number of Stops",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 Mask = "g",
@@ -70,7 +66,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignCurrencyField = new NumericField
             {
                 Name = "Price",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 Mask = "c"
@@ -79,7 +74,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignPercentageField = new NumericField
             {
                 Name = "Percentage",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 Mask = "p"
@@ -88,7 +82,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignCheckBoxField = new OptionsField
             {
                 Name = "CheckBox Options",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 AllowMultipleSelection = false
@@ -98,7 +91,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignComboBoxField = new OptionsField
             {
                 Name = "ComboBox Options",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 AllowMultipleSelection = false
@@ -110,7 +102,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignCheckListField = new OptionsField
             {
                 Name = "CheckList Options",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 AllowMultipleSelection = true
@@ -123,7 +114,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignLocationField = new LocationField
             {
                 Name = "Locations",
-                Group = "Details",
                 Required = false,
                 Tooltip = "Helpful Hint"
             };

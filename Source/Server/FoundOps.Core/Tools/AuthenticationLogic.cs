@@ -25,7 +25,7 @@ namespace FoundOps.Core.Tools
         {
             var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer, allowedRoleTypes)
                              where role.Id == roleId
-                             select role.OwnerParty;
+                             select role.OwnerBusinessAccount;
 
             return ownerParty.OfType<T>();
         }
@@ -70,7 +70,7 @@ namespace FoundOps.Core.Tools
 #if !DEBUG //Skip security in debug mode
                          where role.OwnerPartyId == user.Id || role.MemberParties.Any(a => a.Id == user.Id)
 #endif
-                         select role).Include(r => r.OwnerParty).Include(r => r.MemberParties);
+                         select role).Include(r => r.OwnerBusinessAccount).Include(r => r.MemberParties);
 
             return roles;
         }
@@ -117,7 +117,7 @@ namespace FoundOps.Core.Tools
         {
             //Return if the current user can administer the party or
             //if the current user is a FoundOPS admin (then they should have access to administer the party)
-            return RolesCurrentUserHasAccessTo(coreEntitiesContainer, new[] { RoleType.Administrator }).Select(r => r.OwnerParty).Any(p => p.Id == partyId || p.Id == BusinessAccountsConstants.FoundOpsId);
+            return RolesCurrentUserHasAccessTo(coreEntitiesContainer, new[] { RoleType.Administrator }).Select(r => r.OwnerBusinessAccount).Any(p => p.Id == partyId || p.Id == BusinessAccountsConstants.FoundOpsId);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace FoundOps.Core.Tools
         /// <returns></returns>
         public static bool CanAdministerFoundOPS(this CoreEntitiesContainer coreEntitiesContainer)
         {
-            return RolesCurrentUserHasAccessTo(coreEntitiesContainer, new[] { RoleType.Administrator }).Select(r => r.OwnerParty).Any(p => p.Id == BusinessAccountsConstants.FoundOpsId);
+            return RolesCurrentUserHasAccessTo(coreEntitiesContainer, new[] { RoleType.Administrator }).Select(r => r.OwnerBusinessAccount).Any(p => p.Id == BusinessAccountsConstants.FoundOpsId);
         }
 
         #endregion

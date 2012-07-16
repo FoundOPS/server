@@ -50,11 +50,11 @@ namespace FoundOps.Server.Controllers
 #endif
 
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.PartyImage)
-                        .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks").Include("RoleMembership.OwnerParty")
+                        .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount")
                         .First();
 
             //Load all of the party images for the owner's of roles
-            var businessOwnerIds = user.RoleMembership.Select(r => r.OwnerParty).OfType<BusinessAccount>().Select(ba => ba.Id).Distinct();
+            var businessOwnerIds = user.RoleMembership.Select(r => r.OwnerBusinessAccount).OfType<BusinessAccount>().Select(ba => ba.Id).Distinct();
             var partyImages = _coreEntitiesContainer.Files.OfType<PartyImage>().Where(pi => businessOwnerIds.Contains(pi.PartyId)).Distinct();
             if (user.PartyImage != null)
                 partyImages = partyImages.Union(new[] { user.PartyImage });
@@ -67,7 +67,7 @@ namespace FoundOps.Server.Controllers
                 partyImageUrls.Add(partyImage.OwnerParty.Id, imageUrl);
             }
 
-            var roles = user.RoleMembership.Distinct().OrderBy(r => r.OwnerParty.DisplayName);
+            var roles = user.RoleMembership.Distinct().OrderBy(r => r.OwnerBusinessAccount.DisplayName);
             var sections = roles.SelectMany(r => r.Blocks).Where(s => !s.HideFromNavigation).Distinct().OrderBy(b => b.Name);
 
             //Build the initializeConfig model
@@ -102,13 +102,13 @@ namespace FoundOps.Server.Controllers
 
                     //Set the business account name
                     jsonWriter.WritePropertyName("name");
-                    jsonWriter.WriteValue(role.OwnerParty.DisplayName);
+                    jsonWriter.WriteValue(role.OwnerBusinessAccount.DisplayName);
 
                     //Set the business's logo
-                    if (role.OwnerParty.PartyImage != null)
+                    if (role.OwnerBusinessAccount.PartyImage != null)
                     {
                         jsonWriter.WritePropertyName("businessLogoUrl");
-                        jsonWriter.WriteValue(partyImageUrls[role.OwnerParty.PartyImage.Id]);
+                        jsonWriter.WriteValue(partyImageUrls[role.OwnerBusinessAccount.PartyImage.Id]);
                     }
 
                     //Add the available sections's names for the roles

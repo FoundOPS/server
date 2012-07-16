@@ -66,7 +66,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         private void InitializeDefaultRoles()
         {
             //Setup FoundOPS' Role
-            FoundOpsAdministratorRole = new Role { Name = "Administrator", OwnerParty = BusinessAccountsDesignData.FoundOps, RoleType = RoleType.Administrator };
+            FoundOpsAdministratorRole = new Role { Name = "Administrator", OwnerBusinessAccount = BusinessAccountsDesignData.FoundOps, RoleType = RoleType.Administrator };
 
             foreach (var adminConsoleBlock in BlocksData.AdministrativeConsoleBlocks)
             {
@@ -95,7 +95,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         public static Role SetupServiceProviderRole(BusinessAccount ownerParty, RoleType roleType)
         {
-            var role = new Role { OwnerParty = ownerParty, RoleType = roleType };
+            var role = new Role { OwnerBusinessAccount = ownerParty, RoleType = roleType };
 
             if (roleType == RoleType.Administrator)
             {
