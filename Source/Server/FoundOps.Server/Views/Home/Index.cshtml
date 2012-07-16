@@ -20,13 +20,13 @@
           content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!-- Home screen icon  Mathias Bynens mathiasbynens.be/notes/touch-icons -->
     <!-- For iPhone 4 with high-resolution Retina display: -->
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/h/apple-touch-icon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./Icon-96x96.png">
     <!-- For first-generation iPad: -->
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/m/apple-touch-icon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./Icon-72x72.png">
     <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
-    <link rel="apple-touch-icon-precomposed" href="img/l/apple-touch-icon-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="./Icon-36x36.png">
     <!-- For nokia devices: -->
-    <link rel="shortcut icon" href="img/l/apple-touch-icon.png">
+    <link rel="shortcut icon" href="./Icon-36x36.png">
     <!-- iOS web app, delete if not needed. https://github.com/h5bp/mobile-boilerplate/issues/94 -->
     <!-- <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
@@ -39,7 +39,8 @@
     <meta http-equiv="cleartype" content="on">
     <!-- more tags for your 'head' to consider h5bp.com/d/head-Tips -->
 
-    <link rel="shortcut icon" href="./favicon_32.ico"/>
+    <link rel="shortcut icon" href="./Icon-36x36"/>
+    <!--If debug-->
     <link rel="stylesheet" type="text/css" href="styles/jquery.jscrollpane.css" media="all"/>
     <link rel="stylesheet" type="text/css" href="styles/navigator.css">
 
@@ -53,9 +54,11 @@
     <div id="content">
         <div id="remoteContent">
         </div>
-        <div id="silverlightControlHost" style="height:1px;width:1px; z-index: 0;">
-            <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="100%">
-                <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged" />
+        <!--need to fix the position & set height/width of the outer div for Firefox to show silverlight-->
+        <div id="silverlightControlHost" style="position: fixed; height: 100%; width: 100%;z-index: 0;">
+            <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
+                    style="height: 1px; width: 1px">
+                <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged"/>
                 @{
                 var xapSource = "";
                 var splashSource = "";
@@ -80,16 +83,17 @@
                 }
                 <param name="splashscreensource" value="@splashSource" />
                 <param name="source" value="@sourceParam"/>
+
                 <param name="onLoad" value="onSilverlightPluginLoaded"/>
-                <param name="onError" value="onSilverlightError" />
-                <param name="background" value="#ff333335" />
-                <param name="windowless" value="true" />
-                <param name="minRuntimeVersion" value="5.0.61118.0" />
-                <param name="enableHtmlAccess" value="true" />
-                <param name="autoUpgrade" value="true" />
+                <param name="onError" value="onSilverlightError"/>
+                <param name="background" value="#ff333335"/>
+                <param name="windowless" value="true"/>
+                <param name="minRuntimeVersion" value="5.0.61118.0"/>
+                <param name="enableHtmlAccess" value="true"/>
+                <param name="autoUpgrade" value="true"/>
                 <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration: none">
                     <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"
-                         style="border-style: none" />
+                         style="border-style: none"/>
                 </a>
             </object>
             <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px; z-index: -1;
@@ -102,7 +106,6 @@
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
-
 
 <script data-main="js/main.js" src="lib/require-jquery.js"></script>
 
@@ -147,9 +150,10 @@ mathiasbynens.be/notes/async-analytics-snippet -->
 </script>
 
 <script id="sideBarElementTemplate" type="text/x-kendo-template">
-    <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-hoverIconUrl='#= hoverIconUrl #'>
-        <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>
-        <span class='sectionName'>#= name #</span>
+    <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-hoverIconUrl='#=
+    hoverIconUrl #'>
+    <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>
+    <span class='sectionName'>#= name #</span>
     </a>
 </script>
 </html>
