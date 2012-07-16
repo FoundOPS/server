@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace FoundOPS.API.Models
 {
@@ -14,6 +11,8 @@ namespace FoundOPS.API.Models
         public string FirstName { get; set; }
         public string MiddleInitial { get; set; }
         public string LastName { get; set; }
+
+        public string DisplayName { get { return FirstName + " " + LastName; }}
 
 
         public static Employee ConvertModel(FoundOps.Core.Models.CoreEntities.Employee foundOpsEmployee)

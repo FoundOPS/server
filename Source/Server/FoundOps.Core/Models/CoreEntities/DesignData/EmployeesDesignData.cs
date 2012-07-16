@@ -38,6 +38,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignEmployee = new Employee
             {
+                FirstName = "Jon",
+                LastName = "Perl",
+                Gender = Gender.Male,
                 AddressLineOne = "329 W Lutz Ave",
                 AddressLineTwo = "Apt 3",
                 City = "West Lafayette",
@@ -58,6 +61,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignEmployeeTwo = new Employee
             {
+                FirstName = "Zach",
+                LastName = "Bright",
+                Gender = Gender.Male,
                 AddressLineOne = "440 S Grant St",
                 AddressLineTwo = "Apt 8",
                 City = "West Lafayette",
@@ -78,6 +84,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignEmployeeThree = new Employee
             {
+                FirstName = "Oren",
+                LastName = "Shatken",
+                Gender = Gender.Male,
                 AddressLineOne = "300 N Salisbury St",
                 AddressLineTwo = "Apt 13",
                 City = "West Lafayette",

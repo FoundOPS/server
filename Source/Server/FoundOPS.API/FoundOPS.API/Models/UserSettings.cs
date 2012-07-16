@@ -31,9 +31,13 @@ namespace FoundOPS.API.Models
                     FirstName = userAccount.FirstName,
                     LastName = userAccount.LastName,
                     EmailAddress = userAccount.EmailAddress,
-                    Role = role.Name,
-                    Employee = Employee.ConvertModel(foundOpsEmployee)
+                    Role = role.Name
                 };
+
+            if(foundOpsEmployee != null)
+            {
+                userSettings.Employee = Employee.ConvertModel(foundOpsEmployee);
+            }
 
             return userSettings;
         }

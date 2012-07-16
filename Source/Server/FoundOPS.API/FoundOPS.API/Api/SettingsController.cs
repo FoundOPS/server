@@ -17,6 +17,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Employee = FoundOPS.API.Models.Employee;
 
 namespace FoundOPS.API.Api
 {
@@ -152,10 +153,10 @@ namespace FoundOPS.API.Api
             {
                 //If not a FoundOPS account, return the current business's owned roles memberparties
                 accesibleUserAccounts =
-                    from role in _coreEntitiesContainer.Roles.Where(r => r.OwnerBusinessAccountId == businessAccount.Id)
-                    from userAccount in _coreEntitiesContainer.Parties.OfType<UserAccount>()
-                    where role.MemberParties.Any(p => p.Id == userAccount.Id)
-                    select userAccount;
+                    (from role in _coreEntitiesContainer.Roles.Where(r => r.OwnerBusinessAccountId == businessAccount.Id)
+                     from userAccount in _coreEntitiesContainer.Parties.OfType<UserAccount>()
+                     where role.MemberParties.Any(p => p.Id == userAccount.Id)
+                     select userAccount);
             }
 
             //If the serviceProviderId context is not empty
@@ -171,14 +172,10 @@ namespace FoundOPS.API.Api
             else
                 userAccounts = accesibleUserAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName).ToArray();
 
-            IList<UserSettings> userAccountsQueryable = new List<UserSettings>();
-
-            foreach (var user in userAccounts)
-            {
-                var role = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.MemberParties.Any(p => p.Id == user.Id));
-
-                userAccountsQueryable.Add(UserSettings.ConvertModel(user, role));
-            }
+            var userAccountsQueryable = (from user in userAccounts
+                                         let role = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.MemberParties.Any(p => p.Id == user.Id))
+                                         let account = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == user.Id).Include(ua => ua.LinkedEmployees).First()
+                                         select UserSettings.ConvertModel(account, role)).ToList();
 
             return userAccountsQueryable.AsQueryable();
         }
@@ -221,22 +218,28 @@ namespace FoundOPS.API.Api
             //Add the newly created UserAccount to the database
             _coreEntitiesContainer.Parties.AddObject(user);
 
-            var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == settings.Employee.Id);
 
-            if (employee != null)
-                user.LinkedEmployees.Add(employee);
+            if (settings.Employee != null)
+            {
+                var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.FirstName == settings.Employee.FirstName && e.LastName == settings.Employee.LastName && e.EmployerId == businessAccount.Id);
+
+                user.LinkedEmployees.Add(employee);                
+            }
             else
             {
-                employee = new FoundOps.Core.Models.CoreEntities.Employee
+                var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
                 {
                     Id = Guid.NewGuid(),
                     FirstName = settings.FirstName,
-                    LastName = settings.LastName
+                    LastName = settings.LastName,
+                    Employer = businessAccount
                 };
-                user.LinkedEmployees.Add(employee);
+                user.LinkedEmployees.Add(newEmployee);
             }
 
             _coreEntitiesContainer.SaveChanges();
+
+            #region Send New User Email
 
             var sender = _coreEntitiesContainer.CurrentUserAccount().First().DisplayName;
             var recipient = user.FirstName;
@@ -257,6 +260,8 @@ namespace FoundOPS.API.Api
                                 "support@foundops.com. \r\n\r\n\r\nThe FoundOPS Team";
 
             EmailPasswordTools.SendEmail(user.EmailAddress, subject, body);
+
+            #endregion
 
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
@@ -325,7 +330,8 @@ namespace FoundOPS.API.Api
                     {
                         Id = Guid.NewGuid(),
                         FirstName = settings.EmailAddress,
-                        LastName = settings.LastName
+                        LastName = settings.LastName,
+                        Employer = businessAccount
                     };
                     user.LinkedEmployees.Add(newEmployee);
                 }
@@ -347,6 +353,13 @@ namespace FoundOPS.API.Api
             //If they are not an admin, they do not have the ability to insert new Users
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().First(ua => ua.Id == settings.Id);
+
+            foreach (var employee in user.LinkedEmployees)
+            {
+                user.LinkedEmployees.Remove(employee);                
+            }
 
             _coreEntitiesContainer.DeleteUserAccountBasedOnId(settings.Id);
 
@@ -413,6 +426,26 @@ namespace FoundOPS.API.Api
             }
 
             return UpdatePartyImageHelper(businessAccount);
+        }
+
+        #endregion
+
+        #region Employees
+
+        [AcceptVerbs("GET", "POST")]
+        public IQueryable<Employee> GetAllEmployeesForBusiness(Guid? roleId)
+        {
+            //If there is no RoleId passed, we can assume that the user is not authorized to see all the User Settings
+            if (!roleId.HasValue)
+                ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+
+            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value).FirstOrDefault();
+
+            //If they are not an admin, they do not have the ability to view Users
+            if (businessAccount == null)
+                ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+
+            return businessAccount.Employees.Select(Employee.ConvertModel).AsQueryable();
         }
 
         #endregion

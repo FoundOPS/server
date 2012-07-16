@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using FoundOPS.API.Controllers;
 using FoundOPS.API.Models;
 using FoundOPS.API.Api;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,7 +16,7 @@ namespace API.Tests.Controllers
 
             var controller = new SettingsController { Request = request };
 
-            var response = controller.GetAllUserSettings(new Guid("EF8B0F5E-44BC-4A88-B3F0-59D8A29F5066"));
+            var response = controller.GetAllUserSettings(new Guid("9EEE0112-A8B9-46F4-9574-72C4CF961441"));
         }
 
         [TestMethod]
