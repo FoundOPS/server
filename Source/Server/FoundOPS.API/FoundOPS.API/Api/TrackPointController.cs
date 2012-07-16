@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure;
+﻿using FoundOPS.API.Models;
+using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
@@ -9,9 +10,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ResourceWithLastPoint = FoundOPS.API.Models.ResourceWithLastPoint;
-using TrackPoint = FoundOPS.API.Models.TrackPoint;
 
-namespace FoundOPS.API.Controllers
+namespace FoundOPS.API.Api
 {
 #if !DEBUG
     [Authorize]
@@ -272,7 +272,7 @@ namespace FoundOPS.API.Controllers
         /// <param name="trackPoint">The Model TrackPoint to be pushed to AzureTables</param>
         /// <param name="employee">The employee</param>
         /// <param name="routeId">The Id of the Route that the vehicle or employee are currently on</param>
-        private void PushTrackPointToAzure(BusinessAccount currentBusinessAccount, TrackPoint trackPoint, Employee employee, Guid routeId)
+        private void PushTrackPointToAzure(BusinessAccount currentBusinessAccount, TrackPoint trackPoint, FoundOps.Core.Models.CoreEntities.Employee employee, Guid routeId)
         {
             //Get the storage account information from Azure
             var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);

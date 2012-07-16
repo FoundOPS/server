@@ -1,7 +1,7 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
 using System.Web.Http;
 
-namespace FoundOPS.API.Controllers
+namespace FoundOPS.API.Api
 {
 #if DEBUG
 

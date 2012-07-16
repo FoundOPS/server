@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Objects;
 using System.IO;
 using System.Linq;
 using System.ServiceModel.DomainServices.Server;
@@ -139,22 +138,6 @@ namespace FoundOps.Server.Services.CoreDomainService
                                      ? ObjectContext.Employees
                                      : ObjectContext.Employees.Where(c => c.EmployerId == businessAccount.Id);
 
-            //var employeesPeople =
-            //    from employee in employees
-            //    join user in ObjectContext.Parties.OfType<UserAccount>()
-            //        on employee.Id equals user.Id
-            //    orderby user.LastName + " " + user.FirstName
-            //    select new { employee, user };
-
-            ////TODO: optimize this
-            ////See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
-            ////http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
-            ////Force load OwnedPerson
-            ////Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            //employeesPeople.Select(cp => cp.person).ToArray();
-
-            //return employeesPeople.Select(i => i.employee);
-
             return employees.OrderBy(e => e.FirstName);
         }
 
@@ -196,27 +179,10 @@ namespace FoundOps.Server.Services.CoreDomainService
                                      ? ObjectContext.Employees
                                      : ObjectContext.Employees.Where(c => c.EmployerId == businessAccount.Id);
 
-            //var employeesPeople =
-            //    from employee in employees
-            //    join person in ObjectContext.Parties.OfType<Person>()
-            //        on employee.Id equals person.Id
-            //    orderby person.LastName + " " + person.FirstName
-            //    select new { employee, person };
-
-
             if (!String.IsNullOrEmpty(searchText))
                 employees = employees.Where(e =>
                     e.FirstName.StartsWith(searchText) || e.LastName.StartsWith(searchText)
                     || searchText.StartsWith(e.FirstName) || searchText.Contains(e.LastName));
-
-            ////TODO: optimize this
-            ////See http://stackoverflow.com/questions/5699583/when-how-does-a-ria-services-query-get-added-to-ef-expression-tree
-            ////http://stackoverflow.com/questions/8358681/ria-services-domainservice-query-with-ef-projection-that-calls-method-and-still
-            ////Force load OwnedPerson
-            ////Workaround http://stackoverflow.com/questions/6648895/ef-4-1-inheritance-and-shared-primary-key-association-the-resulttype-of-the-s
-            //employeesPeople.Select(cp => cp.person).ToArray();
-
-            //return employeesPeople.Select(i => i.employee);
 
             return employees;
         }

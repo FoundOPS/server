@@ -314,7 +314,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Silverlight.js" />
-    <Content Include="Views\Shared\HomeLinkView.ascx" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 using FoundOps.Common.Silverlight.Tools;
+using FoundOps.Core.Models;
 using FoundOps.Core.Models.Authentication;
 using Recaptcha;
 using System;
@@ -148,7 +149,7 @@ namespace FoundOps.Server.Controllers
         {
             FormsService.SignOut();
 
-            return Redirect(Global.RootFrontSiteUrl);
+            return Redirect(ServerConstants.RootFrontSiteUrl);
         }
 
         #endregion

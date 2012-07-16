@@ -31,7 +31,7 @@ namespace FoundOps.Server.Controllers
         {
 #if !DEBUG
             if (!HttpContext.User.Identity.IsAuthenticated)
-                return Redirect(Global.RootFrontSiteUrl);
+                return Redirect(ServerConstants.RootFrontSiteUrl);
 #endif
 
 #if DEBUG
