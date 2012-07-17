@@ -50,14 +50,14 @@
                 <TextBlock Text="Employees" />
                 <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Employees"
                                    SourceType="{MarkupExtensions:Static MemberType=CoreEntities:Employee}"
-                                   ItemToRemoveDisplayMember="{Binding SelectedRouteVM.SelectedEmployee.OwnedPerson.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name}"
+                                   ItemToRemoveDisplayMember="{Binding SelectedRouteVM.SelectedEmployee.DisplayName}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name}"
                                    IsDeleteEnabled="{Binding SelectedRouteVM.SelectedEmployee, Converter={StaticResource ExistsBoolConverter}}"
                                    Source="{Tools:GetVM Type=ViewModels:EmployeesVM}" Destination="{Binding SelectedRouteVM}"
                                    DestinationItemsSource="{Binding SelectedRouteVM.EmployeesDestinationItemsSource}" />
                 <Controls2:RadGridView Grid.Row="1" Grid.ColumnSpan="2" SelectionMode="Single" AutoGenerateColumns="False" ShowGroupPanel="False" ShowColumnHeaders="False" RowIndicatorVisibility="Collapsed" 
                                        ItemsSource="{Binding SelectedRouteVM.EmployeesDestinationItemsSource}" SelectedItem="{Binding SelectedRouteVM.SelectedEmployee, Mode=TwoWay}">
                     <Controls2:RadGridView.Columns>
-                        <Controls2:GridViewDataColumn DataMemberBinding="{Binding OwnedPerson.DisplayName, Mode=TwoWay}" />
+                        <Controls2:GridViewDataColumn DataMemberBinding="{Binding DisplayName, Mode=TwoWay}" />
                     </Controls2:RadGridView.Columns>
                 </Controls2:RadGridView>
             </Grid>

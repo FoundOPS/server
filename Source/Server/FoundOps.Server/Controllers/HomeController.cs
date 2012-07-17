@@ -102,7 +102,7 @@ namespace FoundOps.Server.Controllers
 
                     //Set the business account name
                     jsonWriter.WritePropertyName("name");
-                    jsonWriter.WriteValue(role.OwnerBusinessAccount.DisplayName);
+                    jsonWriter.WriteValue(role.OwnerBusinessAccount.Name);
 
                     //Set the business's logo
                     if (role.OwnerBusinessAccount.PartyImage != null)
@@ -133,6 +133,9 @@ namespace FoundOps.Server.Controllers
 
                     jsonWriter.WritePropertyName("name");
                     jsonWriter.WriteValue(section.Name);
+
+                    jsonWriter.WritePropertyName("color");
+                    jsonWriter.WriteValue(section.Color);
 
                     if (section.Url != null)
                     {

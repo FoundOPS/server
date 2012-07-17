@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
@@ -34,8 +33,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private void InitializeEmployees()
         {
-            var partyDesignData = new PartyDesignData();
-
             DesignEmployee = new Employee
             {
                 FirstName = "Jon",

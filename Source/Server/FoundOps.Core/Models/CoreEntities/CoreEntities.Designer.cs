@@ -1224,12 +1224,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="color">Initial value of the Color property.</param>
         /// <param name="hideFromNavigation">Initial value of the HideFromNavigation property.</param>
-        public static Block CreateBlock(global::System.Guid id, global::System.String name, global::System.Boolean hideFromNavigation)
+        public static Block CreateBlock(global::System.Guid id, global::System.String name, global::System.String color, global::System.Boolean hideFromNavigation)
         {
             Block block = new Block();
             block.Id = id;
             block.Name = name;
+            block.Color = color;
             block.HideFromNavigation = hideFromNavigation;
             return block;
         }
@@ -1288,6 +1290,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Color
+        {
+            get
+            {
+                return _Color;
+            }
+            set
+            {
+                OnColorChanging(value);
+                ReportPropertyChanging("Color");
+                _Color = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Color");
+                OnColorChanged();
+            }
+        }
+        private global::System.String _Color;
+        partial void OnColorChanging(global::System.String value);
+        partial void OnColorChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

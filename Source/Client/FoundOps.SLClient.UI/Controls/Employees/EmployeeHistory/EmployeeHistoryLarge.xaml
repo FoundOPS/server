@@ -13,8 +13,8 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="5,3">
                     <TextBlock Text="Employee History Entry - " FontSize="13" Foreground="White" />
-                    <TextBlock Text="{Binding Employee.OwnedPerson.FirstName}" FontSize="13" Foreground="White" />
-                    <TextBlock Text="{Binding Employee.OwnedPerson.LastName}" FontSize="13" Foreground="White" />
+                    <TextBlock Text="{Binding Employee.FirstName}" FontSize="13" Foreground="White" />
+                    <TextBlock Text="{Binding Employee.LastName}" FontSize="13" Foreground="White" />
                     <!--Bind Text to selected vehicle id-->
                 </StackPanel>
                 <SaveDiscardCancel:SaveCancel Grid.Column="1" ISaveDiscardChangesCommands="{Binding DataContext, ElementName=myEmployeeHistoryLarge}"/>

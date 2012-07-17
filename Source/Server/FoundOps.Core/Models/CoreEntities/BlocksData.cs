@@ -156,6 +156,7 @@ namespace FoundOps.Core.Models.CoreEntities
             RoutesBlock = new Block
             {
                 Id = BlockConstants.RoutesBlockId,
+                Color = "green",
                 Name = "Routes",
                 HideFromNavigation = true,
                 IconUrl = "img/routes.png",
@@ -231,6 +232,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.ClientBlockId,
                 Name = "Clients",
+                Color = "blue",
                 IconUrl = "img/clients.png",
                 HoverIconUrl = "img/clientsColor.png",
                 IsSilverlight = true
@@ -240,6 +242,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.DispatcherBlockId,
                 Name = "Dispatcher",
+                Color = "green",
                 IconUrl = "img/dispatcher.png",
                 HoverIconUrl = "img/dispatcherColor.png",
                 IsSilverlight = true
@@ -249,6 +252,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.EmployeesBlockId,
                 Name = "Employees",
+                Color = "red",
                 IconUrl = "img/employees.png",
                 HoverIconUrl = "img/employeesColor.png",
                 IsSilverlight = true
@@ -258,6 +262,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.FeedbackSupportBlockId,
                 Name = "Feedback and Support",
+                Color = "blue",
                 IconUrl = "img/uservoice.png",
                 HoverIconUrl = "img/uservoiceColor.png"
             };
@@ -266,6 +271,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.ImportDataBlockId,
                 Name = "Import Data",
+                Color = "black",
                 HideFromNavigation = true,
                 IsSilverlight = true
             };
@@ -274,6 +280,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.LocationsBlockId,
                 Name = "Locations",
+                Color = "orange",
                 IconUrl = "img/locations.png",
                 HoverIconUrl = "img/locationsColor.png",
                 IsSilverlight = true
@@ -283,6 +290,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.RegionsBlockId,
                 Name = "Regions",
+                Color = "orange",
                 IconUrl = "img/regions.png",
                 HoverIconUrl = "img/regionsColor.png",
                 IsSilverlight = true
@@ -292,6 +300,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.ServicesBlockId,
                 Name = "Services",
+                Color = "green",
                 IconUrl = "img/services.png",
                 HoverIconUrl = "img/servicesColor.png",
                 IsSilverlight = true
@@ -301,6 +310,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.VehiclesBlockId,
                 Name = "Vehicles",
+                Color = "red",
                 IconUrl = "img/vehicles.png",
                 HoverIconUrl = "img/vehiclesColor.png",
                 IsSilverlight = true
@@ -310,6 +320,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.VehicleMaintenanceBlockId,
                 Name = "Vehicle Maintenance",
+                Color = "red",
                 HideFromNavigation = true,
                 IsSilverlight = true
             };
@@ -355,6 +366,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.BusinessAccountsBlockId,
                 Name = "Business Accounts",
+                Color = "black",
                 IconUrl = "img/businessAccounts.png",
                 HoverIconUrl = "img/businessAccountsColor.png",
                 IsSilverlight = true
@@ -364,6 +376,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = BlockConstants.ServiceTemplatesBlockId,
                 Name = "Service Templates",
+                Color = "green",
                 HideFromNavigation = true,
                 IsSilverlight = true
             };
