@@ -226,6 +226,7 @@
     <Content Include="img\businessAccounts.png" />
     <Content Include="img\businessAccountsColor.png" />
     <Content Include="img\emptyPerson.png" />
+    <Content Include="lib\filereader.swf" />
     <Content Include="Scripts\require-jquery.js" />
     <Content Include="styles\jquery.jscrollpane.css" />
     <Content Include="styles\navigator.css" />

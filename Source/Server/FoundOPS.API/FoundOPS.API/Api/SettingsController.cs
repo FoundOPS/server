@@ -199,7 +199,7 @@ namespace FoundOPS.API.Api
         /// x, y, w, h: for cropping
         /// </summary>
         /// <returns>The image url, expiring in 3 hours</returns>
-        public Task<string> UpdateUserImage()
+        public string UpdateUserImage()
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(u => u.PartyImage).First();
 
@@ -500,7 +500,7 @@ namespace FoundOPS.API.Api
         /// </summary>
         /// <returns>The image url, expiring in 3 hours</returns>
         [AcceptVerbs("POST")]
-        public Task<string> UpdateBusinessImage(Guid roleId)
+        public string UpdateBusinessImage(Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
 
@@ -539,7 +539,7 @@ namespace FoundOPS.API.Api
             var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
                 {
                     FirstName = "None",
-                    LastName = ""                    
+                    LastName = ""
                 };
 
             employees.Add(newEmployee);
@@ -559,15 +559,23 @@ namespace FoundOPS.API.Api
         /// </summary>
         /// <param name="partyToUpdate">The party to update</param>
         /// <returns>The image url, expiring in 3 hours</returns>
-        private async Task<string> UpdatePartyImageHelper(Party partyToUpdate)
+        private string UpdatePartyImageHelper(Party partyToUpdate)
         {
-            var formData = await Request.ReadMultipartAsync(new[] { "imageFileName", "imageData" });
+            var formDataTask = Request.ReadMultipartAsync(new[] { "imageFileName", "imageData" });
+            formDataTask.Wait();
 
-            var imageFileName = await formData["imageFileName"].ReadAsStringAsync();
-            var imageDataString = await formData["imageData"].ReadAsStringAsync();
+            var formData = formDataTask.Result;
 
+            var imageFileNameTask = formData["imageFileName"].ReadAsStringAsync();
+            var imageDataStringTask = formData["imageData"].ReadAsStringAsync();
+
+            imageFileNameTask.Wait();
+            var imageFileName = imageFileNameTask.Result;
             if (string.IsNullOrEmpty(imageFileName))
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "imageFileName was not set"));
+
+            imageDataStringTask.Wait();
+            var imageDataString = imageDataStringTask.Result;
 
             //Remove prefaced metadata ex: "data:image/png;base64"
             var metadataIndex = imageDataString.IndexOf("base64,");

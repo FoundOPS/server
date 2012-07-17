@@ -28,5 +28,8 @@
     <Startup>
       <Task commandLine="disableTimeout.cmd" executionContext="elevated" />
     </Startup>
+    <ConfigurationSettings>
+      <Setting name="CloudToolsDiagnosticAgentVersion" />
+    </ConfigurationSettings>
   </WebRole>
 </ServiceDefinition>

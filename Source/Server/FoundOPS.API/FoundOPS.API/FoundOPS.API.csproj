@@ -31,7 +31,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FoundOPS.API</RootNamespace>
     <AssemblyName>FoundOPS.API</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <FileUpgradeFlags>

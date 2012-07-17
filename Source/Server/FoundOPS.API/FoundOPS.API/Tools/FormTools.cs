@@ -14,7 +14,7 @@ namespace FoundOPS.API.Tools
         /// </summary>
         /// <param name="request">The HttpRequestMessage</param>
         /// <param name="keys">The form value names</param>
-        public static async Task<Dictionary<string, HttpContent>> ReadMultipartAsync(this HttpRequestMessage request, string[] keys)
+        public static Task<Dictionary<string, HttpContent>> ReadMultipartAsync(this HttpRequestMessage request, string[] keys)
         {
             var result = new Dictionary<string, HttpContent>();
 
@@ -25,19 +25,22 @@ namespace FoundOPS.API.Tools
             }
 
             // Read the form data and return an async task.
-            var formContents = await request.Content.ReadAsMultipartAsync();
+            return request.Content.ReadAsMultipartAsync()
+                   .ContinueWith(t =>
+                   {
+                       var formContents = t.Result;
+                       foreach (var key in keys)
+                       {
+                           var content = formContents.FirstDispositionNameOrDefault(key);
 
-            foreach (var key in keys)
-            {
-                var content = formContents.FirstDispositionNameOrDefault(key);
+                           if (content == null)
+                               throw new HttpResponseException(request.CreateResponse(HttpStatusCode.BadRequest, key + " was not sent"));
 
-                if (content == null)
-                    throw new HttpResponseException(request.CreateResponse(HttpStatusCode.BadRequest, key + " was not sent"));
+                           result.Add(key, content);
+                       }
 
-                result.Add(key, content);
-            }
-
-            return result;
+                       return result;
+                   });
         }
     }
 }
