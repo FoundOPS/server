@@ -450,12 +450,15 @@ namespace FoundOPS.API.Api
             //Add blank employee
             var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
                 {
-                    DisplayName = "none"
+                    FirstName = "none",
+                    LastName = ""                    
                 };
 
             employees.Add(newEmployee);
 
-            return employees.Select(Employee.ConvertModel).OrderBy(e => e.FirstName).AsQueryable();
+            var filteredEmployees = employees.Where(e => e.LinkedUserAccountId == null);
+
+            return filteredEmployees.Select(Employee.ConvertModel).OrderBy(e => e.FirstName).AsQueryable();
         }
 
         #endregion
