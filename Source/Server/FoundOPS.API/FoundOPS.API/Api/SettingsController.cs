@@ -313,7 +313,7 @@ namespace FoundOPS.API.Api
 
                 user.LinkedEmployees.Add(employee);
             }
-            else if (settings.Employee.FirstName == "create")
+            else if (settings.Employee.FirstName == "Create")
             {
                 var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
                 {
@@ -538,7 +538,7 @@ namespace FoundOPS.API.Api
             //Add blank employee
             var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
                 {
-                    FirstName = "none",
+                    FirstName = "None",
                     LastName = ""                    
                 };
 
