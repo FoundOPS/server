@@ -307,13 +307,13 @@ namespace FoundOPS.API.Api
             _coreEntitiesContainer.Parties.AddObject(user);
 
 
-            if (settings.Employee != null)
+            if (settings.Employee.LastName != null)
             {
                 var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.FirstName == settings.Employee.FirstName && e.LastName == settings.Employee.LastName && e.EmployerId == businessAccount.Id);
 
                 user.LinkedEmployees.Add(employee);
             }
-            else
+            else if (settings.Employee.FirstName == "create")
             {
                 var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
                 {
@@ -533,9 +533,20 @@ namespace FoundOPS.API.Api
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            var employees = _coreEntitiesContainer.Employees.Where(e => e.EmployerId == businessAccount.Id);
+            var employees = _coreEntitiesContainer.Employees.Where(e => e.EmployerId == businessAccount.Id).ToList();
 
-            return employees.Select(Employee.ConvertModel).AsQueryable();
+            //Add blank employee
+            var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
+                {
+                    FirstName = "none",
+                    LastName = ""                    
+                };
+
+            employees.Add(newEmployee);
+
+            var filteredEmployees = employees.Where(e => e.LinkedUserAccountId == null);
+
+            return filteredEmployees.Select(Employee.ConvertModel).OrderBy(e => e.FirstName).AsQueryable();
         }
 
         #endregion
