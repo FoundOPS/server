@@ -7,8 +7,8 @@
     <telerik:RadGridView x:Name="EmployeesGridView" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
                 RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
         <telerik:RadGridView.Columns>
-            <telerik:GridViewDataColumn Header="First Name" DataMemberBinding="{Binding OwnedPerson.FirstName}"/>
-            <telerik:GridViewDataColumn Header="Last Name" DataMemberBinding="{Binding OwnedPerson.LastName}" Width="*"/>
+            <telerik:GridViewDataColumn Header="First Name" DataMemberBinding="{Binding FirstName}"/>
+            <telerik:GridViewDataColumn Header="Last Name" DataMemberBinding="{Binding LastName}" Width="*"/>
             <!--<telerik:GridViewDataColumn Header="Role" Width="*"/>-->
         </telerik:RadGridView.Columns>
     </telerik:RadGridView>

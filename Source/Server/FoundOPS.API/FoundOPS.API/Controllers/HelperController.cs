@@ -11,7 +11,6 @@ namespace FoundOPS.API.Controllers
         /// <param name="email">The email address.</param>
         /// <param name="pass">The password.</param>
         /// <param name="redirect">The url to redirect them to.</param>
-        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public ActionResult Login(string email, string pass, string redirect)
         {
             var authController = new AuthController();

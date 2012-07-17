@@ -359,6 +359,7 @@ GO
 CREATE TABLE [dbo].[Blocks] (
     [Id] uniqueidentifier  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
+    [Color] nvarchar(max)  NOT NULL,
     [HideFromNavigation] bit  NOT NULL,
     [IconUrl] nvarchar(max)  NULL,
     [HoverIconUrl] nvarchar(max)  NULL,

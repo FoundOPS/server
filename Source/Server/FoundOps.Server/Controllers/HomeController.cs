@@ -134,6 +134,9 @@ namespace FoundOps.Server.Controllers
                     jsonWriter.WritePropertyName("name");
                     jsonWriter.WriteValue(section.Name);
 
+                    jsonWriter.WritePropertyName("color");
+                    jsonWriter.WriteValue(section.Color);
+
                     if (section.Url != null)
                     {
                         jsonWriter.WritePropertyName("url");

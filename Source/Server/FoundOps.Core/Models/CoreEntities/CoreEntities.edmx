@@ -376,6 +376,7 @@
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Color" Type="nvarchar(max)" Nullable="false" />
           <Property Name="HideFromNavigation" Type="bit" Nullable="false" />
           <Property Name="IconUrl" Type="nvarchar(max)" />
           <Property Name="HoverIconUrl" Type="nvarchar(max)" />
@@ -2049,12 +2050,13 @@
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Roles" Relationship="CoreEntities.RoleBlock" FromRole="Block" ToRole="Role" />
+          <Property Type="String" Name="Color" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Boolean" Name="HideFromNavigation" Nullable="false" />
           <Property Type="String" Name="IconUrl" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="HoverIconUrl" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Url" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Boolean" Name="IsSilverlight" Nullable="true" />
+          <NavigationProperty Name="Roles" Relationship="CoreEntities.RoleBlock" FromRole="Block" ToRole="Role" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -3225,6 +3227,7 @@
         <MappingFragment StoreEntitySet="Blocks">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
           <ScalarProperty Name="HideFromNavigation" ColumnName="HideFromNavigation" />
           <ScalarProperty Name="IconUrl" ColumnName="IconUrl" />
           <ScalarProperty Name="HoverIconUrl" ColumnName="HoverIconUrl" />

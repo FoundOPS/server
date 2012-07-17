@@ -15,15 +15,24 @@ namespace FoundOPS.API
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapHttpRoute(
-                name: "API Default",
-                routeTemplate: "api/{controller}"
-                );
+            //routes.MapHttpRoute(
+            //    name: "API Default",
+            //    routeTemplate: "api/{controller}"
+            //    );
 
-            routes.MapHttpRoute(
+            var apiRoute = routes.MapHttpRoute(
                 name: "ActionApi",
                 routeTemplate: "api/{controller}/{action}"
                 );
+
+            apiRoute.DataTokens["Namespaces"] = new[] { "FoundOPS.API.Api" };
+
+            var mvcRoute = routes.MapRoute(
+                 "Default", // Route name
+                 "{controller}/{action}"
+                 );
+
+            mvcRoute.DataTokens["Namespaces"] = new[] { "FoundOPS.API.Controllers" };
         }
 
         protected void Application_Start()
