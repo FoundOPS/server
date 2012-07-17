@@ -107,6 +107,7 @@
     <Compile Include="Models\Azure\TrackPointsHistoryContext.cs" />
     <Compile Include="Models\Azure\InvoiceTableDataModel.cs" />
     <Compile Include="Models\Azure\InvoiceDataServiceContext.cs" />
+    <Compile Include="Models\CoreEntities\DesignData\ServicesDesignData.cs" />
     <Compile Include="Models\ServerConstants.cs" />
     <Compile Include="Models\CoreEntities\BlocksData.cs" />
     <Compile Include="Models\CoreEntities\CoreEntities.metadata.cs" />
@@ -124,14 +125,12 @@
     <Compile Include="Models\CoreEntities\DesignData\FieldsDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\InvoicesDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\LocationsDesignData.cs" />
-    <Compile Include="Models\CoreEntities\DesignData\PartyDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\RecurringServicesDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\RegionsDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\RepeatDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\RolesDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\RoutesDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\SalesTermsDesignData.cs" />
-    <Compile Include="Models\CoreEntities\DesignData\ServicesDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\ServiceTemplatesDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\SubLocationsDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\UserAccountsDesignData.cs" />

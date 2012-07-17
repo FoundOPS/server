@@ -386,7 +386,7 @@
                 </InfiniteAccordion:ContextBorder>
                 <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Employee" BorderBrush="{StaticResource VehiclesBrush}" DeleteButtonVisibility="Collapsed">
                     <InfiniteAccordion:ContextBorder.HeaderContent>
-                        <TextBlock Margin="5,0" Text="{Binding OwnedPerson.DisplayName}" Foreground="White" />
+                        <TextBlock Margin="5,0" Text="{Binding DisplayName}" Foreground="White" />
                     </InfiniteAccordion:ContextBorder.HeaderContent>
                 </InfiniteAccordion:ContextBorder>
                 <InfiniteAccordion:ContextBorder ContextType="FoundOps.Core.Models.CoreEntities.Location" BorderBrush="{StaticResource LocationBrush}" DeleteButtonVisibility="Collapsed">

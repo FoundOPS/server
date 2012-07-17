@@ -227,9 +227,6 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\LocationsDesignData.cs">
       <Link>DesignData\LocationsDesignData.cs</Link>
     </Compile>
-    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\PartyDesignData.cs">
-      <Link>DesignData\PartyDesignData.cs</Link>
-    </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\RecurringServicesDesignData.cs">
       <Link>DesignData\RecurringServicesDesignData.cs</Link>
     </Compile>
@@ -247,9 +244,6 @@
     </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\SalesTermsDesignData.cs">
       <Link>DesignData\SalesTermsDesignData.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\ServicesDesignData.cs">
-      <Link>DesignData\ServicesDesignData.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\ServiceTemplatesDesignData.cs">
       <Link>DesignData\ServiceTemplatesDesignData.cs</Link>

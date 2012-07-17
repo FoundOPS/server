@@ -1,7 +1,6 @@
-﻿using System;
+﻿using FoundOps.Common.Tools.ExtensionMethods;
+using System;
 using System.Collections.Generic;
-using FoundOps.Common.Composite.Tools;
-using FoundOps.Common.Tools.ExtensionMethods;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
@@ -16,23 +15,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         public Service OilService;
         public Service SmallGreaseTrapService;
 
-        public ServicesDesignData() : this(null, null, new[] { ServiceTemplatesDesignData.OilServiceTemplate, ServiceTemplatesDesignData.SmallGreaseTrapServiceTemplate }) { }
-
         public ServicesDesignData(BusinessAccount serviceProvider, Client client, IEnumerable<ServiceTemplate> serviceTemplates)
         {
             _serviceTemplates = serviceTemplates;
-
-            if (serviceProvider == null || client == null)
-            {
-                var designPartyData = new PartyDesignData();
-                if (serviceProvider == null)
-                    serviceProvider = designPartyData.DesignBusinessAccount;
-                if (client == null)
-                {
-                    var designClientData = new ClientsDesignData();
-                    client = designClientData.DesignClient;
-                }
-            }
 
             _serviceProvider = serviceProvider;
             _client = client;
